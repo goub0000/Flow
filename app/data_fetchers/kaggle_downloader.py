@@ -31,7 +31,7 @@ class KaggleDatasetDownloader:
     DATASETS = {
         'qs-2025': 'melissamonfared/qs-world-university-rankings-2025',
         'qs-2017-2022': 'padhmam/qs-world-university-rankings-2017-2022',
-        'times-higher-ed': 'ddosad/timedata',
+        'the-2016-2025': 'raymondtoo/the-world-university-rankings-2016-2024',
     }
 
     # Dataset patterns for searching latest versions
@@ -189,6 +189,50 @@ class KaggleDatasetDownloader:
         csv_files = list(download_path.glob('*.csv'))
 
         if csv_files:
+            csv_file = csv_files[0]
+            logger.info(f"Found CSV file: {csv_file.name}")
+            return csv_file
+        else:
+            logger.warning("No CSV files found in downloaded dataset")
+            # List what we got
+            all_files = list(download_path.glob('*'))
+            logger.info(f"Downloaded files: {[f.name for f in all_files]}")
+            return None
+
+    def download_the_rankings(self, force: bool = False) -> Optional[Path]:
+        """
+        Download THE World University Rankings 2016-2025 dataset
+
+        Args:
+            force: Force download even if already exists
+
+        Returns:
+            Path to downloaded CSV file, or None if not found
+        """
+        logger.info("Downloading THE World University Rankings...")
+
+        # Download dataset
+        download_path = self.download_dataset('the-2016-2025', unzip=True, force=force)
+
+        # Find THE-specific CSV file
+        # Look for files with "THE" in the name, excluding "QS" files
+        csv_files = list(download_path.glob('*.csv'))
+
+        # Filter for THE rankings files (exclude QS files)
+        the_files = [f for f in csv_files if 'THE' in f.name and 'QS' not in f.name]
+
+        if the_files:
+            csv_file = the_files[0]
+            logger.info(f"Found CSV file: {csv_file.name}")
+            return csv_file
+        elif csv_files:
+            # Try to find any non-QS World University Rankings file
+            non_qs_files = [f for f in csv_files if 'QS' not in f.name]
+            if non_qs_files:
+                csv_file = non_qs_files[0]
+                logger.info(f"Found CSV file: {csv_file.name}")
+                return csv_file
+            # Last resort: use first CSV
             csv_file = csv_files[0]
             logger.info(f"Found CSV file: {csv_file.name}")
             return csv_file
