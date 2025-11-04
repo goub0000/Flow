@@ -185,20 +185,21 @@ class THERankingsCSVImporter:
         Returns:
             Normalized university dictionary
         """
-        # THE CSV columns may vary, try common column names
+        # THE CSV columns (capitalized): 'Name', 'Country', 'Rank', 'Overall Score', etc.
         university_name = (
-            row.get('university_name') or
+            row.get('Name') or
             row.get('name') or
+            row.get('university_name') or
             row.get('institution') or
             row.get('Institution Name') or
             row.get('University')
         )
 
         country_name = (
+            row.get('Country') or
             row.get('country') or
             row.get('location') or
-            row.get('Location') or
-            row.get('Country')
+            row.get('Location')
         )
 
         if not university_name or not country_name:
@@ -206,8 +207,8 @@ class THERankingsCSVImporter:
 
         # Extract rank
         rank_str = (
-            row.get('rank') or
             row.get('Rank') or
+            row.get('rank') or
             row.get('world_rank') or
             row.get('World Rank')
         )
@@ -215,9 +216,9 @@ class THERankingsCSVImporter:
 
         # Extract scores
         overall_score = self.clean_score(
+            row.get('Overall Score') or
             row.get('scores_overall') or
-            row.get('overall_score') or
-            row.get('Overall Score')
+            row.get('overall_score')
         )
 
         # Get country code
