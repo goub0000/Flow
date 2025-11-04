@@ -37,12 +37,11 @@ jobs:
 
       - name: Update QS Rankings
         run: |
+          export SUPABASE_URL="${{ secrets.SUPABASE_URL }}"
+          export SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}"
+          export KAGGLE_USERNAME="${{ secrets.KAGGLE_USERNAME }}"
+          export KAGGLE_KEY="${{ secrets.KAGGLE_KEY }}"
           python import_to_supabase.py
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
 
   update-college-scorecard:
     name: Update College Scorecard
@@ -71,8 +70,7 @@ jobs:
 
       - name: Update College Scorecard
         run: |
+          export SUPABASE_URL="${{ secrets.SUPABASE_URL }}"
+          export SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}"
+          export COLLEGE_SCORECARD_API_KEY="${{ secrets.COLLEGE_SCORECARD_API_KEY }}"
           python import_college_scorecard_to_supabase.py
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          COLLEGE_SCORECARD_API_KEY: ${{ secrets.COLLEGE_SCORECARD_API_KEY }}
