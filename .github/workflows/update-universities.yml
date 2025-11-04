@@ -74,3 +74,33 @@ jobs:
           export SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}"
           export COLLEGE_SCORECARD_API_KEY="${{ secrets.COLLEGE_SCORECARD_API_KEY }}"
           python import_college_scorecard_to_supabase.py
+
+  update-universities-list-api:
+    name: Update Universities List API
+    runs-on: ubuntu-latest
+    needs: update-college-scorecard  # Run after College Scorecard completes
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create .env file
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}" >> .env
+
+      - name: Update Universities List API
+        run: |
+          export SUPABASE_URL="${{ secrets.SUPABASE_URL }}"
+          export SUPABASE_SERVICE_KEY="${{ secrets.SUPABASE_SERVICE_KEY }}"
+          python import_universities_list_api.py
