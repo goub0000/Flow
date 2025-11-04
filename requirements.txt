@@ -1,0 +1,17 @@
+# Find Your Path - University Recommendation Service
+# Python 3.9+
+# Using latest versions compatible with Python 3.14
+
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy  # For SQLite (local development)
+supabase    # For Supabase (cloud production)
+
+# Utilities
+pydantic
+python-dotenv
+requests
+kaggle
