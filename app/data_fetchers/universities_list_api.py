@@ -141,13 +141,17 @@ class UniversitiesListAPIFetcher:
         # Get domain (first domain)
         domain = uni_data.get('domains', [None])[0]
 
+        # Get ISO alpha-2 country code
+        country_code = uni_data.get('alpha_two_code', '').strip()
+        country_name = uni_data.get('country', '').strip()
+
         normalized = {
             'name': uni_data.get('name', '').strip(),
-            'country': uni_data.get('country', '').strip(),
+            'country': country_code,  # Use ISO alpha-2 code
             'state': state_province,
             'website': website,
-            # Store alpha_two_code and domains as metadata
-            'description': f"Domain: {domain}, Code: {uni_data.get('alpha_two_code', 'N/A')}",
+            # Store domain and country name in description
+            'description': f"{uni_data.get('name', '')} is a higher education institution in {country_name}. Domain: {domain}",
         }
 
         # Remove None values

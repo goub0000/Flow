@@ -1,9 +1,8 @@
 """
-Recommendation Engine - University Matching Algorithm
+Recommendation Engine - University Matching Algorithm (Cloud-Based)
 """
 from typing import List, Dict, Tuple
-from sqlalchemy.orm import Session
-from app.models.university import University, StudentProfile, Recommendation, Program
+from supabase import Client
 import logging
 
 logger = logging.getLogger(__name__)
@@ -19,25 +18,42 @@ class RecommendationEngine:
     - University Characteristics: 10%
     """
 
-    def __init__(self, db: Session):
+    def __init__(self, db: Client):
         self.db = db
 
     def generate_recommendations(
-        self, student: StudentProfile, max_results: int = 15
-    ) -> List[Recommendation]:
+        self, student: Dict, max_results: int = 15
+    ) -> List[Dict]:
         """Generate university recommendations for a student"""
 
-        # Get all universities
-        universities = self.db.query(University).all()
+        # Get all universities from Supabase
+        response = self.db.table('universities').select('*').execute()
+        universities = response.data
 
         if not universities:
             logger.warning("No universities found in database")
             return []
 
+        # Batch-load all programs to avoid N+1 queries
+        logger.info("Loading programs for matching...")
+        programs_response = self.db.table('programs').select('*').execute()
+        all_programs = programs_response.data
+
+        # Create index: university_id -> list of programs
+        programs_by_university = {}
+        for program in all_programs:
+            univ_id = program.get('university_id')
+            if univ_id:
+                if univ_id not in programs_by_university:
+                    programs_by_university[univ_id] = []
+                programs_by_university[univ_id].append(program)
+
+        logger.info(f"Loaded programs for {len(programs_by_university)} universities")
+
         # Calculate scores for each university
         scored_universities = []
         for university in universities:
-            scores = self._calculate_scores(student, university)
+            scores = self._calculate_scores(student, university, programs_by_university)
             total_score = self._calculate_total_score(scores)
             category = self._determine_category(student, university, scores)
 
@@ -56,44 +72,46 @@ class RecommendationEngine:
             scored_universities, max_results
         )
 
-        # Create recommendation objects
+        # Create recommendation dictionaries
         recommendations = []
         for item in selected:
             strengths, concerns = self._generate_insights(
                 student, item["university"], item["scores"]
             )
 
-            recommendation = Recommendation(
-                student_id=student.id,
-                university_id=item["university"].id,
-                match_score=round(item["total_score"], 2),
-                category=item["category"],
-                academic_score=round(item["scores"]["academic"], 2),
-                financial_score=round(item["scores"]["financial"], 2),
-                program_score=round(item["scores"]["program"], 2),
-                location_score=round(item["scores"]["location"], 2),
-                characteristics_score=round(item["scores"]["characteristics"], 2),
-                strengths=strengths,
-                concerns=concerns,
-            )
+            recommendation = {
+                "student_id": student["id"],
+                "university_id": item["university"]["id"],
+                "match_score": round(item["total_score"], 2),
+                "category": item["category"],
+                "academic_score": round(item["scores"]["academic"], 2),
+                "financial_score": round(item["scores"]["financial"], 2),
+                "program_score": round(item["scores"]["program"], 2),
+                "location_score": round(item["scores"]["location"], 2),
+                "characteristics_score": round(item["scores"]["characteristics"], 2),
+                "strengths": strengths,
+                "concerns": concerns,
+                "favorited": 0,
+                "notes": None,
+            }
             recommendations.append(recommendation)
 
         return recommendations
 
     def _calculate_scores(
-        self, student: StudentProfile, university: University
+        self, student: Dict, university: Dict, programs_by_university: Dict
     ) -> Dict[str, float]:
         """Calculate all dimension scores"""
         return {
             "academic": self._calculate_academic_score(student, university),
             "financial": self._calculate_financial_score(student, university),
-            "program": self._calculate_program_score(student, university),
+            "program": self._calculate_program_score(student, university, programs_by_university),
             "location": self._calculate_location_score(student, university),
             "characteristics": self._calculate_characteristics_score(student, university),
         }
 
     def _calculate_academic_score(
-        self, student: StudentProfile, university: University
+        self, student: Dict, university: Dict
     ) -> float:
         """
         Calculate academic fit score (0-100)
@@ -103,8 +121,8 @@ class RecommendationEngine:
         factors = 0
 
         # GPA comparison
-        if student.gpa and university.gpa_average:
-            gpa_diff = student.gpa - university.gpa_average
+        if student.get("gpa") and university.get("gpa_average"):
+            gpa_diff = student["gpa"] - university["gpa_average"]
             if gpa_diff >= 0.3:
                 score += 90  # Well above average
             elif gpa_diff >= 0:
@@ -116,39 +134,39 @@ class RecommendationEngine:
             factors += 1
 
         # SAT comparison (if student has SAT)
-        if student.sat_total and university.sat_math_25th and university.sat_ebrw_25th:
-            sat_25th = (university.sat_math_25th or 0) + (university.sat_ebrw_25th or 0)
-            sat_75th = (university.sat_math_75th or 0) + (university.sat_ebrw_75th or 0)
+        if student.get("sat_total") and university.get("sat_math_25th") and university.get("sat_ebrw_25th"):
+            sat_25th = (university.get("sat_math_25th") or 0) + (university.get("sat_ebrw_25th") or 0)
+            sat_75th = (university.get("sat_math_75th") or 0) + (university.get("sat_ebrw_75th") or 0)
 
             if sat_75th > 0:
-                if student.sat_total >= sat_75th:
+                if student["sat_total"] >= sat_75th:
                     score += 90
-                elif student.sat_total >= sat_25th:
+                elif student["sat_total"] >= sat_25th:
                     # Linear interpolation between 25th and 75th percentile
-                    pct = (student.sat_total - sat_25th) / (sat_75th - sat_25th)
+                    pct = (student["sat_total"] - sat_25th) / (sat_75th - sat_25th)
                     score += 60 + (pct * 20)
                 else:
                     score += 40
                 factors += 1
 
         # ACT comparison (if student has ACT)
-        if student.act_composite and university.act_composite_25th:
-            act_25th = university.act_composite_25th or 0
-            act_75th = university.act_composite_75th or 0
+        if student.get("act_composite") and university.get("act_composite_25th"):
+            act_25th = university.get("act_composite_25th") or 0
+            act_75th = university.get("act_composite_75th") or 0
 
             if act_75th > 0:
-                if student.act_composite >= act_75th:
+                if student["act_composite"] >= act_75th:
                     score += 90
-                elif student.act_composite >= act_25th:
-                    pct = (student.act_composite - act_25th) / (act_75th - act_25th)
+                elif student["act_composite"] >= act_25th:
+                    pct = (student["act_composite"] - act_25th) / (act_75th - act_25th)
                     score += 60 + (pct * 20)
                 else:
                     score += 40
                 factors += 1
 
         # Class rank (if available)
-        if student.class_rank and student.class_size:
-            percentile = (student.class_size - student.class_rank) / student.class_size
+        if student.get("class_rank") and student.get("class_size"):
+            percentile = (student["class_size"] - student["class_rank"]) / student["class_size"]
             if percentile >= 0.9:
                 score += 90
             elif percentile >= 0.75:
@@ -162,13 +180,13 @@ class RecommendationEngine:
         return score / factors if factors > 0 else 70.0
 
     def _calculate_financial_score(
-        self, student: StudentProfile, university: University
+        self, student: Dict, university: Dict
     ) -> float:
         """Calculate financial fit score (0-100)"""
-        if not student.max_budget_per_year or not university.total_cost:
+        if not student.get("max_budget_per_year") or not university.get("total_cost"):
             return 70.0  # Neutral score if no data
 
-        cost_diff = student.max_budget_per_year - university.total_cost
+        cost_diff = student["max_budget_per_year"] - university["total_cost"]
 
         if cost_diff >= 10000:
             return 95.0  # Well within budget
@@ -182,75 +200,73 @@ class RecommendationEngine:
             return 25.0  # Significantly over budget
 
     def _calculate_program_score(
-        self, student: StudentProfile, university: University
+        self, student: Dict, university: Dict, programs_by_university: Dict
     ) -> float:
         """Calculate program match score (0-100)"""
-        if not student.intended_major:
+        if not student.get("intended_major"):
             return 70.0  # Neutral if no major specified
 
-        # Check if university has programs in student's field
-        programs = self.db.query(Program).filter(
-            Program.university_id == university.id
-        ).all()
+        # Get programs for this university from pre-loaded index
+        programs = programs_by_university.get(university["id"], [])
 
         if not programs:
             return 60.0
 
         # Look for exact major match
         for program in programs:
-            if student.intended_major.lower() in program.name.lower():
+            if student["intended_major"].lower() in program["name"].lower():
                 return 95.0
 
         # Look for field match
-        if student.field_of_study:
+        if student.get("field_of_study"):
             for program in programs:
-                if student.field_of_study.lower() in (program.field or "").lower():
+                if student["field_of_study"].lower() in (program.get("field") or "").lower():
                     return 80.0
 
         return 50.0
 
     def _calculate_location_score(
-        self, student: StudentProfile, university: University
+        self, student: Dict, university: Dict
     ) -> float:
         """Calculate location preference score (0-100)"""
         score = 70.0  # Base score
 
         # Check state preference
-        if student.preferred_states and university.state:
-            if university.state in student.preferred_states:
+        if student.get("preferred_states") and university.get("state"):
+            if university["state"] in student["preferred_states"]:
                 score += 20
             else:
                 score -= 10
 
         # Check country preference
-        if student.preferred_countries and university.country:
-            if university.country in student.preferred_countries:
+        if student.get("preferred_countries") and university.get("country"):
+            if university["country"] in student["preferred_countries"]:
                 score += 10
             else:
                 score -= 20
 
         # Check location type (Urban/Suburban/Rural)
-        if student.location_type_preference and university.location_type:
-            if student.location_type_preference == university.location_type:
+        if student.get("location_type_preference") and university.get("location_type"):
+            if student["location_type_preference"] == university["location_type"]:
                 score += 10
 
         return max(0, min(100, score))
 
     def _calculate_characteristics_score(
-        self, student: StudentProfile, university: University
+        self, student: Dict, university: Dict
     ) -> float:
         """Calculate university characteristics score (0-100)"""
         score = 70.0  # Base score
 
         # University type preference
-        if student.preferred_university_type and university.university_type:
-            if student.preferred_university_type == university.university_type:
+        if student.get("preferred_university_type") and university.get("university_type"):
+            if student["preferred_university_type"] == university["university_type"]:
                 score += 15
 
         # Size preference
-        if student.preferred_size and university.total_students:
-            size_category = self._categorize_size(university.total_students)
-            if student.preferred_size == size_category:
+        if student.get("preferred_size") and university.get("total_students"):
+            size_category = self._categorize_size(university["total_students"])
+            if student["preferred_size"] == size_category:
                 score += 15
 
         return max(0, min(100, score))
@@ -269,7 +285,7 @@ class RecommendationEngine:
         return total
 
     def _determine_category(
-        self, student: StudentProfile, university: University, scores: Dict[str, float]
+        self, student: Dict, university: Dict, scores: Dict[str, float]
     ) -> str:
         """Determine if university is Safety, Match, or Reach"""
         academic_score = scores["academic"]
@@ -307,7 +323,7 @@ class RecommendationEngine:
         return selected
 
     def _generate_insights(
-        self, student: StudentProfile, university: University, scores: Dict[str, float]
+        self, student: Dict, university: Dict, scores: Dict[str, float]
     ) -> Tuple[List[str], List[str]]:
         """Generate strengths and concerns for this match"""
         strengths = []
@@ -334,11 +350,11 @@ class RecommendationEngine:
             strengths.append("Located in your preferred area")
 
         # Outcomes
-        if university.graduation_rate_4year and university.graduation_rate_4year >= 0.8:
-            strengths.append(f"High graduation rate ({university.graduation_rate_4year*100:.0f}%)")
+        if university.get("graduation_rate_4year") and university["graduation_rate_4year"] >= 0.8:
+            strengths.append(f"High graduation rate ({university['graduation_rate_4year']*100:.0f}%)")
 
-        if university.median_earnings_10year and university.median_earnings_10year >= 60000:
-            strengths.append(f"Strong career outcomes (${university.median_earnings_10year:,.0f} median earnings)")
+        if university.get("median_earnings_10year") and university["median_earnings_10year"] >= 60000:
+            strengths.append(f"Strong career outcomes (${university['median_earnings_10year']:,.0f} median earnings)")
 
         return strengths, concerns
 

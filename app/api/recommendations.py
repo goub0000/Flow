@@ -1,10 +1,9 @@
 """
-Recommendations API endpoints
+Recommendations API endpoints - Cloud-Based (Supabase)
 """
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from app.database.config import SessionLocal
-from app.models.university import StudentProfile, Recommendation, University
+from supabase import Client
+from app.database.config import get_db
 from app.schemas.recommendation import (
     GenerateRecommendationsRequest,
     RecommendationResponse,
@@ -18,61 +17,93 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-# Dependency to get database session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 @router.post("/recommendations/generate", response_model=RecommendationListResponse)
 def generate_recommendations(
-    request: GenerateRecommendationsRequest, db: Session = Depends(get_db)
+    request: GenerateRecommendationsRequest, db: Client = Depends(get_db)
 ):
     """Generate university recommendations for a student"""
     try:
-        # Get student profile
-        student = (
-            db.query(StudentProfile)
-            .filter(StudentProfile.user_id == request.user_id)
-            .first()
-        )
+        # Get student profile from Supabase
+        response = db.table('student_profiles').select('*').eq('user_id', request.user_id).execute()
 
-        if not student:
+        if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
 
-        # Delete existing recommendations for this student
-        db.query(Recommendation).filter(
-            Recommendation.student_id == student.id
-        ).delete()
-        db.commit()
+        student = response.data[0]
 
-        # Generate new recommendations
+        # Delete existing recommendations for this student
+        db.table('recommendations').delete().eq('student_id', student['id']).execute()
+
+        # Generate new recommendations using the engine
         engine = RecommendationEngine(db)
         recommendations = engine.generate_recommendations(
             student, max_results=request.max_results or 15
         )
 
-        # Save recommendations
-        for rec in recommendations:
-            db.add(rec)
-
-        db.commit()
-
-        # Refresh and load relationships
-        for rec in recommendations:
-            db.refresh(rec)
+        # Insert recommendations into Supabase
+        if recommendations:
+            db.table('recommendations').insert(recommendations).execute()
 
         logger.info(
             f"Generated {len(recommendations)} recommendations for user: {request.user_id}"
         )
 
+        # Fetch the inserted recommendations with university data
+        response = db.table('recommendations').select(
+            '*, universities(*)'
+        ).eq('student_id', student['id']).execute()
+
+        inserted_recommendations = response.data
+
         # Organize by category
-        safety_schools = [r for r in recommendations if r.category == "Safety"]
-        match_schools = [r for r in recommendations if r.category == "Match"]
-        reach_schools = [r for r in recommendations if r.category == "Reach"]
+        safety_schools = [r for r in inserted_recommendations if r["category"] == "Safety"]
+        match_schools = [r for r in inserted_recommendations if r["category"] == "Match"]
+        reach_schools = [r for r in inserted_recommendations if r["category"] == "Reach"]
+
+        return RecommendationListResponse(
+            total=len(inserted_recommendations),
+            safety_schools=safety_schools,
+            match_schools=match_schools,
+            reach_schools=reach_schools,
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/recommendations/{user_id}", response_model=RecommendationListResponse)
+def get_recommendations(user_id: str, db: Client = Depends(get_db)):
+    """Get existing recommendations for a student"""
+    try:
+        # Get student profile
+        response = db.table('student_profiles').select('*').eq('user_id', user_id).execute()
+
+        if not response.data or len(response.data) == 0:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        student = response.data[0]
+
+        # Get recommendations with university data
+        response = db.table('recommendations').select(
+            '*, universities(*)'
+        ).eq('student_id', student['id']).execute()
+
+        recommendations = response.data
+
+        if not recommendations:
+            raise HTTPException(
+                status_code=404,
+                detail="No recommendations found. Generate recommendations first.",
+            )
+
+        # Organize by category
+        safety_schools = [r for r in recommendations if r["category"] == "Safety"]
+        match_schools = [r for r in recommendations if r["category"] == "Match"]
+        reach_schools = [r for r in recommendations if r["category"] == "Reach"]
 
         return RecommendationListResponse(
             total=len(recommendations),
@@ -84,98 +115,79 @@ def generate_recommendations(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error generating recommendations: {e}")
-        db.rollback()
+        logger.error(f"Error fetching recommendations: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.get("/recommendations/{user_id}", response_model=RecommendationListResponse)
-def get_recommendations(user_id: str, db: Session = Depends(get_db)):
-    """Get existing recommendations for a student"""
-    # Get student profile
-    student = (
-        db.query(StudentProfile).filter(StudentProfile.user_id == user_id).first()
-    )
-
-    if not student:
-        raise HTTPException(status_code=404, detail="Student profile not found")
-
-    # Get recommendations
-    recommendations = (
-        db.query(Recommendation)
-        .filter(Recommendation.student_id == student.id)
-        .all()
-    )
-
-    if not recommendations:
-        raise HTTPException(
-            status_code=404,
-            detail="No recommendations found. Generate recommendations first.",
-        )
-
-    # Organize by category
-    safety_schools = [r for r in recommendations if r.category == "Safety"]
-    match_schools = [r for r in recommendations if r.category == "Match"]
-    reach_schools = [r for r in recommendations if r.category == "Reach"]
-
-    return RecommendationListResponse(
-        total=len(recommendations),
-        safety_schools=safety_schools,
-        match_schools=match_schools,
-        reach_schools=reach_schools,
-    )
 
 
 @router.put("/recommendations/{recommendation_id}", response_model=RecommendationResponse)
 def update_recommendation(
     recommendation_id: int,
     request: UpdateRecommendationRequest,
-    db: Session = Depends(get_db),
+    db: Client = Depends(get_db),
 ):
     """Update a recommendation (favorite, add notes)"""
-    recommendation = (
-        db.query(Recommendation)
-        .filter(Recommendation.id == recommendation_id)
-        .first()
-    )
-
-    if not recommendation:
-        raise HTTPException(status_code=404, detail="Recommendation not found")
-
     try:
-        # Update fields
+        # Check if recommendation exists
+        response = db.table('recommendations').select('id').eq('id', recommendation_id).execute()
+
+        if not response.data or len(response.data) == 0:
+            raise HTTPException(status_code=404, detail="Recommendation not found")
+
+        # Build update data
+        update_data = {}
         if request.favorited is not None:
-            recommendation.favorited = request.favorited
+            update_data['favorited'] = 1 if request.favorited else 0
         if request.notes is not None:
-            recommendation.notes = request.notes
+            update_data['notes'] = request.notes
 
-        db.commit()
-        db.refresh(recommendation)
+        if not update_data:
+            # No fields to update, return current
+            response = db.table('recommendations').select(
+                '*, universities(*)'
+            ).eq('id', recommendation_id).execute()
+            return response.data[0]
+
+        # Update the recommendation
+        result = db.table('recommendations').update(update_data).eq('id', recommendation_id).execute()
+
+        # Fetch with university data
+        response = db.table('recommendations').select(
+            '*, universities(*)'
+        ).eq('id', recommendation_id).execute()
+
         logger.info(f"Updated recommendation: {recommendation_id}")
-        return recommendation
+        return response.data[0]
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error updating recommendation: {e}")
-        db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/recommendations/{user_id}/favorites", response_model=list[RecommendationResponse])
-def get_favorite_recommendations(user_id: str, db: Session = Depends(get_db)):
+def get_favorite_recommendations(user_id: str, db: Client = Depends(get_db)):
     """Get favorited recommendations for a student"""
-    # Get student profile
-    student = (
-        db.query(StudentProfile).filter(StudentProfile.user_id == user_id).first()
-    )
+    try:
+        # Get student profile
+        response = db.table('student_profiles').select('*').eq('user_id', user_id).execute()
 
-    if not student:
-        raise HTTPException(status_code=404, detail="Student profile not found")
+        if not response.data or len(response.data) == 0:
+            raise HTTPException(status_code=404, detail="Student profile not found")
 
-    # Get favorited recommendations
-    recommendations = (
-        db.query(Recommendation)
-        .filter(Recommendation.student_id == student.id, Recommendation.favorited == 1)
-        .all()
-    )
+        student = response.data[0]
 
-    return recommendations
+        # Get favorited recommendations with university data
+        response = db.table('recommendations').select(
+            '*, universities(*)'
+        ).eq('student_id', student['id']).eq('favorited', 1).execute()
+
+        recommendations = response.data
+
+        return recommendations
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching favorite recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

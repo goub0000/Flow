@@ -1,6 +1,6 @@
 """
 Find Your Path - University Recommendation Service
-Main FastAPI Application
+Main FastAPI Application - Cloud-Based (Supabase)
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,28 +11,21 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Database setup
-from app.database.config import Base, engine, SessionLocal
-
-# Import models and seed data
-from app.models import university
-from app.database import seed_data
+# Database setup (Supabase)
+from app.database.config import get_supabase
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifecycle manager for startup and shutdown events"""
-    logger.info("Starting Find Your Path Recommendation Service...")
+    logger.info("Starting Find Your Path Recommendation Service (Cloud-Based)...")
 
-    # Create database tables
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables created")
-
-    # Load seed data
+    # Test Supabase connection
     try:
-        seed_data.load_seed_data()
-        logger.info("Seed data loaded successfully")
+        db = get_supabase()
+        response = db.table('universities').select('id', count='exact').limit(1).execute()
+        logger.info(f"Connected to Supabase successfully! ({response.count} universities)")
     except Exception as e:
-        logger.warning(f"Seed data loading skipped: {e}")
+        logger.error(f"Failed to connect to Supabase: {e}")
 
     yield
 
@@ -56,11 +49,13 @@ app.add_middleware(
 )
 
 # Import and include routers
-from app.api import students, recommendations, universities
+# NOTE: All APIs now migrated to Supabase (Cloud-Based)
+from app.api import universities, students, recommendations, monitoring
 
 app.include_router(students.router, prefix="/api/v1", tags=["Students"])
 app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendations"])
 app.include_router(universities.router, prefix="/api/v1", tags=["Universities"])
+app.include_router(monitoring.router, prefix="/api/v1", tags=["Monitoring"])
 
 @app.get("/")
 async def root():
@@ -75,14 +70,6 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy"}
-
-# Dependency to get database session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 if __name__ == "__main__":
     import uvicorn

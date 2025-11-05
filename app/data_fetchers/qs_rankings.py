@@ -195,6 +195,7 @@ class QSRankingsCSVImporter:
 
         # Extract rank
         rank_str = (
+            row.get('RANK_2025') or  # QS 2025 format
             row.get('Rank') or
             row.get('rank') or
             row.get('2025 Rank') or
@@ -203,9 +204,21 @@ class QSRankingsCSVImporter:
         global_rank = self.clean_rank(rank_str)
 
         # Extract scores
-        overall_score = self.clean_score(row.get('Overall Score') or row.get('overall_score'))
-        academic_reputation = self.clean_score(row.get('Academic Reputation') or row.get('academic_reputation'))
-        employer_reputation = self.clean_score(row.get('Employer Reputation') or row.get('employer_reputation'))
+        overall_score = self.clean_score(
+            row.get('Overall_Score') or  # QS 2025 format
+            row.get('Overall Score') or
+            row.get('overall_score')
+        )
+        academic_reputation = self.clean_score(
+            row.get('Academic_Reputation_Score') or  # QS 2025 format
+            row.get('Academic Reputation') or
+            row.get('academic_reputation')
+        )
+        employer_reputation = self.clean_score(
+            row.get('Employer_Reputation_Score') or  # QS 2025 format
+            row.get('Employer Reputation') or
+            row.get('employer_reputation')
+        )
 
         # Get country code
         country_code = self.get_country_code(country_name.strip())
