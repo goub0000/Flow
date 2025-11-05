@@ -3,7 +3,7 @@ Cloud-Based Database Configuration
 Uses Supabase instead of local SQLite
 """
 from supabase import create_client, Client
-from app.utils.config import get_config
+import os
 from typing import Optional
 
 _supabase_client: Optional[Client] = None
@@ -19,8 +19,14 @@ def get_supabase() -> Client:
     global _supabase_client
 
     if _supabase_client is None:
-        url = get_config('SUPABASE_URL', required=True)
-        key = get_config('SUPABASE_KEY', required=True)
+        # Get credentials directly from environment variables
+        # This avoids circular dependency with config.py
+        url = os.environ.get('SUPABASE_URL')
+        key = os.environ.get('SUPABASE_KEY')
+
+        if not url or not key:
+            raise ValueError("SUPABASE_URL and SUPABASE_KEY environment variables are required")
+
         _supabase_client = create_client(url, key)
 
     return _supabase_client
