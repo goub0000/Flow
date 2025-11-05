@@ -1,0 +1,31 @@
+================================================================================
+Data Enrichment Report
+================================================================================
+Start Time: 2025-11-05 21:20:38.703149
+End Time: 2025-11-05 23:20:31.831333
+Universities Processed: 100
+Universities Updated: 58
+Total Fields Filled: 467
+Errors: 0
+
+Fields Filled:
+  updated_at: 98
+  university_type: 65
+  acceptance_rate: 57
+  total_students: 41
+  founded_year: 39
+  location_type: 36
+  website: 30
+  logo_url: 23
+  city: 14
+  tuition_out_state: 12
+  total_cost: 12
+  gpa_average: 11
+  graduation_rate_4year: 11
+  state: 10
+  act_composite_25th: 2
+  act_composite_75th: 2
+  sat_math_25th: 1
+  sat_math_75th: 1
+  sat_ebrw_25th: 1
+  sat_ebrw_75th: 1

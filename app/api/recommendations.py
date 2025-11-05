@@ -11,7 +11,8 @@ from app.schemas.recommendation import (
     RecommendationListResponse,
     UpdateRecommendationRequest,
 )
-from app.ml.ml_recommendation_engine import MLRecommendationEngine
+# Lazy import ML engine to avoid loading heavy dependencies at startup
+# from app.ml.ml_recommendation_engine import MLRecommendationEngine
 import logging
 import os
 
@@ -42,6 +43,8 @@ def generate_recommendations(
 
         # Generate new recommendations using ML-enhanced engine
         # Automatically uses ML if models available, otherwise falls back to rule-based
+        # Lazy import to avoid loading ML dependencies at startup
+        from app.ml.ml_recommendation_engine import MLRecommendationEngine
         engine = MLRecommendationEngine(db, model_dir=ML_MODELS_DIR)
         recommendations = engine.generate_recommendations(
             student, max_results=request.max_results or 15
