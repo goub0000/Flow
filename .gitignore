@@ -45,6 +45,15 @@ env/
 *.sqlite
 *.sqlite3
 
+# Machine Learning Models
+ml_models/
+*.pkl
+*.joblib
+*.pth
+*.pt
+*.h5
+*.model
+
 # Data directories and downloaded files
 data/
 downloads/

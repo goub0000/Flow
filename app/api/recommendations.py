@@ -1,5 +1,6 @@
 """
 Recommendations API endpoints - Cloud-Based (Supabase)
+ML-Enhanced with automatic fallback to rule-based scoring
 """
 from fastapi import APIRouter, Depends, HTTPException
 from supabase import Client
@@ -10,12 +11,16 @@ from app.schemas.recommendation import (
     RecommendationListResponse,
     UpdateRecommendationRequest,
 )
-from app.services.recommendation_engine import RecommendationEngine
+from app.ml.ml_recommendation_engine import MLRecommendationEngine
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Get ML models directory from environment variable
+ML_MODELS_DIR = os.environ.get('ML_MODELS_DIR', './ml_models')
 
 
 @router.post("/recommendations/generate", response_model=RecommendationListResponse)
@@ -35,8 +40,9 @@ def generate_recommendations(
         # Delete existing recommendations for this student
         db.table('recommendations').delete().eq('student_id', student['id']).execute()
 
-        # Generate new recommendations using the engine
-        engine = RecommendationEngine(db)
+        # Generate new recommendations using ML-enhanced engine
+        # Automatically uses ML if models available, otherwise falls back to rule-based
+        engine = MLRecommendationEngine(db, model_dir=ML_MODELS_DIR)
         recommendations = engine.generate_recommendations(
             student, max_results=request.max_results or 15
         )
