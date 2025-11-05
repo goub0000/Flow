@@ -54,6 +54,7 @@ downloads/
 !requirements.json
 !package.json
 !kaggle_config.json
+!railway.json
 
 # Logs
 *.log
