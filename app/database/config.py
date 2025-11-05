@@ -24,6 +24,12 @@ def get_supabase() -> Client:
         url = os.environ.get('SUPABASE_URL')
         key = os.environ.get('SUPABASE_KEY')
 
+        # Debug logging
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"SUPABASE_URL from env: {url[:30] if url else 'NOT SET'}...")
+        logger.info(f"SUPABASE_KEY from env: {'SET' if key else 'NOT SET'}")
+
         if not url or not key:
             raise ValueError("SUPABASE_URL and SUPABASE_KEY environment variables are required")
 
