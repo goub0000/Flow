@@ -62,8 +62,8 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest):
         enrichment_jobs[job_id].update({
             'status': 'completed',
             'completed_at': datetime.now(),
-            'universities_processed': results.get('processed', 0),
-            'universities_updated': results.get('updated', 0),
+            'universities_processed': results.get('total_processed', 0),
+            'universities_updated': results.get('total_updated', 0),
             'errors': results.get('errors', 0),
             'message': 'Enrichment completed successfully'
         })
