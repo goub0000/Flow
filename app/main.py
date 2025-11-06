@@ -42,7 +42,12 @@ app = FastAPI(
 # Configure CORS
 # Allow multiple origins for development and production
 import os
-allowed_origins = os.environ.get("ALLOWED_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080").split(",")
+allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "")
+if allowed_origins_env:
+    allowed_origins = allowed_origins_env.split(",")
+else:
+    # Development: Allow all localhost/127.0.0.1 ports
+    allowed_origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
