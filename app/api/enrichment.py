@@ -37,7 +37,7 @@ class EnrichmentStatus(BaseModel):
     message: Optional[str] = None
 
 
-def run_enrichment_job(job_id: str, request: EnrichmentRequest):
+def run_enrichment_job(job_id: str, request: EnrichmentRequest, trigger_ml_training: bool = False):
     """Background task to run enrichment"""
     try:
         logger.info(f"Starting enrichment job {job_id}")
@@ -69,6 +69,17 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest):
         })
 
         logger.info(f"Enrichment job {job_id} completed")
+
+        # Trigger ML training if requested and enough data was updated
+        if trigger_ml_training and results.get('total_updated', 0) > 0:
+            logger.info(f"Triggering ML training after enriching {results.get('total_updated', 0)} universities")
+            from app.api.ml_training import train_models_background
+            try:
+                train_models_background()
+                enrichment_jobs[job_id]['message'] += ' | ML training triggered'
+            except Exception as ml_error:
+                logger.error(f"ML training trigger failed: {ml_error}")
+                enrichment_jobs[job_id]['message'] += ' | ML training failed'
 
     except Exception as e:
         logger.error(f"Enrichment job {job_id} failed: {e}")
@@ -109,7 +120,9 @@ async def start_enrichment(request: EnrichmentRequest, background_tasks: Backgro
         }
 
         # Start enrichment in background
-        background_tasks.add_task(run_enrichment_job, job_id, request)
+        # Auto-trigger ML training for weekly/monthly batches
+        trigger_ml = request.limit >= 100
+        background_tasks.add_task(run_enrichment_job, job_id, request, trigger_ml)
 
         return enrichment_jobs[job_id]
 

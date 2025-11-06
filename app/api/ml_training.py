@@ -12,7 +12,9 @@ logger = logging.getLogger(__name__)
 training_status = {
     "is_training": False,
     "status": "idle",
-    "message": None
+    "message": None,
+    "last_trained": None,
+    "training_count": 0
 }
 
 
@@ -32,12 +34,25 @@ def train_models_background():
         from app.services.recommendation_engine import RecommendationEngine
         import numpy as np
         import os
+        from datetime import datetime
 
         db = get_supabase()
 
+        # Determine training data size based on data quality
+        # As enrichment improves, use more real data
+        response = db.table('universities').select('id', count='exact').limit(1).execute()
+        total_unis = response.count
+        training_data_size = min(1000, max(500, total_unis // 20))
+
+        logger.info(f"Using {training_data_size} universities for training (out of {total_unis} total)")
+
         # Generate synthetic training data
         logger.info("Generating synthetic training data...")
-        students, universities, programs_by_university, scores = generate_synthetic_data(db)
+        students, universities, programs_by_university, scores = generate_synthetic_data(
+            db,
+            n_students=300,
+            n_universities=training_data_size
+        )
 
         # Train models
         logger.info("Training ensemble model...")
@@ -52,7 +67,9 @@ def train_models_background():
 
         training_status["is_training"] = False
         training_status["status"] = "completed"
-        training_status["message"] = f"Models trained and saved to {model_dir}/"
+        training_status["last_trained"] = datetime.utcnow().isoformat()
+        training_status["training_count"] = training_status.get("training_count", 0) + 1
+        training_status["message"] = f"Models trained and saved to {model_dir}/ (training #{training_status['training_count']})"
         logger.info("ML training completed successfully!")
 
     except Exception as e:
@@ -62,13 +79,13 @@ def train_models_background():
         training_status["message"] = str(e)
 
 
-def generate_synthetic_data(db, n_students=200):
+def generate_synthetic_data(db, n_students=200, n_universities=500):
     """Generate synthetic training data"""
     import numpy as np
     from app.services.recommendation_engine import RecommendationEngine
 
-    # Get data
-    response = db.table('universities').select('*').limit(500).execute()
+    # Get data - use more universities as data quality improves
+    response = db.table('universities').select('*').limit(n_universities).execute()
     universities = response.data
 
     programs_by_university = {}
