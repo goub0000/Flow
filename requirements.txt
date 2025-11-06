@@ -17,6 +17,11 @@ requests>=2.31.0
 pydantic>=2.0.0
 python-dotenv>=1.0.0
 
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+email-validator>=2.0.0
+
 # Web Scraping (optional - for data enrichment)
 beautifulsoup4>=4.12.0
 selenium>=4.15.0
