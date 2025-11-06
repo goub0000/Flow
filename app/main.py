@@ -59,12 +59,14 @@ app.add_middleware(
 
 # Import and include routers
 # NOTE: All APIs now migrated to Supabase (Cloud-Based)
-from app.api import universities, students, recommendations, monitoring, admin, programs, enrichment, ml_training, location_cleaning, auth, courses_api, applications_api, enrollments_api
+from app.api import universities, students, recommendations, monitoring, admin, programs, enrichment, ml_training, location_cleaning, auth, courses_api, applications_api, enrollments_api, messaging_api, notifications_api
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
 app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])
 app.include_router(applications_api.router, prefix="/api/v1", tags=["Applications"])
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
+app.include_router(messaging_api.router, prefix="/api/v1", tags=["Messaging"])
+app.include_router(notifications_api.router, prefix="/api/v1", tags=["Notifications"])
 app.include_router(students.router, prefix="/api/v1", tags=["Students"])
 app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendations"])
 app.include_router(universities.router, prefix="/api/v1", tags=["Universities"])
