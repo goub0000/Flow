@@ -43,13 +43,16 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest):
         logger.info(f"Starting enrichment job {job_id}")
         enrichment_jobs[job_id]['status'] = 'running'
 
+        # Get database client
+        db = get_supabase()
+
         # Initialize orchestrator
         orchestrator = AutoFillOrchestrator(
-            rate_limit_delay=3.0,
-            dry_run=request.dry_run
+            db=db,
+            rate_limit_delay=3.0
         )
 
-        # Run enrichment
+        # Run enrichment (note: dry_run not supported by existing orchestrator)
         results = orchestrator.fill_missing_data(
             limit=request.limit,
             priority_fields=request.fields
