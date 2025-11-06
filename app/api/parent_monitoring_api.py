@@ -2,6 +2,7 @@
 Parent Monitoring API Endpoints
 RESTful API for parent monitoring and student activity tracking
 """
+from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 
 from app.services.parent_monitoring_service import ParentMonitoringService

@@ -2,6 +2,7 @@
 Counseling API Endpoints
 RESTful API for counseling sessions and bookings
 """
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Body
 
 from app.services.counseling_service import CounselingService
