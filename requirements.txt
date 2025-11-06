@@ -33,6 +33,20 @@ kaggle>=1.5.0
 # Utilities
 python-dateutil>=2.8.0
 
+# Testing & Quality
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.25.0  # For testing async endpoints
+
+# Rate Limiting & Security
+slowapi>=0.1.9
+python-multipart>=0.0.6
+
+# Monitoring & Logging
+prometheus-client>=0.18.0
+psutil>=5.9.0  # System metrics
+
 # Machine Learning
 lightgbm>=4.1.0
 scikit-learn>=1.3.0

@@ -34,9 +34,34 @@ async def lifespan(app: FastAPI):
 # Create FastAPI app
 app = FastAPI(
     title="Find Your Path API",
-    description="University Recommendation Service for Flow EdTech Platform",
+    description="""
+    **University Recommendation Service for Flow EdTech Platform**
+
+    A comprehensive EdTech API providing:
+    - JWT Authentication with Role-Based Access Control
+    - University & Program Management
+    - Course Management & Enrollment
+    - Application Tracking
+    - Real-time Messaging & Notifications
+    - Counseling Sessions
+    - Parent Monitoring
+    - Achievements & Gamification
+    - ML-powered Recommendations
+
+    **Features:**
+    - Rate limiting for API protection
+    - Comprehensive error handling
+    - Health checks & monitoring
+    - Supabase (PostgreSQL) backend
+    - Real-time capabilities
+
+    **Documentation:** Visit `/docs` for interactive API documentation
+    """,
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
 )
 
 # Configure CORS
@@ -57,13 +82,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add middleware for error handling and rate limiting
+from app.middleware import (
+    limiter,
+    http_exception_handler,
+    validation_exception_handler,
+    general_exception_handler,
+    ErrorHandlingMiddleware
+)
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from slowapi.errors import RateLimitExceeded
+
+# Add rate limiting
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, http_exception_handler)
+
+# Add error handlers
+app.add_exception_handler(StarletteHTTPException, http_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(Exception, general_exception_handler)
+
+# Add timing and logging middleware
+app.add_middleware(ErrorHandlingMiddleware)
+
 # Import and include routers
 # NOTE: All APIs now migrated to Supabase (Cloud-Based)
 from app.api import (
     universities, students, recommendations, monitoring, admin, programs,
     enrichment, ml_training, location_cleaning, auth, courses_api,
     applications_api, enrollments_api, messaging_api, notifications_api,
-    counseling_api, parent_monitoring_api, achievements_api
+    counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api
 )
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
@@ -84,6 +133,9 @@ app.include_router(ml_training.router, prefix="/api/v1", tags=["ML Training"])
 app.include_router(location_cleaning.router, prefix="/api/v1", tags=["Location Cleaning"])
 app.include_router(monitoring.router, prefix="/api/v1", tags=["Monitoring"])
 app.include_router(admin.router, prefix="/api/v1", tags=["Admin"])
+
+# System monitoring and health checks (no /api/v1 prefix for standard health endpoints)
+app.include_router(system_monitoring_api.router, tags=["System"])
 
 @app.get("/")
 async def root():
