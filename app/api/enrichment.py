@@ -52,8 +52,8 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest):
             rate_limit_delay=3.0
         )
 
-        # Run enrichment (note: dry_run not supported by existing orchestrator)
-        results = orchestrator.fill_missing_data(
+        # Run enrichment
+        results = orchestrator.run_enrichment(
             limit=request.limit,
             priority_fields=request.fields
         )
