@@ -126,11 +126,6 @@ class WebSearchEnricher:
                 if city_match:
                     data['city'] = city_match.group(1)
 
-                # Try to extract founded year
-                founded_match = re.search(r'founded in (\d{4})', extract, re.IGNORECASE)
-                if founded_match:
-                    data['founded_year'] = int(founded_match.group(1))
-
                 # Try to extract student count
                 students_match = re.search(r'(\d{1,3}(?:,\d{3})*)\s+students', extract)
                 if students_match:
