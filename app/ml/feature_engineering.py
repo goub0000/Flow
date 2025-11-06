@@ -31,11 +31,11 @@ class FeatureEngineer:
         features = []
 
         # Academic features
-        features.append(student.get('gpa', 0.0) / 4.0)  # Normalize to 0-1
-        features.append(student.get('sat_total', 0) / 1600.0)  # Normalize
-        features.append(student.get('sat_math', 0) / 800.0)
-        features.append(student.get('sat_ebrw', 0) / 800.0)
-        features.append(student.get('act_composite', 0) / 36.0)
+        features.append((student.get('gpa', 0.0) or 0.0) / 4.0)  # Normalize to 0-1
+        features.append((student.get('sat_total', 0) or 0) / 1600.0)  # Normalize
+        features.append((student.get('sat_math', 0) or 0) / 800.0)
+        features.append((student.get('sat_ebrw', 0) or 0) / 800.0)
+        features.append((student.get('act_composite', 0) or 0) / 36.0)
 
         # Class rank percentile
         if student.get('class_rank') and student.get('class_size'):
@@ -45,7 +45,7 @@ class FeatureEngineer:
             features.append(0.5)  # Neutral
 
         # Financial features
-        budget = student.get('max_budget_per_year', 0)
+        budget = student.get('max_budget_per_year', 0) or 0
         features.append(min(budget / 100000.0, 1.0))  # Normalize (cap at 100k)
         features.append(1.0 if student.get('need_financial_aid') else 0.0)
 
@@ -70,8 +70,8 @@ class FeatureEngineer:
         features = []
 
         # Academic selectivity
-        features.append(university.get('acceptance_rate', 0.5))  # Lower = more selective
-        features.append(university.get('gpa_average', 3.0) / 4.0)
+        features.append(university.get('acceptance_rate', 0.5) or 0.5)  # Lower = more selective
+        features.append((university.get('gpa_average', 3.0) or 3.0) / 4.0)
 
         # Test score ranges (75th percentile)
         sat_75th = ((university.get('sat_math_75th', 0) or 0) +
@@ -84,12 +84,12 @@ class FeatureEngineer:
         features.append(min(cost / 100000.0, 1.0))  # Normalize
 
         # Outcomes
-        features.append(university.get('graduation_rate_4year', 0.7))
+        features.append(university.get('graduation_rate_4year', 0.7) or 0.7)
         earnings = university.get('median_earnings_10year', 0) or 0
         features.append(min(earnings / 150000.0, 1.0))  # Normalize
 
         # Rankings
-        global_rank = university.get('global_rank', 1000)
+        global_rank = university.get('global_rank', 1000) or 1000
         features.append(1.0 - min(global_rank / 1000.0, 1.0))  # Inverse: higher = better
 
         # Size
