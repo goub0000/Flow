@@ -143,8 +143,11 @@ class RecommendationEngine:
                     score += 90
                 elif student["sat_total"] >= sat_25th:
                     # Linear interpolation between 25th and 75th percentile
-                    pct = (student["sat_total"] - sat_25th) / (sat_75th - sat_25th)
-                    score += 60 + (pct * 20)
+                    if sat_75th - sat_25th > 0:
+                        pct = (student["sat_total"] - sat_25th) / (sat_75th - sat_25th)
+                        score += 60 + (pct * 20)
+                    else:
+                        score += 70  # Same percentiles, neutral score
                 else:
                     score += 40
                 factors += 1
@@ -158,8 +161,11 @@ class RecommendationEngine:
                 if student["act_composite"] >= act_75th:
                     score += 90
                 elif student["act_composite"] >= act_25th:
-                    pct = (student["act_composite"] - act_25th) / (act_75th - act_25th)
-                    score += 60 + (pct * 20)
+                    if act_75th - act_25th > 0:
+                        pct = (student["act_composite"] - act_25th) / (act_75th - act_25th)
+                        score += 60 + (pct * 20)
+                    else:
+                        score += 70  # Same percentiles, neutral score
                 else:
                     score += 40
                 factors += 1
