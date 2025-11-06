@@ -59,7 +59,12 @@ app.add_middleware(
 
 # Import and include routers
 # NOTE: All APIs now migrated to Supabase (Cloud-Based)
-from app.api import universities, students, recommendations, monitoring, admin, programs, enrichment, ml_training, location_cleaning, auth, courses_api, applications_api, enrollments_api, messaging_api, notifications_api
+from app.api import (
+    universities, students, recommendations, monitoring, admin, programs,
+    enrichment, ml_training, location_cleaning, auth, courses_api,
+    applications_api, enrollments_api, messaging_api, notifications_api,
+    counseling_api, parent_monitoring_api, achievements_api
+)
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
 app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])
@@ -67,6 +72,9 @@ app.include_router(applications_api.router, prefix="/api/v1", tags=["Application
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
 app.include_router(messaging_api.router, prefix="/api/v1", tags=["Messaging"])
 app.include_router(notifications_api.router, prefix="/api/v1", tags=["Notifications"])
+app.include_router(counseling_api.router, prefix="/api/v1", tags=["Counseling"])
+app.include_router(parent_monitoring_api.router, prefix="/api/v1", tags=["Parent Monitoring"])
+app.include_router(achievements_api.router, prefix="/api/v1", tags=["Achievements"])
 app.include_router(students.router, prefix="/api/v1", tags=["Students"])
 app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendations"])
 app.include_router(universities.router, prefix="/api/v1", tags=["Universities"])
