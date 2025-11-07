@@ -74,30 +74,19 @@ import os
 allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "")
 
 # Base localhost origins for development
-localhost_origins = [
-    "http://localhost:8080",
-    "http://localhost:8081",
-    "http://localhost:8082",
-    "http://localhost:8083",
-    "http://localhost:8084",
-    "http://localhost:8085",
-    "http://localhost:8086",
-    "http://localhost:8087",
-    "http://localhost:8088",
-    "http://localhost:8089",
-    "http://localhost:8090",
-    "http://localhost:8091",
-    "http://localhost:8092",
-    "http://localhost:8093",
-    "http://localhost:8094",
-    "http://localhost:8095",
-    "http://localhost:8096",
-    "http://localhost:8097",
-    "http://127.0.0.1:8080",
-    "http://127.0.0.1:8081",
-    "http://127.0.0.1:8090",
-    "http://127.0.0.1:8097",
-]
+# Generate localhost origins for common Flutter web ports (8080-8100)
+localhost_origins = []
+for port in range(8080, 8101):
+    localhost_origins.append(f"http://localhost:{port}")
+    localhost_origins.append(f"http://127.0.0.1:{port}")
+
+# Add common development ports
+localhost_origins.extend([
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+])
 
 if allowed_origins_env:
     # Production: Use configured origins + localhost for testing
