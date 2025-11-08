@@ -3,7 +3,7 @@
 
 class ApiConfig {
   // Base URLs
-  static const String productionBaseUrl = 'https://web-production-bcafe.up.railway.app';
+  static const String productionBaseUrl = 'https://web-production-51e34.up.railway.app';
   static const String developmentBaseUrl = 'http://localhost:8000';
 
   // Current environment
