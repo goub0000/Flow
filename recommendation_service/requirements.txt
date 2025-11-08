@@ -1,0 +1,56 @@
+# Find Your Path - University Recommendation Service
+# Python 3.9+
+
+# Web Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# Database
+supabase>=2.0.0
+postgrest>=0.13.0
+
+# HTTP Client
+httpx>=0.25.0
+requests>=2.31.0
+
+# Data Processing
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+email-validator>=2.0.0
+
+# Web Scraping (optional - for data enrichment)
+beautifulsoup4>=4.12.0
+selenium>=4.15.0
+lxml>=4.9.0
+
+# Data APIs
+kaggle>=1.5.0
+
+# Utilities
+python-dateutil>=2.8.0
+
+# Testing & Quality
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.25.0  # For testing async endpoints
+
+# Rate Limiting & Security
+slowapi>=0.1.9
+python-multipart>=0.0.6
+
+# Monitoring & Logging
+prometheus-client>=0.18.0
+psutil>=5.9.0  # System metrics
+
+# Machine Learning
+lightgbm>=4.1.0
+scikit-learn>=1.3.0
+numpy>=1.24.0
+pandas>=2.0.0
+# torch>=2.1.0  # Commented out - huge with CUDA, only needed for neural network training
+joblib>=1.3.0
