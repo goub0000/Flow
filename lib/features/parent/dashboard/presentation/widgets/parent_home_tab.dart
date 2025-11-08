@@ -1,0 +1,467 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/models/child_model.dart';
+import '../../../../shared/widgets/custom_card.dart';
+import '../../../../shared/widgets/loading_indicator.dart';
+import '../../../providers/parent_children_provider.dart';
+import '../../../reports/presentation/reports_screen.dart';
+import '../../../scheduling/presentation/meeting_scheduler_screen.dart';
+
+class ParentHomeTab extends ConsumerWidget {
+  final VoidCallback onNavigateToChildren;
+  final VoidCallback onNavigateToNotifications;
+  final VoidCallback onNavigateToSettings;
+
+  const ParentHomeTab({
+    super.key,
+    required this.onNavigateToChildren,
+    required this.onNavigateToNotifications,
+    required this.onNavigateToSettings,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(parentChildrenLoadingProvider);
+    final children = ref.watch(parentChildrenListProvider);
+    final error = ref.watch(parentChildrenErrorProvider);
+    final statistics = ref.watch(parentChildrenStatisticsProvider);
+
+    if (error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 48, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(error, style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(parentChildrenProvider.notifier).fetchChildren();
+              },
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (isLoading) {
+      return const LoadingIndicator(message: 'Loading overview...');
+    }
+
+    final totalChildren = statistics['totalChildren'] as int;
+    final averageGrade = statistics['averageGrade'] as double;
+    final totalApplications = statistics['totalApplications'] as int;
+    final pendingApplications = statistics['pendingApplications'] as int;
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        await ref.read(parentChildrenProvider.notifier).fetchChildren();
+      },
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          // Overview Stats
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  icon: Icons.child_care,
+                  label: 'Children',
+                  value: '$totalChildren',
+                  color: AppColors.parentRole,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatCard(
+                  icon: Icons.star,
+                  label: 'Avg Grade',
+                  value: averageGrade.toStringAsFixed(1),
+                  color: _getGradeColor(averageGrade),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  icon: Icons.description,
+                  label: 'Applications',
+                  value: '$totalApplications',
+                  color: AppColors.info,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatCard(
+                  icon: Icons.pending_actions,
+                  label: 'Pending',
+                  value: '$pendingApplications',
+                  color: AppColors.warning,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Children Overview
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Children Overview',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              if (children.isNotEmpty)
+                TextButton(
+                  onPressed: onNavigateToChildren,
+                  child: const Text('View All'),
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (children.isEmpty)
+            CustomCard(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.child_care_outlined,
+                      size: 48,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No Children Added',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Add your children to track their progress',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            ...children.map((child) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: CustomCard(
+                  onTap: () {
+                    context.go('/parent/children/${child.id}');
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundColor: AppColors.primary,
+                            child: Text(
+                              child.initials,
+                              style: const TextStyle(
+                                color: AppColors.textOnPrimary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  child.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  child.grade,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color:
+                                  _getGradeColor(child.averageGrade).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              '${child.averageGrade.toStringAsFixed(1)}%',
+                              style: TextStyle(
+                                color: _getGradeColor(child.averageGrade),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          _MiniStat(
+                            icon: Icons.book_outlined,
+                            value: '${child.enrolledCourses.length} courses',
+                          ),
+                          const SizedBox(width: 16),
+                          _MiniStat(
+                            icon: Icons.description_outlined,
+                            value: '${child.applications.length} apps',
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          const SizedBox(height: 24),
+
+          // Quick Actions
+          Text(
+            'Quick Actions',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          CustomCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.info.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(Icons.assessment, color: AppColors.info),
+                  ),
+                  title: const Text('View All Reports'),
+                  subtitle: const Text('Academic performance reports'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _viewReports(context),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.warning.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(Icons.calendar_month, color: AppColors.warning),
+                  ),
+                  title: const Text('Schedule Meeting'),
+                  subtitle: const Text('With teachers or counselors'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _scheduleMeeting(context),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.success.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(Icons.notifications, color: AppColors.success),
+                  ),
+                  title: const Text('Notification Settings'),
+                  subtitle: const Text('Manage alerts and updates'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: onNavigateToSettings,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Color _getGradeColor(double grade) {
+  if (grade >= 90) return AppColors.success;
+  if (grade >= 75) return AppColors.info;
+  if (grade >= 60) return AppColors.warning;
+  return AppColors.error;
+}
+
+void _viewReports(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const ReportsScreen(),
+    ),
+  );
+}
+
+void _scheduleMeeting(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+        title: const Text('Schedule Meeting'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Who would you like to meet with?'),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.info.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.school, color: AppColors.info),
+              ),
+              title: const Text('Teacher'),
+              subtitle: const Text('Schedule a parent-teacher conference'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MeetingSchedulerScreen(
+                      meetingType: MeetingType.teacher,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.counselorRole.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.support_agent, color: AppColors.counselorRole),
+              ),
+              title: const Text('Counselor'),
+              subtitle: const Text('Meet with a guidance counselor'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MeetingSchedulerScreen(
+                      meetingType: MeetingType.counselor,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+class _StatCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
+
+  const _StatCard({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomCard(
+      color: color.withValues(alpha: 0.1),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 32),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniStat extends StatelessWidget {
+  final IconData icon;
+  final String value;
+
+  const _MiniStat({
+    required this.icon,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 16, color: AppColors.textSecondary),
+        const SizedBox(width: 4),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
+    );
+  }
+}

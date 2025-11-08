@@ -1,0 +1,762 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/constants/user_roles.dart';
+import '../../../../core/models/admin_user_model.dart';
+import '../../shared/widgets/admin_shell.dart';
+import '../../shared/widgets/admin_data_table.dart';
+import '../../shared/widgets/permission_guard.dart';
+import '../../shared/widgets/export_dialog.dart';
+import '../../shared/widgets/bulk_action_bar.dart';
+import '../../../shared/widgets/logo_avatar.dart';
+import '../../shared/services/export_service.dart';
+import '../../shared/services/bulk_operations_service.dart';
+import '../../shared/utils/debouncer.dart';
+import '../../shared/providers/admin_auth_provider.dart';
+
+/// Admins List Screen - Manage admin user accounts
+///
+/// Features:
+/// - View all admin users (Super Admin, Regional, Content, Support, Finance, Analytics)
+/// - Search and filter by admin role
+/// - Create new admin accounts
+/// - Edit admin profiles and permissions
+/// - Activate/deactivate admin accounts
+/// - Export admin data
+class AdminsListScreen extends ConsumerStatefulWidget {
+  const AdminsListScreen({super.key});
+
+  @override
+  ConsumerState<AdminsListScreen> createState() => _AdminsListScreenState();
+}
+
+class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  final _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
+  String _searchQuery = '';
+  String _selectedStatus = 'all';
+  String _selectedRole = 'all';
+  List<AdminRowData> _selectedItems = [];
+  bool _isBulkOperationInProgress = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchDebouncer.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: Fetch admin users from backend
+    // - API endpoint: GET /api/admin/users/admins
+    // - Support pagination, filtering, search
+    // - Filter by admin role type
+    // - Include: profile data, role, permissions, last login, created date
+    // IMPORTANT: Backend should also filter based on hierarchy - lower admins should not see higher admins
+
+    return AdminShell(
+      child: _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Page Header
+        _buildHeader(),
+        const SizedBox(height: 24),
+
+        // Filters and Search
+        _buildFiltersSection(),
+        const SizedBox(height: 24),
+
+        // Data Table
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Column(
+              children: [
+                BulkActionBar(
+                  selectedCount: _selectedItems.length,
+                  onClearSelection: () => setState(() => _selectedItems = []),
+                  isProcessing: _isBulkOperationInProgress,
+                  actions: [
+                    BulkAction(
+                      label: 'Activate',
+                      icon: Icons.check_circle,
+                      onPressed: _handleBulkActivate,
+                    ),
+                    BulkAction(
+                      label: 'Deactivate',
+                      icon: Icons.block,
+                      onPressed: _handleBulkDeactivate,
+                      isDestructive: true,
+                    ),
+                  ],
+                ),
+                Expanded(child: _buildDataTable()),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Admin Users',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Manage admin accounts and permissions',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              // Export button (requires permission)
+              PermissionGuard(
+                permission: AdminPermission.bulkUserOperations,
+                child: OutlinedButton.icon(
+                  onPressed: () async {
+                    final admins = _getFilteredAdmins();
+                    // TODO: Implement export for admins
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Admin export feature coming soon'),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.download, size: 18),
+                  label: const Text('Export'),
+                ),
+              ),
+              const SizedBox(width: 12),
+
+              // Create admin button (Super Admin only)
+              PermissionGuard(
+                permission: AdminPermission.editUsers,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    // TODO: Navigate to create admin screen
+                    context.go('/admin/system/admins/create');
+                  },
+                  icon: const Icon(Icons.add, size: 18),
+                  label: const Text('Create Admin'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFiltersSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          // Search field
+          Expanded(
+            flex: 2,
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search by name or email...',
+                prefixIcon: const Icon(Icons.search, size: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.border),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.border),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              onChanged: (value) {
+                _searchDebouncer.call(() {
+                  setState(() => _searchQuery = value);
+                });
+              },
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Role filter
+          Container(
+            width: 180,
+            child: DropdownButtonFormField<String>(
+              value: _selectedRole,
+              decoration: InputDecoration(
+                labelText: 'Admin Role',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              items: const [
+                DropdownMenuItem(value: 'all', child: Text('All Roles')),
+                DropdownMenuItem(value: 'superAdmin', child: Text('Super Admin')),
+                DropdownMenuItem(value: 'regionalAdmin', child: Text('Regional Admin')),
+                DropdownMenuItem(value: 'contentAdmin', child: Text('Content Admin')),
+                DropdownMenuItem(value: 'supportAdmin', child: Text('Support Admin')),
+                DropdownMenuItem(value: 'financeAdmin', child: Text('Finance Admin')),
+                DropdownMenuItem(value: 'analyticsAdmin', child: Text('Analytics Admin')),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedRole = value);
+                }
+              },
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Status filter
+          Container(
+            width: 150,
+            child: DropdownButtonFormField<String>(
+              value: _selectedStatus,
+              decoration: InputDecoration(
+                labelText: 'Status',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              items: const [
+                DropdownMenuItem(value: 'all', child: Text('All')),
+                DropdownMenuItem(value: 'active', child: Text('Active')),
+                DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedStatus = value);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDataTable() {
+    final admins = _getFilteredAdmins();
+
+    return AdminDataTable<AdminRowData>(
+      columns: [
+        DataTableColumn<AdminRowData>(
+          label: 'Admin',
+          cellBuilder: (admin) => Row(
+            children: [
+              LogoAvatar.user(
+                photoUrl: null, // TODO: Add photoUrl to AdminRowData model
+                initials: admin.initials,
+                size: 32,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      admin.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      admin.email,
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        DataTableColumn<AdminRowData>(
+          label: 'Role',
+          cellBuilder: (admin) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: admin.roleColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  admin.roleIcon,
+                  size: 14,
+                  color: admin.roleColor,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  admin.roleDisplayName,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: admin.roleColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableColumn<AdminRowData>(
+          label: 'Status',
+          cellBuilder: (admin) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: admin.isActive ? AppColors.success.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              admin.status,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: admin.isActive ? AppColors.success : AppColors.error,
+              ),
+            ),
+          ),
+        ),
+        DataTableColumn<AdminRowData>(
+          label: 'Last Login',
+          cellBuilder: (admin) => Text(
+            admin.lastLogin,
+            style: const TextStyle(fontSize: 13),
+          ),
+        ),
+        DataTableColumn<AdminRowData>(
+          label: 'Created',
+          cellBuilder: (admin) => Text(
+            admin.joinedDate,
+            style: const TextStyle(fontSize: 13),
+          ),
+        ),
+      ],
+      data: admins,
+      isLoading: false, // TODO: Set from actual loading state
+      onRowTap: (admin) {
+        // TODO: Navigate to admin detail screen
+        context.go('/admin/system/admins/${admin.id}');
+      },
+      rowActions: [
+        DataTableAction<AdminRowData>(
+          icon: Icons.visibility,
+          tooltip: 'View Details',
+          onPressed: (admin) {
+            // View is allowed for all admins they can see in the list
+            // Note: Admins are already filtered by hierarchy in _getFilteredAdmins()
+            context.go('/admin/system/admins/${admin.id}');
+          },
+        ),
+        DataTableAction<AdminRowData>(
+          icon: Icons.edit,
+          tooltip: 'Edit Admin',
+          onPressed: (admin) {
+            // Since admins are pre-filtered by hierarchy, this admin can be edited
+            // Additional hierarchy check is performed here for safety
+            final currentAdmin = ref.read(currentAdminUserProvider);
+            if (currentAdmin != null) {
+              final targetRole = UserRole.values.firstWhere(
+                (r) => r.name == admin.role,
+                orElse: () => UserRole.superAdmin,
+              );
+
+              if (currentAdmin.adminRole.canManage(targetRole)) {
+                context.go('/admin/system/admins/${admin.id}/edit');
+              } else {
+                // This should not happen due to list filtering, but included for safety
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('You do not have permission to edit this admin'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            }
+          },
+        ),
+        DataTableAction<AdminRowData>(
+          icon: Icons.block,
+          tooltip: 'Deactivate',
+          color: AppColors.error,
+          onPressed: (admin) {
+            // Since admins are pre-filtered by hierarchy, this admin can be deactivated
+            // Additional hierarchy check is performed here for safety
+            final currentAdmin = ref.read(currentAdminUserProvider);
+            if (currentAdmin != null) {
+              final targetRole = UserRole.values.firstWhere(
+                (r) => r.name == admin.role,
+                orElse: () => UserRole.superAdmin,
+              );
+
+              if (currentAdmin.adminRole.canManage(targetRole)) {
+                // TODO: Show confirmation dialog
+                // TODO: Call deactivate API
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Deactivation feature coming soon'),
+                  ),
+                );
+              } else {
+                // This should not happen due to list filtering, but included for safety
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('You do not have permission to deactivate this admin'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            }
+          },
+        ),
+      ],
+      enableSelection: true,
+      onSelectionChanged: (selectedItems) {
+        setState(() {
+          _selectedItems = selectedItems;
+        });
+      },
+    );
+  }
+
+  List<AdminRowData> _getFilteredAdmins() {
+    // TODO: Replace with actual data from backend
+    final mockAdmins = _getMockAdmins();
+
+    // Get current admin to check hierarchy
+    final currentAdmin = ref.read(currentAdminUserProvider);
+
+    return mockAdmins.where((admin) {
+      // HIERARCHY FILTER: Only show admins that the current admin can manage
+      // This prevents lower-level admins from seeing/managing higher-level admins
+      if (currentAdmin != null) {
+        final adminRole = UserRole.values.firstWhere(
+          (r) => r.name == admin.role,
+          orElse: () => UserRole.superAdmin,
+        );
+
+        // If current admin cannot manage this admin role, exclude it from the list
+        if (!currentAdmin.adminRole.canManage(adminRole)) {
+          return false;
+        }
+      }
+
+      // Apply search filter
+      final matchesSearch = _searchQuery.isEmpty ||
+          admin.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          admin.email.toLowerCase().contains(_searchQuery.toLowerCase());
+
+      // Apply role filter
+      final matchesRole = _selectedRole == 'all' || admin.role == _selectedRole;
+
+      // Apply status filter
+      final matchesStatus = _selectedStatus == 'all' ||
+          (_selectedStatus == 'active' && admin.isActive) ||
+          (_selectedStatus == 'inactive' && !admin.isActive);
+
+      return matchesSearch && matchesRole && matchesStatus;
+    }).toList();
+  }
+
+  List<AdminRowData> _getMockAdmins() {
+    return [
+      AdminRowData(
+        id: '1',
+        name: 'John Admin',
+        email: 'john.admin@flow.edu',
+        role: 'superAdmin',
+        status: 'Active',
+        isActive: true,
+        lastLogin: '2 hours ago',
+        joinedDate: '2024-01-15',
+      ),
+      AdminRowData(
+        id: '2',
+        name: 'Sarah Manager',
+        email: 'sarah.manager@flow.edu',
+        role: 'regionalAdmin',
+        status: 'Active',
+        isActive: true,
+        lastLogin: '1 day ago',
+        joinedDate: '2024-02-20',
+      ),
+      AdminRowData(
+        id: '3',
+        name: 'Mike Content',
+        email: 'mike.content@flow.edu',
+        role: 'contentAdmin',
+        status: 'Active',
+        isActive: true,
+        lastLogin: '3 hours ago',
+        joinedDate: '2024-03-10',
+      ),
+      AdminRowData(
+        id: '4',
+        name: 'Lisa Support',
+        email: 'lisa.support@flow.edu',
+        role: 'supportAdmin',
+        status: 'Active',
+        isActive: true,
+        lastLogin: '30 mins ago',
+        joinedDate: '2024-04-05',
+      ),
+      AdminRowData(
+        id: '5',
+        name: 'David Finance',
+        email: 'david.finance@flow.edu',
+        role: 'financeAdmin',
+        status: 'Inactive',
+        isActive: false,
+        lastLogin: '2 weeks ago',
+        joinedDate: '2024-05-12',
+      ),
+      AdminRowData(
+        id: '6',
+        name: 'Emma Analytics',
+        email: 'emma.analytics@flow.edu',
+        role: 'analyticsAdmin',
+        status: 'Active',
+        isActive: true,
+        lastLogin: '5 hours ago',
+        joinedDate: '2024-06-18',
+      ),
+    ];
+  }
+
+  Future<void> _handleBulkActivate() async {
+    if (_selectedItems.isEmpty) return;
+
+    // Verify hierarchy permissions for all selected items
+    final currentAdmin = ref.read(currentAdminUserProvider);
+    if (currentAdmin != null) {
+      final invalidSelections = _selectedItems.where((admin) {
+        final targetRole = UserRole.values.firstWhere(
+          (r) => r.name == admin.role,
+          orElse: () => UserRole.superAdmin,
+        );
+        return !currentAdmin.adminRole.canManage(targetRole);
+      }).toList();
+
+      if (invalidSelections.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Cannot activate ${invalidSelections.length} admin(s) - insufficient permissions',
+            ),
+            backgroundColor: AppColors.error,
+          ),
+        );
+        return;
+      }
+    }
+
+    setState(() => _isBulkOperationInProgress = true);
+
+    try {
+      // TODO: Implement bulk activate for admins
+      // Backend should also verify hierarchy permissions
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${_selectedItems.length} admin(s) activated'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+        setState(() {
+          _selectedItems = [];
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isBulkOperationInProgress = false);
+      }
+    }
+  }
+
+  Future<void> _handleBulkDeactivate() async {
+    if (_selectedItems.isEmpty) return;
+
+    // Verify hierarchy permissions for all selected items
+    final currentAdmin = ref.read(currentAdminUserProvider);
+    if (currentAdmin != null) {
+      final invalidSelections = _selectedItems.where((admin) {
+        final targetRole = UserRole.values.firstWhere(
+          (r) => r.name == admin.role,
+          orElse: () => UserRole.superAdmin,
+        );
+        return !currentAdmin.adminRole.canManage(targetRole);
+      }).toList();
+
+      if (invalidSelections.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Cannot deactivate ${invalidSelections.length} admin(s) - insufficient permissions',
+            ),
+            backgroundColor: AppColors.error,
+          ),
+        );
+        return;
+      }
+    }
+
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Deactivation'),
+        content: Text(
+          'Are you sure you want to deactivate ${_selectedItems.length} admin(s)? This will revoke their admin access.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Deactivate'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    setState(() => _isBulkOperationInProgress = true);
+
+    try {
+      // TODO: Implement bulk deactivate for admins
+      // Backend should also verify hierarchy permissions
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${_selectedItems.length} admin(s) deactivated'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+        setState(() {
+          _selectedItems = [];
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isBulkOperationInProgress = false);
+      }
+    }
+  }
+}
+
+/// Data model for admin table rows
+/// TODO: Replace with actual Admin model from backend
+class AdminRowData {
+  final String id;
+  final String name;
+  final String email;
+  final String role; // superAdmin, regionalAdmin, etc.
+  final String status;
+  final bool isActive;
+  final String lastLogin;
+  final String joinedDate;
+
+  const AdminRowData({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.role,
+    required this.status,
+    required this.isActive,
+    required this.lastLogin,
+    required this.joinedDate,
+  });
+
+  String get initials {
+    final parts = name.split(' ');
+    if (parts.length >= 2) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return name.substring(0, 1).toUpperCase();
+  }
+
+  String get roleDisplayName {
+    final userRole = UserRole.values.firstWhere(
+      (r) => r.name == role,
+      orElse: () => UserRole.superAdmin,
+    );
+    return userRole.displayName;
+  }
+
+  Color get roleColor {
+    return AppColors.getAdminRoleColor(UserRole.values.firstWhere(
+      (r) => r.name == role,
+      orElse: () => UserRole.superAdmin,
+    ));
+  }
+
+  IconData get roleIcon {
+    return AppColors.getAdminRoleIcon(UserRole.values.firstWhere(
+      (r) => r.name == role,
+      orElse: () => UserRole.superAdmin,
+    ));
+  }
+}

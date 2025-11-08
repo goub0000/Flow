@@ -76,14 +76,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
       if (response.success && response.data != null) {
+        print('✅ Login successful! User: ${response.data!.email}, Role: ${response.data!.activeRole.name}');
         state = state.copyWith(user: response.data, isLoading: false);
+        print('✅ Auth state updated. isAuthenticated: ${state.isAuthenticated}');
       } else {
+        print('❌ Login failed: ${response.message}');
         state = state.copyWith(
           isLoading: false,
           error: response.message ?? 'Login failed',
         );
       }
     } catch (e) {
+      print('❌ Login error: $e');
       state = state.copyWith(
         isLoading: false,
         error: 'Sign in failed: ${e.toString()}',

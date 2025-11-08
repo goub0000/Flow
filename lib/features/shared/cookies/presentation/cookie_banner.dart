@@ -1,0 +1,225 @@
+// lib/features/shared/cookies/presentation/cookie_banner.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/providers/cookie_providers.dart';
+import '../../../../core/theme/app_colors.dart';
+import 'cookie_preferences_modal.dart';
+
+class CookieBanner extends ConsumerStatefulWidget {
+  const CookieBanner({super.key});
+
+  @override
+  ConsumerState<CookieBanner> createState() => _CookieBannerState();
+}
+
+class _CookieBannerState extends ConsumerState<CookieBanner>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
+  bool _isVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
+    _checkIfNeedsConsent();
+  }
+
+  Future<void> _checkIfNeedsConsent() async {
+    final userId = ref.read(currentUserIdProvider);
+
+    // Don't show banner if user is not logged in
+    if (userId == null) return;
+
+    final needsConsent = await ref.read(
+      consentNeededProvider(userId).future,
+    );
+
+    if (needsConsent && mounted) {
+      setState(() => _isVisible = true);
+      _animationController.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _acceptAll() async {
+    final userId = ref.read(currentUserIdProvider);
+    if (userId == null) return;
+
+    final service = ref.read(consentServiceProvider);
+    final success = await service.acceptAll(userId);
+
+    if (success && mounted) {
+      await _animationController.reverse();
+      setState(() => _isVisible = false);
+
+      // Start analytics session
+      final analytics = ref.read(analyticsServiceProvider);
+      await analytics.startSession(userId);
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Cookie preferences saved'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _acceptEssential() async {
+    final userId = ref.read(currentUserIdProvider);
+    if (userId == null) return;
+
+    final service = ref.read(consentServiceProvider);
+    final success = await service.acceptEssentialOnly(userId);
+
+    if (success && mounted) {
+      await _animationController.reverse();
+      setState(() => _isVisible = false);
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Essential cookies only'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  void _showPreferences() {
+    final userId = ref.read(currentUserIdProvider);
+    if (userId == null) return;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CookiePreferencesModal(userId: userId),
+    ).then((saved) {
+      if (saved == true && mounted) {
+        _animationController.reverse();
+        setState(() => _isVisible = false);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isVisible) return const SizedBox.shrink();
+
+    return SlideTransition(
+      position: _slideAnimation,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(20),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.cookie,
+                    color: AppColors.primary,
+                    size: 32,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'We use cookies',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'We use cookies to enhance your experience, analyze site usage, '
+                'and provide personalized content. By clicking "Accept All", '
+                'you consent to our use of cookies.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  ElevatedButton(
+                    onPressed: _acceptAll,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text('Accept All'),
+                  ),
+                  OutlinedButton(
+                    onPressed: _acceptEssential,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                    ),
+                    child: const Text('Essential Only'),
+                  ),
+                  TextButton(
+                    onPressed: _showPreferences,
+                    child: const Text('Customize'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigate to privacy policy
+                      // context.push('/privacy-policy');
+                    },
+                    child: const Text('Privacy Policy'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

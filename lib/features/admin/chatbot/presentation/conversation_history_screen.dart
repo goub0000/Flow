@@ -1,0 +1,423 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../chatbot/application/services/conversation_storage_service.dart';
+import '../../../chatbot/domain/models/conversation.dart';
+
+/// Conversation History Screen - List all conversations with search/filter
+class ConversationHistoryScreen extends ConsumerStatefulWidget {
+  const ConversationHistoryScreen({super.key});
+
+  @override
+  ConsumerState<ConversationHistoryScreen> createState() =>
+      _ConversationHistoryScreenState();
+}
+
+class _ConversationHistoryScreenState
+    extends ConsumerState<ConversationHistoryScreen> {
+  final _storageService = ConversationStorageService();
+  final _searchController = TextEditingController();
+  List<Conversation> _allConversations = [];
+  List<Conversation> _filteredConversations = [];
+  ConversationStatus? _filterStatus;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadConversations();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadConversations() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final conversations = await _storageService.getAllConversations();
+      conversations.sort((a, b) =>
+          b.lastMessageTime.compareTo(a.lastMessageTime));
+
+      setState(() {
+        _allConversations = conversations;
+        _applyFilters();
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _applyFilters() {
+    var filtered = _allConversations;
+
+    // Apply status filter
+    if (_filterStatus != null) {
+      filtered =
+          filtered.where((c) => c.status == _filterStatus).toList();
+    }
+
+    // Apply search filter
+    if (_searchController.text.isNotEmpty) {
+      final query = _searchController.text.toLowerCase();
+      filtered = filtered.where((c) {
+        return c.userName.toLowerCase().contains(query) ||
+            (c.userEmail?.toLowerCase().contains(query) ?? false) ||
+            c.messages.any(
+                (m) => m.content.toLowerCase().contains(query));
+      }).toList();
+    }
+
+    setState(() => _filteredConversations = filtered);
+  }
+
+  Future<void> _updateStatus(String id, ConversationStatus status) async {
+    await _storageService.updateConversationStatus(id, status);
+    await _loadConversations();
+  }
+
+  Future<void> _deleteConversation(String id) async {
+    await _storageService.deleteConversation(id);
+    await _loadConversations();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: const Text('Conversation History'),
+        backgroundColor: AppColors.surface,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadConversations,
+            tooltip: 'Refresh',
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Search and Filter Bar
+          _buildSearchAndFilter(),
+
+          // Conversations List
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _filteredConversations.isEmpty
+                    ? _buildEmptyState()
+                    : RefreshIndicator(
+                        onRefresh: _loadConversations,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _filteredConversations.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final conversation =
+                                _filteredConversations[index];
+                            return _buildConversationCard(conversation);
+                          },
+                        ),
+                      ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchAndFilter() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
+      ),
+      child: Column(
+        children: [
+          // Search bar
+          TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Search conversations...',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        _applyFilters();
+                      },
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              filled: true,
+              fillColor: AppColors.background,
+            ),
+            onChanged: (_) => _applyFilters(),
+          ),
+          const SizedBox(height: 12),
+
+          // Filter chips
+          Row(
+            children: [
+              const Text(
+                'Filter:',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(width: 12),
+              _buildFilterChip('All', null),
+              _buildFilterChip('Active', ConversationStatus.active),
+              _buildFilterChip('Archived', ConversationStatus.archived),
+              _buildFilterChip('Flagged', ConversationStatus.flagged),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, ConversationStatus? status) {
+    final isSelected = _filterStatus == status;
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: FilterChip(
+        label: Text(label),
+        selected: isSelected,
+        onSelected: (_) {
+          setState(() => _filterStatus = status);
+          _applyFilters();
+        },
+        backgroundColor: AppColors.surface,
+        selectedColor: AppColors.primary.withValues(alpha: 0.1),
+      ),
+    );
+  }
+
+  Widget _buildConversationCard(Conversation conversation) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: AppColors.border),
+      ),
+      child: InkWell(
+        onTap: () => context
+            .push('/admin/chatbot/conversation/${conversation.id}'),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor:
+                        AppColors.primary.withValues(alpha: 0.1),
+                    child: Icon(
+                      Icons.person,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          conversation.userName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        if (conversation.userEmail != null)
+                          Text(
+                            conversation.userEmail!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  _buildStatusChip(conversation.status),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Icon(Icons.message,
+                      size: 14, color: AppColors.textSecondary),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${conversation.messageCount} messages',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Icon(Icons.schedule,
+                      size: 14, color: AppColors.textSecondary),
+                  const SizedBox(width: 4),
+                  Text(
+                    _formatTime(conversation.lastMessageTime),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Icon(Icons.timer,
+                      size: 14, color: AppColors.textSecondary),
+                  const SizedBox(width: 4),
+                  Text(
+                    _formatDuration(conversation.duration),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (conversation.status != ConversationStatus.archived)
+                    TextButton.icon(
+                      onPressed: () => _updateStatus(
+                          conversation.id, ConversationStatus.archived),
+                      icon: const Icon(Icons.archive, size: 16),
+                      label: const Text('Archive'),
+                    ),
+                  if (conversation.status != ConversationStatus.flagged)
+                    TextButton.icon(
+                      onPressed: () => _updateStatus(
+                          conversation.id, ConversationStatus.flagged),
+                      icon: const Icon(Icons.flag, size: 16),
+                      label: const Text('Flag'),
+                    ),
+                  TextButton.icon(
+                    onPressed: () async {
+                      final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Delete Conversation'),
+                          content: const Text(
+                              'Are you sure you want to delete this conversation?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (confirmed == true) {
+                        await _deleteConversation(conversation.id);
+                      }
+                    },
+                    icon: const Icon(Icons.delete, size: 16),
+                    label: const Text('Delete'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusChip(ConversationStatus status) {
+    Color color;
+    String label;
+
+    switch (status) {
+      case ConversationStatus.active:
+        color = AppColors.success;
+        label = 'Active';
+        break;
+      case ConversationStatus.archived:
+        color = AppColors.textSecondary;
+        label = 'Archived';
+        break;
+      case ConversationStatus.flagged:
+        color = AppColors.error;
+        label = 'Flagged';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 12,
+          color: color,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.chat_bubble_outline,
+            size: 64,
+            color: AppColors.textSecondary.withValues(alpha: 0.5),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No conversations found',
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDuration(Duration duration) {
+    if (duration.inMinutes < 1) return '${duration.inSeconds}s';
+    if (duration.inHours < 1) return '${duration.inMinutes}m';
+    return '${duration.inHours}h ${duration.inMinutes % 60}m';
+  }
+
+  String _formatTime(DateTime time) {
+    final now = DateTime.now();
+    final diff = now.difference(time);
+
+    if (diff.inMinutes < 1) return 'Just now';
+    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
+    if (diff.inDays < 1) return '${diff.inHours}h ago';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    return '${time.month}/${time.day}/${time.year}';
+  }
+}
