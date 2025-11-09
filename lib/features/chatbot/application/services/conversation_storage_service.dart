@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/models/conversation.dart';
 import '../../domain/models/chat_message.dart';
 
@@ -7,8 +8,9 @@ import '../../domain/models/chat_message.dart';
 class ConversationStorageService {
   static const String _conversationsKey = 'chatbot_conversations';
   static const String _activeConversationKey = 'chatbot_active_conversation';
+  final SupabaseClient _supabase = Supabase.instance.client;
 
-  /// Save a conversation
+  /// Save a conversation (both locally and to Supabase)
   Future<void> saveConversation(Conversation conversation) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -23,9 +25,44 @@ class ConversationStorageService {
       conversations.add(conversation);
     }
 
-    // Save back to storage
+    // Save back to local storage
     final jsonList = conversations.map((c) => c.toJson()).toList();
     await prefs.setString(_conversationsKey, json.encode(jsonList));
+
+    // Save to Supabase for admin tracking and cross-device sync
+    try {
+      final userMessageCount = conversation.messages.where((m) => m.sender == SenderType.user).length;
+      final botMessageCount = conversation.messages.where((m) => m.sender == SenderType.bot).length;
+
+      await _supabase.from('chatbot_conversations').upsert({
+        'id': conversation.id,
+        'user_id': conversation.userId,
+        'user_name': conversation.userName,
+        'user_email': conversation.userEmail,
+        'status': conversation.status.toString().split('.').last,
+        'message_count': conversation.messageCount,
+        'user_message_count': userMessageCount,
+        'bot_message_count': botMessageCount,
+        'created_at': conversation.startTime.toIso8601String(),
+        'updated_at': conversation.lastMessageTime.toIso8601String(),
+        'messages': conversation.messages.map((m) => {
+          'id': m.id,
+          'content': m.content,
+          'sender': m.sender.toString().split('.').last,
+          'timestamp': m.timestamp.toIso8601String(),
+          'quick_actions': m.quickActions?.map((a) => {
+            'id': a.id,
+            'label': a.label,
+            'action': a.action,
+          }).toList(),
+        }).toList(),
+      }, onConflict: 'id');
+
+      print('[ConversationStorage] Successfully saved conversation to Supabase: ${conversation.id}');
+    } catch (e) {
+      print('[ConversationStorage] Failed to save conversation to Supabase: $e');
+      // Don't fail the entire operation if Supabase save fails
+    }
   }
 
   /// Get all conversations
