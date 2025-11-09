@@ -62,6 +62,19 @@ class MLRecommendationEngine:
             logger.warning("No universities found in database")
             return []
 
+        # Filter by preferred countries if specified
+        if student.get("preferred_countries") and len(student["preferred_countries"]) > 0:
+            initial_count = len(universities)
+            universities = [
+                u for u in universities
+                if u.get("country") in student["preferred_countries"]
+            ]
+            logger.info(f"Filtered by country preference: {initial_count} -> {len(universities)} universities")
+
+            if not universities:
+                logger.warning(f"No universities found in preferred countries: {student['preferred_countries']}")
+                return []
+
         # Batch-load all programs to avoid N+1 queries
         logger.info("Loading programs for matching...")
         programs_response = self.db.table('programs').select('*').execute()
