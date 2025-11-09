@@ -1,14 +1,16 @@
 // lib/core/services/consent_service.dart
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:convert';
 import '../models/user_consent.dart';
 import '../constants/cookie_constants.dart';
 
 class ConsentService {
   final SharedPreferences _prefs;
+  final SupabaseClient _supabase;
 
-  ConsentService(this._prefs);
+  ConsentService(this._prefs) : _supabase = Supabase.instance.client;
 
   /// Get current user consent
   Future<UserConsent?> getUserConsent(String userId) async {
@@ -23,16 +25,39 @@ class ConsentService {
     }
   }
 
-  /// Save user consent
+  /// Save user consent (both locally and to Supabase)
   Future<bool> saveUserConsent(UserConsent consent) async {
     try {
+      // Save to local storage for quick access
       final json = jsonEncode(consent.toJson());
-      return await _prefs.setString(
+      final localSaveSuccess = await _prefs.setString(
         '${CookieConstants.consentStatusKey}_${consent.userId}',
         json,
       );
+
+      // Save to Supabase for admin tracking
+      try {
+        await _supabase.from('cookies').upsert({
+          'user_id': consent.userId,
+          'status': consent.status.toString().split('.').last,
+          'essential': consent.categoryConsents[CookieCategory.essential] ?? true,
+          'functional': consent.categoryConsents[CookieCategory.functional] ?? false,
+          'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
+          'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
+          'version': consent.version,
+          'updated_at': DateTime.now().toIso8601String(),
+          'expires_at': consent.expiresAt?.toIso8601String(),
+        }, onConflict: 'user_id');
+
+        print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
+      } catch (e) {
+        print('[ConsentService] Failed to save consent to Supabase: $e');
+        // Don't fail the entire operation if Supabase save fails
+      }
+
+      return localSaveSuccess;
     } catch (e) {
-      print('Error saving consent: $e');
+      print('[ConsentService] Error saving consent: $e');
       return false;
     }
   }
