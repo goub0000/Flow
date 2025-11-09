@@ -31,8 +31,9 @@ class _AdminChatbotDashboardState
     setState(() => _isLoading = true);
 
     try {
-      final stats = await _storageService.getStats();
-      final conversations = await _storageService.getAllConversations();
+      // Use Supabase methods to get global data for admin dashboard
+      final stats = await _storageService.getStatsFromSupabase();
+      final conversations = await _storageService.getAllConversationsFromSupabase();
 
       // Sort by most recent
       conversations.sort((a, b) =>

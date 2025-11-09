@@ -218,6 +218,134 @@ class ConversationStorageService {
     await prefs.remove(_conversationsKey);
     await prefs.remove(_activeConversationKey);
   }
+
+  /// Get all conversations from Supabase (for admin dashboard)
+  Future<List<Conversation>> getAllConversationsFromSupabase() async {
+    try {
+      final conversations = await _supabase.from('chatbot_conversations').select('*') as List<dynamic>;
+
+      return conversations.map((json) {
+        try {
+          // Parse messages from JSON
+          final messagesJson = json['messages'] as List<dynamic>?;
+          final messages = <ChatMessage>[];
+          if (messagesJson != null) {
+            for (final m in messagesJson) {
+              messages.add(ChatMessage(
+                id: m['id'] as String,
+                content: m['content'] as String,
+                type: MessageType.text,
+                sender: m['sender'] == 'user' ? SenderType.user : SenderType.bot,
+                timestamp: DateTime.parse(m['timestamp'] as String),
+                quickActions: null, // Quick actions not stored in Supabase
+              ));
+            }
+          }
+
+          return Conversation(
+            id: json['id'] as String,
+            userId: json['user_id'] as String,
+            userName: json['user_name'] as String,
+            startTime: DateTime.parse(json['created_at'] as String),
+            lastMessageTime: DateTime.parse(json['updated_at'] as String),
+            messages: messages,
+            status: _parseConversationStatus(json['status'] as String?),
+            messageCount: json['message_count'] as int? ?? messages.length,
+            userEmail: json['user_email'] as String?,
+          );
+        } catch (e) {
+          print('[ConversationStorage] Error parsing conversation: $e');
+          return null;
+        }
+      }).whereType<Conversation>().toList();
+    } catch (e) {
+      print('[ConversationStorage] Error fetching conversations from Supabase: $e');
+      return [];
+    }
+  }
+
+  /// Get conversation statistics from Supabase (for admin dashboard)
+  Future<ConversationStats> getStatsFromSupabase() async {
+    try {
+      final conversations = await getAllConversationsFromSupabase();
+
+      int totalMessages = 0;
+      int totalUserMessages = 0;
+      int totalBotMessages = 0;
+      final Map<String, int> topicCounts = {};
+
+      for (final conv in conversations) {
+        totalMessages += conv.messageCount;
+        final userMsgCount = conv.messages.where((m) => m.sender == SenderType.user).length;
+        final botMsgCount = conv.messages.where((m) => m.sender == SenderType.bot).length;
+        totalUserMessages += userMsgCount;
+        totalBotMessages += botMsgCount;
+
+        // Count topics (simplified - based on first user message)
+        if (conv.messages.isNotEmpty) {
+          final firstUserMsg = conv.messages
+              .firstWhere(
+                (m) => m.sender == SenderType.user,
+                orElse: () => conv.messages.first,
+              )
+              .content
+              .toLowerCase();
+
+          // Extract topic keywords
+          if (firstUserMsg.contains('price') || firstUserMsg.contains('cost')) {
+            topicCounts['Pricing'] = (topicCounts['Pricing'] ?? 0) + 1;
+          } else if (firstUserMsg.contains('feature')) {
+            topicCounts['Features'] = (topicCounts['Features'] ?? 0) + 1;
+          } else if (firstUserMsg.contains('register') || firstUserMsg.contains('sign up')) {
+            topicCounts['Registration'] = (topicCounts['Registration'] ?? 0) + 1;
+          } else if (firstUserMsg.contains('help') || firstUserMsg.contains('support')) {
+            topicCounts['Support'] = (topicCounts['Support'] ?? 0) + 1;
+          } else {
+            topicCounts['General'] = (topicCounts['General'] ?? 0) + 1;
+          }
+        }
+      }
+
+      return ConversationStats(
+        totalConversations: conversations.length,
+        activeConversations: conversations
+            .where((c) => c.status == ConversationStatus.active)
+            .length,
+        totalMessages: totalMessages,
+        totalUserMessages: totalUserMessages,
+        totalBotMessages: totalBotMessages,
+        topicCounts: topicCounts,
+        flaggedConversations: conversations
+            .where((c) => c.status == ConversationStatus.flagged)
+            .length,
+      );
+    } catch (e) {
+      print('[ConversationStorage] Error fetching stats from Supabase: $e');
+      return ConversationStats(
+        totalConversations: 0,
+        activeConversations: 0,
+        totalMessages: 0,
+        totalUserMessages: 0,
+        totalBotMessages: 0,
+        topicCounts: {},
+        flaggedConversations: 0,
+      );
+    }
+  }
+
+  /// Helper to parse conversation status from string
+  ConversationStatus _parseConversationStatus(String? status) {
+    switch (status) {
+      case 'active':
+        return ConversationStatus.active;
+      case 'archived':
+        return ConversationStatus.archived;
+      case 'flagged':
+        return ConversationStatus.flagged;
+      default:
+        return ConversationStatus.active;
+    }
+  }
 }
 
 /// Statistics about conversations

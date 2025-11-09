@@ -148,69 +148,84 @@ class ConsentService {
     }
   }
 
-  /// Get consent statistics (for admin dashboard)
+  /// Get consent statistics (for admin dashboard) - Queries Supabase for global data
   Future<Map<String, dynamic>> getConsentStatistics() async {
-    final keys = _prefs.getKeys();
-    final consentKeys = keys.where(
-      (k) => k.startsWith(CookieConstants.consentStatusKey),
-    );
+    try {
+      // Query all cookie consents from Supabase
+      final cookies = await _supabase.from('cookies').select('*') as List<dynamic>;
 
-    int total = consentKeys.length;
-    int accepted = 0;
-    int customized = 0;
-    int declined = 0;
-    int expired = 0;
+      int total = cookies.length;
+      int accepted = 0;
+      int customized = 0;
+      int declined = 0;
+      int expired = 0;
 
-    Map<CookieCategory, int> categoryStats = {
-      CookieCategory.essential: 0,
-      CookieCategory.functional: 0,
-      CookieCategory.analytics: 0,
-      CookieCategory.marketing: 0,
-    };
+      Map<String, int> categoryStats = {
+        'essential': 0,
+        'functional': 0,
+        'analytics': 0,
+        'marketing': 0,
+      };
 
-    for (final key in consentKeys) {
-      final json = _prefs.getString(key);
-      if (json == null) continue;
+      final now = DateTime.now();
 
-      try {
-        final consent = UserConsent.fromJson(jsonDecode(json));
+      for (final cookie in cookies) {
+        final status = cookie['status'] as String?;
+        final expiresAt = cookie['expires_at'] != null
+            ? DateTime.parse(cookie['expires_at'] as String)
+            : null;
 
-        if (consent.isExpired) {
+        // Check if expired
+        if (expiresAt != null && expiresAt.isBefore(now)) {
           expired++;
         } else {
-          switch (consent.status) {
-            case ConsentStatus.accepted:
+          // Count by status
+          switch (status) {
+            case 'accepted':
               accepted++;
               break;
-            case ConsentStatus.customized:
+            case 'customized':
               customized++;
               break;
-            case ConsentStatus.declined:
+            case 'declined':
               declined++;
-              break;
-            case ConsentStatus.notAsked:
               break;
           }
         }
 
         // Count category consents
-        consent.categoryConsents.forEach((category, consented) {
-          if (consented) {
-            categoryStats[category] = (categoryStats[category] ?? 0) + 1;
-          }
-        });
-      } catch (e) {
-        print('Error parsing consent for stats: $e');
+        if (cookie['essential'] == true) categoryStats['essential'] = (categoryStats['essential'] ?? 0) + 1;
+        if (cookie['functional'] == true) categoryStats['functional'] = (categoryStats['functional'] ?? 0) + 1;
+        if (cookie['analytics'] == true) categoryStats['analytics'] = (categoryStats['analytics'] ?? 0) + 1;
+        if (cookie['marketing'] == true) categoryStats['marketing'] = (categoryStats['marketing'] ?? 0) + 1;
       }
-    }
 
-    return {
-      'total': total,
-      'accepted': accepted,
-      'customized': customized,
-      'declined': declined,
-      'expired': expired,
-      'categoryStats': categoryStats,
-    };
+      return {
+        'totalUsers': total,
+        'totalConsented': accepted + customized,
+        'acceptedAll': accepted,
+        'customized': customized,
+        'declined': declined,
+        'expired': expired,
+        'categoryStats': categoryStats,
+      };
+    } catch (e) {
+      print('[ConsentService] Error fetching consent statistics from Supabase: $e');
+      // Fallback to empty stats
+      return {
+        'totalUsers': 0,
+        'totalConsented': 0,
+        'acceptedAll': 0,
+        'customized': 0,
+        'declined': 0,
+        'expired': 0,
+        'categoryStats': {
+          'essential': 0,
+          'functional': 0,
+          'analytics': 0,
+          'marketing': 0,
+        },
+      };
+    }
   }
 }

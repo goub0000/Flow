@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/constants/user_roles.dart';
 
@@ -58,49 +59,86 @@ class AdminUsersState {
 
 /// StateNotifier for managing users (admin)
 class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
+  final SupabaseClient _supabase = Supabase.instance.client;
+
   AdminUsersNotifier() : super(const AdminUsersState()) {
     fetchAllUsers();
   }
 
-  /// Fetch all users
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all users from Supabase
   Future<void> fetchAllUsers() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance.collection('users').get()
+      // Query profiles table from Supabase
+      final profilesData = await _supabase.from('profiles').select('*') as List<dynamic>;
 
-      await Future.delayed(const Duration(seconds: 1));
+      final users = profilesData.map((profile) {
+        try {
+          // Parse user role
+          final roleString = profile['role'] as String?;
+          final activeRole = _parseUserRole(roleString);
 
-      // Mock data for development
-      final mockUsers = List.generate(
-        50,
-        (index) => UserModel(
-          id: 'user_$index',
-          email: 'user$index@example.com',
-          displayName: 'User $index',
-          photoUrl: null,
-          phoneNumber: '+254700${(100000 + index).toString().substring(0, 6)}',
-          activeRole: UserRole.values[index % UserRole.values.length],
-          availableRoles: [UserRole.values[index % UserRole.values.length]],
-          createdAt: DateTime.now().subtract(Duration(days: index)),
-          lastLoginAt: DateTime.now().subtract(Duration(hours: index)),
-          isEmailVerified: index % 2 == 0,
-          isPhoneVerified: index % 3 == 0,
-          metadata: {'isActive': true, 'index': index},
-        ),
-      );
+          return UserModel(
+            id: profile['id'] as String,
+            email: profile['email'] as String? ?? '',
+            displayName: profile['full_name'] as String? ?? profile['display_name'] as String? ?? 'Unknown User',
+            photoUrl: profile['avatar_url'] as String?,
+            phoneNumber: profile['phone'] as String?,
+            activeRole: activeRole,
+            availableRoles: [activeRole],
+            createdAt: profile['created_at'] != null
+                ? DateTime.parse(profile['created_at'] as String)
+                : DateTime.now(),
+            lastLoginAt: profile['last_login_at'] != null
+                ? DateTime.parse(profile['last_login_at'] as String)
+                : null,
+            isEmailVerified: profile['email_verified'] as bool? ?? false,
+            isPhoneVerified: profile['phone_verified'] as bool? ?? false,
+            metadata: {
+              'isActive': profile['is_active'] ?? true,
+              'onboarding_completed': profile['onboarding_completed'] ?? false,
+            },
+          );
+        } catch (e) {
+          print('[AdminUsers] Error parsing user: $e');
+          return null;
+        }
+      }).whereType<UserModel>().toList();
 
       state = state.copyWith(
-        users: mockUsers,
+        users: users,
         isLoading: false,
       );
     } catch (e) {
+      print('[AdminUsers] Error fetching users from Supabase: $e');
       state = state.copyWith(
         error: 'Failed to fetch users: ${e.toString()}',
         isLoading: false,
       );
+    }
+  }
+
+  /// Helper to parse user role from string
+  UserRole _parseUserRole(String? roleString) {
+    if (roleString == null) return UserRole.student;
+
+    switch (roleString.toLowerCase()) {
+      case 'student':
+        return UserRole.student;
+      case 'parent':
+        return UserRole.parent;
+      case 'counselor':
+        return UserRole.counselor;
+      case 'recommender':
+        return UserRole.recommender;
+      case 'institution':
+        return UserRole.institution;
+      case 'admin':
+      case 'superadmin':
+        return UserRole.superAdmin;
+      default:
+        return UserRole.student;
     }
   }
 

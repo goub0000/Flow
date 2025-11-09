@@ -39,7 +39,8 @@ class _ConversationHistoryScreenState
     setState(() => _isLoading = true);
 
     try {
-      final conversations = await _storageService.getAllConversations();
+      // Use Supabase method to get all conversations globally for admin
+      final conversations = await _storageService.getAllConversationsFromSupabase();
       conversations.sort((a, b) =>
           b.lastMessageTime.compareTo(a.lastMessageTime));
 
