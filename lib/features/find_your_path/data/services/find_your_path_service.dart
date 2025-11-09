@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/models/student_profile.dart';
 import '../../domain/models/university.dart';
 import '../../domain/models/recommendation.dart';
@@ -7,11 +8,26 @@ import '../../domain/models/recommendation.dart';
 /// Service for communicating with Find Your Path recommendation API
 class FindYourPathService {
   // API base URL - Cloud-based Railway deployment
-  static const String baseUrl = 'https://web-production-bcafe.up.railway.app/api/v1';
+  static const String baseUrl = 'https://web-production-51e34.up.railway.app/api/v1';
 
   final http.Client _client;
 
   FindYourPathService({http.Client? client}) : _client = client ?? http.Client();
+
+  /// Get authentication headers with Supabase JWT token
+  Map<String, String> _getAuthHeaders() {
+    final supabase = Supabase.instance.client;
+    final session = supabase.auth.currentSession;
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+
+    if (session?.accessToken != null) {
+      headers['Authorization'] = 'Bearer ${session!.accessToken}';
+    }
+
+    return headers;
+  }
 
   /// Create or update student profile
   Future<StudentProfile> saveProfile(StudentProfile profile) async {
@@ -22,9 +38,7 @@ class FindYourPathService {
 
       final response = await _client.post(
         Uri.parse('$baseUrl/students/profile'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
         body: body,
       );
 
@@ -51,9 +65,7 @@ class FindYourPathService {
     try {
       final response = await _client.put(
         Uri.parse('$baseUrl/students/profile/${profile.userId}'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
         body: jsonEncode(profile.toJson()),
       );
 
@@ -73,9 +85,7 @@ class FindYourPathService {
     try {
       final response = await _client.get(
         Uri.parse('$baseUrl/students/profile/$userId'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -96,9 +106,7 @@ class FindYourPathService {
     try {
       final response = await _client.get(
         Uri.parse('$baseUrl/students/profile/$userId/exists'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -133,9 +141,7 @@ class FindYourPathService {
 
       final response = await _client.post(
         Uri.parse('$baseUrl/recommendations/generate'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
         body: body,
       );
 
@@ -160,9 +166,7 @@ class FindYourPathService {
     try {
       final response = await _client.get(
         Uri.parse('$baseUrl/recommendations/$userId'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -181,9 +185,7 @@ class FindYourPathService {
     try {
       final response = await _client.put(
         Uri.parse('$baseUrl/recommendations/$recommendationId/favorite'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -202,9 +204,7 @@ class FindYourPathService {
     try {
       final response = await _client.get(
         Uri.parse('$baseUrl/universities/$universityId'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -229,9 +229,7 @@ class FindYourPathService {
     try {
       final response = await _client.post(
         Uri.parse('$baseUrl/universities/search'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
         body: jsonEncode({
           'query': query,
           'country': country,
@@ -260,9 +258,7 @@ class FindYourPathService {
     try {
       final response = await _client.get(
         Uri.parse('$baseUrl/universities/stats/overview'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: _getAuthHeaders(),
       );
 
       if (response.statusCode == 200) {
