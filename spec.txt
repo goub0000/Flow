@@ -1,0 +1,1547 @@
+Flutter App Development Specifications for "Flow" African EdTech Platform
+Color:
+
+
+
+Executive summary
+This comprehensive technical specification provides complete implementation guidance for building "Flow," an African EdTech platform using Flutter. The platform serves students, institutions, parents, counselors, and recommenders across African markets with intermittent connectivity, low-end devices, and diverse access methods including mobile apps, feature phones (USSD/SMS), and web browsers.
+Key architectural decisions: Offline-first architecture with Drift database, Riverpod 2.x state management, go_router navigation, Africa's Talking for USSD/SMS, Flutterwave for mobile money, and comprehensive optimization for devices under $100 with 1-2GB RAM common in African markets.
+Critical specifications: Sub-15MB APK per architecture, offline-capable core features, mobile money integration (M-Pesa, MTN, Airtel), multi-role RBAC system, feature phone support via USSD/SMS gateway, and performance optimization for 3G networks. This specification enables developers to build the complete application following proven patterns from production African applications.
+
+1. Offline-first architecture patterns and implementation
+Core architecture pattern
+The offline-first architecture treats local database as single source of truth with remote sync as enhancement. This is critical for African markets where connectivity is intermittent and expensive.
+Repository pattern implementation using streams for optimal UX:
+class CourseRepository {
+  final ApiClientService _apiClient;
+  final DatabaseService _db;
+
+  // Stream-based offline-first reading
+  Stream<Course> getCourse(String id) async* {
+    // 1. Emit local data immediately (instant UX)
+    final localCourse = await _db.fetchCourse(id);
+    if (localCourse != null) {
+      yield localCourse;
+    }
+
+    // 2. Fetch from API and update
+    try {
+      final apiCourse = await _apiClient.getCourse(id);
+      await _db.updateCourse(apiCourse);
+      yield apiCourse;
+    } catch (e) {
+      // User already has local data, graceful degradation
+    }
+  }
+
+  // Offline-first writing with queue
+  Future<void> submitAssignment(Assignment assignment) async {
+    // Write locally first (instant feedback)
+    await _db.insertAssignment(assignment);
+    
+    // Queue for sync
+    try {
+      await _apiClient.postAssignment(assignment);
+      await _db.markAsSynced(assignment.id);
+    } catch (e) {
+      // Will sync later via background task
+    }
+  }
+}
+
+Recommended database stack
+Primary: Drift (formerly Moor) - Active maintenance, SQL power, type-safe queries
+dependencies:
+  drift: ^2.14.0
+  sqlite3_flutter_libs: ^0.5.18
+  path_provider: ^2.1.2
+  
+dev_dependencies:
+  drift_dev: ^2.14.1
+  build_runner: ^2.4.7
+
+Implementation example:
+@DriftDatabase(tables: [Courses, Lessons, StudentProgress])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase() : super(_openConnection());
+
+  @override
+  int get schemaVersion => 1;
+
+  static LazyDatabase _openConnection() {
+    return LazyDatabase(() async {
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dbFolder.path, 'flow_edtech.sqlite'));
+      return NativeDatabase.createInBackground(file);
+    });
+  }
+}
+
+// Table definitions
+class Lessons extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text()();
+  TextColumn get content => text()();
+  TextColumn get videoUrl => text().nullable()();
+  BoolColumn get isDownloaded => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get lastSynced => dateTime().nullable()();
+}
+
+Secondary: Hive - For simple caching, zero setup, fast key-value
+dependencies:
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+Sync queue architecture
+class SyncEvent {
+  final String id;
+  final String recordId;
+  final String type; // create, update, delete
+  final Map<String, dynamic> payload;
+  final int timestamp;
+  final int retryCount;
+  final bool isSynced;
+}
+
+class SyncQueueManager {
+  final DatabaseService _db;
+  
+  Future<void> enqueue(SyncEvent event) async {
+    await _db.insertSyncEvent(event);
+    if (await _hasConnectivity()) {
+      _processSyncQueue();
+    }
+  }
+  
+  Future<void> _processSyncQueue() async {
+    final pendingEvents = await _db.getUnsyncedEvents();
+    
+    for (final event in pendingEvents) {
+      try {
+        await _syncEventToServer(event);
+        await _db.markEventAsSynced(event.id);
+      } catch (e) {
+        await _db.incrementRetryCount(event.id);
+        // Exponential backoff
+        if (event.retryCount < 3) {
+          await Future.delayed(
+            Duration(seconds: pow(2, event.retryCount).toInt())
+          );
+        }
+      }
+    }
+  }
+}
+
+Conflict resolution strategy
+For EdTech use cases, Last-Write-Wins with custom merge for progress data:
+class ConflictResolver {
+  LessonProgress resolveProgress(LessonProgress local, LessonProgress remote) {
+    return LessonProgress(
+      lessonId: local.lessonId,
+      // Keep higher progress
+      progressPercent: max(local.progressPercent, remote.progressPercent),
+      // Merge completed sections (union)
+      completedSections: {...local.completedSections, ...remote.completedSections}.toList(),
+      // Keep higher score
+      latestScore: max(local.latestScore ?? 0, remote.latestScore ?? 0),
+      lastAccessed: local.lastAccessed.isAfter(remote.lastAccessed) 
+        ? local.lastAccessed : remote.lastAccessed,
+    );
+  }
+}
+
+Background sync with WorkManager
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    if (await _hasWiFi() && await _hasSufficientBattery()) {
+      final syncService = SyncService();
+      await syncService.syncAll();
+    }
+    return Future.value(true);
+  });
+}
+
+void initializeBackgroundSync() {
+  Workmanager().initialize(callbackDispatcher);
+  
+  Workmanager().registerPeriodicTask(
+    "edtech-content-sync",
+    "syncTask",
+    frequency: Duration(minutes: 30),
+    constraints: Constraints(
+      networkType: NetworkType.connected,
+      requiresBatteryNotLow: true,
+    ),
+  );
+}
+
+
+2. Mobile money payment integration
+Provider overview
+M-Pesa (Kenya, Tanzania): Daraja API with direct integration MTN Mobile Money (Uganda, Ghana, Zambia): MoMo Developer API Airtel Money (Uganda, Tanzania, Zambia): Via aggregators only (no public API)
+Recommended approach: Aggregator + direct hybrid
+Use Flutterwave or Paystack aggregators for rapid deployment, add M-Pesa Daraja direct for high-volume Kenya market.
+Flutterwave integration (recommended)
+Official package: flutterwave_standard: ^1.1.0
+Supports: M-Pesa, MTN MoMo, Airtel Money, Vodafone, Tigo, cards, bank transfers
+import 'package:flutterwave_standard/flutterwave_standard.dart';
+
+final flutterwave = Flutterwave(
+  context: context,
+  publicKey: "FLWPUBK_TEST-xxxxx",
+  currency: "KES",
+  amount: "1500",
+  customer: Customer(
+    name: "John Doe",
+    phoneNumber: "254712345678",
+    email: "[email protected]",
+  ),
+  customization: Customization(title: "Course Payment"),
+  isTestMode: true,
+);
+
+final ChargeResponse response = await flutterwave.charge();
+
+if (response.status == "successful") {
+  // Always verify on backend
+  await verifyTransaction(response.transactionId);
+}
+
+M-Pesa Daraja direct integration
+Package: flutter_mpesa_stk: ^1.1.0
+import 'package:flutter_mpesa_stk/flutter_mpesa_stk.dart';
+
+MpesaResponse response = await FlutterMpesaSTK(
+  consumerKey,
+  consumerSecret,
+  stkPassword,
+  "174379", // Test paybill
+  "https://your-callback-url.com/api/callback",
+  "Transaction failed",
+  env: "testing" // or "production"
+).stkPush(
+  Mpesa(
+    amount,
+    phoneNumber,
+    accountReference: "COURSE001",
+    transactionDesc: "Course enrollment payment"
+  )
+);
+
+Payment architecture
+Flutter App → Backend Server → Payment Gateway/Direct API
+                ↓
+            Webhook Handler → Database Update → Push Notification
+
+Critical security practices
+Store API keys securely using flutter_secure_storage or environment variables
+Always verify transactions server-side before granting access
+Implement idempotency for webhook handlers to prevent duplicate processing
+Use HTTPS only for all payment communications
+Encrypt sensitive data with AES-256
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = FlutterSecureStorage();
+await storage.write(key: 'api_key', value: apiKey);
+String? key = await storage.read(key: 'api_key');
+
+Webhook verification
+bool verifyWebhook(String payload, String signature, String secret) {
+  var hmac = Hmac(sha512, utf8.encode(secret));
+  var digest = hmac.convert(utf8.encode(payload));
+  return digest.toString() == signature;
+}
+
+Transaction verification pattern
+Future<bool> verifyTransaction(String transactionId) async {
+  final response = await http.get(
+    Uri.parse('https://api.provider.com/verify/$transactionId'),
+    headers: {'Authorization': 'Bearer $secretKey'},
+  );
+  
+  final data = jsonDecode(response.body);
+  
+  // Verify all parameters match
+  return data['status'] == 'success' &&
+         data['amount'] == expectedAmount &&
+         data['currency'] == expectedCurrency &&
+         data['customer_id'] == expectedCustomer;
+}
+
+
+3. Multi-role platform architecture
+State management: Riverpod 2.x with code generation
+Rationale: Compile-time safety, no BuildContext dependency, excellent testing, scalable for complex multi-role apps
+dependencies:
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.0
+
+dev_dependencies:
+  riverpod_generator: ^2.3.0
+  build_runner: ^2.4.7
+
+Implementation:
+@riverpod
+class CurrentUser extends _$CurrentUser {
+  @override
+  FutureOr<User?> build() async {
+    return await ref.watch(authRepositoryProvider).getCurrentUser();
+  }
+  
+  Future<void> switchRole(UserRole newRole) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      return await ref.read(authRepositoryProvider).updateUserRole(newRole);
+    });
+  }
+}
+
+Role-based access control (RBAC)
+Five user roles: Student, Institution, Parent, Counselor, Recommender
+enum UserRole {
+  student,
+  institution,
+  parent,
+  counselor,
+  recommender,
+}
+
+enum Permission {
+  // Student
+  viewApplications,
+  submitApplication,
+  editProfile,
+  
+  // Institution
+  viewAllApplications,
+  manageInstitutionProfile,
+  reviewApplications,
+  
+  // Parent
+  viewChildProgress,
+  receiveNotifications,
+  
+  // Counselor
+  viewStudentRecords,
+  provideCounseling,
+  writeRecommendations,
+  
+  // Recommender
+  viewRecommendationRequests,
+  submitRecommendations,
+  
+  // Shared
+  changePassword,
+  viewNotifications,
+}
+
+class RoleManager {
+  static final Map<UserRole, Set<Permission>> rolePermissions = {
+    UserRole.student: {
+      Permission.viewApplications,
+      Permission.submitApplication,
+      Permission.editProfile,
+      Permission.changePassword,
+      Permission.viewNotifications,
+    },
+    UserRole.institution: {
+      Permission.viewAllApplications,
+      Permission.manageInstitutionProfile,
+      Permission.reviewApplications,
+      Permission.changePassword,
+      Permission.viewNotifications,
+    },
+    // ... define for all roles
+  };
+  
+  static bool hasPermission(UserRole role, Permission permission) {
+    return rolePermissions[role]?.contains(permission) ?? false;
+  }
+}
+
+Permission widget for conditional UI
+class PermissionWidget extends ConsumerWidget {
+  final List<Permission> requiredPermissions;
+  final Widget child;
+  final Widget? fallback;
+  
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(currentUserProvider).value;
+    if (user == null) return fallback ?? SizedBox.shrink();
+    
+    final hasAccess = requiredPermissions.any((p) => 
+      RoleManager.hasPermission(user.role, p)
+    );
+    
+    return hasAccess ? child : (fallback ?? SizedBox.shrink());
+  }
+}
+
+Navigation with go_router
+Recommended package: go_router (official Flutter routing)
+@riverpod
+GoRouter router(RouterRef ref) {
+  final currentUser = ref.watch(currentUserProvider);
+  
+  return GoRouter(
+    redirect: (context, state) {
+      final isLoading = currentUser.isLoading;
+      final user = currentUser.value;
+      
+      if (isLoading) return '/loading';
+      if (user == null) return '/login';
+      
+      // Role-based route protection
+      if (!_canAccessRoute(user.role, state.matchedLocation)) {
+        return '/unauthorized';
+      }
+      
+      return null;
+    },
+    routes: [
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithNavbar(navigationShell);
+        },
+        branches: [
+          // Student branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/student/dashboard',
+                builder: (context, state) => StudentDashboard(),
+                routes: [
+                  GoRoute(
+                    path: 'applications',
+                    builder: (context, state) => ApplicationsScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          // Institution branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/institution/dashboard',
+                builder: (context, state) => InstitutionDashboard(),
+                routes: [
+                  GoRoute(
+                    path: 'applicants',
+                    builder: (context, state) => ApplicantsScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          // Add branches for parent, counselor, recommender
+        ],
+      ),
+    ],
+  );
+}
+
+Role switching for multi-role users
+class User {
+  final String id;
+  final List<UserRole> availableRoles;
+  final UserRole activeRole;
+  
+  bool canSwitchTo(UserRole role) => availableRoles.contains(role);
+}
+
+// Role switcher UI component
+class RoleSwitcher extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(currentUserProvider).value;
+    
+    if (user == null || user.availableRoles.length <= 1) {
+      return SizedBox.shrink();
+    }
+    
+    return DropdownButton<UserRole>(
+      value: user.activeRole,
+      items: user.availableRoles.map((role) {
+        return DropdownMenuItem(
+          value: role,
+          child: Text(_roleDisplayName(role)),
+        );
+      }).toList(),
+      onChanged: (newRole) {
+        if (newRole != null) {
+          ref.read(authRepositoryProvider).switchRole(newRole);
+        }
+      },
+    );
+  }
+}
+
+Authentication with Firebase + custom claims
+@riverpod
+class AuthRepository extends _$AuthRepository {
+  @override
+  Stream<User?> build() {
+    return FirebaseAuth.instance.authStateChanges().map((firebaseUser) {
+      if (firebaseUser == null) return null;
+      return _mapFirebaseUser(firebaseUser);
+    });
+  }
+  
+  Future<User> signIn(String email, String password) async {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    
+    // Fetch custom claims (role, permissions)
+    final idTokenResult = await credential.user!.getIdTokenResult();
+    final role = UserRole.values.byName(
+      idTokenResult.claims?['role'] ?? 'student'
+    );
+    
+    return User(
+      id: credential.user!.uid,
+      email: credential.user!.email!,
+      role: role,
+    );
+  }
+}
+
+Project structure (feature-first with clean architecture)
+lib/
+├── core/
+│   ├── constants/ (routes, permissions, roles)
+│   ├── network/ (API client)
+│   └── utils/
+│
+├── features/
+│   ├── authentication/
+│   │   ├── data/ (datasources, models, repositories)
+│   │   ├── domain/ (entities, repository interfaces, usecases)
+│   │   └── presentation/ (providers, screens, widgets)
+│   │
+│   ├── student/
+│   │   ├── applications/
+│   │   ├── profile/
+│   │   └── dashboard/
+│   │
+│   ├── institution/
+│   │   ├── applicants/
+│   │   ├── reviews/
+│   │   └── dashboard/
+│   │
+│   ├── parent/
+│   ├── counselor/
+│   ├── recommender/
+│   └── shared/ (common features)
+│
+├── routing/ (app_router.dart, route_guards.dart)
+└── main.dart
+
+
+4. USSD and SMS gateway integration
+Key insight: USSD is server-side only
+USSD cannot be directly implemented in Flutter apps - it requires network operator infrastructure. Flutter apps and USSD menus are separate interfaces to the same backend system.
+Architecture pattern
+Feature Phone → USSD (*123#) → Telco → Africa's Talking Gateway
+                                              ↓
+                                    USSD Backend (Node.js)
+                                              ↓
+                                    Shared API + Database
+                                              ↑
+Smartphone → Flutter App (HTTP) ───────────────┘
+
+Africa's Talking (recommended provider)
+Coverage: Kenya, Uganda, Tanzania, Rwanda, Ghana, Nigeria, Malawi, South Africa, Zambia, 15+ countries
+Features:
+USSD API with session management (180 second sessions)
+SMS API with delivery reports
+Two-way SMS
+Free sandbox environment
+USSD callback pattern:
+// Node.js backend for USSD
+const UssdMenu = require('ussd-menu-builder');
+let menu = new UssdMenu();
+
+menu.startState({
+  run: () => {
+    menu.con('Welcome to Flow EdTech\n1. Check Progress\n2. View Assignments');
+  },
+  next: {
+    '1': 'checkProgress',
+    '2': 'viewAssignments'
+  }
+});
+
+menu.state('checkProgress', {
+  run: () => {
+    fetchProgress(menu.args.phoneNumber).then(progress => {
+      menu.end(`Your progress: ${progress}%`);
+    });
+  }
+});
+
+// Express route handler
+app.post('/ussd', (req, res) => {
+  menu.run(req.body, ussdResult => {
+    res.send(ussdResult);
+  });
+});
+
+SMS integration in Flutter
+Package: telephony: ^0.2.0 (Android only due to iOS restrictions)
+import 'package:telephony/telephony.dart';
+
+final Telephony telephony = Telephony.instance;
+
+// Request permissions
+bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
+
+// Send SMS
+await telephony.sendSms(
+  to: "+254712345678",
+  message: "Your assignment has been graded: 85%"
+);
+
+// Receive SMS (foreground)
+telephony.listenIncomingSms(
+  onNewMessage: (SmsMessage message) {
+    print("From: ${message.address}");
+    print("Body: ${message.body}");
+  },
+  listenInBackground: false
+);
+
+// Receive SMS (background)
+@pragma('vm:entry-point')
+backgroundMessageHandler(SmsMessage message) async {
+  print("Background SMS: ${message.body}");
+  // Process SMS, send to server
+}
+
+Two-way SMS communication pattern
+Architecture:
+Flutter App → Backend API → Africa's Talking SMS API → User Phone
+                                     ↓
+                            Webhook Callback
+                                     ↓
+                           Backend processes response
+                                     ↓
+                        Push notification to Flutter App
+
+Backend webhook handler:
+app.post('/sms/incoming', (req, res) => {
+  const { from, text, date, id } = req.body;
+  
+  // Store in database
+  db.storeSMS({ from, text, date, messageId: id });
+  
+  // Parse keywords
+  if (text.toLowerCase().includes('help')) {
+    sendAutoReply(from, "Reply with PROGRESS to check your course progress");
+  }
+  
+  // Send push notification to app
+  sendPushNotification(from, text);
+  
+  res.status(200).send('OK');
+});
+
+SMS OTP verification in Flutter
+class OTPVerificationService {
+  final Telephony telephony = Telephony.instance;
+  
+  Future<String?> waitForOTP({Duration timeout = Duration(minutes: 2)}) async {
+    Completer<String?> completer = Completer();
+    
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage message) {
+        RegExp otpRegex = RegExp(r'\b\d{6}\b');
+        Match? match = otpRegex.firstMatch(message.body ?? '');
+        
+        if (match != null && !completer.isCompleted) {
+          completer.complete(match.group(0));
+        }
+      },
+    );
+    
+    Timer(timeout, () {
+      if (!completer.isCompleted) completer.complete(null);
+    });
+    
+    return completer.future;
+  }
+}
+
+
+5. Flutter localization for African languages
+Recommended approach
+Package: easy_localization: ^3.0.0 or Flutter's built-in flutter_localizations
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.0
+  easy_localization: ^3.0.0
+
+Supported African languages
+Swahili (sw), Amharic (am), Hausa (ha), Yoruba (yo), Zulu (zu), Xhosa (xh), Afrikaans (af), Somali (so), Arabic (ar) with RTL support
+Implementation
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  
+  runApp(
+    EasyLocalization(
+      supportedLocales: [
+        Locale('en'),
+        Locale('sw'), // Swahili
+        Locale('ar'), // Arabic (RTL)
+        Locale('am'), // Amharic
+        Locale('ha'), // Hausa
+      ],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en'),
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+    );
+  }
+}
+
+RTL support for Arabic
+Widget build(BuildContext context) {
+  return MaterialApp(
+    builder: (context, child) {
+      return Directionality(
+        textDirection: EasyLocalization.of(context)!.locale.languageCode == 'ar'
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+        child: child!,
+      );
+    },
+  );
+}
+
+Translation files (assets/translations/en.json)
+{
+  "welcome": "Welcome to Flow",
+  "login": "Login",
+  "courses": "Courses",
+  "progress": "Progress: {}%"
+}
+
+Usage in widgets
+Text('welcome').tr()
+Text('progress').tr(args: ['85'])
+context.setLocale(Locale('sw')) // Switch language
+
+
+6. Progressive Web App implementation
+Flutter Web PWA setup
+flutter config --enable-web
+flutter build web --release
+
+Manifest configuration (web/manifest.json)
+{
+  "name": "Flow EdTech Platform",
+  "short_name": "Flow",
+  "description": "African EdTech platform for students and institutions",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0175C2",
+  "theme_color": "#0175C2",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/Icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/Icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
+
+Service worker with Workbox
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.0/workbox-sw.js');
+
+// Precache static resources
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+
+// Cache CSS, JS with Stale While Revalidate
+workbox.routing.registerRoute(
+  ({request}) => 
+    request.destination === 'style' ||
+    request.destination === 'script',
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'asset-cache',
+  })
+);
+
+// Cache images with Cache First
+workbox.routing.registerRoute(
+  ({request}) => request.destination === 'image',
+  new workbox.strategies.CacheFirst({
+    cacheName: 'image-cache',
+    plugins: [
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 60,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+      }),
+    ],
+  })
+);
+
+// Network first for API calls
+workbox.routing.registerRoute(
+  ({url}) => url.pathname.startsWith('/api/'),
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'api-cache',
+    plugins: [
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 5 * 60, // 5 minutes
+      }),
+    ],
+  })
+);
+
+Build command
+# Build without default service worker for custom implementation
+flutter build web --release --pwa-strategy none
+
+# Inject Workbox manifest
+workbox injectManifest workbox-config.js
+
+Renderer optimization for low-end devices
+# HTML renderer (lighter, 0MB overhead)
+flutter build web --release --web-renderer html
+
+# Auto (Flutter decides based on device)
+flutter build web --release --web-renderer auto
+
+# WebAssembly (best performance)
+flutter build web --wasm
+
+
+7. Accessibility implementation (WCAG 2.1 AA)
+Core Flutter accessibility widgets
+// Semantic labels for screen readers
+Semantics(
+  label: 'Submit assignment button',
+  button: true,
+  child: ElevatedButton(
+    onPressed: () {},
+    child: Text('Submit'),
+  ),
+)
+
+// Exclude decorative elements
+ExcludeSemantics(
+  child: Image.asset('decorative_pattern.png'),
+)
+
+// Merge semantics for compound widgets
+MergeSemantics(
+  child: Row(
+    children: [
+      Icon(Icons.star),
+      Text('4.5'),
+    ],
+  ),
+)
+
+Color contrast requirements
+WCAG 2.1 AA requires:
+Normal text: 4.5:1 contrast ratio
+Large text (18pt+): 3:1 contrast ratio
+// Good contrast
+Container(
+  color: Color(0xFF000000), // Black
+  child: Text(
+    'High contrast text',
+    style: TextStyle(color: Colors.white), // 21:1 ratio
+  ),
+)
+
+Focus management
+class AccessibleForm extends StatefulWidget {
+  @override
+  _AccessibleFormState createState() => _AccessibleFormState();
+}
+
+class _AccessibleFormState extends State<AccessibleForm> {
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          focusNode: _emailFocus,
+          decoration: InputDecoration(labelText: 'Email'),
+          onSubmitted: (_) {
+            FocusScope.of(context).requestFocus(_passwordFocus);
+          },
+        ),
+        TextField(
+          focusNode: _passwordFocus,
+          decoration: InputDecoration(labelText: 'Password'),
+        ),
+      ],
+    );
+  }
+  
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    super.dispose();
+  }
+}
+
+Testing accessibility
+testWidgets('Login button has correct semantics', (tester) async {
+  await tester.pumpWidget(LoginScreen());
+  
+  expect(
+    find.bySemanticsLabel('Login button'),
+    findsOneWidget,
+  );
+  
+  final SemanticsNode node = tester.getSemantics(
+    find.byType(ElevatedButton)
+  );
+  expect(node.hasFlag(SemanticsFlag.isButton), isTrue);
+});
+
+
+8. Document management with offline support
+Recommended packages
+dependencies:
+  file_picker: ^6.1.1
+  dio: ^5.4.0
+  path_provider: ^2.1.2
+  permission_handler: ^11.1.0
+  flutter_downloader: ^1.11.5
+  syncfusion_flutter_pdfviewer: ^24.1.41
+
+File upload with progress tracking
+class DocumentUploader {
+  final Dio dio = Dio();
+  
+  Future<void> uploadDocument(File file) async {
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        file.path,
+        filename: file.path.split('/').last,
+      ),
+    });
+    
+    await dio.post(
+      '/upload',
+      data: formData,
+      onSendProgress: (sent, total) {
+        print('Progress: ${(sent / total * 100).toStringAsFixed(0)}%');
+      },
+    );
+  }
+}
+
+Offline document access
+class OfflineDocumentManager {
+  Future<void> downloadForOffline(String documentUrl, String documentId) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final filePath = '${dir.path}/$documentId.pdf';
+    
+    await dio.download(documentUrl, filePath);
+    
+    // Save metadata to local database
+    await _db.saveDocument(Document(
+      id: documentId,
+      localPath: filePath,
+      isDownloaded: true,
+    ));
+  }
+  
+  Future<String> getDocumentPath(String documentId) async {
+    final doc = await _db.getDocument(documentId);
+    
+    if (doc.isDownloaded && await File(doc.localPath).exists()) {
+      return doc.localPath; // Use offline version
+    } else {
+      // Download if not available
+      await downloadForOffline(doc.url, documentId);
+      return doc.localPath;
+    }
+  }
+}
+
+PDF viewer with offline support
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+class DocumentViewer extends StatelessWidget {
+  final String documentId;
+  
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String>(
+      future: OfflineDocumentManager().getDocumentPath(documentId),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return SfPdfViewer.file(File(snapshot.data!));
+        }
+        return CircularProgressIndicator();
+      },
+    );
+  }
+}
+
+
+9. Real-time messaging with offline fallback
+WebSocket with Socket.io
+dependencies:
+  socket_io_client: ^2.0.3
+  flutter_local_notifications: ^16.3.0
+
+Implementation
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+class ChatService {
+  late IO.Socket socket;
+  final List<Message> _offlineQueue = [];
+  
+  void connect() {
+    socket = IO.io('https://api.example.com', 
+      IO.OptionBuilder()
+        .setTransports(['websocket'])
+        .enableAutoConnect()
+        .build()
+    );
+    
+    socket.onConnect((_) {
+      print('Connected to WebSocket');
+      _flushOfflineQueue();
+    });
+    
+    socket.on('message', (data) {
+      final message = Message.fromJson(data);
+      _handleIncomingMessage(message);
+    });
+    
+    socket.onDisconnect((_) => print('Disconnected'));
+  }
+  
+  void sendMessage(Message message) {
+    if (socket.connected) {
+      socket.emit('message', message.toJson());
+    } else {
+      // Queue for later if offline
+      _offlineQueue.add(message);
+      // Save to local database
+      _db.saveMessage(message.copyWith(synced: false));
+    }
+  }
+  
+  Future<void> _flushOfflineQueue() async {
+    for (final message in _offlineQueue) {
+      socket.emit('message', message.toJson());
+    }
+    _offlineQueue.clear();
+  }
+}
+
+Chat UI package
+dependencies:
+  flutter_chat_ui: ^1.6.10
+
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+
+class ChatScreen extends StatelessWidget {
+  final List<types.Message> messages;
+  final User user;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Chat(
+      messages: messages,
+      onSendPressed: _handleSendPressed,
+      user: user,
+    );
+  }
+  
+  void _handleSendPressed(types.PartialText message) {
+    final textMessage = types.TextMessage(
+      author: user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: randomString(),
+      text: message.text,
+    );
+    
+    chatService.sendMessage(textMessage);
+  }
+}
+
+Push notifications for offline messages
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+class PushNotificationService {
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  
+  Future<void> initialize() async {
+    await _messaging.requestPermission();
+    
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // Handle foreground message
+      showLocalNotification(message);
+    });
+    
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Background message: ${message.notification?.title}");
+}
+
+
+10. Performance optimization for low-end devices
+African market device specs (2023)
+Entry-level devices ($30-$100):
+RAM: 1-2 GB
+Storage: 8-16 GB + microSD
+CPU: Quad-core 1.3 GHz
+Screen: 4-6", 720x1280px
+Network: 3G/4G with intermittent connectivity
+Market leaders: TRANSSION (48%), Samsung (26%), Xiaomi
+APK size reduction (Critical)
+Split APKs by architecture (-30% size per build):
+// android/app/build.gradle
+android {
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "arm64-v8a", "x86_64"
+            universalApk false
+        }
+    }
+}
+
+flutter build apk --split-per-abi
+
+ProGuard/R8 optimization (-20% size):
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile(
+                'proguard-android-optimize.txt'
+            ), 'proguard-rules.pro'
+        }
+    }
+}
+
+Code obfuscation (-10-20% + security):
+flutter build apk --release --obfuscate --split-debug-info=debug_info/
+
+Target: Sub-15MB APK per architecture
+Memory optimization
+Proper disposal (prevents leaks):
+class _MyWidgetState extends State<MyWidget> {
+  late StreamSubscription _subscription;
+  late AnimationController _controller;
+  
+  @override
+  void initState() {
+    super.initState();
+    _subscription = stream.listen((data) {});
+    _controller = AnimationController(vsync: this);
+  }
+  
+  @override
+  void dispose() {
+    _subscription.cancel(); // Critical!
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+Image optimization:
+// Specify cache dimensions
+Image.network(
+  imageUrl,
+  cacheWidth: 150,
+  cacheHeight: 150,
+)
+
+// Use compressed formats (WebP)
+// Implement lazy loading with ListView.builder
+
+Widget rebuild optimization
+Use const constructors:
+Widget build(BuildContext context) {
+  return Column(
+    children: const [
+      Text('Static'),
+      Icon(Icons.home),
+    ],
+  );
+}
+
+RepaintBoundary for animations:
+RepaintBoundary(
+  child: RotationTransition(
+    turns: animation,
+    child: Icon(Icons.refresh),
+  ),
+)
+
+Image caching
+dependencies:
+  cached_network_image: ^3.3.0
+  flutter_cache_manager: ^3.3.1
+
+CachedNetworkImage(
+  imageUrl: "https://example.com/image.jpg",
+  placeholder: (context, url) => CircularProgressIndicator(),
+  memCacheWidth: 300,
+  memCacheHeight: 300,
+)
+
+Network optimization
+Connection persistence:
+class ApiService {
+  static final client = http.Client(); // Reuse connection
+  
+  Future<Response> fetchData(String url) async {
+    return await client.get(Uri.parse(url));
+  }
+}
+
+Retry with exponential backoff:
+import 'package:retry/retry.dart';
+
+Future<Response> fetchWithRetry(String url) async {
+  return await RetryOptions(
+    maxAttempts: 3,
+    delayFactor: Duration(seconds: 2),
+  ).retry(() => dio.get(url));
+}
+
+Data compression:
+dio.options.headers['Accept-Encoding'] = 'gzip, deflate';
+
+Battery optimization
+Background task constraints:
+Workmanager().registerPeriodicTask(
+  "sync",
+  "syncTask",
+  frequency: Duration(hours: 1),
+  constraints: Constraints(
+    networkType: NetworkType.connected,
+    requiresBatteryNotLow: true,
+  ),
+);
+
+Performance targets
+APK size: <15MB per architecture
+Memory: <150MB peak, <100MB average
+Frame rate: 60 FPS target, 30 FPS minimum acceptable
+Startup: <3s cold start, <1s warm start
+
+11. Biometric authentication and secure storage
+Biometric authentication
+dependencies:
+  local_auth: ^2.1.0
+
+import 'package:local_auth/local_auth.dart';
+
+class BiometricAuthService {
+  final LocalAuthentication auth = LocalAuthentication();
+  
+  Future<bool> canAuthenticate() async {
+    return await auth.canCheckBiometrics && await auth.isDeviceSupported();
+  }
+  
+  Future<bool> authenticate() async {
+    try {
+      return await auth.authenticate(
+        localizedReason: 'Please authenticate to access your account',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          useErrorDialogs: true,
+          stickyAuth: true,
+        ),
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  Future<List<BiometricType>> getAvailableBiometrics() async {
+    return await auth.getAvailableBiometrics();
+  }
+}
+
+Secure storage
+dependencies:
+  flutter_secure_storage: ^9.0.0
+
+class SecureStorageService {
+  final storage = FlutterSecureStorage();
+  
+  // Store sensitive data
+  Future<void> saveToken(String token) async {
+    await storage.write(key: 'auth_token', value: token);
+  }
+  
+  // Retrieve sensitive data
+  Future<String?> getToken() async {
+    return await storage.read(key: 'auth_token');
+  }
+  
+  // Delete data
+  Future<void> deleteToken() async {
+    await storage.delete(key: 'auth_token');
+  }
+  
+  // Delete all data
+  Future<void> deleteAll() async {
+    await storage.deleteAll();
+  }
+}
+
+Encrypted local database
+dependencies:
+  sqflite_sqlcipher: ^2.2.1
+
+Future<Database> initEncryptedDatabase() async {
+  final path = await getDatabasesPath();
+  return await openDatabase(
+    join(path, 'flow_encrypted.db'),
+    password: await _getEncryptionKey(),
+    version: 1,
+  );
+}
+
+Future<String> _getEncryptionKey() async {
+  final storage = FlutterSecureStorage();
+  
+  String? key = await storage.read(key: 'db_encryption_key');
+  
+  if (key == null) {
+    key = _generateSecureKey();
+    await storage.write(key: 'db_encryption_key', value: key);
+  }
+  
+  return key;
+}
+
+
+Complete package dependencies
+name: flow_edtech
+description: African EdTech platform
+
+dependencies:
+  flutter:
+    sdk: flutter
+    
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.0
+  
+  # Navigation
+  go_router: ^13.0.0
+  
+  # Offline-first & Database
+  drift: ^2.14.0
+  sqlite3_flutter_libs: ^0.5.18
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.2
+  
+  # Network & API
+  dio: ^5.4.0
+  connectivity_plus: ^5.0.2
+  retry: ^3.1.2
+  http: ^1.1.0
+  
+  # Background Tasks
+  workmanager: ^0.5.2
+  
+  # Payments
+  flutterwave_standard: ^1.1.0
+  flutter_mpesa_stk: ^1.1.0
+  
+  # SMS/USSD (Android only)
+  telephony: ^0.2.0
+  
+  # Image Handling
+  cached_network_image: ^3.3.0
+  flutter_cache_manager: ^3.3.1
+  flutter_image_compress: ^2.1.0
+  image_picker: ^1.0.5
+  
+  # Documents
+  file_picker: ^6.1.1
+  syncfusion_flutter_pdfviewer: ^24.1.41
+  flutter_downloader: ^1.11.5
+  permission_handler: ^11.1.0
+  
+  # Real-time Messaging
+  socket_io_client: ^2.0.3
+  flutter_chat_ui: ^1.6.10
+  firebase_messaging: ^14.7.9
+  flutter_local_notifications: ^16.3.0
+  
+  # Authentication & Security
+  firebase_auth: ^4.15.3
+  firebase_core: ^2.24.2
+  local_auth: ^2.1.0
+  flutter_secure_storage: ^9.0.0
+  sqflite_sqlcipher: ^2.2.1
+  
+  # Localization
+  easy_localization: ^3.0.0
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.0
+  
+  # UI & UX
+  infinite_scroll_pagination: ^4.0.0
+  shimmer: ^3.0.0
+  
+  # Battery & Power
+  battery_plus: ^5.0.2
+  wakelock: ^0.6.2
+  
+  # Storage
+  shared_preferences: ^2.2.2
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.7
+  drift_dev: ^2.14.1
+  riverpod_generator: ^2.3.0
+  flutter_lints: ^3.0.1
+
+
+Implementation roadmap
+Phase 1: Foundation (Weeks 1-3)
+Set up project structure with feature-first architecture
+Implement authentication with Firebase + custom claims
+Set up Drift database with offline-first repository pattern
+Configure Riverpod state management with code generation
+Implement basic UI for all five user roles
+Phase 2: Core Features (Weeks 4-7)
+Build student features (courses, applications, progress tracking)
+Build institution features (applicant management, reviews)
+Build parent features (child progress monitoring)
+Build counselor features (student records, recommendations)
+Build recommender features (recommendation requests/submissions)
+Implement role-based navigation with go_router
+Phase 3: Payments & Communication (Weeks 8-10)
+Integrate Flutterwave for mobile money payments
+Add M-Pesa Daraja direct integration
+Implement SMS functionality with telephony package
+Set up USSD backend with Africa's Talking
+Build real-time messaging with Socket.io
+Implement push notifications
+Phase 4: Offline & Optimization (Weeks 11-13)
+Implement background sync with WorkManager
+Add document management with offline support
+Optimize for low-end devices (split APKs, ProGuard, image optimization)
+Implement PWA for web access
+Add localization for African languages
+Test on actual low-end devices (1-2GB RAM)
+Phase 5: Security & Polish (Weeks 14-15)
+Implement biometric authentication
+Add secure storage for sensitive data
+Implement accessibility features (WCAG 2.1 AA)
+Performance profiling and optimization
+Security audit and penetration testing
+User acceptance testing with target users
+Phase 6: Deployment (Week 16)
+Deploy backend servers (with USSD endpoint)
+Release to Google Play Store (split APKs)
+Deploy PWA to web hosting
+Configure Africa's Talking production environment
+Set up monitoring (Firebase Crashlytics, Performance Monitoring)
+Create user documentation and training materials
+
+Critical success factors
+Technical Requirements
+Offline-first architecture with Drift database and sync queue
+Split APKs (<15MB per architecture) with ProGuard optimization
+Multi-role RBAC with Firebase custom claims and go_router guards
+Mobile money integration via Flutterwave + direct M-Pesa for Kenya
+USSD/SMS backend using Africa's Talking for feature phone users
+Performance optimization targeting 1-2GB RAM devices
+Secure storage for tokens and biometric authentication
+Background sync with WorkManager and battery constraints
+Testing Protocol
+Profile in release mode on actual low-end devices ($30-$100 range)
+Test offline functionality extensively
+Simulate 2G/3G network conditions
+Verify APK size <15MB per architecture
+Test all five user roles thoroughly
+Verify payment integration in sandbox and production
+Test USSD flows end-to-end
+Accessibility testing with screen readers
+Security penetration testing
+Extended session testing (30+ minutes)
+Deployment Checklist
+[ ] Backend API deployed with proper scaling
+[ ] USSD endpoint configured with Africa's Talking
+[ ] Firebase project configured with custom claims
+[ ] Payment gateways in production mode
+[ ] Split APKs uploaded to Google Play
+[ ] PWA deployed to CDN
+[ ] SMS webhook endpoints configured
+[ ] Push notification certificates installed
+[ ] Monitoring and analytics active
+[ ] Crash reporting configured
+[ ] User documentation complete
+[ ] Support channels established
+
+Conclusion
+This specification provides complete, implementable guidance for building the "Flow" African EdTech platform. The architecture prioritizes offline-first functionality, multi-role access, mobile money payments, and optimization for low-end devices common in African markets.
+Key architectural decisions:
+Offline-first with Drift database and sync queues
+Riverpod 2.x for state management with compile-time safety
+go_router for role-based navigation
+Flutterwave for multi-provider mobile money integration
+Africa's Talking for USSD/SMS feature phone support
+Split APKs with ProGuard for minimal download size
+WorkManager for reliable background synchronization
+Success metrics:
+APK size: <15MB per architecture
+Cold start: <3 seconds
+Offline core features: 100% functional
+Memory usage: <150MB peak
+Frame rate: 30+ FPS sustained on 1GB RAM devices
+Payment success rate: >95%
+Crash-free users: >99%
+By following this specification, developers can build a production-ready African EdTech platform that works reliably across smartphones, feature phones (via USSD/SMS), and web browsers, even with intermittent connectivity and limited device resources. The proven patterns and packages recommended here are based on successful implementations in African markets and current Flutter best practices as of 2025.
+

@@ -1087,37 +1087,78 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
       featuresDesired: _featuresDesired,
     );
 
-    // Save profile
-    await ref.read(profileProvider.notifier).saveProfile(profile);
-
-    final profileState = ref.read(profileProvider);
-    if (profileState.error != null) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${profileState.error}')),
-        );
-      }
-      return;
-    }
-
-    // Generate recommendations
-    await ref.read(recommendationsProvider.notifier).generateRecommendations(
-          userId: userId,
-        );
-
-    final recsState = ref.read(recommendationsProvider);
-    if (recsState.error != null) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${recsState.error}')),
-        );
-      }
-      return;
-    }
-
-    // Navigate to results
+    // Show loading dialog
     if (mounted) {
-      context.go('/find-your-path/results');
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => _LoadingDialog(),
+      );
+    }
+
+    try {
+      // Save profile
+      await ref.read(profileProvider.notifier).saveProfile(profile);
+
+      final profileState = ref.read(profileProvider);
+      if (profileState.error != null) {
+        if (mounted) {
+          Navigator.of(context).pop(); // Close loading dialog
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error saving profile: ${profileState.error}'),
+              backgroundColor: AppColors.error,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Generate recommendations
+      await ref.read(recommendationsProvider.notifier).generateRecommendations(
+            userId: userId,
+          );
+
+      final recsState = ref.read(recommendationsProvider);
+
+      if (mounted) {
+        Navigator.of(context).pop(); // Close loading dialog
+      }
+
+      if (recsState.error != null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error generating recommendations: ${recsState.error}'),
+              backgroundColor: AppColors.error,
+              duration: const Duration(seconds: 5),
+              action: SnackBarAction(
+                label: 'Retry',
+                textColor: Colors.white,
+                onPressed: () => _submitProfile(),
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Navigate to results
+      if (mounted) {
+        context.go('/find-your-path/results');
+      }
+    } catch (e) {
+      if (mounted) {
+        Navigator.of(context).pop(); // Close loading dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unexpected error: $e'),
+            backgroundColor: AppColors.error,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
     }
   }
 
@@ -1140,6 +1181,71 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Loading dialog widget shown during profile submission and recommendation generation
+class _LoadingDialog extends StatelessWidget {
+  const _LoadingDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false, // Prevent dismissal
+      child: Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Animated circular progress indicator
+              const SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(
+                  strokeWidth: 4,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Loading message
+              const Text(
+                'Generating Recommendations',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Please wait while we analyze universities\nand create personalized matches for you...',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
