@@ -145,10 +145,37 @@ class AuthService:
                 raise Exception("Invalid credentials")
 
             # Fetch user profile
-            user_response = self.db.table('users').select('*').eq('id', auth_response.user.id).single().execute()
+            user_response = self.db.table('users').select('*').eq('id', auth_response.user.id).execute()
 
-            if not user_response.data:
-                raise Exception("User profile not found")
+            # If user profile doesn't exist, create it (handles orphaned auth users)
+            if not user_response.data or len(user_response.data) == 0:
+                logger.warning(f"User profile not found for {auth_response.user.id}, creating...")
+
+                # Get role from user metadata or default to 'student'
+                user_metadata = auth_response.user.user_metadata or {}
+                role = user_metadata.get('role', 'student')
+                display_name = user_metadata.get('display_name', auth_response.user.email.split('@')[0])
+
+                # Create user profile
+                new_profile = {
+                    "id": auth_response.user.id,
+                    "email": auth_response.user.email,
+                    "display_name": display_name,
+                    "active_role": role,
+                    "available_roles": [role],
+                    "phone_number": None,
+                    "email_verified": auth_response.user.email_confirmed_at is not None,
+                    "profile_completed": False,
+                    "onboarding_completed": False,
+                    "preferences": {},
+                    "created_at": auth_response.user.created_at,
+                    "updated_at": datetime.utcnow().isoformat(),
+                }
+
+                profile_response = self.db.table('users').insert(new_profile).execute()
+                user_data = profile_response.data[0] if profile_response.data else new_profile
+            else:
+                user_data = user_response.data[0]
 
             # Update last login timestamp
             self.db.table('users').update({
@@ -160,7 +187,7 @@ class AuthService:
             return SignInResponse(
                 access_token=auth_response.session.access_token,
                 refresh_token=auth_response.session.refresh_token,
-                user=user_response.data,
+                user=user_data,
                 expires_in=auth_response.session.expires_in or 3600
             )
 
