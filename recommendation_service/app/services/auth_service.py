@@ -169,7 +169,7 @@ class AuthService:
                     "profile_completed": False,
                     "onboarding_completed": False,
                     "preferences": {},
-                    "created_at": auth_response.user.created_at,
+                    "created_at": auth_response.user.created_at if isinstance(auth_response.user.created_at, str) else (auth_response.user.created_at.isoformat() if auth_response.user.created_at else datetime.utcnow().isoformat()),
                     "updated_at": datetime.utcnow().isoformat(),
                 }
 
