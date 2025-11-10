@@ -524,6 +524,13 @@ CREATE POLICY "Students can view own progress" ON public.course_progress FOR SEL
 CREATE POLICY "Users can view own conversations" ON public.chatbot_conversations FOR SELECT USING (user_id = auth.uid());
 CREATE POLICY "Users can manage own conversations" ON public.chatbot_conversations FOR ALL USING (user_id = auth.uid());
 
+-- Cookie consent policies
+CREATE POLICY "Users can view own consent" ON public.cookie_consents FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY "Users can manage own consent" ON public.cookie_consents FOR ALL USING (user_id = auth.uid());
+CREATE POLICY "Admin can view all consents" ON public.cookie_consents FOR SELECT USING (
+  EXISTS (SELECT 1 FROM public.admin_users WHERE id = auth.uid())
+);
+
 -- ========================================
 -- REALTIME SUBSCRIPTIONS
 -- ========================================

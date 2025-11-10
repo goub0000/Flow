@@ -35,26 +35,25 @@ class ConsentService {
         json,
       );
 
-      // TODO: Save to Supabase for admin tracking (disabled due to authentication issues)
-      // The consent is saved locally for now. Backend integration needed for admin tracking.
-      // try {
-      //   await _supabase.from('cookies').upsert({
-      //     'user_id': consent.userId,
-      //     'status': consent.status.toString().split('.').last,
-      //     'essential': consent.categoryConsents[CookieCategory.essential] ?? true,
-      //     'functional': consent.categoryConsents[CookieCategory.functional] ?? false,
-      //     'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
-      //     'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
-      //     'version': consent.version,
-      //     'updated_at': DateTime.now().toIso8601String(),
-      //     'expires_at': consent.expiresAt?.toIso8601String(),
-      //   }, onConflict: 'user_id');
-      //
-      //   print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
-      // } catch (e) {
-      //   print('[ConsentService] Failed to save consent to Supabase: $e');
-      //   // Don't fail the entire operation if Supabase save fails
-      // }
+      // Save to Supabase for admin tracking
+      try {
+        await _supabase.from('cookie_consents').upsert({
+          'user_id': consent.userId,
+          'necessary': consent.categoryConsents[CookieCategory.essential] ?? true,
+          'preferences': consent.categoryConsents[CookieCategory.functional] ?? false,
+          'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
+          'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
+          'consent_date': consent.timestamp.toIso8601String(),
+          'last_updated': DateTime.now().toIso8601String(),
+          'ip_address': consent.ipAddress,
+          'user_agent': consent.userAgent,
+        }, onConflict: 'user_id');
+
+        print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
+      } catch (e) {
+        print('[ConsentService] Failed to save consent to Supabase: $e');
+        // Don't fail the entire operation if Supabase save fails
+      }
 
       return localSaveSuccess;
     } catch (e) {
@@ -153,61 +152,47 @@ class ConsentService {
   Future<Map<String, dynamic>> getConsentStatistics() async {
     try {
       // Query all cookie consents from Supabase
-      final cookies = await _supabase.from('cookies').select('*') as List<dynamic>;
+      final consents = await _supabase.from('cookie_consents').select('*') as List<dynamic>;
 
-      int total = cookies.length;
-      int accepted = 0;
-      int customized = 0;
-      int declined = 0;
-      int expired = 0;
+      int total = consents.length;
+      int fullConsent = 0; // Users who consented to all categories
+      int partialConsent = 0; // Users who consented to some categories
+      int essentialOnly = 0; // Users who only have essential (necessary) cookies
 
       Map<String, int> categoryStats = {
-        'essential': 0,
-        'functional': 0,
+        'necessary': 0,
+        'preferences': 0,
         'analytics': 0,
         'marketing': 0,
       };
 
-      final now = DateTime.now();
-
-      for (final cookie in cookies) {
-        final status = cookie['status'] as String?;
-        final expiresAt = cookie['expires_at'] != null
-            ? DateTime.parse(cookie['expires_at'] as String)
-            : null;
-
-        // Check if expired
-        if (expiresAt != null && expiresAt.isBefore(now)) {
-          expired++;
-        } else {
-          // Count by status
-          switch (status) {
-            case 'accepted':
-              accepted++;
-              break;
-            case 'customized':
-              customized++;
-              break;
-            case 'declined':
-              declined++;
-              break;
-          }
-        }
-
+      for (final consent in consents) {
         // Count category consents
-        if (cookie['essential'] == true) categoryStats['essential'] = (categoryStats['essential'] ?? 0) + 1;
-        if (cookie['functional'] == true) categoryStats['functional'] = (categoryStats['functional'] ?? 0) + 1;
-        if (cookie['analytics'] == true) categoryStats['analytics'] = (categoryStats['analytics'] ?? 0) + 1;
-        if (cookie['marketing'] == true) categoryStats['marketing'] = (categoryStats['marketing'] ?? 0) + 1;
+        final necessary = consent['necessary'] == true;
+        final preferences = consent['preferences'] == true;
+        final analytics = consent['analytics'] == true;
+        final marketing = consent['marketing'] == true;
+
+        if (necessary) categoryStats['necessary'] = (categoryStats['necessary'] ?? 0) + 1;
+        if (preferences) categoryStats['preferences'] = (categoryStats['preferences'] ?? 0) + 1;
+        if (analytics) categoryStats['analytics'] = (categoryStats['analytics'] ?? 0) + 1;
+        if (marketing) categoryStats['marketing'] = (categoryStats['marketing'] ?? 0) + 1;
+
+        // Categorize user consent level
+        if (necessary && preferences && analytics && marketing) {
+          fullConsent++;
+        } else if (preferences || analytics || marketing) {
+          partialConsent++;
+        } else {
+          essentialOnly++;
+        }
       }
 
       return {
         'totalUsers': total,
-        'totalConsented': accepted + customized,
-        'acceptedAll': accepted,
-        'customized': customized,
-        'declined': declined,
-        'expired': expired,
+        'fullConsent': fullConsent,
+        'partialConsent': partialConsent,
+        'essentialOnly': essentialOnly,
         'categoryStats': categoryStats,
       };
     } catch (e) {
@@ -215,14 +200,12 @@ class ConsentService {
       // Fallback to empty stats
       return {
         'totalUsers': 0,
-        'totalConsented': 0,
-        'acceptedAll': 0,
-        'customized': 0,
-        'declined': 0,
-        'expired': 0,
+        'fullConsent': 0,
+        'partialConsent': 0,
+        'essentialOnly': 0,
         'categoryStats': {
-          'essential': 0,
-          'functional': 0,
+          'necessary': 0,
+          'preferences': 0,
           'analytics': 0,
           'marketing': 0,
         },
