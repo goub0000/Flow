@@ -4,8 +4,8 @@ import '../../../core/models/program_model.dart';
 
 /// Service for communicating with Programs API
 class ProgramsApiService {
-  // API base URL - update this to your Railway deployment URL
-  static const String baseUrl = 'http://localhost:8000/api/v1';
+  // API base URL - Railway production deployment
+  static const String baseUrl = 'https://web-production-51e34.up.railway.app/api/v1';
 
   final http.Client _client;
 
