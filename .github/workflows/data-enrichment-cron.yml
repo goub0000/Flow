@@ -1,0 +1,83 @@
+name: Data Enrichment Automation
+
+on:
+  schedule:
+    # Daily enrichment at 2:00 AM UTC (30 critical priority universities)
+    - cron: '0 2 * * *'
+
+    # Weekly enrichment every Sunday at 3:00 AM UTC (100 high priority universities)
+    - cron: '0 3 * * 0'
+
+    # Monthly enrichment on the 1st at 4:00 AM UTC (300 medium priority universities)
+    - cron: '0 4 1 * *'
+
+  # Allow manual triggering for testing
+  workflow_dispatch:
+    inputs:
+      enrichment_type:
+        description: 'Type of enrichment to run'
+        required: true
+        default: 'daily'
+        type: choice
+        options:
+          - daily
+          - weekly
+          - monthly
+
+jobs:
+  trigger-enrichment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Determine enrichment type
+        id: enrichment-type
+        run: |
+          # Determine which enrichment to run based on schedule or manual input
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "type=${{ github.event.inputs.enrichment_type }}" >> $GITHUB_OUTPUT
+          elif [ "$(date +%d)" == "01" ]; then
+            # Monthly on the 1st
+            echo "type=monthly" >> $GITHUB_OUTPUT
+          elif [ "$(date +%u)" == "7" ]; then
+            # Weekly on Sunday
+            echo "type=weekly" >> $GITHUB_OUTPUT
+          else
+            # Daily
+            echo "type=daily" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger Daily Enrichment
+        if: steps.enrichment-type.outputs.type == 'daily'
+        run: |
+          echo "Triggering daily enrichment (30 critical priority universities)..."
+          curl -X POST \
+            https://web-production-51e34.up.railway.app/api/v1/enrichment/daily \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n"
+
+      - name: Trigger Weekly Enrichment
+        if: steps.enrichment-type.outputs.type == 'weekly'
+        run: |
+          echo "Triggering weekly enrichment (100 high priority universities)..."
+          curl -X POST \
+            https://web-production-51e34.up.railway.app/api/v1/enrichment/weekly \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n"
+
+      - name: Trigger Monthly Enrichment
+        if: steps.enrichment-type.outputs.type == 'monthly'
+        run: |
+          echo "Triggering monthly enrichment (300 medium priority universities)..."
+          curl -X POST \
+            https://web-production-51e34.up.railway.app/api/v1/enrichment/monthly \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n"
+
+      - name: Check enrichment status
+        run: |
+          echo "Waiting 5 seconds for job to start..."
+          sleep 5
+          echo "Checking enrichment job status..."
+          curl -X GET \
+            https://web-production-51e34.up.railway.app/api/v1/enrichment/status \
+            -H "Content-Type: application/json"
