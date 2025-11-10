@@ -94,13 +94,18 @@ class AuthService {
     String? fullName,
     String? phoneNumber,
   }) async {
+    // Password confirmation is validated on frontend, not sent to backend
+    if (password != confirmPassword) {
+      throw Exception('Passwords do not match');
+    }
+
     try {
       final response = await _apiClient.post(
         '${ApiConfig.auth}/register',
         data: {
           'email': email,
           'password': password,
-          'confirm_password': confirmPassword,
+          // confirm_password is not sent - backend doesn't expect it
           'role': role.name,
           'display_name': fullName,
           'phone_number': phoneNumber,
