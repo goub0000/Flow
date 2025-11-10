@@ -2,12 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/models/program_model.dart';
 import '../services/programs_api_service.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 const _uuid = Uuid();
 
 // Provider for Programs API Service
 final programsApiServiceProvider = Provider<ProgramsApiService>((ref) {
-  return ProgramsApiService();
+  // Get access token from auth provider
+  final authState = ref.watch(authProvider);
+  return ProgramsApiService(accessToken: authState.accessToken);
 });
 
 /// State class for managing institution programs

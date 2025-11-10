@@ -8,8 +8,22 @@ class ProgramsApiService {
   static const String baseUrl = 'https://web-production-51e34.up.railway.app/api/v1';
 
   final http.Client _client;
+  final String? _accessToken;
 
-  ProgramsApiService({http.Client? client}) : _client = client ?? http.Client();
+  ProgramsApiService({
+    http.Client? client,
+    String? accessToken,
+  })  : _client = client ?? http.Client(),
+        _accessToken = accessToken;
+
+  /// Get headers with optional authorization
+  Map<String, String> _getHeaders() {
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    if (_accessToken != null) {
+      headers['Authorization'] = 'Bearer $_accessToken';
+    }
+    return headers;
+  }
 
   /// Get all programs with optional filters
   Future<List<Program>> getPrograms({
@@ -78,7 +92,7 @@ class ProgramsApiService {
     try {
       final response = await _client.post(
         Uri.parse('$baseUrl/programs'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
         body: jsonEncode(program.toJson()),
       );
 
@@ -86,7 +100,7 @@ class ProgramsApiService {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
         return Program.fromJson(json);
       } else {
-        throw Exception('Failed to create program: ${response.statusCode}');
+        throw Exception('Failed to create program: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
       throw Exception('Error creating program: $e');
