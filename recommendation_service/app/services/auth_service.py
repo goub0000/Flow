@@ -117,7 +117,16 @@ class AuthService:
             }
 
         except Exception as e:
+            error_message = str(e).lower()
             logger.error(f"Sign up error: {e}")
+
+            # Check if error is due to duplicate email
+            if "already" in error_message or "duplicate" in error_message or "exists" in error_message:
+                raise Exception(
+                    "This email address is already registered. "
+                    "Please log in to your account or use the 'Forgot Password' option to reset your password."
+                )
+
             raise Exception(f"Registration failed: {str(e)}")
 
     async def sign_in(self, signin_data: SignInRequest) -> SignInResponse:
