@@ -7,11 +7,13 @@ import '../../../core/providers/service_providers.dart';
 /// Authentication state
 class AuthState {
   final UserModel? user;
+  final String? accessToken;
   final bool isLoading;
   final String? error;
 
   const AuthState({
     this.user,
+    this.accessToken,
     this.isLoading = false,
     this.error,
   });
@@ -20,11 +22,13 @@ class AuthState {
 
   AuthState copyWith({
     UserModel? user,
+    String? accessToken,
     bool? isLoading,
     String? error,
   }) {
     return AuthState(
       user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
       isLoading: isLoading ?? this.isLoading,
       error: error,
     );
@@ -33,6 +37,7 @@ class AuthState {
   AuthState clearUser() {
     return AuthState(
       user: null,
+      accessToken: null,
       isLoading: isLoading,
       error: error,
     );
@@ -55,7 +60,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Check if user is already logged in
       if (_authService.isAuthenticated) {
         final user = _authService.currentUser;
-        state = state.copyWith(user: user, isLoading: false);
+        final token = _authService.accessToken;
+        state = state.copyWith(user: user, accessToken: token, isLoading: false);
       } else {
         state = state.copyWith(isLoading: false);
       }
@@ -76,8 +82,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
       if (response.success && response.data != null) {
+        final token = _authService.accessToken;
         print('✅ Login successful! User: ${response.data!.email}, Role: ${response.data!.activeRole.name}');
-        state = state.copyWith(user: response.data, isLoading: false);
+        state = state.copyWith(user: response.data, accessToken: token, isLoading: false);
         print('✅ Auth state updated. isAuthenticated: ${state.isAuthenticated}');
       } else {
         print('❌ Login failed: ${response.message}');

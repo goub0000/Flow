@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/applicant_model.dart';
 import '../services/applications_api_service.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 /// State class for managing institution applicants
 class InstitutionApplicantsState {
@@ -207,10 +208,9 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
 
 /// Provider for institution applicants state
 final institutionApplicantsProvider = StateNotifierProvider<InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
-  // TODO: Get access token from auth provider
-  // final authState = ref.watch(authProvider);
-  // return InstitutionApplicantsNotifier(accessToken: authState.accessToken);
-  return InstitutionApplicantsNotifier();
+  // Get access token from auth provider
+  final authState = ref.watch(authProvider);
+  return InstitutionApplicantsNotifier(accessToken: authState.accessToken);
 });
 
 /// Provider for applicants list
