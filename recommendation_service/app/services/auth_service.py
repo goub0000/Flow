@@ -1,6 +1,7 @@
 """
 Authentication Service - Supabase Auth Integration
 Handles user registration, login, logout, password reset, and profile management
+Updated: 2025-11-10 - Enhanced error handling and orphaned user recovery
 """
 from typing import Optional, Dict, Any, List
 from datetime import datetime
