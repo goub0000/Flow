@@ -116,8 +116,8 @@ class UserModel {
       lastLoginAt: json['last_login_at'] != null
           ? DateTime.parse(json['last_login_at'] as String)
           : null,
-      isEmailVerified: json['is_email_verified'] as bool? ?? false,
-      isPhoneVerified: json['is_phone_verified'] as bool? ?? false,
+      isEmailVerified: (json['is_email_verified'] ?? json['email_verified']) as bool? ?? false,
+      isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified']) as bool? ?? false,
       metadata: json['metadata'] as Map<String, dynamic>?,
     );
   }

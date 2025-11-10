@@ -35,25 +35,26 @@ class ConsentService {
         json,
       );
 
-      // Save to Supabase for admin tracking
-      try {
-        await _supabase.from('cookies').upsert({
-          'user_id': consent.userId,
-          'status': consent.status.toString().split('.').last,
-          'essential': consent.categoryConsents[CookieCategory.essential] ?? true,
-          'functional': consent.categoryConsents[CookieCategory.functional] ?? false,
-          'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
-          'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
-          'version': consent.version,
-          'updated_at': DateTime.now().toIso8601String(),
-          'expires_at': consent.expiresAt?.toIso8601String(),
-        }, onConflict: 'user_id');
-
-        print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
-      } catch (e) {
-        print('[ConsentService] Failed to save consent to Supabase: $e');
-        // Don't fail the entire operation if Supabase save fails
-      }
+      // TODO: Save to Supabase for admin tracking (disabled due to authentication issues)
+      // The consent is saved locally for now. Backend integration needed for admin tracking.
+      // try {
+      //   await _supabase.from('cookies').upsert({
+      //     'user_id': consent.userId,
+      //     'status': consent.status.toString().split('.').last,
+      //     'essential': consent.categoryConsents[CookieCategory.essential] ?? true,
+      //     'functional': consent.categoryConsents[CookieCategory.functional] ?? false,
+      //     'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
+      //     'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
+      //     'version': consent.version,
+      //     'updated_at': DateTime.now().toIso8601String(),
+      //     'expires_at': consent.expiresAt?.toIso8601String(),
+      //   }, onConflict: 'user_id');
+      //
+      //   print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
+      // } catch (e) {
+      //   print('[ConsentService] Failed to save consent to Supabase: $e');
+      //   // Don't fail the entire operation if Supabase save fails
+      // }
 
       return localSaveSuccess;
     } catch (e) {
