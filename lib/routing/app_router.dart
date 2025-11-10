@@ -76,6 +76,7 @@ import '../features/admin/users/presentation/recommenders_list_screen.dart';
 import '../features/admin/users/presentation/recommender_detail_screen.dart';
 import '../features/admin/users/presentation/recommender_form_screen.dart';
 import '../features/admin/users/presentation/admins_list_screen.dart';
+import '../features/admin/users/presentation/admin_form_screen.dart';
 import '../features/admin/system/presentation/audit_log_screen.dart';
 import '../features/admin/finance/presentation/transactions_screen.dart';
 import '../features/admin/content/presentation/content_management_screen.dart';
@@ -612,30 +613,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'admin-admins',
         builder: (context, state) => const AdminsListScreen(),
         routes: [
-          // TODO: Add admin create and detail routes when screens are implemented
-          // GoRoute(
-          //   path: 'create',
-          //   name: 'admin-admin-create',
-          //   builder: (context, state) => const AdminFormScreen(),
-          // ),
-          // GoRoute(
-          //   path: ':id',
-          //   name: 'admin-admin-detail',
-          //   builder: (context, state) {
-          //     final adminId = state.pathParameters['id']!;
-          //     return AdminDetailScreen(adminId: adminId);
-          //   },
-          //   routes: [
-          //     GoRoute(
-          //       path: 'edit',
-          //       name: 'admin-admin-edit',
-          //       builder: (context, state) {
-          //         final adminId = state.pathParameters['id']!;
-          //         return AdminFormScreen(adminId: adminId);
-          //       },
-          //     ),
-          //   ],
-          // ),
+          GoRoute(
+            path: 'create',
+            name: 'admin-admin-create',
+            builder: (context, state) => const AdminFormScreen(),
+          ),
         ],
       ),
 
