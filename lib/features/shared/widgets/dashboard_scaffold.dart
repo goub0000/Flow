@@ -27,22 +27,41 @@ class DashboardScaffold extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
+    final canPop = GoRouter.of(context).canPop();
+
+    // Intelligently show either back button or logo
+    Widget leadingWidget;
+    if (canPop) {
+      // Show back button when navigation is possible
+      leadingWidget = IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () => context.pop(),
+        tooltip: 'Back',
+      );
+    } else {
+      // Show clickable logo when at root level
+      leadingWidget = IconButton(
+        icon: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            'assets/images/logo.png',
+            width: 32,
+            height: 32,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              // Fallback icon if logo doesn't load
+              return const Icon(Icons.home);
+            },
+          ),
+        ),
+        onPressed: () => context.go('/'),
+        tooltip: 'Home',
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 32,
-              height: 32,
-              fit: BoxFit.cover,
-            ),
-          ),
-          onPressed: () => context.go('/'),
-          tooltip: 'Home',
-        ),
+        leading: leadingWidget,
         title: Text(title),
         actions: [
           if (actions != null)

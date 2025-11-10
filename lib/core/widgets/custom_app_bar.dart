@@ -28,17 +28,45 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final canPop = GoRouter.of(context).canPop();
 
+    Widget? leadingWidget;
+
+    // If custom leading is provided, use it
+    if (leading != null) {
+      leadingWidget = leading;
+    }
+    // Otherwise, if we can pop, show back button
+    else if (automaticallyImplyLeading && canPop) {
+      leadingWidget = IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () => context.pop(),
+        tooltip: 'Back',
+      );
+    }
+    // If we can't pop (at root level), show clickable logo
+    else {
+      leadingWidget = IconButton(
+        icon: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            'assets/images/logo.png',
+            width: 32,
+            height: 32,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              // Fallback icon if logo doesn't load
+              return const Icon(Icons.home);
+            },
+          ),
+        ),
+        onPressed: () => context.go('/'),
+        tooltip: 'Home',
+      );
+    }
+
     return AppBar(
       title: Text(title),
       actions: actions,
-      leading: leading ??
-          (automaticallyImplyLeading && canPop
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => context.pop(),
-                  tooltip: 'Back',
-                )
-              : null),
+      leading: leadingWidget,
       automaticallyImplyLeading: false, // We handle it manually
       bottom: bottom,
       backgroundColor: backgroundColor,
