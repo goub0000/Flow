@@ -266,14 +266,15 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         ),
         const SizedBox(height: 20),
 
-        // Current Region
-        if (_currentCountry != null) ...[
+        // Current Region (only show if country has regions)
+        if (_currentCountry != null && _getRegionsForCountry(_currentCountry).isNotEmpty) ...[
           DropdownButtonFormField<String>(
             value: _currentRegion,
             decoration: const InputDecoration(
-              labelText: 'Current Region/State *',
+              labelText: 'Current Region/State (Optional)',
               prefixIcon: Icon(Icons.location_on),
               border: OutlineInputBorder(),
+              helperText: 'Select your region if available',
             ),
             items: _getRegionsForCountry(_currentCountry).map((region) {
               return DropdownMenuItem(
@@ -286,12 +287,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
                 _currentRegion = value;
               });
             },
-            validator: (value) {
-              if (value == null) {
-                return 'Please select your current region';
-              }
-              return null;
-            },
+            validator: null, // Optional field - no validation required
           ),
           const SizedBox(height: 20),
         ],
