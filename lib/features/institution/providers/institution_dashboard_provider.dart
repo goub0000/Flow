@@ -108,51 +108,11 @@ class InstitutionDashboardNotifier extends StateNotifier<InstitutionDashboardSta
     return (accepted / total * 100).toStringAsFixed(1);
   }
 
-  /// Generate mock recent activity
-  /// TODO: Replace with actual data from Firebase
+  /// Generate recent activity from actual data
+  /// TODO: Implement real activity feed from backend audit logs/activity API
   List<Map<String, dynamic>> _generateMockActivity() {
-    return [
-      {
-        'type': 'new_application',
-        'title': 'New Application Received',
-        'description': 'John Smith applied for Computer Science',
-        'timestamp': DateTime.now().subtract(const Duration(minutes: 30)),
-        'icon': 'person_add',
-        'color': 'blue',
-      },
-      {
-        'type': 'application_accepted',
-        'title': 'Application Accepted',
-        'description': 'Sarah Johnson accepted for Business Administration',
-        'timestamp': DateTime.now().subtract(const Duration(hours: 2)),
-        'icon': 'check_circle',
-        'color': 'green',
-      },
-      {
-        'type': 'program_updated',
-        'title': 'Program Updated',
-        'description': 'Engineering program capacity increased to 100',
-        'timestamp': DateTime.now().subtract(const Duration(hours: 5)),
-        'icon': 'edit',
-        'color': 'orange',
-      },
-      {
-        'type': 'document_verified',
-        'title': 'Documents Verified',
-        'description': '5 applicant documents verified',
-        'timestamp': DateTime.now().subtract(const Duration(hours: 8)),
-        'icon': 'verified',
-        'color': 'purple',
-      },
-      {
-        'type': 'new_enrollment',
-        'title': 'New Enrollment',
-        'description': '3 students enrolled in Medical Sciences',
-        'timestamp': DateTime.now().subtract(const Duration(days: 1)),
-        'icon': 'school',
-        'color': 'teal',
-      },
-    ];
+    // Return empty list until activity logging is implemented in backend
+    return [];
   }
 
   /// Get statistics by key

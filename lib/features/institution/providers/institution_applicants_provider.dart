@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/applicant_model.dart';
+import '../services/applications_api_service.dart';
 
 /// State class for managing institution applicants
 class InstitutionApplicantsState {
@@ -28,33 +29,27 @@ class InstitutionApplicantsState {
 
 /// StateNotifier for managing institution applicants
 class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsState> {
-  InstitutionApplicantsNotifier() : super(const InstitutionApplicantsState()) {
+  final ApplicationsApiService _apiService;
+
+  InstitutionApplicantsNotifier({String? accessToken})
+      : _apiService = ApplicationsApiService(accessToken: accessToken),
+        super(const InstitutionApplicantsState()) {
     fetchApplicants();
   }
 
   /// Fetch all applicants for the institution
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<void> fetchApplicants() async {
+  Future<void> fetchApplicants({String? status, String? programId}) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('applicants')
-      //   .where('institutionId', isEqualTo: currentInstitutionId)
-      //   .get()
-
-      // Simulating API call delay
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockApplicants = List<Applicant>.generate(
-        15,
-        (index) => Applicant.mockApplicant(index),
+      final applicants = await _apiService.getInstitutionApplications(
+        status: status,
+        programId: programId,
+        pageSize: 100,
       );
 
       state = state.copyWith(
-        applicants: mockApplicants,
+        applicants: applicants,
         isLoading: false,
       );
     } catch (e) {
@@ -66,41 +61,18 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
   }
 
   /// Update applicant status
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> updateApplicantStatus(String applicantId, String newStatus) async {
+  Future<bool> updateApplicantStatus(String applicantId, String newStatus, {String? reviewerNotes}) async {
     try {
-      // TODO: Replace with actual Firebase update
-      // Example: FirebaseFirestore.instance
-      //   .collection('applicants')
-      //   .doc(applicantId)
-      //   .update({'status': newStatus})
-
-      await Future.delayed(const Duration(milliseconds: 500));
+      final updatedApplicant = await _apiService.updateApplicationStatus(
+        applicantId,
+        newStatus,
+        reviewerNotes: reviewerNotes,
+      );
 
       // Update in local state
       final updatedApplicants = state.applicants.map((a) {
         if (a.id == applicantId) {
-          return Applicant(
-            id: a.id,
-            applicationId: a.applicationId,
-            studentId: a.studentId,
-            studentName: a.studentName,
-            studentEmail: a.studentEmail,
-            studentPhone: a.studentPhone,
-            programId: a.programId,
-            programName: a.programName,
-            status: newStatus,
-            submittedAt: a.submittedAt,
-            appliedDate: a.appliedDate,
-            gpa: a.gpa,
-            previousSchool: a.previousSchool,
-            statementOfPurpose: a.statementOfPurpose,
-            testScores: a.testScores,
-            documents: a.documents,
-            reviewNotes: a.reviewNotes,
-            reviewedBy: a.reviewedBy,
-            reviewedAt: newStatus != 'pending' ? DateTime.now() : null,
-          );
+          return updatedApplicant;
         }
         return a;
       }).toList();
@@ -117,36 +89,18 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
   }
 
   /// Add review notes to applicant
-  /// TODO: Connect to backend API (Firebase Firestore)
   Future<bool> addReviewNotes(String applicantId, String notes, String reviewerName) async {
     try {
-      // TODO: Replace with actual Firebase update
-
-      await Future.delayed(const Duration(milliseconds: 500));
+      // Update status to under_review with notes
+      final updatedApplicant = await _apiService.updateApplicationStatus(
+        applicantId,
+        'under_review',
+        reviewerNotes: notes,
+      );
 
       final updatedApplicants = state.applicants.map((a) {
         if (a.id == applicantId) {
-          return Applicant(
-            id: a.id,
-            applicationId: a.applicationId,
-            studentId: a.studentId,
-            studentName: a.studentName,
-            studentEmail: a.studentEmail,
-            studentPhone: a.studentPhone,
-            programId: a.programId,
-            programName: a.programName,
-            status: a.status,
-            submittedAt: a.submittedAt,
-            appliedDate: a.appliedDate,
-            gpa: a.gpa,
-            previousSchool: a.previousSchool,
-            statementOfPurpose: a.statementOfPurpose,
-            testScores: a.testScores,
-            documents: a.documents,
-            reviewNotes: notes,
-            reviewedBy: reviewerName,
-            reviewedAt: DateTime.now(),
-          );
+          return updatedApplicant;
         }
         return a;
       }).toList();
@@ -163,39 +117,15 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
   }
 
   /// Verify a document
-  /// TODO: Connect to backend API (Firebase Firestore)
   Future<void> verifyDocument(String applicantId, String documentId) async {
     try {
-      // TODO: Update document verification status in Firebase
-
-      await Future.delayed(const Duration(milliseconds: 300));
+      // TODO: Implement document verification endpoint in backend
+      // For now, just fetch the latest application data
+      final application = await _apiService.getApplication(applicantId);
 
       final updatedApplicants = state.applicants.map((a) {
         if (a.id == applicantId) {
-          // Document verification would be handled in backend
-          // For now, just keep the documents as is
-
-          return Applicant(
-            id: a.id,
-            applicationId: a.applicationId,
-            studentId: a.studentId,
-            studentName: a.studentName,
-            studentEmail: a.studentEmail,
-            studentPhone: a.studentPhone,
-            programId: a.programId,
-            programName: a.programName,
-            status: a.status,
-            submittedAt: a.submittedAt,
-            appliedDate: a.appliedDate,
-            gpa: a.gpa,
-            previousSchool: a.previousSchool,
-            statementOfPurpose: a.statementOfPurpose,
-            testScores: a.testScores,
-            documents: a.documents,
-            reviewNotes: a.reviewNotes,
-            reviewedBy: a.reviewedBy,
-            reviewedAt: a.reviewedAt,
-          );
+          return application;
         }
         return a;
       }).toList();
@@ -266,10 +196,20 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
       return a.appliedDate.isAfter(sevenDaysAgo);
     }).toList();
   }
+
+  /// Dispose resources
+  @override
+  void dispose() {
+    _apiService.dispose();
+    super.dispose();
+  }
 }
 
 /// Provider for institution applicants state
 final institutionApplicantsProvider = StateNotifierProvider<InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
+  // TODO: Get access token from auth provider
+  // final authState = ref.watch(authProvider);
+  // return InstitutionApplicantsNotifier(accessToken: authState.accessToken);
   return InstitutionApplicantsNotifier();
 });
 
