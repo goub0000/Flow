@@ -7,6 +7,8 @@ import '../../authentication/providers/auth_provider.dart';
 final applicationsApiServiceProvider = Provider.autoDispose<ApplicationsApiService>((ref) {
   // Get access token from auth provider
   final authState = ref.watch(authProvider);
+  print('[ApplicationsApiService] Creating service with token: ${authState.accessToken?.substring(0, 20)}...');
+  print('[ApplicationsApiService] Auth state: isAuthenticated=${authState.isAuthenticated}, user=${authState.user?.email}');
   return ApplicationsApiService(accessToken: authState.accessToken);
 });
 

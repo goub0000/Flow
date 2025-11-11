@@ -10,6 +10,8 @@ const _uuid = Uuid();
 final programsApiServiceProvider = Provider.autoDispose<ProgramsApiService>((ref) {
   // Get access token from auth provider
   final authState = ref.watch(authProvider);
+  print('[ProgramsApiService] Creating service with token: ${authState.accessToken?.substring(0, 20)}...');
+  print('[ProgramsApiService] Auth state: isAuthenticated=${authState.isAuthenticated}, user=${authState.user?.email}');
   return ProgramsApiService(accessToken: authState.accessToken);
 });
 
