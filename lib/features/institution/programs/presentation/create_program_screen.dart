@@ -7,6 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/program_model.dart';
 import '../../../../core/utils/validators.dart';
 import '../../providers/institution_programs_provider.dart';
+import '../../../authentication/providers/auth_provider.dart';
 
 const _uuid = Uuid();
 
@@ -419,11 +420,17 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
     setState(() => _isSubmitting = true);
 
     try {
+      // Get current user
+      final user = ref.read(currentUserProvider);
+      if (user == null) {
+        throw Exception('User not authenticated');
+      }
+
       // Create Program model instance
       final program = Program(
         id: _uuid.v4(),
-        institutionId: 'current-institution-id', // TODO: Get from auth/context
-        institutionName: 'Current Institution', // TODO: Get from auth/context
+        institutionId: user.id, // Use logged-in user's ID as institution ID
+        institutionName: user.displayName ?? user.email, // Use display name or email
         name: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
         category: _selectedCategory ?? 'Technology',
