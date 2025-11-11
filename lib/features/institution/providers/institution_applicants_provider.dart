@@ -3,6 +3,13 @@ import '../../../core/models/applicant_model.dart';
 import '../services/applications_api_service.dart';
 import '../../authentication/providers/auth_provider.dart';
 
+/// Provider for Applications API Service
+final applicationsApiServiceProvider = Provider.autoDispose<ApplicationsApiService>((ref) {
+  // Get access token from auth provider
+  final authState = ref.watch(authProvider);
+  return ApplicationsApiService(accessToken: authState.accessToken);
+});
+
 /// State class for managing institution applicants
 class InstitutionApplicantsState {
   final List<Applicant> applicants;
@@ -32,9 +39,8 @@ class InstitutionApplicantsState {
 class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsState> {
   final ApplicationsApiService _apiService;
 
-  InstitutionApplicantsNotifier({String? accessToken})
-      : _apiService = ApplicationsApiService(accessToken: accessToken),
-        super(const InstitutionApplicantsState()) {
+  InstitutionApplicantsNotifier(this._apiService)
+      : super(const InstitutionApplicantsState()) {
     fetchApplicants();
   }
 
@@ -208,9 +214,9 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
 
 /// Provider for institution applicants state
 final institutionApplicantsProvider = StateNotifierProvider.autoDispose<InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
-  // Get access token from auth provider
-  final authState = ref.watch(authProvider);
-  return InstitutionApplicantsNotifier(accessToken: authState.accessToken);
+  // Get API service which has current access token
+  final apiService = ref.watch(applicationsApiServiceProvider);
+  return InstitutionApplicantsNotifier(apiService);
 });
 
 /// Provider for applicants list
