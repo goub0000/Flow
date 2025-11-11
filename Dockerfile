@@ -4,18 +4,11 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy everything from repository
+COPY . .
 
 # Install dependencies
 RUN npm install --production
-
-# Copy server file
-COPY server.js ./
-
-# Copy Flutter web build (create directory if needed)
-RUN mkdir -p ./build/web
-COPY build/web/ ./build/web/
 
 # Expose port
 EXPOSE 3000
