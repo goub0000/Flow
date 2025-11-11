@@ -1,0 +1,10 @@
+# Nixpacks configuration for Flutter web frontend with Node.js server
+
+[phases.setup]
+nixPkgs = ['nodejs-18_x']
+
+[phases.install]
+cmds = ['npm install']
+
+[start]
+cmd = 'node server.js'
