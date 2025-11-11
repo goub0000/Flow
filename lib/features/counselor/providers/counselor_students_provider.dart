@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/counseling_models.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing counselor's students
 class CounselorStudentsState {
@@ -28,54 +31,73 @@ class CounselorStudentsState {
 
 /// StateNotifier for managing counselor's students
 class CounselorStudentsNotifier extends StateNotifier<CounselorStudentsState> {
-  CounselorStudentsNotifier() : super(const CounselorStudentsState()) {
+  final ApiClient _apiClient;
+
+  CounselorStudentsNotifier(this._apiClient) : super(const CounselorStudentsState()) {
     fetchStudents();
   }
 
-  /// Fetch all assigned students
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all assigned students from backend API
+  /// Note: Backend may return students through sessions or separate endpoint
   Future<void> fetchStudents() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('student_records')
-      //   .where('counselorId', isEqualTo: currentCounselorId)
-      //   .get()
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockStudents = List<StudentRecord>.generate(
-        12,
-        (index) => StudentRecord.mockStudentRecord(index),
+      // Try to fetch student records from counseling API
+      // Backend might need to implement: GET /api/v1/counseling/students
+      final response = await _apiClient.get(
+        '${ApiConfig.counseling}/students',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((studentJson) => StudentRecord.fromJson(studentJson)).toList();
+          }
+          return <StudentRecord>[];
+        },
       );
 
-      state = state.copyWith(
-        students: mockStudents,
-        isLoading: false,
-      );
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          students: response.data!,
+          isLoading: false,
+        );
+      } else {
+        // If endpoint doesn't exist yet, return empty list instead of mock data
+        state = state.copyWith(
+          students: [],
+          isLoading: false,
+          error: response.message ?? 'Student records endpoint not yet implemented in backend',
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch students: ${e.toString()}',
         isLoading: false,
+        students: [], // Return empty instead of mock
       );
     }
   }
 
-  /// Add a new student
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> addStudent(StudentRecord student) async {
+  /// Add a new student record via backend API
+  Future<bool> addStudent(String studentId) async {
     try {
-      // TODO: Replace with actual Firebase write
+      final response = await _apiClient.post(
+        '${ApiConfig.counseling}/students',
+        data: {
+          'student_id': studentId,
+        },
+        fromJson: (data) => StudentRecord.fromJson(data),
+      );
 
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      final updatedStudents = [...state.students, student];
-      state = state.copyWith(students: updatedStudents);
-
-      return true;
+      if (response.success && response.data != null) {
+        final updatedStudents = [...state.students, response.data!];
+        state = state.copyWith(students: updatedStudents);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to add student',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to add student: ${e.toString()}',
@@ -84,21 +106,33 @@ class CounselorStudentsNotifier extends StateNotifier<CounselorStudentsState> {
     }
   }
 
-  /// Update student record
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> updateStudent(StudentRecord student) async {
+  /// Update student record via backend API
+  Future<bool> updateStudentRecord(String studentId, {
+    String? notes,
+    Map<String, dynamic>? additionalInfo,
+  }) async {
     try {
-      // TODO: Replace with actual Firebase update
+      final response = await _apiClient.put(
+        '${ApiConfig.counseling}/students/$studentId',
+        data: {
+          if (notes != null) 'notes': notes,
+          if (additionalInfo != null) 'additional_info': additionalInfo,
+        },
+        fromJson: (data) => StudentRecord.fromJson(data),
+      );
 
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      final updatedStudents = state.students.map((s) {
-        return s.id == student.id ? student : s;
-      }).toList();
-
-      state = state.copyWith(students: updatedStudents);
-
-      return true;
+      if (response.success && response.data != null) {
+        final updatedStudents = state.students.map((s) {
+          return s.id == studentId ? response.data! : s;
+        }).toList();
+        state = state.copyWith(students: updatedStudents);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update student',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update student: ${e.toString()}',
@@ -107,40 +141,10 @@ class CounselorStudentsNotifier extends StateNotifier<CounselorStudentsState> {
     }
   }
 
-  /// Add notes to student
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Add notes to student via backend API
   Future<bool> addNotes(String studentId, String notes) async {
     try {
-      // TODO: Update notes in Firebase
-
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      final updatedStudents = state.students.map((s) {
-        if (s.id == studentId) {
-          return StudentRecord(
-            id: s.id,
-            name: s.name,
-            email: s.email,
-            photoUrl: s.photoUrl,
-            grade: s.grade,
-            gpa: s.gpa,
-            schoolName: s.schoolName,
-            interests: s.interests,
-            strengths: s.strengths,
-            challenges: s.challenges,
-            goals: s.goals,
-            totalSessions: s.totalSessions,
-            upcomingSessions: s.upcomingSessions,
-            lastSessionDate: s.lastSessionDate,
-            status: s.status,
-          );
-        }
-        return s;
-      }).toList();
-
-      state = state.copyWith(students: updatedStudents);
-
-      return true;
+      return await updateStudentRecord(studentId, notes: notes);
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to add notes: ${e.toString()}',
@@ -221,7 +225,8 @@ class CounselorStudentsNotifier extends StateNotifier<CounselorStudentsState> {
 
 /// Provider for counselor students state
 final counselorStudentsProvider = StateNotifierProvider<CounselorStudentsNotifier, CounselorStudentsState>((ref) {
-  return CounselorStudentsNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return CounselorStudentsNotifier(apiClient);
 });
 
 /// Provider for students list

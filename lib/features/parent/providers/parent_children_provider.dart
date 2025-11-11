@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/child_model.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing parent's children
 class ParentChildrenState {
@@ -28,35 +31,38 @@ class ParentChildrenState {
 
 /// StateNotifier for managing parent's children
 class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
-  ParentChildrenNotifier() : super(const ParentChildrenState()) {
+  final ApiClient _apiClient;
+
+  ParentChildrenNotifier(this._apiClient) : super(const ParentChildrenState()) {
     fetchChildren();
   }
 
-  /// Fetch all children for the parent
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all children for the parent from backend API
   Future<void> fetchChildren() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('children')
-      //   .where('parentId', isEqualTo: currentParentId)
-      //   .get()
-
-      // Simulating API call delay
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockChildren = [
-        Child.mockChild(0),
-        Child.mockChild(1),
-      ];
-
-      state = state.copyWith(
-        children: mockChildren,
-        isLoading: false,
+      final response = await _apiClient.get(
+        '${ApiConfig.parent}/children',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((childJson) => Child.fromJson(childJson)).toList();
+          }
+          return <Child>[];
+        },
       );
+
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          children: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch children',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch children: ${e.toString()}',
@@ -65,20 +71,27 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
     }
   }
 
-  /// Add a new child
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> addChild(Child child) async {
+  /// Link a child to parent account via backend API
+  Future<bool> addChild(String studentId) async {
     try {
-      // TODO: Replace with actual Firebase write
-      // Example: FirebaseFirestore.instance.collection('children').add(child.toJson())
+      final response = await _apiClient.post(
+        '${ApiConfig.parent}/children',
+        data: {
+          'student_id': studentId,
+        },
+        fromJson: (data) => Child.fromJson(data),
+      );
 
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Add to local state
-      final updatedChildren = [...state.children, child];
-      state = state.copyWith(children: updatedChildren);
-
-      return true;
+      if (response.success && response.data != null) {
+        final updatedChildren = [...state.children, response.data!];
+        state = state.copyWith(children: updatedChildren);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to add child',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to add child: ${e.toString()}',
@@ -87,15 +100,28 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
     }
   }
 
-  /// Update child information
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Remove child link via backend API
+  Future<bool> removeChild(String childId) async {
+    try {
+      await _apiClient.delete('${ApiConfig.parent}/children/$childId');
+
+      final updatedChildren = state.children.where((c) => c.id != childId).toList();
+      state = state.copyWith(children: updatedChildren);
+
+      return true;
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to remove child: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  /// Update child information - kept for compatibility
   Future<bool> updateChild(Child child) async {
     try {
-      // TODO: Replace with actual Firebase update
-
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Update in local state
+      // Child info is managed by student, parent can't directly update
+      // This method exists for backwards compatibility
       final updatedChildren = state.children.map((c) {
         return c.id == child.id ? child : c;
       }).toList();
@@ -106,27 +132,6 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update child: ${e.toString()}',
-      );
-      return false;
-    }
-  }
-
-  /// Remove a child
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> removeChild(String childId) async {
-    try {
-      // TODO: Replace with actual Firebase delete
-
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Remove from local state
-      final updatedChildren = state.children.where((c) => c.id != childId).toList();
-      state = state.copyWith(children: updatedChildren);
-
-      return true;
-    } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to remove child: ${e.toString()}',
       );
       return false;
     }
@@ -210,7 +215,8 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
 
 /// Provider for parent children state
 final parentChildrenProvider = StateNotifierProvider<ParentChildrenNotifier, ParentChildrenState>((ref) {
-  return ParentChildrenNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return ParentChildrenNotifier(apiClient);
 });
 
 /// Provider for children list

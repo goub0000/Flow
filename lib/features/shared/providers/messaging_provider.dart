@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 import '../../../core/models/message_model.dart';
-
-const _uuid = Uuid();
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing messaging
 class MessagingState {
@@ -35,43 +35,38 @@ class MessagingState {
 
 /// StateNotifier for managing messaging
 class MessagingNotifier extends StateNotifier<MessagingState> {
-  MessagingNotifier() : super(const MessagingState()) {
+  final ApiClient _apiClient;
+
+  MessagingNotifier(this._apiClient) : super(const MessagingState()) {
     fetchConversations();
   }
 
-  /// Fetch all conversations for current user
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all conversations for current user from backend API
   Future<void> fetchConversations() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('conversations')
-      //   .where('participants', arrayContains: currentUserId)
-      //   .orderBy('updatedAt', descending: true)
-      //   .get()
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockConversations = List<Conversation>.generate(
-        10,
-        (index) => Conversation(
-          id: 'conv_$index',
-          participantId: 'user_$index',
-          participantName: 'User ${index + 1}',
-          participantPhotoUrl: null,
-          lastMessage: Message.mockMessage(index),
-          unreadCount: index % 3 == 0 ? index : 0,
-          lastActivity: DateTime.now().subtract(Duration(hours: index)),
-        ),
+      final response = await _apiClient.get(
+        '${ApiConfig.messaging}/conversations',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((convJson) => Conversation.fromJson(convJson)).toList();
+          }
+          return <Conversation>[];
+        },
       );
 
-      state = state.copyWith(
-        conversations: mockConversations,
-        isLoading: false,
-      );
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          conversations: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch conversations',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch conversations: ${e.toString()}',
@@ -80,25 +75,28 @@ class MessagingNotifier extends StateNotifier<MessagingState> {
     }
   }
 
-  /// Fetch messages for a conversation
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch messages for a conversation from backend API
   Future<void> fetchMessages(String conversationId) async {
     try {
-      // TODO: Replace with actual Firebase query
-      // Listen to real-time updates
-
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Mock messages
-      final mockMessages = List<Message>.generate(
-        15,
-        (index) => Message.mockMessage(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.messaging}/conversations/$conversationId/messages',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((msgJson) => Message.fromJson(msgJson)).toList();
+          }
+          return <Message>[];
+        },
       );
 
-      final updatedMessages = Map<String, List<Message>>.from(state.messages);
-      updatedMessages[conversationId] = mockMessages;
-
-      state = state.copyWith(messages: updatedMessages);
+      if (response.success && response.data != null) {
+        final updatedMessages = Map<String, List<Message>>.from(state.messages);
+        updatedMessages[conversationId] = response.data!;
+        state = state.copyWith(messages: updatedMessages);
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch messages',
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch messages: ${e.toString()}',
@@ -106,53 +104,53 @@ class MessagingNotifier extends StateNotifier<MessagingState> {
     }
   }
 
-  /// Send a message
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Send a message via backend API
   Future<bool> sendMessage(String conversationId, String content, String senderId) async {
     try {
-      // TODO: Write to Firebase and update conversation
-
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      final newMessage = Message(
-        id: _uuid.v4(),
-        conversationId: conversationId,
-        senderId: senderId,
-        senderName: 'Current User', // TODO: Get actual sender name from auth
-        content: content,
-        type: MessageType.text,
-        timestamp: DateTime.now(),
-        isRead: false,
+      final response = await _apiClient.post(
+        '${ApiConfig.messaging}/conversations/$conversationId/messages',
+        data: {
+          'content': content,
+          'type': 'text',
+        },
+        fromJson: (data) => Message.fromJson(data),
       );
 
-      // Add to messages
-      final updatedMessages = Map<String, List<Message>>.from(state.messages);
-      final conversationMessages = updatedMessages[conversationId] ?? [];
-      updatedMessages[conversationId] = [...conversationMessages, newMessage];
+      if (response.success && response.data != null) {
+        // Add new message to local state
+        final updatedMessages = Map<String, List<Message>>.from(state.messages);
+        final conversationMessages = updatedMessages[conversationId] ?? [];
+        updatedMessages[conversationId] = [...conversationMessages, response.data!];
 
-      // Update conversation
-      final updatedConversations = state.conversations.map((conv) {
-        if (conv.id == conversationId) {
-          return Conversation(
-            id: conv.id,
-            participantId: conv.participantId,
-            participantName: conv.participantName,
-            participantPhotoUrl: conv.participantPhotoUrl,
-            participantRole: conv.participantRole,
-            lastMessage: newMessage,
-            unreadCount: conv.unreadCount,
-            lastActivity: DateTime.now(),
-          );
-        }
-        return conv;
-      }).toList();
+        // Update conversation's last message
+        final updatedConversations = state.conversations.map((conv) {
+          if (conv.id == conversationId) {
+            return Conversation(
+              id: conv.id,
+              participantId: conv.participantId,
+              participantName: conv.participantName,
+              participantPhotoUrl: conv.participantPhotoUrl,
+              participantRole: conv.participantRole,
+              lastMessage: response.data!,
+              unreadCount: conv.unreadCount,
+              lastActivity: DateTime.now(),
+            );
+          }
+          return conv;
+        }).toList();
 
-      state = state.copyWith(
-        messages: updatedMessages,
-        conversations: updatedConversations,
-      );
+        state = state.copyWith(
+          messages: updatedMessages,
+          conversations: updatedConversations,
+        );
 
-      return true;
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to send message',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to send message: ${e.toString()}',
@@ -161,12 +159,54 @@ class MessagingNotifier extends StateNotifier<MessagingState> {
     }
   }
 
-  /// Mark conversation as read
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Start new conversation via backend API
+  Future<Conversation?> startConversation(String participantId) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.messaging}/conversations',
+        data: {
+          'participant_id': participantId,
+        },
+        fromJson: (data) => Conversation.fromJson(data),
+      );
+
+      if (response.success && response.data != null) {
+        // Add to conversations list
+        state = state.copyWith(
+          conversations: [response.data!, ...state.conversations],
+        );
+        return response.data!;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to start conversation',
+        );
+        return null;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to start conversation: ${e.toString()}',
+      );
+      return null;
+    }
+  }
+
+  /// Mark conversation messages as read via backend API
   Future<void> markConversationAsRead(String conversationId) async {
     try {
-      // TODO: Update in Firebase
+      // Get all message IDs from this conversation
+      final messages = state.messages[conversationId] ?? [];
+      final messageIds = messages.where((m) => !m.isRead).map((m) => m.id).toList();
 
+      if (messageIds.isNotEmpty) {
+        await _apiClient.post(
+          '${ApiConfig.messaging}/messages/read',
+          data: {
+            'message_ids': messageIds,
+          },
+        );
+      }
+
+      // Update local state
       final updatedConversations = state.conversations.map((conv) {
         if (conv.id == conversationId) {
           return Conversation(
@@ -191,12 +231,31 @@ class MessagingNotifier extends StateNotifier<MessagingState> {
     }
   }
 
-  /// Delete conversation
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Delete message via backend API
+  Future<void> deleteMessage(String messageId, String conversationId) async {
+    try {
+      await _apiClient.delete('${ApiConfig.messaging}/messages/$messageId');
+
+      // Remove from local state
+      final updatedMessages = Map<String, List<Message>>.from(state.messages);
+      final conversationMessages = updatedMessages[conversationId] ?? [];
+      updatedMessages[conversationId] = conversationMessages
+          .where((msg) => msg.id != messageId)
+          .toList();
+
+      state = state.copyWith(messages: updatedMessages);
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to delete message: ${e.toString()}',
+      );
+    }
+  }
+
+  /// Delete conversation (note: backend may not support this yet)
   Future<void> deleteConversation(String conversationId) async {
     try {
-      // TODO: Delete from Firebase
-
+      // Note: API doesn't have explicit delete conversation endpoint
+      // This removes it locally only
       final updatedConversations = state.conversations
           .where((conv) => conv.id != conversationId)
           .toList();
@@ -238,7 +297,8 @@ class MessagingNotifier extends StateNotifier<MessagingState> {
 
 /// Provider for messaging state
 final messagingProvider = StateNotifierProvider<MessagingNotifier, MessagingState>((ref) {
-  return MessagingNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return MessagingNotifier(apiClient);
 });
 
 /// Provider for conversations list

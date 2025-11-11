@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/child_model.dart' hide Application;
 import '../../../core/models/course_model.dart';
 import '../../../core/models/application_model.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for child monitoring data
 class ChildMonitoringState {
@@ -42,7 +45,9 @@ class ChildMonitoringState {
 
 /// StateNotifier for monitoring child progress
 class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
-  ChildMonitoringNotifier() : super(const ChildMonitoringState());
+  final ApiClient _apiClient;
+
+  ChildMonitoringNotifier(this._apiClient) : super(const ChildMonitoringState());
 
   /// Select a child to monitor
   void selectChild(String childId) {
@@ -50,37 +55,53 @@ class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
     loadChildData(childId);
   }
 
-  /// Load all data for selected child
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Load all data for selected child from backend API
   Future<void> loadChildData(String childId) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase queries
-      // Load multiple collections in parallel:
-      // - Child's course enrollments and progress
-      // - Child's applications
-      // - Child's performance metrics
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockCourseProgress = List<CourseProgress>.generate(
-        4,
-        (index) => CourseProgress.mockCourseProgress(index),
+      // Fetch child's enrollments (contains progress)
+      final enrollmentsResponse = await _apiClient.get(
+        '${ApiConfig.parent}/children/$childId/enrollments',
+        fromJson: (data) {
+          if (data is List) {
+            // Convert enrollments to course progress
+            return data.map((e) {
+              return CourseProgress(
+                courseId: e['course_id'] ?? '',
+                courseName: e['course']?['title'] ?? 'Unknown',
+                completionPercentage: (e['progress'] ?? 0).toDouble(),
+                currentGrade: 0.0,
+                assignmentsCompleted: 0,
+                totalAssignments: 0,
+                timeSpent: Duration.zero,
+                lastAccessedAt: DateTime.now(),
+              );
+            }).toList();
+          }
+          return <CourseProgress>[];
+        },
       );
 
-      final mockApplications = List<Application>.generate(
-        3,
-        (index) => Application.mockApplication(index),
+      // Fetch child's applications
+      final applicationsResponse = await _apiClient.get(
+        '${ApiConfig.parent}/children/$childId/applications',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((appJson) => Application.fromJson(appJson)).toList();
+          }
+          return <Application>[];
+        },
       );
 
-      final mockMetrics = _calculatePerformanceMetrics(mockCourseProgress);
+      final courseProgress = enrollmentsResponse.data ?? [];
+      final applications = applicationsResponse.data ?? [];
+      final metrics = _calculatePerformanceMetrics(courseProgress);
 
       state = state.copyWith(
-        courseProgress: mockCourseProgress,
-        applications: mockApplications,
-        performanceMetrics: mockMetrics,
+        courseProgress: courseProgress,
+        applications: applications,
+        performanceMetrics: metrics,
         isLoading: false,
       );
     } catch (e) {
@@ -215,7 +236,8 @@ class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
 
 /// Provider for child monitoring state
 final childMonitoringProvider = StateNotifierProvider<ChildMonitoringNotifier, ChildMonitoringState>((ref) {
-  return ChildMonitoringNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return ChildMonitoringNotifier(apiClient);
 });
 
 /// Provider for selected child's course progress

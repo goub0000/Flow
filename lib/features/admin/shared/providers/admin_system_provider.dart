@@ -1,4 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// System setting model
 class SystemSetting {
@@ -64,23 +67,65 @@ class AdminSystemState {
 
 /// StateNotifier for system settings
 class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
-  AdminSystemNotifier() : super(const AdminSystemState()) {
+  final ApiClient _apiClient;
+
+  AdminSystemNotifier(this._apiClient) : super(const AdminSystemState()) {
     fetchSettings();
     fetchSystemInfo();
   }
 
-  /// Fetch system settings
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch system settings from backend API
   Future<void> fetchSettings() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      await Future.delayed(const Duration(seconds: 1));
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/system/settings',
+        fromJson: (data) => data as Map<String, dynamic>? ?? {},
+      );
 
-      final mockSettings = <String, SystemSetting>{
-        // General settings
-        'app_name': SystemSetting(
+      if (response.success && response.data != null) {
+        // Convert backend settings to local format
+        final Map<String, SystemSetting> settings = {};
+        response.data!.forEach((key, value) {
+          if (value is Map) {
+            settings[key] = SystemSetting(
+              key: key,
+              category: value['category'] ?? 'general',
+              value: value['value'],
+              type: value['type'] ?? 'string',
+              description: value['description'],
+            );
+          }
+        });
+
+        state = state.copyWith(
+          settings: settings.isNotEmpty ? settings : _getDefaultSettings(),
+          isLoading: false,
+        );
+        return;
+      }
+
+      // If backend doesn't have settings yet, use defaults
+      state = state.copyWith(
+        settings: _getDefaultSettings(),
+        isLoading: false,
+      );
+    } catch (e) {
+      // Fallback to default settings on error
+      state = state.copyWith(
+        settings: _getDefaultSettings(),
+        isLoading: false,
+      );
+    }
+  }
+
+  /// Get default settings as fallback
+  Map<String, SystemSetting> _getDefaultSettings() {
+    return {
+
+      // General settings
+      'app_name': SystemSetting(
           key: 'app_name',
           category: 'general',
           value: 'Flow EdTech',
@@ -149,18 +194,7 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
           type: 'string',
           description: 'Default currency',
         ),
-      };
-
-      state = state.copyWith(
-        settings: mockSettings,
-        isLoading: false,
-      );
-    } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to fetch settings: ${e.toString()}',
-        isLoading: false,
-      );
-    }
+    };
   }
 
   /// Fetch system information
@@ -287,7 +321,8 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
 
 /// Provider for admin system state
 final adminSystemProvider = StateNotifierProvider<AdminSystemNotifier, AdminSystemState>((ref) {
-  return AdminSystemNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminSystemNotifier(apiClient);
 });
 
 /// Provider for all settings

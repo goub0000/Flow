@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 import '../../../core/models/document_model.dart';
-
-const _uuid = Uuid();
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing documents
 class DocumentsState {
@@ -39,53 +39,38 @@ class DocumentsState {
 
 /// StateNotifier for managing documents
 class DocumentsNotifier extends StateNotifier<DocumentsState> {
-  DocumentsNotifier() : super(const DocumentsState()) {
+  final ApiClient _apiClient;
+
+  DocumentsNotifier(this._apiClient) : super(const DocumentsState()) {
     fetchDocuments();
   }
 
-  /// Fetch all documents and folders for current user
-  /// TODO: Connect to backend API (Firebase Firestore & Storage)
+  /// Fetch all documents for current user from backend API
   Future<void> fetchDocuments() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Fetch both documents and folders
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockFolders = [
-        DocumentFolder(
-          id: 'folder_1',
-          name: 'Transcripts',
-          documentCount: 3,
-          createdAt: DateTime.now().subtract(const Duration(days: 30)),
-        ),
-        DocumentFolder(
-          id: 'folder_2',
-          name: 'Certificates',
-          documentCount: 5,
-          createdAt: DateTime.now().subtract(const Duration(days: 20)),
-        ),
-        DocumentFolder(
-          id: 'folder_3',
-          name: 'Recommendations',
-          documentCount: 2,
-          createdAt: DateTime.now().subtract(const Duration(days: 10)),
-        ),
-      ];
-
-      final mockDocuments = List<Document>.generate(
-        10,
-        (index) => Document.mockDocument(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.documents}',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((docJson) => Document.fromJson(docJson)).toList();
+          }
+          return <Document>[];
+        },
       );
 
-      state = state.copyWith(
-        documents: mockDocuments,
-        folders: mockFolders,
-        isLoading: false,
-      );
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          documents: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch documents',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch documents: ${e.toString()}',
@@ -94,19 +79,40 @@ class DocumentsNotifier extends StateNotifier<DocumentsState> {
     }
   }
 
-  /// Upload a document
-  /// TODO: Connect to backend API (Firebase Storage & Firestore)
-  Future<bool> uploadDocument(Document document) async {
+  /// Upload a document via backend API
+  /// Note: File upload should be handled separately, this creates document metadata
+  Future<bool> uploadDocument({
+    required String fileName,
+    required String fileType,
+    required int fileSize,
+    required String filePath,
+    String? folderId,
+    String? description,
+  }) async {
     try {
-      // TODO: Upload file to Firebase Storage
-      // TODO: Save metadata to Firestore
+      final response = await _apiClient.post(
+        ApiConfig.documents,
+        data: {
+          'file_name': fileName,
+          'file_type': fileType,
+          'file_size': fileSize,
+          'file_path': filePath,
+          if (folderId != null) 'folder_id': folderId,
+          if (description != null) 'description': description,
+        },
+        fromJson: (data) => Document.fromJson(data),
+      );
 
-      await Future.delayed(const Duration(seconds: 2));
-
-      final updatedDocuments = [...state.documents, document];
-      state = state.copyWith(documents: updatedDocuments);
-
-      return true;
+      if (response.success && response.data != null) {
+        final updatedDocuments = [...state.documents, response.data!];
+        state = state.copyWith(documents: updatedDocuments);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to upload document',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to upload document: ${e.toString()}',
@@ -115,14 +121,10 @@ class DocumentsNotifier extends StateNotifier<DocumentsState> {
     }
   }
 
-  /// Delete a document
-  /// TODO: Connect to backend API (Firebase Storage & Firestore)
+  /// Delete a document via backend API
   Future<bool> deleteDocument(String documentId) async {
     try {
-      // TODO: Delete file from Firebase Storage
-      // TODO: Delete metadata from Firestore
-
-      await Future.delayed(const Duration(milliseconds: 500));
+      await _apiClient.delete('${ApiConfig.documents}/$documentId');
 
       final updatedDocuments = state.documents
           .where((doc) => doc.id != documentId)
@@ -139,51 +141,44 @@ class DocumentsNotifier extends StateNotifier<DocumentsState> {
     }
   }
 
-  /// Create a folder
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> createFolder(String folderName) async {
+  /// Update document metadata via backend API
+  Future<bool> updateDocument(String documentId, {
+    String? fileName,
+    String? description,
+    String? category,
+  }) async {
     try {
-      // TODO: Create folder in Firestore
-
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      final newFolder = DocumentFolder(
-        id: _uuid.v4(),
-        name: folderName,
-        documentCount: 0,
-        createdAt: DateTime.now(),
+      final response = await _apiClient.put(
+        '${ApiConfig.documents}/$documentId',
+        data: {
+          if (fileName != null) 'file_name': fileName,
+          if (description != null) 'description': description,
+          if (category != null) 'category': category,
+        },
+        fromJson: (data) => Document.fromJson(data),
       );
 
-      final updatedFolders = [...state.folders, newFolder];
-      state = state.copyWith(folders: updatedFolders);
+      if (response.success && response.data != null) {
+        final updatedDocuments = state.documents.map((doc) {
+          return doc.id == documentId ? response.data! : doc;
+        }).toList();
 
-      return true;
+        state = state.copyWith(documents: updatedDocuments);
+        return true;
+      }
+      return false;
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to create folder: ${e.toString()}',
+        error: 'Failed to update document: ${e.toString()}',
       );
       return false;
     }
   }
 
-  /// Move document to folder
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> moveToFolder(String documentId, String folderId) async {
+  /// Move document to folder (update category)
+  Future<bool> moveToFolder(String documentId, String category) async {
     try {
-      // TODO: Update document category/folder in Firestore
-
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      final updatedDocuments = state.documents.map((doc) {
-        if (doc.id == documentId) {
-          return doc.copyWith(category: folderId);
-        }
-        return doc;
-      }).toList().cast<Document>();
-
-      state = state.copyWith(documents: updatedDocuments);
-
-      return true;
+      return await updateDocument(documentId, category: category);
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to move document: ${e.toString()}',
@@ -253,7 +248,8 @@ class DocumentsNotifier extends StateNotifier<DocumentsState> {
 
 /// Provider for documents state
 final documentsProvider = StateNotifierProvider<DocumentsNotifier, DocumentsState>((ref) {
-  return DocumentsNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return DocumentsNotifier(apiClient);
 });
 
 /// Provider for documents list

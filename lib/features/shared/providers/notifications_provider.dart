@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/notification_model.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing notifications
 class NotificationsState {
@@ -28,35 +31,38 @@ class NotificationsState {
 
 /// StateNotifier for managing notifications
 class NotificationsNotifier extends StateNotifier<NotificationsState> {
-  NotificationsNotifier() : super(const NotificationsState()) {
+  final ApiClient _apiClient;
+
+  NotificationsNotifier(this._apiClient) : super(const NotificationsState()) {
     fetchNotifications();
   }
 
-  /// Fetch all notifications for current user
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all notifications for current user from backend API
   Future<void> fetchNotifications() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('notifications')
-      //   .where('userId', isEqualTo: currentUserId)
-      //   .orderBy('createdAt', descending: true)
-      //   .get()
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockNotifications = List<NotificationModel>.generate(
-        20,
-        (index) => NotificationModel.mockNotification(index),
+      final response = await _apiClient.get(
+        ApiConfig.notifications,
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((notifJson) => NotificationModel.fromJson(notifJson)).toList();
+          }
+          return <NotificationModel>[];
+        },
       );
 
-      state = state.copyWith(
-        notifications: mockNotifications,
-        isLoading: false,
-      );
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          notifications: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch notifications',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch notifications: ${e.toString()}',
@@ -65,11 +71,15 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     }
   }
 
-  /// Mark notification as read
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Mark notification as read via backend API
   Future<void> markAsRead(String notificationId) async {
     try {
-      // TODO: Update in Firebase
+      await _apiClient.post(
+        '${ApiConfig.notifications}/read',
+        data: {
+          'notification_ids': [notificationId],
+        },
+      );
 
       final updatedNotifications = state.notifications.map((notif) {
         if (notif.id == notificationId) {
@@ -95,11 +105,10 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     }
   }
 
-  /// Mark all notifications as read
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Mark all notifications as read via backend API
   Future<void> markAllAsRead() async {
     try {
-      // TODO: Batch update in Firebase
+      await _apiClient.post('${ApiConfig.notifications}/read-all');
 
       final updatedNotifications = state.notifications.map((notif) {
         return NotificationModel(
@@ -122,11 +131,10 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     }
   }
 
-  /// Delete notification
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Delete notification via backend API
   Future<void> deleteNotification(String notificationId) async {
     try {
-      // TODO: Delete from Firebase
+      await _apiClient.delete('${ApiConfig.notifications}/$notificationId');
 
       final updatedNotifications = state.notifications
           .where((notif) => notif.id != notificationId)
@@ -140,11 +148,15 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     }
   }
 
-  /// Clear all notifications
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Clear all notifications (delete all)
   Future<void> clearAll() async {
     try {
-      // TODO: Delete all from Firebase
+      // Delete all notifications via backend
+      final notificationIds = state.notifications.map((n) => n.id).toList();
+
+      for (final id in notificationIds) {
+        await _apiClient.delete('${ApiConfig.notifications}/$id');
+      }
 
       state = state.copyWith(notifications: []);
     } catch (e) {
@@ -185,7 +197,8 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 
 /// Provider for notifications state
 final notificationsProvider = StateNotifierProvider<NotificationsNotifier, NotificationsState>((ref) {
-  return NotificationsNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return NotificationsNotifier(apiClient);
 });
 
 /// Provider for notifications list

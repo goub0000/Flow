@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/course_model.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing courses list
 class CoursesState {
@@ -28,28 +31,41 @@ class CoursesState {
 
 /// StateNotifier for managing courses
 class CoursesNotifier extends StateNotifier<CoursesState> {
-  CoursesNotifier() : super(const CoursesState()) {
+  final ApiClient _apiClient;
+
+  CoursesNotifier(this._apiClient) : super(const CoursesState()) {
     fetchCourses();
   }
 
-  /// Fetch all available courses
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all available courses from backend API
   Future<void> fetchCourses() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance.collection('courses').where('isActive', isEqualTo: true).get()
-
-      // Simulating API call delay
-      await Future.delayed(const Duration(seconds: 1));
-
-      // For now, return empty list since mock data is removed
-      // Backend should provide actual course data
-      state = state.copyWith(
-        courses: [],
-        isLoading: false,
+      final response = await _apiClient.get(
+        ApiConfig.courses,
+        queryParameters: {
+          'is_published': true,  // Only fetch published courses
+        },
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((courseJson) => Course.fromJson(courseJson)).toList();
+          }
+          return <Course>[];
+        },
       );
+
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          courses: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch courses',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch courses: ${e.toString()}',
@@ -90,7 +106,8 @@ class CoursesNotifier extends StateNotifier<CoursesState> {
 
 /// Provider for courses state
 final coursesProvider = StateNotifierProvider<CoursesNotifier, CoursesState>((ref) {
-  return CoursesNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return CoursesNotifier(apiClient);
 });
 
 /// Provider for available courses list

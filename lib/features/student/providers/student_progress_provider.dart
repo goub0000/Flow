@@ -1,6 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/progress_model.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 import '../../authentication/providers/auth_provider.dart';
+import './student_enrollments_provider.dart';
 
 /// State class for managing progress
 class ProgressState {
@@ -34,13 +38,14 @@ class ProgressState {
 /// StateNotifier for managing student progress
 class ProgressNotifier extends StateNotifier<ProgressState> {
   final Ref ref;
+  final ApiClient _apiClient;
 
-  ProgressNotifier(this.ref) : super(const ProgressState()) {
+  ProgressNotifier(this.ref, this._apiClient) : super(const ProgressState()) {
     fetchProgress();
   }
 
-  /// Fetch student progress data
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch student progress data from backend API
+  /// Progress is derived from enrollments data
   Future<void> fetchProgress() async {
     state = state.copyWith(isLoading: true, error: null);
 
@@ -54,26 +59,50 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
         return;
       }
 
-      // TODO: Replace with actual Firebase query
-      // Example:
-      // - Fetch overall progress: FirebaseFirestore.instance.collection('progress').doc(user.id).get()
-      // - Fetch course progress: FirebaseFirestore.instance.collection('courseProgress')
-      //     .where('studentId', isEqualTo: user.id).get()
+      // Fetch enrollments which contain progress information
+      final enrollments = ref.read(enrollmentsListProvider);
 
-      // Simulating API call delay
-      await Future.delayed(const Duration(seconds: 1));
+      // Convert enrollments to course progress
+      final courseProgressList = enrollments.map((enrollment) {
+        return CourseProgress(
+          courseId: enrollment.courseId,
+          courseName: enrollment.course?.title ?? 'Unknown Course',
+          completionPercentage: enrollment.progress.toDouble(),
+          currentGrade: 0.0, // TODO: Add grade tracking to enrollment model
+          assignmentsCompleted: 0, // TODO: Add assignments tracking
+          totalAssignments: 0,
+          timeSpent: Duration.zero, // TODO: Add time tracking
+          lastAccessedAt: enrollment.enrolledAt,
+        );
+      }).toList();
 
-      // For now, return empty/default data since mock data is removed
-      // Backend should provide actual progress data
       state = state.copyWith(
-        overallProgress: null,
-        courseProgressList: [],
+        courseProgressList: courseProgressList,
         isLoading: false,
       );
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch progress: ${e.toString()}',
         isLoading: false,
+      );
+    }
+  }
+
+  /// Update progress for a specific enrollment
+  Future<void> updateEnrollmentProgress(String enrollmentId, int progress) async {
+    try {
+      await _apiClient.put(
+        '${ApiConfig.enrollments}/$enrollmentId/progress',
+        data: {
+          'progress': progress,
+        },
+      );
+
+      // Refresh progress data after update
+      await fetchProgress();
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to update progress: ${e.toString()}',
       );
     }
   }
@@ -139,7 +168,8 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
 
 /// Provider for progress state
 final progressProvider = StateNotifierProvider<ProgressNotifier, ProgressState>((ref) {
-  return ProgressNotifier(ref);
+  final apiClient = ref.watch(apiClientProvider);
+  return ProgressNotifier(ref, apiClient);
 });
 
 /// Provider for overall progress

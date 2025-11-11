@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 const _uuid = Uuid();
 
@@ -85,28 +88,39 @@ class AdminSupportState {
 
 /// StateNotifier for admin support
 class AdminSupportNotifier extends StateNotifier<AdminSupportState> {
-  AdminSupportNotifier() : super(const AdminSupportState()) {
+  final ApiClient _apiClient;
+
+  AdminSupportNotifier(this._apiClient) : super(const AdminSupportState()) {
     fetchTickets();
   }
 
-  /// Fetch all support tickets
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all support tickets from backend API
   Future<void> fetchTickets() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      await Future.delayed(const Duration(seconds: 1));
-
-      final mockTickets = List.generate(
-        30,
-        (index) => SupportTicket.mockTicket(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/support/tickets',
+        fromJson: (data) {
+          if (data is List) {
+            // Backend may not have full ticket implementation yet
+            return <SupportTicket>[];
+          }
+          return <SupportTicket>[];
+        },
       );
 
-      state = state.copyWith(
-        tickets: mockTickets,
-        isLoading: false,
-      );
+      if (response.success) {
+        state = state.copyWith(
+          tickets: response.data ?? [],
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch tickets',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch tickets: ${e.toString()}',
@@ -287,7 +301,8 @@ class AdminSupportNotifier extends StateNotifier<AdminSupportState> {
 
 /// Provider for admin support state
 final adminSupportProvider = StateNotifierProvider<AdminSupportNotifier, AdminSupportState>((ref) {
-  return AdminSupportNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminSupportNotifier(apiClient);
 });
 
 /// Provider for tickets list

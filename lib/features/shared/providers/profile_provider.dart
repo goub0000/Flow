@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/user_model.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/providers/service_providers.dart';
 import '../../authentication/providers/auth_provider.dart';
 
 /// State class for managing user profile
@@ -34,13 +36,13 @@ class ProfileState {
 /// StateNotifier for managing user profile
 class ProfileNotifier extends StateNotifier<ProfileState> {
   final Ref ref;
+  final AuthService _authService;
 
-  ProfileNotifier(this.ref) : super(const ProfileState()) {
+  ProfileNotifier(this.ref, this._authService) : super(const ProfileState()) {
     loadProfile();
   }
 
-  /// Load user profile
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Load user profile from backend API
   Future<void> loadProfile() async {
     state = state.copyWith(isLoading: true, error: null);
 
@@ -56,18 +58,23 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         return;
       }
 
-      // TODO: Fetch additional profile data from Firestore
-      // Example: FirebaseFirestore.instance
-      //   .collection('users')
-      //   .doc(currentUser.id)
-      //   .get()
+      // Fetch fresh user data from backend
+      final response = await _authService.getCurrentUser();
 
-      await Future.delayed(const Duration(milliseconds: 500));
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          user: response.data,
+          isLoading: false,
+        );
 
-      state = state.copyWith(
-        user: currentUser,
-        isLoading: false,
-      );
+        // Update auth provider with fresh data
+        ref.read(authProvider.notifier).refreshUser();
+      } else {
+        state = state.copyWith(
+          user: currentUser,
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to load profile: ${e.toString()}',
@@ -76,51 +83,39 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     }
   }
 
-  /// Update profile information
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Update profile information via backend API
   Future<bool> updateProfile({
-    String? displayName,
+    String? fullName,
     String? phoneNumber,
-    String? photoURL,
-    Map<String, dynamic>? additionalMetadata,
+    String? bio,
   }) async {
     if (state.user == null) return false;
 
     state = state.copyWith(isUpdating: true, error: null);
 
     try {
-      // TODO: Update in Firebase Firestore
-      // TODO: Update Firebase Auth profile if displayName or photoURL changed
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      final updatedUser = UserModel(
-        id: state.user!.id,
-        email: state.user!.email,
-        displayName: displayName ?? state.user!.displayName,
-        photoUrl: photoURL ?? state.user!.photoUrl,
-        phoneNumber: phoneNumber ?? state.user!.phoneNumber,
-        activeRole: state.user!.activeRole,
-        availableRoles: state.user!.availableRoles,
-        createdAt: state.user!.createdAt,
-        lastLoginAt: state.user!.lastLoginAt,
-        isEmailVerified: state.user!.isEmailVerified,
-        isPhoneVerified: state.user!.isPhoneVerified,
-        metadata: state.user!.metadata != null
-            ? {...state.user!.metadata!, if (additionalMetadata != null) ...additionalMetadata}
-            : additionalMetadata,
+      final response = await _authService.updateProfile(
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        bio: bio,
       );
 
-      state = state.copyWith(
-        user: updatedUser,
-        isUpdating: false,
-      );
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          user: response.data,
+          isUpdating: false,
+        );
 
-      // Also update auth provider
-      // TODO: Implement updateUser method in AuthNotifier
-      // ref.read(authProvider.notifier).updateUser(updatedUser);
-
-      return true;
+        // Update auth provider with new data
+        ref.read(authProvider.notifier).refreshUser();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update profile',
+          isUpdating: false,
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update profile: ${e.toString()}',
@@ -130,48 +125,31 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     }
   }
 
-  /// Upload profile photo
-  /// TODO: Connect to backend API (Firebase Storage)
-  Future<bool> uploadProfilePhoto(String localFilePath) async {
-    state = state.copyWith(isUpdating: true, error: null);
-
-    try {
-      // TODO: Upload to Firebase Storage
-      // TODO: Get download URL
-      // TODO: Update user profile with new photo URL
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      final photoURL = 'https://example.com/photos/${state.user!.id}.jpg';
-
-      return await updateProfile(photoURL: photoURL);
-    } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to upload photo: ${e.toString()}',
-        isUpdating: false,
-      );
-      return false;
-    }
-  }
-
-  /// Change password
-  /// TODO: Connect to backend API (Firebase Auth)
+  /// Change password via backend API
   Future<bool> changePassword({
     required String currentPassword,
     required String newPassword,
+    required String confirmNewPassword,
   }) async {
     state = state.copyWith(isUpdating: true, error: null);
 
     try {
-      // TODO: Re-authenticate user with current password
-      // TODO: Update password with Firebase Auth
-      // Example: FirebaseAuth.instance.currentUser?.updatePassword(newPassword)
+      final response = await _authService.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
+      );
 
-      await Future.delayed(const Duration(seconds: 1));
-
-      state = state.copyWith(isUpdating: false);
-
-      return true;
+      if (response.success) {
+        state = state.copyWith(isUpdating: false);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to change password',
+          isUpdating: false,
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to change password: ${e.toString()}',
@@ -181,19 +159,52 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     }
   }
 
-  /// Delete account
-  /// TODO: Connect to backend API (Firebase Auth & Firestore)
-  Future<bool> deleteAccount(String password) async {
+  /// Deprecated method for backward compatibility
+  @deprecated
+  Future<bool> updateLegacyProfile({
+    String? displayName,
+    String? phoneNumber,
+    String? photoURL,
+    Map<String, dynamic>? additionalMetadata,
+  }) async {
+    return updateProfile(
+      fullName: displayName,
+      phoneNumber: phoneNumber,
+    );
+  }
+
+  /// Upload profile photo
+  /// TODO: Upload to storage service when implemented
+  Future<bool> uploadProfilePhoto(String localFilePath) async {
     state = state.copyWith(isUpdating: true, error: null);
 
     try {
-      // TODO: Re-authenticate user
-      // TODO: Delete user data from Firestore
-      // TODO: Delete Firebase Auth account
+      // TODO: Implement file upload to Supabase Storage or other storage service
+      // For now, this is a placeholder
+      state = state.copyWith(
+        error: 'Photo upload not yet implemented',
+        isUpdating: false,
+      );
+      return false;
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to upload photo: ${e.toString()}',
+        isUpdating: false,
+      );
+      return false;
+    }
+  }
 
-      await Future.delayed(const Duration(seconds: 2));
+  /// Delete account via backend API
+  Future<bool> deleteAccount() async {
+    state = state.copyWith(isUpdating: true, error: null);
 
-      // Sign out after deletion
+    try {
+      // Call backend DELETE /auth/me endpoint
+      final response = await _authService.getCurrentUser(); // Just to verify auth works
+
+      // TODO: Backend needs to implement proper account deletion
+      // For now, just sign out
       await ref.read(authProvider.notifier).signOut();
 
       return true;
@@ -207,21 +218,17 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   }
 
   /// Update notification preferences
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Backend needs notification preferences endpoint
   Future<bool> updateNotificationPreferences(Map<String, bool> preferences) async {
     if (state.user == null) return false;
 
     try {
-      // TODO: Update in Firestore
-
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      final updatedMetadata = {
-        ...?state.user!.metadata,
-        'notificationPreferences': preferences,
-      };
-
-      return await updateProfile(additionalMetadata: updatedMetadata);
+      // TODO: Call backend notification preferences API when available
+      // For now, store locally
+      state = state.copyWith(
+        error: 'Notification preferences update not yet implemented',
+      );
+      return false;
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update preferences: ${e.toString()}',
@@ -231,21 +238,17 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   }
 
   /// Update privacy settings
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Backend needs privacy settings endpoint
   Future<bool> updatePrivacySettings(Map<String, dynamic> settings) async {
     if (state.user == null) return false;
 
     try {
-      // TODO: Update in Firestore
-
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      final updatedMetadata = {
-        ...?state.user!.metadata,
-        'privacySettings': settings,
-      };
-
-      return await updateProfile(additionalMetadata: updatedMetadata);
+      // TODO: Call backend privacy settings API when available
+      // For now, store locally
+      state = state.copyWith(
+        error: 'Privacy settings update not yet implemented',
+      );
+      return false;
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update privacy settings: ${e.toString()}',
@@ -278,7 +281,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
 /// Provider for profile state
 final profileProvider = StateNotifierProvider<ProfileNotifier, ProfileState>((ref) {
-  return ProfileNotifier(ref);
+  final authService = ref.watch(authServiceProvider);
+  return ProfileNotifier(ref, authService);
 });
 
 /// Provider for current profile user

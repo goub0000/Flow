@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/course_model.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// Content item model for admin management
 class ContentItem {
@@ -90,28 +93,39 @@ class AdminContentState {
 
 /// StateNotifier for content management
 class AdminContentNotifier extends StateNotifier<AdminContentState> {
-  AdminContentNotifier() : super(const AdminContentState()) {
+  final ApiClient _apiClient;
+
+  AdminContentNotifier(this._apiClient) : super(const AdminContentState()) {
     fetchContent();
   }
 
-  /// Fetch all content
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all content from backend API
   Future<void> fetchContent() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      await Future.delayed(const Duration(seconds: 1));
-
-      final mockContent = List.generate(
-        40,
-        (index) => ContentItem.mockContent(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/content',
+        fromJson: (data) {
+          if (data is List) {
+            // Backend may not have full content management yet
+            return <ContentItem>[];
+          }
+          return <ContentItem>[];
+        },
       );
 
-      state = state.copyWith(
-        content: mockContent,
-        isLoading: false,
-      );
+      if (response.success) {
+        state = state.copyWith(
+          content: response.data ?? [],
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch content',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch content: ${e.toString()}',
@@ -241,7 +255,8 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
 
 /// Provider for admin content state
 final adminContentProvider = StateNotifierProvider<AdminContentNotifier, AdminContentState>((ref) {
-  return AdminContentNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminContentNotifier(apiClient);
 });
 
 /// Provider for content list

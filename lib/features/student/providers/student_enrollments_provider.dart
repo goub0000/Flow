@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 import '../../../core/models/course_model.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 import '../../authentication/providers/auth_provider.dart';
 
 /// State class for managing enrollments
@@ -35,14 +37,13 @@ class EnrollmentsState {
 /// StateNotifier for managing enrollments
 class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
   final Ref ref;
-  final Uuid _uuid = const Uuid();
+  final ApiClient _apiClient;
 
-  EnrollmentsNotifier(this.ref) : super(const EnrollmentsState()) {
+  EnrollmentsNotifier(this.ref, this._apiClient) : super(const EnrollmentsState()) {
     fetchEnrollments();
   }
 
-  /// Fetch student enrollments
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch student enrollments from backend API
   Future<void> fetchEnrollments() async {
     state = state.copyWith(isLoading: true, error: null);
 
@@ -56,19 +57,27 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
         return;
       }
 
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance.collection('enrollments')
-      //   .where('studentId', isEqualTo: user.id).get()
-
-      // Simulating API call delay
-      await Future.delayed(const Duration(seconds: 1));
-
-      // For now, return empty list since mock data is removed
-      // Backend should provide actual enrollment data
-      state = state.copyWith(
-        enrollments: [],
-        isLoading: false,
+      final response = await _apiClient.get(
+        '${ApiConfig.students}/me/enrollments',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((enrollmentJson) => Enrollment.fromJson(enrollmentJson)).toList();
+          }
+          return <Enrollment>[];
+        },
       );
+
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          enrollments: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch enrollments',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch enrollments: ${e.toString()}',
@@ -77,8 +86,7 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
     }
   }
 
-  /// Enroll in a course
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Enroll in a course via backend API
   Future<bool> enrollInCourse(String courseId, Course? course) async {
     state = state.copyWith(isEnrolling: true, error: null);
 
@@ -105,30 +113,28 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
         return false;
       }
 
-      final enrollment = Enrollment(
-        id: _uuid.v4(),
-        studentId: user.id,
-        courseId: courseId,
-        course: course,
-        enrolledAt: DateTime.now(),
-        status: 'active',
-        progress: 0,
+      final response = await _apiClient.post(
+        ApiConfig.enrollments,
+        data: {
+          'course_id': courseId,
+        },
+        fromJson: (data) => Enrollment.fromJson(data),
       );
 
-      // TODO: Replace with actual Firebase write
-      // Example: await FirebaseFirestore.instance.collection('enrollments').add(enrollment.toJson())
-      // Also update course enrolledStudents count
-
-      // Simulating API call delay
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Add to local state
-      state = state.copyWith(
-        enrollments: [...state.enrollments, enrollment],
-        isEnrolling: false,
-      );
-
-      return true;
+      if (response.success && response.data != null) {
+        // Add new enrollment to local state
+        state = state.copyWith(
+          enrollments: [...state.enrollments, response.data!],
+          isEnrolling: false,
+        );
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to enroll in course',
+          isEnrolling: false,
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to enroll in course: ${e.toString()}',
@@ -173,7 +179,8 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
 
 /// Provider for enrollments state
 final enrollmentsProvider = StateNotifierProvider<EnrollmentsNotifier, EnrollmentsState>((ref) {
-  return EnrollmentsNotifier(ref);
+  final apiClient = ref.watch(apiClientProvider);
+  return EnrollmentsNotifier(ref, apiClient);
 });
 
 /// Provider for enrollments list

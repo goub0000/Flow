@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/payment_model.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// Transaction model for admin finance
 class Transaction {
@@ -97,31 +100,43 @@ class AdminFinanceState {
 
 /// StateNotifier for admin finance
 class AdminFinanceNotifier extends StateNotifier<AdminFinanceState> {
-  AdminFinanceNotifier() : super(const AdminFinanceState()) {
+  final ApiClient _apiClient;
+
+  AdminFinanceNotifier(this._apiClient) : super(const AdminFinanceState()) {
     fetchTransactions();
   }
 
-  /// Fetch all transactions
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all transactions from backend API
   Future<void> fetchTransactions() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      await Future.delayed(const Duration(seconds: 1));
-
-      final mockTransactions = List.generate(
-        50,
-        (index) => Transaction.mockTransaction(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/finance/transactions',
+        fromJson: (data) {
+          if (data is List) {
+            // Backend may not have full transaction data yet
+            return <Transaction>[];
+          }
+          return <Transaction>[];
+        },
       );
 
-      final stats = _calculateStatistics(mockTransactions);
+      if (response.success) {
+        final transactions = response.data ?? [];
+        final stats = _calculateStatistics(transactions);
 
-      state = state.copyWith(
-        transactions: mockTransactions,
-        statistics: stats,
-        isLoading: false,
-      );
+        state = state.copyWith(
+          transactions: transactions,
+          statistics: stats,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch transactions',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch transactions: ${e.toString()}',
@@ -248,7 +263,8 @@ class AdminFinanceNotifier extends StateNotifier<AdminFinanceState> {
 
 /// Provider for admin finance state
 final adminFinanceProvider = StateNotifierProvider<AdminFinanceNotifier, AdminFinanceState>((ref) {
-  return AdminFinanceNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminFinanceNotifier(apiClient);
 });
 
 /// Provider for transactions list

@@ -19,6 +19,19 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
+def _add_computed_fields(program: dict) -> dict:
+    """Add computed fields required by ProgramResponse schema"""
+    program['available_slots'] = program['max_students'] - program['enrolled_students']
+    program['fill_percentage'] = (
+        (program['enrolled_students'] / program['max_students'] * 100)
+        if program['max_students'] > 0 else 0
+    )
+    # If updated_at doesn't exist in database, use created_at
+    if 'updated_at' not in program:
+        program['updated_at'] = program['created_at']
+    return program
+
+
 @router.get("/programs", response_model=ProgramListResponse)
 async def get_programs(
     institution_id: Optional[UUID] = None,
@@ -69,9 +82,12 @@ async def get_programs(
         # Execute query
         result = query.execute()
 
+        # Add computed fields to all programs
+        programs_with_computed = [_add_computed_fields(p) for p in result.data]
+
         return {
             "total": result.count if result.count else 0,
-            "programs": result.data
+            "programs": programs_with_computed
         }
 
     except Exception as e:
@@ -90,7 +106,7 @@ async def get_program(program_id: UUID):
         if not result.data:
             raise HTTPException(status_code=404, detail="Program not found")
 
-        return result.data[0]
+        return _add_computed_fields(result.data[0])
 
     except HTTPException:
         raise
@@ -120,7 +136,20 @@ async def create_program(program: ProgramCreate):
         if not result.data:
             raise HTTPException(status_code=500, detail="Failed to create program")
 
-        return result.data[0]
+        # Get the created program
+        created_program = result.data[0]
+
+        # Add computed fields required by ProgramResponse
+        created_program['available_slots'] = created_program['max_students'] - created_program['enrolled_students']
+        created_program['fill_percentage'] = (
+            (created_program['enrolled_students'] / created_program['max_students'] * 100)
+            if created_program['max_students'] > 0 else 0
+        )
+        # If updated_at doesn't exist in database, use created_at
+        if 'updated_at' not in created_program:
+            created_program['updated_at'] = created_program['created_at']
+
+        return created_program
 
     except HTTPException:
         raise

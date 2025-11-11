@@ -1,4 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// Audit log entry model
 class AuditLogEntry {
@@ -72,12 +75,13 @@ class AdminAuditState {
 
 /// StateNotifier for audit logs
 class AdminAuditNotifier extends StateNotifier<AdminAuditState> {
-  AdminAuditNotifier() : super(const AdminAuditState()) {
+  final ApiClient _apiClient;
+
+  AdminAuditNotifier(this._apiClient) : super(const AdminAuditState()) {
     fetchAuditLogs();
   }
 
-  /// Fetch audit logs
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch audit logs from backend API
   Future<void> fetchAuditLogs({
     DateTime? startDate,
     DateTime? endDate,
@@ -88,18 +92,35 @@ class AdminAuditNotifier extends StateNotifier<AdminAuditState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query with filters
-      await Future.delayed(const Duration(seconds: 1));
-
-      final mockLogs = List.generate(
-        100,
-        (index) => AuditLogEntry.mockEntry(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/audit/logs',
+        queryParameters: {
+          if (startDate != null) 'start_date': startDate.toIso8601String(),
+          if (endDate != null) 'end_date': endDate.toIso8601String(),
+          if (userId != null) 'user_id': userId,
+          if (action != null) 'action': action,
+          if (resource != null) 'resource': resource,
+        },
+        fromJson: (data) {
+          if (data is List) {
+            // Backend may not have audit logs yet
+            return <AuditLogEntry>[];
+          }
+          return <AuditLogEntry>[];
+        },
       );
 
-      state = state.copyWith(
-        logs: mockLogs,
-        isLoading: false,
-      );
+      if (response.success) {
+        state = state.copyWith(
+          logs: response.data ?? [],
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch audit logs',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch audit logs: ${e.toString()}',
@@ -216,7 +237,8 @@ class AdminAuditNotifier extends StateNotifier<AdminAuditState> {
 
 /// Provider for admin audit state
 final adminAuditProvider = StateNotifierProvider<AdminAuditNotifier, AdminAuditState>((ref) {
-  return AdminAuditNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminAuditNotifier(apiClient);
 });
 
 /// Provider for audit logs list

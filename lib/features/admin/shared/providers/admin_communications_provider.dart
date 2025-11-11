@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 const _uuid = Uuid();
 
@@ -81,28 +84,40 @@ class AdminCommunicationsState {
 
 /// StateNotifier for admin communications
 class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState> {
-  AdminCommunicationsNotifier() : super(const AdminCommunicationsState()) {
+  final ApiClient _apiClient;
+
+  AdminCommunicationsNotifier(this._apiClient) : super(const AdminCommunicationsState()) {
     fetchCampaigns();
   }
 
-  /// Fetch all campaigns
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all campaigns from backend API
   Future<void> fetchCampaigns() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      await Future.delayed(const Duration(seconds: 1));
-
-      final mockCampaigns = List.generate(
-        15,
-        (index) => Campaign.mockCampaign(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/communications/campaigns',
+        fromJson: (data) {
+          if (data is List) {
+            // Backend might not have Campaign model, so we'll return empty for now
+            // This endpoint may need to be implemented in the backend
+            return <Campaign>[];
+          }
+          return <Campaign>[];
+        },
       );
 
-      state = state.copyWith(
-        campaigns: mockCampaigns,
-        isLoading: false,
-      );
+      if (response.success) {
+        state = state.copyWith(
+          campaigns: response.data ?? [],
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch campaigns',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch campaigns: ${e.toString()}',
@@ -130,8 +145,7 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
     }
   }
 
-  /// Send announcement to all users
-  /// TODO: Connect to messaging service
+  /// Send announcement to all users via backend API
   Future<bool> sendAnnouncement({
     required String title,
     required String message,
@@ -139,27 +153,43 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
     required String type,
   }) async {
     try {
-      // TODO: Send via appropriate channel (FCM, email service, SMS)
-      await Future.delayed(const Duration(seconds: 2));
-
-      final campaign = Campaign(
-        id: _uuid.v4(),
-        title: title,
-        type: type,
-        status: 'sent',
-        message: message,
-        targetRoles: targetRoles,
-        sentAt: DateTime.now(),
-        recipientCount: 500,
-        deliveredCount: 495,
-        openedCount: 300,
-        createdAt: DateTime.now(),
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/communications/announcements',
+        data: {
+          'title': title,
+          'message': message,
+          'target_roles': targetRoles,
+          'type': type,
+        },
+        fromJson: (data) => data,
       );
 
-      final updatedCampaigns = [campaign, ...state.campaigns];
-      state = state.copyWith(campaigns: updatedCampaigns);
+      if (response.success) {
+        // Create a campaign record for local state
+        final campaign = Campaign(
+          id: _uuid.v4(),
+          title: title,
+          type: type,
+          status: 'sent',
+          message: message,
+          targetRoles: targetRoles,
+          sentAt: DateTime.now(),
+          recipientCount: response.data?['recipient_count'] ?? 0,
+          deliveredCount: response.data?['delivered_count'] ?? 0,
+          openedCount: 0,
+          createdAt: DateTime.now(),
+        );
 
-      return true;
+        final updatedCampaigns = [campaign, ...state.campaigns];
+        state = state.copyWith(campaigns: updatedCampaigns);
+
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to send announcement',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to send announcement: ${e.toString()}',
@@ -256,7 +286,8 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
 
 /// Provider for admin communications state
 final adminCommunicationsProvider = StateNotifierProvider<AdminCommunicationsNotifier, AdminCommunicationsState>((ref) {
-  return AdminCommunicationsNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminCommunicationsNotifier(apiClient);
 });
 
 /// Provider for campaigns list

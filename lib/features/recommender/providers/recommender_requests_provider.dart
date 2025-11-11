@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/counseling_models.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// State class for managing recommendation requests
 class RecommenderRequestsState {
@@ -28,34 +31,38 @@ class RecommenderRequestsState {
 
 /// StateNotifier for managing recommendation requests
 class RecommenderRequestsNotifier extends StateNotifier<RecommenderRequestsState> {
-  RecommenderRequestsNotifier() : super(const RecommenderRequestsState()) {
+  final ApiClient _apiClient;
+
+  RecommenderRequestsNotifier(this._apiClient) : super(const RecommenderRequestsState()) {
     fetchRequests();
   }
 
-  /// Fetch all recommendation requests
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Fetch all recommendation requests from backend API
   Future<void> fetchRequests() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('recommendations')
-      //   .where('recommenderId', isEqualTo: currentRecommenderId)
-      //   .get()
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Mock data for development
-      final mockRequests = List<Recommendation>.generate(
-        10,
-        (index) => Recommendation.mockRecommendation(index),
+      final response = await _apiClient.get(
+        '${ApiConfig.recommender}/recommendations',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((recJson) => Recommendation.fromJson(recJson)).toList();
+          }
+          return <Recommendation>[];
+        },
       );
 
-      state = state.copyWith(
-        requests: mockRequests,
-        isLoading: false,
-      );
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          requests: response.data!,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch requests',
+          isLoading: false,
+        );
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to fetch requests: ${e.toString()}',
@@ -64,21 +71,34 @@ class RecommenderRequestsNotifier extends StateNotifier<RecommenderRequestsState
     }
   }
 
-  /// Update recommendation
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> updateRecommendation(Recommendation recommendation) async {
+  /// Update recommendation via backend API
+  Future<bool> updateRecommendation(String recommendationId, {
+    String? content,
+    String? status,
+  }) async {
     try {
-      // TODO: Replace with actual Firebase update
+      final response = await _apiClient.put(
+        '${ApiConfig.recommender}/recommendations/$recommendationId',
+        data: {
+          if (content != null) 'content': content,
+          if (status != null) 'status': status,
+        },
+        fromJson: (data) => Recommendation.fromJson(data),
+      );
 
-      await Future.delayed(const Duration(milliseconds: 500));
+      if (response.success && response.data != null) {
+        final updatedRequests = state.requests.map((r) {
+          return r.id == recommendationId ? response.data! : r;
+        }).toList();
 
-      final updatedRequests = state.requests.map((r) {
-        return r.id == recommendation.id ? recommendation : r;
-      }).toList();
-
-      state = state.copyWith(requests: updatedRequests);
-
-      return true;
+        state = state.copyWith(requests: updatedRequests);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update recommendation',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update recommendation: ${e.toString()}',
@@ -87,37 +107,24 @@ class RecommenderRequestsNotifier extends StateNotifier<RecommenderRequestsState
     }
   }
 
-  /// Submit recommendation
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Submit recommendation via backend API
   Future<bool> submitRecommendation(String requestId, String content) async {
     try {
-      // TODO: Submit to Firebase and notify student/institution
+      final response = await _apiClient.post(
+        '${ApiConfig.recommender}/recommendations/$requestId/submit',
+        data: {
+          'content': content,
+        },
+        fromJson: (data) => Recommendation.fromJson(data),
+      );
 
-      await Future.delayed(const Duration(milliseconds: 500));
+      if (response.success && response.data != null) {
+        final updatedRequests = state.requests.map((r) {
+          return r.id == requestId ? response.data! : r;
+        }).toList();
 
-      final updatedRequests = state.requests.map((r) {
-        if (r.id == requestId) {
-          return Recommendation(
-            id: r.id,
-            studentId: r.studentId,
-            studentName: r.studentName,
-            studentEmail: r.studentEmail,
-            counselorId: r.counselorId,
-            institutionName: r.institutionName,
-            programName: r.programName,
-            deadline: r.deadline,
-            status: 'submitted',
-            content: content,
-            requestedDate: r.requestedDate,
-            submittedDate: DateTime.now(),
-          );
-        }
-        return r;
-      }).toList();
-
-      state = state.copyWith(requests: updatedRequests);
-
-      return true;
+        state = state.copyWith(requests: updatedRequests);
+        return true;
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to submit recommendation: ${e.toString()}',
@@ -295,7 +302,8 @@ class RecommenderRequestsNotifier extends StateNotifier<RecommenderRequestsState
 
 /// Provider for recommender requests state
 final recommenderRequestsProvider = StateNotifierProvider<RecommenderRequestsNotifier, RecommenderRequestsState>((ref) {
-  return RecommenderRequestsNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return RecommenderRequestsNotifier(apiClient);
 });
 
 /// Provider for requests list

@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/constants/user_roles.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// User filter options
 class UserFilter {
@@ -60,8 +63,9 @@ class AdminUsersState {
 /// StateNotifier for managing users (admin)
 class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
   final SupabaseClient _supabase = Supabase.instance.client;
+  final ApiClient _apiClient;
 
-  AdminUsersNotifier() : super(const AdminUsersState()) {
+  AdminUsersNotifier(this._apiClient) : super(const AdminUsersState()) {
     fetchAllUsers();
   }
 
@@ -143,36 +147,43 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
   }
 
   /// Update user status (activate/deactivate)
-  /// TODO: Connect to backend API (Firebase Firestore)
   Future<bool> updateUserStatus(String userId, bool isActive) async {
     try {
-      // TODO: Update in Firebase
+      final response = await _apiClient.put(
+        '${ApiConfig.admin}/users/$userId/status',
+        data: {'is_active': isActive},
+        fromJson: (data) => data,
+      );
 
-      await Future.delayed(const Duration(milliseconds: 300));
+      if (response.success) {
+        final updatedUsers = state.users.map((user) {
+          if (user.id == userId) {
+            return UserModel(
+              id: user.id,
+              email: user.email,
+              displayName: user.displayName,
+              photoUrl: user.photoUrl,
+              phoneNumber: user.phoneNumber,
+              activeRole: user.activeRole,
+              availableRoles: user.availableRoles,
+              createdAt: user.createdAt,
+              lastLoginAt: user.lastLoginAt,
+              isEmailVerified: user.isEmailVerified,
+              isPhoneVerified: user.isPhoneVerified,
+              metadata: {...?user.metadata, 'isActive': isActive},
+            );
+          }
+          return user;
+        }).toList();
 
-      final updatedUsers = state.users.map((user) {
-        if (user.id == userId) {
-          return UserModel(
-            id: user.id,
-            email: user.email,
-            displayName: user.displayName,
-            photoUrl: user.photoUrl,
-            phoneNumber: user.phoneNumber,
-            activeRole: user.activeRole,
-            availableRoles: user.availableRoles,
-            createdAt: user.createdAt,
-            lastLoginAt: user.lastLoginAt,
-            isEmailVerified: user.isEmailVerified,
-            isPhoneVerified: user.isPhoneVerified,
-            metadata: {...?user.metadata, 'isActive': isActive},
-          );
-        }
-        return user;
-      }).toList();
-
-      state = state.copyWith(users: updatedUsers);
-
-      return true;
+        state = state.copyWith(users: updatedUsers);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update user status',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update user status: ${e.toString()}',
@@ -182,12 +193,9 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
   }
 
   /// Delete user
-  /// TODO: Connect to backend API (Firebase Firestore)
   Future<bool> deleteUser(String userId) async {
     try {
-      // TODO: Delete from Firebase (soft delete recommended)
-
-      await Future.delayed(const Duration(milliseconds: 500));
+      await _apiClient.delete('${ApiConfig.admin}/users/$userId');
 
       final updatedUsers = state.users.where((user) => user.id != userId).toList();
       state = state.copyWith(users: updatedUsers);
@@ -202,38 +210,48 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
   }
 
   /// Bulk update user roles
-  /// TODO: Connect to backend API (Firebase Firestore)
   Future<bool> bulkUpdateRoles(List<String> userIds, String newRole) async {
     try {
-      // TODO: Batch update in Firebase
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/users/bulk-update-roles',
+        data: {
+          'user_ids': userIds,
+          'role': newRole,
+        },
+        fromJson: (data) => data,
+      );
 
-      await Future.delayed(const Duration(milliseconds: 800));
+      if (response.success) {
+        // Update locally
+        final updatedUsers = state.users.map((user) {
+          if (userIds.contains(user.id)) {
+            final updatedRoles = {...user.availableRoles, UserRole.values.firstWhere((r) => r.name == newRole, orElse: () => user.activeRole)};
+            return UserModel(
+              id: user.id,
+              email: user.email,
+              displayName: user.displayName,
+              photoUrl: user.photoUrl,
+              phoneNumber: user.phoneNumber,
+              activeRole: user.activeRole,
+              availableRoles: updatedRoles.toList(),
+              createdAt: user.createdAt,
+              lastLoginAt: user.lastLoginAt,
+              isEmailVerified: user.isEmailVerified,
+              isPhoneVerified: user.isPhoneVerified,
+              metadata: user.metadata,
+            );
+          }
+          return user;
+        }).toList();
 
-      // Update locally
-      final updatedUsers = state.users.map((user) {
-        if (userIds.contains(user.id)) {
-          final updatedRoles = {...user.availableRoles, UserRole.values.firstWhere((r) => r.name == newRole, orElse: () => user.activeRole)};
-          return UserModel(
-            id: user.id,
-            email: user.email,
-            displayName: user.displayName,
-            photoUrl: user.photoUrl,
-            phoneNumber: user.phoneNumber,
-            activeRole: user.activeRole,
-            availableRoles: updatedRoles.toList(),
-            createdAt: user.createdAt,
-            lastLoginAt: user.lastLoginAt,
-            isEmailVerified: user.isEmailVerified,
-            isPhoneVerified: user.isPhoneVerified,
-            metadata: user.metadata,
-          );
-        }
-        return user;
-      }).toList();
-
-      state = state.copyWith(users: updatedUsers);
-
-      return true;
+        state = state.copyWith(users: updatedUsers);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to bulk update roles',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to bulk update roles: ${e.toString()}',
@@ -300,7 +318,8 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
 
 /// Provider for admin users state
 final adminUsersProvider = StateNotifierProvider<AdminUsersNotifier, AdminUsersState>((ref) {
-  return AdminUsersNotifier();
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminUsersNotifier(apiClient);
 });
 
 /// Provider for filtered users list
