@@ -207,62 +207,62 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
 }
 
 /// Provider for institution applicants state
-final institutionApplicantsProvider = StateNotifierProvider<InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
+final institutionApplicantsProvider = StateNotifierProvider.autoDispose<InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
   // Get access token from auth provider
   final authState = ref.watch(authProvider);
   return InstitutionApplicantsNotifier(accessToken: authState.accessToken);
 });
 
 /// Provider for applicants list
-final institutionApplicantsListProvider = Provider<List<Applicant>>((ref) {
+final institutionApplicantsListProvider = Provider.autoDispose<List<Applicant>>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.applicants;
 });
 
 /// Provider for checking if applicants are loading
-final institutionApplicantsLoadingProvider = Provider<bool>((ref) {
+final institutionApplicantsLoadingProvider = Provider.autoDispose<bool>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.isLoading;
 });
 
 /// Provider for applicants error
-final institutionApplicantsErrorProvider = Provider<String?>((ref) {
+final institutionApplicantsErrorProvider = Provider.autoDispose<String?>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.error;
 });
 
 /// Provider for applicant statistics
-final institutionApplicantStatisticsProvider = Provider<Map<String, int>>((ref) {
+final institutionApplicantStatisticsProvider = Provider.autoDispose<Map<String, int>>((ref) {
   final notifier = ref.watch(institutionApplicantsProvider.notifier);
   return notifier.getApplicantStatistics();
 });
 
 /// Provider for pending applicants
-final pendingApplicantsProvider = Provider<List<Applicant>>((ref) {
+final pendingApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.applicants.where((a) => a.status == 'pending').toList();
 });
 
 /// Provider for under review applicants
-final underReviewApplicantsProvider = Provider<List<Applicant>>((ref) {
+final underReviewApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.applicants.where((a) => a.status == 'under_review').toList();
 });
 
 /// Provider for accepted applicants
-final acceptedApplicantsProvider = Provider<List<Applicant>>((ref) {
+final acceptedApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.applicants.where((a) => a.status == 'accepted').toList();
 });
 
 /// Provider for rejected applicants
-final rejectedApplicantsProvider = Provider<List<Applicant>>((ref) {
+final rejectedApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
   final applicantsState = ref.watch(institutionApplicantsProvider);
   return applicantsState.applicants.where((a) => a.status == 'rejected').toList();
 });
 
 /// Provider for recent applicants
-final recentApplicantsProvider = Provider<List<Applicant>>((ref) {
+final recentApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
   final notifier = ref.watch(institutionApplicantsProvider.notifier);
   return notifier.getRecentApplicants();
 });

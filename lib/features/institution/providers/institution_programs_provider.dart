@@ -7,7 +7,7 @@ import '../../authentication/providers/auth_provider.dart';
 const _uuid = Uuid();
 
 // Provider for Programs API Service
-final programsApiServiceProvider = Provider<ProgramsApiService>((ref) {
+final programsApiServiceProvider = Provider.autoDispose<ProgramsApiService>((ref) {
   // Get access token from auth provider
   final authState = ref.watch(authProvider);
   return ProgramsApiService(accessToken: authState.accessToken);
@@ -195,38 +195,38 @@ class InstitutionProgramsNotifier extends StateNotifier<InstitutionProgramsState
 }
 
 /// Provider for institution programs state
-final institutionProgramsProvider = StateNotifierProvider<InstitutionProgramsNotifier, InstitutionProgramsState>((ref) {
+final institutionProgramsProvider = StateNotifierProvider.autoDispose<InstitutionProgramsNotifier, InstitutionProgramsState>((ref) {
   final apiService = ref.watch(programsApiServiceProvider);
   // TODO: Get actual institution ID from auth/context
   return InstitutionProgramsNotifier(apiService);
 });
 
 /// Provider for programs list
-final institutionProgramsListProvider = Provider<List<Program>>((ref) {
+final institutionProgramsListProvider = Provider.autoDispose<List<Program>>((ref) {
   final programsState = ref.watch(institutionProgramsProvider);
   return programsState.programs;
 });
 
 /// Provider for checking if programs are loading
-final institutionProgramsLoadingProvider = Provider<bool>((ref) {
+final institutionProgramsLoadingProvider = Provider.autoDispose<bool>((ref) {
   final programsState = ref.watch(institutionProgramsProvider);
   return programsState.isLoading;
 });
 
 /// Provider for programs error
-final institutionProgramsErrorProvider = Provider<String?>((ref) {
+final institutionProgramsErrorProvider = Provider.autoDispose<String?>((ref) {
   final programsState = ref.watch(institutionProgramsProvider);
   return programsState.error;
 });
 
 /// Provider for active programs only
-final activeInstitutionProgramsProvider = Provider<List<Program>>((ref) {
+final activeInstitutionProgramsProvider = Provider.autoDispose<List<Program>>((ref) {
   final programsState = ref.watch(institutionProgramsProvider);
   return programsState.programs.where((p) => p.isActive).toList();
 });
 
 /// Provider for program statistics
-final institutionProgramStatisticsProvider = Provider<Map<String, dynamic>>((ref) {
+final institutionProgramStatisticsProvider = Provider.autoDispose<Map<String, dynamic>>((ref) {
   final notifier = ref.watch(institutionProgramsProvider.notifier);
   return notifier.getProgramStatistics();
 });
