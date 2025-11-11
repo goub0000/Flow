@@ -49,7 +49,7 @@ class ProgramsApiService {
 
       final response = await _client.get(
         uri,
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -71,7 +71,7 @@ class ProgramsApiService {
     try {
       final response = await _client.get(
         Uri.parse('$baseUrl/programs/$programId'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -112,7 +112,7 @@ class ProgramsApiService {
     try {
       final response = await _client.put(
         Uri.parse('$baseUrl/programs/${program.id}'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
         body: jsonEncode(program.toJson()),
       );
 
@@ -132,7 +132,7 @@ class ProgramsApiService {
     try {
       final response = await _client.delete(
         Uri.parse('$baseUrl/programs/$programId'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
       );
 
       if (response.statusCode != 204 && response.statusCode != 200) {
@@ -148,7 +148,7 @@ class ProgramsApiService {
     try {
       final response = await _client.patch(
         Uri.parse('$baseUrl/programs/$programId/toggle-status'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -173,7 +173,7 @@ class ProgramsApiService {
 
       final response = await _client.get(
         uri,
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -206,7 +206,7 @@ class ProgramsApiService {
     try {
       final response = await _client.post(
         Uri.parse('$baseUrl/programs/$programId/enroll'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _getHeaders(),
       );
 
       if (response.statusCode == 200) {
