@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/providers/service_providers.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 /// State class for managing user profile
 class ProfileState {
@@ -85,16 +86,21 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   /// Update profile information via backend API
   Future<bool> updateProfile({
     String? fullName,
+    String? displayName,
     String? phoneNumber,
     String? bio,
+    Map<String, dynamic>? additionalMetadata,
   }) async {
     if (state.user == null) return false;
 
     state = state.copyWith(isUpdating: true, error: null);
 
     try {
+      // Use displayName as fullName if provided
+      final nameToUpdate = displayName ?? fullName;
+
       final response = await _authService.updateProfile(
-        fullName: fullName,
+        fullName: nameToUpdate,
         phoneNumber: phoneNumber,
         bio: bio,
       );

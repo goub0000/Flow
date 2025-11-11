@@ -70,8 +70,12 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
           currentGrade: 0.0, // TODO: Add grade tracking to enrollment model
           assignmentsCompleted: 0, // TODO: Add assignments tracking
           totalAssignments: 0,
+          quizzesCompleted: 0, // TODO: Add quiz tracking
+          totalQuizzes: 0,
           timeSpent: Duration.zero, // TODO: Add time tracking
-          lastAccessedAt: enrollment.enrolledAt,
+          lastAccessed: enrollment.enrolledAt,
+          modules: [], // TODO: Add module progress tracking
+          grades: [], // TODO: Add grade tracking
         );
       }).toList();
 

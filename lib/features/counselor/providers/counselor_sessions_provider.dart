@@ -74,6 +74,7 @@ class CounselorSessionsNotifier extends StateNotifier<CounselorSessionsState> {
   /// Create a new session via backend API
   Future<bool> createSession({
     required String studentId,
+    String? studentName,
     required String type,
     required DateTime scheduledDate,
     required Duration duration,
@@ -85,6 +86,7 @@ class CounselorSessionsNotifier extends StateNotifier<CounselorSessionsState> {
         '${ApiConfig.counseling}/sessions',
         data: {
           'student_id': studentId,
+          if (studentName != null) 'student_name': studentName,
           'type': type,
           'scheduled_date': scheduledDate.toIso8601String(),
           'duration_minutes': duration.inMinutes,
@@ -146,6 +148,37 @@ class CounselorSessionsNotifier extends StateNotifier<CounselorSessionsState> {
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update session: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  /// Update session status via backend API
+  Future<bool> updateSessionStatus(String sessionId, String status) async {
+    try {
+      final response = await _apiClient.put(
+        '${ApiConfig.counseling}/sessions/$sessionId',
+        data: {
+          'status': status,
+        },
+        fromJson: (data) => CounselingSession.fromJson(data),
+      );
+
+      if (response.success && response.data != null) {
+        final updatedSessions = state.sessions.map((s) {
+          return s.id == sessionId ? response.data! : s;
+        }).toList();
+        state = state.copyWith(sessions: updatedSessions);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update session status',
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to update session status: ${e.toString()}',
       );
       return false;
     }

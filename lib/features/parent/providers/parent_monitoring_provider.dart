@@ -68,14 +68,13 @@ class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
             // Convert enrollments to course progress
             return data.map((e) {
               return CourseProgress(
-                courseId: e['course_id'] ?? '',
+                id: e['course_id'] ?? '',
                 courseName: e['course']?['title'] ?? 'Unknown',
                 completionPercentage: (e['progress'] ?? 0).toDouble(),
                 currentGrade: 0.0,
                 assignmentsCompleted: 0,
                 totalAssignments: 0,
-                timeSpent: Duration.zero,
-                lastAccessedAt: DateTime.now(),
+                lastActivity: DateTime.now(),
               );
             }).toList();
           }
