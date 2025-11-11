@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/providers/service_providers.dart';
-import '../../authentication/providers/auth_provider.dart';
 
 /// State class for managing user profile
 class ProfileState {

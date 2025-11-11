@@ -125,6 +125,12 @@ class RecommenderRequestsNotifier extends StateNotifier<RecommenderRequestsState
 
         state = state.copyWith(requests: updatedRequests);
         return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to submit recommendation',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to submit recommendation: ${e.toString()}',

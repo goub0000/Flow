@@ -39,10 +39,13 @@ class ApiConfig {
   static const String messaging = '/messages';
   static const String notifications = '/notifications';
   static const String counseling = '/counseling';
+  static const String parent = '/parent';
   static const String parentMonitoring = '/parent';
   static const String achievements = '/achievements';
   static const String monitoring = '/monitoring';
   static const String admin = '/admin';
+  static const String recommender = '/recommender';
+  static const String documents = '/documents';
 
   // Storage keys
   static const String accessTokenKey = 'access_token';

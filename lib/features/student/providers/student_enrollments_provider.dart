@@ -3,7 +3,6 @@ import '../../../core/models/course_model.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart';
-import '../../authentication/providers/auth_provider.dart';
 
 /// State class for managing enrollments
 class EnrollmentsState {
