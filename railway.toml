@@ -1,21 +1,12 @@
-# Railway Configuration File
+# Railway Configuration File - Flutter Web Frontend
 # https://docs.railway.app/deploy/config-as-code
 
 [build]
 builder = "NIXPACKS"
-buildCommand = "pip install -r requirements.txt"
 
 [deploy]
-startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "node server.js"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
-healthcheckPath = "/health"
+healthcheckPath = "/"
 healthcheckTimeout = 300
-
-# Environment variables required (set these in Railway dashboard)
-# SUPABASE_URL - Your Supabase project URL
-# SUPABASE_KEY - Your Supabase service role key
-# ALLOWED_ORIGINS - Comma-separated list of allowed CORS origins
-# COLLEGE_SCORECARD_API_KEY - (Optional) For data enrichment
-# KAGGLE_USERNAME - (Optional) For ranking data imports
-# KAGGLE_KEY - (Optional) For ranking data imports

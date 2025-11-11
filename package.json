@@ -1,0 +1,16 @@
+{
+  "name": "flow-edtech-web",
+  "version": "1.0.0",
+  "description": "Flow EdTech Platform - Web Frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "flutter build web --release"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
