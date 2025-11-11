@@ -10,9 +10,12 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --production
 
-# Copy server and build files
+# Copy server file
 COPY server.js ./
-COPY build/web ./build/web
+
+# Copy Flutter web build (create directory if needed)
+RUN mkdir -p ./build/web
+COPY build/web/ ./build/web/
 
 # Expose port
 EXPOSE 3000
