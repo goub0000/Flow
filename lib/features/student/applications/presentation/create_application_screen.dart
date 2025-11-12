@@ -391,40 +391,41 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               setState(() => _currentStep++);
             } else if (_currentStep == 1) {
               // Step 2: Validate personal information
-              if (_fullNameController.text.trim().isEmpty ||
-                  _emailController.text.trim().isEmpty ||
-                  _phoneController.text.trim().isEmpty ||
-                  _streetAddressController.text.trim().isEmpty ||
-                  _cityController.text.trim().isEmpty ||
-                  _selectedCountry == null ||
-                  _selectedState == null) {
+              final missingPersonalFields = <String>[];
+              if (_fullNameController.text.trim().isEmpty) missingPersonalFields.add('Full Name');
+              if (_emailController.text.trim().isEmpty) missingPersonalFields.add('Email');
+              if (_phoneController.text.trim().isEmpty) missingPersonalFields.add('Phone');
+              if (_streetAddressController.text.trim().isEmpty) missingPersonalFields.add('Street Address');
+              if (_cityController.text.trim().isEmpty) missingPersonalFields.add('City/Town');
+              if (_selectedCountry == null) missingPersonalFields.add('Country');
+              if (_selectedState == null) missingPersonalFields.add('State/Province');
+
+              if (missingPersonalFields.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please fill in all personal information fields'),
+                  SnackBar(
+                    content: Text('Missing: ${missingPersonalFields.join(", ")}'),
                     backgroundColor: AppColors.error,
+                    duration: const Duration(seconds: 5),
                   ),
                 );
-                return;
-              }
-              // Validate form fields
-              if (!_formKey.currentState!.validate()) {
                 return;
               }
               setState(() => _currentStep++);
             } else if (_currentStep == 2) {
               // Step 3: Validate academic information
-              if (_previousSchoolController.text.trim().isEmpty ||
-                  _gpaController.text.trim().isEmpty ||
-                  _personalStatementController.text.trim().isEmpty) {
+              final missingAcademicFields = <String>[];
+              if (_previousSchoolController.text.trim().isEmpty) missingAcademicFields.add('Previous School');
+              if (_gpaController.text.trim().isEmpty) missingAcademicFields.add('GPA');
+              if (_personalStatementController.text.trim().isEmpty) missingAcademicFields.add('Personal Statement');
+
+              if (missingAcademicFields.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please fill in all academic information fields'),
+                  SnackBar(
+                    content: Text('Missing: ${missingAcademicFields.join(", ")}'),
                     backgroundColor: AppColors.error,
+                    duration: const Duration(seconds: 5),
                   ),
                 );
-                return;
-              }
-              if (!_formKey.currentState!.validate()) {
                 return;
               }
               setState(() => _currentStep++);
