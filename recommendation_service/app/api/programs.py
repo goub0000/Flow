@@ -140,6 +140,12 @@ async def create_program(program: ProgramCreate):
         # Convert Decimal to float for JSON serialization
         program_data['fee'] = float(program_data['fee'])
 
+        # Convert datetime objects to ISO strings for Supabase
+        for field in ['application_deadline', 'start_date']:
+            if field in program_data and program_data[field] is not None:
+                if isinstance(program_data[field], datetime):
+                    program_data[field] = program_data[field].isoformat()
+
         # Insert into database
         result = db.table('programs').insert(program_data).execute()
 
@@ -178,6 +184,12 @@ async def update_program(program_id: UUID, program: ProgramUpdate):
         # Convert Decimal to float if present
         if 'fee' in update_data:
             update_data['fee'] = float(update_data['fee'])
+
+        # Convert datetime objects to ISO strings for Supabase
+        for field in ['application_deadline', 'start_date']:
+            if field in update_data and update_data[field] is not None:
+                if isinstance(update_data[field], datetime):
+                    update_data[field] = update_data[field].isoformat()
 
         # Update in database
         result = db.table('programs').update(update_data).eq('id', str(program_id)).execute()
