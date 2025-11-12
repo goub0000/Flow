@@ -90,12 +90,17 @@ class ProgramsApiService {
   /// Create a new program
   Future<Program> createProgram(Program program) async {
     try {
+      // Convert to JSON but exclude id and created_at (backend will generate these)
+      final programJson = program.toJson();
+      programJson.remove('id');
+      programJson.remove('created_at');
+
       print('[ProgramsAPI] POST $baseUrl/programs with token: ${_accessToken?.substring(0, 20) ?? "NULL"}');
-      print('[ProgramsAPI] Program data: ${jsonEncode(program.toJson())}');
+      print('[ProgramsAPI] Program data: ${jsonEncode(programJson)}');
       final response = await _client.post(
         Uri.parse('$baseUrl/programs'),
         headers: _getHeaders(),
-        body: jsonEncode(program.toJson()),
+        body: jsonEncode(programJson),
       );
 
       if (response.statusCode == 201) {
