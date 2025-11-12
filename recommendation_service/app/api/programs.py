@@ -136,20 +136,9 @@ async def create_program(program: ProgramCreate):
         if not result.data:
             raise HTTPException(status_code=500, detail="Failed to create program")
 
-        # Get the created program
+        # Get the created program and add computed fields
         created_program = result.data[0]
-
-        # Add computed fields required by ProgramResponse
-        created_program['available_slots'] = created_program['max_students'] - created_program['enrolled_students']
-        created_program['fill_percentage'] = (
-            (created_program['enrolled_students'] / created_program['max_students'] * 100)
-            if created_program['max_students'] > 0 else 0
-        )
-        # If updated_at doesn't exist in database, use created_at
-        if 'updated_at' not in created_program:
-            created_program['updated_at'] = created_program['created_at']
-
-        return created_program
+        return _add_computed_fields(created_program)
 
     except HTTPException:
         raise
