@@ -29,6 +29,19 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
 
+  // Countries and their states/provinces
+  static const Map<String, List<String>> _countriesWithStates = {
+    'United States': ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'],
+    'Canada': ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan', 'Yukon'],
+    'United Kingdom': ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+    'Kenya': ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Thika', 'Malindi', 'Kitale', 'Garissa', 'Kakamega', 'Nyeri', 'Meru', 'Kiambu', 'Machakos', 'Kajiado'],
+    'Nigeria': ['Lagos', 'Kano', 'Ibadan', 'Abuja', 'Port Harcourt', 'Benin City', 'Kaduna', 'Onitsha', 'Enugu', 'Ilorin'],
+    'Ghana': ['Greater Accra', 'Ashanti', 'Western', 'Eastern', 'Central', 'Volta', 'Northern', 'Upper East', 'Upper West', 'Brong-Ahafo'],
+    'South Africa': ['Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Eastern Cape', 'Free State', 'Limpopo', 'Mpumalanga', 'North West', 'Northern Cape'],
+    'Australia': ['New South Wales', 'Victoria', 'Queensland', 'Western Australia', 'South Australia', 'Tasmania', 'Australian Capital Territory', 'Northern Territory'],
+    'India': ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'],
+  };
+
   // Selected institution (registered institution account)
   Institution? _selectedInstitution;
 
@@ -44,10 +57,15 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _addressController = TextEditingController();
+  final _streetAddressController = TextEditingController();
+  final _cityController = TextEditingController();
   final _previousSchoolController = TextEditingController();
   final _gpaController = TextEditingController();
   final _personalStatementController = TextEditingController();
+
+  // Address dropdowns
+  String? _selectedCountry;
+  String? _selectedState;
 
   // Document upload states
   Map<String, PlatformFile?> _uploadedDocuments = {
@@ -63,7 +81,8 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
     _fullNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _addressController.dispose();
+    _streetAddressController.dispose();
+    _cityController.dispose();
     _previousSchoolController.dispose();
     _gpaController.dispose();
     _personalStatementController.dispose();
@@ -147,7 +166,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         'fullName': _fullNameController.text,
         'email': _emailController.text,
         'phone': _phoneController.text,
-        'address': _addressController.text,
+        'streetAddress': _streetAddressController.text,
+        'city': _cityController.text,
+        'state': _selectedState,
+        'country': _selectedCountry,
       };
 
       academicInfo = {
@@ -197,6 +219,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
     if (_fullNameController.text.trim().isEmpty) missingFields.add('Full Name');
     if (_emailController.text.trim().isEmpty) missingFields.add('Email');
     if (_phoneController.text.trim().isEmpty) missingFields.add('Phone');
+    if (_streetAddressController.text.trim().isEmpty) missingFields.add('Street Address');
+    if (_cityController.text.trim().isEmpty) missingFields.add('City');
+    if (_selectedCountry == null) missingFields.add('Country');
+    if (_selectedState == null) missingFields.add('State/Province');
     if (_previousSchoolController.text.trim().isEmpty) missingFields.add('Previous School');
     if (_gpaController.text.trim().isEmpty) missingFields.add('GPA');
     if (_personalStatementController.text.trim().isEmpty) missingFields.add('Personal Statement');
@@ -368,7 +394,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               if (_fullNameController.text.trim().isEmpty ||
                   _emailController.text.trim().isEmpty ||
                   _phoneController.text.trim().isEmpty ||
-                  _addressController.text.trim().isEmpty) {
+                  _streetAddressController.text.trim().isEmpty ||
+                  _cityController.text.trim().isEmpty ||
+                  _selectedCountry == null ||
+                  _selectedState == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Please fill in all personal information fields'),
@@ -377,15 +406,8 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                 );
                 return;
               }
-              // Validate form fields and show specific error
+              // Validate form fields
               if (!_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please fix the validation errors shown in red'),
-                    backgroundColor: AppColors.error,
-                    duration: Duration(seconds: 4),
-                  ),
-                );
                 return;
               }
               setState(() => _currentStep++);
@@ -733,16 +755,81 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: _addressController,
-                    maxLines: 3,
+                    controller: _streetAddressController,
                     decoration: const InputDecoration(
-                      labelText: 'Address',
+                      labelText: 'Street Address *',
                       prefixIcon: Icon(Icons.home),
+                      hintText: 'e.g., 123 Main Street',
                     ),
-                    validator: Validators.compose([
-                      Validators.required('Please enter your address'),
-                      Validators.minLength(10, 'Address'),
-                    ]),
+                    validator: Validators.required('Please enter your street address'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _cityController,
+                    decoration: const InputDecoration(
+                      labelText: 'City/Town *',
+                      prefixIcon: Icon(Icons.location_city),
+                      hintText: 'e.g., Norman',
+                    ),
+                    validator: Validators.required('Please enter your city'),
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownButtonFormField<String>(
+                    value: _selectedCountry,
+                    decoration: const InputDecoration(
+                      labelText: 'Country *',
+                      prefixIcon: Icon(Icons.public),
+                      border: OutlineInputBorder(),
+                    ),
+                    items: _countriesWithStates.keys.map((country) {
+                      return DropdownMenuItem<String>(
+                        value: country,
+                        child: Text(country),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCountry = value;
+                        _selectedState = null; // Reset state when country changes
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a country';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownButtonFormField<String>(
+                    value: _selectedState,
+                    decoration: const InputDecoration(
+                      labelText: 'State/Province *',
+                      prefixIcon: Icon(Icons.map),
+                      border: OutlineInputBorder(),
+                    ),
+                    items: _selectedCountry != null
+                        ? _countriesWithStates[_selectedCountry]!.map((state) {
+                            return DropdownMenuItem<String>(
+                              value: state,
+                              child: Text(state),
+                            );
+                          }).toList()
+                        : [],
+                    onChanged: _selectedCountry != null
+                        ? (value) {
+                            setState(() {
+                              _selectedState = value;
+                            });
+                          }
+                        : null,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a state/province';
+                      }
+                      return null;
+                    },
+                    disabledHint: const Text('Select a country first'),
                   ),
                 ],
               ),
