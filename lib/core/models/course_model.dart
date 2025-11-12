@@ -48,29 +48,63 @@ class Course {
   bool get hasAvailableSlots => !isFull;
 
   factory Course.fromJson(Map<String, dynamic> json) {
+    // Support both camelCase (courses) and snake_case (programs) formats
+    final String institutionIdKey = json.containsKey('institution_id') ? 'institution_id' : 'institutionId';
+    final String institutionNameKey = json.containsKey('institution_name') ? 'institution_name' : 'institutionName';
+    final String imageUrlKey = json.containsKey('image_url') ? 'image_url' : 'imageUrl';
+    final String startDateKey = json.containsKey('start_date') ? 'start_date' : 'startDate';
+    final String endDateKey = json.containsKey('end_date') ? 'end_date' : 'endDate';
+    final String enrolledStudentsKey = json.containsKey('enrolled_students') ? 'enrolled_students' : 'enrolledStudents';
+    final String maxStudentsKey = json.containsKey('max_students') ? 'max_students' : 'maxStudents';
+    final String isActiveKey = json.containsKey('is_active') ? 'is_active' : 'isActive';
+    final String isOnlineKey = json.containsKey('is_online') ? 'is_online' : 'isOnline';
+    final String createdAtKey = json.containsKey('created_at') ? 'created_at' : 'createdAt';
+
+    // Programs API uses 'name' instead of 'title'
+    final String titleValue = json['title'] as String? ?? json['name'] as String;
+
+    // Programs API uses 'requirements' instead of 'prerequisites'
+    final List<String> prerequisitesList = (json['prerequisites'] as List?)?.cast<String>() ??
+                                           (json['requirements'] as List?)?.cast<String>() ?? [];
+
+    // Programs API uses 'duration_days' instead of 'duration' (months)
+    int durationMonths;
+    if (json.containsKey('duration_days')) {
+      // Convert days to months (approximate: 30 days per month)
+      durationMonths = ((json['duration_days'] as int) / 30).round();
+    } else {
+      durationMonths = json['duration'] as int;
+    }
+
+    // Handle fee as either num or double
+    double? feeValue;
+    if (json['fee'] != null) {
+      feeValue = (json['fee'] as num).toDouble();
+    }
+
     return Course(
-      id: json['id'] as String,
-      title: json['title'] as String,
+      id: json['id'].toString(), // Support both string and int IDs
+      title: titleValue,
       description: json['description'] as String,
-      institutionId: json['institutionId'] as String,
-      institutionName: json['institutionName'] as String,
-      imageUrl: json['imageUrl'] as String?,
+      institutionId: json[institutionIdKey].toString(),
+      institutionName: json[institutionNameKey] as String,
+      imageUrl: json[imageUrlKey] as String?,
       level: json['level'] as String,
       category: json['category'] as String,
-      duration: json['duration'] as int,
-      fee: json['fee'] as double?,
+      duration: durationMonths,
+      fee: feeValue,
       currency: json['currency'] as String? ?? 'USD',
-      prerequisites: (json['prerequisites'] as List?)?.cast<String>() ?? [],
-      startDate: DateTime.parse(json['startDate'] as String),
-      endDate: json['endDate'] != null
-          ? DateTime.parse(json['endDate'] as String)
+      prerequisites: prerequisitesList,
+      startDate: DateTime.parse(json[startDateKey] as String),
+      endDate: json[endDateKey] != null
+          ? DateTime.parse(json[endDateKey] as String)
           : null,
-      enrolledStudents: json['enrolledStudents'] as int? ?? 0,
-      maxStudents: json['maxStudents'] as int? ?? 100,
-      isActive: json['isActive'] as bool? ?? true,
-      isOnline: json['isOnline'] as bool? ?? false,
+      enrolledStudents: json[enrolledStudentsKey] as int? ?? 0,
+      maxStudents: json[maxStudentsKey] as int? ?? 100,
+      isActive: json[isActiveKey] as bool? ?? true,
+      isOnline: json[isOnlineKey] as bool? ?? false,
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: DateTime.parse(json[createdAtKey] as String),
     );
   }
 

@@ -37,19 +37,27 @@ class CoursesNotifier extends StateNotifier<CoursesState> {
     fetchCourses();
   }
 
-  /// Fetch all available courses from backend API
+  /// Fetch all available programs from backend API
+  /// Programs are academic degree programs offered by registered institutions
   Future<void> fetchCourses() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
       final response = await _apiClient.get(
-        ApiConfig.courses,
+        ApiConfig.programs,  // Changed from courses to programs
         queryParameters: {
-          'is_published': true,  // Only fetch published courses
+          'is_active': true,  // Only fetch active programs
+          'skip': 0,
+          'limit': 100,  // Fetch more programs at once
         },
         fromJson: (data) {
-          if (data is List) {
-            return data.map((courseJson) => Course.fromJson(courseJson)).toList();
+          // Programs API returns: {"total": n, "programs": [...]}
+          if (data is Map<String, dynamic> && data.containsKey('programs')) {
+            final programsList = data['programs'] as List;
+            return programsList.map((programJson) => Course.fromJson(programJson)).toList();
+          } else if (data is List) {
+            // Fallback for direct list response
+            return data.map((programJson) => Course.fromJson(programJson)).toList();
           }
           return <Course>[];
         },
@@ -62,13 +70,13 @@ class CoursesNotifier extends StateNotifier<CoursesState> {
         );
       } else {
         state = state.copyWith(
-          error: response.message ?? 'Failed to fetch courses',
+          error: response.message ?? 'Failed to fetch programs',
           isLoading: false,
         );
       }
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to fetch courses: ${e.toString()}',
+        error: 'Failed to fetch programs: ${e.toString()}',
         isLoading: false,
       );
     }
