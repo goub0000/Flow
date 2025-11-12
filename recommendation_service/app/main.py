@@ -136,10 +136,12 @@ from app.api import (
     universities, students, recommendations, monitoring, admin, programs,
     enrichment, ml_training, location_cleaning, auth, courses_api,
     applications_api, enrollments_api, messaging_api, notifications_api,
-    counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api
+    counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
+    institutions_api
 )
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
+app.include_router(institutions_api.router, prefix="/api/v1", tags=["Institutions"])
 app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])
 app.include_router(applications_api.router, prefix="/api/v1", tags=["Applications"])
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
