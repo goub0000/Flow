@@ -30,12 +30,16 @@ def _add_computed_fields(program: dict) -> dict:
     if 'institution_id' in program and program['institution_id'] is not None:
         program['institution_id'] = str(program['institution_id'])
 
+    # Convert fee to float (Supabase may return it as string/Decimal)
+    if 'fee' in program and program['fee'] is not None:
+        program['fee'] = float(program['fee'])
+
     # Safely compute available_slots and fill_percentage
     max_students = program.get('max_students', 0)
     enrolled_students = program.get('enrolled_students', 0)
 
     program['available_slots'] = max_students - enrolled_students
-    program['fill_percentage'] = (
+    program['fill_percentage'] = float(
         (enrolled_students / max_students * 100)
         if max_students > 0 else 0
     )
