@@ -24,9 +24,14 @@ class StorageService {
     required String fileType,
   }) async {
     try {
+      print('[StorageService] Starting upload for $fileName (type: $fileType)');
+      print('[StorageService] User ID: $userId');
+      print('[StorageService] File size: ${fileBytes.length} bytes');
+
       // Create a unique file path: userId/fileType/timestamp_filename
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final filePath = '$userId/$fileType/${timestamp}_$fileName';
+      print('[StorageService] Upload path: $filePath');
 
       // Determine content type from file extension
       String contentType = 'application/octet-stream';
@@ -49,8 +54,10 @@ class StorageService {
           contentType = 'image/png';
           break;
       }
+      print('[StorageService] Content type: $contentType');
 
       // Upload to Supabase Storage
+      print('[StorageService] Starting Supabase upload...');
       await _supabase.storage
           .from('documents')
           .upload(
@@ -63,10 +70,15 @@ class StorageService {
             ),
           );
 
+      print('[StorageService] Upload successful!');
       // Return storage path in Supabase format: bucket/path
       // Backend and institutions can generate URLs as needed
-      return 'documents/$filePath';
+      final storagePath = 'documents/$filePath';
+      print('[StorageService] Returning path: $storagePath');
+      return storagePath;
     } catch (e) {
+      print('[StorageService] Upload failed: $e');
+      print('[StorageService] Error type: ${e.runtimeType}');
       throw Exception('Failed to upload document: $e');
     }
   }
