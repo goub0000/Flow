@@ -3,13 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/models/institution_model.dart';
 import '../../../../core/models/program_model.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
+import '../../../../core/services/storage_service.dart';
+import '../../../../core/providers/service_providers.dart';
 import '../../../shared/widgets/custom_card.dart';
+import '../../../authentication/providers/auth_provider.dart' hide currentUserProvider;
 import '../../providers/student_applications_provider.dart';
 import '../../institutions/browse_institutions_screen.dart';
 
@@ -69,25 +73,102 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   Future<void> _submitApplication() async {
     if (!_formKey.currentState!.validate()) return;
 
-    // Prepare application data
-    final personalInfo = {
-      'fullName': _fullNameController.text,
-      'email': _emailController.text,
-      'phone': _phoneController.text,
-      'address': _addressController.text,
-    };
+    // Show uploading indicator
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Row(
+          children: [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+            ),
+            SizedBox(width: 12),
+            Text('Uploading documents...'),
+          ],
+        ),
+        duration: Duration(minutes: 2),
+      ),
+    );
 
-    final academicInfo = {
-      'previousSchool': _previousSchoolController.text,
-      'gpa': _gpaController.text,
-      'personalStatement': _personalStatementController.text,
-    };
+    // Declare variables outside try block
+    late Map<String, dynamic> personalInfo;
+    late Map<String, dynamic> academicInfo;
+    late Map<String, dynamic> documents;
 
-    final documents = {
-      'transcript': _uploadedDocuments['transcript']?.name ?? '',
-      'id': _uploadedDocuments['id']?.name ?? '',
-      'statement': _uploadedDocuments['statement']?.name ?? '',
-    };
+    try {
+      // Get current user
+      final user = ref.read(currentUserProvider);
+      if (user == null) {
+        throw Exception('User not authenticated');
+      }
+
+      // Upload documents to Supabase Storage
+      final supabase = ref.read(supabaseClientProvider);
+      final storageService = StorageService(supabase);
+
+      final documentUrls = <String, String>{};
+
+      // Upload transcript
+      if (_uploadedDocuments['transcript'] != null) {
+        final transcriptUrl = await storageService.uploadDocument(
+          userId: user.id,
+          fileName: _uploadedDocuments['transcript']!.name,
+          fileBytes: _uploadedDocuments['transcript']!.bytes!,
+          fileType: 'transcript',
+        );
+        documentUrls['transcript'] = transcriptUrl;
+      }
+
+      // Upload ID document
+      if (_uploadedDocuments['id'] != null) {
+        final idUrl = await storageService.uploadDocument(
+          userId: user.id,
+          fileName: _uploadedDocuments['id']!.name,
+          fileBytes: _uploadedDocuments['id']!.bytes!,
+          fileType: 'id',
+        );
+        documentUrls['id'] = idUrl;
+      }
+
+      // Upload passport photo
+      if (_uploadedDocuments['statement'] != null) {
+        final photoUrl = await storageService.uploadDocument(
+          userId: user.id,
+          fileName: _uploadedDocuments['statement']!.name,
+          fileBytes: _uploadedDocuments['statement']!.bytes!,
+          fileType: 'photo',
+        );
+        documentUrls['photo'] = photoUrl;
+      }
+
+      // Prepare application data with uploaded document URLs
+      personalInfo = {
+        'fullName': _fullNameController.text,
+        'email': _emailController.text,
+        'phone': _phoneController.text,
+        'address': _addressController.text,
+      };
+
+      academicInfo = {
+        'previousSchool': _previousSchoolController.text,
+        'gpa': _gpaController.text,
+        'personalStatement': _personalStatementController.text,
+      };
+
+      documents = documentUrls;  // Use uploaded URLs instead of file names
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to upload documents: ${e.toString()}'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+      return;
+    }
 
     // Validate institution is selected
     if (_selectedInstitution == null) {
@@ -145,12 +226,16 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
     );
 
     if (mounted) {
+      // Hide uploading snackbar
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
       if (success) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Application submitted successfully!'),
+            content: Text('Application and documents submitted successfully!'),
             backgroundColor: AppColors.success,
+            duration: Duration(seconds: 4),
           ),
         );
       } else {
@@ -160,6 +245,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               ref.read(applicationsErrorProvider) ?? 'Failed to submit application',
             ),
             backgroundColor: AppColors.error,
+            duration: Duration(seconds: 5),
           ),
         );
       }
@@ -255,9 +341,89 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         child: Stepper(
           currentStep: _currentStep,
           onStepContinue: () {
-            if (_currentStep < 3) {
+            // Validate current step before continuing
+            if (_currentStep == 0) {
+              // Step 1: Validate institution and program selection
+              if (_selectedInstitution == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please select an institution to continue'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+                return;
+              }
+              if (_selectedProgram == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please select a program to continue'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+                return;
+              }
+              setState(() => _currentStep++);
+            } else if (_currentStep == 1) {
+              // Step 2: Validate personal information
+              if (_fullNameController.text.trim().isEmpty ||
+                  _emailController.text.trim().isEmpty ||
+                  _phoneController.text.trim().isEmpty ||
+                  _addressController.text.trim().isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please fill in all personal information fields'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+                return;
+              }
+              // Validate form fields
+              if (!_formKey.currentState!.validate()) {
+                return;
+              }
+              setState(() => _currentStep++);
+            } else if (_currentStep == 2) {
+              // Step 3: Validate academic information
+              if (_previousSchoolController.text.trim().isEmpty ||
+                  _gpaController.text.trim().isEmpty ||
+                  _personalStatementController.text.trim().isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please fill in all academic information fields'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+                return;
+              }
+              if (!_formKey.currentState!.validate()) {
+                return;
+              }
               setState(() => _currentStep++);
             } else {
+              // Step 4: Validate documents before submission
+              final missingDocs = <String>[];
+              if (_uploadedDocuments['transcript'] == null) {
+                missingDocs.add('Academic Transcript');
+              }
+              if (_uploadedDocuments['id'] == null) {
+                missingDocs.add('ID Document');
+              }
+              if (_uploadedDocuments['statement'] == null) {
+                missingDocs.add('Passport Photo');
+              }
+
+              if (missingDocs.isNotEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Missing required documents: ${missingDocs.join(", ")}'),
+                    backgroundColor: AppColors.error,
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+                return;
+              }
+
+              // All documents uploaded, proceed with submission
               _submitApplication();
             }
           },
@@ -625,9 +791,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               ),
             ),
 
-            // Step 4: Documents
+            // Step 4: Documents (Required)
             Step(
-              title: const Text('Documents'),
+              title: const Text('Documents (Required)'),
               isActive: _currentStep >= 3,
               state: StepState.indexed,
               content: Column(
@@ -663,17 +829,18 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   ),
                   const SizedBox(height: 24),
                   CustomCard(
-                    color: AppColors.info.withValues(alpha: 0.1),
+                    color: AppColors.error.withValues(alpha: 0.1),
                     child: Row(
                       children: [
-                        const Icon(Icons.info_outline, color: AppColors.info),
+                        const Icon(Icons.error_outline, color: AppColors.error),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Documents selected will be uploaded when you submit the application. Actual file upload to storage requires backend integration.',
+                            'All three documents are required. Please upload Academic Transcript, ID Document, and Passport Photo before submitting.',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppColors.info,
+                                      color: AppColors.error,
+                                      fontWeight: FontWeight.w500,
                                     ),
                           ),
                         ),
