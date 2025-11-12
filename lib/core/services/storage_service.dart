@@ -16,7 +16,7 @@ class StorageService {
   /// [fileBytes] - File content as bytes
   /// [fileType] - Type of document (transcript, id, photo, etc.)
   ///
-  /// Returns the public URL of the uploaded file
+  /// Returns the signed URL of the uploaded file (valid for 1 year)
   Future<String> uploadDocument({
     required String userId,
     required String fileName,
@@ -28,24 +28,47 @@ class StorageService {
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final filePath = '$userId/$fileType/${timestamp}_$fileName';
 
+      // Determine content type from file extension
+      String contentType = 'application/octet-stream';
+      final extension = fileName.toLowerCase().split('.').last;
+      switch (extension) {
+        case 'pdf':
+          contentType = 'application/pdf';
+          break;
+        case 'doc':
+          contentType = 'application/msword';
+          break;
+        case 'docx':
+          contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+          break;
+        case 'jpg':
+        case 'jpeg':
+          contentType = 'image/jpeg';
+          break;
+        case 'png':
+          contentType = 'image/png';
+          break;
+      }
+
       // Upload to Supabase Storage
-      final response = await _supabase.storage
+      await _supabase.storage
           .from('documents')
           .uploadBinary(
             filePath,
             fileBytes,
-            fileOptions: const FileOptions(
+            fileOptions: FileOptions(
+              contentType: contentType,
               cacheControl: '3600',
               upsert: false,
             ),
           );
 
-      // Get public URL
-      final publicUrl = _supabase.storage
+      // Get signed URL (valid for 1 year) since bucket is private
+      final signedUrl = await _supabase.storage
           .from('documents')
-          .getPublicUrl(filePath);
+          .createSignedUrl(filePath, 31536000); // 1 year in seconds
 
-      return publicUrl;
+      return signedUrl;
     } catch (e) {
       throw Exception('Failed to upload document: $e');
     }
