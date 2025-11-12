@@ -31,11 +31,13 @@ def _add_computed_fields(program: dict) -> dict:
     if 'updated_at' not in program:
         program['updated_at'] = program['created_at']
 
-    # Ensure datetime fields are strings (Supabase returns them as strings)
-    # This handles edge cases where they might be datetime objects
+    # Convert datetime strings to datetime objects (Pydantic expects datetime objects)
+    # Supabase returns datetime fields as ISO strings, we need to parse them
     for field in ['created_at', 'updated_at', 'application_deadline', 'start_date']:
-        if field in program and isinstance(program[field], datetime):
-            program[field] = program[field].isoformat()
+        if field in program and program[field] is not None:
+            if isinstance(program[field], str):
+                # Parse ISO string to datetime object
+                program[field] = datetime.fromisoformat(program[field].replace('Z', '+00:00'))
 
     return program
 
@@ -183,7 +185,7 @@ async def update_program(program_id: UUID, program: ProgramUpdate):
         if not result.data:
             raise HTTPException(status_code=500, detail="Failed to update program")
 
-        return result.data[0]
+        return _add_computed_fields(result.data[0])
 
     except HTTPException:
         raise
@@ -233,7 +235,7 @@ async def toggle_program_status(program_id: UUID):
             'is_active': not current_status
         }).eq('id', str(program_id)).execute()
 
-        return update_result.data[0]
+        return _add_computed_fields(update_result.data[0])
 
     except HTTPException:
         raise
@@ -317,7 +319,7 @@ async def enroll_student_in_program(program_id: UUID):
             'enrolled_students': program['enrolled_students'] + 1
         }).eq('id', str(program_id)).execute()
 
-        return update_result.data[0]
+        return _add_computed_fields(update_result.data[0])
 
     except HTTPException:
         raise
