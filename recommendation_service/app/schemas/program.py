@@ -4,7 +4,6 @@ Pydantic schemas for institutional programs/courses
 from pydantic import BaseModel, Field, UUID4
 from typing import Optional, List
 from datetime import datetime
-from decimal import Decimal
 
 
 class ProgramBase(BaseModel):
@@ -16,7 +15,7 @@ class ProgramBase(BaseModel):
     category: str  # e.g., Technology, Business, Health Sciences
     level: str = Field(..., pattern="^(certificate|diploma|undergraduate|postgraduate|doctoral)$")
     duration_days: int = Field(..., gt=0)
-    fee: Decimal = Field(..., ge=0)
+    fee: float = Field(..., ge=0)
     currency: str = "USD"
     max_students: int = Field(..., gt=0)
     enrolled_students: int = Field(default=0, ge=0)
@@ -40,7 +39,7 @@ class ProgramUpdate(BaseModel):
     category: Optional[str] = None
     level: Optional[str] = None
     duration_days: Optional[int] = None
-    fee: Optional[Decimal] = None
+    fee: Optional[float] = None
     currency: Optional[str] = None
     max_students: Optional[int] = None
     enrolled_students: Optional[int] = None
@@ -54,7 +53,7 @@ class ProgramResponse(ProgramBase):
     """Response schema for programs"""
     id: str  # Changed from UUID4 to str to support integer IDs from database
     available_slots: int
-    fill_percentage: Decimal
+    fill_percentage: float
     created_at: datetime
     updated_at: datetime
 
