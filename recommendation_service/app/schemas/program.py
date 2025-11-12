@@ -52,7 +52,7 @@ class ProgramUpdate(BaseModel):
 
 class ProgramResponse(ProgramBase):
     """Response schema for programs"""
-    id: UUID4
+    id: str  # Changed from UUID4 to str to support integer IDs from database
     available_slots: int
     fill_percentage: Decimal
     created_at: datetime
