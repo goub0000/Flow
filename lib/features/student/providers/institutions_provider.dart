@@ -75,20 +75,29 @@ class InstitutionsNotifier extends StateNotifier<InstitutionsState> {
   InstitutionsNotifier(this._ref)
       : _apiService = InstitutionsApiService(),
         super(const InstitutionsState()) {
-    _initializeAuthToken();
-    fetchInstitutions();
+    _initialize();
   }
 
-  /// Initialize authentication token from SharedPreferences
-  Future<void> _initializeAuthToken() async {
+  /// Initialize authentication token from SharedPreferences and fetch institutions
+  Future<void> _initialize() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(ApiConfig.accessTokenKey);
       if (token != null) {
         _apiService.setAuthToken(token);
+        // Only fetch after token is set
+        await fetchInstitutions();
+      } else {
+        state = state.copyWith(
+          error: 'Authentication required. Please login.',
+          isLoading: false,
+        );
       }
     } catch (e) {
-      // Token not found or error, will need to authenticate
+      state = state.copyWith(
+        error: 'Failed to initialize: ${e.toString()}',
+        isLoading: false,
+      );
     }
   }
 
@@ -180,8 +189,7 @@ class InstitutionsNotifier extends StateNotifier<InstitutionsState> {
   /// Clear all filters and reset
   Future<void> clearFilters() async {
     state = const InstitutionsState();
-    await _initializeAuthToken();
-    await fetchInstitutions();
+    await _initialize();
   }
 
   /// Refresh institutions (pull-to-refresh)
