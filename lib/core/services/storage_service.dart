@@ -53,22 +53,19 @@ class StorageService {
       // Upload to Supabase Storage
       await _supabase.storage
           .from('documents')
-          .uploadBinary(
+          .upload(
             filePath,
             fileBytes,
             fileOptions: FileOptions(
               contentType: contentType,
               cacheControl: '3600',
-              upsert: false,
+              upsert: true, // Allow overwriting if file exists
             ),
           );
 
-      // Get signed URL (valid for 1 year) since bucket is private
-      final signedUrl = await _supabase.storage
-          .from('documents')
-          .createSignedUrl(filePath, 31536000); // 1 year in seconds
-
-      return signedUrl;
+      // Return storage path in Supabase format: bucket/path
+      // Backend and institutions can generate URLs as needed
+      return 'documents/$filePath';
     } catch (e) {
       throw Exception('Failed to upload document: $e');
     }
