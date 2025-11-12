@@ -87,12 +87,14 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
 
   /// Submit new application via backend API
   Future<bool> submitApplication({
+    required String institutionId,  // Added institution_id (UUID)
     required String institutionName,
     required String programName,
     required Map<String, dynamic> personalInfo,
     required Map<String, dynamic> academicInfo,
     required Map<String, dynamic> documents,
     String? programId,
+    String? applicationType,  // Added application_type
     double? applicationFee,
   }) async {
     state = state.copyWith(isSubmitting: true, error: null);
@@ -110,7 +112,9 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
       final response = await _apiClient.post(
         ApiConfig.applications,
         data: {
-          'program_id': programId,
+          'institution_id': institutionId,  // Send institution UUID
+          'program_id': programId ?? institutionId,  // Use program_id if available, fallback to institution_id
+          'application_type': applicationType ?? 'undergraduate',  // Default to undergraduate
           'institution_name': institutionName,
           'program_name': programName,
           'personal_info': personalInfo,

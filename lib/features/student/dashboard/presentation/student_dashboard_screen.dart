@@ -7,7 +7,6 @@ import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
-import '../../courses/presentation/courses_list_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
@@ -29,7 +28,6 @@ class _StudentDashboardScreenState
 
   final List<Widget> _pages = [
     const _DashboardHomeTab(),
-    const CoursesListScreen(),
     const ApplicationsListScreen(),
     const ProgressScreen(),
     const ProfileScreen(),
@@ -53,11 +51,6 @@ class _StudentDashboardScreenState
               icon: Icons.home_outlined,
               activeIcon: Icons.home,
               label: 'Home',
-            ),
-            DashboardNavigationItem(
-              icon: Icons.school_outlined,
-              activeIcon: Icons.school,
-              label: 'Courses',
             ),
             DashboardNavigationItem(
               icon: Icons.description_outlined,

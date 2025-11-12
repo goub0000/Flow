@@ -79,8 +79,20 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       'statement': _uploadedDocuments['statement']?.name ?? '',
     };
 
+    // Validate institution is selected
+    if (_selectedInstitution == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select an institution'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
     // Submit application using provider
     final success = await ref.read(applicationsProvider.notifier).submitApplication(
+      institutionId: _selectedInstitution!.id,  // Send institution UUID
       institutionName: _institutionController.text,
       programName: _programController.text,
       personalInfo: personalInfo,
