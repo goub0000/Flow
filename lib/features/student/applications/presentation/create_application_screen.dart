@@ -180,8 +180,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       final response = await apiClient.get<List<Program>>(
         '${ApiConfig.institutions}/$institutionId/programs',
         fromJson: (data) {
-          if (data is List) {
-            return data.map((item) => Program.fromJson(item as Map<String, dynamic>)).toList();
+          // API returns {total: X, programs: [...]}
+          if (data is Map<String, dynamic> && data['programs'] is List) {
+            final programsList = data['programs'] as List;
+            return programsList.map((item) => Program.fromJson(item as Map<String, dynamic>)).toList();
           }
           return [];
         },
