@@ -22,6 +22,14 @@ logger = logging.getLogger(__name__)
 
 def _add_computed_fields(program: dict) -> dict:
     """Add computed fields required by ProgramResponse schema"""
+    # Convert ID to string (handles both integer and UUID IDs)
+    if 'id' in program and program['id'] is not None:
+        program['id'] = str(program['id'])
+
+    # Convert institution_id to string if it exists
+    if 'institution_id' in program and program['institution_id'] is not None:
+        program['institution_id'] = str(program['institution_id'])
+
     # Safely compute available_slots and fill_percentage
     max_students = program.get('max_students', 0)
     enrolled_students = program.get('enrolled_students', 0)
