@@ -89,19 +89,7 @@ class _InstitutionDashboardScreenState
   }
 
   String _getTitle() {
-    switch (_currentIndex) {
-      case 0:
-        return 'Institution Dashboard';
-      case 1:
-        return 'Applicants';
-      case 2:
-        return 'Programs';
-      case 3:
-        return 'Profile';
-      case 4:
-        return 'Settings';
-      default:
-        return 'Institution Dashboard';
-    }
+    // Always show "Institution Dashboard" to avoid redundancy with bottom nav labels
+    return 'Institution Dashboard';
   }
 }
