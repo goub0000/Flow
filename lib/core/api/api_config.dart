@@ -30,6 +30,7 @@ class ApiConfig {
   // API Endpoints
   static const String auth = '/auth';
   static const String students = '/students';
+  static const String institutions = '/institutions';
   static const String universities = '/universities';
   static const String programs = '/programs';
   static const String courses = '/courses';

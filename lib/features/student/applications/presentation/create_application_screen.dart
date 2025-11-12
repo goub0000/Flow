@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
-import '../../../../core/models/university_model.dart';
+import '../../../../core/models/institution_model.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../providers/student_applications_provider.dart';
-import '../../universities/browse_universities_screen.dart';
+import '../../institutions/browse_institutions_screen.dart';
 
 class CreateApplicationScreen extends ConsumerStatefulWidget {
   const CreateApplicationScreen({super.key});
@@ -21,8 +21,8 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
 
-  // Selected university
-  University? _selectedUniversity;
+  // Selected institution (registered institution account)
+  Institution? _selectedInstitution;
 
   // Form controllers
   final _institutionController = TextEditingController();
@@ -212,24 +212,24 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                         ),
                   ),
                   const SizedBox(height: 12),
-                  if (_selectedUniversity == null)
+                  if (_selectedInstitution == null)
                     OutlinedButton.icon(
                       onPressed: () async {
-                        final result = await Navigator.push<University>(
+                        final result = await Navigator.push<Institution>(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const BrowseUniversitiesScreen(selectionMode: true),
+                            builder: (context) => const BrowseInstitutionsScreen(selectionMode: true),
                           ),
                         );
                         if (result != null) {
                           setState(() {
-                            _selectedUniversity = result;
+                            _selectedInstitution = result;
                             _institutionController.text = result.name;
                           });
                         }
                       },
                       icon: const Icon(Icons.search),
-                      label: const Text('Browse Universities'),
+                      label: const Text('Browse Institutions'),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.all(16),
                         minimumSize: const Size(double.infinity, 50),
@@ -246,25 +246,45 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                               color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.school, color: AppColors.primary),
+                            child: const Icon(Icons.business, color: AppColors.primary),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _selectedUniversity!.name,
-                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                        fontWeight: FontWeight.bold,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        _selectedInstitution!.name,
+                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
+                                    ),
+                                    if (_selectedInstitution!.isVerified)
+                                      const Icon(
+                                        Icons.verified,
+                                        size: 16,
+                                        color: AppColors.success,
+                                      ),
+                                  ],
                                 ),
                                 Text(
-                                  _selectedUniversity!.location,
+                                  _selectedInstitution!.email,
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: AppColors.textSecondary,
                                       ),
                                 ),
+                                if (_selectedInstitution!.hasOfferings)
+                                  Text(
+                                    _selectedInstitution!.formattedTotalOfferings,
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: AppColors.primary,
+                                          fontSize: 11,
+                                        ),
+                                  ),
                               ],
                             ),
                           ),
@@ -272,7 +292,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                             icon: const Icon(Icons.close),
                             onPressed: () {
                               setState(() {
-                                _selectedUniversity = null;
+                                _selectedInstitution = null;
                                 _institutionController.clear();
                               });
                             },
@@ -294,11 +314,11 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                       Validators.minLength(3, 'Program name'),
                     ]),
                   ),
-                  if (_selectedUniversity == null)
+                  if (_selectedInstitution == null)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(
-                        'Please select a university to continue',
+                        'Please select an institution to continue',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.error,
                             ),
