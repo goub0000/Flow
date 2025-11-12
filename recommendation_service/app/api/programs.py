@@ -22,22 +22,31 @@ logger = logging.getLogger(__name__)
 
 def _add_computed_fields(program: dict) -> dict:
     """Add computed fields required by ProgramResponse schema"""
-    program['available_slots'] = program['max_students'] - program['enrolled_students']
+    # Safely compute available_slots and fill_percentage
+    max_students = program.get('max_students', 0)
+    enrolled_students = program.get('enrolled_students', 0)
+
+    program['available_slots'] = max_students - enrolled_students
     program['fill_percentage'] = (
-        (program['enrolled_students'] / program['max_students'] * 100)
-        if program['max_students'] > 0 else 0
+        (enrolled_students / max_students * 100)
+        if max_students > 0 else 0
     )
+
     # If updated_at doesn't exist in database, use created_at
-    if 'updated_at' not in program:
-        program['updated_at'] = program['created_at']
+    if 'updated_at' not in program or program['updated_at'] is None:
+        program['updated_at'] = program.get('created_at')
 
     # Convert datetime strings to datetime objects (Pydantic expects datetime objects)
     # Supabase returns datetime fields as ISO strings, we need to parse them
     for field in ['created_at', 'updated_at', 'application_deadline', 'start_date']:
         if field in program and program[field] is not None:
             if isinstance(program[field], str):
-                # Parse ISO string to datetime object
-                program[field] = datetime.fromisoformat(program[field].replace('Z', '+00:00'))
+                try:
+                    # Parse ISO string to datetime object
+                    program[field] = datetime.fromisoformat(program[field].replace('Z', '+00:00'))
+                except (ValueError, AttributeError):
+                    # If parsing fails, leave as is
+                    pass
 
     return program
 
