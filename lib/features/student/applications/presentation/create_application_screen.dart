@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/models/institution_model.dart';
+import '../../../../core/models/program_model.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../providers/student_applications_provider.dart';
 import '../../institutions/browse_institutions_screen.dart';
@@ -23,6 +27,12 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
   // Selected institution (registered institution account)
   Institution? _selectedInstitution;
+
+  // Programs from selected institution
+  List<Program> _availablePrograms = [];
+  Program? _selectedProgram;
+  bool _isLoadingPrograms = false;
+  String? _programsError;
 
   // Form controllers
   final _institutionController = TextEditingController();
@@ -83,8 +93,39 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
     if (_selectedInstitution == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select an institution'),
+          content: Text('Please select an institution before submitting'),
           backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    // Validate program is selected
+    if (_selectedProgram == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a program before submitting'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    // Validate required documents
+    final missingFields = <String>[];
+    if (_fullNameController.text.trim().isEmpty) missingFields.add('Full Name');
+    if (_emailController.text.trim().isEmpty) missingFields.add('Email');
+    if (_phoneController.text.trim().isEmpty) missingFields.add('Phone');
+    if (_previousSchoolController.text.trim().isEmpty) missingFields.add('Previous School');
+    if (_gpaController.text.trim().isEmpty) missingFields.add('GPA');
+    if (_personalStatementController.text.trim().isEmpty) missingFields.add('Personal Statement');
+
+    if (missingFields.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Missing required fields: ${missingFields.join(", ")}'),
+          backgroundColor: AppColors.error,
+          duration: const Duration(seconds: 5),
         ),
       );
       return;
@@ -93,12 +134,14 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
     // Submit application using provider
     final success = await ref.read(applicationsProvider.notifier).submitApplication(
       institutionId: _selectedInstitution!.id,  // Send institution UUID
-      institutionName: _institutionController.text,
-      programName: _programController.text,
+      institutionName: _selectedInstitution!.name,
+      programId: _selectedProgram!.id,  // Send program UUID
+      programName: _selectedProgram!.name,
+      applicationType: _selectedProgram!.level,  // Use program level as application type
       personalInfo: personalInfo,
       academicInfo: academicInfo,
       documents: documents,
-      applicationFee: 50.0,
+      applicationFee: _selectedProgram!.fee,  // Use program fee
     );
 
     if (mounted) {
@@ -120,6 +163,46 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
           ),
         );
       }
+    }
+  }
+
+  Future<void> _fetchPrograms(String institutionId) async {
+    setState(() {
+      _isLoadingPrograms = true;
+      _programsError = null;
+      _availablePrograms = [];
+      _selectedProgram = null;
+    });
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final apiClient = ApiClient(prefs);
+      final response = await apiClient.get<List<Program>>(
+        '${ApiConfig.institutions}/$institutionId/programs',
+        fromJson: (data) {
+          if (data is List) {
+            return data.map((item) => Program.fromJson(item as Map<String, dynamic>)).toList();
+          }
+          return [];
+        },
+      );
+
+      if (response.success && response.data != null) {
+        setState(() {
+          _availablePrograms = response.data!;
+          _isLoadingPrograms = false;
+        });
+      } else {
+        setState(() {
+          _programsError = response.message ?? 'Failed to load programs';
+          _isLoadingPrograms = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _programsError = 'Error loading programs: ${e.toString()}';
+        _isLoadingPrograms = false;
+      });
     }
   }
 
@@ -238,6 +321,8 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                             _selectedInstitution = result;
                             _institutionController.text = result.name;
                           });
+                          // Fetch programs from selected institution
+                          await _fetchPrograms(result.id);
                         }
                       },
                       icon: const Icon(Icons.search),
@@ -314,25 +399,121 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                       ),
                     ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _programController,
-                    decoration: const InputDecoration(
-                      labelText: 'Program/Course Name',
-                      prefixIcon: Icon(Icons.book),
-                      hintText: 'e.g., Computer Science',
-                    ),
-                    validator: Validators.compose([
-                      Validators.required('Please enter program name'),
-                      Validators.minLength(3, 'Program name'),
-                    ]),
+
+                  // Program Selection Dropdown
+                  Text(
+                    'Select Program *',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
+                  const SizedBox(height: 8),
+                  if (_isLoadingPrograms)
+                    const Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 12),
+                            Text('Loading available programs...'),
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (_programsError != null)
+                    Card(
+                      color: AppColors.error.withOpacity(0.1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.error_outline, color: AppColors.error),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                _programsError!,
+                                style: const TextStyle(color: AppColors.error),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (_availablePrograms.isEmpty && _selectedInstitution != null)
+                    Card(
+                      color: AppColors.warning.withOpacity(0.1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.info_outline, color: AppColors.warning),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Text(
+                                'This institution has no active programs yet. Please select another institution.',
+                                style: TextStyle(color: AppColors.warning),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (_availablePrograms.isNotEmpty)
+                    DropdownButtonFormField<Program>(
+                      value: _selectedProgram,
+                      decoration: InputDecoration(
+                        labelText: 'Select a Program *',
+                        prefixIcon: const Icon(Icons.school),
+                        border: const OutlineInputBorder(),
+                        helperText: '${_availablePrograms.length} programs available',
+                      ),
+                      items: _availablePrograms.map((program) {
+                        return DropdownMenuItem<Program>(
+                          value: program,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                program.name,
+                                style: const TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                '${program.level.toUpperCase()} • \$${program.fee.toStringAsFixed(0)} • ${program.duration.inDays ~/ 30} months',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (program) {
+                        setState(() {
+                          _selectedProgram = program;
+                          _programController.text = program?.name ?? '';
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a program';
+                        }
+                        return null;
+                      },
+                    ),
                   if (_selectedInstitution == null)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(
-                        'Please select an institution to continue',
+                        'Please select an institution first to view available programs',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.error,
+                              color: AppColors.info,
                             ),
                       ),
                     ),
