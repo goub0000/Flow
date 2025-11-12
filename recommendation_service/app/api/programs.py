@@ -5,6 +5,7 @@ Cloud-based institutional programs management
 from fastapi import APIRouter, HTTPException, Query
 from typing import List, Optional
 from uuid import UUID
+from datetime import datetime
 from app.database.config import get_supabase
 from app.schemas.program import (
     ProgramCreate,
@@ -29,6 +30,13 @@ def _add_computed_fields(program: dict) -> dict:
     # If updated_at doesn't exist in database, use created_at
     if 'updated_at' not in program:
         program['updated_at'] = program['created_at']
+
+    # Ensure datetime fields are strings (Supabase returns them as strings)
+    # This handles edge cases where they might be datetime objects
+    for field in ['created_at', 'updated_at', 'application_deadline', 'start_date']:
+        if field in program and isinstance(program[field], datetime):
+            program[field] = program[field].isoformat()
+
     return program
 
 
