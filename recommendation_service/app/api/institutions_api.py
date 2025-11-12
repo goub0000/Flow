@@ -76,7 +76,7 @@ async def get_institutions(
         # Build query - fetch users with 'institution' role
         query = db.table('users').select(
             'id, display_name, email, phone_number, photo_url, '
-            'created_at, is_email_verified, metadata',
+            'created_at, email_verified, metadata',
             count='exact'
         ).in_('active_role', ['institution']).or_(
             'available_roles.cs.{institution}'
@@ -91,7 +91,7 @@ async def get_institutions(
 
         # Apply verification filter
         if is_verified is not None:
-            query = query.eq('is_email_verified', is_verified)
+            query = query.eq('email_verified', is_verified)
 
         # Apply ordering
         query = query.order('display_name', desc=False)
@@ -137,7 +137,7 @@ async def get_institutions(
                 phone_number=inst.get('phone_number'),
                 photo_url=inst.get('photo_url'),
                 created_at=inst.get('created_at'),
-                is_verified=inst.get('is_email_verified', False),
+                is_verified=inst.get('email_verified', False),
                 programs_count=programs_count,
                 courses_count=courses_count
             ))
@@ -182,7 +182,7 @@ async def get_institution(
         # Fetch institution
         response = db.table('users').select(
             'id, display_name, email, phone_number, photo_url, '
-            'created_at, is_email_verified, active_role, available_roles'
+            'created_at, email_verified, active_role, available_roles'
         ).eq('id', institution_id).execute()
 
         if not response.data:
@@ -219,7 +219,7 @@ async def get_institution(
             phone_number=inst.get('phone_number'),
             photo_url=inst.get('photo_url'),
             created_at=inst.get('created_at'),
-            is_verified=inst.get('is_email_verified', False),
+            is_verified=inst.get('email_verified', False),
             programs_count=programs_count,
             courses_count=courses_count
         )
