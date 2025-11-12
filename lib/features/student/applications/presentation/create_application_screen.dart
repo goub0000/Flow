@@ -377,8 +377,15 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                 );
                 return;
               }
-              // Validate form fields
+              // Validate form fields and show specific error
               if (!_formKey.currentState!.validate()) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please fix the validation errors shown in red'),
+                    backgroundColor: AppColors.error,
+                    duration: Duration(seconds: 4),
+                  ),
+                );
                 return;
               }
               setState(() => _currentStep++);
