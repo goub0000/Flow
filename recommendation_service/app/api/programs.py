@@ -76,6 +76,9 @@ async def get_programs(
     """
     Get programs with optional filtering
 
+    NOTE: Only returns programs from REGISTERED institutions (users with role='institution').
+    Recommendation/informational universities are excluded.
+
     Query Parameters:
     - institution_id: Filter by institution
     - category: Filter by category
@@ -88,10 +91,43 @@ async def get_programs(
     try:
         db = get_supabase()
 
-        # Start query
+        # CRITICAL: First, get all registered institution user IDs from auth.users
+        # This ensures we only show programs from registered institutions,
+        # NOT from recommendation universities
+        try:
+            # Query auth.users table for users with institution role
+            auth_response = db.rpc('get_institution_user_ids').execute()
+
+            if not auth_response.data:
+                # Fallback: If RPC doesn't exist, use raw metadata query
+                # Get users where raw_user_meta_data->'role' = 'institution'
+                users_response = db.table('auth.users').select('id').execute()
+                registered_institution_ids = [u['id'] for u in users_response.data if u.get('raw_user_meta_data', {}).get('role') == 'institution']
+            else:
+                registered_institution_ids = auth_response.data
+
+        except Exception as auth_error:
+            logger.warning(f"Could not fetch registered institutions: {auth_error}")
+            # Fallback: At minimum, include the known registered institution
+            registered_institution_ids = ['8099317e-c970-4b13-9417-5bc891fa44a0']
+
+        # Convert to strings for comparison
+        registered_institution_ids_str = [str(uid) for uid in registered_institution_ids]
+
+        if not registered_institution_ids_str:
+            # No registered institutions found
+            return {
+                "total": 0,
+                "programs": []
+            }
+
+        # Start query - ONLY from registered institutions
         query = db.table('programs').select('*', count='exact')
 
-        # Apply filters
+        # CRITICAL FILTER: Only show programs from registered institutions
+        query = query.in_('institution_id', registered_institution_ids_str)
+
+        # Apply additional filters
         if institution_id:
             query = query.eq('institution_id', str(institution_id))
 
