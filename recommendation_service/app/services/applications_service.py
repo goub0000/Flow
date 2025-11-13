@@ -34,12 +34,23 @@ class ApplicationsService:
     ) -> ApplicationResponse:
         """Create a new application"""
         try:
+            # DEPLOYMENT VERSION CHECK - v1.0.1
+            logger.info(f"[VERSION] ApplicationsService v1.0.1 - create_application called")
+            # DEBUG: Log incoming data
+            logger.info(f"[DEBUG] Received application data:")
+            logger.info(f"[DEBUG] institution_name: {application_data.institution_name}")
+            logger.info(f"[DEBUG] program_name: {application_data.program_name}")
+            logger.info(f"[DEBUG] application_fee: {application_data.application_fee}")
+
             application = {
                 "id": str(uuid4()),
                 "student_id": student_id,
                 "institution_id": application_data.institution_id,
                 "program_id": application_data.program_id,
                 "application_type": application_data.application_type.value,
+                "institution_name": application_data.institution_name,
+                "program_name": application_data.program_name,
+                "application_fee": application_data.application_fee,
                 "status": ApplicationStatus.PENDING.value,
                 "personal_info": application_data.personal_info,
                 "academic_info": application_data.academic_info,
