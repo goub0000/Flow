@@ -90,9 +90,16 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   }
 
   Future<void> _submitApplication() async {
-    if (!_formKey.currentState!.validate()) return;
+    print('[CreateApplication] _submitApplication() called');
+    print('[CreateApplication] Form validation...');
+    if (!_formKey.currentState!.validate()) {
+      print('[CreateApplication] Form validation failed');
+      return;
+    }
+    print('[CreateApplication] Form validation passed');
 
     // Show uploading indicator
+    print('[CreateApplication] Showing upload indicator');
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Row(
@@ -431,6 +438,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               setState(() => _currentStep++);
             } else {
               // Step 4: Validate documents before submission
+              print('[CreateApplication] Submit button clicked');
+              print('[CreateApplication] Current step: $_currentStep');
+              print('[CreateApplication] Uploaded documents: ${_uploadedDocuments.keys.where((key) => _uploadedDocuments[key] != null).toList()}');
+
               final missingDocs = <String>[];
               if (_uploadedDocuments['transcript'] == null) {
                 missingDocs.add('Academic Transcript');
@@ -443,6 +454,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               }
 
               if (missingDocs.isNotEmpty) {
+                print('[CreateApplication] Missing documents: ${missingDocs.join(", ")}');
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Missing required documents: ${missingDocs.join(", ")}'),
@@ -454,6 +466,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               }
 
               // All documents uploaded, proceed with submission
+              print('[CreateApplication] All documents validated, calling _submitApplication()');
               _submitApplication();
             }
           },
