@@ -91,6 +91,11 @@ class ApplicationResponse(BaseModel):
     application_type: str
     status: str
 
+    # Institution and Program Information (required by frontend)
+    institution_name: str
+    program_name: str
+    application_fee: Optional[float] = None
+
     # Application Data
     personal_info: Dict[str, Any] = Field(default_factory=dict)
     academic_info: Dict[str, Any] = Field(default_factory=dict)
