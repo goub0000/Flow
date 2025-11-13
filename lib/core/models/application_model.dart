@@ -50,11 +50,15 @@ class Application {
           ? DateTime.parse(json['reviewed_at'] as String)
           : null,
       reviewNotes: json['reviewer_notes'] as String?,
-      documents: json['documents'] as Map<String, dynamic>? ?? {},
+      documents: json['documents'] is List
+          ? (json['documents'] as List).isEmpty
+              ? {}
+              : (json['documents'] as List).first as Map<String, dynamic>
+          : json['documents'] as Map<String, dynamic>? ?? {},
       personalInfo: json['personal_info'] as Map<String, dynamic>? ?? {},
       academicInfo: json['academic_info'] as Map<String, dynamic>? ?? {},
       applicationFee: (json['application_fee'] as num?)?.toDouble(),
-      feePaid: json['fee_paid'] as bool? ?? false,
+      feePaid: false, // Fee payment status not stored in DB yet
     );
   }
 
