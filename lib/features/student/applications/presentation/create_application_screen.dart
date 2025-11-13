@@ -91,13 +91,8 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
   Future<void> _submitApplication() async {
     print('[CreateApplication] _submitApplication() called');
-    print('[CreateApplication] Form validation...');
-    if (!_formKey.currentState!.validate()) {
-      print('[CreateApplication] Form validation failed');
-      return;
-    }
-    print('[CreateApplication] Form validation passed');
 
+    // No need to validate form again - we already validated step by step
     // Show uploading indicator
     print('[CreateApplication] Showing upload indicator');
     ScaffoldMessenger.of(context).showSnackBar(
