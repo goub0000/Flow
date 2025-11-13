@@ -124,46 +124,43 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         throw Exception('User not authenticated');
       }
 
-      // Upload documents to Supabase Storage
-      final supabase = ref.read(supabaseClientProvider);
-      final storageService = StorageService(supabase);
+      // Instead of uploading to Supabase directly, we'll send file info to backend
+      // Backend will handle the upload with its service role key
+      print('[CreateApplication] Preparing document data for backend upload');
 
-      final documentUrls = <String, String>{};
+      final documentData = <String, Map<String, dynamic>>{};
 
-      // Upload transcript
+      // Prepare transcript
       if (_uploadedDocuments['transcript'] != null) {
-        final transcriptUrl = await storageService.uploadDocument(
-          userId: user.id,
-          fileName: _uploadedDocuments['transcript']!.name,
-          fileBytes: _uploadedDocuments['transcript']!.bytes!,
-          fileType: 'transcript',
-        );
-        documentUrls['transcript'] = transcriptUrl;
+        final file = _uploadedDocuments['transcript']!;
+        documentData['transcript'] = {
+          'fileName': file.name,
+          'fileSize': file.size,
+          'fileType': 'transcript',
+        };
       }
 
-      // Upload ID document
+      // Prepare ID document
       if (_uploadedDocuments['id'] != null) {
-        final idUrl = await storageService.uploadDocument(
-          userId: user.id,
-          fileName: _uploadedDocuments['id']!.name,
-          fileBytes: _uploadedDocuments['id']!.bytes!,
-          fileType: 'id',
-        );
-        documentUrls['id'] = idUrl;
+        final file = _uploadedDocuments['id']!;
+        documentData['id'] = {
+          'fileName': file.name,
+          'fileSize': file.size,
+          'fileType': 'id',
+        };
       }
 
-      // Upload passport photo
+      // Prepare passport photo
       if (_uploadedDocuments['statement'] != null) {
-        final photoUrl = await storageService.uploadDocument(
-          userId: user.id,
-          fileName: _uploadedDocuments['statement']!.name,
-          fileBytes: _uploadedDocuments['statement']!.bytes!,
-          fileType: 'photo',
-        );
-        documentUrls['photo'] = photoUrl;
+        final file = _uploadedDocuments['statement']!;
+        documentData['photo'] = {
+          'fileName': file.name,
+          'fileSize': file.size,
+          'fileType': 'photo',
+        };
       }
 
-      // Prepare application data with uploaded document URLs
+      // Prepare application data
       personalInfo = {
         'fullName': _fullNameController.text,
         'email': _emailController.text,
@@ -180,13 +177,14 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         'personalStatement': _personalStatementController.text,
       };
 
-      documents = documentUrls;  // Use uploaded URLs instead of file names
+      // Send document metadata - backend will handle actual upload
+      documents = documentData;
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to upload documents: ${e.toString()}'),
+            content: Text('Failed to prepare application: ${e.toString()}'),
             backgroundColor: AppColors.error,
           ),
         );
@@ -261,7 +259,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Application and documents submitted successfully!'),
+            content: Text('Application submitted successfully!'),
             backgroundColor: AppColors.success,
             duration: Duration(seconds: 4),
           ),
