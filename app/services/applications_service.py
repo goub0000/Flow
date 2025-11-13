@@ -34,6 +34,8 @@ class ApplicationsService:
     ) -> ApplicationResponse:
         """Create a new application"""
         try:
+            # DEPLOYMENT VERSION CHECK - v1.0.1
+            logger.info(f"[VERSION] ApplicationsService v1.0.1 - create_application called")
             # DEBUG: Log incoming data
             logger.info(f"[DEBUG] Received application data:")
             logger.info(f"[DEBUG] institution_name: {application_data.institution_name}")

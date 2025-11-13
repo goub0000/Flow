@@ -21,7 +21,7 @@ from app.database.config import get_supabase
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifecycle manager for startup and shutdown events"""
-    logger.info("Starting Find Your Path Recommendation Service (Cloud-Based)...")
+    logger.info("Starting Find Your Path Recommendation Service (Cloud-Based - v1.0.1)...")
 
     # Test Supabase connection
     try:
