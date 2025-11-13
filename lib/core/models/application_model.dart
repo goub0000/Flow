@@ -40,21 +40,21 @@ class Application {
   factory Application.fromJson(Map<String, dynamic> json) {
     return Application(
       id: json['id'] as String,
-      studentId: json['studentId'] as String,
-      institutionId: json['institutionId'] as String,
-      institutionName: json['institutionName'] as String,
-      programName: json['programName'] as String,
+      studentId: json['student_id'] as String,
+      institutionId: json['institution_id'] as String,
+      institutionName: json['institution_name'] as String,
+      programName: json['program_name'] as String,
       status: json['status'] as String? ?? 'pending',
-      submittedAt: DateTime.parse(json['submittedAt'] as String),
-      reviewedAt: json['reviewedAt'] != null
-          ? DateTime.parse(json['reviewedAt'] as String)
+      submittedAt: DateTime.parse(json['created_at'] as String),
+      reviewedAt: json['reviewed_at'] != null
+          ? DateTime.parse(json['reviewed_at'] as String)
           : null,
-      reviewNotes: json['reviewNotes'] as String?,
+      reviewNotes: json['reviewer_notes'] as String?,
       documents: json['documents'] as Map<String, dynamic>? ?? {},
-      personalInfo: json['personalInfo'] as Map<String, dynamic>? ?? {},
-      academicInfo: json['academicInfo'] as Map<String, dynamic>? ?? {},
-      applicationFee: (json['applicationFee'] as num?)?.toDouble(),
-      feePaid: json['feePaid'] as bool? ?? false,
+      personalInfo: json['personal_info'] as Map<String, dynamic>? ?? {},
+      academicInfo: json['academic_info'] as Map<String, dynamic>? ?? {},
+      applicationFee: (json['application_fee'] as num?)?.toDouble(),
+      feePaid: json['fee_paid'] as bool? ?? false,
     );
   }
 
