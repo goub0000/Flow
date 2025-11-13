@@ -124,8 +124,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         throw Exception('User not authenticated');
       }
 
-      // Backend expects document URLs as simple strings
-      // For now, send filenames to indicate which documents are uploaded
+      // Backend expects documents as a List of Dict objects
       print('[CreateApplication] Preparing document data for backend');
 
       // Prepare application data
@@ -145,12 +144,34 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         'personalStatement': _personalStatementController.text,
       };
 
-      // Send document URLs (filenames for now, backend can process later)
-      documents = {
-        'transcript': _uploadedDocuments['transcript']?.name ?? '',
-        'id_document': _uploadedDocuments['id']?.name ?? '',
-        'passport_photo': _uploadedDocuments['statement']?.name ?? '',
-      };
+      // Send documents as list of dictionaries (backend expects List[Dict[str, str]])
+      final documentsList = <Map<String, String>>[];
+
+      if (_uploadedDocuments['transcript'] != null) {
+        documentsList.add({
+          'type': 'transcript',
+          'filename': _uploadedDocuments['transcript']!.name,
+          'url': 'pending_upload',  // Placeholder for backend processing
+        });
+      }
+
+      if (_uploadedDocuments['id'] != null) {
+        documentsList.add({
+          'type': 'id_document',
+          'filename': _uploadedDocuments['id']!.name,
+          'url': 'pending_upload',
+        });
+      }
+
+      if (_uploadedDocuments['statement'] != null) {
+        documentsList.add({
+          'type': 'passport_photo',
+          'filename': _uploadedDocuments['statement']!.name,
+          'url': 'pending_upload',
+        });
+      }
+
+      documents = {'list': documentsList};
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();

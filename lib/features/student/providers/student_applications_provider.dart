@@ -109,6 +109,9 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
         return false;
       }
 
+      // Extract the documents list from the map if it exists
+      final documentsList = documents['list'] as List<Map<String, String>>? ?? [];
+
       final response = await _apiClient.post(
         ApiConfig.applications,
         data: {
@@ -119,7 +122,7 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
           'program_name': programName,
           'personal_info': personalInfo,
           'academic_info': academicInfo,
-          'documents': documents,
+          'documents': documentsList,  // Send as List, not Map
           'application_fee': applicationFee,
         },
         fromJson: (data) => Application.fromJson(data),
