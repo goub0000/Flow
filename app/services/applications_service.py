@@ -34,6 +34,12 @@ class ApplicationsService:
     ) -> ApplicationResponse:
         """Create a new application"""
         try:
+            # DEBUG: Log incoming data
+            logger.info(f"[DEBUG] Received application data:")
+            logger.info(f"[DEBUG] institution_name: {application_data.institution_name}")
+            logger.info(f"[DEBUG] program_name: {application_data.program_name}")
+            logger.info(f"[DEBUG] application_fee: {application_data.application_fee}")
+
             application = {
                 "id": str(uuid4()),
                 "student_id": student_id,
