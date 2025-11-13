@@ -112,19 +112,26 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
       // Extract the documents list from the map if it exists
       final documentsList = documents['list'] as List<Map<String, String>>? ?? [];
 
+      // Only send fields that match the backend schema (ApplicationCreateRequest)
+      final requestData = <String, dynamic>{
+        'institution_id': institutionId,
+        'program_id': programId ?? institutionId,
+        'application_type': applicationType ?? 'undergraduate',
+        'personal_info': personalInfo,
+        'academic_info': academicInfo,
+        'documents': documentsList,
+      };
+
+      // Add optional fields to metadata for reference
+      requestData['metadata'] = {
+        'institution_name': institutionName,
+        'program_name': programName,
+        if (applicationFee != null) 'application_fee': applicationFee,
+      };
+
       final response = await _apiClient.post(
         ApiConfig.applications,
-        data: {
-          'institution_id': institutionId,  // Send institution UUID
-          'program_id': programId ?? institutionId,  // Use program_id if available, fallback to institution_id
-          'application_type': applicationType ?? 'undergraduate',  // Default to undergraduate
-          'institution_name': institutionName,
-          'program_name': programName,
-          'personal_info': personalInfo,
-          'academic_info': academicInfo,
-          'documents': documentsList,  // Send as List, not Map
-          'application_fee': applicationFee,
-        },
+        data: requestData,
         fromJson: (data) => Application.fromJson(data),
       );
 
