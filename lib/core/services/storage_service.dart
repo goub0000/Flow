@@ -56,11 +56,11 @@ class StorageService {
       }
       print('[StorageService] Content type: $contentType');
 
-      // Upload to Supabase Storage
+      // Upload to Supabase Storage using uploadBinary for byte arrays
       print('[StorageService] Starting Supabase upload...');
       await _supabase.storage
           .from('documents')
-          .upload(
+          .uploadBinary(
             filePath,
             fileBytes,
             fileOptions: FileOptions(
