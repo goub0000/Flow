@@ -124,41 +124,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         throw Exception('User not authenticated');
       }
 
-      // Instead of uploading to Supabase directly, we'll send file info to backend
-      // Backend will handle the upload with its service role key
-      print('[CreateApplication] Preparing document data for backend upload');
-
-      final documentData = <String, Map<String, dynamic>>{};
-
-      // Prepare transcript
-      if (_uploadedDocuments['transcript'] != null) {
-        final file = _uploadedDocuments['transcript']!;
-        documentData['transcript'] = {
-          'fileName': file.name,
-          'fileSize': file.size,
-          'fileType': 'transcript',
-        };
-      }
-
-      // Prepare ID document
-      if (_uploadedDocuments['id'] != null) {
-        final file = _uploadedDocuments['id']!;
-        documentData['id'] = {
-          'fileName': file.name,
-          'fileSize': file.size,
-          'fileType': 'id',
-        };
-      }
-
-      // Prepare passport photo
-      if (_uploadedDocuments['statement'] != null) {
-        final file = _uploadedDocuments['statement']!;
-        documentData['photo'] = {
-          'fileName': file.name,
-          'fileSize': file.size,
-          'fileType': 'photo',
-        };
-      }
+      // Backend expects document URLs as simple strings
+      // For now, send filenames to indicate which documents are uploaded
+      print('[CreateApplication] Preparing document data for backend');
 
       // Prepare application data
       personalInfo = {
@@ -177,8 +145,12 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         'personalStatement': _personalStatementController.text,
       };
 
-      // Send document metadata - backend will handle actual upload
-      documents = documentData;
+      // Send document URLs (filenames for now, backend can process later)
+      documents = {
+        'transcript': _uploadedDocuments['transcript']?.name ?? '',
+        'id_document': _uploadedDocuments['id']?.name ?? '',
+        'passport_photo': _uploadedDocuments['statement']?.name ?? '',
+      };
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -907,7 +879,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   const SizedBox(height: 16),
                   _DocumentUploadCard(
                     title: 'Academic Transcript',
-                    subtitle: 'PDF format, max 5MB',
+                    subtitle: 'Official transcript from your previous school (PDF, DOC, or DOCX format, max 5MB)',
                     icon: Icons.description,
                     onUpload: () => _pickDocument('transcript'),
                     uploadedFile: _uploadedDocuments['transcript'],
@@ -915,7 +887,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   const SizedBox(height: 12),
                   _DocumentUploadCard(
                     title: 'ID Document',
-                    subtitle: 'Passport, National ID, or Driver\'s License',
+                    subtitle: 'Valid government-issued ID: Passport, National ID Card, or Driver\'s License (PDF, JPG, or PNG)',
                     icon: Icons.badge,
                     onUpload: () => _pickDocument('id'),
                     uploadedFile: _uploadedDocuments['id'],
@@ -923,7 +895,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   const SizedBox(height: 12),
                   _DocumentUploadCard(
                     title: 'Passport Photo',
-                    subtitle: 'Recent passport-sized photo',
+                    subtitle: 'Recent passport-sized photo with plain background (JPG or PNG format)',
                     icon: Icons.photo_camera,
                     onUpload: () => _pickDocument('statement'),
                     uploadedFile: _uploadedDocuments['statement'],
