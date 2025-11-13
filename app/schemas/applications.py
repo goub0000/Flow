@@ -34,6 +34,11 @@ class ApplicationCreateRequest(BaseModel):
     program_id: str
     application_type: ApplicationType = ApplicationType.UNDERGRADUATE
 
+    # Database NOT NULL fields
+    institution_name: str
+    program_name: str
+    application_fee: Optional[float] = None
+
     # Personal Information
     personal_info: Dict[str, Any] = Field(default_factory=dict)
 

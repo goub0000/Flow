@@ -112,7 +112,7 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
       // Extract the documents list from the map if it exists
       final documentsList = documents['list'] as List<Map<String, String>>? ?? [];
 
-      // Only send fields that match the backend schema (ApplicationCreateRequest)
+      // Build request data matching backend schema
       final requestData = <String, dynamic>{
         'institution_id': institutionId,
         'program_id': programId ?? institutionId,
@@ -120,13 +120,10 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
         'personal_info': personalInfo,
         'academic_info': academicInfo,
         'documents': documentsList,
-      };
-
-      // Add optional fields to metadata for reference
-      requestData['metadata'] = {
+        // Database requires these fields (NOT NULL constraint)
         'institution_name': institutionName,
         'program_name': programName,
-        if (applicationFee != null) 'application_fee': applicationFee,
+        'application_fee': applicationFee,
       };
 
       final response = await _apiClient.post(
