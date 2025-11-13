@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../api/api_client.dart';
 import '../api/api_config.dart';
 import '../api/api_response.dart';
@@ -68,6 +69,15 @@ class AuthService {
 
     // Set token in API client
     await _apiClient.setToken(accessToken);
+
+    // Set session in Supabase client for storage operations
+    try {
+      print('[AuthService] Setting Supabase session with access token');
+      await Supabase.instance.client.auth.setSession(accessToken);
+      print('[AuthService] Supabase session set successfully');
+    } catch (e) {
+      print('[AuthService] Failed to set Supabase session: $e');
+    }
   }
 
   /// Clear session from storage
