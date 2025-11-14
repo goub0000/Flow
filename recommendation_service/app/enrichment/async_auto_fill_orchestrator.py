@@ -176,7 +176,8 @@ class AsyncAutoFillOrchestrator:
         session: aiohttp.ClientSession,
         web_enricher,
         field_scrapers,
-        scorecard_enricher=None
+        scorecard_enricher=None,
+        cache=None
     ) -> Tuple[Dict, int]:
         """
         Asynchronously enrich a single university with missing data
@@ -187,6 +188,7 @@ class AsyncAutoFillOrchestrator:
             web_enricher: AsyncWebSearchEnricher instance
             field_scrapers: AsyncFieldScrapers instance
             scorecard_enricher: Optional AsyncCollegeScorecardEnricher for U.S. universities
+            cache: Optional AsyncEnrichmentCache for caching
 
         Returns:
             Tuple of (enriched_data dict, fields_filled count)
@@ -196,27 +198,54 @@ class AsyncAutoFillOrchestrator:
 
             enriched_data = {}
             fields_filled = 0
+            university_id = university.get('id')
 
             try:
+                # Step -1: Check cache first for ALL missing fields
+                if cache and university_id:
+                    missing_fields = [f for f in self.FILLABLE_FIELDS if not university.get(f)]
+                    cached_fields = cache.get_cached_fields(university_id, missing_fields)
+
+                    for field, value in cached_fields.items():
+                        if value and not university.get(field):
+                            enriched_data[field] = value
+                            fields_filled += 1
+
+                    if cached_fields:
+                        logger.info(
+                            f"Cache provided {len(cached_fields)} fields for {university['name']}"
+                        )
+
                 # Step 0: College Scorecard (U.S. universities only) - Official source first!
                 if scorecard_enricher and university.get('country') in ['USA', 'United States', 'US', None]:
                     logger.info(f"Checking College Scorecard for: {university['name']}")
                     scorecard_data = await scorecard_enricher.enrich_university_async(university, session)
                     for field, value in scorecard_data.items():
-                        if value and not university.get(field):
+                        if value and not university.get(field) and field not in enriched_data:
                             enriched_data[field] = value
                             fields_filled += 1
 
                     if scorecard_data:
                         logger.info(f"College Scorecard filled {len(scorecard_data)} fields")
+                        # Cache College Scorecard data (30 day TTL)
+                        if cache and university_id:
+                            cache.cache_multiple_fields(
+                                university_id, scorecard_data, 'college_scorecard'
+                            )
                         await asyncio.sleep(self.rate_limit_delay)
 
                 # Step 1: General web search (Wikipedia, DuckDuckGo, etc.)
                 general_data = await web_enricher.enrich_university_async(university, session)
                 for field, value in general_data.items():
-                    if value and not university.get(field):
+                    if value and not university.get(field) and field not in enriched_data:
                         enriched_data[field] = value
                         fields_filled += 1
+
+                # Cache web search data (7 day TTL)
+                if cache and university_id and general_data:
+                    cache.cache_multiple_fields(
+                        university_id, general_data, 'wikipedia'
+                    )
 
                 # Small delay to respect rate limits
                 await asyncio.sleep(self.rate_limit_delay)
@@ -361,6 +390,7 @@ class AsyncAutoFillOrchestrator:
         from .async_web_search_enricher import AsyncWebSearchEnricher
         from .async_field_scrapers import AsyncFieldScrapers
         from .async_college_scorecard_enricher import AsyncCollegeScorecardEnricher
+        from .async_enrichment_cache import AsyncEnrichmentCache
 
         logger.info("=" * 80)
         logger.info("Starting Async Automated Data Enrichment")
@@ -395,11 +425,15 @@ class AsyncAutoFillOrchestrator:
                 logger.info(f"ℹ️  College Scorecard API not available: {e}")
                 scorecard_enricher = None
 
+            # Initialize enrichment cache
+            cache = AsyncEnrichmentCache(self.db, enabled=not dry_run)
+            logger.info(f"✅ Enrichment cache enabled (dry_run={dry_run})")
+
             # Create tasks for concurrent processing
             tasks = []
             for university in universities:
                 task = self.enrich_university_async(
-                    university, session, web_enricher, field_scrapers, scorecard_enricher
+                    university, session, web_enricher, field_scrapers, scorecard_enricher, cache
                 )
                 tasks.append((university, task))
 
@@ -431,24 +465,42 @@ class AsyncAutoFillOrchestrator:
                     logger.error(f"Error processing {university['name']}: {e}")
                     self.stats['errors'] += 1
 
-        self.stats['end_time'] = datetime.utcnow()
-        duration = (self.stats['end_time'] - self.stats['start_time']).total_seconds()
+            self.stats['end_time'] = datetime.utcnow()
+            duration = (self.stats['end_time'] - self.stats['start_time']).total_seconds()
 
-        # Final report
-        logger.info("")
-        logger.info("=" * 80)
-        logger.info("Async Enrichment Complete!")
-        logger.info("=" * 80)
-        logger.info(f"Universities processed: {self.stats['total_processed']}")
-        logger.info(f"Universities updated: {self.stats['total_updated']}")
-        logger.info(f"Total fields filled: {sum(self.stats['fields_filled'].values())}")
-        logger.info(f"Errors encountered: {self.stats['errors']}")
-        logger.info(f"Duration: {duration:.1f} seconds ({duration/60:.1f} minutes)")
-        logger.info(f"Speed: {self.stats['total_processed']/duration:.2f} universities/second")
-        logger.info("")
-        logger.info("Fields filled breakdown:")
-        for field, count in sorted(self.stats['fields_filled'].items(), key=lambda x: x[1], reverse=True):
-            logger.info(f"  {field}: {count}")
+            # Get cache statistics
+            cache_stats = cache.get_stats() if cache else None
+
+            # Final report
+            logger.info("")
+            logger.info("=" * 80)
+            logger.info("Async Enrichment Complete!")
+            logger.info("=" * 80)
+            logger.info(f"Universities processed: {self.stats['total_processed']}")
+            logger.info(f"Universities updated: {self.stats['total_updated']}")
+            logger.info(f"Total fields filled: {sum(self.stats['fields_filled'].values())}")
+            logger.info(f"Errors encountered: {self.stats['errors']}")
+            logger.info(f"Duration: {duration:.1f} seconds ({duration/60:.1f} minutes)")
+            logger.info(f"Speed: {self.stats['total_processed']/duration:.2f} universities/second")
+
+            # Cache statistics
+            if cache_stats and cache_stats['total_requests'] > 0:
+                logger.info("")
+                logger.info("Cache Performance:")
+                logger.info(f"  Cache hits: {cache_stats['hits']}")
+                logger.info(f"  Cache misses: {cache_stats['misses']}")
+                logger.info(f"  Cache writes: {cache_stats['writes']}")
+                logger.info(f"  Hit rate: {cache_stats['hit_rate']}%")
+                logger.info(f"  Time saved: ~{cache_stats['hits'] * 3:.0f} seconds (est)")
+
+            logger.info("")
+            logger.info("Fields filled breakdown:")
+            for field, count in sorted(self.stats['fields_filled'].items(), key=lambda x: x[1], reverse=True):
+                logger.info(f"  {field}: {count}")
+
+            # Add cache stats to return value
+            if cache_stats:
+                self.stats['cache'] = cache_stats
 
         return self.stats
 
