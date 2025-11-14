@@ -153,9 +153,12 @@ class EnrichmentWorker:
                         # Update database if fields were enriched
                         if enriched:
                             try:
-                                # Filter out None values and empty strings before updating
+                                # Fields with NOT NULL constraints that should never be updated
+                                PROTECTED_FIELDS = {'id', 'name'}
+
+                                # Filter out None values, empty strings, and protected fields
                                 cleaned_data = {k: v for k, v in enriched.items()
-                                              if v is not None and v != ''}
+                                              if v is not None and v != '' and k not in PROTECTED_FIELDS}
 
                                 if cleaned_data:
                                     # Add university ID to the data for upsert
