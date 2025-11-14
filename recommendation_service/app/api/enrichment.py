@@ -442,3 +442,254 @@ async def clear_old_jobs():
         'removed': len(jobs_to_remove),
         'remaining': len(enrichment_jobs)
     }
+
+
+# ============================================================================
+# CACHE MANAGEMENT ENDPOINTS
+# ============================================================================
+
+@router.get("/cache/stats")
+async def get_cache_statistics():
+    """
+    Get enrichment cache statistics
+
+    Returns:
+        - total_entries: Total cache entries
+        - valid_entries: Non-expired entries
+        - expired_entries: Expired entries
+        - by_source: Breakdown by data source (College Scorecard, Wikipedia, etc.)
+        - by_field: Breakdown by field (acceptance_rate, tuition, etc.)
+    """
+    try:
+        from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
+
+        db = get_supabase()
+        cache = AsyncEnrichmentCache(db)
+
+        stats = cache.get_database_stats()
+
+        if stats is None:
+            raise HTTPException(status_code=500, detail="Failed to retrieve cache statistics")
+
+        return {
+            "success": True,
+            "statistics": stats,
+            "timestamp": datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to get cache stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/cache/health")
+async def get_cache_health():
+    """
+    Check cache health and provide recommendations
+
+    Returns health status and recommendations for cache management
+    """
+    try:
+        from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
+
+        db = get_supabase()
+        cache = AsyncEnrichmentCache(db)
+
+        stats = cache.get_database_stats()
+
+        if stats is None:
+            return {
+                "status": "error",
+                "message": "Could not retrieve cache statistics"
+            }
+
+        total = stats['total_entries']
+        valid = stats['valid_entries']
+        expired = stats['expired_entries']
+
+        # Calculate health metrics
+        expiration_rate = (expired / total * 100) if total > 0 else 0
+
+        # Determine health status
+        if expiration_rate > 30:
+            status = "warning"
+            message = "High expiration rate - consider running cleanup"
+            recommendations = [
+                "Run cache cleanup to remove expired entries",
+                f"{expired} entries can be cleaned up"
+            ]
+        elif total > 100000:
+            status = "warning"
+            message = "Large cache size - monitor performance"
+            recommendations = [
+                "Cache is growing large - monitor database size",
+                "Consider reducing TTL for less critical sources"
+            ]
+        else:
+            status = "healthy"
+            message = "Cache is operating normally"
+            recommendations = []
+
+        return {
+            "status": status,
+            "message": message,
+            "metrics": {
+                "total_entries": total,
+                "valid_entries": valid,
+                "expired_entries": expired,
+                "expiration_rate": round(expiration_rate, 2)
+            },
+            "recommendations": recommendations,
+            "timestamp": datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to check cache health: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/cache/university/{university_id}")
+async def invalidate_university_cache(university_id: int):
+    """
+    Invalidate all cached fields for a specific university
+
+    Use this when:
+    - University data has been manually updated
+    - University website has changed significantly
+    - You want to force fresh enrichment for this university
+
+    Args:
+        university_id: ID of the university
+
+    Returns:
+        Number of cache entries deleted
+    """
+    try:
+        from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
+
+        db = get_supabase()
+        cache = AsyncEnrichmentCache(db)
+
+        deleted = cache.invalidate_university(university_id)
+
+        return {
+            "success": True,
+            "university_id": university_id,
+            "entries_deleted": deleted,
+            "message": f"Invalidated {deleted} cache entries for university {university_id}",
+            "timestamp": datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to invalidate university cache: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/cache/field/{field_name}")
+async def invalidate_field_cache(field_name: str):
+    """
+    Invalidate a specific field across ALL universities
+
+    Use this when:
+    - Field definition or calculation has changed
+    - Data source for this field has been updated
+    - You want to force re-enrichment of this field for all universities
+
+    Args:
+        field_name: Name of the field (e.g., 'acceptance_rate', 'tuition_out_state')
+
+    Returns:
+        Number of cache entries deleted
+    """
+    try:
+        from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
+
+        db = get_supabase()
+        cache = AsyncEnrichmentCache(db)
+
+        deleted = cache.invalidate_field(field_name)
+
+        return {
+            "success": True,
+            "field_name": field_name,
+            "entries_deleted": deleted,
+            "message": f"Invalidated {deleted} cache entries for field '{field_name}'",
+            "timestamp": datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to invalidate field cache: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/cache/cleanup")
+async def cleanup_expired_cache():
+    """
+    Remove all expired cache entries
+
+    This frees up database space and improves query performance.
+    Safe to run anytime - only removes entries past their expiration date.
+
+    Recommended: Run weekly via cron job
+
+    Returns:
+        Number of expired entries deleted
+    """
+    try:
+        from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
+
+        db = get_supabase()
+        cache = AsyncEnrichmentCache(db)
+
+        deleted = cache.cleanup_expired()
+
+        return {
+            "success": True,
+            "entries_deleted": deleted,
+            "message": f"Cleaned up {deleted} expired cache entries",
+            "timestamp": datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to cleanup cache: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/cache/all")
+async def clear_all_cache():
+    """
+    DANGER: Clear ALL cache entries (expired and valid)
+
+    Use with extreme caution! This will:
+    - Delete all cached enrichment data
+    - Force fresh enrichment for all universities on next run
+    - Significantly slow down next enrichment (no cache hits)
+
+    Only use when:
+    - Major data source changes
+    - Cache corruption suspected
+    - Complete refresh needed
+
+    Returns:
+        Number of entries deleted
+    """
+    try:
+        db = get_supabase()
+
+        # Delete all cache entries
+        response = db.table('enrichment_cache').delete().neq('id', 0).execute()
+        deleted = len(response.data) if response.data else 0
+
+        logger.warning(f"CACHE CLEARED: All {deleted} cache entries deleted")
+
+        return {
+            "success": True,
+            "entries_deleted": deleted,
+            "message": f"⚠️ ALL cache cleared: {deleted} entries deleted",
+            "warning": "Next enrichment will be slower (no cache hits)",
+            "timestamp": datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to clear all cache: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
