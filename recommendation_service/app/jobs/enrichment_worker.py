@@ -154,10 +154,15 @@ class EnrichmentWorker:
                         # Update database if fields were enriched
                         if enriched:
                             try:
-                                self.db.table('universities')\
-                                    .update(enriched)\
-                                    .eq('id', university['id'])\
-                                    .execute()
+                                # Filter out None values and empty strings before updating
+                                cleaned_data = {k: v for k, v in enriched.items()
+                                              if v is not None and v != ''}
+
+                                if cleaned_data:
+                                    self.db.table('universities')\
+                                        .update(cleaned_data)\
+                                        .eq('id', university['id'])\
+                                        .execute()
 
                                 progress_callback(university['name'], fields_filled)
 
