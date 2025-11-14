@@ -12,6 +12,7 @@ postgrest>=0.13.0
 # HTTP Client
 httpx>=0.25.0
 requests>=2.31.0
+aiohttp>=3.9.0  # Async HTTP client for concurrent enrichment
 
 # Data Processing
 pydantic>=2.0.0
