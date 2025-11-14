@@ -159,9 +159,12 @@ class EnrichmentWorker:
                                               if v is not None and v != ''}
 
                                 if cleaned_data:
+                                    # Add university ID to the data for upsert
+                                    cleaned_data['id'] = university['id']
+
+                                    # Use upsert instead of update - more reliable with Supabase
                                     self.db.table('universities')\
-                                        .update(cleaned_data)\
-                                        .eq('id', university['id'])\
+                                        .upsert(cleaned_data, on_conflict='id')\
                                         .execute()
 
                                 progress_callback(university['name'], fields_filled)
