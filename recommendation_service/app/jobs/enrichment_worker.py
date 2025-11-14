@@ -26,7 +26,7 @@ class EnrichmentWorker:
 
     def __init__(self):
         self.db = get_supabase()
-        self.orchestrator = AsyncAutoFillOrchestrator()
+        self.orchestrator = AsyncAutoFillOrchestrator(self.db)
         self.is_running = False
         self.current_job_id: Optional[str] = None
 

@@ -34,6 +34,7 @@ class EnrichmentJob:
     created_at: datetime
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     # Job parameters
     university_limit: Optional[int] = None
@@ -55,7 +56,7 @@ class EnrichmentJob:
         """Convert to dictionary for JSON serialization"""
         data = asdict(self)
         # Convert datetime objects to ISO strings
-        for key in ['created_at', 'started_at', 'completed_at']:
+        for key in ['created_at', 'started_at', 'completed_at', 'updated_at']:
             if data[key]:
                 data[key] = data[key].isoformat()
         # Convert enum to string
@@ -66,7 +67,7 @@ class EnrichmentJob:
     def from_dict(cls, data: Dict) -> 'EnrichmentJob':
         """Create from dictionary"""
         # Convert ISO strings to datetime
-        for key in ['created_at', 'started_at', 'completed_at']:
+        for key in ['created_at', 'started_at', 'completed_at', 'updated_at']:
             if data.get(key):
                 data[key] = datetime.fromisoformat(data[key])
         # Convert string to enum
