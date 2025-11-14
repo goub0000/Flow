@@ -19,8 +19,6 @@ class LinkStatus(str, Enum):
 class ActivityType(str, Enum):
     """Student activity types"""
     LOGIN = "login"
-    COURSE_ENROLLMENT = "course_enrollment"
-    COURSE_PROGRESS = "course_progress"
     ASSIGNMENT_SUBMISSION = "assignment_submission"
     GRADE_RECEIVED = "grade_received"
     APPLICATION_SUBMITTED = "application_submitted"
@@ -116,20 +114,9 @@ class ProgressReportRequest(BaseModel):
     student_id: str
     report_period_start: str  # ISO date
     report_period_end: str  # ISO date
-    include_courses: bool = True
     include_applications: bool = True
     include_counseling: bool = True
     include_achievements: bool = True
-
-
-class CourseProgressSummary(BaseModel):
-    """Summary of course progress"""
-    course_id: str
-    course_title: str
-    enrollment_status: str
-    progress_percentage: float
-    grade: Optional[str] = None
-    last_activity: Optional[str] = None
 
 
 class ApplicationProgressSummary(BaseModel):
@@ -161,11 +148,6 @@ class ProgressReportResponse(BaseModel):
     generated_at: str
 
     # Overall statistics
-    total_courses: int = 0
-    active_courses: int = 0
-    completed_courses: int = 0
-    average_progress: float = 0.0
-
     total_applications: int = 0
     pending_applications: int = 0
     accepted_applications: int = 0
@@ -178,7 +160,6 @@ class ProgressReportResponse(BaseModel):
     achievements_this_period: int = 0
 
     # Detailed data
-    courses: List[CourseProgressSummary] = Field(default_factory=list)
     applications: List[ApplicationProgressSummary] = Field(default_factory=list)
     counseling_sessions: List[CounselingSessionSummary] = Field(default_factory=list)
     recent_achievements: List[Dict[str, Any]] = Field(default_factory=list)
@@ -257,11 +238,6 @@ class ParentDashboardStats(BaseModel):
     # Current status
     is_active: bool  # Active in last 7 days
     last_activity: Optional[str] = None
-
-    # Courses
-    active_courses: int
-    average_course_progress: float
-    courses_at_risk: int  # Progress < 50% and past midpoint
 
     # Applications
     total_applications: int

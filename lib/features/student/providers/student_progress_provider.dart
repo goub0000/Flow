@@ -61,13 +61,13 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
       // Fetch enrollments which contain progress information
       final enrollments = ref.read(enrollmentsListProvider);
 
-      // Convert enrollments to course progress
+      // Convert enrollments to program progress
       final courseProgressList = enrollments.map((enrollment) {
         return CourseProgress(
           courseId: enrollment.courseId,
-          courseName: enrollment.course?.title ?? 'Unknown Course',
+          courseName: enrollment.courseName,
           completionPercentage: enrollment.progress.toDouble(),
-          currentGrade: 0.0, // TODO: Add grade tracking to enrollment model
+          currentGrade: enrollment.grade ?? 0.0,
           assignmentsCompleted: 0, // TODO: Add assignments tracking
           totalAssignments: 0,
           quizzesCompleted: 0, // TODO: Add quiz tracking

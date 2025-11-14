@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/models/course_model.dart';
+import '../../../core/services/enrollments_service.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart';
@@ -85,8 +85,8 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
     }
   }
 
-  /// Enroll in a course via backend API
-  Future<bool> enrollInCourse(String courseId, Course? course) async {
+  /// Enroll in a program via backend API
+  Future<bool> enrollInProgram(String programId) async {
     state = state.copyWith(isEnrolling: true, error: null);
 
     try {
@@ -101,12 +101,12 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
 
       // Check if already enrolled
       final alreadyEnrolled = state.enrollments.any(
-        (enrollment) => enrollment.courseId == courseId,
+        (enrollment) => enrollment.courseId == programId,
       );
 
       if (alreadyEnrolled) {
         state = state.copyWith(
-          error: 'Already enrolled in this course',
+          error: 'Already enrolled in this program',
           isEnrolling: false,
         );
         return false;
@@ -115,7 +115,7 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
       final response = await _apiClient.post(
         ApiConfig.enrollments,
         data: {
-          'course_id': courseId,
+          'course_id': programId,
         },
         fromJson: (data) => Enrollment.fromJson(data),
       );
@@ -129,32 +129,32 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
         return true;
       } else {
         state = state.copyWith(
-          error: response.message ?? 'Failed to enroll in course',
+          error: response.message ?? 'Failed to enroll in program',
           isEnrolling: false,
         );
         return false;
       }
     } catch (e) {
       state = state.copyWith(
-        error: 'Failed to enroll in course: ${e.toString()}',
+        error: 'Failed to enroll in program: ${e.toString()}',
         isEnrolling: false,
       );
       return false;
     }
   }
 
-  /// Check if enrolled in a course
-  bool isEnrolledInCourse(String courseId) {
+  /// Check if enrolled in a program
+  bool isEnrolledInProgram(String programId) {
     return state.enrollments.any(
-      (enrollment) => enrollment.courseId == courseId && enrollment.status == 'active',
+      (enrollment) => enrollment.courseId == programId && enrollment.status == EnrollmentStatus.active,
     );
   }
 
-  /// Get enrollment for a course
-  Enrollment? getEnrollmentForCourse(String courseId) {
+  /// Get enrollment for a program
+  Enrollment? getEnrollmentForProgram(String programId) {
     try {
       return state.enrollments.firstWhere(
-        (enrollment) => enrollment.courseId == courseId,
+        (enrollment) => enrollment.courseId == programId,
       );
     } catch (e) {
       return null;
@@ -164,14 +164,14 @@ class EnrollmentsNotifier extends StateNotifier<EnrollmentsState> {
   /// Get active enrollments
   List<Enrollment> getActiveEnrollments() {
     return state.enrollments.where(
-      (enrollment) => enrollment.status == 'active',
+      (enrollment) => enrollment.status == EnrollmentStatus.active,
     ).toList();
   }
 
   /// Get completed enrollments
   List<Enrollment> getCompletedEnrollments() {
     return state.enrollments.where(
-      (enrollment) => enrollment.status == 'completed',
+      (enrollment) => enrollment.status == EnrollmentStatus.completed,
     ).toList();
   }
 }

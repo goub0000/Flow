@@ -103,7 +103,7 @@ class _DashboardHomeTab extends ConsumerWidget {
     // Mock data for enhanced features
     final mockStats = [
       StatData(
-        label: 'Enrolled Courses',
+        label: 'Enrolled Programs',
         value: '${enrollments.length}',
         icon: Icons.school,
         color: AppColors.primary,
@@ -136,7 +136,7 @@ class _DashboardHomeTab extends ConsumerWidget {
     final mockActivities = [
       ActivityItem(
         id: '1',
-        title: 'Course Completed',
+        title: 'Program Completed',
         description: 'You completed Introduction to Computer Science',
         timestamp: DateTime.now().subtract(const Duration(hours: 2)),
         type: ActivityType.achievement,

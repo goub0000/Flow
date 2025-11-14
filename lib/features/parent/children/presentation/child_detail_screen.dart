@@ -373,7 +373,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
                     const Icon(Icons.access_time, size: 16, color: AppColors.textSecondary),
                     const SizedBox(width: 4),
                     Text(
-                      _formatTime(progress.lastActivity),
+                      _formatTime(progress.lastAccessed),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],

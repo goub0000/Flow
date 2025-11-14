@@ -10,7 +10,6 @@ import 'language_settings_screen.dart';
 import 'data_storage_settings_screen.dart';
 import '../help/presentation/help_center_screen.dart';
 import 'subscriptions_screen.dart';
-import 'course_preferences_screen.dart';
 import 'study_schedule_screen.dart';
 import 'progress_reports_screen.dart';
 import 'contact_support_screen.dart';
@@ -190,19 +189,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         SettingsCard(
           children: [
-            SettingsTile(
-              icon: Icons.school,
-              title: 'Course Preferences',
-              subtitle: 'Set your learning goals',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CoursePreferencesScreen(),
-                  ),
-                );
-              },
-            ),
             SettingsTile(
               icon: Icons.calendar_today,
               title: 'Study Schedule',

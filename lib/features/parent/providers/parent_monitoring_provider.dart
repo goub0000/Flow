@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/models/child_model.dart' hide Application;
-import '../../../core/models/course_model.dart';
+import '../../../core/models/child_model.dart' hide Application, CourseProgress;
+import '../../../core/models/progress_model.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
@@ -68,13 +68,18 @@ class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
             // Convert enrollments to course progress
             return data.map((e) {
               return CourseProgress(
-                id: e['course_id'] ?? '',
+                courseId: e['course_id'] ?? '',
                 courseName: e['course']?['title'] ?? 'Unknown',
                 completionPercentage: (e['progress'] ?? 0).toDouble(),
                 currentGrade: 0.0,
                 assignmentsCompleted: 0,
                 totalAssignments: 0,
-                lastActivity: DateTime.now(),
+                quizzesCompleted: 0,
+                totalQuizzes: 0,
+                timeSpent: Duration.zero,
+                lastAccessed: DateTime.now(),
+                modules: [],
+                grades: [],
               );
             }).toList();
           }
@@ -147,7 +152,7 @@ class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
 
       // Assignments
       totalAssignments += course.totalAssignments;
-      completedAssignments += course.completedAssignments;
+      completedAssignments += course.assignmentsCompleted;
 
       // Grade distribution
       final letterGrade = _getLetterGrade(course.currentGrade);

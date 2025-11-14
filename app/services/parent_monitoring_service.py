@@ -17,7 +17,6 @@ from app.schemas.parent_monitoring import (
     StudentActivityListResponse,
     ProgressReportRequest,
     ProgressReportResponse,
-    CourseProgressSummary,
     ApplicationProgressSummary,
     CounselingSessionSummary,
     AlertSettingsUpdateRequest,
@@ -249,31 +248,6 @@ class ParentMonitoringService:
                 generated_at=datetime.utcnow().isoformat()
             )
 
-            # Courses data
-            if report_request.include_courses:
-                enrollments = self.db.table('enrollments').select('*').eq('student_id', student_id).execute()
-
-                if enrollments.data:
-                    report.total_courses = len(enrollments.data)
-                    report.active_courses = len([e for e in enrollments.data if e['status'] == 'active'])
-                    report.completed_courses = len([e for e in enrollments.data if e['status'] == 'completed'])
-
-                    progress_values = [e['progress_percentage'] for e in enrollments.data]
-                    report.average_progress = sum(progress_values) / len(progress_values) if progress_values else 0.0
-
-                    # Get course details
-                    for enrollment in enrollments.data:
-                        course = self.db.table('courses').select('title').eq('id', enrollment['course_id']).single().execute()
-                        course_title = course.data.get('title', 'Unknown') if course.data else 'Unknown'
-
-                        report.courses.append(CourseProgressSummary(
-                            course_id=enrollment['course_id'],
-                            course_title=course_title,
-                            enrollment_status=enrollment['status'],
-                            progress_percentage=enrollment['progress_percentage'],
-                            last_activity=enrollment.get('updated_at')
-                        ))
-
             # Applications data
             if report_request.include_applications:
                 applications = self.db.table('applications').select('*').eq('student_id', student_id).execute()
@@ -390,9 +364,6 @@ class ParentMonitoringService:
                     student_id=student_id,
                     student_name=student_name,
                     is_active=False,
-                    active_courses=0,
-                    average_course_progress=0.0,
-                    courses_at_risk=0,
                     total_applications=0,
                     pending_applications=0,
                     accepted_applications=0,
@@ -415,14 +386,6 @@ class ParentMonitoringService:
                     last_activity = datetime.fromisoformat(recent_activity.data[0]['timestamp'].replace('Z', '+00:00'))
                     stats.last_activity = recent_activity.data[0]['timestamp']
                     stats.is_active = (datetime.utcnow() - last_activity).days < 7
-
-                # Course stats
-                enrollments = self.db.table('enrollments').select('*').eq('student_id', student_id).execute()
-                if enrollments.data:
-                    stats.active_courses = len([e for e in enrollments.data if e['status'] == 'active'])
-                    progress_values = [e['progress_percentage'] for e in enrollments.data if e['status'] == 'active']
-                    stats.average_course_progress = sum(progress_values) / len(progress_values) if progress_values else 0.0
-                    stats.courses_at_risk = len([e for e in enrollments.data if e['progress_percentage'] < 50 and e['status'] == 'active'])
 
                 # Application stats
                 applications = self.db.table('applications').select('status').eq('student_id', student_id).execute()

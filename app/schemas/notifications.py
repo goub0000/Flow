@@ -12,8 +12,6 @@ class NotificationType(str, Enum):
     """Notification type enumeration"""
     SYSTEM = "system"  # System announcements
     APPLICATION_STATUS = "application_status"  # Application updates
-    ENROLLMENT = "enrollment"  # Enrollment confirmations
-    COURSE_UPDATE = "course_update"  # Course content updates
     MESSAGE = "message"  # New message received
     PAYMENT = "payment"  # Payment confirmations
     DEADLINE_REMINDER = "deadline_reminder"  # Upcoming deadlines

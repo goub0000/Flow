@@ -77,7 +77,6 @@ class ApiConfig {
   static const String institutions = '/institutions';
   static const String universities = '/universities';
   static const String programs = '/programs';
-  static const String courses = '/courses';
   static const String enrollments = '/enrollments';
   static const String applications = '/applications';
   static const String recommendations = '/recommendations';

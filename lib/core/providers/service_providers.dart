@@ -7,7 +7,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../api/api_client.dart';
 import '../services/auth_service.dart';
-import '../services/courses_service.dart';
 import '../services/enrollments_service.dart';
 import '../services/applications_service.dart';
 import '../services/messaging_service.dart';
@@ -36,12 +35,6 @@ final authServiceProvider = Provider<AuthService>((ref) {
   final apiClient = ref.watch(apiClientProvider);
   final prefs = ref.watch(sharedPreferencesProvider);
   return AuthService(apiClient, prefs);
-});
-
-/// Courses Service Provider
-final coursesServiceProvider = Provider<CoursesService>((ref) {
-  final apiClient = ref.watch(apiClientProvider);
-  return CoursesService(apiClient);
 });
 
 /// Enrollments Service Provider

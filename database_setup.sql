@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
 );
 
 -- ========================================
--- 2. ACADEMIC PROGRAMS & COURSES
+-- 2. ACADEMIC PROGRAMS
 -- ========================================
 
 -- programs table
@@ -64,43 +64,6 @@ CREATE TABLE IF NOT EXISTS public.programs (
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- courses table
-CREATE TABLE IF NOT EXISTS public.courses (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  description TEXT,
-  institution_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  institution_name TEXT,
-  image_url TEXT,
-  level TEXT CHECK (level IN ('beginner', 'intermediate', 'advanced')),
-  category TEXT,
-  duration_hours INTEGER,
-  fee NUMERIC(10, 2),
-  currency TEXT DEFAULT 'USD',
-  prerequisites TEXT[],
-  start_date TIMESTAMPTZ,
-  end_date TIMESTAMPTZ,
-  enrolled_students INTEGER DEFAULT 0,
-  max_students INTEGER,
-  is_active BOOLEAN DEFAULT TRUE,
-  is_online BOOLEAN DEFAULT FALSE,
-  rating NUMERIC(2, 1) CHECK (rating >= 0 AND rating <= 5),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- enrollments table
-CREATE TABLE IF NOT EXISTS public.enrollments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  student_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  course_id UUID NOT NULL REFERENCES public.courses(id) ON DELETE CASCADE,
-  enrolled_at TIMESTAMPTZ DEFAULT NOW(),
-  status TEXT DEFAULT 'active' CHECK (status IN ('active', 'completed', 'dropped', 'suspended')),
-  progress NUMERIC(5, 2) DEFAULT 0 CHECK (progress >= 0 AND progress <= 100),
-  grade NUMERIC(5, 2) CHECK (grade >= 0 AND grade <= 100),
-  UNIQUE(student_id, course_id)
 );
 
 -- ========================================
@@ -138,7 +101,7 @@ CREATE TABLE IF NOT EXISTS public.payments (
   user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
   item_id UUID NOT NULL,
   item_name TEXT NOT NULL,
-  item_type TEXT NOT NULL CHECK (item_type IN ('course', 'program', 'application', 'subscription', 'other')),
+  item_type TEXT NOT NULL CHECK (item_type IN ('program', 'application', 'subscription', 'other')),
   amount NUMERIC(10, 2) NOT NULL CHECK (amount >= 0),
   currency TEXT DEFAULT 'USD',
   method TEXT CHECK (method IN ('card', 'mpesa', 'flutterwave', 'paypal', 'stripe')),
@@ -210,7 +173,7 @@ CREATE TABLE IF NOT EXISTS public.notifications (
   user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('application', 'course', 'payment', 'alert', 'message', 'system')),
+  type TEXT NOT NULL CHECK (type IN ('application', 'payment', 'alert', 'message', 'system')),
   data JSONB DEFAULT '{}'::jsonb,
   is_read BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
@@ -309,29 +272,6 @@ CREATE TABLE IF NOT EXISTS public.parent_alerts (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ========================================
--- 10. PROGRESS TRACKING
--- ========================================
-
--- course_progress table
-CREATE TABLE IF NOT EXISTS public.course_progress (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  student_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-  course_id UUID NOT NULL REFERENCES public.courses(id) ON DELETE CASCADE,
-  completion_percentage NUMERIC(5, 2) DEFAULT 0 CHECK (completion_percentage >= 0 AND completion_percentage <= 100),
-  current_grade NUMERIC(5, 2) CHECK (current_grade >= 0 AND current_grade <= 100),
-  assignments_completed INTEGER DEFAULT 0 CHECK (assignments_completed >= 0),
-  total_assignments INTEGER DEFAULT 0 CHECK (total_assignments >= 0),
-  quizzes_completed INTEGER DEFAULT 0 CHECK (quizzes_completed >= 0),
-  total_quizzes INTEGER DEFAULT 0 CHECK (total_quizzes >= 0),
-  time_spent_minutes INTEGER DEFAULT 0 CHECK (time_spent_minutes >= 0),
-  last_accessed TIMESTAMPTZ,
-  modules JSONB DEFAULT '[]'::jsonb,
-  grades JSONB DEFAULT '[]'::jsonb,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(student_id, course_id)
-);
 
 -- ========================================
 -- 11. CHATBOT & CONVERSATIONS
@@ -377,16 +317,6 @@ CREATE INDEX IF NOT EXISTS idx_users_active_role ON public.users(active_role);
 CREATE INDEX IF NOT EXISTS idx_programs_institution ON public.programs(institution_id);
 CREATE INDEX IF NOT EXISTS idx_programs_category ON public.programs(category);
 CREATE INDEX IF NOT EXISTS idx_programs_is_active ON public.programs(is_active);
-
--- Courses
-CREATE INDEX IF NOT EXISTS idx_courses_institution ON public.courses(institution_id);
-CREATE INDEX IF NOT EXISTS idx_courses_category ON public.courses(category);
-CREATE INDEX IF NOT EXISTS idx_courses_is_active ON public.courses(is_active);
-
--- Enrollments
-CREATE INDEX IF NOT EXISTS idx_enrollments_student ON public.enrollments(student_id);
-CREATE INDEX IF NOT EXISTS idx_enrollments_course ON public.enrollments(course_id);
-CREATE INDEX IF NOT EXISTS idx_enrollments_status ON public.enrollments(status);
 
 -- Applications
 CREATE INDEX IF NOT EXISTS idx_applications_student ON public.applications(student_id);
@@ -434,10 +364,6 @@ CREATE INDEX IF NOT EXISTS idx_alerts_parent ON public.parent_alerts(parent_id);
 CREATE INDEX IF NOT EXISTS idx_alerts_child ON public.parent_alerts(child_id);
 CREATE INDEX IF NOT EXISTS idx_alerts_read ON public.parent_alerts(is_read);
 
--- Course Progress
-CREATE INDEX IF NOT EXISTS idx_progress_student ON public.course_progress(student_id);
-CREATE INDEX IF NOT EXISTS idx_progress_course ON public.course_progress(course_id);
-
 -- Chatbot
 CREATE INDEX IF NOT EXISTS idx_chatbot_user ON public.chatbot_conversations(user_id);
 
@@ -453,8 +379,6 @@ CREATE INDEX IF NOT EXISTS idx_cookie_session ON public.cookie_consents(session_
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.programs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.enrollments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.applications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.documents ENABLE ROW LEVEL SECURITY;
@@ -466,7 +390,6 @@ ALTER TABLE public.counseling_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.recommendations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.children ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.parent_alerts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.course_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.chatbot_conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.cookie_consents ENABLE ROW LEVEL SECURITY;
 
@@ -477,14 +400,6 @@ CREATE POLICY "Users can update own profile" ON public.users FOR UPDATE USING (a
 -- Programs policies
 CREATE POLICY "Anyone can view active programs" ON public.programs FOR SELECT USING (is_active = true);
 CREATE POLICY "Institutions can manage own programs" ON public.programs FOR ALL USING (institution_id = auth.uid());
-
--- Courses policies
-CREATE POLICY "Anyone can view active courses" ON public.courses FOR SELECT USING (is_active = true);
-CREATE POLICY "Institutions can manage own courses" ON public.courses FOR ALL USING (institution_id = auth.uid());
-
--- Enrollments policies
-CREATE POLICY "Students can view own enrollments" ON public.enrollments FOR SELECT USING (student_id = auth.uid());
-CREATE POLICY "Students can enroll in courses" ON public.enrollments FOR INSERT WITH CHECK (student_id = auth.uid());
 
 -- Applications policies
 CREATE POLICY "Students can view own applications" ON public.applications FOR SELECT USING (student_id = auth.uid());
@@ -517,9 +432,6 @@ CREATE POLICY "Students can view own records" ON public.student_records FOR SELE
 CREATE POLICY "Parents can view own children" ON public.children FOR SELECT USING (parent_id = auth.uid());
 CREATE POLICY "Parents can manage own children" ON public.children FOR ALL USING (parent_id = auth.uid());
 
--- Progress policies
-CREATE POLICY "Students can view own progress" ON public.course_progress FOR SELECT USING (student_id = auth.uid());
-
 -- Chatbot policies
 CREATE POLICY "Users can view own conversations" ON public.chatbot_conversations FOR SELECT USING (user_id = auth.uid());
 CREATE POLICY "Users can manage own conversations" ON public.chatbot_conversations FOR ALL USING (user_id = auth.uid());
@@ -548,12 +460,10 @@ $$ LANGUAGE plpgsql;
 -- Add triggers to tables with updated_at
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_programs_updated_at BEFORE UPDATE ON public.programs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_courses_updated_at BEFORE UPDATE ON public.courses FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_applications_updated_at BEFORE UPDATE ON public.applications FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_children_updated_at BEFORE UPDATE ON public.children FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_student_records_updated_at BEFORE UPDATE ON public.student_records FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_counseling_sessions_updated_at BEFORE UPDATE ON public.counseling_sessions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_course_progress_updated_at BEFORE UPDATE ON public.course_progress FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ========================================
 -- SUCCESS MESSAGE

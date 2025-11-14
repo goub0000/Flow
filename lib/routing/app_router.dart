@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 import '../core/constants/user_roles.dart';
 import '../core/models/user_model.dart';
 import '../core/error/error_handling.dart';
-import '../core/models/course_model.dart';
 import '../core/models/application_model.dart';
 import '../core/models/counseling_models.dart';
 import '../features/authentication/providers/auth_provider.dart';
@@ -19,8 +18,6 @@ import '../features/home/presentation/modern_home_screen.dart';
 
 // Student
 import '../features/student/dashboard/presentation/student_dashboard_screen.dart';
-import '../features/student/courses/presentation/courses_list_screen.dart';
-import '../features/student/courses/presentation/course_detail_screen.dart';
 import '../features/student/applications/presentation/applications_list_screen.dart';
 import '../features/student/applications/presentation/application_detail_screen.dart';
 import '../features/student/applications/presentation/create_application_screen.dart';
@@ -247,29 +244,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/student/dashboard',
         name: 'student-dashboard',
         builder: (context, state) => const StudentDashboardScreen(),
-      ),
-      GoRoute(
-        path: '/student/courses',
-        name: 'student-courses',
-        builder: (context, state) => const CoursesListScreen(),
-      ),
-      GoRoute(
-        path: '/student/courses/:id',
-        name: 'student-course-detail',
-        builder: (context, state) {
-          // Course object should be passed via state.extra
-          final course = state.extra as Course?;
-          if (course == null) {
-            // If no course provided, redirect back to courses list
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/student/courses');
-            });
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          return CourseDetailScreen(course: course);
-        },
       ),
       GoRoute(
         path: '/student/applications',
@@ -647,15 +621,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ContentManagementScreen(),
         routes: [
           GoRoute(
-            path: 'courses',
-            name: 'admin-content-courses',
-            builder: (context, state) => const AdminPlaceholderScreen(
-              title: 'Courses Management',
-              description: 'Manage educational courses, lessons, and curriculum content.',
-              icon: Icons.menu_book,
-            ),
-          ),
-          GoRoute(
             path: 'curriculum',
             name: 'admin-content-curriculum',
             builder: (context, state) => const AdminPlaceholderScreen(
@@ -746,15 +711,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // Content Admin Routes
-      GoRoute(
-        path: '/admin/courses',
-        name: 'admin-courses-management',
-        builder: (context, state) => const AdminPlaceholderScreen(
-          title: 'Courses Management',
-          description: 'Manage all educational courses and their content.',
-          icon: Icons.menu_book,
-        ),
-      ),
       GoRoute(
         path: '/admin/curriculum',
         name: 'admin-curriculum-management',

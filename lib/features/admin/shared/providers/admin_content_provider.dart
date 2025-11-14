@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/models/course_model.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
@@ -30,20 +29,6 @@ class ContentItem {
     this.rating = 0.0,
   });
 
-  static ContentItem fromCourse(Course course) {
-    return ContentItem(
-      id: course.id,
-      title: course.title,
-      type: 'course',
-      status: 'published',
-      authorId: null,
-      authorName: course.institutionName,
-      createdAt: DateTime.now().subtract(const Duration(days: 30)),
-      publishedAt: DateTime.now().subtract(const Duration(days: 25)),
-      views: course.enrolledStudents,
-      rating: 4.5,
-    );
-  }
 
   static ContentItem mockContent(int index) {
     final types = ['course', 'lesson', 'module', 'assignment'];
