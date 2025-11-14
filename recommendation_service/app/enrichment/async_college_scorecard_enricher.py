@@ -10,6 +10,11 @@ import os
 from typing import Dict, Optional, List
 from dotenv import load_dotenv
 
+from app.utils.retry import (
+    retry_async,
+    COLLEGE_SCORECARD_RATE_LIMITER,
+)
+
 load_dotenv()
 logger = logging.getLogger(__name__)
 
@@ -66,6 +71,7 @@ class AsyncCollegeScorecardEnricher:
                 "Get free key at: https://api.data.gov/signup/"
             )
 
+    @retry_async(max_attempts=3, initial_delay=1.0, max_delay=10.0)
     async def search_university_async(
         self,
         university_name: str,
@@ -74,6 +80,7 @@ class AsyncCollegeScorecardEnricher:
     ) -> Optional[Dict]:
         """
         Search College Scorecard for university by name
+        WITH RETRY LOGIC AND RATE LIMITING
 
         Args:
             university_name: University name to search
@@ -88,6 +95,8 @@ class AsyncCollegeScorecardEnricher:
             return None
 
         try:
+            # Rate limiting - wait for token before making request
+            await COLLEGE_SCORECARD_RATE_LIMITER.acquire()
             params = {
                 'school.name': university_name,
                 'api_key': self.api_key,

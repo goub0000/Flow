@@ -1,6 +1,7 @@
 """
 Async Web Search-Based Data Enricher
 High-performance async version using aiohttp
+WITH RETRY LOGIC AND RATE LIMITING
 """
 import aiohttp
 import asyncio
@@ -8,6 +9,14 @@ import logging
 from typing import Dict, Optional
 from bs4 import BeautifulSoup
 import re
+
+from app.utils.retry import (
+    retry_async,
+    WIKIPEDIA_RATE_LIMITER,
+    DUCKDUCKGO_RATE_LIMITER,
+    WIKIPEDIA_CIRCUIT_BREAKER,
+    DUCKDUCKGO_CIRCUIT_BREAKER,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -82,16 +91,20 @@ class AsyncWebSearchEnricher:
 
         return enriched_data
 
+    @retry_async(max_attempts=3, initial_delay=1.0, max_delay=10.0)
     async def _search_wikipedia_async(
         self,
         university_name: str,
         country: str = None,
         session: aiohttp.ClientSession = None
     ) -> Dict:
-        """Async Wikipedia search"""
+        """Async Wikipedia search with retry logic and rate limiting"""
         data = {}
 
         try:
+            # Rate limiting - wait for token before making request
+            await WIKIPEDIA_RATE_LIMITER.acquire()
+
             # Search Wikipedia API
             search_url = "https://en.wikipedia.org/w/api.php"
             search_params = {
@@ -158,15 +171,19 @@ class AsyncWebSearchEnricher:
 
         return data
 
+    @retry_async(max_attempts=3, initial_delay=2.0, max_delay=15.0)
     async def _search_duckduckgo_async(
         self,
         university_name: str,
         session: aiohttp.ClientSession = None
     ) -> Dict:
-        """Async DuckDuckGo instant answer API"""
+        """Async DuckDuckGo instant answer API with retry logic and rate limiting"""
         data = {}
 
         try:
+            # Rate limiting - wait for token before making request
+            await DUCKDUCKGO_RATE_LIMITER.acquire()
+
             url = "https://api.duckduckgo.com/"
             params = {
                 'q': university_name,
