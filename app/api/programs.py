@@ -2,9 +2,8 @@
 Programs API endpoints
 Cloud-based institutional programs management
 """
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Path
 from typing import List, Optional
-from uuid import UUID
 from app.database.config import get_supabase
 from app.schemas.program import (
     ProgramCreate,
@@ -117,7 +116,7 @@ async def get_program_statistics(institution_id: Optional[UUID] = None):
 
 
 @router.get("/programs/{program_id}", response_model=ProgramResponse)
-async def get_program(program_id: str):
+async def get_program(program_id: str = Path(..., description="Program ID as string")):
     """Get a specific program by ID"""
     try:
         db = get_supabase()
@@ -167,7 +166,7 @@ async def create_program(program: ProgramCreate):
 
 
 @router.put("/programs/{program_id}", response_model=ProgramResponse)
-async def update_program(program_id: str, program: ProgramUpdate):
+async def update_program(program_id: str = Path(..., description="Program ID as string"), program: ProgramUpdate = ...):
     """Update an existing program"""
     try:
         db = get_supabase()
@@ -204,7 +203,7 @@ async def update_program(program_id: str, program: ProgramUpdate):
 
 
 @router.delete("/programs/{program_id}", status_code=204)
-async def delete_program(program_id: str):
+async def delete_program(program_id: str = Path(..., description="Program ID as string")):
     """Delete a program"""
     try:
         db = get_supabase()
@@ -227,7 +226,7 @@ async def delete_program(program_id: str):
 
 
 @router.patch("/programs/{program_id}/toggle-status", response_model=ProgramResponse)
-async def toggle_program_status(program_id: str):
+async def toggle_program_status(program_id: str = Path(..., description="Program ID as string")):
     """Toggle program active status"""
     try:
         db = get_supabase()
@@ -270,7 +269,7 @@ async def get_institution_programs(
 
 
 @router.post("/programs/{program_id}/enroll")
-async def enroll_student_in_program(program_id: str):
+async def enroll_student_in_program(program_id: str = Path(..., description="Program ID as string")):
     """Increment enrolled students count (simulated enrollment)"""
     try:
         db = get_supabase()
