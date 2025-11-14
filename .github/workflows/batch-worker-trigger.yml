@@ -1,0 +1,74 @@
+name: Batch Processing Worker Trigger
+
+on:
+  schedule:
+    # Run every 5 minutes to process any pending batch jobs
+    - cron: '*/5 * * * *'
+
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  trigger-batch-worker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Batch Worker
+        run: |
+          echo "========================================="
+          echo "Triggering Railway Batch Worker"
+          echo "========================================="
+          echo "Time: $(date -u)"
+          echo ""
+
+          # Trigger the batch worker to process pending jobs
+          response=$(curl -X POST \
+            https://web-production-51e34.up.railway.app/api/v1/batch/worker/start \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n" \
+            -s)
+
+          echo "$response"
+
+          # Check if worker started successfully
+          if echo "$response" | grep -q "200"; then
+            echo ""
+            echo "[SUCCESS] Worker triggered successfully"
+          else
+            echo ""
+            echo "[WARNING] Worker trigger returned non-200 status"
+          fi
+
+      - name: Check Queue Status
+        run: |
+          echo ""
+          echo "========================================="
+          echo "Checking Batch Queue Status"
+          echo "========================================="
+
+          # Wait a moment for worker to start
+          sleep 2
+
+          # Check queue stats
+          curl -X GET \
+            https://web-production-51e34.up.railway.app/api/v1/batch/queue/stats \
+            -H "Content-Type: application/json" \
+            -s | jq '.'
+
+      - name: Summary
+        run: |
+          echo ""
+          echo "========================================="
+          echo "Batch Worker Trigger Complete"
+          echo "========================================="
+          echo "This workflow runs every 5 minutes to:"
+          echo "  1. Trigger the batch worker"
+          echo "  2. Process any pending enrichment jobs"
+          echo "  3. Update university data with retry logic"
+          echo ""
+          echo "Benefits:"
+          echo "  - Automatic processing of batch jobs"
+          echo "  - No manual intervention needed"
+          echo "  - Free (GitHub Actions)"
+          echo "  - Reliable execution"
+          echo "========================================="
