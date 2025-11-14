@@ -341,3 +341,7 @@ class FieldSpecificScrapers:
             logger.debug(f"Failed to scrape tuition page: {e}")
 
         return costs
+
+
+# Global instance for import
+FIELD_SCRAPERS = FieldSpecificScrapers()
