@@ -79,6 +79,43 @@ async def get_programs(
         raise HTTPException(status_code=500, detail=f"Failed to fetch programs: {str(e)}")
 
 
+@router.get("/programs/statistics/overview", response_model=ProgramStatistics)
+async def get_program_statistics(institution_id: Optional[UUID] = None):
+    """Get program statistics, optionally filtered by institution"""
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('programs').select('*')
+        if institution_id:
+            query = query.eq('institution_id', str(institution_id))
+
+        result = query.execute()
+        programs = result.data
+
+        # Calculate statistics
+        total_programs = len(programs)
+        active_programs = sum(1 for p in programs if p['is_active'])
+        total_capacity = sum(p['max_students'] for p in programs)
+        total_enrolled = sum(p['enrolled_students'] for p in programs)
+        available_spots = total_capacity - total_enrolled
+        occupancy_rate = (total_enrolled / total_capacity * 100) if total_capacity > 0 else 0
+
+        return {
+            "total_programs": total_programs,
+            "active_programs": active_programs,
+            "inactive_programs": total_programs - active_programs,
+            "total_capacity": total_capacity,
+            "total_enrolled": total_enrolled,
+            "available_spots": available_spots,
+            "occupancy_rate": round(occupancy_rate, 2)
+        }
+
+    except Exception as e:
+        logger.error(f"Error calculating program statistics: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to calculate statistics: {str(e)}")
+
+
 @router.get("/programs/{program_id}", response_model=ProgramResponse)
 async def get_program(program_id: UUID):
     """Get a specific program by ID"""
@@ -214,43 +251,6 @@ async def toggle_program_status(program_id: UUID):
     except Exception as e:
         logger.error(f"Error toggling program status {program_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to toggle status: {str(e)}")
-
-
-@router.get("/programs/statistics/overview", response_model=ProgramStatistics)
-async def get_program_statistics(institution_id: Optional[UUID] = None):
-    """Get program statistics, optionally filtered by institution"""
-    try:
-        db = get_supabase()
-
-        # Build query
-        query = db.table('programs').select('*')
-        if institution_id:
-            query = query.eq('institution_id', str(institution_id))
-
-        result = query.execute()
-        programs = result.data
-
-        # Calculate statistics
-        total_programs = len(programs)
-        active_programs = sum(1 for p in programs if p['is_active'])
-        total_capacity = sum(p['max_students'] for p in programs)
-        total_enrolled = sum(p['enrolled_students'] for p in programs)
-        available_spots = total_capacity - total_enrolled
-        occupancy_rate = (total_enrolled / total_capacity * 100) if total_capacity > 0 else 0
-
-        return {
-            "total_programs": total_programs,
-            "active_programs": active_programs,
-            "inactive_programs": total_programs - active_programs,
-            "total_capacity": total_capacity,
-            "total_enrolled": total_enrolled,
-            "available_spots": available_spots,
-            "occupancy_rate": round(occupancy_rate, 2)
-        }
-
-    except Exception as e:
-        logger.error(f"Error calculating program statistics: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to calculate statistics: {str(e)}")
 
 
 @router.get("/institutions/{institution_id}/programs", response_model=ProgramListResponse)
