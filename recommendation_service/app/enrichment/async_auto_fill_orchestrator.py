@@ -175,7 +175,8 @@ class AsyncAutoFillOrchestrator:
         university: Dict,
         session: aiohttp.ClientSession,
         web_enricher,
-        field_scrapers
+        field_scrapers,
+        scorecard_enricher=None
     ) -> Tuple[Dict, int]:
         """
         Asynchronously enrich a single university with missing data
@@ -185,6 +186,7 @@ class AsyncAutoFillOrchestrator:
             session: aiohttp ClientSession
             web_enricher: AsyncWebSearchEnricher instance
             field_scrapers: AsyncFieldScrapers instance
+            scorecard_enricher: Optional AsyncCollegeScorecardEnricher for U.S. universities
 
         Returns:
             Tuple of (enriched_data dict, fields_filled count)
@@ -196,6 +198,19 @@ class AsyncAutoFillOrchestrator:
             fields_filled = 0
 
             try:
+                # Step 0: College Scorecard (U.S. universities only) - Official source first!
+                if scorecard_enricher and university.get('country') in ['USA', 'United States', 'US', None]:
+                    logger.info(f"Checking College Scorecard for: {university['name']}")
+                    scorecard_data = await scorecard_enricher.enrich_university_async(university, session)
+                    for field, value in scorecard_data.items():
+                        if value and not university.get(field):
+                            enriched_data[field] = value
+                            fields_filled += 1
+
+                    if scorecard_data:
+                        logger.info(f"College Scorecard filled {len(scorecard_data)} fields")
+                        await asyncio.sleep(self.rate_limit_delay)
+
                 # Step 1: General web search (Wikipedia, DuckDuckGo, etc.)
                 general_data = await web_enricher.enrich_university_async(university, session)
                 for field, value in general_data.items():
@@ -345,6 +360,7 @@ class AsyncAutoFillOrchestrator:
         """
         from .async_web_search_enricher import AsyncWebSearchEnricher
         from .async_field_scrapers import AsyncFieldScrapers
+        from .async_college_scorecard_enricher import AsyncCollegeScorecardEnricher
 
         logger.info("=" * 80)
         logger.info("Starting Async Automated Data Enrichment")
@@ -370,11 +386,20 @@ class AsyncAutoFillOrchestrator:
             web_enricher = AsyncWebSearchEnricher(rate_limit_delay=self.rate_limit_delay)
             field_scrapers = AsyncFieldScrapers()
 
+            # Initialize College Scorecard enricher (U.S. universities only)
+            # Will gracefully skip if API key not configured
+            try:
+                scorecard_enricher = AsyncCollegeScorecardEnricher()
+                logger.info("✅ College Scorecard API enabled for U.S. universities")
+            except Exception as e:
+                logger.info(f"ℹ️  College Scorecard API not available: {e}")
+                scorecard_enricher = None
+
             # Create tasks for concurrent processing
             tasks = []
             for university in universities:
                 task = self.enrich_university_async(
-                    university, session, web_enricher, field_scrapers
+                    university, session, web_enricher, field_scrapers, scorecard_enricher
                 )
                 tasks.append((university, task))
 
