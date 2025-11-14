@@ -118,8 +118,8 @@ class AsyncWebSearchEnricher:
                     'action': 'query',
                     'titles': page_title,
                     'prop': 'extracts|pageimages|coordinates|info',
-                    'exintro': True,
-                    'explaintext': True,
+                    'exintro': '1',  # Must be string, not boolean
+                    'explaintext': '1',  # Must be string, not boolean
                     'piprop': 'original',
                     'inprop': 'url',
                     'format': 'json'
@@ -176,6 +176,12 @@ class AsyncWebSearchEnricher:
 
             async with session.get(url, params=params, timeout=10, headers=self.headers) as response:
                 if response.status != 200:
+                    return data
+
+                # Check content type before parsing
+                content_type = response.headers.get('Content-Type', '')
+                if 'json' not in content_type.lower():
+                    logger.warning(f"DuckDuckGo returned non-JSON content type: {content_type}")
                     return data
 
                 result = await response.json()
