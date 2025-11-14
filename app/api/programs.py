@@ -117,12 +117,12 @@ async def get_program_statistics(institution_id: Optional[UUID] = None):
 
 
 @router.get("/programs/{program_id}", response_model=ProgramResponse)
-async def get_program(program_id: UUID):
+async def get_program(program_id: str):
     """Get a specific program by ID"""
     try:
         db = get_supabase()
 
-        result = db.table('programs').select('*').eq('id', str(program_id)).execute()
+        result = db.table('programs').select('*').eq('id', program_id).execute()
 
         if not result.data:
             raise HTTPException(status_code=404, detail="Program not found")
@@ -167,13 +167,13 @@ async def create_program(program: ProgramCreate):
 
 
 @router.put("/programs/{program_id}", response_model=ProgramResponse)
-async def update_program(program_id: UUID, program: ProgramUpdate):
+async def update_program(program_id: str, program: ProgramUpdate):
     """Update an existing program"""
     try:
         db = get_supabase()
 
         # Check if program exists
-        existing = db.table('programs').select('id').eq('id', str(program_id)).execute()
+        existing = db.table('programs').select('id').eq('id', program_id).execute()
         if not existing.data:
             raise HTTPException(status_code=404, detail="Program not found")
 
@@ -189,7 +189,7 @@ async def update_program(program_id: UUID, program: ProgramUpdate):
             update_data['fee'] = float(update_data['fee'])
 
         # Update in database
-        result = db.table('programs').update(update_data).eq('id', str(program_id)).execute()
+        result = db.table('programs').update(update_data).eq('id', program_id).execute()
 
         if not result.data:
             raise HTTPException(status_code=500, detail="Failed to update program")
@@ -204,18 +204,18 @@ async def update_program(program_id: UUID, program: ProgramUpdate):
 
 
 @router.delete("/programs/{program_id}", status_code=204)
-async def delete_program(program_id: UUID):
+async def delete_program(program_id: str):
     """Delete a program"""
     try:
         db = get_supabase()
 
         # Check if program exists
-        existing = db.table('programs').select('id').eq('id', str(program_id)).execute()
+        existing = db.table('programs').select('id').eq('id', program_id).execute()
         if not existing.data:
             raise HTTPException(status_code=404, detail="Program not found")
 
         # Delete from database
-        db.table('programs').delete().eq('id', str(program_id)).execute()
+        db.table('programs').delete().eq('id', program_id).execute()
 
         return None
 
@@ -227,13 +227,13 @@ async def delete_program(program_id: UUID):
 
 
 @router.patch("/programs/{program_id}/toggle-status", response_model=ProgramResponse)
-async def toggle_program_status(program_id: UUID):
+async def toggle_program_status(program_id: str):
     """Toggle program active status"""
     try:
         db = get_supabase()
 
         # Get current status
-        result = db.table('programs').select('is_active').eq('id', str(program_id)).execute()
+        result = db.table('programs').select('is_active').eq('id', program_id).execute()
         if not result.data:
             raise HTTPException(status_code=404, detail="Program not found")
 
@@ -242,7 +242,7 @@ async def toggle_program_status(program_id: UUID):
         # Toggle status
         update_result = db.table('programs').update({
             'is_active': not current_status
-        }).eq('id', str(program_id)).execute()
+        }).eq('id', program_id).execute()
 
         return update_result.data[0]
 
@@ -270,13 +270,13 @@ async def get_institution_programs(
 
 
 @router.post("/programs/{program_id}/enroll")
-async def enroll_student_in_program(program_id: UUID):
+async def enroll_student_in_program(program_id: str):
     """Increment enrolled students count (simulated enrollment)"""
     try:
         db = get_supabase()
 
         # Get current enrollment
-        result = db.table('programs').select('enrolled_students, max_students').eq('id', str(program_id)).execute()
+        result = db.table('programs').select('enrolled_students, max_students').eq('id', program_id).execute()
         if not result.data:
             raise HTTPException(status_code=404, detail="Program not found")
 
@@ -289,7 +289,7 @@ async def enroll_student_in_program(program_id: UUID):
         # Increment enrollment
         update_result = db.table('programs').update({
             'enrolled_students': program['enrolled_students'] + 1
-        }).eq('id', str(program_id)).execute()
+        }).eq('id', program_id).execute()
 
         return update_result.data[0]
 
