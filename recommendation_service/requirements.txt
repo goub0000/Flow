@@ -1,9 +1,10 @@
 # Find Your Path - University Recommendation Service
 # Python 3.9+
+# Updated: 2025-01-14 - Force Railway cache invalidation
 
 # Web Framework
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
 
 # Database
 supabase>=2.0.0
