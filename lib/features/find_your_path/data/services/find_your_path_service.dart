@@ -4,11 +4,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/models/student_profile.dart';
 import '../../domain/models/university.dart';
 import '../../domain/models/recommendation.dart';
+import '../../../../core/api/api_config.dart';
 
 /// Service for communicating with Find Your Path recommendation API
 class FindYourPathService {
-  // API base URL - Cloud-based Railway deployment
-  static const String baseUrl = 'https://web-production-51e34.up.railway.app/api/v1';
+  // API base URL - uses centralized configuration from ApiConfig
+  // This will automatically use the correct URL based on environment
+  static String get baseUrl => ApiConfig.apiBaseUrl;
 
   final http.Client _client;
 
@@ -275,7 +277,7 @@ class FindYourPathService {
   Future<bool> healthCheck() async {
     try {
       final response = await _client.get(
-        Uri.parse('http://localhost:8000/health'),
+        Uri.parse('${ApiConfig.baseUrl}/health'),
       );
       return response.statusCode == 200;
     } catch (e) {

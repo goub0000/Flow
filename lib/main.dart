@@ -33,6 +33,9 @@ void main() async {
   // Initialize error handling
   ErrorHandler.init();
 
+  // Validate API configuration (will throw if required env vars missing)
+  ApiConfig.validateConfig();
+
   // Initialize Supabase
   await Supabase.initialize(
     url: ApiConfig.supabaseUrl,

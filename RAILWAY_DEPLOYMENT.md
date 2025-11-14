@@ -91,12 +91,19 @@ git push -u origin main
 #### Step 3: Configure Environment Variables
 In Railway dashboard, go to **Variables** tab and add:
 
-**Required Variables:**
+**CRITICAL - Required Variables (Backend will NOT start without these):**
 ```bash
 SUPABASE_URL=<YOUR_SUPABASE_PROJECT_URL>
 SUPABASE_KEY=<YOUR_SUPABASE_SERVICE_ROLE_KEY>
+SUPABASE_JWT_SECRET=<YOUR_SUPABASE_JWT_SECRET>
 ALLOWED_ORIGINS=https://your-frontend-url.railway.app
 ```
+
+**How to get these values:**
+- `SUPABASE_URL`: Supabase Dashboard → Settings → API → Project URL
+- `SUPABASE_KEY`: Supabase Dashboard → Settings → API → service_role key (keep secret!)
+- `SUPABASE_JWT_SECRET`: Supabase Dashboard → Settings → API → JWT Settings → JWT Secret
+- `ALLOWED_ORIGINS`: Your Flutter web deployment URL (or multiple URLs separated by commas)
 
 **Optional Variables:**
 ```bash
@@ -107,10 +114,12 @@ COLLEGE_SCORECARD_RATE_LIMIT_DELAY=0.1
 ```
 
 **SECURITY WARNING:**
+- ⚠️ **JWT_SECRET is CRITICAL** - Without it, ALL authentication will fail
 - Get Supabase credentials from: Supabase Dashboard → Project Settings → API
 - Get College Scorecard API key from: https://collegescorecard.ed.gov/data/documentation/
 - Get Kaggle credentials from: https://www.kaggle.com/settings/account → API
 - NEVER commit these credentials to git or share them publicly
+- Use different credentials for dev/staging/production environments
 
 #### Step 4: Deploy
 Railway will automatically:
@@ -143,8 +152,9 @@ railway init
 
 #### Step 4: Add Environment Variables
 ```bash
-railway variables set SUPABASE_URL=https://wmuarotbdjhqbyjyslqg.supabase.co
+railway variables set SUPABASE_URL=https://your-project.supabase.co
 railway variables set SUPABASE_KEY=your_service_role_key
+railway variables set SUPABASE_JWT_SECRET=your_jwt_secret_32_chars_minimum
 railway variables set ALLOWED_ORIGINS=https://your-app.railway.app
 ```
 

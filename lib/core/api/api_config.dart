@@ -6,12 +6,17 @@
 /// flutter run --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
 
 class ApiConfig {
-  // Base URLs
-  static const String productionBaseUrl = 'https://web-production-51e34.up.railway.app';
+  // Base URLs - configured via environment variables
+  // Use --dart-define=API_BASE_URL=your_url to set production URL
+  static const String productionBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000', // Development fallback only
+  );
+
   static const String developmentBaseUrl = 'http://localhost:8000';
 
-  // Current environment
-  static const bool isProduction = true; // Set to true for production builds
+  // Current environment - auto-detect based on API_BASE_URL presence
+  static bool get isProduction => const String.fromEnvironment('API_BASE_URL', defaultValue: '').isNotEmpty;
 
   // Get the active base URL
   static String get baseUrl => isProduction ? productionBaseUrl : developmentBaseUrl;
@@ -28,17 +33,43 @@ class ApiConfig {
   static const Duration sendTimeout = Duration(seconds: 30);
 
   // Supabase Configuration
-  // Read from --dart-define flags with fallback to hardcoded values for development
-  // In production, these MUST be provided via --dart-define
+  // SECURITY: These MUST be provided via --dart-define flags
+  // NEVER commit credentials to source control
+  //
+  // Development: Create .env file and use --dart-define-from-file=.env
+  // Production: Use CI/CD secrets or build-time environment variables
+  //
+  // Required build command:
+  // flutter build web \
+  //   --dart-define=SUPABASE_URL=https://your-project.supabase.co \
+  //   --dart-define=SUPABASE_ANON_KEY=your_anon_key \
+  //   --dart-define=API_BASE_URL=https://your-api.railway.app
+
   static const String supabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
-    defaultValue: 'https://wmuarotbdjhqbyjyslqg.supabase.co',
+    // NO DEFAULT VALUE for security - will fail fast if not provided
   );
 
   static const String supabaseAnonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
-    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU2ODEsImV4cCI6MjA3NzQyMTY4MX0.oQhvQe2iyDyHjxpvP4wWpqXUADfG7KBaO3SFsBM9qFo',
+    // NO DEFAULT VALUE for security - will fail fast if not provided
   );
+
+  // Validation: Ensure critical configuration is provided
+  static void validateConfig() {
+    if (supabaseUrl.isEmpty) {
+      throw Exception(
+        'SUPABASE_URL not configured. '
+        'Please provide via --dart-define=SUPABASE_URL=your_url'
+      );
+    }
+    if (supabaseAnonKey.isEmpty) {
+      throw Exception(
+        'SUPABASE_ANON_KEY not configured. '
+        'Please provide via --dart-define=SUPABASE_ANON_KEY=your_key'
+      );
+    }
+  }
 
   // API Endpoints
   static const String auth = '/auth';
