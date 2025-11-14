@@ -140,7 +140,8 @@ class EnrichmentWorker:
                 """Process single university with semaphore"""
                 async with semaphore:
                     try:
-                        enriched = await self.orchestrator.enrich_university_async(
+                        # enrich_university_async returns (enriched_data, fields_filled) tuple
+                        enriched, fields_filled = await self.orchestrator.enrich_university_async(
                             university=university,
                             session=None,  # Session created internally
                             web_enricher=web_enricher,
@@ -148,8 +149,6 @@ class EnrichmentWorker:
                             scorecard_enricher=scorecard_enricher,
                             cache=cache
                         )
-
-                        fields_filled = len(enriched) if enriched else 0
 
                         # Update database if fields were enriched
                         if enriched:
