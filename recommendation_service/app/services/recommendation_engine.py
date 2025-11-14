@@ -26,17 +26,74 @@ class RecommendationEngine:
     ) -> List[Dict]:
         """Generate university recommendations for a student"""
 
-        # Get all universities from Supabase
-        response = self.db.table('universities').select('*').execute()
+        # PERFORMANCE OPTIMIZATION: Apply pre-filtering to reduce data load
+        # Instead of loading ALL universities, filter by student preferences first
+        logger.info("Applying pre-filters based on student preferences...")
+
+        query = self.db.table('universities').select('*')
+
+        # Filter by preferred countries (if specified)
+        if student.get('preferred_countries'):
+            query = query.in_('country', student['preferred_countries'])
+
+        # Filter by preferred states (if specified)
+        # Only apply if preferred_countries includes 'United States'
+        if student.get('preferred_states') and (
+            not student.get('preferred_countries') or
+            'United States' in student.get('preferred_countries', [])
+        ):
+            query = query.in_('state', student['preferred_states'])
+
+        # Filter by budget (if specified) - exclude universities way over budget
+        if student.get('max_budget_per_year'):
+            # Allow up to 30% over budget (for reach schools + financial aid possibilities)
+            max_acceptable_cost = student['max_budget_per_year'] * 1.3
+            query = query.lte('total_cost', max_acceptable_cost)
+
+        # Filter by university type (if specified)
+        if student.get('preferred_university_type'):
+            query = query.eq('university_type', student['preferred_university_type'])
+
+        # Only get universities with critical data (to ensure quality recommendations)
+        # Require acceptance_rate and at least one cost metric
+        query = query.not_.is_('acceptance_rate', 'null')
+        query = query.or_('tuition_out_state.not.is.null,total_cost.not.is.null')
+
+        # LIMIT: Even with filters, cap at reasonable number for performance
+        # We'll score and filter down to max_results anyway
+        max_candidates = min(500, max_results * 50)  # At most 500 universities
+        query = query.limit(max_candidates)
+
+        response = query.execute()
         universities = response.data
 
         if not universities:
-            logger.warning("No universities found in database")
+            logger.warning(
+                "No universities found matching student filters. "
+                "Falling back to broader search..."
+            )
+            # Fallback: Get top universities without strict filters
+            response = self.db.table('universities')\
+                .select('*')\
+                .not_.is_('acceptance_rate', 'null')\
+                .limit(200)\
+                .execute()
+            universities = response.data
+
+        if not universities:
+            logger.error("No universities found in database at all")
             return []
 
-        # Batch-load all programs to avoid N+1 queries
-        logger.info("Loading programs for matching...")
-        programs_response = self.db.table('programs').select('*').execute()
+        logger.info(f"Loaded {len(universities)} candidate universities for matching")
+
+        # Batch-load programs only for the filtered universities
+        university_ids = [u['id'] for u in universities]
+        logger.info(f"Loading programs for {len(university_ids)} universities...")
+
+        programs_response = self.db.table('programs')\
+            .select('*')\
+            .in_('university_id', university_ids)\
+            .execute()
         all_programs = programs_response.data
 
         # Create index: university_id -> list of programs

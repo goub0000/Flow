@@ -17,9 +17,11 @@ Currently, only the frontend is deployed. We need TWO separate Railway services:
 5. Go to **Settings** tab
 6. Under **"Root Directory"**, enter: `recommendation_service`
 7. Under **"Environment Variables"**, add:
-   - `SUPABASE_URL` = `https://wmuarotbdjhqbyjyslqg.supabase.co`
-   - `SUPABASE_KEY` = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTg0NTY4MSwiZXhwIjoyMDc3NDIxNjgxfQ.CjfL8kn745KaxUUflPY30WnbLfMKwwVmA2RI3vFwAlM`
+   - `SUPABASE_URL` = `<YOUR_SUPABASE_PROJECT_URL>` (Get from Supabase Dashboard → Project Settings → API)
+   - `SUPABASE_KEY` = `<YOUR_SUPABASE_SERVICE_ROLE_KEY>` (Get from Supabase Dashboard → Project Settings → API → service_role key - KEEP THIS SECRET!)
    - `ALLOWED_ORIGINS` = (leave empty for now, we'll add frontend URL after next step)
+
+   **SECURITY WARNING:** Never commit your actual Supabase service_role key to git or share it publicly. It has full database access.
 8. Click **"Redeploy"**
 9. Once deployed, copy the backend URL (e.g., `https://backend-production-xxxx.up.railway.app`)
 

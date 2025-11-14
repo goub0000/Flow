@@ -106,13 +106,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Add middleware for error handling and rate limiting
+# Add middleware for error handling, rate limiting, and security
 from app.middleware import (
     limiter,
     http_exception_handler,
     validation_exception_handler,
     general_exception_handler,
-    ErrorHandlingMiddleware
+    ErrorHandlingMiddleware,
+    SecurityHeadersMiddleware,
+    log_security_headers_status
 )
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -126,6 +128,10 @@ app.add_exception_handler(RateLimitExceeded, http_exception_handler)
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, general_exception_handler)
+
+# Add security headers middleware (MUST be added before other middleware)
+app.add_middleware(SecurityHeadersMiddleware)
+log_security_headers_status()
 
 # Add timing and logging middleware
 app.add_middleware(ErrorHandlingMiddleware)

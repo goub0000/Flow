@@ -45,10 +45,14 @@ dependencies:
   url_launcher: ^6.3.0
   timeago: ^3.7.1
   http: ^1.2.0
+  logging: ^1.2.0
 
   # Backend Integration
   supabase_flutter: ^2.5.0
   dio: ^5.4.0
+
+  # Error Reporting & Monitoring
+  sentry_flutter: ^8.9.0
 
 dev_dependencies:
   flutter_test:

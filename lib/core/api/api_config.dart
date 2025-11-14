@@ -1,5 +1,9 @@
 /// API Configuration
 /// Contains all API endpoints and configuration settings
+///
+/// IMPORTANT: API keys should be provided via --dart-define flags during build:
+/// flutter build web --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
+/// flutter run --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
 
 class ApiConfig {
   // Base URLs
@@ -24,8 +28,17 @@ class ApiConfig {
   static const Duration sendTimeout = Duration(seconds: 30);
 
   // Supabase Configuration
-  static const String supabaseUrl = 'https://wmuarotbdjhqbyjyslqg.supabase.co';
-  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU2ODEsImV4cCI6MjA3NzQyMTY4MX0.oQhvQe2iyDyHjxpvP4wWpqXUADfG7KBaO3SFsBM9qFo';
+  // Read from --dart-define flags with fallback to hardcoded values for development
+  // In production, these MUST be provided via --dart-define
+  static const String supabaseUrl = String.fromEnvironment(
+    'SUPABASE_URL',
+    defaultValue: 'https://wmuarotbdjhqbyjyslqg.supabase.co',
+  );
+
+  static const String supabaseAnonKey = String.fromEnvironment(
+    'SUPABASE_ANON_KEY',
+    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU2ODEsImV4cCI6MjA3NzQyMTY4MX0.oQhvQe2iyDyHjxpvP4wWpqXUADfG7KBaO3SFsBM9qFo',
+  );
 
   // API Endpoints
   static const String auth = '/auth';

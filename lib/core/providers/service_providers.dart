@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../api/api_client.dart';
-import '../api/api_config.dart';
 import '../services/auth_service.dart';
 import '../services/courses_service.dart';
 import '../services/enrollments_service.dart';

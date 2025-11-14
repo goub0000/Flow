@@ -93,18 +93,24 @@ In Railway dashboard, go to **Variables** tab and add:
 
 **Required Variables:**
 ```bash
-SUPABASE_URL=https://wmuarotbdjhqbyjyslqg.supabase.co
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTg0NTY4MSwiZXhwIjoyMDc3NDIxNjgxfQ.CjfL8kn745KaxUUflPY30WnbLfMKwwVmA2RI3vFwAlM
-ALLOWED_ORIGINS=https://your-railway-app.railway.app,https://your-frontend.com
+SUPABASE_URL=<YOUR_SUPABASE_PROJECT_URL>
+SUPABASE_KEY=<YOUR_SUPABASE_SERVICE_ROLE_KEY>
+ALLOWED_ORIGINS=https://your-frontend-url.railway.app
 ```
 
 **Optional Variables:**
 ```bash
-COLLEGE_SCORECARD_API_KEY=jyutWGFXMnYcbbJ6wo4USq6Zedhk6f6G8Ve4hC8G
-KAGGLE_USERNAME=ogouba
-KAGGLE_KEY=ac333671efe0a886b5834c5536c601cd
+COLLEGE_SCORECARD_API_KEY=<YOUR_COLLEGE_SCORECARD_API_KEY>
+KAGGLE_USERNAME=<YOUR_KAGGLE_USERNAME>
+KAGGLE_KEY=<YOUR_KAGGLE_API_KEY>
 COLLEGE_SCORECARD_RATE_LIMIT_DELAY=0.1
 ```
+
+**SECURITY WARNING:**
+- Get Supabase credentials from: Supabase Dashboard → Project Settings → API
+- Get College Scorecard API key from: https://collegescorecard.ed.gov/data/documentation/
+- Get Kaggle credentials from: https://www.kaggle.com/settings/account → API
+- NEVER commit these credentials to git or share them publicly
 
 #### Step 4: Deploy
 Railway will automatically:

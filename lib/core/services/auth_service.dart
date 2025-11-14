@@ -2,16 +2,17 @@
 /// Handles user authentication, registration, and session management
 
 import 'dart:convert';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../api/api_client.dart';
 import '../api/api_config.dart';
 import '../api/api_response.dart';
-import '../api/api_exception.dart';
 import '../models/user_model.dart';
 import '../constants/user_roles.dart';
 
 class AuthService {
+  final _logger = Logger('AuthService');
   final ApiClient _apiClient;
   final SharedPreferences _prefs;
 
@@ -48,7 +49,7 @@ class AuthService {
         await _apiClient.setToken(_accessToken!);
       }
     } catch (e) {
-      print('Error loading session: $e');
+      _logger.warning('Error loading session', e);
       await clearSession();
     }
   }
@@ -72,11 +73,11 @@ class AuthService {
 
     // Set session in Supabase client for storage operations
     try {
-      print('[AuthService] Setting Supabase session with access token');
+      _logger.info('Setting Supabase session with access token');
       await Supabase.instance.client.auth.setSession(accessToken);
-      print('[AuthService] Supabase session set successfully');
+      _logger.info('Supabase session set successfully');
     } catch (e) {
-      print('[AuthService] Failed to set Supabase session: $e');
+      _logger.severe('Failed to set Supabase session', e);
     }
   }
 

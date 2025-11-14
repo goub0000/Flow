@@ -15,8 +15,91 @@ from app.enrichment.async_auto_fill_orchestrator import AsyncAutoFillOrchestrato
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Track running enrichment jobs
-enrichment_jobs = {}
+# REMOVED: In-memory job storage (replaced with database persistence)
+# enrichment_jobs = {}
+
+# Helper functions for database-backed job persistence
+def _get_job_from_db(job_id: str) -> Optional[dict]:
+    """Retrieve job status from database"""
+    try:
+        db = get_supabase()
+        response = db.table('enrichment_jobs').select('*').eq('job_id', job_id).single().execute()
+        if response.data:
+            job = response.data
+            # Convert to API format
+            return {
+                'job_id': job['job_id'],
+                'status': job['status'],
+                'started_at': job.get('started_at'),
+                'completed_at': job.get('completed_at'),
+                'universities_processed': job.get('processed_universities', 0),
+                'universities_updated': job.get('successful_updates', 0),
+                'errors': job.get('errors_count', 0),
+                'message': job.get('error_message')
+            }
+        return None
+    except Exception as e:
+        logger.error(f"Failed to get job {job_id} from database: {e}")
+        return None
+
+def _create_job_in_db(job_id: str, status: str = 'pending', message: str = 'Job queued') -> dict:
+    """Create new job record in database"""
+    try:
+        db = get_supabase()
+        job_data = {
+            'job_id': job_id,
+            'status': status,
+            'created_at': datetime.now().isoformat(),
+            'total_universities': 0,
+            'processed_universities': 0,
+            'successful_updates': 0,
+            'total_fields_filled': 0,
+            'errors_count': 0,
+            'error_message': message if status == 'failed' else None,
+            'results': {'message': message}
+        }
+        db.table('enrichment_jobs').insert(job_data).execute()
+        return {
+            'job_id': job_id,
+            'status': status,
+            'started_at': None,
+            'completed_at': None,
+            'universities_processed': 0,
+            'universities_updated': 0,
+            'errors': 0,
+            'message': message
+        }
+    except Exception as e:
+        logger.error(f"Failed to create job {job_id} in database: {e}")
+        raise
+
+def _update_job_in_db(job_id: str, updates: dict) -> bool:
+    """Update job status in database"""
+    try:
+        db = get_supabase()
+        # Map API field names to database column names
+        db_updates = {}
+        if 'status' in updates:
+            db_updates['status'] = updates['status']
+        if 'started_at' in updates:
+            db_updates['started_at'] = updates['started_at'].isoformat() if isinstance(updates['started_at'], datetime) else updates['started_at']
+        if 'completed_at' in updates:
+            db_updates['completed_at'] = updates['completed_at'].isoformat() if isinstance(updates['completed_at'], datetime) else updates['completed_at']
+        if 'universities_processed' in updates:
+            db_updates['processed_universities'] = updates['universities_processed']
+        if 'universities_updated' in updates:
+            db_updates['successful_updates'] = updates['universities_updated']
+        if 'errors' in updates:
+            db_updates['errors_count'] = updates['errors']
+        if 'message' in updates:
+            db_updates['error_message'] = updates['message']
+            db_updates['results'] = {'message': updates['message']}
+
+        db.table('enrichment_jobs').update(db_updates).eq('job_id', job_id).execute()
+        return True
+    except Exception as e:
+        logger.error(f"Failed to update job {job_id} in database: {e}")
+        return False
 
 
 class EnrichmentRequest(BaseModel):
@@ -44,7 +127,7 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest, trigger_ml_train
     """Background task to run enrichment"""
     try:
         logger.info(f"Starting enrichment job {job_id}")
-        enrichment_jobs[job_id]['status'] = 'running'
+        _update_job_in_db(job_id, {'status': 'running', 'started_at': datetime.now()})
 
         # Get database client
         db = get_supabase()
@@ -61,8 +144,8 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest, trigger_ml_train
             priority_fields=request.fields
         )
 
-        # Update job status
-        enrichment_jobs[job_id].update({
+        # Update job status in database
+        _update_job_in_db(job_id, {
             'status': 'completed',
             'completed_at': datetime.now(),
             'universities_processed': results.get('total_processed', 0),
@@ -79,14 +162,20 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest, trigger_ml_train
             from app.api.ml_training import train_models_background
             try:
                 train_models_background()
-                enrichment_jobs[job_id]['message'] += ' | ML training triggered'
+                job = _get_job_from_db(job_id)
+                if job:
+                    message = job.get('message', 'Enrichment completed successfully')
+                    _update_job_in_db(job_id, {'message': message + ' | ML training triggered'})
             except Exception as ml_error:
                 logger.error(f"ML training trigger failed: {ml_error}")
-                enrichment_jobs[job_id]['message'] += ' | ML training failed'
+                job = _get_job_from_db(job_id)
+                if job:
+                    message = job.get('message', 'Enrichment completed successfully')
+                    _update_job_in_db(job_id, {'message': message + ' | ML training failed'})
 
     except Exception as e:
         logger.error(f"Enrichment job {job_id} failed: {e}")
-        enrichment_jobs[job_id].update({
+        _update_job_in_db(job_id, {
             'status': 'failed',
             'completed_at': datetime.now(),
             'message': str(e)
@@ -97,7 +186,7 @@ async def run_async_enrichment_job(job_id: str, request: EnrichmentRequest, trig
     """Background task to run async enrichment (5-10x faster)"""
     try:
         logger.info(f"Starting ASYNC enrichment job {job_id}")
-        enrichment_jobs[job_id]['status'] = 'running'
+        _update_job_in_db(job_id, {'status': 'running', 'started_at': datetime.now()})
 
         # Get database client
         db = get_supabase()
@@ -116,8 +205,8 @@ async def run_async_enrichment_job(job_id: str, request: EnrichmentRequest, trig
             dry_run=request.dry_run
         )
 
-        # Update job status
-        enrichment_jobs[job_id].update({
+        # Update job status in database
+        _update_job_in_db(job_id, {
             'status': 'completed',
             'completed_at': datetime.now(),
             'universities_processed': results.get('total_processed', 0),
@@ -134,14 +223,20 @@ async def run_async_enrichment_job(job_id: str, request: EnrichmentRequest, trig
             from app.api.ml_training import train_models_background
             try:
                 train_models_background()
-                enrichment_jobs[job_id]['message'] += ' | ML training triggered'
+                job = _get_job_from_db(job_id)
+                if job:
+                    message = job.get('message', 'Async enrichment completed successfully')
+                    _update_job_in_db(job_id, {'message': message + ' | ML training triggered'})
             except Exception as ml_error:
                 logger.error(f"ML training trigger failed: {ml_error}")
-                enrichment_jobs[job_id]['message'] += ' | ML training failed'
+                job = _get_job_from_db(job_id)
+                if job:
+                    message = job.get('message', 'Async enrichment completed successfully')
+                    _update_job_in_db(job_id, {'message': message + ' | ML training failed'})
 
     except Exception as e:
         logger.error(f"Async enrichment job {job_id} failed: {e}")
-        enrichment_jobs[job_id].update({
+        _update_job_in_db(job_id, {
             'status': 'failed',
             'completed_at': datetime.now(),
             'message': str(e)
@@ -165,24 +260,15 @@ async def start_enrichment(request: EnrichmentRequest, background_tasks: Backgro
         # Generate job ID
         job_id = f"enrich_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
-        # Initialize job status
-        enrichment_jobs[job_id] = {
-            'job_id': job_id,
-            'status': 'starting',
-            'started_at': datetime.now(),
-            'completed_at': None,
-            'universities_processed': 0,
-            'universities_updated': 0,
-            'errors': 0,
-            'message': 'Enrichment job queued'
-        }
+        # Create job record in database
+        job_status = _create_job_in_db(job_id, status='pending', message='Enrichment job queued')
 
         # Start enrichment in background
         # Auto-trigger ML training for weekly/monthly batches
         trigger_ml = request.limit >= 100
         background_tasks.add_task(run_enrichment_job, job_id, request, trigger_ml)
 
-        return enrichment_jobs[job_id]
+        return job_status
 
     except Exception as e:
         logger.error(f"Failed to start enrichment: {e}")
@@ -192,19 +278,45 @@ async def start_enrichment(request: EnrichmentRequest, background_tasks: Backgro
 @router.get("/enrichment/status/{job_id}", response_model=EnrichmentStatus)
 async def get_enrichment_status(job_id: str):
     """Get status of an enrichment job"""
-    if job_id not in enrichment_jobs:
+    job = _get_job_from_db(job_id)
+    if not job:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    return enrichment_jobs[job_id]
+    return job
 
 
 @router.get("/enrichment/status")
 async def get_all_enrichment_jobs():
     """Get status of all enrichment jobs"""
-    return {
-        "total_jobs": len(enrichment_jobs),
-        "jobs": list(enrichment_jobs.values())
-    }
+    try:
+        db = get_supabase()
+        # Get recent jobs (last 100)
+        response = db.table('enrichment_jobs')\
+            .select('*')\
+            .order('created_at', desc=True)\
+            .limit(100)\
+            .execute()
+
+        jobs = []
+        for job_data in response.data:
+            jobs.append({
+                'job_id': job_data['job_id'],
+                'status': job_data['status'],
+                'started_at': job_data.get('started_at'),
+                'completed_at': job_data.get('completed_at'),
+                'universities_processed': job_data.get('processed_universities', 0),
+                'universities_updated': job_data.get('successful_updates', 0),
+                'errors': job_data.get('errors_count', 0),
+                'message': job_data.get('error_message')
+            })
+
+        return {
+            "total_jobs": len(jobs),
+            "jobs": jobs
+        }
+    except Exception as e:
+        logger.error(f"Failed to get jobs: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/enrichment/analyze")
@@ -349,17 +461,8 @@ async def start_async_enrichment(request: EnrichmentRequest):
         # Generate job ID
         job_id = f"async_enrich_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
-        # Initialize job status
-        enrichment_jobs[job_id] = {
-            'job_id': job_id,
-            'status': 'starting',
-            'started_at': datetime.now(),
-            'completed_at': None,
-            'universities_processed': 0,
-            'universities_updated': 0,
-            'errors': 0,
-            'message': 'Async enrichment job queued (5-10x faster)'
-        }
+        # Create job record in database
+        job_status = _create_job_in_db(job_id, status='pending', message='Async enrichment job queued (5-10x faster)')
 
         # Auto-trigger ML training for weekly/monthly batches
         trigger_ml = request.limit >= 100
@@ -368,7 +471,7 @@ async def start_async_enrichment(request: EnrichmentRequest):
         import asyncio
         asyncio.create_task(run_async_enrichment_job(job_id, request, trigger_ml))
 
-        return enrichment_jobs[job_id]
+        return job_status
 
     except Exception as e:
         logger.error(f"Failed to start async enrichment: {e}")
@@ -425,24 +528,33 @@ async def run_monthly_async_enrichment():
 
 @router.delete("/enrichment/jobs")
 async def clear_old_jobs():
-    """Clear completed jobs older than 24 hours"""
+    """Clear completed jobs older than 24 hours from database"""
     from datetime import timedelta
 
-    cutoff = datetime.now() - timedelta(hours=24)
-    jobs_to_remove = []
+    try:
+        db = get_supabase()
+        cutoff = (datetime.now() - timedelta(hours=24)).isoformat()
 
-    for job_id, job in enrichment_jobs.items():
-        if job['status'] in ['completed', 'failed']:
-            if job.get('completed_at') and job['completed_at'] < cutoff:
-                jobs_to_remove.append(job_id)
+        # Delete old completed/failed jobs
+        response = db.table('enrichment_jobs')\
+            .delete()\
+            .in_('status', ['completed', 'failed', 'cancelled'])\
+            .lt('completed_at', cutoff)\
+            .execute()
 
-    for job_id in jobs_to_remove:
-        del enrichment_jobs[job_id]
+        removed = len(response.data) if response.data else 0
 
-    return {
-        'removed': len(jobs_to_remove),
-        'remaining': len(enrichment_jobs)
-    }
+        # Get remaining job count
+        remaining_response = db.table('enrichment_jobs').select('job_id', count='exact').execute()
+        remaining = remaining_response.count or 0
+
+        return {
+            'removed': removed,
+            'remaining': remaining
+        }
+    except Exception as e:
+        logger.error(f"Failed to clear old jobs: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ============================================================================

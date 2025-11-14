@@ -58,17 +58,19 @@ Once your project is created:
 
    ```bash
    # Supabase Configuration
-   SUPABASE_URL=https://xxxxxxxxxxxxx.supabase.co
-   SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-   SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   SUPABASE_URL=<YOUR_SUPABASE_PROJECT_URL>
+   SUPABASE_ANON_KEY=<YOUR_SUPABASE_ANON_KEY>
+   SUPABASE_SERVICE_KEY=<YOUR_SUPABASE_SERVICE_ROLE_KEY>
 
    # Database mode: 'supabase' or 'sqlite'
    DATABASE_MODE=supabase
 
-   # Kaggle API (already configured)
-   KAGGLE_USERNAME=ogouba
-   KAGGLE_KEY=ac333671efe0a886b5834c5536c601cd
+   # Kaggle API (get from https://www.kaggle.com/settings/account → API → Create New Token)
+   KAGGLE_USERNAME=<YOUR_KAGGLE_USERNAME>
+   KAGGLE_KEY=<YOUR_KAGGLE_API_KEY>
    ```
+
+   **SECURITY NOTE:** Never commit these credentials to git. Keep them in .env files only.
 
 3. **Save** the file
 

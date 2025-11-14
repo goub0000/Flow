@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import '../core/constants/user_roles.dart';
-import '../core/theme/app_colors.dart';
 import '../core/models/user_model.dart';
 import '../core/error/error_handling.dart';
 import '../core/models/course_model.dart';
 import '../core/models/application_model.dart';
-import '../core/models/program_model.dart';
-import '../core/models/applicant_model.dart';
-import '../core/models/child_model.dart' hide Application;
 import '../core/models/counseling_models.dart';
-import '../core/models/document_model.dart' as doc_model;
-import '../core/models/message_model.dart';
 import '../features/authentication/providers/auth_provider.dart';
 import '../features/authentication/presentation/screens/login_screen.dart';
 import '../features/authentication/presentation/screens/register_screen.dart';
@@ -20,7 +15,6 @@ import '../features/authentication/presentation/screens/forgot_password_screen.d
 import '../features/authentication/presentation/screens/email_verification_screen.dart';
 import '../features/authentication/presentation/screens/onboarding_screen.dart';
 import '../features/authentication/presentation/screens/biometric_setup_screen.dart';
-import '../features/home/presentation/home_screen.dart';
 import '../features/home/presentation/modern_home_screen.dart';
 
 // Student
@@ -35,15 +29,12 @@ import '../features/student/progress/presentation/progress_screen.dart';
 // Institution
 import '../features/institution/dashboard/presentation/institution_dashboard_screen.dart';
 import '../features/institution/applicants/presentation/applicants_list_screen.dart';
-import '../features/institution/applicants/presentation/applicant_detail_screen.dart';
 import '../features/institution/programs/presentation/programs_list_screen.dart';
-import '../features/institution/programs/presentation/program_detail_screen.dart';
 import '../features/institution/programs/presentation/create_program_screen.dart';
 
 // Parent
 import '../features/parent/dashboard/presentation/parent_dashboard_screen.dart';
 import '../features/parent/children/presentation/children_list_screen.dart';
-import '../features/parent/children/presentation/child_detail_screen.dart';
 
 // Counselor
 import '../features/counselor/dashboard/presentation/counselor_dashboard_screen.dart';
@@ -114,6 +105,7 @@ import '../features/find_your_path/presentation/screens/university_detail_screen
 
 /// Router provider
 final routerProvider = Provider<GoRouter>((ref) {
+  final logger = Logger('AppRouter');
   final authState = ref.watch(authProvider);
 
   return GoRouter(
@@ -133,14 +125,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Check if accessing find-your-path routes (public access)
       final isFindYourPathRoute = state.matchedLocation.startsWith('/find-your-path');
 
-      print('🔀 Router redirect: location=${state.matchedLocation}, isAuthenticated=$isAuthenticated');
+      logger.fine('Router redirect: location=${state.matchedLocation}, isAuthenticated=$isAuthenticated');
 
       // PRIORITY 1: Redirect authenticated users away from auth routes and home page
       if (isAuthenticated) {
         if (isAuthRoute || isHomeRoute) {
           final user = authState.user!;
           final dashboardRoute = user.activeRole.dashboardRoute;
-          print('🔀 Redirecting authenticated user to dashboard: $dashboardRoute');
+          logger.info('Redirecting authenticated user to dashboard: $dashboardRoute');
           return dashboardRoute;
         }
       }

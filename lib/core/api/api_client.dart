@@ -1,15 +1,16 @@
 /// API Client
 /// Main HTTP client with authentication and error handling
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_config.dart';
 import 'api_exception.dart';
 import 'api_response.dart';
 
 class ApiClient {
+  final _logger = Logger('ApiClient');
   late final Dio _dio;
   final SharedPreferences _prefs;
   String? _accessToken;
@@ -45,7 +46,7 @@ class ApiClient {
         requestBody: true,
         responseBody: true,
         error: true,
-        logPrint: (obj) => print('[API] $obj'),
+        logPrint: (obj) => _logger.fine('[API] $obj'),
       ),
     );
   }

@@ -6,6 +6,10 @@ from app.middleware.error_handling import (
     general_exception_handler,
     ErrorHandlingMiddleware
 )
+from app.middleware.security_headers import (
+    SecurityHeadersMiddleware,
+    log_security_headers_status
+)
 
 __all__ = [
     "limiter",
@@ -13,5 +17,7 @@ __all__ = [
     "http_exception_handler",
     "validation_exception_handler",
     "general_exception_handler",
-    "ErrorHandlingMiddleware"
+    "ErrorHandlingMiddleware",
+    "SecurityHeadersMiddleware",
+    "log_security_headers_status"
 ]
