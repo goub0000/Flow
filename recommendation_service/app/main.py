@@ -61,7 +61,7 @@ app = FastAPI(
 
     **Documentation:** Visit `/docs` for interactive API documentation
     """,
-    version="1.0.0",
+    version="1.0.1",
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
