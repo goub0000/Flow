@@ -10,7 +10,9 @@ import '../widgets/loading_indicator.dart';
 import '../widgets/logo_avatar.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.showBackButton = true});
+
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,11 +59,12 @@ class ProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
+        leading: showBackButton ? IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
           tooltip: 'Back',
-        ),
+        ) : null,
+        automaticallyImplyLeading: showBackButton,
         title: const Text('Profile'),
         actions: [
           IconButton(

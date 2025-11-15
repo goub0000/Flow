@@ -30,7 +30,7 @@ class _StudentDashboardScreenState
     const _DashboardHomeTab(),
     const ApplicationsListScreen(),
     const ProgressScreen(),
-    const ProfileScreen(),
+    const ProfileScreen(showBackButton: false),
     const SettingsScreen(),
   ];
 
