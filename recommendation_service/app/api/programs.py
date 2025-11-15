@@ -2,7 +2,7 @@
 Programs API endpoints
 Cloud-based institutional programs management
 """
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Path
 from typing import List, Optional
 from uuid import UUID
 from datetime import datetime
@@ -162,8 +162,45 @@ async def get_programs(
         raise HTTPException(status_code=500, detail=f"Failed to fetch programs: {str(e)}")
 
 
+@router.get("/programs/statistics/overview", response_model=ProgramStatistics)
+async def get_program_statistics(institution_id: Optional[UUID] = None):
+    """Get program statistics, optionally filtered by institution"""
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('programs').select('*')
+        if institution_id:
+            query = query.eq('institution_id', str(institution_id))
+
+        result = query.execute()
+        programs = result.data
+
+        # Calculate statistics
+        total_programs = len(programs)
+        active_programs = sum(1 for p in programs if p['is_active'])
+        total_capacity = sum(p['max_students'] for p in programs)
+        total_enrolled = sum(p['enrolled_students'] for p in programs)
+        available_spots = total_capacity - total_enrolled
+        occupancy_rate = (total_enrolled / total_capacity * 100) if total_capacity > 0 else 0
+
+        return {
+            "total_programs": total_programs,
+            "active_programs": active_programs,
+            "inactive_programs": total_programs - active_programs,
+            "total_capacity": total_capacity,
+            "total_enrolled": total_enrolled,
+            "available_spots": available_spots,
+            "occupancy_rate": round(occupancy_rate, 2)
+        }
+
+    except Exception as e:
+        logger.error(f"Error calculating program statistics: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to calculate statistics: {str(e)}")
+
+
 @router.get("/programs/{program_id}", response_model=ProgramResponse)
-async def get_program(program_id: UUID):
+async def get_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Get a specific program by ID"""
     try:
         db = get_supabase()
@@ -221,7 +258,7 @@ async def create_program(program: ProgramCreate):
 
 
 @router.put("/programs/{program_id}", response_model=ProgramResponse)
-async def update_program(program_id: UUID, program: ProgramUpdate):
+async def update_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$"), program: ProgramUpdate = ...):
     """Update an existing program"""
     try:
         db = get_supabase()
@@ -264,7 +301,7 @@ async def update_program(program_id: UUID, program: ProgramUpdate):
 
 
 @router.delete("/programs/{program_id}", status_code=204)
-async def delete_program(program_id: UUID):
+async def delete_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Delete a program"""
     try:
         db = get_supabase()
@@ -287,7 +324,7 @@ async def delete_program(program_id: UUID):
 
 
 @router.patch("/programs/{program_id}/toggle-status", response_model=ProgramResponse)
-async def toggle_program_status(program_id: UUID):
+async def toggle_program_status(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Toggle program active status"""
     try:
         db = get_supabase()
@@ -313,43 +350,6 @@ async def toggle_program_status(program_id: UUID):
         raise HTTPException(status_code=500, detail=f"Failed to toggle status: {str(e)}")
 
 
-@router.get("/programs/statistics/overview", response_model=ProgramStatistics)
-async def get_program_statistics(institution_id: Optional[UUID] = None):
-    """Get program statistics, optionally filtered by institution"""
-    try:
-        db = get_supabase()
-
-        # Build query
-        query = db.table('programs').select('*')
-        if institution_id:
-            query = query.eq('institution_id', str(institution_id))
-
-        result = query.execute()
-        programs = result.data
-
-        # Calculate statistics
-        total_programs = len(programs)
-        active_programs = sum(1 for p in programs if p['is_active'])
-        total_capacity = sum(p['max_students'] for p in programs)
-        total_enrolled = sum(p['enrolled_students'] for p in programs)
-        available_spots = total_capacity - total_enrolled
-        occupancy_rate = (total_enrolled / total_capacity * 100) if total_capacity > 0 else 0
-
-        return {
-            "total_programs": total_programs,
-            "active_programs": active_programs,
-            "inactive_programs": total_programs - active_programs,
-            "total_capacity": total_capacity,
-            "total_enrolled": total_enrolled,
-            "available_spots": available_spots,
-            "occupancy_rate": round(occupancy_rate, 2)
-        }
-
-    except Exception as e:
-        logger.error(f"Error calculating program statistics: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to calculate statistics: {str(e)}")
-
-
 @router.get("/institutions/{institution_id}/programs", response_model=ProgramListResponse)
 async def get_institution_programs(
     institution_id: UUID,
@@ -367,7 +367,7 @@ async def get_institution_programs(
 
 
 @router.post("/programs/{program_id}/enroll")
-async def enroll_student_in_program(program_id: UUID):
+async def enroll_student_in_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Increment enrolled students count (simulated enrollment)"""
     try:
         db = get_supabase()
