@@ -4,6 +4,7 @@ Cloud-based institutional programs management
 """
 from fastapi import APIRouter, HTTPException, Query, Path
 from typing import List, Optional
+from uuid import UUID
 from app.database.config import get_supabase
 from app.schemas.program import (
     ProgramCreate,
