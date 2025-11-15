@@ -5,6 +5,8 @@
 /// flutter build web --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
 /// flutter run --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
 
+import 'package:flutter/foundation.dart';
+
 class ApiConfig {
   // Base URLs - configured via environment variables
   // Use --dart-define=API_BASE_URL=your_url to set production URL
@@ -58,17 +60,31 @@ class ApiConfig {
   // Validation: Ensure critical configuration is provided
   static void validateConfig() {
     if (supabaseUrl.isEmpty) {
-      throw Exception(
-        'SUPABASE_URL not configured. '
-        'Please provide via --dart-define=SUPABASE_URL=your_url'
-      );
+      // More descriptive error for debugging
+      final message = 'SUPABASE_URL not configured. '
+        'Please provide via --dart-define=SUPABASE_URL=your_url during build. '
+        'Current value: "$supabaseUrl"';
+
+      // In web, log to console for debugging
+      debugPrint('ERROR: $message');
+      throw Exception(message);
     }
     if (supabaseAnonKey.isEmpty) {
-      throw Exception(
-        'SUPABASE_ANON_KEY not configured. '
-        'Please provide via --dart-define=SUPABASE_ANON_KEY=your_key'
-      );
+      // More descriptive error for debugging
+      final message = 'SUPABASE_ANON_KEY not configured. '
+        'Please provide via --dart-define=SUPABASE_ANON_KEY=your_key during build. '
+        'Current value length: ${supabaseAnonKey.length}';
+
+      // In web, log to console for debugging
+      debugPrint('ERROR: $message');
+      throw Exception(message);
     }
+
+    // Log successful configuration (only in debug mode)
+    debugPrint('API Configuration validated successfully:');
+    debugPrint('  - Supabase URL: ${supabaseUrl.substring(0, 20)}...');
+    debugPrint('  - API Base URL: $apiBaseUrl');
+    debugPrint('  - Environment: ${isProduction ? "Production" : "Development"}');
   }
 
   // API Endpoints
