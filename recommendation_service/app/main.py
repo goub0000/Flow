@@ -154,7 +154,7 @@ from app.api import (
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
 app.include_router(institutions_api.router, prefix="/api/v1", tags=["Institutions"])
-app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])
+# app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])  # Courses removed from system
 app.include_router(applications_api.router, prefix="/api/v1", tags=["Applications"])
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
 app.include_router(messaging_api.router, prefix="/api/v1", tags=["Messaging"])
