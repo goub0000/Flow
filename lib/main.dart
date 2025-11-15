@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,36 +61,64 @@ void main() async {
     rethrow; // This is critical, can't continue without it
   }
 
-  // Initialize Sentry for crash reporting
+  // Initialize Sentry for crash reporting (optional, skip on web if it causes issues)
   // DSN should be provided via --dart-define=SENTRY_DSN=your_dsn in production
   const sentryDsn = String.fromEnvironment('SENTRY_DSN', defaultValue: '');
 
-  await SentryFlutter.init(
-    (options) {
-      options.dsn = sentryDsn.isEmpty ? null : sentryDsn;
-      options.environment = ApiConfig.isProduction ? 'production' : 'development';
-      options.tracesSampleRate = 0.2; // 20% of transactions
-      options.enableAutoSessionTracking = true;
-      options.attachStacktrace = true;
-      options.beforeSend = (event, hint) {
-        // Filter out sensitive data if needed
-        return event;
-      };
-    },
-    appRunner: () => runApp(
-      ProviderScope(
-        overrides: [
-          // Override SharedPreferences provider for cookie consent
-          sharedPreferencesProvider.overrideWithValue(prefs),
-          // Override SharedPreferences provider for API services
-          service_providers.sharedPreferencesProvider.overrideWithValue(prefs),
-        ],
-        child: const RestartWidget(
-          child: FlowApp(),
+  try {
+    debugPrint('🚀 Starting app initialization...');
+
+    // Skip Sentry on web for now - it can cause initialization issues
+    if (kIsWeb || sentryDsn.isEmpty) {
+      debugPrint('ℹ️ Sentry disabled (web platform or no DSN)');
+      runApp(
+        ProviderScope(
+          overrides: [
+            // Override SharedPreferences provider for cookie consent
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            // Override SharedPreferences provider for API services
+            service_providers.sharedPreferencesProvider.overrideWithValue(prefs),
+          ],
+          child: const RestartWidget(
+            child: FlowApp(),
+          ),
         ),
-      ),
-    ),
-  );
+      );
+    } else {
+      debugPrint('📊 Initializing Sentry...');
+      await SentryFlutter.init(
+        (options) {
+          options.dsn = sentryDsn;
+          options.environment = ApiConfig.isProduction ? 'production' : 'development';
+          options.tracesSampleRate = 0.2; // 20% of transactions
+          options.enableAutoSessionTracking = true;
+          options.attachStacktrace = true;
+          options.beforeSend = (event, hint) {
+            // Filter out sensitive data if needed
+            return event;
+          };
+        },
+        appRunner: () => runApp(
+          ProviderScope(
+            overrides: [
+              // Override SharedPreferences provider for cookie consent
+              sharedPreferencesProvider.overrideWithValue(prefs),
+              // Override SharedPreferences provider for API services
+              service_providers.sharedPreferencesProvider.overrideWithValue(prefs),
+            ],
+            child: const RestartWidget(
+              child: FlowApp(),
+            ),
+          ),
+        ),
+      );
+    }
+    debugPrint('✅ App started successfully');
+  } catch (e, stackTrace) {
+    debugPrint('❌ Fatal error during app startup: $e');
+    debugPrint('Stack trace: $stackTrace');
+    rethrow;
+  }
 }
 
 /// Widget that allows restarting the entire app
