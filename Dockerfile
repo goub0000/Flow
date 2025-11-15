@@ -9,7 +9,7 @@ WORKDIR /app
 COPY build/web /app/build/web
 
 # Copy server and dependencies
-COPY server.js package.json package-lock.json ./
+COPY server.js package.json ./
 
 # Install Node.js dependencies
 RUN npm install --production
