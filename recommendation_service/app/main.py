@@ -88,6 +88,12 @@ localhost_origins.extend([
     "http://127.0.0.1:3001",
 ])
 
+# Add Flutter web app Railway deployment
+flutter_web_origins = [
+    "https://web-production-bcafe.up.railway.app",
+]
+localhost_origins.extend(flutter_web_origins)
+
 if allowed_origins_env:
     # Production: Use configured origins + localhost for testing
     configured_origins = allowed_origins_env.split(",")

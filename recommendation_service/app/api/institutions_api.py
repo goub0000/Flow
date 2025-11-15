@@ -115,7 +115,7 @@ async def get_institutions(
             ]
             total = len(institutions_data)
 
-        # Get program and course counts for each institution
+        # Get program counts for each institution
         institutions = []
         for inst in institutions_data:
             # Count programs
@@ -123,12 +123,6 @@ async def get_institutions(
                 'id', count='exact'
             ).eq('institution_id', inst['id']).execute()
             programs_count = programs_response.count if hasattr(programs_response, 'count') else 0
-
-            # Count courses
-            courses_response = db.table('courses').select(
-                'id', count='exact'
-            ).eq('institution_id', inst['id']).execute()
-            courses_count = courses_response.count if hasattr(courses_response, 'count') else 0
 
             institutions.append(InstitutionResponse(
                 id=inst['id'],
@@ -139,7 +133,7 @@ async def get_institutions(
                 created_at=inst.get('created_at'),
                 is_verified=inst.get('email_verified', False),
                 programs_count=programs_count,
-                courses_count=courses_count
+                courses_count=0  # Courses removed from system
             ))
 
         logger.info(
@@ -206,12 +200,6 @@ async def get_institution(
         ).eq('institution_id', institution_id).execute()
         programs_count = programs_response.count if hasattr(programs_response, 'count') else 0
 
-        # Count courses
-        courses_response = db.table('courses').select(
-            'id', count='exact'
-        ).eq('institution_id', institution_id).execute()
-        courses_count = courses_response.count if hasattr(courses_response, 'count') else 0
-
         return InstitutionResponse(
             id=inst['id'],
             name=inst.get('display_name', 'Unnamed Institution'),
@@ -221,7 +209,7 @@ async def get_institution(
             created_at=inst.get('created_at'),
             is_verified=inst.get('email_verified', False),
             programs_count=programs_count,
-            courses_count=courses_count
+            courses_count=0  # Courses removed from system
         )
 
     except HTTPException:
