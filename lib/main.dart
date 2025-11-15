@@ -37,13 +37,28 @@ void main() async {
   ApiConfig.validateConfig();
 
   // Initialize Supabase
-  await Supabase.initialize(
-    url: ApiConfig.supabaseUrl,
-    anonKey: ApiConfig.supabaseAnonKey,
-  );
+  try {
+    await Supabase.initialize(
+      url: ApiConfig.supabaseUrl,
+      anonKey: ApiConfig.supabaseAnonKey,
+    );
+    debugPrint('✅ Supabase initialized successfully');
+  } catch (e, stackTrace) {
+    debugPrint('❌ Supabase initialization failed: $e');
+    debugPrint('Stack trace: $stackTrace');
+    // Continue anyway - app can work without Supabase for some features
+  }
 
   // Initialize SharedPreferences for cookie consent
-  final prefs = await SharedPreferences.getInstance();
+  late final SharedPreferences prefs;
+  try {
+    prefs = await SharedPreferences.getInstance();
+    debugPrint('✅ SharedPreferences initialized successfully');
+  } catch (e, stackTrace) {
+    debugPrint('❌ SharedPreferences initialization failed: $e');
+    debugPrint('Stack trace: $stackTrace');
+    rethrow; // This is critical, can't continue without it
+  }
 
   // Initialize Sentry for crash reporting
   // DSN should be provided via --dart-define=SENTRY_DSN=your_dsn in production
