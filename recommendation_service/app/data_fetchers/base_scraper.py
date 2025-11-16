@@ -78,7 +78,6 @@ class BaseScraper(ABC):
             'city': self._clean_text(raw_data.get('city')),
             'website': self._clean_url(raw_data.get('website')),
             'description': self._clean_text(raw_data.get('description')),
-            'founded_year': raw_data.get('founded_year'),
             'phone': self._clean_text(raw_data.get('phone')),
             'email': self._clean_email(raw_data.get('email')),
         }

@@ -30,7 +30,6 @@ def analyze_data_quality():
         'city',
         'website',
         'description',
-        'founded_year',
         'phone',
         'email',
         'logo_url',
@@ -92,7 +91,7 @@ def analyze_data_quality():
     logger.info("SAMPLE UNIVERSITIES WITH MISSING DATA:")
     logger.info("-" * 80)
 
-    sample = client.client.table('universities').select('id, name, country, website, description, email, phone, founded_year').is_('website', 'null').limit(10).execute()
+    sample = client.client.table('universities').select('id, name, country, website, description, email, phone').is_('website', 'null').limit(10).execute()
 
     if sample.data:
         for uni in sample.data:
@@ -103,7 +102,6 @@ def analyze_data_quality():
             logger.info(f"  Description: {'NULL' if not uni.get('description') else uni['description'][:50] + '...'}")
             logger.info(f"  Email: {uni.get('email', 'NULL')}")
             logger.info(f"  Phone: {uni.get('phone', 'NULL')}")
-            logger.info(f"  Founded: {uni.get('founded_year', 'NULL')}")
 
     logger.info("")
     logger.info("=" * 80)

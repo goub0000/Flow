@@ -22,7 +22,6 @@ class UniversityDataModel(BaseModel):
     city: Optional[str] = Field(None, max_length=100)
     website: Optional[str] = Field(None, max_length=500)
     description: Optional[str] = Field(None, max_length=2000)
-    founded_year: Optional[int] = None
     phone: Optional[str] = Field(None, max_length=50)
     email: Optional[str] = Field(None, max_length=200)
 
@@ -70,16 +69,6 @@ class UniversityDataModel(BaseModel):
             url_pattern = r'https?://[\w\-\.]+\.[a-z]{2,}'
             if not re.match(url_pattern, v, re.IGNORECASE):
                 raise ValueError('Invalid website URL format')
-
-        return v
-
-    @validator('founded_year')
-    def year_must_be_reasonable(cls, v):
-        """Validate founded year is reasonable"""
-        if v is not None:
-            # Universities didn't exist before ~1000 AD
-            if v < 800 or v > 2025:
-                raise ValueError('Founded year must be between 800 and 2025')
 
         return v
 
