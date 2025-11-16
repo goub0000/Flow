@@ -108,7 +108,7 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           await context.push('/student/applications/create');
-          _refreshApplications();
+          // No need to manually refresh - the provider already refreshes after submission
         },
         icon: const Icon(Icons.add),
         label: const Text('New Application'),

@@ -133,11 +133,13 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
       );
 
       if (response.success && response.data != null) {
-        // Add new application to local state
-        state = state.copyWith(
-          applications: [...state.applications, response.data!],
-          isSubmitting: false,
-        );
+        // Instead of just adding to local state, refresh the entire list
+        // This ensures we get the application with all server-side fields properly set
+        state = state.copyWith(isSubmitting: false);
+
+        // Fetch fresh applications list from server to ensure consistency
+        await fetchApplications();
+
         return true;
       } else {
         state = state.copyWith(

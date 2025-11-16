@@ -249,6 +249,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
       if (success) {
+        // Note: Applications list is automatically refreshed in submitApplication method
+        // No need to refresh here as it's already done in the provider
+
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

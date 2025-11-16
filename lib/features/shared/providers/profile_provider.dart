@@ -39,6 +39,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   final AuthService _authService;
 
   ProfileNotifier(this.ref, this._authService) : super(const ProfileState()) {
+    // Load profile immediately
     loadProfile();
   }
 

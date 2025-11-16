@@ -45,7 +45,10 @@ class Application {
       institutionName: json['institution_name'] as String,
       programName: json['program_name'] as String,
       status: json['status'] as String? ?? 'pending',
-      submittedAt: DateTime.parse(json['created_at'] as String),
+      // Use submitted_at if available, otherwise fall back to created_at
+      submittedAt: json['submitted_at'] != null
+          ? DateTime.parse(json['submitted_at'] as String)
+          : DateTime.parse(json['created_at'] as String),
       reviewedAt: json['reviewed_at'] != null
           ? DateTime.parse(json['reviewed_at'] as String)
           : null,
