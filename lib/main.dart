@@ -44,6 +44,30 @@ void main() async {
       anonKey: ApiConfig.supabaseAnonKey,
     );
     debugPrint('✅ Supabase initialized successfully');
+
+    // Clear any invalid sessions from previous deployments
+    try {
+      final session = Supabase.instance.client.auth.currentSession;
+      if (session != null) {
+        debugPrint('Found existing session, validating...');
+        // Try to refresh - if it fails, clear the session
+        final response = await Supabase.instance.client.auth.refreshSession();
+        if (response.session == null) {
+          debugPrint('Session refresh failed, clearing invalid session...');
+          await Supabase.instance.client.auth.signOut();
+        } else {
+          debugPrint('✅ Session is valid');
+        }
+      }
+    } catch (e) {
+      debugPrint('Invalid session detected, clearing: $e');
+      try {
+        await Supabase.instance.client.auth.signOut();
+        debugPrint('✅ Cleared invalid session');
+      } catch (signOutError) {
+        debugPrint('Failed to clear session: $signOutError');
+      }
+    }
   } catch (e, stackTrace) {
     debugPrint('❌ Supabase initialization failed: $e');
     debugPrint('Stack trace: $stackTrace');
