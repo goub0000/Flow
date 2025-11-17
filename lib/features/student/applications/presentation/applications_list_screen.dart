@@ -7,7 +7,9 @@ import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../../shared/widgets/status_badge.dart';
+import '../../../shared/widgets/refresh_utilities.dart';
 import '../../providers/student_applications_provider.dart';
+import '../../providers/student_applications_realtime_provider.dart';
 
 class ApplicationsListScreen extends ConsumerStatefulWidget {
   const ApplicationsListScreen({super.key});
@@ -17,7 +19,7 @@ class ApplicationsListScreen extends ConsumerStatefulWidget {
 }
 
 class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, RefreshableMixin {
   late TabController _tabController;
 
   @override
@@ -33,7 +35,36 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
   }
 
   Future<void> _refreshApplications() async {
-    await ref.read(applicationsProvider.notifier).fetchApplications();
+    return handleRefresh(() async {
+      try {
+        await ref.read(applicationsProvider.notifier).fetchApplications();
+
+        // Try to refresh real-time provider if available
+        try {
+          ref.read(studentApplicationsRealtimeProvider.notifier).refresh();
+        } catch (e) {
+          print('[DEBUG] Real-time provider refresh skipped: $e');
+        }
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('applications_list').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh applications',
+          );
+        }
+        rethrow;
+      }
+    });
   }
 
   List<Application> _getFilteredApplications(List<Application> applications, String status) {
@@ -127,7 +158,14 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
 
     return RefreshIndicator(
       onRefresh: _refreshApplications,
-      child: _buildApplicationsListInternal(applications),
+      child: Column(
+        children: [
+          const LastRefreshIndicator(providerKey: 'applications_list'),
+          Expanded(
+            child: _buildApplicationsListInternal(applications),
+          ),
+        ],
+      ),
     );
   }
 

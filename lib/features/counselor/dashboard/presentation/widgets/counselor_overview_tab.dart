@@ -4,11 +4,12 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/models/counseling_models.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
+import '../../../../shared/widgets/refresh_utilities.dart';
 import '../../../providers/counselor_dashboard_provider.dart';
 import '../../../providers/counselor_students_provider.dart';
 import '../../../providers/counselor_sessions_provider.dart';
 
-class CounselorOverviewTab extends ConsumerWidget {
+class CounselorOverviewTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToStudents;
   final VoidCallback onNavigateToSessions;
 
@@ -19,7 +20,43 @@ class CounselorOverviewTab extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CounselorOverviewTab> createState() => _CounselorOverviewTabState();
+}
+
+class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> with RefreshableMixin {
+  Future<void> _handleRefresh() async {
+    return handleRefresh(() async {
+      try {
+        // Refresh all data sources in parallel
+        await Future.wait([
+          ref.read(counselorDashboardProvider.notifier).loadDashboardData(),
+          ref.read(counselorStudentsProvider.notifier).fetchStudents(),
+          ref.read(counselorSessionsProvider.notifier).fetchSessions(),
+        ]);
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('counselor_dashboard').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh: ${e.toString()}',
+          );
+        }
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading = ref.watch(counselorDashboardLoadingProvider);
     final error = ref.watch(counselorDashboardErrorProvider);
     final statistics = ref.watch(counselorDashboardStatisticsProvider);
@@ -58,12 +95,14 @@ class CounselorOverviewTab extends ConsumerWidget {
     final todaySessionsList = sessions.where((s) => s.isToday).toList();
 
     return RefreshIndicator(
-      onRefresh: () async {
-        await ref.read(counselorDashboardProvider.notifier).loadDashboardData();
-      },
+      onRefresh: _handleRefresh,
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
+          // Last refresh timestamp
+          const LastRefreshIndicator(providerKey: 'counselor_dashboard'),
+          const SizedBox(height: 8),
           // Stats Cards
           Row(
             children: [
@@ -120,7 +159,7 @@ class CounselorOverviewTab extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 TextButton(
-                  onPressed: onNavigateToSessions,
+                  onPressed: widget.onNavigateToSessions,
                   child: const Text('View All'),
                 ),
               ],
@@ -210,7 +249,7 @@ class CounselorOverviewTab extends ConsumerWidget {
               ),
               if (students.isNotEmpty)
                 TextButton(
-                  onPressed: onNavigateToStudents,
+                  onPressed: widget.onNavigateToStudents,
                   child: const Text('View All'),
                 ),
             ],

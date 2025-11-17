@@ -46,6 +46,7 @@ dependencies:
   timeago: ^3.7.1
   http: ^1.2.0
   logging: ^1.2.0
+  connectivity_plus: ^6.0.0
 
   # Backend Integration
   supabase_flutter: ^2.5.0

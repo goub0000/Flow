@@ -36,6 +36,7 @@ class Application {
   bool get isUnderReview => status == 'under_review';
   bool get isAccepted => status == 'accepted';
   bool get isRejected => status == 'rejected';
+  bool get isPaid => feePaid;
 
   factory Application.fromJson(Map<String, dynamic> json) {
     return Application(
@@ -62,6 +63,41 @@ class Application {
       academicInfo: json['academic_info'] as Map<String, dynamic>? ?? {},
       applicationFee: (json['application_fee'] as num?)?.toDouble(),
       feePaid: false, // Fee payment status not stored in DB yet
+    );
+  }
+
+  /// Create a copy with updated fields
+  Application copyWith({
+    String? id,
+    String? studentId,
+    String? institutionId,
+    String? institutionName,
+    String? programName,
+    String? status,
+    DateTime? submittedAt,
+    DateTime? reviewedAt,
+    String? reviewNotes,
+    Map<String, dynamic>? documents,
+    Map<String, dynamic>? personalInfo,
+    Map<String, dynamic>? academicInfo,
+    double? applicationFee,
+    bool? feePaid,
+  }) {
+    return Application(
+      id: id ?? this.id,
+      studentId: studentId ?? this.studentId,
+      institutionId: institutionId ?? this.institutionId,
+      institutionName: institutionName ?? this.institutionName,
+      programName: programName ?? this.programName,
+      status: status ?? this.status,
+      submittedAt: submittedAt ?? this.submittedAt,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      reviewNotes: reviewNotes ?? this.reviewNotes,
+      documents: documents ?? this.documents,
+      personalInfo: personalInfo ?? this.personalInfo,
+      academicInfo: academicInfo ?? this.academicInfo,
+      applicationFee: applicationFee ?? this.applicationFee,
+      feePaid: feePaid ?? this.feePaid,
     );
   }
 

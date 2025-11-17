@@ -5,10 +5,11 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/models/counseling_models.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
+import '../../../../shared/widgets/refresh_utilities.dart';
 import '../../../providers/recommender_dashboard_provider.dart';
 import '../../../providers/recommender_requests_provider.dart';
 
-class RecommenderOverviewTab extends ConsumerWidget {
+class RecommenderOverviewTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToRequests;
 
   const RecommenderOverviewTab({
@@ -17,7 +18,42 @@ class RecommenderOverviewTab extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RecommenderOverviewTab> createState() => _RecommenderOverviewTabState();
+}
+
+class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab> with RefreshableMixin {
+  Future<void> _handleRefresh() async {
+    return handleRefresh(() async {
+      try {
+        // Refresh all data sources in parallel
+        await Future.wait([
+          ref.read(recommenderDashboardProvider.notifier).loadDashboardData(),
+          ref.read(recommenderRequestsProvider.notifier).fetchRequests(),
+        ]);
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('recommender_dashboard').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh: ${e.toString()}',
+          );
+        }
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading = ref.watch(recommenderDashboardLoadingProvider);
     final error = ref.watch(recommenderDashboardErrorProvider);
     final statistics = ref.watch(recommenderDashboardStatisticsProvider);
@@ -54,12 +90,14 @@ class RecommenderOverviewTab extends ConsumerWidget {
     final urgent = statistics['urgentRequests'] as int? ?? 0;
 
     return RefreshIndicator(
-      onRefresh: () async {
-        await ref.read(recommenderDashboardProvider.notifier).loadDashboardData();
-      },
+      onRefresh: _handleRefresh,
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
+          // Last refresh timestamp
+          const LastRefreshIndicator(providerKey: 'recommender_dashboard'),
+          const SizedBox(height: 8),
           // Welcome Card
           CustomCard(
             color: AppColors.recommenderRole.withValues(alpha: 0.1),
@@ -294,7 +332,7 @@ class RecommenderOverviewTab extends ConsumerWidget {
               ),
               if (recommendations.isNotEmpty)
                 TextButton(
-                  onPressed: onNavigateToRequests,
+                  onPressed: widget.onNavigateToRequests,
                   child: const Text('View All'),
                 ),
             ],

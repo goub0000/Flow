@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/coming_soon_dialog.dart';
+import '../../../shared/widgets/refresh_utilities.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
@@ -34,9 +35,44 @@ class AdminDashboardScreen extends ConsumerWidget {
   }
 }
 
-class _DashboardContent extends ConsumerWidget {
+class _DashboardContent extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DashboardContent> createState() => _DashboardContentState();
+}
+
+class _DashboardContentState extends ConsumerState<_DashboardContent> with RefreshableMixin {
+  Future<void> _handleRefresh() async {
+    return handleRefresh(() async {
+      try {
+        // Refresh all data sources
+        await Future.wait([
+          ref.read(adminAnalyticsProvider.notifier).fetchAnalytics(),
+          ref.read(adminSupportProvider.notifier).fetchTickets(),
+        ]);
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('admin_dashboard').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh: ${e.toString()}',
+          );
+        }
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final adminUser = ref.watch(currentAdminUserProvider);
     final theme = Theme.of(context);
     final metrics = ref.watch(adminAnalyticsMetricsProvider);
@@ -48,11 +84,14 @@ class _DashboardContent extends ConsumerWidget {
       );
     }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return RefreshIndicator(
+      onRefresh: _handleRefresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           // Page header
           Row(
             children: [
@@ -152,7 +191,11 @@ class _DashboardContent extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 8),
+
+          // Last refresh timestamp
+          const LastRefreshIndicator(providerKey: 'admin_dashboard'),
+          const SizedBox(height: 24),
 
           // KPI Cards Grid
           GridView.count(
@@ -234,6 +277,7 @@ class _DashboardContent extends ConsumerWidget {
             ],
           ),
         ],
+        ),
       ),
     );
   }

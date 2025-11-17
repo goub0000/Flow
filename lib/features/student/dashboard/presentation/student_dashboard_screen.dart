@@ -6,6 +6,7 @@ import '../../../shared/widgets/dashboard_scaffold.dart';
 import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
 import '../../../shared/widgets/coming_soon_dialog.dart';
+import '../../../shared/widgets/refresh_utilities.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
@@ -16,6 +17,7 @@ import '../../../shared/providers/profile_provider.dart';
 import '../../providers/activity_feed_provider.dart';
 import '../../providers/recommendations_provider.dart';
 import '../../providers/dashboard_statistics_provider.dart';
+import '../../providers/student_applications_realtime_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -152,13 +154,62 @@ class _StudentDashboardScreenState
   }
 }
 
-class _DashboardHomeTab extends ConsumerWidget {
+class _DashboardHomeTab extends ConsumerStatefulWidget {
   const _DashboardHomeTab({super.key, this.onNavigateToTab});
 
   final void Function(int)? onNavigateToTab;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DashboardHomeTab> createState() => _DashboardHomeTabState();
+}
+
+class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with RefreshableMixin {
+  Future<void> _handleRefresh() async {
+    return handleRefresh(() async {
+      try {
+        // Refresh all data sources - invalidate providers to force refresh
+        ref.invalidate(dashboardStatisticsProvider);
+        ref.invalidate(activityFeedProvider);
+        ref.invalidate(recommendationsProvider);
+        ref.invalidate(applicationsListProvider);
+
+        // Wait for async providers to complete
+        await Future.wait([
+          ref.read(activityFeedProvider.future),
+          ref.read(recommendationsProvider.future),
+        ]);
+
+        // If using real-time provider, refresh it too
+        try {
+          ref.read(studentApplicationsRealtimeProvider.notifier).refresh();
+        } catch (e) {
+          // Real-time provider might not be available
+          print('[DEBUG] Real-time provider refresh skipped: $e');
+        }
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('student_dashboard').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh: ${e.toString()}',
+          );
+        }
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     // Get real data from providers
@@ -178,9 +229,12 @@ class _DashboardHomeTab extends ConsumerWidget {
     // Get messages count (null means no badge shown)
     final messagesCount = ref.watch(unreadMessagesCountProvider);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
+    return RefreshIndicator(
+      onRefresh: _handleRefresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Welcome Card with Progress
@@ -280,7 +334,7 @@ class _DashboardHomeTab extends ConsumerWidget {
                 onTap: () {
                   // Use tab navigation instead of route navigation
                   print('[DEBUG] Quick Action: My Applications clicked');
-                  onNavigateToTab?.call(1); // Navigate to Applications tab
+                  widget.onNavigateToTab?.call(1); // Navigate to Applications tab
                 },
               ),
               QuickAction(
@@ -290,7 +344,7 @@ class _DashboardHomeTab extends ConsumerWidget {
                 onTap: () {
                   // Use tab navigation instead of route navigation
                   print('[DEBUG] Quick Action: Progress clicked');
-                  onNavigateToTab?.call(2); // Navigate to Progress tab
+                  widget.onNavigateToTab?.call(2); // Navigate to Progress tab
                 },
               ),
               QuickAction(
@@ -318,27 +372,27 @@ class _DashboardHomeTab extends ConsumerWidget {
                 case 'Total Applications':
                 case 'Applications':
                   // Navigate to Applications tab
-                  onNavigateToTab?.call(1);
+                  widget.onNavigateToTab?.call(1);
                   break;
                 case 'Accepted':
                   // Navigate to Applications tab - ideally with accepted filter
                   // For now, just go to applications tab
-                  onNavigateToTab?.call(1);
+                  widget.onNavigateToTab?.call(1);
                   break;
                 case 'Pending':
                   // Navigate to Applications tab - ideally with pending filter
                   // For now, just go to applications tab
-                  onNavigateToTab?.call(1);
+                  widget.onNavigateToTab?.call(1);
                   break;
                 case 'Under Review':
                 case 'In Review':
                   // Navigate to Applications tab - ideally with review filter
                   // For now, just go to applications tab
-                  onNavigateToTab?.call(1);
+                  widget.onNavigateToTab?.call(1);
                   break;
                 default:
                   // For any other stats, navigate to applications
-                  onNavigateToTab?.call(1);
+                  widget.onNavigateToTab?.call(1);
               }
 
               // Log the stat tap for debugging
@@ -486,9 +540,9 @@ class _DashboardHomeTab extends ConsumerWidget {
                     if (metadata != null && metadata['applicationId'] != null) {
                       // TODO: Navigate to specific application detail when implemented
                       // For now, navigate to Applications tab
-                      onNavigateToTab?.call(1);
+                      widget.onNavigateToTab?.call(1);
                     } else {
-                      onNavigateToTab?.call(1); // Go to Applications tab
+                      widget.onNavigateToTab?.call(1); // Go to Applications tab
                     }
                     break;
 
@@ -552,7 +606,7 @@ class _DashboardHomeTab extends ConsumerWidget {
 
                   default:
                     // For unknown activity types, try to navigate to applications
-                    onNavigateToTab?.call(1);
+                    widget.onNavigateToTab?.call(1);
                 }
               },
             ),
@@ -634,7 +688,12 @@ class _DashboardHomeTab extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 16),
+
+          // Last refresh timestamp
+          const LastRefreshIndicator(providerKey: 'student_dashboard'),
+          const SizedBox(height: 8),
         ],
+      ),
       ),
     );
   }

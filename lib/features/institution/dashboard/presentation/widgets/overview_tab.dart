@@ -5,15 +5,56 @@ import '../../../../../core/models/program_model.dart';
 import '../../../../../core/models/applicant_model.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
+import '../../../../shared/widgets/refresh_utilities.dart';
 import '../../../providers/institution_dashboard_provider.dart';
+import '../../../providers/institution_applicants_realtime_provider.dart';
 
-class OverviewTab extends ConsumerWidget {
+class OverviewTab extends ConsumerStatefulWidget {
   final Function(int)? onNavigate;
 
   const OverviewTab({super.key, this.onNavigate});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OverviewTab> createState() => _OverviewTabState();
+}
+
+class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin {
+  Future<void> _handleRefresh() async {
+    return handleRefresh(() async {
+      try {
+        // Refresh dashboard data
+        await ref.read(institutionDashboardProvider.notifier).loadDashboardData();
+
+        // Try to refresh real-time provider if available
+        try {
+          ref.read(institutionApplicantsRealtimeProvider.notifier).refresh();
+        } catch (e) {
+          print('[DEBUG] Real-time provider refresh skipped: $e');
+        }
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('institution_dashboard').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh: ${e.toString()}',
+          );
+        }
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading = ref.watch(institutionDashboardLoadingProvider);
     final error = ref.watch(institutionDashboardErrorProvider);
     final statistics = ref.watch(institutionDashboardStatisticsProvider);
@@ -52,12 +93,14 @@ class OverviewTab extends ConsumerWidget {
     final totalEnrollments = statistics['totalEnrolled'] as int? ?? 0;
 
     return RefreshIndicator(
-      onRefresh: () async {
-        await ref.read(institutionDashboardProvider.notifier).loadDashboardData();
-      },
+      onRefresh: _handleRefresh,
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
+          // Last refresh timestamp
+          const LastRefreshIndicator(providerKey: 'institution_dashboard'),
+          const SizedBox(height: 8),
           // Statistics Cards
           Row(
             children: [
@@ -128,7 +171,7 @@ class OverviewTab extends ConsumerWidget {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: pendingApplicants > 0 ? () {
                     // Navigate to applicants tab (index 1)
-                    onNavigate?.call(1);
+                    widget.onNavigate?.call(1);
                   } : null,
                 ),
                 const Divider(height: 1),
@@ -146,7 +189,7 @@ class OverviewTab extends ConsumerWidget {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: underReviewApplicants > 0 ? () {
                     // Navigate to applicants tab (index 1)
-                    onNavigate?.call(1);
+                    widget.onNavigate?.call(1);
                   } : null,
                 ),
                 const Divider(height: 1),
@@ -164,7 +207,7 @@ class OverviewTab extends ConsumerWidget {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: acceptedApplicants > 0 ? () {
                     // Navigate to applicants tab (index 1)
-                    onNavigate?.call(1);
+                    widget.onNavigate?.call(1);
                   } : null,
                 ),
                 const Divider(height: 1),
@@ -182,7 +225,7 @@ class OverviewTab extends ConsumerWidget {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     // Navigate to programs tab (index 2)
-                    onNavigate?.call(2);
+                    widget.onNavigate?.call(2);
                   },
                 ),
               ],

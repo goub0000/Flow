@@ -12,6 +12,7 @@ import '../services/applications_service.dart';
 import '../services/messaging_service.dart';
 import '../services/notifications_service.dart';
 import '../services/realtime_service.dart';
+import '../services/enhanced_realtime_service.dart';
 import '../models/user_model.dart';
 
 /// Shared Preferences Provider
@@ -99,4 +100,23 @@ final unreadNotificationsCountProvider = FutureProvider<int>((ref) async {
 final realtimeServiceProvider = Provider<RealtimeService>((ref) {
   final supabase = ref.watch(supabaseClientProvider);
   return RealtimeService(supabase);
+});
+
+/// Enhanced Realtime Service Provider
+final enhancedRealtimeServiceProvider = Provider<EnhancedRealtimeService>((ref) {
+  final supabase = ref.watch(supabaseClientProvider);
+  final service = EnhancedRealtimeService(supabase);
+
+  // Clean up on disposal
+  ref.onDispose(() {
+    service.dispose();
+  });
+
+  return service;
+});
+
+/// Connection Status Provider
+final realtimeConnectionStatusProvider = StreamProvider<ConnectionStatus>((ref) {
+  final service = ref.watch(enhancedRealtimeServiceProvider);
+  return service.connectionStatus;
 });

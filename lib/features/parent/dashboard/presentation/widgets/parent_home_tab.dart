@@ -5,11 +5,13 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/models/child_model.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
+import '../../../../shared/widgets/refresh_utilities.dart';
 import '../../../providers/parent_children_provider.dart';
+import '../../../providers/parent_alerts_provider.dart';
 import '../../../reports/presentation/reports_screen.dart';
 import '../../../scheduling/presentation/meeting_scheduler_screen.dart';
 
-class ParentHomeTab extends ConsumerWidget {
+class ParentHomeTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToChildren;
   final VoidCallback onNavigateToNotifications;
   final VoidCallback onNavigateToSettings;
@@ -22,7 +24,42 @@ class ParentHomeTab extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ParentHomeTab> createState() => _ParentHomeTabState();
+}
+
+class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableMixin {
+  Future<void> _handleRefresh() async {
+    return handleRefresh(() async {
+      try {
+        // Refresh all data sources in parallel
+        await Future.wait([
+          ref.read(parentChildrenProvider.notifier).fetchChildren(),
+          ref.read(parentAlertsProvider.notifier).fetchAlerts(),
+        ]);
+
+        // Update last refresh time
+        ref.read(lastRefreshTimeProvider('parent_dashboard').notifier).state = DateTime.now();
+
+        // Show success feedback
+        if (mounted) {
+          showRefreshFeedback(context, success: true);
+        }
+      } catch (e) {
+        // Show error feedback
+        if (mounted) {
+          showRefreshFeedback(
+            context,
+            success: false,
+            message: 'Failed to refresh: ${e.toString()}',
+          );
+        }
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading = ref.watch(parentChildrenLoadingProvider);
     final children = ref.watch(parentChildrenListProvider);
     final error = ref.watch(parentChildrenErrorProvider);
@@ -58,12 +95,14 @@ class ParentHomeTab extends ConsumerWidget {
     final pendingApplications = statistics['pendingApplications'] as int;
 
     return RefreshIndicator(
-      onRefresh: () async {
-        await ref.read(parentChildrenProvider.notifier).fetchChildren();
-      },
+      onRefresh: _handleRefresh,
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
+          // Last refresh timestamp
+          const LastRefreshIndicator(providerKey: 'parent_dashboard'),
+          const SizedBox(height: 8),
           // Overview Stats
           Row(
             children: [
@@ -120,7 +159,7 @@ class ParentHomeTab extends ConsumerWidget {
               ),
               if (children.isNotEmpty)
                 TextButton(
-                  onPressed: onNavigateToChildren,
+                  onPressed: widget.onNavigateToChildren,
                   child: const Text('View All'),
                 ),
             ],
@@ -301,7 +340,7 @@ class ParentHomeTab extends ConsumerWidget {
                   title: const Text('Notification Settings'),
                   subtitle: const Text('Manage alerts and updates'),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: onNavigateToSettings,
+                  onTap: widget.onNavigateToSettings,
                 ),
               ],
             ),
