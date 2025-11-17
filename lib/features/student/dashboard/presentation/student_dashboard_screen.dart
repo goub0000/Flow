@@ -10,7 +10,6 @@ import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
-import '../../providers/student_enrollments_provider.dart';
 import '../../providers/student_applications_provider.dart';
 import '../../providers/student_progress_provider.dart';
 
@@ -95,25 +94,26 @@ class _DashboardHomeTab extends ConsumerWidget {
     final theme = Theme.of(context);
 
     // Get data from providers
-    final enrollments = ref.watch(enrollmentsListProvider);
     final applications = ref.watch(applicationsListProvider);
-    final completedCoursesCount = ref.watch(completedCoursesCountProvider);
     final pendingApplicationsCount = ref.watch(pendingApplicationsCountProvider);
+
+    // Count accepted applications
+    final acceptedApplicationsCount = applications.where((app) => app.status == 'accepted').length;
 
     // Mock data for enhanced features
     final mockStats = [
       StatData(
-        label: 'Enrolled Programs',
-        value: '${enrollments.length}',
-        icon: Icons.school,
+        label: 'Total Applications',
+        value: '${applications.length}',
+        icon: Icons.description,
         color: AppColors.primary,
         trend: 12.5,
         subtitle: 'vs last month',
       ),
       StatData(
-        label: 'Completed',
-        value: '$completedCoursesCount',
-        icon: Icons.assignment_turned_in,
+        label: 'Accepted',
+        value: '$acceptedApplicationsCount',
+        icon: Icons.check_circle,
         color: AppColors.success,
         trend: 8.3,
       ),
@@ -125,9 +125,9 @@ class _DashboardHomeTab extends ConsumerWidget {
         trend: -5.2,
       ),
       StatData(
-        label: 'Applications',
-        value: '${applications.length}',
-        icon: Icons.description,
+        label: 'Under Review',
+        value: '${applications.where((app) => app.status == 'under_review').length}',
+        icon: Icons.rate_review,
         color: AppColors.info,
         sparklineData: [3, 5, 4, 8, 6, 9, 7],
       ),
@@ -228,7 +228,7 @@ class _DashboardHomeTab extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Overall Progress',
+                            'Application Success Rate',
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.9),
                               fontSize: 12,
@@ -238,7 +238,7 @@ class _DashboardHomeTab extends ConsumerWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
-                              value: completedCoursesCount / (enrollments.length > 0 ? enrollments.length : 1),
+                              value: acceptedApplicationsCount / (applications.length > 0 ? applications.length : 1),
                               backgroundColor: Colors.white.withOpacity(0.3),
                               valueColor: const AlwaysStoppedAnimation(Colors.white),
                               minHeight: 8,
@@ -249,7 +249,7 @@ class _DashboardHomeTab extends ConsumerWidget {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      '${((completedCoursesCount / (enrollments.length > 0 ? enrollments.length : 1)) * 100).toInt()}%',
+                      '${((acceptedApplicationsCount / (applications.length > 0 ? applications.length : 1)) * 100).toInt()}%',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
