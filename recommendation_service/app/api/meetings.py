@@ -22,8 +22,7 @@ from app.schemas.meeting import (
 )
 from app.utils.security import (
     get_current_user,
-    CurrentUser,
-    require_role
+    CurrentUser
 )
 
 router = APIRouter()
