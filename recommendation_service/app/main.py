@@ -147,7 +147,7 @@ app.add_middleware(ErrorHandlingMiddleware)
 from app.api import (
     universities, students, recommendations, monitoring, admin, programs,
     enrichment, ml_training, location_cleaning, auth, courses_api,
-    applications_api, enrollments_api, messaging_api, notifications_api,
+    applications, enrollments_api, messaging_api, notifications_api,
     counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
     institutions_api, batch_enrichment_api
 )
@@ -155,7 +155,7 @@ from app.api import (
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
 app.include_router(institutions_api.router, prefix="/api/v1", tags=["Institutions"])
 app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])  # Re-enabled for compatibility
-app.include_router(applications_api.router, prefix="/api/v1", tags=["Applications"])
+app.include_router(applications.router, prefix="/api/v1", tags=["Applications"])
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
 app.include_router(messaging_api.router, prefix="/api/v1", tags=["Messaging"])
 app.include_router(notifications_api.router, prefix="/api/v1", tags=["Notifications"])
