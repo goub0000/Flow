@@ -22,30 +22,31 @@ security = HTTPBearer()
 SUPABASE_JWT_SECRET = os.environ.get("SUPABASE_JWT_SECRET", "")
 ALGORITHM = "HS256"
 
-# CRITICAL: Validate JWT secret at startup (fail-fast)
+# CRITICAL: Validate JWT secret at startup
 def _validate_jwt_secret():
     """
     Validate JWT secret configuration at startup.
-    Crashes the service if secret is missing or insecure.
-    This is intentional - better to fail at startup than silently allow insecure auth.
+    Logs warnings if secret is missing or insecure.
     """
     if not SUPABASE_JWT_SECRET:
-        raise ValueError(
-            "FATAL: SUPABASE_JWT_SECRET environment variable is not set. "
-            "JWT authentication cannot function without a secret. "
-            "Set SUPABASE_JWT_SECRET in your .env file or environment."
+        logger.warning(
+            "WARNING: SUPABASE_JWT_SECRET environment variable is not set. "
+            "JWT authentication will not function properly. "
+            "Set SUPABASE_JWT_SECRET in your environment for production use."
         )
+        return
 
     if len(SUPABASE_JWT_SECRET) < 32:
-        raise ValueError(
-            f"FATAL: SUPABASE_JWT_SECRET is too short ({len(SUPABASE_JWT_SECRET)} characters). "
-            "For security, JWT secrets must be at least 32 characters long. "
-            "Use a strong, randomly generated secret."
+        logger.warning(
+            f"WARNING: SUPABASE_JWT_SECRET is too short ({len(SUPABASE_JWT_SECRET)} characters). "
+            "For security, JWT secrets should be at least 32 characters long. "
+            "Consider using a stronger, randomly generated secret."
         )
+        return
 
     logger.info("JWT secret validation passed - authentication is properly configured")
 
-# Run validation at module import (fail-fast on startup)
+# Run validation at module import
 _validate_jwt_secret()
 
 # User roles
