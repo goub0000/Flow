@@ -17,6 +17,7 @@ from app.schemas.applications import (
     ApplicationStatistics,
     ApplicationStatus
 )
+from app.utils.activity_logger import log_activity_sync, ActivityType
 
 logger = logging.getLogger(__name__)
 
@@ -163,6 +164,32 @@ class ApplicationsService:
 
             logger.info(f"Application submitted: {application_id}")
 
+            # Get student info for activity log
+            try:
+                student_response = self.db.table('users').select('display_name, email').eq('id', student_id).single().execute()
+                student_name = student_response.data.get('display_name', 'Unknown') if student_response.data else 'Unknown'
+                student_email = student_response.data.get('email', 'Unknown') if student_response.data else 'Unknown'
+
+                # Log activity
+                log_activity_sync(
+                    action_type=ActivityType.APPLICATION_SUBMITTED,
+                    description=f"Application submitted to {app.institution_name} for {app.program_name}",
+                    user_id=student_id,
+                    user_name=student_name,
+                    user_email=student_email,
+                    user_role="student",
+                    metadata={
+                        "application_id": application_id,
+                        "institution_id": app.institution_id,
+                        "institution_name": app.institution_name,
+                        "program_id": app.program_id,
+                        "program_name": app.program_name,
+                        "application_type": app.application_type
+                    }
+                )
+            except Exception as log_error:
+                logger.warning(f"Failed to log application submission activity: {log_error}")
+
             return ApplicationResponse(**response.data[0])
 
         except Exception as e:
@@ -224,6 +251,37 @@ class ApplicationsService:
                 raise Exception("Failed to update application status")
 
             logger.info(f"Application status updated: {application_id} -> {status_data.status.value}")
+
+            # Get institution info for activity log
+            try:
+                institution_response = self.db.table('users').select('display_name, email').eq('id', institution_id).single().execute()
+                institution_name = institution_response.data.get('display_name', 'Unknown') if institution_response.data else 'Unknown'
+                institution_email = institution_response.data.get('email', 'Unknown') if institution_response.data else 'Unknown'
+
+                # Get student info
+                student_response = self.db.table('users').select('display_name').eq('id', app.student_id).single().execute()
+                student_name = student_response.data.get('display_name', 'Unknown') if student_response.data else 'Unknown'
+
+                # Log activity
+                log_activity_sync(
+                    action_type=ActivityType.APPLICATION_STATUS_CHANGED,
+                    description=f"Application status changed to {status_data.status.value} for {student_name}'s application to {app.institution_name}",
+                    user_id=institution_id,
+                    user_name=institution_name,
+                    user_email=institution_email,
+                    user_role="institution",
+                    metadata={
+                        "application_id": application_id,
+                        "student_id": app.student_id,
+                        "student_name": student_name,
+                        "old_status": app.status,
+                        "new_status": status_data.status.value,
+                        "institution_name": app.institution_name,
+                        "program_name": app.program_name
+                    }
+                )
+            except Exception as log_error:
+                logger.warning(f"Failed to log application status change activity: {log_error}")
 
             return ApplicationResponse(**response.data[0])
 

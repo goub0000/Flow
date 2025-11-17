@@ -10,6 +10,7 @@ from pydantic import BaseModel, EmailStr
 
 from app.database.config import get_supabase
 from app.utils.security import UserRole
+from app.utils.activity_logger import log_activity_sync, ActivityType
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +112,20 @@ class AuthService:
 
             logger.info(f"User registered successfully: {signup_data.email} (Role: {signup_data.role})")
 
+            # Log activity
+            log_activity_sync(
+                action_type=ActivityType.USER_REGISTRATION,
+                description=f"New user registered: {signup_data.display_name} ({signup_data.role})",
+                user_id=user_id,
+                user_name=signup_data.display_name,
+                user_email=signup_data.email,
+                user_role=signup_data.role,
+                metadata={
+                    "role": signup_data.role,
+                    "email_verified": False
+                }
+            )
+
             return {
                 "user": profile_response.data[0] if profile_response.data else user_profile,
                 "message": "Registration successful. Please check your email to verify your account.",
@@ -185,6 +200,19 @@ class AuthService:
 
             logger.info(f"User signed in: {signin_data.email}")
 
+            # Log activity
+            log_activity_sync(
+                action_type=ActivityType.USER_LOGIN,
+                description=f"User logged in: {user_data.get('display_name', 'Unknown')}",
+                user_id=auth_response.user.id,
+                user_name=user_data.get('display_name'),
+                user_email=signin_data.email,
+                user_role=user_data.get('active_role'),
+                metadata={
+                    "email_verified": user_data.get('email_verified', False)
+                }
+            )
+
             return SignInResponse(
                 access_token=auth_response.session.access_token,
                 refresh_token=auth_response.session.refresh_token,
@@ -201,9 +229,29 @@ class AuthService:
         Sign out user and invalidate token
         """
         try:
+            # Get current user before signing out
+            auth_user = self.db.auth.get_user()
+            user_id = auth_user.user.id if auth_user and auth_user.user else None
+
             self.db.auth.sign_out()
 
             logger.info("User signed out successfully")
+
+            # Log activity if we have user info
+            if user_id:
+                try:
+                    user_response = self.db.table('users').select('display_name, email, active_role').eq('id', user_id).single().execute()
+                    if user_response.data:
+                        log_activity_sync(
+                            action_type=ActivityType.USER_LOGOUT,
+                            description=f"User logged out: {user_response.data.get('display_name', 'Unknown')}",
+                            user_id=user_id,
+                            user_name=user_response.data.get('display_name'),
+                            user_email=user_response.data.get('email'),
+                            user_role=user_response.data.get('active_role')
+                        )
+                except Exception as log_error:
+                    logger.warning(f"Failed to log logout activity: {log_error}")
 
             return {"message": "Signed out successfully"}
 
@@ -258,6 +306,21 @@ class AuthService:
             })
 
             logger.info(f"Password updated for user: {user_id}")
+
+            # Log activity
+            try:
+                user_response = self.db.table('users').select('display_name, email, active_role').eq('id', user_id).single().execute()
+                if user_response.data:
+                    log_activity_sync(
+                        action_type=ActivityType.USER_PASSWORD_CHANGED,
+                        description=f"Password changed for: {user_response.data.get('display_name', 'Unknown')}",
+                        user_id=user_id,
+                        user_name=user_response.data.get('display_name'),
+                        user_email=user_response.data.get('email'),
+                        user_role=user_response.data.get('active_role')
+                    )
+            except Exception as log_error:
+                logger.warning(f"Failed to log password change activity: {log_error}")
 
             return {"message": "Password updated successfully"}
 
@@ -349,12 +412,13 @@ class AuthService:
         """
         try:
             # Fetch user's available roles
-            user_response = self.db.table('users').select('available_roles').eq('id', user_id).single().execute()
+            user_response = self.db.table('users').select('available_roles, active_role, display_name, email').eq('id', user_id).single().execute()
 
             if not user_response.data:
                 raise Exception("User not found")
 
             available_roles = user_response.data.get('available_roles', [])
+            old_role = user_response.data.get('active_role')
 
             if new_role not in available_roles:
                 raise Exception(f"User does not have access to role: {new_role}")
@@ -366,6 +430,20 @@ class AuthService:
             }).eq('id', user_id).execute()
 
             logger.info(f"User {user_id} switched to role: {new_role}")
+
+            # Log activity
+            log_activity_sync(
+                action_type=ActivityType.USER_ROLE_CHANGED,
+                description=f"User {user_response.data.get('display_name', 'Unknown')} switched role from {old_role} to {new_role}",
+                user_id=user_id,
+                user_name=user_response.data.get('display_name'),
+                user_email=user_response.data.get('email'),
+                user_role=new_role,
+                metadata={
+                    "old_role": old_role,
+                    "new_role": new_role
+                }
+            )
 
             return response.data[0]
 

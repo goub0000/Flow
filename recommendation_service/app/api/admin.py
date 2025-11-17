@@ -2,16 +2,24 @@
 Admin/Management API Endpoints
 Includes data enrichment and other administrative tasks
 """
-from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Depends, Query
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app.database.config import get_supabase
 from app.enrichment.auto_fill_orchestrator import AutoFillOrchestrator
 from app.enrichment.web_search_enricher import WebSearchEnricher
 from app.enrichment.field_scrapers import FieldSpecificScrapers
+from app.utils.security import get_current_user, CurrentUser, require_admin
+from app.utils.activity_logger import get_recent_activities, ActivityType
+from app.schemas.activity import (
+    RecentActivityResponse,
+    ActivityLogResponse,
+    ActivityFilterRequest,
+    ActivityStatsResponse
+)
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -177,3 +185,300 @@ async def analyze_null_values():
     except Exception as e:
         logger.error(f"Analysis failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== ADMIN DASHBOARD ACTIVITY FEED ====================
+
+@router.get("/admin/dashboard/recent-activity")
+async def get_recent_activity(
+    limit: int = Query(default=10, ge=1, le=100, description="Maximum number of activities to return"),
+    user_id: Optional[str] = Query(default=None, description="Filter by user ID"),
+    action_type: Optional[str] = Query(default=None, description="Filter by action type"),
+    current_user: CurrentUser = Depends(require_admin)
+) -> RecentActivityResponse:
+    """
+    Get recent activities for admin dashboard
+
+    **Admin Only** - Retrieves the latest activities from the audit log.
+
+    **Query Parameters:**
+    - limit: Maximum number of activities to return (1-100, default: 10)
+    - user_id: Optional filter by user ID
+    - action_type: Optional filter by action type
+
+    **Returns:**
+    - activities: List of recent activity log entries
+    - total_count: Total number of activities matching filters
+    - limit: The limit applied
+    - has_more: Whether there are more activities beyond the limit
+
+    **Tracked Event Types:**
+    - User registrations (new students, parents, counselors, institutions)
+    - User logins/logouts
+    - Application submissions and status changes
+    - Program/course creation and updates
+    - System events
+
+    **Example Response:**
+    ```json
+    {
+      "activities": [
+        {
+          "id": "uuid",
+          "timestamp": "2025-01-17T10:30:00Z",
+          "user_name": "John Doe",
+          "user_role": "student",
+          "action_type": "application_submitted",
+          "description": "Submitted application to Harvard University",
+          "metadata": {"university_id": "123", "program_id": "456"}
+        }
+      ],
+      "total_count": 150,
+      "limit": 10,
+      "has_more": true
+    }
+    ```
+    """
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('activity_log').select('*', count='exact')
+
+        # Apply filters
+        if user_id:
+            query = query.eq('user_id', user_id)
+
+        if action_type:
+            query = query.eq('action_type', action_type)
+
+        # Get total count (before limit)
+        count_response = query.execute()
+        total_count = count_response.count if count_response.count else 0
+
+        # Apply limit and ordering
+        query = query.order('timestamp', desc=True).limit(limit)
+
+        response = query.execute()
+
+        activities = []
+        if response.data:
+            for activity in response.data:
+                activities.append(ActivityLogResponse(
+                    id=activity['id'],
+                    timestamp=activity['timestamp'],
+                    user_id=activity.get('user_id'),
+                    user_name=activity.get('user_name'),
+                    user_email=activity.get('user_email'),
+                    user_role=activity.get('user_role'),
+                    action_type=activity['action_type'],
+                    description=activity['description'],
+                    metadata=activity.get('metadata', {}),
+                    ip_address=activity.get('ip_address'),
+                    user_agent=activity.get('user_agent'),
+                    created_at=activity['created_at']
+                ))
+
+        return RecentActivityResponse(
+            activities=activities,
+            total_count=total_count,
+            limit=limit,
+            has_more=total_count > limit
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching recent activities: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch recent activities: {str(e)}"
+        )
+
+
+@router.get("/admin/dashboard/activity-stats")
+async def get_activity_stats(
+    current_user: CurrentUser = Depends(require_admin)
+) -> ActivityStatsResponse:
+    """
+    Get activity statistics for admin dashboard
+
+    **Admin Only** - Returns aggregated statistics about user activities.
+
+    **Returns:**
+    - total_activities: Total number of activities in the log
+    - activities_today: Number of activities today
+    - activities_this_week: Number of activities this week
+    - activities_this_month: Number of activities this month
+    - top_action_types: Most common action types with counts
+    - top_users: Most active users
+    - recent_registrations: Number of recent user registrations
+    - recent_logins: Number of recent logins
+    - recent_applications: Number of recent application submissions
+    """
+    try:
+        db = get_supabase()
+
+        # Get current time boundaries
+        now = datetime.utcnow()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_start = today_start - timedelta(days=today_start.weekday())
+        month_start = today_start.replace(day=1)
+
+        # Total activities
+        total_response = db.table('activity_log').select('id', count='exact').execute()
+        total_activities = total_response.count if total_response.count else 0
+
+        # Activities today
+        today_response = db.table('activity_log').select('id', count='exact').gte(
+            'timestamp', today_start.isoformat()
+        ).execute()
+        activities_today = today_response.count if today_response.count else 0
+
+        # Activities this week
+        week_response = db.table('activity_log').select('id', count='exact').gte(
+            'timestamp', week_start.isoformat()
+        ).execute()
+        activities_this_week = week_response.count if week_response.count else 0
+
+        # Activities this month
+        month_response = db.table('activity_log').select('id', count='exact').gte(
+            'timestamp', month_start.isoformat()
+        ).execute()
+        activities_this_month = month_response.count if month_response.count else 0
+
+        # Top action types (last 30 days)
+        thirty_days_ago = now - timedelta(days=30)
+        action_types_response = db.table('activity_log').select('action_type').gte(
+            'timestamp', thirty_days_ago.isoformat()
+        ).execute()
+
+        top_action_types = {}
+        if action_types_response.data:
+            for activity in action_types_response.data:
+                action_type = activity['action_type']
+                top_action_types[action_type] = top_action_types.get(action_type, 0) + 1
+
+        # Sort and get top 10
+        top_action_types = dict(sorted(
+            top_action_types.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )[:10])
+
+        # Top users (last 30 days)
+        users_response = db.table('activity_log').select(
+            'user_id, user_name, user_email'
+        ).gte(
+            'timestamp', thirty_days_ago.isoformat()
+        ).not_.is_('user_id', 'null').execute()
+
+        user_activity_counts = {}
+        if users_response.data:
+            for activity in users_response.data:
+                user_id = activity['user_id']
+                if user_id not in user_activity_counts:
+                    user_activity_counts[user_id] = {
+                        'user_id': user_id,
+                        'user_name': activity.get('user_name', 'Unknown'),
+                        'user_email': activity.get('user_email', 'Unknown'),
+                        'activity_count': 0
+                    }
+                user_activity_counts[user_id]['activity_count'] += 1
+
+        top_users = sorted(
+            user_activity_counts.values(),
+            key=lambda x: x['activity_count'],
+            reverse=True
+        )[:10]
+
+        # Recent registrations (last 7 days)
+        seven_days_ago = now - timedelta(days=7)
+        registrations_response = db.table('activity_log').select('id', count='exact').eq(
+            'action_type', ActivityType.USER_REGISTRATION
+        ).gte('timestamp', seven_days_ago.isoformat()).execute()
+        recent_registrations = registrations_response.count if registrations_response.count else 0
+
+        # Recent logins (last 24 hours)
+        logins_response = db.table('activity_log').select('id', count='exact').eq(
+            'action_type', ActivityType.USER_LOGIN
+        ).gte('timestamp', today_start.isoformat()).execute()
+        recent_logins = logins_response.count if logins_response.count else 0
+
+        # Recent applications (last 7 days)
+        applications_response = db.table('activity_log').select('id', count='exact').eq(
+            'action_type', ActivityType.APPLICATION_SUBMITTED
+        ).gte('timestamp', seven_days_ago.isoformat()).execute()
+        recent_applications = applications_response.count if applications_response.count else 0
+
+        return ActivityStatsResponse(
+            total_activities=total_activities,
+            activities_today=activities_today,
+            activities_this_week=activities_this_week,
+            activities_this_month=activities_this_month,
+            top_action_types=top_action_types,
+            top_users=top_users,
+            recent_registrations=recent_registrations,
+            recent_logins=recent_logins,
+            recent_applications=recent_applications
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching activity stats: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch activity statistics: {str(e)}"
+        )
+
+
+@router.get("/admin/dashboard/user-activity/{user_id}")
+async def get_user_activity(
+    user_id: str,
+    limit: int = Query(default=20, ge=1, le=100),
+    current_user: CurrentUser = Depends(require_admin)
+) -> List[ActivityLogResponse]:
+    """
+    Get activity history for a specific user
+
+    **Admin Only** - Retrieves all activities for a specific user.
+
+    **Path Parameters:**
+    - user_id: The user's ID
+
+    **Query Parameters:**
+    - limit: Maximum number of activities to return (1-100, default: 20)
+
+    **Returns:**
+    - List of activity log entries for the user
+    """
+    try:
+        db = get_supabase()
+
+        response = db.table('activity_log').select('*').eq(
+            'user_id', user_id
+        ).order('timestamp', desc=True).limit(limit).execute()
+
+        activities = []
+        if response.data:
+            for activity in response.data:
+                activities.append(ActivityLogResponse(
+                    id=activity['id'],
+                    timestamp=activity['timestamp'],
+                    user_id=activity.get('user_id'),
+                    user_name=activity.get('user_name'),
+                    user_email=activity.get('user_email'),
+                    user_role=activity.get('user_role'),
+                    action_type=activity['action_type'],
+                    description=activity['description'],
+                    metadata=activity.get('metadata', {}),
+                    ip_address=activity.get('ip_address'),
+                    user_agent=activity.get('user_agent'),
+                    created_at=activity['created_at']
+                ))
+
+        return activities
+
+    except Exception as e:
+        logger.error(f"Error fetching user activity: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch user activity: {str(e)}"
+        )
