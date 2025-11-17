@@ -31,7 +31,7 @@ class _CounselorDashboardScreenState
       ),
       const StudentsListScreen(),
       const SessionsListScreen(),
-      const ProfileScreen(),
+      const ProfileScreen(showBackButton: false),
       const SettingsScreen(),
     ];
   }

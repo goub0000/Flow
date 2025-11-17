@@ -12,6 +12,7 @@ import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 import '../../providers/student_applications_provider.dart';
 import '../../providers/student_progress_provider.dart';
+import '../../../shared/providers/profile_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -78,11 +79,25 @@ class _StudentDashboardScreenState
     // Debug logging
     print('[DEBUG] StudentDashboardScreen build - currentIndex: $_currentIndex');
 
+    // Get the current user for profile edit action
+    final user = ref.watch(currentProfileProvider);
+
     return Stack(
       children: [
         DashboardScaffold(
           title: _getTitleForIndex(_currentIndex),
           currentIndex: _currentIndex,
+          actions: _currentIndex == 3 && user != null // Show edit button on Profile tab
+              ? [
+                  DashboardAction(
+                    icon: Icons.edit,
+                    onPressed: () {
+                      context.push('/profile/edit');
+                    },
+                    tooltip: 'Edit Profile',
+                  ),
+                ]
+              : null,
           onNavigationTap: (index) {
             print('[DEBUG] Navigation tap - from $_currentIndex to $index');
             setState(() {

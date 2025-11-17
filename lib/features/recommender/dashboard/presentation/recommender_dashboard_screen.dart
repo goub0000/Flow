@@ -28,7 +28,7 @@ class _RecommenderDashboardScreenState
         onNavigateToRequests: () => setState(() => _currentIndex = 1),
       ),
       const RequestsListScreen(),
-      const ProfileScreen(),
+      const ProfileScreen(showBackButton: false),
       const SettingsScreen(),
     ];
   }

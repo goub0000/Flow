@@ -31,7 +31,7 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
       ),
       const ChildrenListScreen(),
       const NotificationsScreen(),
-      const ProfileScreen(),
+      const ProfileScreen(showBackButton: false),
       const SettingsScreen(),
     ];
   }

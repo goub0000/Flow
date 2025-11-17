@@ -26,7 +26,7 @@ class _InstitutionDashboardScreenState
     OverviewTab(onNavigate: (index) => setState(() => _currentIndex = index)),
     const ApplicantsListScreen(),
     const ProgramsListScreen(),
-    const ProfileScreen(),
+    const ProfileScreen(showBackButton: false),
     const SettingsScreen(),
   ];
 

@@ -49,51 +49,43 @@ class ProfileScreen extends ConsumerWidget {
       );
     }
 
-    // When used in dashboard tabs (showBackButton = false), always show the scaffold
-    // This prevents the profile tab from disappearing during initial load
+    // When used in dashboard tabs (showBackButton = false), don't create a Scaffold
+    // The DashboardScaffold already provides the AppBar and structure
     if (!showBackButton) {
-      return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('Profile'),
-          actions: [
-            if (user != null && !isLoading)
-              IconButton(
-                icon: const Icon(Icons.edit),
+      // Just return the body content without wrapping in Scaffold
+      if (isLoading) {
+        return const LoadingIndicator(message: 'Loading profile...');
+      }
+
+      if (user == null) {
+        return const Center(child: Text('Not logged in'));
+      }
+
+      if (error != null) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(error, style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 16),
+              ElevatedButton(
                 onPressed: () {
-                  context.push('/profile/edit');
+                  ref.read(profileProvider.notifier).loadProfile();
                 },
+                child: const Text('Retry'),
               ),
-          ],
-        ),
-        body: isLoading
-            ? const LoadingIndicator(message: 'Loading profile...')
-            : (user == null
-                ? const Center(child: Text('Not logged in'))
-                : (error != null
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                            const SizedBox(height: 16),
-                            Text(error, style: const TextStyle(color: Colors.red)),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                ref.read(profileProvider.notifier).loadProfile();
-                              },
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: () async {
-                          await ref.read(profileProvider.notifier).refresh();
-                        },
-                        child: _buildProfileContent(user, completeness, theme, context),
-                      ))),
+            ],
+          ),
+        );
+      }
+
+      return RefreshIndicator(
+        onRefresh: () async {
+          await ref.read(profileProvider.notifier).refresh();
+        },
+        child: _buildProfileContent(user, completeness, theme, context),
       );
     }
 
