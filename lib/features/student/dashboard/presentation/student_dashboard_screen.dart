@@ -25,13 +25,34 @@ class _StudentDashboardScreenState
     extends ConsumerState<StudentDashboardScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    const _DashboardHomeTab(),
-    const ApplicationsListScreen(),
-    const ProgressScreen(),
-    const ProfileScreen(showBackButton: false),
-    const SettingsScreen(),
+  // Use late to allow passing callback to home tab
+  late final List<Widget> _pages = [
+    _DashboardHomeTab(
+      key: const PageStorageKey('home'),
+      onNavigateToTab: (index) {
+        print('[DEBUG] Quick Action navigation to tab: $index');
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+    ),
+    const ApplicationsListScreen(key: PageStorageKey('applications')),
+    const ProgressScreen(key: PageStorageKey('progress')),
+    const ProfileScreen(key: PageStorageKey('profile'), showBackButton: false),
+    const SettingsScreen(key: PageStorageKey('settings')),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    print('[DEBUG] StudentDashboardScreen initState - initial index: $_currentIndex');
+  }
+
+  @override
+  void dispose() {
+    print('[DEBUG] StudentDashboardScreen dispose');
+    super.dispose();
+  }
 
   // Add this to prevent unnecessary navigation conflicts
   String _getTitleForIndex(int index) {
@@ -53,14 +74,19 @@ class _StudentDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
+    // Debug logging
+    print('[DEBUG] StudentDashboardScreen build - currentIndex: $_currentIndex');
+
     return Stack(
       children: [
         DashboardScaffold(
           title: _getTitleForIndex(_currentIndex),
           currentIndex: _currentIndex,
           onNavigationTap: (index) {
+            print('[DEBUG] Navigation tap - from $_currentIndex to $index');
             setState(() {
               _currentIndex = index;
+              print('[DEBUG] setState completed - new index: $_currentIndex');
             });
           },
           navigationItems: const [
@@ -90,7 +116,10 @@ class _StudentDashboardScreenState
               label: 'Settings',
             ),
           ],
-          body: _pages[_currentIndex],
+          body: IndexedStack(
+            index: _currentIndex,
+            children: _pages,
+          ),
         ),
         // Cookie consent banner
         const Positioned(
@@ -105,7 +134,9 @@ class _StudentDashboardScreenState
 }
 
 class _DashboardHomeTab extends ConsumerWidget {
-  const _DashboardHomeTab();
+  const _DashboardHomeTab({super.key, this.onNavigateToTab});
+
+  final void Function(int)? onNavigateToTab;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -302,13 +333,21 @@ class _DashboardHomeTab extends ConsumerWidget {
                 icon: Icons.description,
                 color: AppColors.info,
                 badgeCount: pendingApplicationsCount,
-                onTap: () => context.go('/student/applications'),
+                onTap: () {
+                  // Use tab navigation instead of route navigation
+                  print('[DEBUG] Quick Action: My Applications clicked');
+                  onNavigateToTab?.call(1); // Navigate to Applications tab
+                },
               ),
               QuickAction(
                 label: 'Progress',
                 icon: Icons.analytics,
                 color: AppColors.success,
-                onTap: () => context.go('/student/progress'),
+                onTap: () {
+                  // Use tab navigation instead of route navigation
+                  print('[DEBUG] Quick Action: Progress clicked');
+                  onNavigateToTab?.call(2); // Navigate to Progress tab
+                },
               ),
               QuickAction(
                 label: 'Messages',

@@ -40,11 +40,13 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
   ProfileNotifier(this.ref, this._authService) : super(const ProfileState()) {
     // Load profile immediately
+    print('[DEBUG] ProfileNotifier initialized - loading profile');
     loadProfile();
   }
 
   /// Load user profile from backend API
   Future<void> loadProfile() async {
+    print('[DEBUG] ProfileNotifier.loadProfile() called');
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -63,6 +65,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       final response = await _authService.getCurrentUser();
 
       if (response.success && response.data != null) {
+        print('[DEBUG] Profile loaded successfully');
         state = state.copyWith(
           user: response.data,
           isLoading: false,
@@ -71,6 +74,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         // Update auth provider with fresh data
         ref.read(authProvider.notifier).refreshUser();
       } else {
+        print('[DEBUG] Profile load failed, using cached user');
         state = state.copyWith(
           user: currentUser,
           isLoading: false,

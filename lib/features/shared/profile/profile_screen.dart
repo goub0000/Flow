@@ -15,11 +15,16 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Debug logging
+    print('[DEBUG] ProfileScreen build - showBackButton: $showBackButton');
+
     final isLoading = ref.watch(profileLoadingProvider);
     final user = ref.watch(currentProfileProvider);
     final error = ref.watch(profileErrorProvider);
     final completeness = ref.watch(profileCompletenessProvider);
     final theme = Theme.of(context);
+
+    print('[DEBUG] ProfileScreen state - isLoading: $isLoading, user: ${user != null}, error: $error');
 
     if (error != null) {
       return Scaffold(

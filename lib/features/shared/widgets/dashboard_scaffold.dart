@@ -196,7 +196,10 @@ class DashboardScaffold extends ConsumerWidget {
       body: body,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
-        onTap: onNavigationTap,
+        onTap: (index) {
+          print('[DEBUG] DashboardScaffold: BottomNav tapped - index: $index');
+          onNavigationTap(index);
+        },
         items: navigationItems
             .map((item) => BottomNavigationBarItem(
                   icon: Icon(item.icon),
