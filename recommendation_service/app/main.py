@@ -149,7 +149,7 @@ from app.api import (
     enrichment, ml_training, location_cleaning, auth, courses_api,
     applications, enrollments_api, messaging_api, notifications_api,
     counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
-    institutions_api, batch_enrichment_api
+    institutions_api, batch_enrichment_api, meetings
 )
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
@@ -162,6 +162,7 @@ app.include_router(notifications_api.router, prefix="/api/v1", tags=["Notificati
 app.include_router(counseling_api.router, prefix="/api/v1", tags=["Counseling"])
 app.include_router(parent_monitoring_api.router, prefix="/api/v1", tags=["Parent Monitoring"])
 app.include_router(achievements_api.router, prefix="/api/v1", tags=["Achievements"])
+app.include_router(meetings.router, prefix="/api/v1", tags=["Meetings"])
 app.include_router(students.router, prefix="/api/v1", tags=["Students"])
 app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendations"])
 app.include_router(universities.router, prefix="/api/v1", tags=["Universities"])
