@@ -142,7 +142,7 @@ async def update_enrollment_progress(
 async def get_my_enrollments(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
-    status: Optional[str] = None,
+    enrollment_status: Optional[str] = Query(None, alias="status"),
     current_user: CurrentUser = Depends(require_student)
 ) -> EnrollmentListResponse:
     """
@@ -160,7 +160,7 @@ async def get_my_enrollments(
     """
     try:
         service = EnrollmentsService()
-        result = await service.list_student_enrollments(current_user.id, page, page_size, status)
+        result = await service.list_student_enrollments(current_user.id, page, page_size, enrollment_status)
         return result
     except Exception as e:
         raise HTTPException(
@@ -174,7 +174,7 @@ async def get_course_enrollments(
     course_id: str,
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
-    status: Optional[str] = None,
+    enrollment_status: Optional[str] = Query(None, alias="status"),
     current_user: CurrentUser = Depends(get_current_user)
 ) -> EnrollmentListResponse:
     """
@@ -191,7 +191,7 @@ async def get_course_enrollments(
     try:
         service = EnrollmentsService()
         # TODO: Check if user is the course instructor/institution
-        result = await service.list_course_enrollments(course_id, page, page_size, status)
+        result = await service.list_course_enrollments(course_id, page, page_size, enrollment_status)
         return result
     except Exception as e:
         raise HTTPException(
