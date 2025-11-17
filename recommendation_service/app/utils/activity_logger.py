@@ -56,6 +56,14 @@ class ActivityType:
     COUNSELING_SESSION_COMPLETED = "counseling_session_completed"
     COUNSELING_SESSION_CANCELLED = "counseling_session_cancelled"
 
+    # Meeting Management
+    MEETING_REQUESTED = "meeting_requested"
+    MEETING_APPROVED = "meeting_approved"
+    MEETING_DECLINED = "meeting_declined"
+    MEETING_CANCELLED = "meeting_cancelled"
+    MEETING_COMPLETED = "meeting_completed"
+    MEETING_RESCHEDULED = "meeting_rescheduled"
+
     # System Events
     SYSTEM_ERROR = "system_error"
     SYSTEM_MAINTENANCE = "system_maintenance"
