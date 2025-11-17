@@ -5,14 +5,17 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/dashboard_scaffold.dart';
 import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
+import '../../../shared/widgets/coming_soon_dialog.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 import '../../providers/student_applications_provider.dart';
-import '../../providers/student_progress_provider.dart';
 import '../../../shared/providers/profile_provider.dart';
+import '../../providers/activity_feed_provider.dart';
+import '../../providers/recommendations_provider.dart';
+import '../../providers/dashboard_statistics_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -158,97 +161,22 @@ class _DashboardHomeTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    // Get data from providers
+    // Get real data from providers
     final applications = ref.watch(applicationsListProvider);
     final pendingApplicationsCount = ref.watch(pendingApplicationsCountProvider);
-
-    // Count accepted applications - use getter methods not string comparison
     final acceptedApplicationsCount = applications.where((app) => app.isAccepted).length;
-    final underReviewCount = applications.where((app) => app.isUnderReview).length;
 
-    // Mock data for enhanced features
-    final mockStats = [
-      StatData(
-        label: 'Total Applications',
-        value: '${applications.length}',
-        icon: Icons.description,
-        color: AppColors.primary,
-        trend: 12.5,
-        subtitle: 'vs last month',
-      ),
-      StatData(
-        label: 'Accepted',
-        value: '$acceptedApplicationsCount',
-        icon: Icons.check_circle,
-        color: AppColors.success,
-        trend: 8.3,
-      ),
-      StatData(
-        label: 'Pending',
-        value: '$pendingApplicationsCount',
-        icon: Icons.pending_actions,
-        color: AppColors.warning,
-        trend: -5.2,
-      ),
-      StatData(
-        label: 'Under Review',
-        value: '$underReviewCount',
-        icon: Icons.rate_review,
-        color: AppColors.info,
-        sparklineData: [3, 5, 4, 8, 6, 9, 7],
-      ),
-    ];
+    // Get real statistics from provider
+    final statistics = ref.watch(dashboardStatisticsProvider);
 
-    final mockActivities = [
-      ActivityItem(
-        id: '1',
-        title: 'Program Completed',
-        description: 'You completed Introduction to Computer Science',
-        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-        type: ActivityType.achievement,
-      ),
-      ActivityItem(
-        id: '2',
-        title: 'New Application Submitted',
-        description: 'Application to University of Nairobi submitted',
-        timestamp: DateTime.now().subtract(const Duration(hours: 5)),
-        type: ActivityType.application,
-      ),
-      ActivityItem(
-        id: '3',
-        title: 'Payment Received',
-        description: 'Payment confirmed for Fall 2024 tuition',
-        timestamp: DateTime.now().subtract(const Duration(days: 1)),
-        type: ActivityType.payment,
-      ),
-      ActivityItem(
-        id: '4',
-        title: 'New Message',
-        description: 'Counselor sent you a message about scholarships',
-        timestamp: DateTime.now().subtract(const Duration(days: 2)),
-        type: ActivityType.message,
-      ),
-    ];
+    // Get real activity feed
+    final activitiesAsync = ref.watch(activityFeedProvider);
 
-    final mockRecommendations = [
-      {
-        'title': 'Data Science Fundamentals',
-        'description': 'Learn the basics of data analysis and visualization',
-        'imageUrl': '',
-        'badge': 'NEW',
-      },
-      {
-        'title': 'Web Development Bootcamp',
-        'description': 'Build modern web applications from scratch',
-        'imageUrl': '',
-        'badge': 'POPULAR',
-      },
-      {
-        'title': 'Mobile App Development',
-        'description': 'Create iOS and Android apps with Flutter',
-        'imageUrl': '',
-      },
-    ];
+    // Get real recommendations
+    final recommendationsAsync = ref.watch(recommendationsProvider);
+
+    // Get messages count (null means no badge shown)
+    final messagesCount = ref.watch(unreadMessagesCountProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -369,7 +297,7 @@ class _DashboardHomeTab extends ConsumerWidget {
                 label: 'Messages',
                 icon: Icons.message,
                 color: AppColors.warning,
-                badgeCount: 3,
+                badgeCount: messagesCount,  // Use real count or null
                 onTap: () => context.go('/messages'),
               ),
             ],
@@ -383,9 +311,38 @@ class _DashboardHomeTab extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           StatsGrid(
-            stats: mockStats,
+            stats: statistics,  // Use real statistics
             onStatTap: (stat) {
               // Navigate based on stat type
+              switch (stat.label) {
+                case 'Total Applications':
+                case 'Applications':
+                  // Navigate to Applications tab
+                  onNavigateToTab?.call(1);
+                  break;
+                case 'Accepted':
+                  // Navigate to Applications tab - ideally with accepted filter
+                  // For now, just go to applications tab
+                  onNavigateToTab?.call(1);
+                  break;
+                case 'Pending':
+                  // Navigate to Applications tab - ideally with pending filter
+                  // For now, just go to applications tab
+                  onNavigateToTab?.call(1);
+                  break;
+                case 'Under Review':
+                case 'In Review':
+                  // Navigate to Applications tab - ideally with review filter
+                  // For now, just go to applications tab
+                  onNavigateToTab?.call(1);
+                  break;
+                default:
+                  // For any other stats, navigate to applications
+                  onNavigateToTab?.call(1);
+              }
+
+              // Log the stat tap for debugging
+              print('[DEBUG] Stat tapped: ${stat.label} with value: ${stat.value}');
             },
           ),
           const SizedBox(height: 24),
@@ -502,25 +459,179 @@ class _DashboardHomeTab extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
 
-          // Activity Feed
-          ActivityFeed(
-            activities: mockActivities,
-            onViewAll: () {
-              // Navigate to full activity log
-            },
-            onActivityTap: (activity) {
-              // Navigate based on activity type
-            },
+          // Activity Feed with loading state
+          activitiesAsync.when(
+            data: (activities) => ActivityFeed(
+              activities: activities,
+              onViewAll: () {
+                // Show coming soon dialog for full activity log
+                ComingSoonDialog.show(
+                  context,
+                  featureName: 'Activity History',
+                  customMessage: 'A comprehensive activity history view with filters and search capabilities is coming soon.',
+                );
+              },
+              onActivityTap: (activity) {
+                // Navigate based on activity type
+                final metadata = activity.metadata;
+                final activityType = activity.type;
+
+                // Log for debugging
+                print('[DEBUG] Activity tapped: Type=${activity.type}, Title=${activity.title}');
+
+                switch (activityType) {
+                  case 'application':
+                  case 'application_status':
+                    // Navigate to application detail or applications tab
+                    if (metadata != null && metadata['applicationId'] != null) {
+                      // TODO: Navigate to specific application detail when implemented
+                      // For now, navigate to Applications tab
+                      onNavigateToTab?.call(1);
+                    } else {
+                      onNavigateToTab?.call(1); // Go to Applications tab
+                    }
+                    break;
+
+                  case 'achievement':
+                  case 'badge':
+                    // Show achievement details in a dialog
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Row(
+                          children: [
+                            const Icon(Icons.emoji_events, color: AppColors.warning),
+                            const SizedBox(width: 8),
+                            const Text('Achievement'),
+                          ],
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              activity.title,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            if (activity.description != null) ...[
+                              const SizedBox(height: 8),
+                              Text(activity.description!),
+                            ],
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Close'),
+                          ),
+                        ],
+                      ),
+                    );
+                    break;
+
+                  case 'payment':
+                  case 'payment_status':
+                    // Navigate to payment history if available
+                    ComingSoonDialog.show(
+                      context,
+                      featureName: 'Payment History',
+                      customMessage: 'View detailed payment history and transaction records.',
+                    );
+                    break;
+
+                  case 'message':
+                  case 'notification':
+                    // Navigate to messages
+                    context.go('/messages');
+                    break;
+
+                  case 'recommendation':
+                    // Navigate to courses/programs
+                    context.go('/student/courses');
+                    break;
+
+                  default:
+                    // For unknown activity types, try to navigate to applications
+                    onNavigateToTab?.call(1);
+                }
+              },
+            ),
+            loading: () => const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            error: (error, stack) => Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                  const SizedBox(height: 8),
+                  Text('Failed to load activities', style: theme.textTheme.bodyLarge),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => ref.refresh(activityFeedProvider),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
           ),
           const SizedBox(height: 24),
 
-          // Recommendations
-          RecommendationsCarousel(
-            recommendations: mockRecommendations,
-            onTap: (rec) {
-              // Navigate to course detail
-              context.go('/student/courses');
-            },
+          // Recommendations with loading state
+          recommendationsAsync.when(
+            data: (recommendations) => RecommendationsCarousel(
+              recommendations: recommendations.map((rec) => rec.toMap()).toList(),
+              onTap: (rec) {
+                // Navigate based on recommendation type
+                final title = rec['title'] as String?;
+                final id = rec['id'] as String?;
+                final type = rec['type'] as String?;
+
+                print('[DEBUG] Recommendation tapped: Title=$title, Type=$type, ID=$id');
+
+                if (title == 'Find Your Path Assessment') {
+                  // Navigate to the assessment
+                  context.push('/find-your-path');
+                } else if (id != null && type == 'course') {
+                  // Navigate to specific course detail
+                  // TODO: When course detail page is implemented, use: context.go('/student/courses/$id')
+                  // For now, navigate to courses list
+                  context.go('/student/courses');
+                } else if (id != null && type == 'program') {
+                  // Navigate to specific program detail
+                  // TODO: When program detail page is implemented, use: context.go('/student/programs/$id')
+                  // For now, navigate to courses list
+                  context.go('/student/courses');
+                } else {
+                  // Default navigation to courses page
+                  context.go('/student/courses');
+                }
+              },
+            ),
+            loading: () => const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            error: (error, stack) => Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                  const SizedBox(height: 8),
+                  Text('Failed to load recommendations', style: theme.textTheme.bodyLarge),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => ref.refresh(recommendationsProvider),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
           ),
           const SizedBox(height: 16),
         ],

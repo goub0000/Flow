@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
-import '../../../core/providers/service_providers.dart';
+import '../../../core/providers/service_providers.dart' hide currentUserProvider;
 import '../../authentication/providers/auth_provider.dart';
 
 class TestDebugWidget extends ConsumerWidget {

@@ -180,7 +180,11 @@ class _ApplicantsListScreenState extends ConsumerState<ApplicantsListScreen>
             child: _ApplicantCard(
               applicant: applicant,
               onTap: () {
-                context.go('/institution/applicants/${applicant.id}');
+                // Pass the applicant data via extra to avoid fetching again
+                context.go(
+                  '/institution/applicants/${applicant.id}',
+                  extra: applicant,
+                );
               },
             ),
           );

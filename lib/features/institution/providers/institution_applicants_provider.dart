@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/applicant_model.dart';
 import '../services/applications_api_service.dart';
+import '../services/realtime_service.dart';
 import '../../authentication/providers/auth_provider.dart';
 
 /// Provider for Applications API Service
@@ -10,6 +12,18 @@ final applicationsApiServiceProvider = Provider.autoDispose<ApplicationsApiServi
   print('[ApplicationsApiService] Creating service with token: ${authState.accessToken?.substring(0, 20)}...');
   print('[ApplicationsApiService] Auth state: isAuthenticated=${authState.isAuthenticated}, user=${authState.user?.email}');
   return ApplicationsApiService(accessToken: authState.accessToken);
+});
+
+/// Provider for Realtime Service
+final institutionRealtimeServiceProvider = Provider.autoDispose<InstitutionRealtimeService>((ref) {
+  final service = InstitutionRealtimeService();
+
+  // Clean up when provider is disposed
+  ref.onDispose(() {
+    service.dispose();
+  });
+
+  return service;
 });
 
 /// State class for managing institution applicants
@@ -40,10 +54,35 @@ class InstitutionApplicantsState {
 /// StateNotifier for managing institution applicants
 class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsState> {
   final ApplicationsApiService _apiService;
+  final InstitutionRealtimeService _realtimeService;
+  final String? _institutionId;
+  StreamSubscription<ApplicationUpdate>? _realtimeSubscription;
 
-  InstitutionApplicantsNotifier(this._apiService)
-      : super(const InstitutionApplicantsState()) {
+  InstitutionApplicantsNotifier(
+    this._apiService,
+    this._realtimeService,
+    this._institutionId,
+  ) : super(const InstitutionApplicantsState()) {
+    _initialize();
+  }
+
+  void _initialize() {
     fetchApplicants();
+    _setupRealtimeSubscription();
+  }
+
+  /// Setup real-time subscription for application updates
+  void _setupRealtimeSubscription() {
+    if (_institutionId == null) return;
+
+    // Subscribe to real-time updates
+    _realtimeService.subscribeToApplications(_institutionId);
+
+    // Listen for updates - simplified version without enum
+    _realtimeSubscription = _realtimeService.applicationUpdates.listen((update) {
+      print('[InstitutionApplicants] Received real-time update: ${update.eventType} for ${update.applicationId}');
+      // Real-time updates are disabled in the stub implementation
+    });
   }
 
   /// Fetch all applicants for the institution
@@ -51,226 +90,207 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final applicants = await _apiService.getInstitutionApplications(
+      print('[InstitutionApplicants] Fetching applicants...');
+      print('[InstitutionApplicants] InstitutionId: $_institutionId, Status: $status, ProgramId: $programId');
+
+      // TODO: Replace with actual institution ID from user profile
+      const institutionId = '123';  // Hardcoded for testing
+
+      final result = await _apiService.getInstitutionApplications(
         status: status,
         programId: programId,
-        pageSize: 100,
       );
 
+      if (result != null) {
+        state = state.copyWith(
+          applicants: result,
+          isLoading: false,
+        );
+        print('[InstitutionApplicants] Successfully fetched ${result.length} applicants');
+      } else {
+        state = state.copyWith(
+          applicants: [],
+          isLoading: false,
+        );
+        print('[InstitutionApplicants] No applicants found');
+      }
+    } catch (e, stackTrace) {
+      print('[InstitutionApplicants] Error fetching applicants: $e');
+      print('[InstitutionApplicants] Stack trace: $stackTrace');
       state = state.copyWith(
-        applicants: applicants,
-        isLoading: false,
-      );
-    } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to fetch applicants: ${e.toString()}',
+        error: 'Failed to load applicants: $e',
         isLoading: false,
       );
     }
   }
 
-  /// Update applicant status
-  Future<bool> updateApplicantStatus(String applicantId, String newStatus, {String? reviewerNotes}) async {
+  /// Update an applicant's status
+  Future<void> updateApplicantStatus(String applicantId, String newStatus) async {
     try {
-      final updatedApplicant = await _apiService.updateApplicationStatus(
+      await _apiService.updateApplicationStatus(
         applicantId,
         newStatus,
-        reviewerNotes: reviewerNotes,
       );
 
-      // Update in local state
+      // Update local state
       final updatedApplicants = state.applicants.map((a) {
         if (a.id == applicantId) {
-          return updatedApplicant;
+          return a.copyWith(status: newStatus);
         }
         return a;
       }).toList();
 
       state = state.copyWith(applicants: updatedApplicants);
-
-      return true;
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to update applicant status: ${e.toString()}',
-      );
-      return false;
+      state = state.copyWith(error: 'Failed to update status: $e');
     }
   }
 
-  /// Add review notes to applicant
-  Future<bool> addReviewNotes(String applicantId, String notes, String reviewerName) async {
-    try {
-      // Update status to under_review with notes
-      final updatedApplicant = await _apiService.updateApplicationStatus(
-        applicantId,
-        'under_review',
-        reviewerNotes: notes,
-      );
-
-      final updatedApplicants = state.applicants.map((a) {
-        if (a.id == applicantId) {
-          return updatedApplicant;
-        }
-        return a;
-      }).toList();
-
-      state = state.copyWith(applicants: updatedApplicants);
-
-      return true;
-    } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to add review notes: ${e.toString()}',
-      );
-      return false;
-    }
+  /// Filter applicants by status
+  void filterByStatus(String? status) {
+    fetchApplicants(status: status);
   }
 
-  /// Verify a document
-  Future<void> verifyDocument(String applicantId, String documentId) async {
-    try {
-      // TODO: Implement document verification endpoint in backend
-      // For now, just fetch the latest application data
-      final application = await _apiService.getApplication(applicantId);
-
-      final updatedApplicants = state.applicants.map((a) {
-        if (a.id == applicantId) {
-          return application;
-        }
-        return a;
-      }).toList();
-
-      state = state.copyWith(applicants: updatedApplicants);
-    } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to verify document: ${e.toString()}',
-      );
-    }
+  /// Filter applicants by program
+  void filterByProgram(String? programId) {
+    fetchApplicants(programId: programId);
   }
 
   /// Search applicants by name or email
   List<Applicant> searchApplicants(String query) {
     if (query.isEmpty) return state.applicants;
 
-    final lowerQuery = query.toLowerCase();
+    final lowercaseQuery = query.toLowerCase();
     return state.applicants.where((applicant) {
-      return applicant.studentName.toLowerCase().contains(lowerQuery) ||
-          applicant.studentEmail.toLowerCase().contains(lowerQuery) ||
-          applicant.programName.toLowerCase().contains(lowerQuery);
+      return applicant.studentName.toLowerCase().contains(lowercaseQuery) ||
+          applicant.studentEmail.toLowerCase().contains(lowercaseQuery);
     }).toList();
   }
 
-  /// Filter applicants by status
-  List<Applicant> filterByStatus(String status) {
-    if (status == 'all') return state.applicants;
-
-    return state.applicants.where((applicant) {
-      return applicant.status == status;
-    }).toList();
+  /// Sort applicants by date
+  void sortByDate({bool ascending = false}) {
+    final sorted = [...state.applicants];
+    sorted.sort((a, b) {
+      final comparison = a.submittedAt.compareTo(b.submittedAt);
+      return ascending ? comparison : -comparison;
+    });
+    state = state.copyWith(applicants: sorted);
   }
 
-  /// Filter applicants by program
-  List<Applicant> filterByProgram(String programId) {
-    if (programId.isEmpty) return state.applicants;
-
-    return state.applicants.where((applicant) {
-      return applicant.programId == programId;
-    }).toList();
+  /// Sort applicants by name
+  void sortByName({bool ascending = true}) {
+    final sorted = [...state.applicants];
+    sorted.sort((a, b) {
+      final comparison = a.studentName.compareTo(b.studentName);
+      return ascending ? comparison : -comparison;
+    });
+    state = state.copyWith(applicants: sorted);
   }
 
   /// Get applicant by ID
-  Applicant? getApplicantById(String id) {
+  Applicant? getApplicantById(String applicantId) {
     try {
-      return state.applicants.firstWhere((applicant) => applicant.id == id);
+      return state.applicants.firstWhere((a) => a.id == applicantId);
     } catch (e) {
       return null;
     }
   }
 
-  /// Get applicant statistics
-  Map<String, int> getApplicantStatistics() {
-    return {
-      'total': state.applicants.length,
-      'pending': state.applicants.where((a) => a.status == 'pending').length,
-      'underReview': state.applicants.where((a) => a.status == 'under_review').length,
-      'accepted': state.applicants.where((a) => a.status == 'accepted').length,
-      'rejected': state.applicants.where((a) => a.status == 'rejected').length,
-      'withdrawn': state.applicants.where((a) => a.status == 'withdrawn').length,
-    };
-  }
-
-  /// Get recent applicants (last 7 days)
-  List<Applicant> getRecentApplicants() {
-    final sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
-    return state.applicants.where((a) {
-      return a.appliedDate.isAfter(sevenDaysAgo);
-    }).toList();
-  }
-
-  /// Dispose resources
   @override
   void dispose() {
-    _apiService.dispose();
+    _realtimeSubscription?.cancel();
+    _realtimeService.unsubscribeFromApplications();
     super.dispose();
   }
 }
 
-/// Provider for institution applicants state
-final institutionApplicantsProvider = StateNotifierProvider.autoDispose<InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
-  // Get API service which has current access token
+/// Provider for institution applicants
+final institutionApplicantsProvider = StateNotifierProvider.autoDispose<
+    InstitutionApplicantsNotifier, InstitutionApplicantsState>((ref) {
   final apiService = ref.watch(applicationsApiServiceProvider);
-  return InstitutionApplicantsNotifier(apiService);
+  final realtimeService = ref.watch(institutionRealtimeServiceProvider);
+
+  // TODO: Get institution ID from user profile
+  const institutionId = '123';  // Hardcoded for testing
+
+  return InstitutionApplicantsNotifier(
+    apiService,
+    realtimeService,
+    institutionId,
+  );
 });
 
-/// Provider for applicants list
-final institutionApplicantsListProvider = Provider.autoDispose<List<Applicant>>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.applicants;
-});
-
-/// Provider for checking if applicants are loading
-final institutionApplicantsLoadingProvider = Provider.autoDispose<bool>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.isLoading;
-});
-
-/// Provider for applicants error
-final institutionApplicantsErrorProvider = Provider.autoDispose<String?>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.error;
+/// Provider for filtered applicants
+final filteredApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
+  final state = ref.watch(institutionApplicantsProvider);
+  return state.applicants;
 });
 
 /// Provider for applicant statistics
-final institutionApplicantStatisticsProvider = Provider.autoDispose<Map<String, int>>((ref) {
-  final notifier = ref.watch(institutionApplicantsProvider.notifier);
-  return notifier.getApplicantStatistics();
+final applicantStatisticsProvider = Provider.autoDispose<Map<String, int>>((ref) {
+  final applicants = ref.watch(filteredApplicantsProvider);
+
+  return {
+    'total': applicants.length,
+    'pending': applicants.where((a) => a.status == 'pending').length,
+    'reviewing': applicants.where((a) => a.status == 'reviewing').length,
+    'accepted': applicants.where((a) => a.status == 'accepted').length,
+    'rejected': applicants.where((a) => a.status == 'rejected').length,
+    'waitlisted': applicants.where((a) => a.status == 'waitlisted').length,
+  };
 });
 
-/// Provider for pending applicants
+// Additional providers for different states
+final institutionApplicantsListProvider = Provider.autoDispose<List<Applicant>>((ref) {
+  final state = ref.watch(institutionApplicantsProvider);
+  return state.applicants;
+});
+
+final institutionApplicantsLoadingProvider = Provider.autoDispose<bool>((ref) {
+  final state = ref.watch(institutionApplicantsProvider);
+  return state.isLoading;
+});
+
+final institutionApplicantsErrorProvider = Provider.autoDispose<String?>((ref) {
+  final state = ref.watch(institutionApplicantsProvider);
+  return state.error;
+});
+
 final pendingApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.applicants.where((a) => a.status == 'pending').toList();
+  final applicants = ref.watch(institutionApplicantsListProvider);
+  return applicants.where((a) => a.status == 'pending').toList();
 });
 
-/// Provider for under review applicants
 final underReviewApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.applicants.where((a) => a.status == 'under_review').toList();
+  final applicants = ref.watch(institutionApplicantsListProvider);
+  return applicants.where((a) => a.status == 'reviewing' || a.status == 'under_review').toList();
 });
 
-/// Provider for accepted applicants
 final acceptedApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.applicants.where((a) => a.status == 'accepted').toList();
+  final applicants = ref.watch(institutionApplicantsListProvider);
+  return applicants.where((a) => a.status == 'accepted').toList();
 });
 
-/// Provider for rejected applicants
 final rejectedApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
-  final applicantsState = ref.watch(institutionApplicantsProvider);
-  return applicantsState.applicants.where((a) => a.status == 'rejected').toList();
+  final applicants = ref.watch(institutionApplicantsListProvider);
+  return applicants.where((a) => a.status == 'rejected').toList();
 });
 
-/// Provider for recent applicants
 final recentApplicantsProvider = Provider.autoDispose<List<Applicant>>((ref) {
-  final notifier = ref.watch(institutionApplicantsProvider.notifier);
-  return notifier.getRecentApplicants();
+  final applicants = ref.watch(institutionApplicantsListProvider);
+  final sorted = [...applicants];
+  sorted.sort((a, b) => b.submittedAt.compareTo(a.submittedAt));
+  return sorted.take(10).toList();
+});
+
+final institutionApplicantStatisticsProvider = Provider.autoDispose<Map<String, dynamic>>((ref) {
+  final applicants = ref.watch(institutionApplicantsListProvider);
+  return {
+    'total': applicants.length,
+    'pending': applicants.where((a) => a.status == 'pending').length,
+    'reviewing': applicants.where((a) => a.status == 'reviewing' || a.status == 'under_review').length,
+    'accepted': applicants.where((a) => a.status == 'accepted').length,
+    'rejected': applicants.where((a) => a.status == 'rejected').length,
+    'waitlisted': applicants.where((a) => a.status == 'waitlisted').length,
+  };
 });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../widgets/resource_widgets.dart';
+import '../widgets/coming_soon_dialog.dart';
 
 /// Resource Viewer Screen
 ///
@@ -192,7 +193,13 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  ComingSoonDialog.show(
+                    context,
+                    featureName: 'Video Player',
+                    customMessage: 'Video playback functionality will be available soon.',
+                  );
+                },
                 icon: const Icon(Icons.play_arrow, size: 32),
                 style: IconButton.styleFrom(
                   backgroundColor: AppColors.primary,
@@ -239,12 +246,24 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ComingSoonDialog.show(
+                    context,
+                    featureName: 'Audio Controls',
+                    customMessage: 'Audio playback controls will be available soon.',
+                  );
+                },
                 icon: const Icon(Icons.skip_previous, size: 32),
               ),
               const SizedBox(width: 16),
               IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  ComingSoonDialog.show(
+                    context,
+                    featureName: 'Audio Player',
+                    customMessage: 'Audio playback functionality will be available soon.',
+                  );
+                },
                 icon: const Icon(Icons.play_arrow, size: 40),
                 style: IconButton.styleFrom(
                   backgroundColor: AppColors.primary,
@@ -253,7 +272,13 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
               ),
               const SizedBox(width: 16),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ComingSoonDialog.show(
+                    context,
+                    featureName: 'Audio Controls',
+                    customMessage: 'Audio playback controls will be available soon.',
+                  );
+                },
                 icon: const Icon(Icons.skip_next, size: 32),
               ),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/coming_soon_dialog.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
@@ -76,12 +77,78 @@ class _DashboardContent extends ConsumerWidget {
                 ),
               ),
               // Quick actions
-              ElevatedButton.icon(
-                onPressed: () {
-                  // TODO: Add quick action
+              PopupMenuButton<String>(
+                child: ElevatedButton.icon(
+                  onPressed: null, // Use PopupMenuButton's onSelected instead
+                  icon: const Icon(Icons.add, size: 20),
+                  label: const Text('Quick Action'),
+                ),
+                onSelected: (String value) {
+                  switch (value) {
+                    case 'add_user':
+                      ComingSoonDialog.show(
+                        context,
+                        featureName: 'Add User',
+                        customMessage: 'Quickly add new users to the system with role assignments and permissions.',
+                      );
+                      break;
+                    case 'create_announcement':
+                      ComingSoonDialog.show(
+                        context,
+                        featureName: 'Create Announcement',
+                        customMessage: 'Send announcements to all users or specific groups.',
+                      );
+                      break;
+                    case 'generate_report':
+                      ComingSoonDialog.show(
+                        context,
+                        featureName: 'Generate Report',
+                        customMessage: 'Generate comprehensive reports with analytics and insights.',
+                      );
+                      break;
+                    case 'bulk_actions':
+                      ComingSoonDialog.show(
+                        context,
+                        featureName: 'Bulk Actions',
+                        customMessage: 'Perform bulk operations on multiple entities at once.',
+                      );
+                      break;
+                  }
                 },
-                icon: const Icon(Icons.add, size: 20),
-                label: const Text('Quick Action'),
+                itemBuilder: (BuildContext context) => [
+                  const PopupMenuItem<String>(
+                    value: 'add_user',
+                    child: ListTile(
+                      leading: Icon(Icons.person_add),
+                      title: Text('Add User'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'create_announcement',
+                    child: ListTile(
+                      leading: Icon(Icons.campaign),
+                      title: Text('Create Announcement'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'generate_report',
+                    child: ListTile(
+                      leading: Icon(Icons.analytics),
+                      title: Text('Generate Report'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'bulk_actions',
+                    child: ListTile(
+                      leading: Icon(Icons.checklist),
+                      title: Text('Bulk Actions'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

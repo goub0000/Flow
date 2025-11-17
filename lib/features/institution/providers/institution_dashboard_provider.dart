@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'institution_programs_provider.dart';
 import 'institution_applicants_provider.dart';
+import '../services/applications_api_service.dart';
 
 /// State class for institution dashboard data
 class InstitutionDashboardState {
@@ -40,45 +41,56 @@ class InstitutionDashboardNotifier extends StateNotifier<InstitutionDashboardSta
   }
 
   /// Load all dashboard data
-  /// TODO: Connect to backend API (Firebase Firestore)
   Future<void> loadDashboardData() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase aggregation queries
+      // Fetch real data from backend API
+      final apiService = ref.read(applicationsApiServiceProvider);
 
-      // Simulating API call delay
-      await Future.delayed(const Duration(seconds: 1));
+      // Get statistics from the API
+      Map<String, dynamic> apiStatistics = {};
+      try {
+        apiStatistics = await apiService.getStatistics();
+        print('[InstitutionDashboard] Fetched API statistics: $apiStatistics');
+      } catch (e) {
+        print('[InstitutionDashboard] Failed to fetch API statistics: $e');
+        // Fall back to local provider statistics
+      }
 
-      // Get statistics from other providers
+      // Also ensure applicants are loaded
+      await ref.read(institutionApplicantsProvider.notifier).fetchApplicants();
+
+      // Get statistics from providers (includes real data from API)
       final programStats = ref.read(institutionProgramStatisticsProvider);
       final applicantStats = ref.read(institutionApplicantStatisticsProvider);
 
+      // Merge API statistics with local statistics
       final statistics = {
-        // Program statistics
-        'totalPrograms': programStats['totalPrograms'],
-        'activePrograms': programStats['activePrograms'],
-        'inactivePrograms': programStats['inactivePrograms'],
-        'totalCapacity': programStats['totalCapacity'],
-        'totalEnrolled': programStats['totalEnrolled'],
-        'availableSpots': programStats['availableSpots'],
-        'occupancyRate': programStats['occupancyRate'],
+        // Use API statistics if available, otherwise use local
+        'totalPrograms': apiStatistics['total_programs'] ?? programStats['totalPrograms'] ?? 0,
+        'activePrograms': apiStatistics['active_programs'] ?? programStats['activePrograms'] ?? 0,
+        'inactivePrograms': programStats['inactivePrograms'] ?? 0,
+        'totalCapacity': programStats['totalCapacity'] ?? 0,
+        'totalEnrolled': apiStatistics['total_enrolled'] ?? programStats['totalEnrolled'] ?? 0,
+        'availableSpots': programStats['availableSpots'] ?? 0,
+        'occupancyRate': programStats['occupancyRate'] ?? '0',
 
-        // Applicant statistics
-        'totalApplicants': applicantStats['total'],
-        'pendingApplicants': applicantStats['pending'],
-        'underReviewApplicants': applicantStats['underReview'],
-        'acceptedApplicants': applicantStats['accepted'],
-        'rejectedApplicants': applicantStats['rejected'],
+        // Applicant statistics from API or local
+        'totalApplicants': apiStatistics['total_applications'] ?? applicantStats['total'] ?? 0,
+        'pendingApplicants': apiStatistics['pending_applications'] ?? applicantStats['pending'] ?? 0,
+        'underReviewApplicants': apiStatistics['under_review_applications'] ?? applicantStats['underReview'] ?? 0,
+        'acceptedApplicants': apiStatistics['accepted_applications'] ?? applicantStats['accepted'] ?? 0,
+        'rejectedApplicants': apiStatistics['rejected_applications'] ?? applicantStats['rejected'] ?? 0,
 
         // Additional metrics
-        'acceptanceRate': _calculateAcceptanceRate(applicantStats),
-        'averageReviewTime': '2.5 days', // TODO: Calculate from actual data
-        'newApplicationsThisWeek': applicantStats['pending'] ?? 0,
+        'acceptanceRate': apiStatistics['acceptance_rate'] ?? _calculateAcceptanceRate(applicantStats),
+        'averageReviewTime': apiStatistics['average_review_time'] ?? '2.5 days',
+        'newApplicationsThisWeek': apiStatistics['new_applications_this_week'] ?? applicantStats['pending'] ?? 0,
       };
 
-      // Mock recent activity
-      final recentActivity = _generateMockActivity();
+      // Generate activity from real data
+      final recentActivity = _generateActivityFromApplications();
 
       state = state.copyWith(
         statistics: statistics,
@@ -99,20 +111,48 @@ class InstitutionDashboardNotifier extends StateNotifier<InstitutionDashboardSta
   }
 
   /// Calculate acceptance rate
-  String _calculateAcceptanceRate(Map<String, int> applicantStats) {
-    final total = applicantStats['total'] ?? 0;
-    final accepted = applicantStats['accepted'] ?? 0;
+  String _calculateAcceptanceRate(Map<String, dynamic> applicantStats) {
+    final total = (applicantStats['total'] ?? 0) as int;
+    final accepted = (applicantStats['accepted'] ?? 0) as int;
 
     if (total == 0) return '0.0';
 
     return (accepted / total * 100).toStringAsFixed(1);
   }
 
-  /// Generate recent activity from actual data
-  /// TODO: Implement real activity feed from backend audit logs/activity API
-  List<Map<String, dynamic>> _generateMockActivity() {
-    // Return empty list until activity logging is implemented in backend
-    return [];
+  /// Generate recent activity from actual applications data
+  List<Map<String, dynamic>> _generateActivityFromApplications() {
+    try {
+      // Get recent applicants from the provider
+      final recentApplicants = ref.read(recentApplicantsProvider);
+
+      // Convert to activity items
+      final activities = <Map<String, dynamic>>[];
+
+      for (final applicant in recentApplicants.take(10)) {
+        activities.add({
+          'id': applicant.id,
+          'type': 'new_application',
+          'title': 'New Application',
+          'description': '${applicant.studentName} applied for ${applicant.programName}',
+          'timestamp': applicant.submittedAt,
+          'icon': 'application',
+          'status': applicant.status,
+        });
+      }
+
+      // Sort by timestamp (most recent first)
+      activities.sort((a, b) {
+        final aTime = a['timestamp'] as DateTime;
+        final bTime = b['timestamp'] as DateTime;
+        return bTime.compareTo(aTime);
+      });
+
+      return activities;
+    } catch (e) {
+      print('[InstitutionDashboard] Error generating activity: $e');
+      return [];
+    }
   }
 
   /// Get statistics by key

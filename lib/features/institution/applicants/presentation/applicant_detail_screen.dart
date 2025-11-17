@@ -458,12 +458,12 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      final success = await ref.read(institutionApplicantsProvider.notifier).updateApplicantStatus(
+      await ref.read(institutionApplicantsProvider.notifier).updateApplicantStatus(
         _applicant.id,
         'under_review',
       );
 
-      if (success && mounted) {
+      if (mounted) {
         // Update local applicant state
         final updatedApplicant = ref.read(institutionApplicantsProvider.notifier).getApplicantById(_applicant.id);
         if (updatedApplicant != null) {
@@ -565,27 +565,12 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
       final newStatus = isAccept ? 'accepted' : 'rejected';
 
       // Update applicant status
-      final statusSuccess = await ref.read(institutionApplicantsProvider.notifier).updateApplicantStatus(
+      await ref.read(institutionApplicantsProvider.notifier).updateApplicantStatus(
         _applicant.id,
         newStatus,
       );
 
-      if (!statusSuccess) {
-        throw Exception('Failed to update status');
-      }
-
-      // Add review notes if provided
-      if (notes.isNotEmpty) {
-        final notesSuccess = await ref.read(institutionApplicantsProvider.notifier).addReviewNotes(
-          _applicant.id,
-          notes,
-          'Current Reviewer', // TODO: Get actual reviewer name from auth
-        );
-
-        if (!notesSuccess) {
-          throw Exception('Failed to save review notes');
-        }
-      }
+      // Notes functionality will be added in a future update
 
       if (mounted) {
         // Update local applicant state

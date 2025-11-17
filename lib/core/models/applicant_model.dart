@@ -47,6 +47,50 @@ class Applicant {
   bool get isAccepted => status == 'accepted';
   bool get isRejected => status == 'rejected';
 
+  Applicant copyWith({
+    String? id,
+    String? applicationId,
+    String? studentId,
+    String? studentName,
+    String? studentEmail,
+    String? studentPhone,
+    String? programId,
+    String? programName,
+    String? status,
+    DateTime? submittedAt,
+    DateTime? appliedDate,
+    DateTime? reviewedAt,
+    String? reviewedBy,
+    String? reviewNotes,
+    double? gpa,
+    String? previousSchool,
+    List<Document>? documents,
+    String? statementOfPurpose,
+    Map<String, dynamic>? testScores,
+  }) {
+    return Applicant(
+      id: id ?? this.id,
+      applicationId: applicationId ?? this.applicationId,
+      studentId: studentId ?? this.studentId,
+      studentName: studentName ?? this.studentName,
+      studentEmail: studentEmail ?? this.studentEmail,
+      studentPhone: studentPhone ?? this.studentPhone,
+      programId: programId ?? this.programId,
+      programName: programName ?? this.programName,
+      status: status ?? this.status,
+      submittedAt: submittedAt ?? this.submittedAt,
+      appliedDate: appliedDate ?? this.appliedDate,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      reviewedBy: reviewedBy ?? this.reviewedBy,
+      reviewNotes: reviewNotes ?? this.reviewNotes,
+      gpa: gpa ?? this.gpa,
+      previousSchool: previousSchool ?? this.previousSchool,
+      documents: documents ?? this.documents,
+      statementOfPurpose: statementOfPurpose ?? this.statementOfPurpose,
+      testScores: testScores ?? this.testScores,
+    );
+  }
+
   factory Applicant.fromJson(Map<String, dynamic> json) {
     return Applicant(
       id: json['id'] as String,

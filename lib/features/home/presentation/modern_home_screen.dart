@@ -1098,31 +1098,7 @@ class _MinimalFooter extends StatelessWidget {
                               height: 1.6,
                             ),
                           ),
-                          const SizedBox(height: 24),
-                          // Social Media Icons
-                          Row(
-                            children: [
-                              _SocialButton(
-                                icon: Icons.language,
-                                onPressed: () {},
-                              ),
-                              const SizedBox(width: 12),
-                              _SocialButton(
-                                icon: Icons.facebook,
-                                onPressed: () {},
-                              ),
-                              const SizedBox(width: 12),
-                              _SocialButton(
-                                icon: Icons.phone_android,
-                                onPressed: () {},
-                              ),
-                              const SizedBox(width: 12),
-                              _SocialButton(
-                                icon: Icons.mail_outline,
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
+                          // Social media icons removed - will be added when actual links are available
                         ],
                       ),
                     ),
@@ -1265,18 +1241,8 @@ class _MinimalFooter extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
 
-                    // Social Media Icons (Mobile)
-                    Row(
-                      children: [
-                        _SocialButton(icon: Icons.language, onPressed: () {}),
-                        const SizedBox(width: 12),
-                        _SocialButton(icon: Icons.facebook, onPressed: () {}),
-                        const SizedBox(width: 12),
-                        _SocialButton(icon: Icons.phone_android, onPressed: () {}),
-                        const SizedBox(width: 12),
-                        _SocialButton(icon: Icons.mail_outline, onPressed: () {}),
-                      ],
-                    ),
+                    // Social Media Icons (Mobile) - removed until actual links are available
+                    const SizedBox.shrink(),
                   ],
                 ),
 

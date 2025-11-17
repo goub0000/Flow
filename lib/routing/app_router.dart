@@ -26,8 +26,11 @@ import '../features/student/progress/presentation/progress_screen.dart';
 // Institution
 import '../features/institution/dashboard/presentation/institution_dashboard_screen.dart';
 import '../features/institution/applicants/presentation/applicants_list_screen.dart';
+import '../features/institution/applicants/presentation/applicant_detail_screen.dart';
 import '../features/institution/programs/presentation/programs_list_screen.dart';
 import '../features/institution/programs/presentation/create_program_screen.dart';
+import '../features/institution/providers/institution_applicants_provider.dart';
+import '../core/models/applicant_model.dart';
 
 // Parent
 import '../features/parent/dashboard/presentation/parent_dashboard_screen.dart';
@@ -293,16 +296,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'institution-applicants',
         builder: (context, state) => const ApplicantsListScreen(),
       ),
-      // TODO: Re-enable when backend is connected
-      // GoRoute(
-      //   path: '/institution/applicants/:id',
-      //   name: 'institution-applicant-detail',
-      //   builder: (context, state) {
-      //     final applicantId = state.pathParameters['id']!;
-      //     // Fetch applicant from backend
-      //     return ApplicantDetailScreen(applicant: applicant);
-      //   },
-      // ),
+      GoRoute(
+        path: '/institution/applicants/:id',
+        name: 'institution-applicant-detail',
+        builder: (context, state) {
+          final applicantId = state.pathParameters['id']!;
+          // Get applicant from provider or passed via state.extra
+          final applicant = state.extra as Applicant?;
+
+          if (applicant != null) {
+            return ApplicantDetailScreen(applicant: applicant);
+          }
+
+          // If no applicant passed, create a wrapper widget to fetch it
+          return _ApplicantDetailWrapper(applicantId: applicantId);
+        },
+      ),
       GoRoute(
         path: '/institution/programs',
         name: 'institution-programs',
@@ -1060,5 +1069,66 @@ class _RouterNotifier extends ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+}
+
+/// Wrapper widget to fetch applicant by ID
+class _ApplicantDetailWrapper extends ConsumerWidget {
+  final String applicantId;
+
+  const _ApplicantDetailWrapper({required this.applicantId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Try to get applicant from provider's cache
+    final state = ref.watch(institutionApplicantsProvider);
+    final applicant = state.applicants.cast<Applicant?>().firstWhere(
+      (a) => a?.id == applicantId,
+      orElse: () => null,
+    );
+
+    if (applicant != null) {
+      return ApplicantDetailScreen(applicant: applicant);
+    }
+
+    // If not in cache, fetch from backend
+    return FutureBuilder<Applicant?>(
+      future: _fetchApplicantFromBackend(ref, applicantId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          // Redirect back to applicants list if applicant not found
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.go('/institution/applicants');
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Applicant not found'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          });
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return ApplicantDetailScreen(applicant: snapshot.data!);
+      },
+    );
+  }
+
+  Future<Applicant?> _fetchApplicantFromBackend(WidgetRef ref, String applicantId) async {
+    try {
+      final apiService = ref.read(applicationsApiServiceProvider);
+      return await apiService.getApplication(applicantId);
+    } catch (e) {
+      print('Error fetching applicant: $e');
+      return null;
+    }
   }
 }
