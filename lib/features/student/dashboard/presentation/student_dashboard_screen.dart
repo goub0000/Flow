@@ -97,8 +97,9 @@ class _DashboardHomeTab extends ConsumerWidget {
     final applications = ref.watch(applicationsListProvider);
     final pendingApplicationsCount = ref.watch(pendingApplicationsCountProvider);
 
-    // Count accepted applications
-    final acceptedApplicationsCount = applications.where((app) => app.status == 'accepted').length;
+    // Count accepted applications - use getter methods not string comparison
+    final acceptedApplicationsCount = applications.where((app) => app.isAccepted).length;
+    final underReviewCount = applications.where((app) => app.isUnderReview).length;
 
     // Mock data for enhanced features
     final mockStats = [
@@ -126,7 +127,7 @@ class _DashboardHomeTab extends ConsumerWidget {
       ),
       StatData(
         label: 'Under Review',
-        value: '${applications.where((app) => app.status == 'under_review').length}',
+        value: '$underReviewCount',
         icon: Icons.rate_review,
         color: AppColors.info,
         sparklineData: [3, 5, 4, 8, 6, 9, 7],
