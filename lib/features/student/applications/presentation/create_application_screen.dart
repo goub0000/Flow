@@ -147,10 +147,21 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       // Send documents as list of dictionaries (backend expects List[Dict[str, str]])
       final documentsList = <Map<String, String>>[];
 
+      // Helper function to safely get filename
+      String getFilename(PlatformFile file) {
+        try {
+          return file.name;
+        } catch (e) {
+          print('[CreateApplication] Error accessing file.name: $e');
+          // Fallback: use bytes length as identifier
+          return 'document_${file.size}_${DateTime.now().millisecondsSinceEpoch}';
+        }
+      }
+
       if (_uploadedDocuments['transcript'] != null) {
         documentsList.add({
           'type': 'transcript',
-          'filename': _uploadedDocuments['transcript']!.name,
+          'filename': getFilename(_uploadedDocuments['transcript']!),
           'url': 'pending_upload',  // Placeholder for backend processing
         });
       }
@@ -158,7 +169,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       if (_uploadedDocuments['id'] != null) {
         documentsList.add({
           'type': 'id_document',
-          'filename': _uploadedDocuments['id']!.name,
+          'filename': getFilename(_uploadedDocuments['id']!),
           'url': 'pending_upload',
         });
       }
@@ -166,7 +177,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       if (_uploadedDocuments['statement'] != null) {
         documentsList.add({
           'type': 'passport_photo',
-          'filename': _uploadedDocuments['statement']!.name,
+          'filename': getFilename(_uploadedDocuments['statement']!),
           'url': 'pending_upload',
         });
       }
@@ -330,7 +341,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${result.files.first.name} uploaded successfully'),
+            content: Text('${result.files.first.name.isNotEmpty ? result.files.first.name : 'File'} uploaded successfully'),
             backgroundColor: AppColors.success,
           ),
         );
@@ -1004,7 +1015,7 @@ class _DocumentUploadCard extends StatelessWidget {
                 ),
                 Text(
                   isUploaded
-                      ? uploadedFile!.name
+                      ? (uploadedFile!.name.isNotEmpty ? uploadedFile!.name : 'Uploaded file')
                       : subtitle,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: isUploaded ? AppColors.success : AppColors.textSecondary,
