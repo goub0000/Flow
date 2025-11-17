@@ -317,7 +317,23 @@ class ApplicationsService:
     ) -> ApplicationListResponse:
         """List applications for an institution"""
         try:
+            # CRITICAL DEBUG: Log the exact institution_id being queried
+            logger.info(f"[DEBUG] Fetching applications for institution_id: {institution_id}")
+            logger.info(f"[DEBUG] Query params - page: {page}, page_size: {page_size}, status: {status}, program_id: {program_id}")
+
+            # First, debug check what applications exist for this institution
+            debug_query = self.db.table('applications').select('id, institution_id, status, created_at').eq('institution_id', institution_id).execute()
+            logger.info(f"[DEBUG] Applications found for institution {institution_id}: {len(debug_query.data) if debug_query.data else 0}")
+
+            if debug_query.data:
+                logger.info(f"[DEBUG] Sample application IDs: {[app['id'] for app in debug_query.data[:3]]}")
+
+            # Build the main query
             query = self.db.table('applications').select('*', count='exact').eq('institution_id', institution_id)
+
+            # NOTE: NOT filtering by is_submitted=True because existing applications have is_submitted=False
+            # even though they're submitted (have submitted_at timestamp). This is a data inconsistency.
+            # TODO: Fix student application submission to properly set is_submitted=True
 
             if status:
                 query = query.eq('status', status)
@@ -325,9 +341,13 @@ class ApplicationsService:
                 query = query.eq('program_id', program_id)
 
             offset = (page - 1) * page_size
-            query = query.order('submitted_at', desc=True).range(offset, offset + page_size - 1)
+            # Fix: Use created_at instead of submitted_at which might be null
+            query = query.order('created_at', desc=True).range(offset, offset + page_size - 1)
 
             response = query.execute()
+
+            logger.info(f"[DEBUG] Final query returned {len(response.data) if response.data else 0} applications")
+            logger.info(f"[DEBUG] Response count: {response.count}")
 
             applications = [ApplicationResponse(**app) for app in response.data] if response.data else []
             total = response.count or 0
@@ -342,6 +362,7 @@ class ApplicationsService:
 
         except Exception as e:
             logger.error(f"List institution applications error: {e}")
+            logger.error(f"[DEBUG] Institution ID was: {institution_id}")
             raise Exception(f"Failed to list applications: {str(e)}")
 
     async def get_institution_statistics(self, institution_id: str) -> ApplicationStatistics:

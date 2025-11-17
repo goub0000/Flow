@@ -8,6 +8,7 @@ import '../../applicants/presentation/applicants_list_screen.dart';
 import '../../programs/presentation/programs_list_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
+import '../../debug/institution_debug_screen.dart';
 
 class InstitutionDashboardScreen extends ConsumerStatefulWidget {
   const InstitutionDashboardScreen({super.key});
@@ -38,6 +39,20 @@ class _InstitutionDashboardScreenState
             title: _getTitle(),
             currentIndex: _currentIndex,
             onNavigationTap: (index) => setState(() => _currentIndex = index),
+            actions: [
+              // Debug button for troubleshooting
+              DashboardAction(
+                icon: Icons.bug_report,
+                tooltip: 'Debug Panel',
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const InstitutionDebugScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
             navigationItems: const [
             DashboardNavigationItem(
               icon: Icons.dashboard_outlined,

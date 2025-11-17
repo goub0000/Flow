@@ -195,6 +195,13 @@ class ApplicationsApiService {
         .whereType<Document>()
         .toList();
 
+    // Get program name from application data or use default
+    final programName = app['program_name'] as String? ??
+                       app['metadata']?['program_name'] as String? ??
+                       'Program ${app['program_id'] ?? ''}';
+
+    print('[ApplicationsAPI] Mapping application ${app['id']}: program_name=$programName');
+
     return Applicant(
       id: app['id'] as String,
       applicationId: app['id'] as String,
@@ -203,11 +210,13 @@ class ApplicationsApiService {
       studentEmail: studentEmail,
       studentPhone: studentPhone,
       programId: app['program_id'] as String? ?? '',
-      programName: 'Program', // TODO: Fetch from programs API or include in backend
+      programName: programName,
       status: app['status'] as String? ?? 'pending',
       submittedAt: app['submitted_at'] != null
           ? DateTime.parse(app['submitted_at'] as String)
-          : DateTime.parse(app['created_at'] as String),
+          : app['created_at'] != null
+              ? DateTime.parse(app['created_at'] as String)
+              : DateTime.now(),
       appliedDate: app['created_at'] != null
           ? DateTime.parse(app['created_at'] as String)
           : DateTime.now(),
