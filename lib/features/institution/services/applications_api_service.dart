@@ -170,7 +170,11 @@ class ApplicationsApiService {
     final studentPhone = personalInfo['phone'] as String? ?? 'N/A';
 
     // Extract academic information
-    final gpa = (academicInfo['gpa'] as num?)?.toDouble() ?? 0.0;
+    // Fix: Handle GPA as either String or num to avoid type casting errors
+    final gpaValue = academicInfo['gpa'];
+    final gpa = gpaValue != null
+        ? (gpaValue is num ? gpaValue.toDouble() : double.tryParse(gpaValue.toString()) ?? 0.0)
+        : 0.0;
     final previousSchool = academicInfo['previous_school'] as String? ??
         academicInfo['high_school'] as String? ??
         'N/A';

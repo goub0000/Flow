@@ -48,6 +48,22 @@ class Program {
 
   factory Program.fromJson(Map<String, dynamic> json) {
     // Handle both camelCase (frontend) and snake_case (API)
+    // Helper function to safely parse int values (handles both int and String)
+    int _parseInt(dynamic value, int defaultValue) {
+      if (value == null) return defaultValue;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value) ?? defaultValue;
+      return defaultValue;
+    }
+
+    // Helper function to safely parse double values (handles both num and String)
+    double _parseDouble(dynamic value, double defaultValue) {
+      if (value == null) return defaultValue;
+      if (value is num) return value.toDouble();
+      if (value is String) return double.tryParse(value) ?? defaultValue;
+      return defaultValue;
+    }
+
     return Program(
       id: json['id'] as String,
       institutionId: (json['institution_id'] ?? json['institutionId']) as String,
@@ -56,10 +72,10 @@ class Program {
       description: (json['description'] ?? '') as String,
       category: json['category'] as String,
       level: json['level'] as String,
-      duration: Duration(days: (json['duration_days'] ?? json['durationDays']) as int),
-      fee: ((json['fee'] as num?)?.toDouble() ?? 0.0),
-      maxStudents: (json['max_students'] ?? json['maxStudents']) as int,
-      enrolledStudents: (json['enrolled_students'] ?? json['enrolledStudents'] ?? 0) as int,
+      duration: Duration(days: _parseInt(json['duration_days'] ?? json['durationDays'], 365)),
+      fee: _parseDouble(json['fee'], 0.0),
+      maxStudents: _parseInt(json['max_students'] ?? json['maxStudents'], 0),
+      enrolledStudents: _parseInt(json['enrolled_students'] ?? json['enrolledStudents'], 0),
       requirements: json['requirements'] != null
           ? List<String>.from(json['requirements'] as List)
           : [],
