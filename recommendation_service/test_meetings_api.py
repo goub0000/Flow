@@ -7,13 +7,16 @@ import json
 from datetime import datetime, timedelta
 
 # Configuration
-BASE_URL = "http://localhost:8000/api/v1"
+BASE_URL = "https://web-production-51e34.up.railway.app/api/v1"
+
 # Replace with actual tokens from your auth system
+# Run: python get_test_tokens.py to obtain these tokens
 PARENT_TOKEN = "your-parent-jwt-token"
 TEACHER_TOKEN = "your-teacher-jwt-token"
 COUNSELOR_TOKEN = "your-counselor-jwt-token"
 
 # Replace with actual user IDs from your database
+# These will be provided when you run get_test_tokens.py
 PARENT_ID = "parent-user-uuid"
 STUDENT_ID = "student-user-uuid"
 TEACHER_ID = "teacher-user-uuid"
