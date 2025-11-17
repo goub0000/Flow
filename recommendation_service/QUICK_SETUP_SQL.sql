@@ -107,7 +107,7 @@ VALUES (
     'system_test',
     'Activity log system successfully installed',
     'System',
-    '{"installation_date": "' || NOW()::text || '", "version": "1.0.0"}'
+    jsonb_build_object('installation_date', NOW()::text, 'version', '1.0.0')
 );
 
 -- ============================================
