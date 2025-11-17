@@ -73,11 +73,16 @@ class AuthService {
 
     // Set session in Supabase client for storage operations
     try {
-      _logger.info('Setting Supabase session with access token');
-      await Supabase.instance.client.auth.setSession(accessToken);
-      _logger.info('Supabase session set successfully');
+      _logger.info('Setting Supabase session with both access and refresh tokens');
+
+      // Fix: Pass both tokens as a combined string (Supabase format)
+      // Format: "accessToken.refreshToken"
+      await Supabase.instance.client.auth.recoverSession('$accessToken.$refreshToken');
+
+      _logger.info('✅ Supabase session set successfully with both tokens');
     } catch (e) {
       _logger.severe('Failed to set Supabase session', e);
+      // Don't throw - session save should continue even if Supabase session fails
     }
   }
 
