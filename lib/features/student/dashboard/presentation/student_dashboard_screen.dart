@@ -25,7 +25,8 @@ class _StudentDashboardScreenState
     extends ConsumerState<StudentDashboardScreen> {
   int _currentIndex = 0;
 
-  // Use late to allow passing callback to home tab
+  // IMPORTANT: Removed 'const' from widgets that use providers
+  // ProfileScreen, ApplicationsListScreen use ConsumerWidget and need to rebuild
   late final List<Widget> _pages = [
     _DashboardHomeTab(
       key: const PageStorageKey('home'),
@@ -36,10 +37,10 @@ class _StudentDashboardScreenState
         });
       },
     ),
-    const ApplicationsListScreen(key: PageStorageKey('applications')),
-    const ProgressScreen(key: PageStorageKey('progress')),
-    const ProfileScreen(key: PageStorageKey('profile'), showBackButton: false),
-    const SettingsScreen(key: PageStorageKey('settings')),
+    ApplicationsListScreen(key: const PageStorageKey('applications')),
+    ProgressScreen(key: const PageStorageKey('progress')),
+    ProfileScreen(key: const PageStorageKey('profile'), showBackButton: false),
+    SettingsScreen(key: const PageStorageKey('settings')),
   ];
 
   @override
