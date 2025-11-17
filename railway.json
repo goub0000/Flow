@@ -11,7 +11,8 @@
           "cmds": ["npm install"]
         }
       }
-    }
+    },
+    "buildCommand": "echo 'Using pre-built Flutter web files'"
   },
   "deploy": {
     "startCommand": "node server.js",
