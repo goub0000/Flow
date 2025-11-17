@@ -56,28 +56,52 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
         return;
       }
 
+      // DEBUG: Log the user ID being used
+      print('[DEBUG] Fetching applications for user ID: ${user.id}');
+      print('[DEBUG] User email: ${user.email}');
+
       final response = await _apiClient.get(
         '${ApiConfig.students}/me/applications',
         fromJson: (data) {
-          if (data is List) {
+          print('[DEBUG] Raw response data type: ${data.runtimeType}');
+          print('[DEBUG] Raw response data: $data');
+
+          // Handle both direct list response and paginated response
+          if (data is Map<String, dynamic>) {
+            // Paginated response with 'applications' field
+            if (data.containsKey('applications')) {
+              final applications = data['applications'] as List;
+              print('[DEBUG] Found ${applications.length} applications in paginated response');
+              return applications.map((appJson) => Application.fromJson(appJson)).toList();
+            }
+            // Single application wrapped in object
+            return [Application.fromJson(data)];
+          } else if (data is List) {
+            // Direct list of applications
+            print('[DEBUG] Found ${data.length} applications in list response');
             return data.map((appJson) => Application.fromJson(appJson)).toList();
           }
+          print('[DEBUG] No applications found, returning empty list');
           return <Application>[];
         },
       );
 
       if (response.success && response.data != null) {
+        print('[DEBUG] Successfully fetched ${response.data!.length} applications');
         state = state.copyWith(
           applications: response.data!,
           isLoading: false,
         );
       } else {
+        print('[DEBUG] Failed to fetch applications: ${response.message}');
         state = state.copyWith(
           error: response.message ?? 'Failed to fetch applications',
           isLoading: false,
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('[DEBUG] Exception fetching applications: $e');
+      print('[DEBUG] Stack trace: $stackTrace');
       state = state.copyWith(
         error: 'Failed to fetch applications: ${e.toString()}',
         isLoading: false,

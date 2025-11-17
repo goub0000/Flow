@@ -33,12 +33,30 @@ class _StudentDashboardScreenState
     const SettingsScreen(),
   ];
 
+  // Add this to prevent unnecessary navigation conflicts
+  String _getTitleForIndex(int index) {
+    switch (index) {
+      case 0:
+        return 'Student Dashboard';
+      case 1:
+        return 'My Applications';
+      case 2:
+        return 'Progress';
+      case 3:
+        return 'Profile';
+      case 4:
+        return 'Settings';
+      default:
+        return 'Student Dashboard';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         DashboardScaffold(
-          title: 'Student Dashboard',
+          title: _getTitleForIndex(_currentIndex),
           currentIndex: _currentIndex,
           onNavigationTap: (index) {
             setState(() {

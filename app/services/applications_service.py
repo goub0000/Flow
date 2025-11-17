@@ -259,6 +259,26 @@ class ApplicationsService:
     ) -> ApplicationListResponse:
         """List applications for a student"""
         try:
+            # CRITICAL DEBUG: Log the exact student_id being queried
+            logger.info(f"[DEBUG] Fetching applications for student_id: {student_id}")
+            logger.info(f"[DEBUG] Query params - page: {page}, page_size: {page_size}, status: {status}")
+
+            # First, let's check what applications exist in the database for debugging
+            debug_query = self.db.table('applications').select('id, student_id, created_at, status').execute()
+            logger.info(f"[DEBUG] Total applications in DB: {len(debug_query.data) if debug_query.data else 0}")
+
+            if debug_query.data:
+                # Log first few applications for debugging
+                for app in debug_query.data[:5]:
+                    logger.info(f"[DEBUG] App ID: {app['id']}, Student ID: {app['student_id']}, Status: {app['status']}")
+
+                # Check if any belong to this student
+                matching = [app for app in debug_query.data if app['student_id'] == student_id]
+                logger.info(f"[DEBUG] Applications matching student_id {student_id}: {len(matching)}")
+                if matching:
+                    logger.info(f"[DEBUG] Matching app IDs: {[app['id'] for app in matching]}")
+
+            # Now run the actual query
             query = self.db.table('applications').select('*', count='exact').eq('student_id', student_id)
 
             if status:
@@ -268,6 +288,9 @@ class ApplicationsService:
             query = query.order('created_at', desc=True).range(offset, offset + page_size - 1)
 
             response = query.execute()
+
+            logger.info(f"[DEBUG] Query response - Found {len(response.data) if response.data else 0} applications")
+            logger.info(f"[DEBUG] Response count: {response.count}")
 
             applications = [ApplicationResponse(**app) for app in response.data] if response.data else []
             total = response.count or 0

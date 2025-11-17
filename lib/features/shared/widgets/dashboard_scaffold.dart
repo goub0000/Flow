@@ -125,10 +125,29 @@ class DashboardScaffold extends ConsumerWidget {
             onSelected: (value) {
               switch (value) {
                 case 'profile':
-                  context.go('/profile');
+                  // Don't navigate if we're already in a dashboard with tabs
+                  // Let the tab navigation handle profile display
+                  if (navigationItems.any((item) => item.label == 'Profile')) {
+                    // Find and switch to profile tab instead of navigating
+                    final profileIndex = navigationItems.indexWhere((item) => item.label == 'Profile');
+                    if (profileIndex != -1) {
+                      onNavigationTap(profileIndex);
+                    }
+                  } else {
+                    // Only navigate to standalone profile if not in tabbed dashboard
+                    context.go('/profile');
+                  }
                   break;
                 case 'settings':
-                  context.go('/settings');
+                  // Similar handling for settings
+                  if (navigationItems.any((item) => item.label == 'Settings')) {
+                    final settingsIndex = navigationItems.indexWhere((item) => item.label == 'Settings');
+                    if (settingsIndex != -1) {
+                      onNavigationTap(settingsIndex);
+                    }
+                  } else {
+                    context.go('/settings');
+                  }
                   break;
                 case 'logout':
                   ref.read(authProvider.notifier).signOut();
