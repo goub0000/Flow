@@ -66,5 +66,5 @@ def main():
 
 if __name__ == "__main__":
     # Auto-run the latest migration
-    migration_file = "migrations/add_data_tracking_fields.sql"
+    migration_file = "migrations/create_student_activities_table.sql"
     run_migration(migration_file)
