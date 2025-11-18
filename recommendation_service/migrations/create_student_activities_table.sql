@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS student_activities (
     timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-    -- Indexes for better query performance
+    -- Foreign key to auth.users
     CONSTRAINT fk_student_activities_student
         FOREIGN KEY (student_id)
         REFERENCES auth.users(id)
@@ -42,37 +42,13 @@ CREATE POLICY "Students can view own activities"
     FOR SELECT
     USING (auth.uid() = student_id);
 
--- Parents can view their children's activities (if parent-student relationship exists)
-CREATE POLICY "Parents can view children activities"
-    ON student_activities
-    FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM parent_children
-            WHERE parent_id = auth.uid()
-            AND child_id = student_id
-        )
-    );
-
--- Counselors can view activities of their students
-CREATE POLICY "Counselors can view student activities"
-    ON student_activities
-    FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid()
-            AND role = 'counselor'
-        )
-    );
-
 -- System/Service role can insert activities (for automated logging)
 CREATE POLICY "Service role can insert activities"
     ON student_activities
     FOR INSERT
     WITH CHECK (true);
 
--- Add comment to table
+-- Add comments to table
 COMMENT ON TABLE student_activities IS 'Stores student activity feed events automatically created when actions occur';
 COMMENT ON COLUMN student_activities.activity_type IS 'Type of activity: application_submitted, achievement_earned, etc.';
 COMMENT ON COLUMN student_activities.metadata IS 'Additional context data stored as JSON';
