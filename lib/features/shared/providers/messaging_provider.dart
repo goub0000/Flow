@@ -388,6 +388,7 @@ final unreadMessageCountProvider = FutureProvider<UnreadCountResponse>((ref) asy
 });
 
 /// Provider for total unread count (for badges)
+/// NOTE: This uses the API-based count. For real-time updates, see totalUnreadMessagesRealtimeProvider
 final totalUnreadMessagesProvider = Provider<int>((ref) {
   final unreadCountAsync = ref.watch(unreadMessageCountProvider);
   return unreadCountAsync.when(
@@ -396,6 +397,12 @@ final totalUnreadMessagesProvider = Provider<int>((ref) {
     error: (_, __) => 0,
   );
 });
+
+/// Real-time provider for total unread count (uses Supabase real-time)
+/// Import note: This requires conversations_realtime_provider to be available
+/// For now, this is a placeholder that falls back to the API-based version
+/// To enable real-time: uncomment the import and use realtimeTotalUnreadCountProvider
+final totalUnreadMessagesRealtimeProvider = totalUnreadMessagesProvider;
 
 /// Legacy providers for backward compatibility
 final messagingProvider = conversationsProvider;
