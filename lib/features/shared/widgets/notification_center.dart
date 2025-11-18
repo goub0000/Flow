@@ -4,15 +4,15 @@ import 'package:go_router/go_router.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
 
-/// Notification center screen - displays list of notifications
-class NotificationsScreen extends ConsumerStatefulWidget {
-  const NotificationsScreen({super.key});
+/// Notification center widget - displays list of notifications
+class NotificationCenter extends ConsumerStatefulWidget {
+  const NotificationCenter({super.key});
 
   @override
-  ConsumerState<NotificationsScreen> createState() => _NotificationsScreenState();
+  ConsumerState<NotificationCenter> createState() => _NotificationCenterState();
 }
 
-class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
+class _NotificationCenterState extends ConsumerState<NotificationCenter> {
   final _scrollController = ScrollController();
 
   @override
@@ -56,12 +56,6 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               },
               child: const Text('Mark all read'),
             ),
-
-          // Settings button
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => context.push('/settings/notifications'),
-          ),
 
           // Filter button
           IconButton(
@@ -183,7 +177,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
       // Notifications under this date
       for (final notification in entry.value) {
         if (currentIndex == index) {
-          return _NotificationTile(
+          return NotificationTile(
             notification: notification,
             onTap: () => _onNotificationTap(context, notification),
             onMarkAsRead: () => _markAsRead(notification.id),
@@ -285,7 +279,7 @@ class _DateHeader extends StatelessWidget {
 }
 
 /// Individual notification tile
-class _NotificationTile extends StatelessWidget {
+class NotificationTile extends StatelessWidget {
   final AppNotification notification;
   final VoidCallback? onTap;
   final VoidCallback? onMarkAsRead;
@@ -293,7 +287,8 @@ class _NotificationTile extends StatelessWidget {
   final VoidCallback? onArchive;
   final VoidCallback? onDelete;
 
-  const _NotificationTile({
+  const NotificationTile({
+    super.key,
     required this.notification,
     this.onTap,
     this.onMarkAsRead,
