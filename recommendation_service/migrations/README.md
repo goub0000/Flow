@@ -192,6 +192,73 @@ for table in tables:
 "
 ```
 
+## Completed Migrations
+
+### recommendation_tracking Tables Migration
+
+**File:** `create_recommendation_tracking_tables.sql`
+**Status:** ⏳ PENDING
+**Created:** 2025-11-17
+**Purpose:** Creates 4 tables for Phase 3.2 - ML Recommendations API Enhancement with tracking
+
+#### To Execute This Migration
+
+1. Open your Supabase project dashboard:
+   - URL: https://supabase.com/dashboard/project/wmuarotbdjhqbyjyslqg/editor
+
+2. Navigate to SQL Editor:
+   - Click "SQL Editor" in the left sidebar
+   - Click "New Query"
+
+3. Copy the SQL from `create_recommendation_tracking_tables.sql`
+
+4. Paste into the SQL Editor and click "Run" (or press Ctrl+Enter)
+
+5. Verify the migration succeeded:
+   - You should see a success message
+   - The following 4 tables should appear in your database schema:
+     - recommendation_impressions
+     - recommendation_clicks
+     - recommendation_feedback
+     - student_interaction_summary
+
+#### What This Migration Creates
+
+- **Tables (4):**
+  - `recommendation_impressions` - Tracks when recommendations are shown to students
+  - `recommendation_clicks` - Tracks student clicks on recommendations
+  - `recommendation_feedback` - Explicit feedback from students about recommendations
+  - `student_interaction_summary` - Aggregated interaction statistics per student
+
+- **Features:**
+  - Automatic impression tracking when recommendations are shown
+  - Click tracking with action types (view, apply, favorite, share)
+  - Feedback system for ML model improvement
+  - Interaction summary with triggers for automatic updates
+  - CTR (click-through rate) calculation
+
+- **Indexes:** Multiple indexes for query performance
+
+- **RLS Policies:** Row-level security for students and service role access
+
+- **Triggers:** Automatic update of student_interaction_summary on new impressions/clicks
+
+#### Verification
+
+After running the migration, verify it worked:
+
+```bash
+cd recommendation_service
+python -c "
+from app.database.config import get_supabase
+db = get_supabase()
+tables = ['recommendation_impressions', 'recommendation_clicks', 'recommendation_feedback', 'student_interaction_summary']
+for table in tables:
+    result = db.table(table).select('count', count='exact').limit(0).execute()
+    print(f'{table}: {result.count} records')
+"
+```
+
 ## Migration History
 
 | Date       | Migration                                  | Status      |
@@ -199,4 +266,5 @@ for table in tables:
 | 2025-11-17 | create_student_activities_table.sql        | ✅ COMPLETED |
 | 2025-11-17 | create_grades_tables.sql                   | ✅ COMPLETED |
 | 2025-11-17 | create_recommendation_system_tables.sql    | ✅ COMPLETED |
+| 2025-11-17 | create_recommendation_tracking_tables.sql  | ⏳ PENDING   |
 

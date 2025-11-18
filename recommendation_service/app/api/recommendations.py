@@ -1,8 +1,9 @@
 """
 Recommendations API endpoints - Cloud-Based (Supabase)
 ML-Enhanced with automatic fallback to rule-based scoring
+Phase 3.2 - Enhanced with personalized recommendations and tracking
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from supabase import Client
 from app.database.config import get_db
 from app.schemas.recommendation import (
@@ -11,10 +12,20 @@ from app.schemas.recommendation import (
     RecommendationListResponse,
     UpdateRecommendationRequest,
 )
+from app.schemas.recommendation_tracking import (
+    PersonalizedRecommendationsResponse,
+    RecommendationClickCreate,
+    RecommendationClickResponse,
+    RecommendationFeedbackCreate,
+    RecommendationFeedbackResponse,
+    StudentInteractionSummaryResponse
+)
+from app.services.personalized_recommendations_service import PersonalizedRecommendationsService
 # Lazy import ML engine to avoid loading heavy dependencies at startup
 # from app.ml.ml_recommendation_engine import MLRecommendationEngine
 import logging
 import os
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -199,4 +210,166 @@ def get_favorite_recommendations(user_id: str, db: Client = Depends(get_db)):
         raise
     except Exception as e:
         logger.error(f"Error fetching favorite recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== Phase 3.2 - Personalized Recommendations with Tracking ====================
+
+@router.get("/recommendations/personalized", response_model=PersonalizedRecommendationsResponse)
+async def get_personalized_recommendations(
+    student_id: str = Query(..., description="Student user ID"),
+    max_results: int = Query(10, ge=1, le=50, description="Maximum number of recommendations"),
+    category: Optional[str] = Query(None, description="Filter by category (Safety, Match, Reach)"),
+    db: Client = Depends(get_db)
+):
+    """
+    Get personalized university recommendations with match explanations and tracking
+
+    **Phase 3.2 - ML Recommendations API Enhancement**
+
+    This endpoint provides:
+    - Personalized recommendations with match scores
+    - Human-readable match explanations
+    - Detailed breakdown of matching factors
+    - Automatic tracking of impressions for ML improvement
+    - Confidence scores from ML model
+
+    **Query Parameters:**
+    - student_id: Student's user ID
+    - max_results: Number of recommendations to return (1-50, default: 10)
+    - category: Optional filter by Safety/Match/Reach
+
+    **Returns:**
+    - List of personalized recommendations with explanations
+    - Session ID for tracking clicks/feedback
+    - Category counts (safety, match, reach)
+    - ML model information
+
+    **Note:** Recommendations must be generated first using POST /recommendations/generate
+    """
+    try:
+        service = PersonalizedRecommendationsService(db)
+        return await service.generate_personalized_recommendations(
+            student_id=student_id,
+            max_results=max_results,
+            category_filter=category
+        )
+
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error generating personalized recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/recommendations/clicks", response_model=RecommendationClickResponse, status_code=201)
+async def track_recommendation_click(
+    click_data: RecommendationClickCreate,
+    db: Client = Depends(get_db)
+):
+    """
+    Track when a user clicks on a recommendation
+
+    **Use Cases:**
+    - User views university details
+    - User applies to university
+    - User favorites a university
+    - User shares a university
+
+    **Request Body:**
+    - impression_id: Optional link to the impression record
+    - student_id: Student who clicked
+    - university_id: University that was clicked
+    - action_type: Type of action (view_details, apply, favorite, share)
+    - time_to_click_seconds: Optional time from impression to click
+    - device_type: Optional device type (web, mobile, tablet)
+
+    **ML Usage:**
+    - Click data is used to improve recommendation accuracy
+    - High click-through rates indicate good matches
+    - Action types show different levels of engagement
+    """
+    try:
+        service = PersonalizedRecommendationsService(db)
+        result = service.track_click(click_data)
+        return result
+
+    except Exception as e:
+        logger.error(f"Error tracking click: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/recommendations/feedback", response_model=RecommendationFeedbackResponse, status_code=201)
+async def submit_recommendation_feedback(
+    feedback_data: RecommendationFeedbackCreate,
+    db: Client = Depends(get_db)
+):
+    """
+    Submit explicit feedback about a recommendation
+
+    **Feedback Types:**
+    - thumbs_up: Helpful recommendation
+    - thumbs_down: Not helpful
+    - not_interested: User not interested in this university
+    - already_applied: User already applied
+    - helpful/not_helpful: General feedback
+
+    **Request Body:**
+    - student_id: Student providing feedback
+    - university_id: University being rated
+    - feedback_type: Type of feedback
+    - rating: Optional 1-5 star rating
+    - comment: Optional text comment
+    - reasons: Optional array of specific reasons
+
+    **ML Usage:**
+    - Explicit feedback directly improves ML model
+    - Negative feedback reduces similar recommendations
+    - Reasons help identify what factors matter most
+    """
+    try:
+        service = PersonalizedRecommendationsService(db)
+        result = service.submit_feedback(feedback_data)
+        return result
+
+    except Exception as e:
+        logger.error(f"Error submitting feedback: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/recommendations/analytics/{student_id}", response_model=Optional[StudentInteractionSummaryResponse])
+async def get_student_recommendation_analytics(
+    student_id: str,
+    db: Client = Depends(get_db)
+):
+    """
+    Get aggregated analytics for a student's recommendation interactions
+
+    **Returns:**
+    - Total impressions (recommendations shown)
+    - Total clicks
+    - Total applications from recommendations
+    - Total favorites
+    - Click-through rate (CTR)
+    - Preferred categories (based on clicks)
+    - Preferred locations
+    - Preferred cost range
+    - Last interaction timestamp
+
+    **Use Cases:**
+    - Student dashboard analytics
+    - Understanding student preferences
+    - Personalizing future recommendations
+    """
+    try:
+        service = PersonalizedRecommendationsService(db)
+        result = service.get_student_interaction_summary(student_id)
+
+        if result is None:
+            return None  # No interactions yet
+
+        return result
+
+    except Exception as e:
+        logger.error(f"Error getting analytics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
