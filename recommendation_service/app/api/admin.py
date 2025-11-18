@@ -482,3 +482,368 @@ async def get_user_activity(
             status_code=500,
             detail=f"Failed to fetch user activity: {str(e)}"
         )
+
+
+# ==================== ADMIN DASHBOARD ANALYTICS ====================
+
+class DataPoint(BaseModel):
+    """Single data point for charts"""
+    label: str  # Month name, role name, etc.
+    value: float  # The numeric value
+    date: Optional[datetime] = None  # Optional date for time-series
+
+
+class UserGrowthResponse(BaseModel):
+    """User growth analytics response"""
+    data_points: List[DataPoint]
+    total_users: int
+    growth_rate: float  # Percentage growth from previous period
+    period: str  # "6_months", "1_year", etc.
+    comparison_period_users: int  # Users in previous period
+    average_per_period: float  # Average users per month/week
+
+
+class RoleDistributionResponse(BaseModel):
+    """Role distribution analytics response"""
+    distributions: List[DataPoint]
+    total_users: int
+    most_common_role: str
+    role_percentages: Dict[str, float]
+
+
+class EnhancedMetricsResponse(BaseModel):
+    """Enhanced metrics with comparisons"""
+    active_users_30days: int
+    active_users_30days_previous: int
+    active_users_change_percent: float
+
+    new_registrations_7days: int
+    new_registrations_7days_previous: int
+    registrations_change_percent: float
+
+    applications_7days: int
+    applications_7days_previous: int
+    applications_change_percent: float
+
+    total_users: int
+    total_students: int
+    total_institutions: int
+    total_parents: int
+    total_counselors: int
+
+
+@router.get("/admin/dashboard/analytics/user-growth")
+async def get_user_growth_analytics(
+    period: str = Query(default="6_months", description="Time period: 6_months, 1_year, 3_months"),
+    current_user: CurrentUser = Depends(require_admin)
+) -> UserGrowthResponse:
+    """
+    Get user growth analytics over time
+
+    **Admin Only** - Returns time-series data of user registrations.
+
+    **Query Parameters:**
+    - period: Time period to analyze (6_months, 1_year, 3_months)
+
+    **Returns:**
+    - data_points: Array of {label, value, date} for chart visualization
+    - total_users: Total number of users
+    - growth_rate: Percentage growth from previous period
+    - comparison_period_users: Number of users in comparison period
+    - average_per_period: Average users registered per month
+    """
+    try:
+        db = get_supabase()
+        now = datetime.utcnow()
+
+        # Determine time range
+        if period == "1_year":
+            months_back = 12
+            comparison_months_back = 24
+        elif period == "3_months":
+            months_back = 3
+            comparison_months_back = 6
+        else:  # default 6_months
+            months_back = 6
+            comparison_months_back = 12
+
+        start_date = now - timedelta(days=months_back * 30)
+        comparison_start_date = now - timedelta(days=comparison_months_back * 30)
+        comparison_end_date = start_date
+
+        # Get all users with registration dates
+        response = db.table('users').select('id, created_at, role').order('created_at').execute()
+
+        if not response.data:
+            return UserGrowthResponse(
+                data_points=[],
+                total_users=0,
+                growth_rate=0.0,
+                period=period,
+                comparison_period_users=0,
+                average_per_period=0.0
+            )
+
+        # Aggregate by month
+        month_counts = {}
+        total_users = len(response.data)
+        current_period_users = 0
+        comparison_period_users = 0
+
+        for user in response.data:
+            created_at = datetime.fromisoformat(user['created_at'].replace('Z', '+00:00'))
+
+            # Count for current period
+            if created_at >= start_date:
+                current_period_users += 1
+                # Group by month
+                month_key = created_at.strftime('%Y-%m')
+                month_label = created_at.strftime('%b')  # Jan, Feb, etc.
+
+                if month_key not in month_counts:
+                    month_counts[month_key] = {
+                        'label': month_label,
+                        'value': 0,
+                        'date': created_at.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+                    }
+                month_counts[month_key]['value'] += 1
+
+            # Count for comparison period
+            if comparison_start_date <= created_at < comparison_end_date:
+                comparison_period_users += 1
+
+        # Convert to list and sort by date
+        data_points_raw = sorted(month_counts.values(), key=lambda x: x['date'])
+
+        # Calculate cumulative values for better visualization
+        cumulative = 0
+        data_points = []
+        for point in data_points_raw:
+            cumulative += point['value']
+            data_points.append(DataPoint(
+                label=point['label'],
+                value=cumulative,  # Cumulative total
+                date=point['date']
+            ))
+
+        # Calculate growth rate
+        if comparison_period_users > 0:
+            growth_rate = ((current_period_users - comparison_period_users) / comparison_period_users) * 100
+        else:
+            growth_rate = 100.0 if current_period_users > 0 else 0.0
+
+        # Average per month
+        average_per_period = current_period_users / months_back if months_back > 0 else 0.0
+
+        return UserGrowthResponse(
+            data_points=data_points,
+            total_users=total_users,
+            growth_rate=round(growth_rate, 2),
+            period=period,
+            comparison_period_users=comparison_period_users,
+            average_per_period=round(average_per_period, 2)
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching user growth analytics: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch user growth analytics: {str(e)}"
+        )
+
+
+@router.get("/admin/dashboard/analytics/role-distribution")
+async def get_role_distribution_analytics(
+    current_user: CurrentUser = Depends(require_admin)
+) -> RoleDistributionResponse:
+    """
+    Get user role distribution analytics
+
+    **Admin Only** - Returns breakdown of users by role.
+
+    **Returns:**
+    - distributions: Array of {label, value} for pie chart
+    - total_users: Total number of users
+    - most_common_role: Role with most users
+    - role_percentages: Percentage breakdown by role
+    """
+    try:
+        db = get_supabase()
+
+        # Get all users with roles
+        response = db.table('users').select('role').execute()
+
+        if not response.data:
+            return RoleDistributionResponse(
+                distributions=[],
+                total_users=0,
+                most_common_role="none",
+                role_percentages={}
+            )
+
+        # Count by role
+        role_counts = {}
+        total_users = len(response.data)
+
+        for user in response.data:
+            role = user.get('role', 'unknown')
+            role_counts[role] = role_counts.get(role, 0) + 1
+
+        # Convert to data points
+        distributions = []
+        role_percentages = {}
+
+        for role, count in role_counts.items():
+            percentage = (count / total_users) * 100 if total_users > 0 else 0
+            role_percentages[role] = round(percentage, 2)
+
+            distributions.append(DataPoint(
+                label=role.capitalize(),
+                value=count
+            ))
+
+        # Find most common role
+        most_common_role = max(role_counts.items(), key=lambda x: x[1])[0] if role_counts else "none"
+
+        # Sort by count descending
+        distributions.sort(key=lambda x: x.value, reverse=True)
+
+        return RoleDistributionResponse(
+            distributions=distributions,
+            total_users=total_users,
+            most_common_role=most_common_role,
+            role_percentages=role_percentages
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching role distribution analytics: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch role distribution analytics: {str(e)}"
+        )
+
+
+@router.get("/admin/dashboard/analytics/metrics")
+async def get_enhanced_metrics(
+    current_user: CurrentUser = Depends(require_admin)
+) -> EnhancedMetricsResponse:
+    """
+    Get enhanced user activity metrics with period comparisons
+
+    **Admin Only** - Returns key metrics with comparison to previous periods.
+
+    **Returns:**
+    - Active users in last 30 days (with comparison to previous 30 days)
+    - New registrations in last 7 days (with comparison to previous 7 days)
+    - Applications in last 7 days (with comparison to previous 7 days)
+    - Total user counts by role
+    - Percentage changes for all metrics
+    """
+    try:
+        db = get_supabase()
+        now = datetime.utcnow()
+
+        # Time boundaries
+        days_30_ago = now - timedelta(days=30)
+        days_60_ago = now - timedelta(days=60)
+        days_7_ago = now - timedelta(days=7)
+        days_14_ago = now - timedelta(days=14)
+
+        # Active users (last 30 days) - users who logged in
+        active_30_response = db.table('activity_log').select('user_id', count='exact').eq(
+            'action_type', ActivityType.USER_LOGIN
+        ).gte('timestamp', days_30_ago.isoformat()).execute()
+
+        # Unique active users
+        active_users_30days = len(set([a['user_id'] for a in active_30_response.data if a.get('user_id')])) if active_30_response.data else 0
+
+        # Active users (previous 30 days)
+        active_60_response = db.table('activity_log').select('user_id').eq(
+            'action_type', ActivityType.USER_LOGIN
+        ).gte('timestamp', days_60_ago.isoformat()).lt('timestamp', days_30_ago.isoformat()).execute()
+
+        active_users_30days_previous = len(set([a['user_id'] for a in active_60_response.data if a.get('user_id')])) if active_60_response.data else 0
+
+        # Calculate change percent
+        if active_users_30days_previous > 0:
+            active_users_change_percent = ((active_users_30days - active_users_30days_previous) / active_users_30days_previous) * 100
+        else:
+            active_users_change_percent = 100.0 if active_users_30days > 0 else 0.0
+
+        # New registrations (last 7 days)
+        reg_7_response = db.table('users').select('id', count='exact').gte(
+            'created_at', days_7_ago.isoformat()
+        ).execute()
+        new_registrations_7days = reg_7_response.count if reg_7_response.count else 0
+
+        # New registrations (previous 7 days)
+        reg_14_response = db.table('users').select('id', count='exact').gte(
+            'created_at', days_14_ago.isoformat()
+        ).lt('created_at', days_7_ago.isoformat()).execute()
+        new_registrations_7days_previous = reg_14_response.count if reg_14_response.count else 0
+
+        if new_registrations_7days_previous > 0:
+            registrations_change_percent = ((new_registrations_7days - new_registrations_7days_previous) / new_registrations_7days_previous) * 100
+        else:
+            registrations_change_percent = 100.0 if new_registrations_7days > 0 else 0.0
+
+        # Applications (last 7 days)
+        apps_7_response = db.table('applications').select('id', count='exact').gte(
+            'created_at', days_7_ago.isoformat()
+        ).execute()
+        applications_7days = apps_7_response.count if apps_7_response.count else 0
+
+        # Applications (previous 7 days)
+        apps_14_response = db.table('applications').select('id', count='exact').gte(
+            'created_at', days_14_ago.isoformat()
+        ).lt('created_at', days_7_ago.isoformat()).execute()
+        applications_7days_previous = apps_14_response.count if apps_14_response.count else 0
+
+        if applications_7days_previous > 0:
+            applications_change_percent = ((applications_7days - applications_7days_previous) / applications_7days_previous) * 100
+        else:
+            applications_change_percent = 100.0 if applications_7days > 0 else 0.0
+
+        # Total users by role
+        all_users_response = db.table('users').select('role', count='exact').execute()
+        total_users = all_users_response.count if all_users_response.count else 0
+
+        # Count by role
+        students_response = db.table('users').select('id', count='exact').eq('role', 'student').execute()
+        total_students = students_response.count if students_response.count else 0
+
+        institutions_response = db.table('users').select('id', count='exact').eq('role', 'institution').execute()
+        total_institutions = institutions_response.count if institutions_response.count else 0
+
+        parents_response = db.table('users').select('id', count='exact').eq('role', 'parent').execute()
+        total_parents = parents_response.count if parents_response.count else 0
+
+        counselors_response = db.table('users').select('id', count='exact').eq('role', 'counselor').execute()
+        total_counselors = counselors_response.count if counselors_response.count else 0
+
+        return EnhancedMetricsResponse(
+            active_users_30days=active_users_30days,
+            active_users_30days_previous=active_users_30days_previous,
+            active_users_change_percent=round(active_users_change_percent, 2),
+
+            new_registrations_7days=new_registrations_7days,
+            new_registrations_7days_previous=new_registrations_7days_previous,
+            registrations_change_percent=round(registrations_change_percent, 2),
+
+            applications_7days=applications_7days,
+            applications_7days_previous=applications_7days_previous,
+            applications_change_percent=round(applications_change_percent, 2),
+
+            total_users=total_users,
+            total_students=total_students,
+            total_institutions=total_institutions,
+            total_parents=total_parents,
+            total_counselors=total_counselors
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching enhanced metrics: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch enhanced metrics: {str(e)}"
+        )
