@@ -1,0 +1,12 @@
+# Scheduled Reports Cron Service Dependencies
+# Install with: pip install -r requirements_scheduled_reports.txt
+
+# Core scheduling
+APScheduler==3.10.4
+
+# Email service
+sendgrid==6.11.0
+
+# Already in main requirements.txt but listed here for reference:
+# supabase==2.0.0
+# python-dotenv==1.0.0
