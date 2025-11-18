@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/message_widgets.dart';
+import '../../../shared/providers/conversations_realtime_provider.dart';
+import '../../../../core/models/conversation_model.dart';
 
 /// Messages List Screen
 ///
-/// Displays all conversations for the current user.
+/// Displays all conversations for the current user with real-time updates.
 /// Shows conversation tiles with:
 /// - Avatar and online status
 /// - Last message preview
 /// - Unread count badge
 /// - Time ago indicator
-///
-/// Backend Integration TODO:
-/// - Integrate with MessagingService to fetch real conversations
-/// - Implement real-time updates via WebSocket
-/// - Add pull-to-refresh functionality
-/// - Implement search and filter capabilities
-/// - Add pagination/infinite scroll
+/// - Real-time message updates
+/// - Connection status indicator
 
-class MessagesListScreen extends StatefulWidget {
+class MessagesListScreen extends ConsumerStatefulWidget {
   const MessagesListScreen({super.key});
 
   @override
-  State<MessagesListScreen> createState() => _MessagesListScreenState();
+  ConsumerState<MessagesListScreen> createState() => _MessagesListScreenState();
 }
 
-class _MessagesListScreenState extends State<MessagesListScreen> {
+class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
   final _searchController = TextEditingController();
   bool _isSearching = false;
 
@@ -36,128 +34,46 @@ class _MessagesListScreenState extends State<MessagesListScreen> {
     super.dispose();
   }
 
-  // Mock data - replace with actual API integration
-  final List<Conversation> _mockConversations = [
-    Conversation(
-      id: '1',
-      title: 'Dr. Sarah Johnson',
-      subtitle: 'Academic Counselor',
-      avatar: null,
-      lastMessage: Message(
-        id: 'm1',
-        conversationId: '1',
-        senderId: 'counselor1',
-        senderName: 'Dr. Sarah Johnson',
-        content: 'Great! I\'ve reviewed your application. Let\'s discuss the scholarship opportunities.',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
-        isCurrentUser: false,
-      ),
-      unreadCount: 2,
-      isOnline: true,
-      participantIds: ['current_user', 'counselor1'],
-      lastActivity: DateTime.now().subtract(const Duration(minutes: 5)),
-    ),
-    Conversation(
-      id: '2',
-      title: 'University of Nairobi',
-      subtitle: 'Admissions Office',
-      avatar: null,
-      lastMessage: Message(
-        id: 'm2',
-        conversationId: '2',
-        senderId: 'current_user',
-        senderName: 'You',
-        content: 'Thank you for the information. When can I expect a response?',
-        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-        isCurrentUser: true,
-      ),
-      unreadCount: 0,
-      isOnline: false,
-      participantIds: ['current_user', 'institution1'],
-      lastActivity: DateTime.now().subtract(const Duration(hours: 2)),
-    ),
-    Conversation(
-      id: '3',
-      title: 'John Kamau',
-      subtitle: 'Student',
-      avatar: null,
-      lastMessage: Message(
-        id: 'm3',
-        conversationId: '3',
-        senderId: 'student2',
-        senderName: 'John Kamau',
-        content: 'Hey! Did you check out the new Computer Science program?',
-        timestamp: DateTime.now().subtract(const Duration(hours: 5)),
-        isCurrentUser: false,
-      ),
-      unreadCount: 1,
-      isOnline: true,
-      participantIds: ['current_user', 'student2'],
-      lastActivity: DateTime.now().subtract(const Duration(hours: 5)),
-    ),
-    Conversation(
-      id: '4',
-      title: 'Strathmore University',
-      subtitle: 'Financial Aid Office',
-      avatar: null,
-      lastMessage: Message(
-        id: 'm4',
-        conversationId: '4',
-        senderId: 'institution2',
-        senderName: 'Financial Aid',
-        content: 'Your scholarship application has been received and is under review.',
-        timestamp: DateTime.now().subtract(const Duration(days: 1)),
-        isCurrentUser: false,
-      ),
-      unreadCount: 0,
-      isOnline: false,
-      participantIds: ['current_user', 'institution2'],
-      lastActivity: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    Conversation(
-      id: '5',
-      title: 'Mary Wanjiku',
-      subtitle: 'Career Counselor',
-      avatar: null,
-      lastMessage: Message(
-        id: 'm5',
-        conversationId: '5',
-        senderId: 'current_user',
-        senderName: 'You',
-        content: 'I\'ll prepare the documents and send them by tomorrow.',
-        timestamp: DateTime.now().subtract(const Duration(days: 2)),
-        isCurrentUser: true,
-      ),
-      unreadCount: 0,
-      isOnline: false,
-      participantIds: ['current_user', 'counselor2'],
-      lastActivity: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-  ];
-
-  List<Conversation> get _filteredConversations {
+  List<Conversation> _getFilteredConversations(List<Conversation> conversations) {
     final query = _searchController.text.toLowerCase();
-    if (query.isEmpty) return _mockConversations;
+    if (query.isEmpty) return conversations;
 
-    return _mockConversations.where((conversation) {
-      return conversation.title.toLowerCase().contains(query) ||
-          (conversation.subtitle?.toLowerCase().contains(query) ?? false) ||
-          (conversation.lastMessage?.content.toLowerCase().contains(query) ??
-              false);
+    return conversations.where((conversation) {
+      // Search in title (if available)
+      if (conversation.title?.toLowerCase().contains(query) ?? false) {
+        return true;
+      }
+      // Search in last message preview
+      if (conversation.lastMessagePreview?.toLowerCase().contains(query) ?? false) {
+        return true;
+      }
+      return false;
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final conversations = _filteredConversations;
-    final unreadCount =
-        conversations.fold<int>(0, (sum, c) => sum + c.unreadCount);
+    final conversationsState = ref.watch(conversationsRealtimeProvider);
+    final allConversations = conversationsState.conversations;
+    final conversations = _getFilteredConversations(allConversations);
+    final unreadCount = conversationsState.totalUnreadCount;
+    final isConnected = conversationsState.isConnected;
+    final isLoading = conversationsState.isLoading;
+    final error = conversationsState.error;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(_isSearching ? 'Search Messages' : 'Messages'),
+        title: Row(
+          children: [
+            Text(_isSearching ? 'Search Messages' : 'Messages'),
+            if (!isConnected) ...[
+              const SizedBox(width: 8),
+              const Icon(Icons.cloud_off, size: 16, color: AppColors.warning),
+            ],
+          ],
+        ),
         centerTitle: false,
         actions: [
           if (!_isSearching)
@@ -214,80 +130,236 @@ class _MessagesListScreenState extends State<MessagesListScreen> {
               )
             : null,
       ),
-      body: conversations.isEmpty
-          ? const EmptyMessagesState(
-              message: 'No conversations yet',
-              icon: Icons.chat_bubble_outline,
+      body: error != null
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(error, style: const TextStyle(color: Colors.red)),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      ref.read(conversationsRealtimeProvider.notifier).refresh();
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             )
-          : Column(
-              children: [
-                // Unread messages banner
-                if (unreadCount > 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    child: Row(
+          : isLoading && conversations.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : conversations.isEmpty
+                  ? const EmptyMessagesState(
+                      message: 'No conversations yet',
+                      icon: Icons.chat_bubble_outline,
+                    )
+                  : Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: const BoxDecoration(
-                            color: AppColors.primary,
-                            shape: BoxShape.circle,
+                        // Unread messages banner
+                        if (unreadCount > 0)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.mail,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'You have $unreadCount unread message${unreadCount > 1 ? 's' : ''}',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          child: const Icon(
-                            Icons.mail,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'You have $unreadCount unread message${unreadCount > 1 ? 's' : ''}',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
+
+                        // Conversations list
+                        Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              await ref.read(conversationsRealtimeProvider.notifier).refresh();
+                            },
+                            child: ListView.builder(
+                              itemCount: conversations.length,
+                              itemBuilder: (context, index) {
+                                final conversation = conversations[index];
+                                return _ConversationListTile(
+                                  conversation: conversation,
+                                  onTap: () {
+                                    context.push('/messages/${conversation.id}');
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-
-                // Conversations list
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: conversations.length,
-                    itemBuilder: (context, index) {
-                      final conversation = conversations[index];
-                      return ConversationTile(
-                        conversation: conversation,
-                        onTap: () {
-                          context.push(
-                            '/messages/${conversation.id}',
-                            extra: conversation,
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'messages_fab',
         onPressed: () {
-          // Navigate to new conversation screen
-          // context.push('/messages/new');
+          // TODO: Implement new conversation flow with user search
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('New conversation feature - Backend integration required'),
+              content: Text('New conversation feature - Coming soon'),
             ),
           );
         },
         child: const Icon(Icons.edit),
       ),
     );
+  }
+}
+
+/// Custom conversation list tile for real-time conversations
+class _ConversationListTile extends StatelessWidget {
+  final Conversation conversation;
+  final VoidCallback onTap;
+
+  const _ConversationListTile({
+    required this.conversation,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final hasUnread = conversation.unreadCount > 0;
+    final lastMessageTime = conversation.lastMessageAt;
+    final timeAgo = lastMessageTime != null ? _formatTimeAgo(lastMessageTime) : '';
+
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: hasUnread ? AppColors.primary.withValues(alpha: 0.05) : null,
+          border: Border(
+            bottom: BorderSide(
+              color: theme.colorScheme.outline.withValues(alpha: 0.1),
+            ),
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Avatar (placeholder for now)
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.person, color: AppColors.primary),
+            ),
+            const SizedBox(width: 12),
+
+            // Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          conversation.title ?? 'Conversation',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: hasUnread ? FontWeight.bold : FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (timeAgo.isNotEmpty)
+                        Text(
+                          timeAgo,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: hasUnread ? AppColors.primary : AppColors.textSecondary,
+                            fontWeight: hasUnread ? FontWeight.w600 : null,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          conversation.lastMessagePreview ?? 'No messages yet',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            fontWeight: hasUnread ? FontWeight.w600 : null,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (hasUnread) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.error,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${conversation.unreadCount}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes}m';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours}h';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}d';
+    } else {
+      return '${dateTime.day}/${dateTime.month}';
+    }
   }
 }

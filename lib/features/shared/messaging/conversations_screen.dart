@@ -9,6 +9,12 @@ import '../widgets/loading_indicator.dart';
 import '../widgets/logo_avatar.dart';
 import '../providers/messaging_provider.dart' hide Conversation;
 
+/// @deprecated This screen is deprecated. Use MessagesListScreen instead which has
+/// real-time messaging support with Supabase. This file is kept for backwards compatibility
+/// but should not be used in new code.
+///
+/// See: lib/features/shared/messages/presentation/messages_list_screen.dart
+@Deprecated('Use MessagesListScreen instead')
 class ConversationsScreen extends ConsumerStatefulWidget {
   const ConversationsScreen({super.key});
 
