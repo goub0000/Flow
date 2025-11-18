@@ -18,6 +18,7 @@ import '../../providers/activity_feed_provider.dart';
 import '../../providers/recommendations_provider.dart';
 import '../../providers/dashboard_statistics_provider.dart';
 import '../../providers/student_applications_realtime_provider.dart';
+import '../../../../core/providers/student_activities_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -169,13 +170,12 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
       try {
         // Refresh all data sources - invalidate providers to force refresh
         ref.invalidate(dashboardStatisticsProvider);
-        ref.invalidate(activityFeedProvider);
+        ref.invalidate(studentActivitiesProvider);
         ref.invalidate(recommendationsProvider);
         ref.invalidate(applicationsListProvider);
 
-        // Wait for async providers to complete
+        // Wait for async providers to complete (if needed)
         await Future.wait([
-          ref.read(activityFeedProvider.future),
           ref.read(recommendationsProvider.future),
         ]);
 
@@ -220,8 +220,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
     // Get real statistics from provider
     final statistics = ref.watch(dashboardStatisticsProvider);
 
-    // Get real activity feed
-    final activitiesAsync = ref.watch(activityFeedProvider);
+    // Get real activity feed from new provider
+    final activitiesState = ref.watch(studentActivitiesProvider);
 
     // Get real recommendations
     final recommendationsAsync = ref.watch(recommendationsProvider);
@@ -513,10 +513,46 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
           ),
           const SizedBox(height: 24),
 
-          // Activity Feed with loading state
-          activitiesAsync.when(
-            data: (activities) => ActivityFeed(
-              activities: activities,
+          // Activity Feed with loading/error states
+          if (activitiesState.isLoading && activitiesState.activities.isEmpty)
+            const Center(child: CircularProgressIndicator())
+          else if (activitiesState.error != null && activitiesState.activities.isEmpty)
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Failed to load activities',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    activitiesState.error!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () => ref.read(studentActivitiesProvider.notifier).refresh(),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+          else
+            ActivityFeed(
+              activities: activitiesState.activities.map((a) => Activity(
+                id: a.id,
+                type: a.type.toString().split('.').last,
+                title: a.title,
+                description: a.description,
+                timestamp: a.timestamp,
+                icon: a.icon,
+                metadata: a.metadata,
+              )).toList(),
               onViewAll: () {
                 // Show coming soon dialog for full activity log
                 ComingSoonDialog.show(
@@ -536,6 +572,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 switch (activityType) {
                   case 'application':
                   case 'application_status':
+                  case 'application_submitted':
+                  case 'application_status_changed':
                     // Navigate to application detail or applications tab
                     if (metadata != null && metadata['applicationId'] != null) {
                       // TODO: Navigate to specific application detail when implemented
@@ -548,6 +586,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
 
                   case 'achievement':
                   case 'badge':
+                  case 'achievement_earned':
                     // Show achievement details in a dialog
                     showDialog(
                       context: context,
@@ -585,6 +624,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
 
                   case 'payment':
                   case 'payment_status':
+                  case 'payment_made':
                     // Navigate to payment history if available
                     ComingSoonDialog.show(
                       context,
@@ -595,6 +635,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
 
                   case 'message':
                   case 'notification':
+                  case 'message_received':
                     // Navigate to messages
                     context.go('/messages');
                     break;

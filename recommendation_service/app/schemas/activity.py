@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from uuid import UUID
+from enum import Enum
 
 
 class ActivityLogBase(BaseModel):
@@ -81,3 +82,66 @@ class ActivityStatsResponse(BaseModel):
     recent_registrations: int
     recent_logins: int
     recent_applications: int
+
+
+# ==================== Student Activity Feed Schemas ====================
+
+
+class StudentActivityType(str, Enum):
+    """Types of student activities for the activity feed"""
+    APPLICATION_SUBMITTED = "application_submitted"
+    APPLICATION_STATUS_CHANGED = "application_status_changed"
+    ACHIEVEMENT_EARNED = "achievement_earned"
+    PAYMENT_MADE = "payment_made"
+    MESSAGE_RECEIVED = "message_received"
+    COURSE_COMPLETED = "course_completed"
+    MEETING_SCHEDULED = "meeting_scheduled"
+    MEETING_COMPLETED = "meeting_completed"
+
+
+class StudentActivity(BaseModel):
+    """Student activity feed item"""
+    id: str
+    timestamp: datetime
+    type: StudentActivityType
+    title: str
+    description: str
+    icon: str
+    related_entity_id: Optional[str] = Field(
+        default=None,
+        description="ID of related entity (application_id, achievement_id, etc.)"
+    )
+    metadata: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Additional context data (university_name, amount, status, etc.)"
+    )
+
+    class Config:
+        from_attributes = True
+
+
+class StudentActivityFeedResponse(BaseModel):
+    """Response for student activity feed with pagination"""
+    activities: List[StudentActivity]
+    total_count: int
+    page: int = Field(default=1, ge=1, description="Current page number")
+    limit: int = Field(default=10, ge=1, le=100, description="Items per page")
+    has_more: bool = Field(description="Whether more pages are available")
+
+
+class StudentActivityFilterRequest(BaseModel):
+    """Schema for filtering student activities"""
+    page: int = Field(default=1, ge=1, description="Page number")
+    limit: int = Field(default=10, ge=1, le=100, description="Items per page")
+    activity_types: Optional[List[StudentActivityType]] = Field(
+        default=None,
+        description="Filter by specific activity types"
+    )
+    start_date: Optional[datetime] = Field(
+        default=None,
+        description="Filter activities after this date"
+    )
+    end_date: Optional[datetime] = Field(
+        default=None,
+        description="Filter activities before this date"
+    )
