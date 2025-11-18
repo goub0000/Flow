@@ -324,7 +324,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 label: 'Browse Courses',
                 icon: Icons.explore,
                 color: AppColors.primary,
-                onTap: () => context.go('/student/courses'),
+                onTap: () => context.go('/find-your-path'),
               ),
               QuickAction(
                 label: 'My Applications',
@@ -642,7 +642,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
 
                   case 'recommendation':
                     // Navigate to courses/programs
-                    context.go('/student/courses');
+                    context.go('/find-your-path');
                     break;
 
                   default:
@@ -693,16 +693,16 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 } else if (id != null && type == 'course') {
                   // Navigate to specific course detail
                   // TODO: When course detail page is implemented, use: context.go('/student/courses/$id')
-                  // For now, navigate to courses list
-                  context.go('/student/courses');
+                  // For now, navigate to find your path
+                  context.go('/find-your-path');
                 } else if (id != null && type == 'program') {
                   // Navigate to specific program detail
                   // TODO: When program detail page is implemented, use: context.go('/student/programs/$id')
-                  // For now, navigate to courses list
-                  context.go('/student/courses');
+                  // For now, navigate to find your path
+                  context.go('/find-your-path');
                 } else {
-                  // Default navigation to courses page
-                  context.go('/student/courses');
+                  // Default navigation to find your path
+                  context.go('/find-your-path');
                 }
               },
             ),

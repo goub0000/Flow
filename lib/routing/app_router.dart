@@ -29,12 +29,14 @@ import '../features/institution/applicants/presentation/applicants_list_screen.d
 import '../features/institution/applicants/presentation/applicant_detail_screen.dart';
 import '../features/institution/programs/presentation/programs_list_screen.dart';
 import '../features/institution/programs/presentation/create_program_screen.dart';
+import '../features/institution/programs/presentation/program_detail_screen.dart';
 import '../features/institution/providers/institution_applicants_provider.dart';
 import '../core/models/applicant_model.dart';
 
 // Parent
 import '../features/parent/dashboard/presentation/parent_dashboard_screen.dart';
 import '../features/parent/children/presentation/children_list_screen.dart';
+import '../features/parent/children/presentation/child_detail_screen.dart';
 
 // Counselor
 import '../features/counselor/dashboard/presentation/counselor_dashboard_screen.dart';
@@ -94,6 +96,7 @@ import '../features/shared/messages/presentation/messages_list_screen.dart';
 import '../features/shared/messages/presentation/conversation_detail_screen.dart';
 import '../features/shared/widgets/message_widgets.dart' as msg_widgets;
 import '../features/shared/documents/documents_screen.dart';
+import '../features/shared/documents/document_viewer_screen.dart';
 import '../features/shared/payments/payment_method_screen.dart';
 import '../features/shared/payments/payment_history_screen.dart';
 
@@ -322,16 +325,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'institution-create-program',
         builder: (context, state) => const CreateProgramScreen(),
       ),
-      // TODO: Re-enable when backend is connected
-      // GoRoute(
-      //   path: '/institution/programs/:id',
-      //   name: 'institution-program-detail',
-      //   builder: (context, state) {
-      //     final programId = state.pathParameters['id']!;
-      //     // Fetch program from backend
-      //     return ProgramDetailScreen(program: program);
-      //   },
-      // ),
+      GoRoute(
+        path: '/institution/programs/:id',
+        name: 'institution-program-detail',
+        builder: (context, state) {
+          final programId = state.pathParameters['id']!;
+          // Program should be passed via state.extra
+          final program = state.extra as Program?;
+          if (program == null) {
+            // If no program provided, redirect back to programs list
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/institution/programs');
+            });
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return ProgramDetailScreen(program: program);
+        },
+      ),
 
       // ============================================================
       // PARENT ROUTES
@@ -347,16 +359,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'parent-children',
         builder: (context, state) => const ChildrenListScreen(),
       ),
-      // TODO: Re-enable when backend is connected
-      // GoRoute(
-      //   path: '/parent/children/:id',
-      //   name: 'parent-child-detail',
-      //   builder: (context, state) {
-      //     final childId = state.pathParameters['id']!;
-      //     // Fetch child from backend
-      //     return ChildDetailScreen(child: child);
-      //   },
-      // ),
+      GoRoute(
+        path: '/parent/children/:id',
+        name: 'parent-child-detail',
+        builder: (context, state) {
+          final childId = state.pathParameters['id']!;
+          // Child should be passed via state.extra
+          final child = state.extra as Child?;
+          if (child == null) {
+            // If no child provided, redirect back to children list
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/parent/children');
+            });
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return ChildDetailScreen(child: child);
+        },
+      ),
 
       // ============================================================
       // COUNSELOR ROUTES
@@ -965,16 +986,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'documents',
         builder: (context, state) => const DocumentsScreen(),
       ),
-      // TODO: Re-enable when backend is connected
-      // GoRoute(
-      //   path: '/documents/:id',
-      //   name: 'document-viewer',
-      //   builder: (context, state) {
-      //     final documentId = state.pathParameters['id']!;
-      //     // Fetch document from backend
-      //     return DocumentViewerScreen(document: document);
-      //   },
-      // ),
+      GoRoute(
+        path: '/documents/:id',
+        name: 'document-viewer',
+        builder: (context, state) {
+          final documentId = state.pathParameters['id']!;
+          // Document should be passed via state.extra
+          final document = state.extra as Document?;
+          if (document == null) {
+            // If no document provided, redirect back to documents list
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/documents');
+            });
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return DocumentViewerScreen(document: document);
+        },
+      ),
 
       // Payment routes
       GoRoute(
