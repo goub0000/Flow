@@ -48,6 +48,12 @@ dependencies:
   logging: ^1.2.0
   connectivity_plus: ^6.0.0
 
+  # Export & Reporting
+  pdf: ^3.11.1
+  printing: ^5.13.2
+  csv: ^6.0.0
+  path_provider: ^2.1.2
+
   # Backend Integration
   supabase_flutter: ^2.5.0
   dio: ^5.4.0

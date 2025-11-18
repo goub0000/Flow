@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/application_model.dart';
+import '../../../../core/providers/service_providers.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../../shared/widgets/status_badge.dart';
 import '../../../shared/widgets/refresh_utilities.dart';
+import '../../../shared/widgets/export_button.dart';
 import '../../providers/student_applications_provider.dart';
 import '../../providers/student_applications_realtime_provider.dart';
 
@@ -95,6 +97,26 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
           tooltip: 'Back',
         ),
         title: const Text('My Applications'),
+        actions: [
+          if (applications.isNotEmpty)
+            ExportButton(
+              data: applications.map((app) => {
+                'institution_name': app.institution?.name ?? 'N/A',
+                'program_name': app.programName,
+                'status': app.status,
+                'application_date': app.submittedAt?.toIso8601String(),
+                'decision_date': app.decidedAt?.toIso8601String(),
+                'notes': app.notes ?? '',
+              }).toList(),
+              exportType: ExportType.applications,
+              metadata: {
+                'studentName': ref.read(currentUserProvider)?.fullName ?? 'Student',
+              },
+              onExportComplete: () {
+                print('[DEBUG] Export completed successfully');
+              },
+            ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
