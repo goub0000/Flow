@@ -133,18 +133,52 @@ class AdminAnalyticsNotifier extends StateNotifier<AdminAnalyticsState> {
     }
   }
 
-  /// Get user growth data
-  /// Note: This returns derived data from the metrics
-  List<Map<String, dynamic>> getUserGrowthData(String period) {
-    // This could be enhanced to fetch from backend, but for now
-    // returns placeholder data that could be derived from metrics
-    return List.generate(12, (index) {
-      return {
-        'period': 'Month ${index + 1}',
-        'users': 100 + (index * 50),
-        'active': 70 + (index * 35),
-      };
-    });
+  /// Get user growth data from backend API
+  Future<Map<String, dynamic>?> fetchUserGrowth(String period) async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/dashboard/analytics/user-growth?period=$period',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        return response.data!;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch user growth data',
+        );
+        return null;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to fetch user growth data: ${e.toString()}',
+      );
+      return null;
+    }
+  }
+
+  /// Get role distribution data from backend API
+  Future<Map<String, dynamic>?> fetchRoleDistribution() async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/dashboard/analytics/role-distribution',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        return response.data!;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch role distribution data',
+        );
+        return null;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to fetch role distribution data: ${e.toString()}',
+      );
+      return null;
+    }
   }
 
   /// Get revenue trends
