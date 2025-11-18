@@ -59,35 +59,48 @@ class StudentActivitiesService:
         activities = []
 
         try:
-            # 1. Application Activities
-            application_activities = await self._get_application_activities(
+            # First, try to get from dedicated student_activities table
+            stored_activities = await self._get_stored_activities(
                 student_id, filters, db
             )
-            activities.extend(application_activities)
 
-            # 2. Achievement Activities
-            achievement_activities = await self._get_achievement_activities(
-                student_id, filters, db
-            )
-            activities.extend(achievement_activities)
+            if stored_activities:
+                # If we have stored activities, use them (they're more efficient)
+                activities.extend(stored_activities)
+                logger.info(f"Retrieved {len(stored_activities)} stored activities for student {student_id}")
+            else:
+                # Fallback to real-time aggregation from various tables
+                logger.info(f"No stored activities found, aggregating from source tables for student {student_id}")
 
-            # 3. Meeting Activities
-            meeting_activities = await self._get_meeting_activities(
-                student_id, filters, db
-            )
-            activities.extend(meeting_activities)
+                # 1. Application Activities
+                application_activities = await self._get_application_activities(
+                    student_id, filters, db
+                )
+                activities.extend(application_activities)
 
-            # 4. Message Activities (recent unread messages)
-            message_activities = await self._get_message_activities(
-                student_id, filters, db
-            )
-            activities.extend(message_activities)
+                # 2. Achievement Activities
+                achievement_activities = await self._get_achievement_activities(
+                    student_id, filters, db
+                )
+                activities.extend(achievement_activities)
 
-            # 5. Enrollment Activities
-            enrollment_activities = await self._get_enrollment_activities(
-                student_id, filters, db
-            )
-            activities.extend(enrollment_activities)
+                # 3. Meeting Activities
+                meeting_activities = await self._get_meeting_activities(
+                    student_id, filters, db
+                )
+                activities.extend(meeting_activities)
+
+                # 4. Message Activities (recent unread messages)
+                message_activities = await self._get_message_activities(
+                    student_id, filters, db
+                )
+                activities.extend(message_activities)
+
+                # 5. Enrollment Activities
+                enrollment_activities = await self._get_enrollment_activities(
+                    student_id, filters, db
+                )
+                activities.extend(enrollment_activities)
 
             # Sort by timestamp (most recent first)
             activities.sort(key=lambda x: x.timestamp, reverse=True)
@@ -111,6 +124,58 @@ class StudentActivitiesService:
         except Exception as e:
             logger.error(f"Error fetching student activities: {e}")
             raise
+
+    async def _get_stored_activities(
+        self,
+        student_id: str,
+        filters: StudentActivityFilterRequest,
+        db: Client
+    ) -> List[StudentActivity]:
+        """Get activities from the dedicated student_activities table"""
+        activities = []
+
+        try:
+            # Build query
+            query = db.table('student_activities').select('*').eq('student_id', student_id)
+
+            # Apply date filters
+            if filters.start_date:
+                query = query.gte('timestamp', filters.start_date.isoformat())
+            if filters.end_date:
+                query = query.lte('timestamp', filters.end_date.isoformat())
+
+            # Apply activity type filter
+            if filters.activity_types:
+                # Convert enum values to strings for query
+                type_values = [t.value for t in filters.activity_types]
+                query = query.in_('activity_type', type_values)
+
+            # Execute query with sorting and limit
+            result = query.order('timestamp', desc=True).limit(200).execute()
+
+            if result.data:
+                for activity in result.data:
+                    try:
+                        # Convert database record to StudentActivity model
+                        activities.append(StudentActivity(
+                            id=activity['id'],
+                            timestamp=datetime.fromisoformat(activity['timestamp'].replace('Z', '+00:00')),
+                            type=StudentActivityType(activity['activity_type']),
+                            title=activity['title'],
+                            description=activity['description'],
+                            icon=activity['icon'],
+                            related_entity_id=activity.get('related_entity_id'),
+                            metadata=activity.get('metadata', {}),
+                        ))
+                    except Exception as e:
+                        logger.warning(f"Skipping invalid activity record: {e}")
+                        continue
+
+        except Exception as e:
+            logger.error(f"Error fetching stored activities: {e}")
+            # Don't raise - fall back to aggregation
+
+        return activities
 
     async def _get_application_activities(
         self,

@@ -18,6 +18,7 @@ from app.schemas.applications import (
     ApplicationStatus
 )
 from app.utils.activity_logger import log_activity_sync, ActivityType
+from app.services.activity_logger import get_activity_logger
 
 logger = logging.getLogger(__name__)
 
@@ -187,6 +188,15 @@ class ApplicationsService:
                         "application_type": app.application_type
                     }
                 )
+
+                # Also create student activity feed entry
+                activity_logger = get_activity_logger(self.db)
+                activity_logger.log_application_submitted(
+                    student_id=student_id,
+                    application_id=application_id,
+                    institution_name=app.institution_name,
+                    program_name=app.program_name
+                )
             except Exception as log_error:
                 logger.warning(f"Failed to log application submission activity: {log_error}")
 
@@ -279,6 +289,17 @@ class ApplicationsService:
                         "institution_name": app.institution_name,
                         "program_name": app.program_name
                     }
+                )
+
+                # Also create student activity feed entry
+                activity_logger = get_activity_logger(self.db)
+                activity_logger.log_application_status_changed(
+                    student_id=app.student_id,
+                    application_id=application_id,
+                    institution_name=app.institution_name,
+                    new_status=status_data.status.value,
+                    previous_status=app.status,
+                    program_name=app.program_name
                 )
             except Exception as log_error:
                 logger.warning(f"Failed to log application status change activity: {log_error}")
