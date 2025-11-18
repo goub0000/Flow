@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/widgets/dashboard_scaffold.dart';
 import '../../../shared/widgets/notification_badge.dart';
+import '../../../shared/widgets/message_badge.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import 'widgets/overview_tab.dart';
 import '../../applicants/presentation/applicants_list_screen.dart';
@@ -43,6 +44,8 @@ class _InstitutionDashboardScreenState
             actions: [
               // Notification badge - always visible
               const NotificationBadge(),
+              // Message badge - always visible
+              const MessageBadge(),
               // Debug button for troubleshooting
               DashboardAction(
                 icon: Icons.bug_report,

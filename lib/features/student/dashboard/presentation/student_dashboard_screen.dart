@@ -8,6 +8,7 @@ import '../../../shared/widgets/dashboard_widgets.dart';
 import '../../../shared/widgets/coming_soon_dialog.dart';
 import '../../../shared/widgets/refresh_utilities.dart';
 import '../../../shared/widgets/notification_badge.dart';
+import '../../../shared/widgets/message_badge.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
@@ -97,6 +98,8 @@ class _StudentDashboardScreenState
           actions: [
             // Notification badge - always visible
             const NotificationBadge(),
+            // Message badge - always visible
+            const MessageBadge(),
             // Edit button - only on Profile tab
             if (_currentIndex == 3 && user != null)
               DashboardAction(
