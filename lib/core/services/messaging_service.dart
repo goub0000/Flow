@@ -6,6 +6,7 @@ import '../api/api_client.dart';
 import '../api/api_config.dart';
 import '../api/api_response.dart';
 import '../models/message_model.dart';
+import '../models/conversation_model.dart';
 
 class MessagingService {
   final ApiClient _apiClient;

@@ -93,7 +93,10 @@ class StudentActivityFilterRequest with _$StudentActivityFilterRequest {
 
   factory StudentActivityFilterRequest.fromJson(Map<String, dynamic> json) =>
       _$StudentActivityFilterRequestFromJson(json);
+}
 
+/// Extension for StudentActivityFilterRequest
+extension StudentActivityFilterRequestExtension on StudentActivityFilterRequest {
   /// Convert to query parameters for API request
   Map<String, dynamic> toQueryParams() {
     final params = <String, String>{

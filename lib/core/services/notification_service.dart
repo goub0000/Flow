@@ -18,14 +18,14 @@ class NotificationService {
         throw Exception('User not authenticated');
       }
 
-      var query = _supabase
+      // Start building query - use dynamic to handle type changes through the chain
+      dynamic query = _supabase
           .from('notifications')
           .select('*')
           .eq('user_id', userId)
-          .isFilter('deleted_at', null)
-          .order('created_at', ascending: false);
+          .isFilter('deleted_at', null);
 
-      // Apply filters
+      // Apply optional filters before ordering
       if (filter != null) {
         if (filter.isRead != null) {
           query = query.eq('is_read', filter.isRead!);
@@ -34,7 +34,7 @@ class NotificationService {
           query = query.eq('is_archived', filter.isArchived!);
         }
         if (filter.types != null && filter.types!.isNotEmpty) {
-          query = query.in_(
+          query = query.inFilter(
             'type',
             filter.types!.map((t) => _notificationTypeToString(t)).toList(),
           );
@@ -48,12 +48,16 @@ class NotificationService {
         if (filter.priority != null) {
           query = query.eq('priority', filter.priority!.index);
         }
+      }
 
-        // Pagination
+      // Apply ordering after all filters
+      query = query.order('created_at', ascending: false);
+
+      // Apply pagination
+      if (filter != null) {
         final offset = (filter.page - 1) * filter.limit;
         query = query.range(offset, offset + filter.limit - 1);
       } else {
-        // Default pagination
         query = query.range(0, 19);
       }
 
