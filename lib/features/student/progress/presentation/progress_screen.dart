@@ -6,6 +6,7 @@ import '../../../../core/models/progress_model.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
+import '../../../shared/widgets/export_button.dart';
 import '../../providers/student_progress_provider.dart';
 import '../../providers/student_analytics_provider.dart';
 import '../../../shared/providers/profile_provider.dart';
@@ -747,7 +748,7 @@ class _LegendItem extends StatelessWidget {
 }
 
 // Course Progress Detail Screen
-class CourseProgressDetailScreen extends StatelessWidget {
+class CourseProgressDetailScreen extends ConsumerWidget {
   final CourseProgress progress;
 
   const CourseProgressDetailScreen({
@@ -756,12 +757,37 @@ class CourseProgressDetailScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final user = ref.watch(currentProfileProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(progress.courseName),
+        actions: [
+          if (progress.grades.isNotEmpty)
+            ExportButton(
+              data: progress.grades.map((grade) => {
+                'name': grade.name,
+                'assignment_name': grade.name,
+                'category': 'Assignment',
+                'grade': grade.grade,
+                'max_grade': grade.maxGrade,
+                'percentage': grade.percentage,
+                'date': grade.submittedAt.toIso8601String(),
+                'submitted_date': grade.submittedAt.toIso8601String(),
+                'feedback': grade.feedback,
+              }).toList(),
+              exportType: ExportType.grades,
+              metadata: {
+                'studentName': user?.fullName ?? 'Student',
+                'courseName': progress.courseName,
+              },
+              onExportComplete: () {
+                print('[DEBUG] Grades export completed successfully');
+              },
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

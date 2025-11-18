@@ -274,6 +274,105 @@ class ExportService {
     );
   }
 
+  /// Export grades to PDF
+  static Future<void> exportGradesToPDF({
+    required List<dynamic> grades,
+    required String studentName,
+    String? courseName,
+  }) async {
+    final headers = [
+      'Assignment',
+      'Category',
+      'Grade',
+      'Max Points',
+      'Percentage',
+      'Date'
+    ];
+    final data = grades.map((grade) {
+      return [
+        grade['assignment_name'] ?? grade['name'] ?? 'N/A',
+        grade['category'] ?? 'Assignment',
+        grade['grade']?.toString() ?? grade['points_earned']?.toString() ?? 'N/A',
+        grade['max_grade']?.toString() ?? grade['points_possible']?.toString() ?? 'N/A',
+        grade['percentage'] != null
+            ? '${(grade['percentage'] as num).toStringAsFixed(1)}%'
+            : 'N/A',
+        grade['graded_date'] != null || grade['submitted_date'] != null
+            ? DateFormat('MMM dd, yyyy').format(DateTime.parse(
+                grade['graded_date'] ?? grade['submitted_date']))
+            : grade['date'] != null
+                ? DateFormat('MMM dd, yyyy').format(DateTime.parse(grade['date']))
+                : 'N/A',
+      ];
+    }).toList();
+
+    // Calculate average if possible
+    final percentages = grades
+        .where((g) => g['percentage'] != null)
+        .map((g) => (g['percentage'] as num).toDouble())
+        .toList();
+    final averageGrade = percentages.isNotEmpty
+        ? percentages.reduce((a, b) => a + b) / percentages.length
+        : null;
+
+    await exportToPDF(
+      filename: 'grades_${DateTime.now().millisecondsSinceEpoch}',
+      title: courseName != null ? '$courseName - Grade Report' : 'Grade Report',
+      subtitle: 'Student: $studentName',
+      headers: headers,
+      data: data,
+      metadata: {
+        'Total Assignments': grades.length.toString(),
+        if (averageGrade != null)
+          'Average Grade': '${averageGrade.toStringAsFixed(1)}%',
+        'Student': studentName,
+        if (courseName != null) 'Course': courseName,
+        'Export Date': DateFormat('MMMM dd, yyyy').format(DateTime.now()),
+      },
+    );
+  }
+
+  /// Export grades to CSV
+  static Future<void> exportGradesToCSV({
+    required List<dynamic> grades,
+  }) async {
+    final data = [
+      [
+        'Assignment',
+        'Category',
+        'Grade',
+        'Max Points',
+        'Percentage',
+        'Status',
+        'Submitted Date',
+        'Graded Date',
+        'Feedback'
+      ],
+      ...grades.map((grade) {
+        return [
+          grade['assignment_name'] ?? grade['name'] ?? 'N/A',
+          grade['category'] ?? 'Assignment',
+          grade['grade']?.toString() ?? grade['points_earned']?.toString() ?? '',
+          grade['max_grade']?.toString() ?? grade['points_possible']?.toString() ?? '',
+          grade['percentage']?.toString() ?? '',
+          grade['status'] ?? '',
+          grade['submitted_date'] != null
+              ? DateFormat('yyyy-MM-dd').format(DateTime.parse(grade['submitted_date']))
+              : grade['date'] ?? '',
+          grade['graded_date'] != null
+              ? DateFormat('yyyy-MM-dd').format(DateTime.parse(grade['graded_date']))
+              : '',
+          grade['feedback'] ?? grade['teacher_comments'] ?? '',
+        ];
+      }),
+    ];
+
+    await exportToCSV(
+      filename: 'grades_${DateTime.now().millisecondsSinceEpoch}',
+      data: data,
+    );
+  }
+
   /// Download file (cross-platform)
   static Future<void> _downloadFile({
     required Uint8List bytes,

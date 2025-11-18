@@ -148,8 +148,24 @@ class ExportButton extends StatelessWidget {
   }
 
   Future<void> _exportGrades(ExportFormat format) async {
-    // TODO: Implement grades export
-    throw UnimplementedError('Grades export coming soon');
+    switch (format) {
+      case ExportFormat.pdf:
+        await ExportService.exportGradesToPDF(
+          grades: data,
+          studentName: metadata?['studentName'] ?? 'Student',
+          courseName: metadata?['courseName'],
+        );
+        break;
+      case ExportFormat.csv:
+        await ExportService.exportGradesToCSV(grades: data);
+        break;
+      case ExportFormat.json:
+        await ExportService.exportToJSON(
+          filename: customFilename ?? 'grades',
+          data: {'grades': data},
+        );
+        break;
+    }
   }
 
   Future<void> _exportAnalytics(ExportFormat format) async {
