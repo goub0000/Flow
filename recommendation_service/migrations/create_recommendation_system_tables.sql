@@ -50,7 +50,40 @@ CREATE TABLE IF NOT EXISTS recommendation_requests (
         CHECK (deadline >= CURRENT_DATE)
 );
 
--- 2. Letter of Recommendations Table
+-- 2. Recommendation Templates Table (must be created before letters table)
+CREATE TABLE IF NOT EXISTS recommendation_templates (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Template details
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    category VARCHAR(50) NOT NULL, -- academic, professional, scholarship, character
+
+    -- Template content
+    content TEXT NOT NULL,
+
+    -- Customizable fields (JSON array of field names)
+    custom_fields JSONB DEFAULT '[]'::jsonb,
+
+    -- Usage tracking
+    usage_count INTEGER DEFAULT 0,
+
+    -- Template metadata
+    is_public BOOLEAN DEFAULT true,
+    created_by UUID, -- NULL for system templates
+
+    -- Timestamps
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    -- Foreign key
+    CONSTRAINT fk_recommendation_templates_creator
+        FOREIGN KEY (created_by)
+        REFERENCES auth.users(id)
+        ON DELETE SET NULL
+);
+
+-- 3. Letter of Recommendations Table
 CREATE TABLE IF NOT EXISTS letter_of_recommendations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     request_id UUID NOT NULL,
@@ -91,39 +124,6 @@ CREATE TABLE IF NOT EXISTS letter_of_recommendations (
     CONSTRAINT fk_letter_of_recommendations_template
         FOREIGN KEY (template_id)
         REFERENCES recommendation_templates(id)
-        ON DELETE SET NULL
-);
-
--- 3. Recommendation Templates Table
-CREATE TABLE IF NOT EXISTS recommendation_templates (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-
-    -- Template details
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    category VARCHAR(50) NOT NULL, -- academic, professional, scholarship, character
-
-    -- Template content
-    content TEXT NOT NULL,
-
-    -- Customizable fields (JSON array of field names)
-    custom_fields JSONB DEFAULT '[]'::jsonb,
-
-    -- Usage tracking
-    usage_count INTEGER DEFAULT 0,
-
-    -- Template metadata
-    is_public BOOLEAN DEFAULT true,
-    created_by UUID, -- NULL for system templates
-
-    -- Timestamps
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-    -- Foreign key
-    CONSTRAINT fk_recommendation_templates_creator
-        FOREIGN KEY (created_by)
-        REFERENCES auth.users(id)
         ON DELETE SET NULL
 );
 
