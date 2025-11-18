@@ -7,6 +7,8 @@ import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../providers/student_progress_provider.dart';
+import '../../providers/student_analytics_provider.dart';
+import '../../../shared/providers/profile_provider.dart';
 
 class ProgressScreen extends ConsumerStatefulWidget {
   const ProgressScreen({super.key});
@@ -23,6 +25,14 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
+    // Fetch analytics data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final user = ref.read(currentProfileProvider);
+      if (user != null) {
+        ref.read(studentAnalyticsProvider(user.id).notifier).fetchAll();
+      }
+    });
   }
 
   @override
@@ -148,6 +158,14 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
               ),
             ],
           ),
+          const SizedBox(height: 24),
+
+          // Application Success Rate Chart (Phase 4.2)
+          _ApplicationSuccessChart(),
+          const SizedBox(height: 24),
+
+          // GPA Trend Chart (Phase 4.2)
+          _GpaTrendChart(),
           const SizedBox(height: 24),
 
           // Grade Trend Chart
@@ -959,6 +977,418 @@ class _DetailStat extends StatelessWidget {
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
               ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Application Success Rate Pie Chart Widget (Phase 4.2)
+class _ApplicationSuccessChart extends ConsumerWidget {
+  const _ApplicationSuccessChart();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final user = ref.watch(currentProfileProvider);
+
+    if (user == null) {
+      return const SizedBox.shrink();
+    }
+
+    final applicationSuccessData = ref.watch(studentApplicationSuccessProvider(user.id));
+    final isLoading = ref.watch(studentAnalyticsLoadingProvider(user.id));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Application Success Rate',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        CustomCard(
+          child: isLoading
+              ? const SizedBox(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              : applicationSuccessData == null
+                  ? const SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Text('No application data available'),
+                      ),
+                    )
+                  : _buildApplicationSuccessContent(applicationSuccessData, theme),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildApplicationSuccessContent(Map<String, dynamic> data, ThemeData theme) {
+    final totalApplications = data['total_applications'] as int;
+    final acceptanceRate = (data['acceptance_rate'] as num).toDouble();
+    final distributions = data['distributions'] as List<dynamic>;
+
+    if (totalApplications == 0) {
+      return const SizedBox(
+        height: 200,
+        child: Center(
+          child: Text('No applications yet'),
+        ),
+      );
+    }
+
+    // Color mapping for different statuses
+    final statusColors = {
+      'Accepted': AppColors.success,
+      'Pending': AppColors.info,
+      'Rejected': AppColors.error,
+      'Withdrawn': AppColors.textSecondary,
+    };
+
+    return Row(
+      children: [
+        // Pie Chart
+        SizedBox(
+          width: 160,
+          height: 160,
+          child: PieChart(
+            PieChartData(
+              sectionsSpace: 2,
+              centerSpaceRadius: 40,
+              sections: distributions.map<PieChartSectionData>((dist) {
+                final status = dist['status'] as String;
+                final count = (dist['count'] as num).toInt();
+                final percentage = (dist['percentage'] as num).toDouble();
+                final color = statusColors[status] ?? AppColors.primary;
+
+                return PieChartSectionData(
+                  value: count.toDouble(),
+                  title: '${percentage.toStringAsFixed(0)}%',
+                  color: color,
+                  radius: 50,
+                  titleStyle: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+        const SizedBox(width: 24),
+        // Legend and Stats
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Acceptance Rate Highlight
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.success.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Acceptance Rate',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '${acceptanceRate.toStringAsFixed(1)}%',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.success,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Legend
+              ...distributions.map<Widget>((dist) {
+                final status = dist['status'] as String;
+                final count = (dist['count'] as num).toInt();
+                final color = statusColors[status] ?? AppColors.primary;
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: _LegendItem(
+                    color: color,
+                    label: status,
+                    value: '$count',
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// GPA Trend Line Chart Widget (Phase 4.2)
+class _GpaTrendChart extends ConsumerWidget {
+  const _GpaTrendChart();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final user = ref.watch(currentProfileProvider);
+
+    if (user == null) {
+      return const SizedBox.shrink();
+    }
+
+    final gpaTrendData = ref.watch(studentGpaTrendProvider(user.id));
+    final isLoading = ref.watch(studentAnalyticsLoadingProvider(user.id));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'GPA Trend',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        CustomCard(
+          child: isLoading
+              ? const SizedBox(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              : gpaTrendData == null
+                  ? const SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Text('No GPA data available'),
+                      ),
+                    )
+                  : _buildGpaTrendContent(gpaTrendData, theme),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGpaTrendContent(Map<String, dynamic> data, ThemeData theme) {
+    final currentGpa = (data['current_gpa'] as num).toDouble();
+    final goalGpa = (data['goal_gpa'] as num).toDouble();
+    final trend = data['trend'] as String;
+    final dataPoints = data['data_points'] as List<dynamic>;
+
+    // Trend color and icon
+    final trendColor = trend == 'improving'
+        ? AppColors.success
+        : trend == 'declining'
+            ? AppColors.error
+            : AppColors.info;
+    final trendIcon = trend == 'improving'
+        ? Icons.trending_up
+        : trend == 'declining'
+            ? Icons.trending_down
+            : Icons.trending_flat;
+
+    return Column(
+      children: [
+        // Summary Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                Text(
+                  currentGpa.toStringAsFixed(2),
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Current GPA',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  goalGpa.toStringAsFixed(2),
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.success,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Goal GPA',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(trendIcon, color: trendColor, size: 24),
+                    const SizedBox(width: 4),
+                    Text(
+                      trend.toUpperCase(),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: trendColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Trend',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        // Line Chart
+        if (dataPoints.length > 1) ...[
+          SizedBox(
+            height: 200,
+            child: LineChart(
+              _buildGpaTrendChartData(dataPoints),
+            ),
+          ),
+        ] else ...[
+          // Single data point - show simple display
+          Container(
+            height: 100,
+            alignment: Alignment.center,
+            child: Text(
+              'Historical GPA data will appear here as you progress through semesters',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  LineChartData _buildGpaTrendChartData(List<dynamic> dataPoints) {
+    final spots = dataPoints
+        .asMap()
+        .entries
+        .map((entry) => FlSpot(
+              entry.key.toDouble(),
+              (entry.value['gpa'] as num).toDouble(),
+            ))
+        .toList();
+
+    return LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: false,
+        horizontalInterval: 0.5,
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: AppColors.border.withValues(alpha: 0.3),
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 40,
+            getTitlesWidget: (value, meta) {
+              return Text(
+                value.toStringAsFixed(1),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 10,
+                ),
+              );
+            },
+          ),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, meta) {
+              final index = value.toInt();
+              if (index >= 0 && index < dataPoints.length) {
+                final semester = dataPoints[index]['semester'] as String;
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    semester,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 10,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      ),
+      borderData: FlBorderData(show: false),
+      minX: 0,
+      maxX: (dataPoints.length - 1).toDouble(),
+      minY: 0,
+      maxY: 4.0,
+      lineBarsData: [
+        LineChartBarData(
+          spots: spots,
+          isCurved: true,
+          color: AppColors.primary,
+          barWidth: 3,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: true,
+            getDotPainter: (spot, percent, barData, index) {
+              return FlDotCirclePainter(
+                radius: 4,
+                color: AppColors.primary,
+                strokeWidth: 2,
+                strokeColor: Colors.white,
+              );
+            },
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            color: AppColors.primary.withValues(alpha: 0.1),
+          ),
         ),
       ],
     );
