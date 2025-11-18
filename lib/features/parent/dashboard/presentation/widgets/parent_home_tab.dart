@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/models/child_model.dart';
+import '../../../../../core/models/meeting_models.dart' as models;
+import '../../../../../core/providers/meetings_provider.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
 import '../../../../shared/widgets/refresh_utilities.dart';
@@ -35,6 +38,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
         await Future.wait([
           ref.read(parentChildrenProvider.notifier).fetchChildren(),
           ref.read(parentAlertsProvider.notifier).fetchAlerts(),
+          ref.read(parentMeetingsProvider.notifier).fetchMeetings(),
         ]);
 
         // Update last refresh time
@@ -64,6 +68,10 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
     final children = ref.watch(parentChildrenListProvider);
     final error = ref.watch(parentChildrenErrorProvider);
     final statistics = ref.watch(parentChildrenStatisticsProvider);
+
+    // Meetings state
+    final upcomingMeetings = ref.watch(parentUpcomingMeetingsProvider);
+    final pendingMeetings = ref.watch(parentPendingMeetingsProvider);
 
     if (error != null) {
       return Center(
@@ -147,6 +155,101 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  icon: Icons.event_available,
+                  label: 'Upcoming',
+                  value: '${upcomingMeetings.length}',
+                  color: AppColors.success,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatCard(
+                  icon: Icons.pending,
+                  label: 'Requests',
+                  value: '${pendingMeetings.length}',
+                  color: AppColors.counselorRole,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Meetings Overview
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Upcoming Meetings',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              if (upcomingMeetings.isNotEmpty)
+                TextButton(
+                  onPressed: () => _scheduleMeeting(context),
+                  child: const Text('View All'),
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (upcomingMeetings.isEmpty)
+            CustomCard(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.event_busy,
+                      size: 48,
+                      color: AppColors.textSecondary,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No Upcoming Meetings',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Schedule meetings with teachers or counselors',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () => _scheduleMeeting(context),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Schedule Meeting'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.textOnPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            ...upcomingMeetings.take(3).map((meeting) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _MeetingCard(meeting: meeting),
+              );
+            }),
+          if (upcomingMeetings.length > 3)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: TextButton(
+                onPressed: () => _scheduleMeeting(context),
+                child: Text('View ${upcomingMeetings.length - 3} more meetings'),
+              ),
+            ),
           const SizedBox(height: 24),
 
           // Children Overview
@@ -501,6 +604,192 @@ class _MiniStat extends StatelessWidget {
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
+    );
+  }
+}
+
+class _MeetingCard extends StatelessWidget {
+  final models.Meeting meeting;
+
+  const _MeetingCard({required this.meeting});
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormatter = DateFormat('EEE, MMM d');
+    final timeFormatter = DateFormat('h:mm a');
+
+    Color statusColor;
+    IconData statusIcon;
+    String statusText;
+
+    switch (meeting.status) {
+      case models.MeetingStatus.pending:
+        statusColor = AppColors.warning;
+        statusIcon = Icons.pending;
+        statusText = 'PENDING';
+        break;
+      case models.MeetingStatus.approved:
+        statusColor = AppColors.success;
+        statusIcon = Icons.check_circle;
+        statusText = 'APPROVED';
+        break;
+      case models.MeetingStatus.declined:
+        statusColor = AppColors.error;
+        statusIcon = Icons.cancel;
+        statusText = 'DECLINED';
+        break;
+      case models.MeetingStatus.cancelled:
+        statusColor = AppColors.textSecondary;
+        statusIcon = Icons.event_busy;
+        statusText = 'CANCELLED';
+        break;
+      case models.MeetingStatus.completed:
+        statusColor = AppColors.info;
+        statusIcon = Icons.done_all;
+        statusText = 'COMPLETED';
+        break;
+    }
+
+    IconData meetingModeIcon;
+    switch (meeting.meetingMode) {
+      case models.MeetingMode.videoCall:
+        meetingModeIcon = Icons.videocam;
+        break;
+      case models.MeetingMode.inPerson:
+        meetingModeIcon = Icons.person;
+        break;
+      case models.MeetingMode.phoneCall:
+        meetingModeIcon = Icons.phone;
+        break;
+    }
+
+    return CustomCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(meetingModeIcon, color: statusColor, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      meeting.subject,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      meeting.staffName ?? 'Staff Member',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(statusIcon, size: 12, color: statusColor),
+                    const SizedBox(width: 4),
+                    Text(
+                      statusText,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (meeting.scheduledDate != null) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.calendar_today, size: 14, color: AppColors.textSecondary),
+                const SizedBox(width: 6),
+                Text(
+                  dateFormatter.format(meeting.scheduledDate!),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(width: 16),
+                Icon(Icons.access_time, size: 14, color: AppColors.textSecondary),
+                const SizedBox(width: 6),
+                Text(
+                  timeFormatter.format(meeting.scheduledDate!),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(width: 16),
+                Icon(Icons.schedule, size: 14, color: AppColors.textSecondary),
+                const SizedBox(width: 6),
+                Text(
+                  '${meeting.durationMinutes} min',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ],
+          if (meeting.meetingLink != null && meeting.meetingMode == models.MeetingMode.videoCall) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.link, size: 14, color: AppColors.primary),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    meeting.meetingLink!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.primary,
+                          decoration: TextDecoration.underline,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (meeting.location != null && meeting.meetingMode == models.MeetingMode.inPerson) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.location_on, size: 14, color: AppColors.textSecondary),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    meeting.location!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
