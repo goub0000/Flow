@@ -534,7 +534,46 @@ class _QuickStatItem extends StatelessWidget {
   }
 }
 
-class _UserGrowthChart extends StatelessWidget {
+class _UserGrowthChart extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<_UserGrowthChart> createState() => _UserGrowthChartState();
+}
+
+class _UserGrowthChartState extends ConsumerState<_UserGrowthChart> {
+  Map<String, dynamic>? _growthData;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchGrowthData();
+  }
+
+  Future<void> _fetchGrowthData() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final data = await ref.read(adminAnalyticsProvider.notifier).fetchUserGrowth('6_months');
+      if (mounted) {
+        setState(() {
+          _growthData = data;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -565,95 +604,115 @@ class _UserGrowthChart extends StatelessWidget {
           const SizedBox(height: 24),
           SizedBox(
             height: 200,
-            child: LineChart(
-              LineChartData(
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: 500,
-                  getDrawingHorizontalLine: (value) {
-                    return FlLine(
-                      color: AppColors.border,
-                      strokeWidth: 1,
-                    );
-                  },
-                ),
-                titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 40,
-                      getTitlesWidget: (value, meta) {
-                        return Text(
-                          value.toInt().toString(),
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 12,
-                          ),
-                        );
-                      },
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? Center(child: Text('Error: $_error', style: TextStyle(color: AppColors.error)))
+                    : _buildChart(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChart() {
+    if (_growthData == null || _growthData!['data_points'] == null) {
+      return const Center(child: Text('No data available'));
+    }
+
+    final dataPoints = _growthData!['data_points'] as List<dynamic>;
+    if (dataPoints.isEmpty) {
+      return const Center(child: Text('No data available'));
+    }
+
+    // Convert API data to FlSpot format
+    final spots = <FlSpot>[];
+    final labels = <String>[];
+
+    for (int i = 0; i < dataPoints.length; i++) {
+      final point = dataPoints[i];
+      spots.add(FlSpot(i.toDouble(), (point['value'] as num).toDouble()));
+      labels.add(point['label'] as String);
+    }
+
+    return LineChart(
+      LineChartData(
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: false,
+          horizontalInterval: spots.isNotEmpty ? (spots.map((s) => s.y).reduce((a, b) => a > b ? a : b) / 4) : 500,
+          getDrawingHorizontalLine: (value) {
+            return FlLine(
+              color: AppColors.border,
+              strokeWidth: 1,
+            );
+          },
+        ),
+        titlesData: FlTitlesData(
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitlesWidget: (value, meta) {
+                return Text(
+                  value.toInt().toString(),
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                );
+              },
+            ),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                final index = value.toInt();
+                if (index >= 0 && index < labels.length) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      labels[index],
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (value, meta) {
-                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-                        if (value.toInt() >= 0 && value.toInt() < months.length) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              months[value.toInt()],
-                              style: TextStyle(
-                                color: AppColors.textSecondary,
-                                fontSize: 12,
-                              ),
-                            ),
-                          );
-                        }
-                        return const Text('');
-                      },
-                    ),
-                  ),
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                ),
-                borderData: FlBorderData(show: false),
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: const [
-                      FlSpot(0, 1200),
-                      FlSpot(1, 1400),
-                      FlSpot(2, 1650),
-                      FlSpot(3, 1800),
-                      FlSpot(4, 2100),
-                      FlSpot(5, 2400),
-                    ],
-                    isCurved: true,
-                    color: AppColors.primary,
-                    barWidth: 3,
-                    dotData: FlDotData(
-                      show: true,
-                      getDotPainter: (spot, percent, barData, index) {
-                        return FlDotCirclePainter(
-                          radius: 4,
-                          color: AppColors.primary,
-                          strokeWidth: 2,
-                          strokeColor: AppColors.surface,
-                        );
-                      },
-                    ),
-                    belowBarData: BarAreaData(
-                      show: true,
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                    ),
-                  ),
-                ],
-              ),
+                  );
+                }
+                return const Text('');
+              },
+            ),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+        ),
+        borderData: FlBorderData(show: false),
+        lineBarsData: [
+          LineChartBarData(
+            spots: spots,
+            isCurved: true,
+            color: AppColors.primary,
+            barWidth: 3,
+            dotData: FlDotData(
+              show: true,
+              getDotPainter: (spot, percent, barData, index) {
+                return FlDotCirclePainter(
+                  radius: 4,
+                  color: AppColors.primary,
+                  strokeWidth: 2,
+                  strokeColor: AppColors.surface,
+                );
+              },
+            ),
+            belowBarData: BarAreaData(
+              show: true,
+              color: AppColors.primary.withValues(alpha: 0.1),
             ),
           ),
         ],
@@ -662,7 +721,46 @@ class _UserGrowthChart extends StatelessWidget {
   }
 }
 
-class _UserDistributionChart extends StatelessWidget {
+class _UserDistributionChart extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<_UserDistributionChart> createState() => _UserDistributionChartState();
+}
+
+class _UserDistributionChartState extends ConsumerState<_UserDistributionChart> {
+  Map<String, dynamic>? _distributionData;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDistributionData();
+  }
+
+  Future<void> _fetchDistributionData() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final data = await ref.read(adminAnalyticsProvider.notifier).fetchRoleDistribution();
+      if (mounted) {
+        setState(() {
+          _distributionData = data;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -693,69 +791,98 @@ class _UserDistributionChart extends StatelessWidget {
           const SizedBox(height: 24),
           SizedBox(
             height: 160,
-            child: PieChart(
-              PieChartData(
-                sections: [
-                  PieChartSectionData(
-                    value: 66,
-                    title: '66%',
-                    color: AppColors.primary,
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  PieChartSectionData(
-                    value: 15,
-                    title: '15%',
-                    color: AppColors.secondary,
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  PieChartSectionData(
-                    value: 12,
-                    title: '12%',
-                    color: AppColors.accent,
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  PieChartSectionData(
-                    value: 7,
-                    title: '7%',
-                    color: AppColors.success,
-                    radius: 50,
-                    titleStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-                sectionsSpace: 2,
-                centerSpaceRadius: 0,
-              ),
-            ),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? Center(child: Text('Error: $_error', style: TextStyle(color: AppColors.error, fontSize: 12)))
+                    : _buildPieChart(),
           ),
           const SizedBox(height: 16),
-          _buildLegendItem('Students', AppColors.primary, '8,234'),
-          const SizedBox(height: 8),
-          _buildLegendItem('Parents', AppColors.secondary, '1,865'),
-          const SizedBox(height: 8),
-          _buildLegendItem('Counselors', AppColors.accent, '1,496'),
-          const SizedBox(height: 8),
-          _buildLegendItem('Recommenders', AppColors.success, '863'),
+          if (!_isLoading && _error == null) _buildLegends(),
         ],
       ),
+    );
+  }
+
+  Widget _buildPieChart() {
+    if (_distributionData == null || _distributionData!['distributions'] == null) {
+      return const Center(child: Text('No data available'));
+    }
+
+    final distributions = _distributionData!['distributions'] as List<dynamic>;
+    if (distributions.isEmpty) {
+      return const Center(child: Text('No data available'));
+    }
+
+    final rolePercentages = _distributionData!['role_percentages'] as Map<String, dynamic>;
+    final totalUsers = _distributionData!['total_users'] as int;
+
+    // Define colors for each role
+    final roleColors = {
+      'student': AppColors.primary,
+      'parent': AppColors.secondary,
+      'counselor': AppColors.accent,
+      'institution': AppColors.success,
+      'admin': AppColors.info,
+      'recommender': AppColors.warning,
+    };
+
+    final sections = distributions.map<PieChartSectionData>((dist) {
+      final label = (dist['label'] as String).toLowerCase();
+      final value = (dist['value'] as num).toDouble();
+      final percentage = rolePercentages[label] ?? 0.0;
+      final color = roleColors[label] ?? AppColors.textSecondary;
+
+      return PieChartSectionData(
+        value: value,
+        title: '${percentage.toStringAsFixed(0)}%',
+        color: color,
+        radius: 50,
+        titleStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      );
+    }).toList();
+
+    return PieChart(
+      PieChartData(
+        sections: sections,
+        sectionsSpace: 2,
+        centerSpaceRadius: 0,
+      ),
+    );
+  }
+
+  Widget _buildLegends() {
+    if (_distributionData == null || _distributionData!['distributions'] == null) {
+      return const SizedBox.shrink();
+    }
+
+    final distributions = _distributionData!['distributions'] as List<dynamic>;
+
+    // Define colors for each role
+    final roleColors = {
+      'student': AppColors.primary,
+      'parent': AppColors.secondary,
+      'counselor': AppColors.accent,
+      'institution': AppColors.success,
+      'admin': AppColors.info,
+      'recommender': AppColors.warning,
+    };
+
+    return Column(
+      children: distributions.map<Widget>((dist) {
+        final label = dist['label'] as String;
+        final value = (dist['value'] as num).toInt();
+        final color = roleColors[label.toLowerCase()] ?? AppColors.textSecondary;
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: _buildLegendItem(label, color, value.toString()),
+        );
+      }).toList(),
     );
   }
 
