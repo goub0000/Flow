@@ -1,338 +1,286 @@
-class Message {
+import 'package:equatable/equatable.dart';
+import 'conversation_model.dart';
+
+/// Model for a message in a conversation
+class Message extends Equatable {
   final String id;
   final String conversationId;
   final String senderId;
-  final String senderName;
-  final String? senderPhotoUrl;
   final String content;
-  final MessageType type;
+  final MessageType messageType;
+  final String? attachmentUrl;
+  final String? replyToId;
+  final bool isEdited;
+  final bool isDeleted;
+  final List<String> readBy;
+  final DateTime? deliveredAt;
+  final DateTime? readAt;
+  final Map<String, dynamic>? metadata;
   final DateTime timestamp;
-  final bool isRead;
-  final List<String>? attachments;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  Message({
+  const Message({
     required this.id,
     required this.conversationId,
     required this.senderId,
-    required this.senderName,
-    this.senderPhotoUrl,
     required this.content,
-    required this.type,
+    this.messageType = MessageType.text,
+    this.attachmentUrl,
+    this.replyToId,
+    this.isEdited = false,
+    this.isDeleted = false,
+    this.readBy = const [],
+    this.deliveredAt,
+    this.readAt,
+    this.metadata,
     required this.timestamp,
-    required this.isRead,
-    this.attachments,
+    required this.createdAt,
+    required this.updatedAt,
   });
-
-  String get initials {
-    final names = senderName.split(' ');
-    if (names.length >= 2) {
-      return '${names[0][0]}${names[1][0]}'.toUpperCase();
-    }
-    return senderName.substring(0, 1).toUpperCase();
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'conversationId': conversationId,
-      'senderId': senderId,
-      'senderName': senderName,
-      'senderPhotoUrl': senderPhotoUrl,
-      'content': content,
-      'type': type.toString(),
-      'timestamp': timestamp.toIso8601String(),
-      'isRead': isRead,
-      'attachments': attachments,
-    };
-  }
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       id: json['id'] as String,
-      conversationId: json['conversationId'] as String,
-      senderId: json['senderId'] as String,
-      senderName: json['senderName'] as String,
-      senderPhotoUrl: json['senderPhotoUrl'] as String?,
+      conversationId: json['conversation_id'] as String,
+      senderId: json['sender_id'] as String,
       content: json['content'] as String,
-      type: MessageType.values.firstWhere(
-        (e) => e.toString() == json['type'],
-        orElse: () => MessageType.text,
+      messageType: MessageType.fromJson(
+        json['message_type'] as String? ?? 'text',
       ),
-      timestamp: DateTime.parse(json['timestamp'] as String),
-      isRead: json['isRead'] as bool,
-      attachments: json['attachments'] != null
-          ? List<String>.from(json['attachments'])
+      attachmentUrl: json['attachment_url'] as String?,
+      replyToId: json['reply_to_id'] as String?,
+      isEdited: json['is_edited'] as bool? ?? false,
+      isDeleted: json['is_deleted'] as bool? ?? false,
+      readBy: (json['read_by'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      deliveredAt: json['delivered_at'] != null
+          ? DateTime.parse(json['delivered_at'] as String)
           : null,
+      readAt: json['read_at'] != null
+          ? DateTime.parse(json['read_at'] as String)
+          : null,
+      metadata: json['metadata'] as Map<String, dynamic>?,
+      timestamp: DateTime.parse(json['timestamp'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
-  }
-
-  static List<Message> mockMessages(String conversationId) {
-    return [
-      Message(
-        id: 'msg1',
-        conversationId: conversationId,
-        senderId: 'user2',
-        senderName: 'Dr. Sarah Johnson',
-        content: 'Hello! How can I help you today?',
-        type: MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-        isRead: true,
-      ),
-      Message(
-        id: 'msg2',
-        conversationId: conversationId,
-        senderId: 'user1',
-        senderName: 'John Doe',
-        content: 'I have a question about the upcoming assignment.',
-        type: MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 55)),
-        isRead: true,
-      ),
-      Message(
-        id: 'msg3',
-        conversationId: conversationId,
-        senderId: 'user2',
-        senderName: 'Dr. Sarah Johnson',
-        content: 'Of course! What would you like to know?',
-        type: MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 50)),
-        isRead: true,
-      ),
-      Message(
-        id: 'msg4',
-        conversationId: conversationId,
-        senderId: 'user1',
-        senderName: 'John Doe',
-        content: 'Is it due this Friday or next Friday?',
-        type: MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
-        isRead: true,
-      ),
-      Message(
-        id: 'msg5',
-        conversationId: conversationId,
-        senderId: 'user2',
-        senderName: 'Dr. Sarah Johnson',
-        content: 'The assignment is due next Friday, March 15th, at 11:59 PM.',
-        type: MessageType.text,
-        timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
-        isRead: false,
-      ),
-    ];
-  }
-
-  /// Single mock message for development
-  static Message mockMessage([int index = 0]) {
-    final senders = [
-      {'id': 'user1', 'name': 'John Doe'},
-      {'id': 'user2', 'name': 'Dr. Sarah Johnson'},
-      {'id': 'user3', 'name': 'Prof. Michael Chen'},
-      {'id': 'user4', 'name': 'Emily Brown'},
-    ];
-    final contents = [
-      'Hello! This is a test message.',
-      'The assignment is due next Friday.',
-      'Thank you for the information!',
-      'Can we schedule a meeting?',
-    ];
-
-    final sender = senders[index % senders.length];
-    return Message(
-      id: 'msg${index + 1}',
-      conversationId: 'conv${(index % 3) + 1}',
-      senderId: sender['id']!,
-      senderName: sender['name']!,
-      content: contents[index % contents.length],
-      type: MessageType.text,
-      timestamp: DateTime.now().subtract(Duration(hours: index + 1)),
-      isRead: index % 2 == 0,
-    );
-  }
-}
-
-enum MessageType {
-  text,
-  image,
-  file,
-  system,
-}
-
-class Conversation {
-  final String id;
-  final String participantId;
-  final String participantName;
-  final String? participantPhotoUrl;
-  final String? participantRole;
-  final Message? lastMessage;
-  final int unreadCount;
-  final DateTime lastActivity;
-
-  Conversation({
-    required this.id,
-    required this.participantId,
-    required this.participantName,
-    this.participantPhotoUrl,
-    this.participantRole,
-    this.lastMessage,
-    required this.unreadCount,
-    required this.lastActivity,
-  });
-
-  String get initials {
-    final names = participantName.split(' ');
-    if (names.length >= 2) {
-      return '${names[0][0]}${names[1][0]}'.toUpperCase();
-    }
-    return participantName.substring(0, 1).toUpperCase();
-  }
-
-  String get lastMessagePreview {
-    if (lastMessage == null) return 'No messages yet';
-    if (lastMessage!.type == MessageType.image) return '📷 Image';
-    if (lastMessage!.type == MessageType.file) return '📎 File';
-    if (lastMessage!.content.length > 50) {
-      return '${lastMessage!.content.substring(0, 50)}...';
-    }
-    return lastMessage!.content;
-  }
-
-  String get formattedLastActivity {
-    final now = DateTime.now();
-    final difference = now.difference(lastActivity);
-
-    if (difference.inMinutes < 1) {
-      return 'Just now';
-    } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
-    } else {
-      return '${lastActivity.day}/${lastActivity.month}/${lastActivity.year}';
-    }
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'participantId': participantId,
-      'participantName': participantName,
-      'participantPhotoUrl': participantPhotoUrl,
-      'participantRole': participantRole,
-      'lastMessage': lastMessage?.toJson(),
-      'unreadCount': unreadCount,
-      'lastActivity': lastActivity.toIso8601String(),
+      'conversation_id': conversationId,
+      'sender_id': senderId,
+      'content': content,
+      'message_type': messageType.toJson(),
+      'attachment_url': attachmentUrl,
+      'reply_to_id': replyToId,
+      'is_edited': isEdited,
+      'is_deleted': isDeleted,
+      'read_by': readBy,
+      'delivered_at': deliveredAt?.toIso8601String(),
+      'read_at': readAt?.toIso8601String(),
+      'metadata': metadata,
+      'timestamp': timestamp.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
     };
   }
 
-  factory Conversation.fromJson(Map<String, dynamic> json) {
-    return Conversation(
-      id: json['id'] as String,
-      participantId: json['participantId'] as String,
-      participantName: json['participantName'] as String,
-      participantPhotoUrl: json['participantPhotoUrl'] as String?,
-      participantRole: json['participantRole'] as String?,
-      lastMessage: json['lastMessage'] != null
-          ? Message.fromJson(json['lastMessage'])
-          : null,
-      unreadCount: json['unreadCount'] as int,
-      lastActivity: DateTime.parse(json['lastActivity'] as String),
+  Message copyWith({
+    String? id,
+    String? conversationId,
+    String? senderId,
+    String? content,
+    MessageType? messageType,
+    String? attachmentUrl,
+    String? replyToId,
+    bool? isEdited,
+    bool? isDeleted,
+    List<String>? readBy,
+    DateTime? deliveredAt,
+    DateTime? readAt,
+    Map<String, dynamic>? metadata,
+    DateTime? timestamp,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Message(
+      id: id ?? this.id,
+      conversationId: conversationId ?? this.conversationId,
+      senderId: senderId ?? this.senderId,
+      content: content ?? this.content,
+      messageType: messageType ?? this.messageType,
+      attachmentUrl: attachmentUrl ?? this.attachmentUrl,
+      replyToId: replyToId ?? this.replyToId,
+      isEdited: isEdited ?? this.isEdited,
+      isDeleted: isDeleted ?? this.isDeleted,
+      readBy: readBy ?? this.readBy,
+      deliveredAt: deliveredAt ?? this.deliveredAt,
+      readAt: readAt ?? this.readAt,
+      metadata: metadata ?? this.metadata,
+      timestamp: timestamp ?? this.timestamp,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
-  static List<Conversation> mockConversations() {
-    return [
-      Conversation(
-        id: 'conv1',
-        participantId: 'user2',
-        participantName: 'Dr. Sarah Johnson',
-        participantRole: 'Counselor',
-        lastMessage: Message(
-          id: 'msg1',
-          conversationId: 'conv1',
-          senderId: 'user2',
-          senderName: 'Dr. Sarah Johnson',
-          content: 'The assignment is due next Friday, March 15th, at 11:59 PM.',
-          type: MessageType.text,
-          timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
-          isRead: false,
-        ),
-        unreadCount: 1,
-        lastActivity: DateTime.now().subtract(const Duration(minutes: 30)),
-      ),
-      Conversation(
-        id: 'conv2',
-        participantId: 'user3',
-        participantName: 'Prof. Michael Chen',
-        participantRole: 'Institution',
-        lastMessage: Message(
-          id: 'msg2',
-          conversationId: 'conv2',
-          senderId: 'user1',
-          senderName: 'John Doe',
-          content: 'Thank you for the information!',
-          type: MessageType.text,
-          timestamp: DateTime.now().subtract(const Duration(hours: 5)),
-          isRead: true,
-        ),
-        unreadCount: 0,
-        lastActivity: DateTime.now().subtract(const Duration(hours: 5)),
-      ),
-      Conversation(
-        id: 'conv3',
-        participantId: 'user4',
-        participantName: 'Emily Brown',
-        participantRole: 'Student',
-        lastMessage: Message(
-          id: 'msg3',
-          conversationId: 'conv3',
-          senderId: 'user4',
-          senderName: 'Emily Brown',
-          content: 'Can we schedule a meeting to discuss my application?',
-          type: MessageType.text,
-          timestamp: DateTime.now().subtract(const Duration(days: 1)),
-          isRead: false,
-        ),
-        unreadCount: 2,
-        lastActivity: DateTime.now().subtract(const Duration(days: 1)),
-      ),
-      Conversation(
-        id: 'conv4',
-        participantId: 'user5',
-        participantName: 'David Wilson',
-        participantRole: 'Recommender',
-        lastMessage: Message(
-          id: 'msg4',
-          conversationId: 'conv4',
-          senderId: 'user5',
-          senderName: 'David Wilson',
-          content: 'I\'ve submitted your recommendation letter.',
-          type: MessageType.text,
-          timestamp: DateTime.now().subtract(const Duration(days: 2)),
-          isRead: true,
-        ),
-        unreadCount: 0,
-        lastActivity: DateTime.now().subtract(const Duration(days: 2)),
-      ),
-      Conversation(
-        id: 'conv5',
-        participantId: 'user6',
-        participantName: 'Lisa Anderson',
-        participantRole: 'Parent',
-        lastMessage: Message(
-          id: 'msg5',
-          conversationId: 'conv5',
-          senderId: 'user1',
-          senderName: 'John Doe',
-          content: 'I\'ll send you the progress report soon.',
-          type: MessageType.text,
-          timestamp: DateTime.now().subtract(const Duration(days: 3)),
-          isRead: true,
-        ),
-        unreadCount: 0,
-        lastActivity: DateTime.now().subtract(const Duration(days: 3)),
-      ),
-    ];
+  /// Check if message is read by a specific user
+  bool isReadBy(String userId) {
+    return readBy.contains(userId);
   }
+
+  /// Check if message is sent by a specific user
+  bool isSentBy(String userId) {
+    return senderId == userId;
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
+        conversationId,
+        senderId,
+        content,
+        messageType,
+        attachmentUrl,
+        replyToId,
+        isEdited,
+        isDeleted,
+        readBy,
+        deliveredAt,
+        readAt,
+        metadata,
+        timestamp,
+        createdAt,
+        updatedAt,
+      ];
+}
+
+/// Model for message list response
+class MessageListResponse extends Equatable {
+  final List<Message> messages;
+  final int total;
+  final int page;
+  final int pageSize;
+  final bool hasMore;
+
+  const MessageListResponse({
+    required this.messages,
+    required this.total,
+    required this.page,
+    required this.pageSize,
+    required this.hasMore,
+  });
+
+  factory MessageListResponse.fromJson(Map<String, dynamic> json) {
+    return MessageListResponse(
+      messages: (json['messages'] as List<dynamic>?)
+              ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      total: (json['total'] as num?)?.toInt() ?? 0,
+      page: (json['page'] as num?)?.toInt() ?? 1,
+      pageSize: (json['page_size'] as num?)?.toInt() ?? 50,
+      hasMore: json['has_more'] as bool? ?? false,
+    );
+  }
+
+  @override
+  List<Object?> get props => [messages, total, page, pageSize, hasMore];
+}
+
+/// Request model for sending a new message
+class MessageCreateRequest {
+  final String conversationId;
+  final String content;
+  final MessageType messageType;
+  final String? attachmentUrl;
+  final String? replyToId;
+  final Map<String, dynamic>? metadata;
+
+  const MessageCreateRequest({
+    required this.conversationId,
+    required this.content,
+    this.messageType = MessageType.text,
+    this.attachmentUrl,
+    this.replyToId,
+    this.metadata,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'conversation_id': conversationId,
+      'content': content,
+      'message_type': messageType.toJson(),
+      if (attachmentUrl != null) 'attachment_url': attachmentUrl,
+      if (replyToId != null) 'reply_to_id': replyToId,
+      if (metadata != null) 'metadata': metadata,
+    };
+  }
+}
+
+/// Request model for updating/editing a message
+class MessageUpdateRequest {
+  final String content;
+
+  const MessageUpdateRequest({required this.content});
+
+  Map<String, dynamic> toJson() {
+    return {'content': content};
+  }
+}
+
+/// Request model for marking messages as read
+class ReadReceiptRequest {
+  final List<String> messageIds;
+
+  const ReadReceiptRequest({required this.messageIds});
+
+  Map<String, dynamic> toJson() {
+    return {'message_ids': messageIds};
+  }
+}
+
+/// Request model for typing indicator
+class TypingIndicatorRequest {
+  final String conversationId;
+  final bool isTyping;
+
+  const TypingIndicatorRequest({
+    required this.conversationId,
+    required this.isTyping,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'conversation_id': conversationId,
+      'is_typing': isTyping,
+    };
+  }
+}
+
+/// Model for unread count response
+class UnreadCountResponse extends Equatable {
+  final int totalUnread;
+  final Map<String, int> byConversation;
+
+  const UnreadCountResponse({
+    required this.totalUnread,
+    required this.byConversation,
+  });
+
+  factory UnreadCountResponse.fromJson(Map<String, dynamic> json) {
+    return UnreadCountResponse(
+      totalUnread: (json['total_unread'] as num?)?.toInt() ?? 0,
+      byConversation: Map<String, int>.from(
+        json['by_conversation'] as Map? ?? {},
+      ),
+    );
+  }
+
+  @override
+  List<Object?> get props => [totalUnread, byConversation];
 }
