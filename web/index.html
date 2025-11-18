@@ -34,5 +34,30 @@
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/flutter_service_worker.js')
+          .then(function(registration) {
+            console.log('ServiceWorker registration successful:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      });
+
+      // Listen for service worker messages
+      navigator.serviceWorker.addEventListener('message', function(event) {
+        if (event.data.type === 'BACKGROUND_SYNC') {
+          // Dispatch custom event to notify Flutter app
+          window.dispatchEvent(new CustomEvent('background-sync', {
+            detail: { tag: event.data.tag }
+          }));
+        }
+      });
+    }
+  </script>
 </body>
 </html>

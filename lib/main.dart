@@ -12,6 +12,7 @@ import 'core/providers/service_providers.dart' as service_providers;
 import 'core/error/error_handling.dart';
 import 'core/api/api_config.dart';
 import 'routing/app_router.dart';
+import 'features/shared/widgets/offline_status_indicator.dart';
 
 void main() async {
   // Ensure Flutter bindings are initialized
@@ -202,6 +203,20 @@ class FlowApp extends ConsumerWidget {
       ),
       themeMode: appearance.themeMode,
       routerConfig: router,
+      builder: (context, child) {
+        return Stack(
+          children: [
+            if (child != null) child,
+            // Offline status indicator at the top
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: const OfflineStatusIndicator(),
+            ),
+          ],
+        );
+      },
     );
   }
 }
