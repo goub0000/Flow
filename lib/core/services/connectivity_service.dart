@@ -31,7 +31,7 @@ class ConnectivityService {
 
   void _init() {
     // Initialize with current online status
-    _currentStatus = html.window.navigator.onLine
+    _currentStatus = (html.window.navigator.onLine ?? true)
         ? ConnectivityStatus.online
         : ConnectivityStatus.offline;
 

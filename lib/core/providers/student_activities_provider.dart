@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/activity_models.dart';
 import '../services/student_activities_api_service.dart';
-import 'auth_provider.dart';
+import '../../features/shared/providers/profile_provider.dart';
 
 /// State for student activities
 class StudentActivitiesState {
@@ -162,10 +162,9 @@ class StudentActivitiesNotifier extends StateNotifier<StudentActivitiesState> {
 
 /// Provider for student activities API service
 final studentActivitiesApiServiceProvider = Provider<StudentActivitiesApiService>((ref) {
-  final authState = ref.watch(authStateProvider);
-  final accessToken = authState.value?.session?.accessToken;
-
-  return StudentActivitiesApiService(accessToken: accessToken);
+  // TODO: Implement proper auth token retrieval
+  // For now, return service without token (will use Supabase client's auth)
+  return StudentActivitiesApiService(accessToken: null);
 });
 
 /// Provider for student activities state
