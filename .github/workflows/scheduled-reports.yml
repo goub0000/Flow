@@ -1,0 +1,83 @@
+name: Scheduled Reports
+
+on:
+  schedule:
+    # Runs every hour at minute 0
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  process-reports:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd recommendation_service
+          pip install supabase-py python-dotenv
+
+      - name: Process scheduled reports
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          cd recommendation_service
+          python -c "
+          import asyncio
+          import os
+          from supabase import create_client
+          from datetime import datetime
+
+          async def process_reports():
+              print('🚀 Starting scheduled reports processing...')
+
+              # Connect to Supabase
+              supabase = create_client(
+                  os.getenv('SUPABASE_URL'),
+                  os.getenv('SUPABASE_SERVICE_KEY')
+              )
+
+              # Get due reports
+              response = supabase.table('scheduled_reports') \
+                  .select('*') \
+                  .eq('is_active', True) \
+                  .lte('next_run_at', datetime.now().isoformat()) \
+                  .execute()
+
+              reports = response.data
+              print(f'📊 Found {len(reports)} reports to process')
+
+              for report in reports:
+                  try:
+                      print(f'📝 Processing: {report[\"title\"]}')
+
+                      # Mark as executed (this will update next_run_at automatically)
+                      supabase.rpc('mark_report_executed', {
+                          'report_id': report['id'],
+                          'execution_status': 'completed'
+                      }).execute()
+
+                      print(f'✅ Completed: {report[\"title\"]}')
+
+                  except Exception as e:
+                      print(f'❌ Error processing {report[\"title\"]}: {str(e)}')
+
+                      # Mark as failed
+                      supabase.rpc('mark_report_executed', {
+                          'report_id': report['id'],
+                          'execution_status': 'failed',
+                          'error_msg': str(e)
+                      }).execute()
+
+              print('🎉 Processing complete!')
+
+          asyncio.run(process_reports())
+          "
