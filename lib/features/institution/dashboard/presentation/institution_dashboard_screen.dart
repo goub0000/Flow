@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../shared/widgets/dashboard_scaffold.dart';
+import '../../../shared/widgets/notification_badge.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import 'widgets/overview_tab.dart';
 import '../../applicants/presentation/applicants_list_screen.dart';
@@ -40,6 +41,8 @@ class _InstitutionDashboardScreenState
             currentIndex: _currentIndex,
             onNavigationTap: (index) => setState(() => _currentIndex = index),
             actions: [
+              // Notification badge - always visible
+              const NotificationBadge(),
               // Debug button for troubleshooting
               DashboardAction(
                 icon: Icons.bug_report,

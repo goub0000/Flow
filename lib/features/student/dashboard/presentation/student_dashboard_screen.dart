@@ -7,6 +7,7 @@ import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
 import '../../../shared/widgets/coming_soon_dialog.dart';
 import '../../../shared/widgets/refresh_utilities.dart';
+import '../../../shared/widgets/notification_badge.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
@@ -93,17 +94,19 @@ class _StudentDashboardScreenState
         DashboardScaffold(
           title: _getTitleForIndex(_currentIndex),
           currentIndex: _currentIndex,
-          actions: _currentIndex == 3 && user != null // Show edit button on Profile tab
-              ? [
-                  DashboardAction(
-                    icon: Icons.edit,
-                    onPressed: () {
-                      context.push('/profile/edit');
-                    },
-                    tooltip: 'Edit Profile',
-                  ),
-                ]
-              : null,
+          actions: [
+            // Notification badge - always visible
+            const NotificationBadge(),
+            // Edit button - only on Profile tab
+            if (_currentIndex == 3 && user != null)
+              DashboardAction(
+                icon: Icons.edit,
+                onPressed: () {
+                  context.push('/profile/edit');
+                },
+                tooltip: 'Edit Profile',
+              ),
+          ],
           onNavigationTap: (index) {
             print('[DEBUG] Navigation tap - from $_currentIndex to $index');
             setState(() {
