@@ -38,23 +38,25 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   }
 
   /// Fetch all notifications for current user from backend API
-  Future<void> fetchNotifications() async {
+  Future<void> fetchNotifications({int page = 1, int pageSize = 100, bool unreadOnly = false}) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
+      // Backend returns NotificationListResponse with pagination
       final response = await _apiClient.get(
-        ApiConfig.notifications,
-        fromJson: (data) {
-          if (data is List) {
-            return data.map((notifJson) => NotificationModel.fromJson(notifJson)).toList();
-          }
-          return <NotificationModel>[];
-        },
+        '${ApiConfig.notifications}?page=$page&page_size=$pageSize&unread_only=$unreadOnly',
+        fromJson: (data) => data as Map<String, dynamic>,
       );
 
       if (response.success && response.data != null) {
+        // Extract notifications array from response
+        final notificationsData = response.data!['notifications'] as List<dynamic>? ?? [];
+        final notifications = notificationsData
+            .map((notifJson) => NotificationModel.fromJson(notifJson as Map<String, dynamic>))
+            .toList();
+
         state = state.copyWith(
-          notifications: response.data!,
+          notifications: notifications,
           isLoading: false,
         );
       } else {
@@ -83,15 +85,9 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 
       final updatedNotifications = state.notifications.map((notif) {
         if (notif.id == notificationId) {
-          return NotificationModel(
-            id: notif.id,
-            userId: notif.userId,
-            type: notif.type,
-            title: notif.title,
-            body: notif.body,
-            data: notif.data,
+          return notif.copyWith(
             isRead: true,
-            createdAt: notif.createdAt,
+            readAt: DateTime.now(),
           );
         }
         return notif;
@@ -110,16 +106,11 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     try {
       await _apiClient.post('${ApiConfig.notifications}/read-all');
 
+      final now = DateTime.now();
       final updatedNotifications = state.notifications.map((notif) {
-        return NotificationModel(
-          id: notif.id,
-          userId: notif.userId,
-          type: notif.type,
-          title: notif.title,
-          body: notif.body,
-          data: notif.data,
+        return notif.copyWith(
           isRead: true,
-          createdAt: notif.createdAt,
+          readAt: now,
         );
       }).toList();
 
