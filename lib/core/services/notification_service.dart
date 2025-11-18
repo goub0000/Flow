@@ -20,9 +20,9 @@ class NotificationService {
 
       var query = _supabase
           .from('notifications')
-          .select('*', const FetchOptions(count: CountOption.exact))
+          .select('*')
           .eq('user_id', userId)
-          .is_('deleted_at', null)
+          .isFilter('deleted_at', null)
           .order('created_at', ascending: false);
 
       // Apply filters
@@ -58,8 +58,7 @@ class NotificationService {
       }
 
       final response = await query;
-      final data = response.data as List;
-      final count = response.count ?? 0;
+      final data = response as List;
 
       final notifications = data.map((json) {
         return AppNotification.fromJson({
@@ -68,15 +67,23 @@ class NotificationService {
         });
       }).toList();
 
+      // Get total count
+      final countResponse = await _supabase
+          .from('notifications')
+          .select('id')
+          .eq('user_id', userId)
+          .isFilter('deleted_at', null);
+      final count = (countResponse as List).length;
+
       // Get unread count separately
       final unreadCountResponse = await _supabase
           .from('notifications')
-          .select('id', const FetchOptions(count: CountOption.exact, head: true))
+          .select('id')
           .eq('user_id', userId)
           .eq('is_read', false)
-          .is_('deleted_at', null);
+          .isFilter('deleted_at', null);
 
-      final unreadCount = unreadCountResponse.count ?? 0;
+      final unreadCount = (unreadCountResponse as List).length;
 
       final limit = filter?.limit ?? 20;
       final page = filter?.page ?? 1;
@@ -105,12 +112,12 @@ class NotificationService {
 
       final response = await _supabase
           .from('notifications')
-          .select('id', const FetchOptions(count: CountOption.exact, head: true))
+          .select('id')
           .eq('user_id', userId)
           .eq('is_read', false)
           .is_('deleted_at', null);
 
-      return response.count ?? 0;
+      return (response as List).length;
     } catch (e) {
       print('Error getting unread count: $e');
       return 0;
