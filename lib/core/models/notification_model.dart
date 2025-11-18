@@ -20,8 +20,9 @@ class NotificationModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  // Legacy field for backward compatibility
+  // Legacy fields for backward compatibility
   String get type => notificationType;
+  String get message => body;
 
   NotificationModel({
     required this.id,

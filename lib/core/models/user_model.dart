@@ -39,6 +39,9 @@ class UserModel {
   /// Alias for photoUrl for compatibility
   String? get photoURL => photoUrl;
 
+  /// Alias for displayName for compatibility
+  String? get fullName => displayName;
+
   /// Get user's initials for avatar
   String get initials {
     if (displayName == null || displayName!.isEmpty) {

@@ -97,9 +97,17 @@ class _StudentDashboardScreenState
           currentIndex: _currentIndex,
           actions: [
             // Notification badge - always visible
-            const NotificationBadge(),
+            DashboardAction(
+              icon: Icons.notifications,
+              onPressed: () => context.push('/notifications'),
+              badge: const NotificationBadge(),
+            ),
             // Message badge - always visible
-            const MessageBadge(),
+            DashboardAction(
+              icon: Icons.message,
+              onPressed: () => context.push('/messages'),
+              badge: const MessageBadge(),
+            ),
             // Edit button - only on Profile tab
             if (_currentIndex == 3 && user != null)
               DashboardAction(
@@ -740,7 +748,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
           const LastRefreshIndicator(providerKey: 'student_dashboard'),
           const SizedBox(height: 8),
         ],
-      ),
+        ),
       ),
     );
   }

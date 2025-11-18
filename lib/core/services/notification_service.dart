@@ -115,7 +115,7 @@ class NotificationService {
           .select('id')
           .eq('user_id', userId)
           .eq('is_read', false)
-          .is_('deleted_at', null);
+          .isFilter('deleted_at', null);
 
       return (response as List).length;
     } catch (e) {
