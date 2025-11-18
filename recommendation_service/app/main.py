@@ -61,7 +61,7 @@ app = FastAPI(
 
     **Documentation:** Visit `/docs` for interactive API documentation
     """,
-    version="1.1.0",
+    version="1.2.0",
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -149,7 +149,8 @@ from app.api import (
     enrichment, ml_training, location_cleaning, auth, courses_api,
     applications, enrollments_api, messaging_api, notifications_api,
     counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
-    institutions_api, batch_enrichment_api, meetings, student_activities_api, grades
+    institutions_api, batch_enrichment_api, meetings, student_activities_api, grades,
+    recommendation_letters
 )
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
@@ -166,6 +167,7 @@ app.include_router(meetings.router, prefix="/api/v1", tags=["Meetings"])
 app.include_router(students.router, prefix="/api/v1", tags=["Students"])
 app.include_router(student_activities_api.router, prefix="/api/v1", tags=["Student Activities"])
 app.include_router(grades.router, prefix="/api/v1", tags=["Grades"])
+app.include_router(recommendation_letters.router, prefix="/api/v1", tags=["Recommendation Letters"])
 app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendations"])
 app.include_router(universities.router, prefix="/api/v1", tags=["Universities"])
 app.include_router(programs.router, prefix="/api/v1", tags=["Programs"])

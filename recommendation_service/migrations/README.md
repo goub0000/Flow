@@ -127,10 +127,75 @@ for table in tables:
 "
 ```
 
+## Pending Migrations
+
+### recommendation_system Tables Migration
+
+**File:** `create_recommendation_system_tables.sql`
+**Status:** ⏳ PENDING
+**Created:** 2025-11-17
+**Purpose:** Creates 4 tables for Phase 3.5 - Letter of Recommendation Management System
+
+#### To Execute This Migration
+
+1. Open your Supabase project dashboard:
+   - URL: https://supabase.com/dashboard/project/wmuarotbdjhqbyjyslqg/editor
+
+2. Navigate to SQL Editor:
+   - Click "SQL Editor" in the left sidebar
+   - Click "New Query"
+
+3. Copy the SQL from `create_recommendation_system_tables.sql`
+
+4. Paste into the SQL Editor and click "Run" (or press Ctrl+Enter)
+
+5. Verify the migration succeeded:
+   - You should see a success message
+   - The following 4 tables should appear in your database schema:
+     - recommendation_requests
+     - letter_of_recommendations
+     - recommendation_templates
+     - recommendation_reminders
+
+#### What This Migration Creates
+
+- **Tables (4):**
+  - `recommendation_requests` - Student requests for letters of recommendation
+  - `letter_of_recommendations` - Actual recommendation letters written by recommenders
+  - `recommendation_templates` - Pre-built templates for common recommendation types
+  - `recommendation_reminders` - Automated reminders for pending recommendations
+
+- **Features:**
+  - 3 default templates (Academic, Scholarship, Professional)
+  - Automatic reminder system
+  - Share link generation for letters
+  - Template field replacement system
+
+- **Indexes:** Multiple indexes for query performance
+
+- **RLS Policies:** Row-level security for students, recommenders, and service role access
+
+#### Verification
+
+After running the migration, verify it worked:
+
+```bash
+cd recommendation_service
+python -c "
+from app.database.config import get_supabase
+db = get_supabase()
+tables = ['recommendation_requests', 'letter_of_recommendations', 'recommendation_templates', 'recommendation_reminders']
+for table in tables:
+    result = db.table(table).select('count', count='exact').limit(0).execute()
+    print(f'{table}: {result.count} records')
+"
+```
+
 ## Migration History
 
-| Date       | Migration                           | Status      |
-|------------|-------------------------------------|-------------|
-| 2025-11-17 | create_student_activities_table.sql | ✅ COMPLETED |
-| 2025-11-17 | create_grades_tables.sql            | ✅ COMPLETED |
+| Date       | Migration                                  | Status      |
+|------------|--------------------------------------------|-------------|
+| 2025-11-17 | create_student_activities_table.sql        | ✅ COMPLETED |
+| 2025-11-17 | create_grades_tables.sql                   | ✅ COMPLETED |
+| 2025-11-17 | create_recommendation_system_tables.sql    | ⏳ PENDING   |
 
