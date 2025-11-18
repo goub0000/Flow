@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
-import '../providers/notifications_provider.dart';
+import '../providers/notifications_realtime_provider.dart';
 
 /// Notification bell icon with badge showing unread count
 class NotificationBadge extends ConsumerWidget {
@@ -17,7 +17,7 @@ class NotificationBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final unreadCount = ref.watch(unreadNotificationsCountProvider);
+    final unreadCount = ref.watch(realtimeUnreadNotificationsCountProvider);
 
     return IconButton(
       icon: Stack(
@@ -75,7 +75,7 @@ class SimpleNotificationBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final unreadCount = ref.watch(unreadNotificationsCountProvider);
+    final unreadCount = ref.watch(realtimeUnreadNotificationsCountProvider);
 
     return Badge(
       label: Text('$unreadCount'),
