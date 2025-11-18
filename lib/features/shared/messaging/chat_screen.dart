@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/models/conversation_model.dart';
 import '../../../core/models/message_model.dart';
+import '../../../core/providers/service_providers.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/logo_avatar.dart';
-import '../providers/messaging_provider.dart' hide Conversation;
+import '../widgets/typing_indicator.dart';
+import '../providers/messaging_realtime_provider.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  final Conversation conversation;
+  final String conversationId;
 
   const ChatScreen({
     super.key,
-    required this.conversation,
+    required this.conversationId,
   });
 
   @override
@@ -21,23 +24,49 @@ class ChatScreen extends ConsumerStatefulWidget {
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final String _currentUserId = 'user1'; // Mock current user ID
   bool _isSending = false;
+  bool _isTyping = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Scroll to bottom when messages are loaded
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(messagingProvider.notifier).fetchMessages(widget.conversation.id);
       _scrollToBottom();
     });
+
+    // Send typing indicator when text changes
+    _messageController.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
+    _messageController.removeListener(_onTextChanged);
     _messageController.dispose();
     _scrollController.dispose();
+
+    // Stop typing indicator
+    if (_isTyping) {
+      ref.read(conversationRealtimeProvider(widget.conversationId).notifier)
+          .sendTypingIndicator(false);
+    }
+
     super.dispose();
+  }
+
+  void _onTextChanged() {
+    final hasText = _messageController.text.trim().isNotEmpty;
+
+    if (hasText && !_isTyping) {
+      setState(() => _isTyping = true);
+      ref.read(conversationRealtimeProvider(widget.conversationId).notifier)
+          .sendTypingIndicator(true);
+    } else if (!hasText && _isTyping) {
+      setState(() => _isTyping = false);
+      ref.read(conversationRealtimeProvider(widget.conversationId).notifier)
+          .sendTypingIndicator(false);
+    }
   }
 
   void _scrollToBottom() {
@@ -54,32 +83,30 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final content = _messageController.text.trim();
     if (content.isEmpty || _isSending) return;
 
-    setState(() {
-      _isSending = true;
-    });
+    setState(() => _isSending = true);
+
+    // Stop typing indicator
+    if (_isTyping) {
+      setState(() => _isTyping = false);
+      ref.read(conversationRealtimeProvider(widget.conversationId).notifier)
+          .sendTypingIndicator(false);
+    }
 
     try {
-      await ref.read(messagingProvider.notifier).sendMessage(
-        widget.conversation.id,
-        content,
-        'current_user_id', // TODO: Get actual user ID from auth
-      );
+      final message = await ref
+          .read(conversationRealtimeProvider(widget.conversationId).notifier)
+          .sendMessage(content);
 
-      if (mounted) {
+      if (message != null && mounted) {
         _messageController.clear();
-        setState(() {
-          _isSending = false;
-        });
 
+        // Scroll to bottom after sending
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollToBottom();
         });
       }
     } catch (e) {
       if (mounted) {
-        setState(() {
-          _isSending = false;
-        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to send message: $e'),
@@ -87,23 +114,46 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
         );
       }
+    } finally {
+      if (mounted) {
+        setState(() => _isSending = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isLoading = ref.watch(messagingLoadingProvider);
-    final error = ref.watch(messagingErrorProvider);
-    final messages = ref.watch(messagesListProvider(widget.conversation.id));
+    final conversationState = ref.watch(conversationRealtimeProvider(widget.conversationId));
+    final currentUser = ref.watch(currentUserProvider);
+    final typingUsers = ref.watch(typingUsersProvider(widget.conversationId));
+
+    final conversation = conversationState.conversation;
+    final messages = conversationState.messages;
+    final isLoading = conversationState.isLoading;
+    final error = conversationState.error;
+    final isConnected = conversationState.isConnected;
+
+    // Get conversation title
+    String title = 'Chat';
+    if (conversation != null) {
+      title = conversation.title ?? 'Chat';
+
+      // For direct conversations, show the other participant's name
+      if (conversation.conversationType == ConversationType.direct && currentUser != null) {
+        final otherUserId = conversation.getOtherParticipantId(currentUser.id);
+        // TODO: Fetch user profile for name
+        title = 'User ${otherUserId?.substring(0, 8)}';
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             LogoAvatar.user(
-              photoUrl: widget.conversation.participantPhotoUrl,
-              initials: widget.conversation.initials,
+              photoUrl: null,
+              initials: title.substring(0, 2),
               size: 36,
             ),
             const SizedBox(width: 12),
@@ -112,16 +162,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.conversation.participantName,
+                    title,
                     style: const TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (widget.conversation.participantRole != null)
+                  if (!isConnected)
                     Text(
-                      widget.conversation.participantRole!,
-                      style: const TextStyle(
+                      'Connecting...',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.warning,
+                      ),
+                    )
+                  else if (typingUsers.isNotEmpty)
+                    Text(
+                      typingUsers.length == 1 ? 'typing...' : '${typingUsers.length} typing...',
+                      style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
                 ],
@@ -142,27 +201,31 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         children: [
           // Error State
           if (error != null)
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text(error, style: const TextStyle(color: Colors.red)),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        ref.read(messagingProvider.notifier).fetchMessages(widget.conversation.id);
-                      },
-                      child: const Text('Retry'),
+            Container(
+              padding: const EdgeInsets.all(12),
+              color: AppColors.error.withOpacity(0.1),
+              child: Row(
+                children: [
+                  Icon(Icons.error_outline, color: AppColors.error, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      error,
+                      style: TextStyle(color: AppColors.error, fontSize: 12),
                     ),
-                  ],
-                ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      ref.read(conversationRealtimeProvider(widget.conversationId).notifier).refresh();
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
-            )
+            ),
+
           // Loading State
-          else if (isLoading && messages.isEmpty)
+          if (isLoading && messages.isEmpty)
             const Expanded(
               child: LoadingIndicator(message: 'Loading messages...'),
             )
@@ -198,15 +261,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     )
                   : RefreshIndicator(
                       onRefresh: () async {
-                        await ref.read(messagingProvider.notifier).fetchMessages(widget.conversation.id);
+                        await ref.read(conversationRealtimeProvider(widget.conversationId).notifier).refresh();
                       },
                       child: ListView.builder(
                         controller: _scrollController,
                         padding: const EdgeInsets.all(16),
-                        itemCount: messages.length,
+                        itemCount: messages.length + (typingUsers.isNotEmpty ? 1 : 0),
                         itemBuilder: (context, index) {
+                          // Show typing indicator at the end
+                          if (typingUsers.isNotEmpty && index == messages.length) {
+                            // TODO: Fetch user names from profile service
+                            final typingUserNames = typingUsers.map((id) => 'User ${id.substring(0, 8)}').toList();
+                            return TypingIndicatorBubble(typingUserNames: typingUserNames);
+                          }
+
                           final message = messages[index];
-                          final isCurrentUser = message.senderId == _currentUserId;
+                          final isCurrentUser = currentUser != null && message.senderId == currentUser.id;
                           final showDate = index == 0 ||
                               !_isSameDay(
                                 message.timestamp,
@@ -219,6 +289,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                               _MessageBubble(
                                 message: message,
                                 isCurrentUser: isCurrentUser,
+                                currentUserId: currentUser?.id,
                               ),
                             ],
                           );
@@ -261,7 +332,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: AppColors.background,
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 10,
@@ -323,7 +394,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               title: const Text('Search in conversation'),
               onTap: () {
                 Navigator.pop(context);
-                _showSearchDialog();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Search feature coming soon'),
+                    backgroundColor: AppColors.info,
+                  ),
+                );
               },
             ),
             ListTile(
@@ -331,57 +407,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               title: const Text('Mute notifications'),
               onTap: () {
                 Navigator.pop(context);
-                _showMuteDialog();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete, color: AppColors.error),
-              title: const Text(
-                'Delete conversation',
-                style: TextStyle(color: AppColors.error),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                _showDeleteConfirmation();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Mute feature coming soon'),
+                    backgroundColor: AppColors.info,
+                  ),
+                );
               },
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showDeleteConfirmation() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Conversation?'),
-        content: const Text(
-          'This will delete all messages in this conversation. This action cannot be undone.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              // TODO: Delete conversation
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Conversation deleted'),
-                  backgroundColor: AppColors.success,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-            ),
-            child: const Text('Delete'),
-          ),
-        ],
       ),
     );
   }
@@ -413,202 +448,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
               title: const Text('Photo & Video'),
               subtitle: const Text('From gallery'),
-              onTap: () async {
+              onTap: () {
                 Navigator.pop(context);
-                // TODO: Implement with image_picker package
-                // final images = await ImagePicker().pickMultiImage();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Opening gallery...'),
+                    content: Text('File attachments coming soon'),
                     backgroundColor: AppColors.info,
                   ),
                 );
               },
             ),
-            ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.success.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.camera_alt, color: AppColors.success),
-              ),
-              title: const Text('Camera'),
-              subtitle: const Text('Take a photo'),
-              onTap: () async {
-                Navigator.pop(context);
-                // TODO: Implement with image_picker package
-                // final image = await ImagePicker().pickImage(source: ImageSource.camera);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Opening camera...'),
-                    backgroundColor: AppColors.info,
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.info.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.insert_drive_file, color: AppColors.info),
-              ),
-              title: const Text('Document'),
-              subtitle: const Text('PDF, DOC, TXT, etc.'),
-              onTap: () async {
-                Navigator.pop(context);
-                // TODO: Implement with file_picker package
-                // final result = await FilePicker.platform.pickFiles();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Opening file picker...'),
-                    backgroundColor: AppColors.info,
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showSearchDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Search Messages'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search in conversation...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              autofocus: true,
-              onChanged: (value) {
-                // TODO: Implement search logic
-                // Filter messages based on search query
-              },
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Search functionality will filter messages in real-time',
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Search activated'),
-                  backgroundColor: AppColors.info,
-                ),
-              );
-            },
-            child: const Text('Search'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showMuteDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Mute Notifications'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Mute notifications for:'),
-            const SizedBox(height: 16),
-            ListTile(
-              title: const Text('30 minutes'),
-              leading: Radio<int>(
-                value: 30,
-                groupValue: 0,
-                onChanged: (value) {},
-              ),
-              contentPadding: EdgeInsets.zero,
-            ),
-            ListTile(
-              title: const Text('1 hour'),
-              leading: Radio<int>(
-                value: 60,
-                groupValue: 0,
-                onChanged: (value) {},
-              ),
-              contentPadding: EdgeInsets.zero,
-            ),
-            ListTile(
-              title: const Text('8 hours'),
-              leading: Radio<int>(
-                value: 480,
-                groupValue: 0,
-                onChanged: (value) {},
-              ),
-              contentPadding: EdgeInsets.zero,
-            ),
-            ListTile(
-              title: const Text('Until tomorrow'),
-              leading: Radio<int>(
-                value: -1,
-                groupValue: 0,
-                onChanged: (value) {},
-              ),
-              contentPadding: EdgeInsets.zero,
-            ),
-            ListTile(
-              title: const Text('Forever'),
-              leading: Radio<int>(
-                value: -2,
-                groupValue: 0,
-                onChanged: (value) {},
-              ),
-              contentPadding: EdgeInsets.zero,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // TODO: Implement mute logic with backend
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Notifications muted'),
-                  backgroundColor: AppColors.success,
-                ),
-              );
-            },
-            child: const Text('Mute'),
-          ),
-        ],
       ),
     );
   }
@@ -668,15 +519,18 @@ class _DateDivider extends StatelessWidget {
 class _MessageBubble extends StatelessWidget {
   final Message message;
   final bool isCurrentUser;
+  final String? currentUserId;
 
   const _MessageBubble({
     required this.message,
     required this.isCurrentUser,
+    this.currentUserId,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isRead = currentUserId != null && message.isReadBy(currentUserId!);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -687,8 +541,8 @@ class _MessageBubble extends StatelessWidget {
         children: [
           if (!isCurrentUser) ...[
             LogoAvatar.user(
-              photoUrl: null, // TODO: Add sender photo
-              initials: message.initials,
+              photoUrl: null,
+              initials: message.senderId.substring(0, 2),
               size: 32,
             ),
             const SizedBox(width: 8),
@@ -715,25 +569,39 @@ class _MessageBubble extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (!isCurrentUser)
+                  if (message.isEdited)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Text(
-                        message.senderName,
+                        'Edited',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textSecondary,
+                          fontSize: 10,
+                          fontStyle: FontStyle.italic,
+                          color: isCurrentUser
+                              ? Colors.white.withOpacity(0.7)
+                              : AppColors.textSecondary,
                         ),
                       ),
                     ),
-                  Text(
-                    message.content,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: isCurrentUser
-                          ? Colors.white
-                          : AppColors.textPrimary,
+                  if (message.isDeleted)
+                    Text(
+                      'This message was deleted',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: isCurrentUser
+                            ? Colors.white.withOpacity(0.7)
+                            : AppColors.textSecondary,
+                      ),
+                    )
+                  else
+                    Text(
+                      message.content,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isCurrentUser
+                            ? Colors.white
+                            : AppColors.textPrimary,
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 4),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -750,12 +618,12 @@ class _MessageBubble extends StatelessWidget {
                       if (isCurrentUser) ...[
                         const SizedBox(width: 4),
                         Icon(
-                          message.isRead
+                          isRead
                               ? Icons.done_all
                               : Icons.done,
                           size: 14,
-                          color: message.isRead
-                              ? AppColors.primaryLight
+                          color: isRead
+                              ? AppColors.success
                               : Colors.white.withValues(alpha: 0.8),
                         ),
                       ],
