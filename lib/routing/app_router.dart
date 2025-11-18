@@ -99,6 +99,16 @@ import '../features/shared/documents/documents_screen.dart';
 import '../features/shared/documents/document_viewer_screen.dart';
 import '../features/shared/payments/payment_method_screen.dart';
 import '../features/shared/payments/payment_history_screen.dart';
+import '../features/shared/resources/resource_viewer_screen.dart';
+import '../features/shared/schedule/add_event_screen.dart';
+import '../features/shared/schedule/event_details_screen.dart';
+import '../features/shared/exams/exam_results_screen.dart';
+import '../features/shared/exams/take_exam_screen.dart';
+import '../features/shared/quizzes/quiz_taking_screen.dart';
+import '../features/shared/quizzes/quiz_results_screen.dart';
+import '../features/shared/tasks/add_task_screen.dart';
+import '../features/shared/tasks/task_details_screen.dart';
+import '../features/shared/collaboration/study_groups_screen.dart';
 
 // Find Your Path
 import '../features/find_your_path/presentation/screens/find_your_path_landing_screen.dart';
@@ -1025,6 +1035,119 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/payments/history',
         name: 'payment-history',
         builder: (context, state) => const PaymentHistoryScreen(),
+      ),
+
+      // Resources routes
+      GoRoute(
+        path: '/resources/view',
+        name: 'resource-viewer',
+        builder: (context, state) {
+          final resource = state.extra;
+          return ResourceViewerScreen(resource: resource);
+        },
+      ),
+
+      // Schedule/Calendar routes
+      GoRoute(
+        path: '/schedule/add-event',
+        name: 'add-event',
+        builder: (context, state) {
+          final date = state.extra as DateTime?;
+          return AddEventScreen(initialDate: date);
+        },
+      ),
+      GoRoute(
+        path: '/schedule/event-details',
+        name: 'event-details',
+        builder: (context, state) {
+          final event = state.extra;
+          return EventDetailsScreen(event: event);
+        },
+      ),
+      GoRoute(
+        path: '/schedule/edit-event',
+        name: 'edit-event',
+        builder: (context, state) {
+          final event = state.extra;
+          return EventDetailsScreen(event: event, isEditing: true);
+        },
+      ),
+
+      // Exam routes
+      GoRoute(
+        path: '/exams/results',
+        name: 'exam-results',
+        builder: (context, state) {
+          final exam = state.extra;
+          return ExamResultsScreen(exam: exam);
+        },
+      ),
+      GoRoute(
+        path: '/exams/details',
+        name: 'exam-details',
+        builder: (context, state) {
+          final exam = state.extra;
+          return TakeExamScreen(exam: exam);
+        },
+      ),
+      GoRoute(
+        path: '/exams/take',
+        name: 'take-exam',
+        builder: (context, state) {
+          final exam = state.extra;
+          return TakeExamScreen(exam: exam);
+        },
+      ),
+
+      // Quiz routes
+      GoRoute(
+        path: '/quiz/take',
+        name: 'take-quiz',
+        builder: (context, state) {
+          final quiz = state.extra;
+          return QuizTakingScreen(quiz: quiz);
+        },
+      ),
+      GoRoute(
+        path: '/quiz/results',
+        name: 'quiz-results',
+        builder: (context, state) {
+          final quiz = state.extra;
+          return QuizResultsScreen(quiz: quiz);
+        },
+      ),
+
+      // Task routes
+      GoRoute(
+        path: '/tasks/add',
+        name: 'add-task',
+        builder: (context, state) => const AddTaskScreen(),
+      ),
+      GoRoute(
+        path: '/tasks/details',
+        name: 'task-details',
+        builder: (context, state) {
+          final task = state.extra;
+          return TaskDetailsScreen(task: task);
+        },
+      ),
+      GoRoute(
+        path: '/tasks/edit',
+        name: 'edit-task',
+        builder: (context, state) {
+          final task = state.extra;
+          return TaskDetailsScreen(task: task, isEditing: true);
+        },
+      ),
+
+      // Collaboration routes
+      GoRoute(
+        path: '/collaboration/group',
+        name: 'study-group',
+        builder: (context, state) {
+          final group = state.extra;
+          return StudyGroupsScreen(group: group);
+        },
       ),
 
       // ============================================================
