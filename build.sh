@@ -10,17 +10,20 @@ echo "========================================="
 # Check if environment variables are set
 if [ -z "$SUPABASE_URL" ]; then
   echo "ERROR: SUPABASE_URL environment variable is not set"
+  echo "Please set it in Railway dashboard or export it locally"
   exit 1
 fi
 
 if [ -z "$SUPABASE_ANON_KEY" ]; then
   echo "ERROR: SUPABASE_ANON_KEY environment variable is not set"
+  echo "Please set it in Railway dashboard or export it locally"
   exit 1
 fi
 
+# API_BASE_URL is optional for local development
 if [ -z "$API_BASE_URL" ]; then
-  echo "ERROR: API_BASE_URL environment variable is not set"
-  exit 1
+  echo "WARNING: API_BASE_URL not set, using default localhost"
+  export API_BASE_URL="http://localhost:8000"
 fi
 
 echo "Environment variables detected:"
