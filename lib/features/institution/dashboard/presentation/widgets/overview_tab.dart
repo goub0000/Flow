@@ -28,8 +28,9 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
     // Fetch analytics data on init
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final profile = ref.read(profileProvider);
-      if (profile != null && profile.institutionId != null) {
-        ref.read(institutionAnalyticsProvider(profile.institutionId!).notifier).fetchAll();
+      if (profile.user != null) {
+        final institutionId = profile.user!.id;
+        ref.read(institutionAnalyticsProvider(institutionId).notifier).fetchAll();
       }
     });
   }
@@ -49,8 +50,9 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
 
         // Refresh analytics data
         final profile = ref.read(profileProvider);
-        if (profile != null && profile.institutionId != null) {
-          await ref.read(institutionAnalyticsProvider(profile.institutionId!).notifier).refresh();
+        if (profile.user != null) {
+          final institutionId = profile.user!.id;
+          await ref.read(institutionAnalyticsProvider(institutionId).notifier).refresh();
         }
 
         // Update last refresh time
@@ -345,15 +347,16 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
 
   Widget _buildAnalyticsSection() {
     final profile = ref.watch(profileProvider);
-    if (profile == null || profile.institutionId == null) {
+    if (profile.user == null) {
       return const SizedBox.shrink();
     }
 
-    final funnelData = ref.watch(institutionApplicationFunnelProvider(profile.institutionId!));
-    final demographicsData = ref.watch(institutionApplicantDemographicsProvider(profile.institutionId!));
-    final popularityData = ref.watch(institutionProgramPopularityProvider(profile.institutionId!));
-    final decisionData = ref.watch(institutionTimeToDecisionProvider(profile.institutionId!));
-    final isAnalyticsLoading = ref.watch(institutionAnalyticsLoadingProvider(profile.institutionId!));
+    final institutionId = profile.user!.id;
+    final funnelData = ref.watch(institutionApplicationFunnelProvider(institutionId));
+    final demographicsData = ref.watch(institutionApplicantDemographicsProvider(institutionId));
+    final popularityData = ref.watch(institutionProgramPopularityProvider(institutionId));
+    final decisionData = ref.watch(institutionTimeToDecisionProvider(institutionId));
+    final isAnalyticsLoading = ref.watch(institutionAnalyticsLoadingProvider(institutionId));
 
     if (isAnalyticsLoading) {
       return const CustomCard(

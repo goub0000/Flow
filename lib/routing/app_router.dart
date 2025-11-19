@@ -7,6 +7,8 @@ import '../core/models/user_model.dart';
 import '../core/error/error_handling.dart';
 import '../core/models/application_model.dart';
 import '../core/models/counseling_models.dart';
+import '../core/models/program_model.dart';
+import '../core/models/child_model.dart';
 import '../features/authentication/providers/auth_provider.dart';
 import '../features/authentication/presentation/screens/login_screen.dart';
 import '../features/authentication/presentation/screens/register_screen.dart';
@@ -109,6 +111,14 @@ import '../features/shared/quizzes/quiz_results_screen.dart';
 import '../features/shared/tasks/add_task_screen.dart';
 import '../features/shared/tasks/task_details_screen.dart';
 import '../features/shared/collaboration/study_groups_screen.dart';
+
+// Model imports for type safety
+import '../features/shared/widgets/schedule_widgets.dart'; // EventModel
+import '../features/shared/widgets/quiz_widgets.dart'; // QuizModel
+import '../features/shared/widgets/task_widgets.dart'; // TaskModel
+import '../features/shared/widgets/exam_widgets.dart'; // ExamModel
+import '../features/shared/widgets/resource_widgets.dart'; // ResourceModel
+import '../core/models/document_model.dart' as doc_model; // Document
 
 // Find Your Path
 import '../features/find_your_path/presentation/screens/find_your_path_landing_screen.dart';
@@ -1000,9 +1010,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/documents/:id',
         name: 'document-viewer',
         builder: (context, state) {
-          final documentId = state.pathParameters['id']!;
           // Document should be passed via state.extra
-          final document = state.extra as Document?;
+          final document = state.extra as doc_model.Document?;
           if (document == null) {
             // If no document provided, redirect back to documents list
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1042,7 +1051,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/resources/view',
         name: 'resource-viewer',
         builder: (context, state) {
-          final resource = state.extra;
+          final resource = state.extra as ResourceModel;
           return ResourceViewerScreen(resource: resource);
         },
       ),
@@ -1060,7 +1069,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/schedule/event-details',
         name: 'event-details',
         builder: (context, state) {
-          final event = state.extra;
+          final event = state.extra as EventModel;
           return EventDetailsScreen(event: event);
         },
       ),
@@ -1068,8 +1077,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/schedule/edit-event',
         name: 'edit-event',
         builder: (context, state) {
-          final event = state.extra;
-          return EventDetailsScreen(event: event, isEditing: true);
+          final event = state.extra as EventModel;
+          return EventDetailsScreen(event: event);
         },
       ),
 
@@ -1078,7 +1087,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/exams/results',
         name: 'exam-results',
         builder: (context, state) {
-          final exam = state.extra;
+          final exam = state.extra as ExamModel;
           return ExamResultsScreen(exam: exam);
         },
       ),
@@ -1086,7 +1095,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/exams/details',
         name: 'exam-details',
         builder: (context, state) {
-          final exam = state.extra;
+          final exam = state.extra as ExamModel;
           return TakeExamScreen(exam: exam);
         },
       ),
@@ -1094,7 +1103,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/exams/take',
         name: 'take-exam',
         builder: (context, state) {
-          final exam = state.extra;
+          final exam = state.extra as ExamModel;
           return TakeExamScreen(exam: exam);
         },
       ),
@@ -1104,7 +1113,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/quiz/take',
         name: 'take-quiz',
         builder: (context, state) {
-          final quiz = state.extra;
+          final quiz = state.extra as QuizModel;
           return QuizTakingScreen(quiz: quiz);
         },
       ),
@@ -1112,8 +1121,21 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/quiz/results',
         name: 'quiz-results',
         builder: (context, state) {
-          final quiz = state.extra;
-          return QuizResultsScreen(quiz: quiz);
+          final extraData = state.extra as Map<String, dynamic>;
+          final quiz = extraData['quiz'] as QuizModel;
+          final score = extraData['score'] as int;
+          final totalPoints = extraData['totalPoints'] as int;
+          final timeTaken = extraData['timeTaken'] as Duration;
+          final passed = extraData['passed'] as bool;
+          final answers = extraData['answers'] as Map<String, dynamic>;
+          return QuizResultsScreen(
+            quiz: quiz,
+            score: score,
+            totalPoints: totalPoints,
+            timeTaken: timeTaken,
+            passed: passed,
+            answers: answers,
+          );
         },
       ),
 
@@ -1127,7 +1149,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/tasks/details',
         name: 'task-details',
         builder: (context, state) {
-          final task = state.extra;
+          final task = state.extra as TaskModel;
           return TaskDetailsScreen(task: task);
         },
       ),
@@ -1135,8 +1157,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/tasks/edit',
         name: 'edit-task',
         builder: (context, state) {
-          final task = state.extra;
-          return TaskDetailsScreen(task: task, isEditing: true);
+          final task = state.extra as TaskModel;
+          return TaskDetailsScreen(task: task);
         },
       ),
 
@@ -1145,8 +1167,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/collaboration/group',
         name: 'study-group',
         builder: (context, state) {
-          final group = state.extra;
-          return StudyGroupsScreen(group: group);
+          return const StudyGroupsScreen();
         },
       ),
 

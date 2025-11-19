@@ -32,8 +32,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 
-# Ignore ALL build folders - Railway builds on the server
-/build/
+# Allow build/web for deployment, ignore other build folders
+/build/*
+!/build/web/
 /coverage/
 
 # Symbolication related

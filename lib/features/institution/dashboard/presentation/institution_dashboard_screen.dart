@@ -43,9 +43,17 @@ class _InstitutionDashboardScreenState
             onNavigationTap: (index) => setState(() => _currentIndex = index),
             actions: [
               // Notification badge - always visible
-              const NotificationBadge(),
+              DashboardAction(
+                icon: Icons.notifications,
+                onPressed: () => context.push('/notifications'),
+                tooltip: 'Notifications',
+              ),
               // Message badge - always visible
-              const MessageBadge(),
+              DashboardAction(
+                icon: Icons.message,
+                onPressed: () => context.push('/messages'),
+                tooltip: 'Messages',
+              ),
               // Debug button for troubleshooting
               DashboardAction(
                 icon: Icons.bug_report,

@@ -11,8 +11,8 @@ import '../../../../shared/widgets/refresh_utilities.dart';
 import '../../../providers/counselor_dashboard_provider.dart';
 import '../../../providers/counselor_students_provider.dart';
 import '../../../providers/counselor_sessions_provider.dart';
-import '../../meetings/presentation/meeting_requests_screen.dart';
-import '../../meetings/presentation/availability_management_screen.dart';
+import '../../../meetings/presentation/meeting_requests_screen.dart';
+import '../../../meetings/presentation/availability_management_screen.dart';
 
 class CounselorOverviewTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToStudents;

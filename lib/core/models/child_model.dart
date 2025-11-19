@@ -9,7 +9,7 @@ class Child {
   final String? schoolName;
   final String grade;
   final List<String> enrolledCourses;
-  final List<Application> applications;
+  final List<ChildApplication> applications;
   final double averageGrade;
   final DateTime lastActive;
 
@@ -61,7 +61,7 @@ class Child {
       grade: json['grade'] as String,
       enrolledCourses: List<String>.from(json['enrolledCourses'] as List),
       applications: (json['applications'] as List)
-          .map((app) => Application.fromJson(app as Map<String, dynamic>))
+          .map((app) => ChildApplication.fromJson(app as Map<String, dynamic>))
           .toList(),
       averageGrade: (json['averageGrade'] as num).toDouble(),
       lastActive: DateTime.parse(json['lastActive'] as String),
@@ -121,14 +121,14 @@ class Child {
         grade: '10th Grade',
         enrolledCourses: ['Mathematics', 'Physics', 'Computer Science'],
         applications: [
-          Application(
+          ChildApplication(
             id: 'app1',
             institutionName: 'University of Ghana',
             programName: 'Bachelor of Computer Science',
             status: 'under_review',
             submittedAt: now.subtract(const Duration(days: 15)),
           ),
-          Application(
+          ChildApplication(
             id: 'app2',
             institutionName: 'University of Lagos',
             programName: 'Software Engineering',
@@ -167,7 +167,7 @@ class Child {
           'Laboratory Techniques'
         ],
         applications: [
-          Application(
+          ChildApplication(
             id: 'app3',
             institutionName: 'Johns Hopkins University',
             programName: 'PhD in Biochemistry',
@@ -183,14 +183,14 @@ class Child {
 }
 
 /// Simplified application for child monitoring
-class Application {
+class ChildApplication {
   final String id;
   final String institutionName;
   final String programName;
   final String status;
   final DateTime submittedAt;
 
-  Application({
+  ChildApplication({
     required this.id,
     required this.institutionName,
     required this.programName,
@@ -198,8 +198,8 @@ class Application {
     required this.submittedAt,
   });
 
-  factory Application.fromJson(Map<String, dynamic> json) {
-    return Application(
+  factory ChildApplication.fromJson(Map<String, dynamic> json) {
+    return ChildApplication(
       id: json['id'] as String,
       institutionName: json['institutionName'] as String,
       programName: json['programName'] as String,
@@ -219,12 +219,12 @@ class Application {
   }
 
   /// Single mock application for development
-  static Application mockApplication([int index = 0]) {
+  static ChildApplication mockApplication([int index = 0]) {
     final institutions = ['University of Ghana', 'Makerere University', 'University of Cape Town', 'University of Lagos'];
     final programs = ['Bachelor of Computer Science', 'MBA - Business Administration', 'Bachelor of Medicine', 'Engineering'];
     final statuses = ['under_review', 'pending', 'accepted', 'rejected'];
 
-    return Application(
+    return ChildApplication(
       id: 'app${index + 1}',
       institutionName: institutions[index % institutions.length],
       programName: programs[index % programs.length],

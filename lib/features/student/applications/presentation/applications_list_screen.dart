@@ -101,12 +101,12 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
           if (applications.isNotEmpty)
             ExportButton(
               data: applications.map((app) => {
-                'institution_name': app.institution?.name ?? 'N/A',
+                'institution_name': app.institutionName,
                 'program_name': app.programName,
                 'status': app.status,
-                'application_date': app.submittedAt?.toIso8601String(),
-                'decision_date': app.decidedAt?.toIso8601String(),
-                'notes': app.notes ?? '',
+                'application_date': app.submittedAt.toIso8601String(),
+                'decision_date': app.reviewedAt?.toIso8601String(),
+                'notes': app.reviewNotes ?? '',
               }).toList(),
               exportType: ExportType.applications,
               metadata: {

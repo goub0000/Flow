@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/models/activity_models.dart';
 import '../../../shared/widgets/dashboard_scaffold.dart';
 import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
@@ -100,13 +101,13 @@ class _StudentDashboardScreenState
             DashboardAction(
               icon: Icons.notifications,
               onPressed: () => context.push('/notifications'),
-              badge: const NotificationBadge(),
+              tooltip: 'Notifications',
             ),
             // Message badge - always visible
             DashboardAction(
               icon: Icons.message,
               onPressed: () => context.push('/messages'),
-              badge: const MessageBadge(),
+              tooltip: 'Messages',
             ),
             // Edit button - only on Profile tab
             if (_currentIndex == 3 && user != null)
@@ -558,15 +559,37 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
             )
           else
             ActivityFeed(
-              activities: activitiesState.activities.map((a) => Activity(
-                id: a.id,
-                type: a.type.toString().split('.').last,
-                title: a.title,
-                description: a.description,
-                timestamp: a.timestamp,
-                icon: a.icon,
-                metadata: a.metadata,
-              )).toList(),
+              activities: activitiesState.activities.map((a) {
+                // Map StudentActivityType to ActivityType
+                ActivityType activityType;
+                switch (a.type) {
+                  case StudentActivityType.applicationSubmitted:
+                  case StudentActivityType.applicationStatusChanged:
+                    activityType = ActivityType.application;
+                    break;
+                  case StudentActivityType.achievementEarned:
+                    activityType = ActivityType.achievement;
+                    break;
+                  case StudentActivityType.paymentMade:
+                    activityType = ActivityType.payment;
+                    break;
+                  case StudentActivityType.messageReceived:
+                    activityType = ActivityType.message;
+                    break;
+                  case StudentActivityType.courseCompleted:
+                  default:
+                    activityType = ActivityType.course;
+                }
+
+                return ActivityItem(
+                  id: a.id,
+                  title: a.title,
+                  description: a.description,
+                  timestamp: a.timestamp,
+                  type: activityType,
+                  metadata: a.metadata,
+                );
+              }).toList(),
               onViewAll: () {
                 // Show coming soon dialog for full activity log
                 ComingSoonDialog.show(
@@ -578,90 +601,65 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
               onActivityTap: (activity) {
                 // Navigate based on activity type
                 final metadata = activity.metadata;
-                final activityType = activity.type;
 
                 // Log for debugging
                 print('[DEBUG] Activity tapped: Type=${activity.type}, Title=${activity.title}');
 
-                switch (activityType) {
-                  case 'application':
-                  case 'application_status':
-                  case 'application_submitted':
-                  case 'application_status_changed':
-                    // Navigate to application detail or applications tab
-                    if (metadata != null && metadata['applicationId'] != null) {
-                      // TODO: Navigate to specific application detail when implemented
-                      // For now, navigate to Applications tab
-                      widget.onNavigateToTab?.call(1);
-                    } else {
-                      widget.onNavigateToTab?.call(1); // Go to Applications tab
-                    }
-                    break;
-
-                  case 'achievement':
-                  case 'badge':
-                  case 'achievement_earned':
-                    // Show achievement details in a dialog
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Row(
-                          children: [
-                            const Icon(Icons.emoji_events, color: AppColors.warning),
-                            const SizedBox(width: 8),
-                            const Text('Achievement'),
-                          ],
-                        ),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              activity.title,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            if (activity.description != null) ...[
-                              const SizedBox(height: 8),
-                              Text(activity.description!),
-                            ],
-                          ],
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Close'),
-                          ),
+                // Handle based on activity type
+                if (activity.type == ActivityType.application) {
+                  // Navigate to application detail or applications tab
+                  if (metadata != null && metadata['applicationId'] != null) {
+                    // TODO: Navigate to specific application detail when implemented
+                    // For now, navigate to Applications tab
+                    widget.onNavigateToTab?.call(1);
+                  } else {
+                    widget.onNavigateToTab?.call(1); // Go to Applications tab
+                  }
+                } else if (activity.type == ActivityType.achievement) {
+                  // Show achievement details in a dialog
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Row(
+                        children: [
+                          const Icon(Icons.emoji_events, color: AppColors.warning),
+                          const SizedBox(width: 8),
+                          const Text('Achievement'),
                         ],
                       ),
-                    );
-                    break;
-
-                  case 'payment':
-                  case 'payment_status':
-                  case 'payment_made':
-                    // Navigate to payment history if available
-                    ComingSoonDialog.show(
-                      context,
-                      featureName: 'Payment History',
-                      customMessage: 'View detailed payment history and transaction records.',
-                    );
-                    break;
-
-                  case 'message':
-                  case 'notification':
-                  case 'message_received':
-                    // Navigate to messages
-                    context.go('/messages');
-                    break;
-
-                  case 'recommendation':
-                    // Navigate to courses/programs
-                    context.go('/find-your-path');
-                    break;
-
-                  default:
-                    // For unknown activity types, try to navigate to applications
-                    widget.onNavigateToTab?.call(1);
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            activity.title,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(activity.description),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Close'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (activity.type == ActivityType.payment) {
+                  // Navigate to payment history if available
+                  ComingSoonDialog.show(
+                    context,
+                    featureName: 'Payment History',
+                    customMessage: 'View detailed payment history and transaction records.',
+                  );
+                } else if (activity.type == ActivityType.message) {
+                  // Navigate to messages
+                  context.go('/messages');
+                } else {
+                  // For unknown activity types, try to navigate to applications
+                  widget.onNavigateToTab?.call(1);
                 }
               },
             ),
