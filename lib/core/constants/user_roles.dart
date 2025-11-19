@@ -23,6 +23,34 @@ enum AdminLevel {
 }
 
 extension UserRoleExtension on UserRole {
+  /// Get role name as string (lowercase)
+  String get name {
+    switch (this) {
+      case UserRole.student:
+        return 'student';
+      case UserRole.institution:
+        return 'institution';
+      case UserRole.parent:
+        return 'parent';
+      case UserRole.counselor:
+        return 'counselor';
+      case UserRole.recommender:
+        return 'recommender';
+      case UserRole.superAdmin:
+        return 'superadmin';
+      case UserRole.regionalAdmin:
+        return 'regionaladmin';
+      case UserRole.contentAdmin:
+        return 'contentadmin';
+      case UserRole.supportAdmin:
+        return 'supportadmin';
+      case UserRole.financeAdmin:
+        return 'financeadmin';
+      case UserRole.analyticsAdmin:
+        return 'analyticsadmin';
+    }
+  }
+
   /// Get display name for the role
   String get displayName {
     switch (this) {
