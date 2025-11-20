@@ -174,7 +174,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             width: 12,
                             height: 12,
                             decoration: BoxDecoration(
-                              color: AppColors.getRoleColor(role.name),
+                              color: AppColors.getRoleColor(role.roleName),
                               shape: BoxShape.circle,
                             ),
                           ),

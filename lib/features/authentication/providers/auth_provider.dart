@@ -83,7 +83,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       if (response.success && response.data != null) {
         final token = _authService.accessToken;
-        print('✅ Login successful! User: ${response.data!.email}, Role: ${response.data!.activeRole.name}');
+        print('✅ Login successful! User: ${response.data!.email}, Role: ${response.data!.activeRole.roleName}');
         state = state.copyWith(user: response.data, accessToken: token, isLoading: false);
         print('✅ Auth state updated. isAuthenticated: ${state.isAuthenticated}');
       } else {

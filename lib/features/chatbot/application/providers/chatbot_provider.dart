@@ -4,6 +4,7 @@ import '../../domain/models/conversation.dart';
 import '../services/chatbot_service.dart';
 import '../services/conversation_storage_service.dart';
 import '../../../authentication/providers/auth_provider.dart';
+import '../../../../core/constants/user_roles.dart';
 
 /// Chatbot state
 class ChatbotState {
@@ -146,7 +147,7 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
       final userId = authState.user?.id ?? 'anonymous';
       final userName = authState.user?.displayName ?? 'Guest User';
       final userEmail = authState.user?.email;
-      final userRole = authState.user?.activeRole.name;
+      final userRole = authState.user?.activeRole.roleName;
 
       // Create conversation object
       final conversation = Conversation(

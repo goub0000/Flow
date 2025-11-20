@@ -371,11 +371,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: AppColors.getRoleColor(user.activeRole.name)
+                    color: AppColors.getRoleColor(user.activeRole.roleName)
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: AppColors.getRoleColor(user.activeRole.name)
+                      color: AppColors.getRoleColor(user.activeRole.roleName)
                           .withValues(alpha: 0.3),
                     ),
                   ),
@@ -386,7 +386,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: AppColors.getRoleColor(user.activeRole.name),
+                          color: AppColors.getRoleColor(user.activeRole.roleName),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -394,7 +394,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       Text(
                         user.activeRole.displayName,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.getRoleColor(user.activeRole.name),
+                          color: AppColors.getRoleColor(user.activeRole.roleName),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -507,7 +507,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           width: 12,
                           height: 12,
                           decoration: BoxDecoration(
-                            color: AppColors.getRoleColor(role.name),
+                            color: AppColors.getRoleColor(role.roleName),
                             shape: BoxShape.circle,
                           ),
                         ),

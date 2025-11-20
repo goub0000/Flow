@@ -225,7 +225,7 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
         // Update locally
         final updatedUsers = state.users.map((user) {
           if (userIds.contains(user.id)) {
-            final updatedRoles = {...user.availableRoles, UserRole.values.firstWhere((r) => r.name == newRole, orElse: () => user.activeRole)};
+            final updatedRoles = {...user.availableRoles, UserRole.values.firstWhere((r) => r.roleName == newRole, orElse: () => user.activeRole)};
             return UserModel(
               id: user.id,
               email: user.email,
@@ -272,7 +272,7 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
     // Filter by role
     if (state.filter.role != null && state.filter.role!.isNotEmpty && state.filter.role != 'all') {
       filteredUsers = filteredUsers.where((user) {
-        return user.availableRoles.any((role) => role.name == state.filter.role);
+        return user.availableRoles.any((role) => role.roleName == state.filter.role);
       }).toList();
     }
 
@@ -298,7 +298,7 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
 
   /// Get users by role
   List<UserModel> getUsersByRole(String role) {
-    return state.users.where((user) => user.availableRoles.any((r) => r.name == role)).toList();
+    return state.users.where((user) => user.availableRoles.any((r) => r.roleName == role)).toList();
   }
 
   /// Get user statistics

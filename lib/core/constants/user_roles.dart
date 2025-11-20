@@ -24,7 +24,7 @@ enum AdminLevel {
 
 extension UserRoleExtension on UserRole {
   /// Get role name as string (lowercase)
-  String get name {
+  String get roleName {
     switch (this) {
       case UserRole.student:
         return 'student';
@@ -111,7 +111,7 @@ extension UserRoleExtension on UserRole {
   /// Parse UserRole from string
   static UserRole fromString(String value) {
     return UserRole.values.firstWhere(
-      (role) => role.name == value.toLowerCase(),
+      (role) => role.roleName == value.toLowerCase(),
       orElse: () => UserRole.student,
     );
   }
