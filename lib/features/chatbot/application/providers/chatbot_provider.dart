@@ -147,7 +147,7 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
       final userId = authState.user?.id ?? 'anonymous';
       final userName = authState.user?.displayName ?? 'Guest User';
       final userEmail = authState.user?.email;
-      final userRole = authState.user?.activeRole.roleName;
+      final userRole = authState.user != null ? UserRoleHelper.getRoleName(authState.user!.activeRole) : null;
 
       // Create conversation object
       final conversation = Conversation(

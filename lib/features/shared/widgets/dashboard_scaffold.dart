@@ -89,7 +89,7 @@ class DashboardScaffold extends ConsumerWidget {
                           width: 12,
                           height: 12,
                           decoration: BoxDecoration(
-                            color: AppColors.getRoleColor(role.roleName),
+                            color: AppColors.getRoleColor(UserRoleHelper.getRoleName(role)),
                             shape: BoxShape.circle,
                           ),
                         ),

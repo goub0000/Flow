@@ -22,10 +22,11 @@ enum AdminLevel {
   specialized, // Content, Support, Finance, Analytics - Specialized access
 }
 
-extension UserRoleExtension on UserRole {
+/// Helper class for UserRole operations to avoid minification issues
+class UserRoleHelper {
   /// Get role name as string (lowercase)
-  String get roleName {
-    switch (this) {
+  static String getRoleName(UserRole role) {
+    switch (role) {
       case UserRole.student:
         return 'student';
       case UserRole.institution:
@@ -50,6 +51,9 @@ extension UserRoleExtension on UserRole {
         return 'analyticsadmin';
     }
   }
+}
+
+extension UserRoleExtension on UserRole {
 
   /// Get display name for the role
   String get displayName {
@@ -111,7 +115,7 @@ extension UserRoleExtension on UserRole {
   /// Parse UserRole from string
   static UserRole fromString(String value) {
     return UserRole.values.firstWhere(
-      (role) => role.roleName == value.toLowerCase(),
+      (role) => UserRoleHelper.getRoleName(role) == value.toLowerCase(),
       orElse: () => UserRole.student,
     );
   }

@@ -200,11 +200,11 @@ class ProfileScreen extends ConsumerWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppColors.getRoleColor(user.activeRole.roleName)
+                      color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole))
                           .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: AppColors.getRoleColor(user.activeRole.roleName)
+                        color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole))
                             .withValues(alpha: 0.3),
                       ),
                     ),
@@ -215,7 +215,7 @@ class ProfileScreen extends ConsumerWidget {
                           width: 8,
                           height: 8,
                           decoration: BoxDecoration(
-                            color: AppColors.getRoleColor(user.activeRole.roleName),
+                            color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole)),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -223,7 +223,7 @@ class ProfileScreen extends ConsumerWidget {
                         Text(
                           user.activeRole.displayName,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.getRoleColor(user.activeRole.roleName),
+                            color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole)),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -329,7 +329,7 @@ class ProfileScreen extends ConsumerWidget {
                             width: 12,
                             height: 12,
                             decoration: BoxDecoration(
-                              color: AppColors.getRoleColor(role.roleName),
+                              color: AppColors.getRoleColor(UserRoleHelper.getRoleName(role)),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -466,11 +466,11 @@ class ProfileScreen extends ConsumerWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: AppColors.getRoleColor(user.activeRole.roleName)
+                  color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole))
                       .withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: AppColors.getRoleColor(user.activeRole.roleName)
+                    color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole))
                         .withValues(alpha: 0.3),
                   ),
                 ),
@@ -481,7 +481,7 @@ class ProfileScreen extends ConsumerWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: AppColors.getRoleColor(user.activeRole.roleName),
+                        color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole)),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -489,7 +489,7 @@ class ProfileScreen extends ConsumerWidget {
                     Text(
                       user.activeRole.displayName,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.getRoleColor(user.activeRole.roleName),
+                        color: AppColors.getRoleColor(UserRoleHelper.getRoleName(user.activeRole)),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -595,7 +595,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 12,
                         height: 12,
                         decoration: BoxDecoration(
-                          color: AppColors.getRoleColor(role.roleName),
+                          color: AppColors.getRoleColor(UserRoleHelper.getRoleName(role)),
                           shape: BoxShape.circle,
                         ),
                       ),

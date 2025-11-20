@@ -122,7 +122,7 @@ class AuthService {
           'email': email,
           'password': password,
           // confirm_password is not sent - backend doesn't expect it
-          'role': role.roleName,
+          'role': UserRoleHelper.getRoleName(role),
           'display_name': fullName,
           'phone_number': phoneNumber,
         },
@@ -363,7 +363,7 @@ class AuthService {
       final response = await _apiClient.post(
         '${ApiConfig.auth}/switch-role',
         data: {
-          'role': role.roleName,
+          'role': UserRoleHelper.getRoleName(role),
         },
         fromJson: (data) {
           final user = UserModel.fromJson(data['user']);
