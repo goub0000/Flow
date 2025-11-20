@@ -71,38 +71,18 @@ app = FastAPI(
 # Configure CORS
 # Allow multiple origins for development and production
 import os
-allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "")
 
-# Base localhost origins for development
-# Generate localhost origins for common Flutter web ports (8080-8100)
-localhost_origins = []
-for port in range(8080, 8101):
-    localhost_origins.append(f"http://localhost:{port}")
-    localhost_origins.append(f"http://127.0.0.1:{port}")
+# Get CORS origins from environment variable with development defaults
+# In production, set CORS_ORIGINS to include both frontend and backend URLs
+allowed_origins = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:8080,http://localhost:3000,http://localhost:3001"
+).split(",")
 
-# Add common development ports
-localhost_origins.extend([
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-])
+# Strip whitespace from origins
+allowed_origins = [origin.strip() for origin in allowed_origins]
 
-# Add Flutter web app Railway deployment
-flutter_web_origins = [
-    "https://web-production-bcafe.up.railway.app",
-]
-localhost_origins.extend(flutter_web_origins)
-
-if allowed_origins_env:
-    # Production: Use configured origins + localhost for testing
-    configured_origins = allowed_origins_env.split(",")
-    allowed_origins = list(set(configured_origins + localhost_origins))
-else:
-    # Development: Use localhost origins only
-    allowed_origins = localhost_origins
-
-logger.info(f"CORS configured with {len(allowed_origins)} allowed origins")
+logger.info(f"CORS configured with {len(allowed_origins)} allowed origins: {allowed_origins}")
 
 app.add_middleware(
     CORSMiddleware,
