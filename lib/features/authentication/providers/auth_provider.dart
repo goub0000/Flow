@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/constants/user_roles.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/providers/service_providers.dart';
+
+final _logger = Logger('AuthProvider');
 
 /// Authentication state
 class AuthState {
@@ -66,7 +69,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(isLoading: false);
       }
     } catch (e) {
-      print('Error checking auth state: $e');
+      _logger.warning('Error checking auth state', e);
       state = state.copyWith(isLoading: false);
     }
   }
@@ -83,18 +86,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       if (response.success && response.data != null) {
         final token = _authService.accessToken;
-        print('✅ Login successful! User: ${response.data!.email}, Role: ${UserRoleHelper.getRoleName(response.data!.activeRole)}');
+        _logger.info('Login successful! User: ${response.data!.email}, Role: ${UserRoleHelper.getRoleName(response.data!.activeRole)}');
         state = state.copyWith(user: response.data, accessToken: token, isLoading: false);
-        print('✅ Auth state updated. isAuthenticated: ${state.isAuthenticated}');
+        _logger.fine('Auth state updated. isAuthenticated: ${state.isAuthenticated}');
       } else {
-        print('❌ Login failed: ${response.message}');
+        _logger.warning('Login failed: ${response.message}');
         state = state.copyWith(
           isLoading: false,
           error: response.message ?? 'Login failed',
         );
       }
     } catch (e) {
-      print('❌ Login error: $e');
+      _logger.severe('Login error', e);
       state = state.copyWith(
         isLoading: false,
         error: 'Sign in failed: ${e.toString()}',
@@ -208,7 +211,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(user: response.data);
       }
     } catch (e) {
-      print('Error refreshing user: $e');
+      _logger.warning('Error refreshing user', e);
     }
   }
 }
