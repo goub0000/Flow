@@ -49,12 +49,12 @@ class ApiConfig {
 
   static const String supabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
-    // NO DEFAULT VALUE for security - will fail fast if not provided
+    defaultValue: 'https://wmuarotbdjhqbyjyslqg.supabase.co', // Dev fallback only
   );
 
   static const String supabaseAnonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
-    // NO DEFAULT VALUE for security - will fail fast if not provided
+    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU2ODEsImV4cCI6MjA3NzQyMTY4MX0.CjfL8kn745KaxUUflPY30WnbLfMKwwVmA2RI3vFwAlM', // Dev fallback only
   );
 
   // Validation: Ensure critical configuration is provided
