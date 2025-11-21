@@ -37,6 +37,7 @@ import '../features/institution/programs/presentation/create_program_screen.dart
 import '../features/institution/programs/presentation/program_detail_screen.dart';
 import '../features/institution/courses/presentation/institution_courses_screen.dart';
 import '../features/institution/courses/presentation/create_course_screen.dart';
+import '../features/institution/courses/presentation/course_permissions_screen.dart';
 import '../features/institution/providers/institution_applicants_provider.dart';
 import '../core/models/applicant_model.dart';
 
@@ -438,6 +439,23 @@ final routerProvider = Provider<GoRouter>((ref) {
             );
           }
           return CreateCourseScreen(course: course);
+        },
+      ),
+      GoRoute(
+        path: '/institution/courses/:id/permissions',
+        name: 'institution-course-permissions',
+        builder: (context, state) {
+          final courseId = state.pathParameters['id']!;
+          final course = state.extra as Course?;
+          if (course == null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/institution/courses');
+            });
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return CoursePermissionsScreen(course: course);
         },
       ),
 

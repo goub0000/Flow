@@ -206,6 +206,8 @@ class InstitutionCoursesScreen extends ConsumerWidget {
         trailing: PopupMenuButton(
           itemBuilder: (context) => [
             const PopupMenuItem(value: 'edit', child: Text('Edit')),
+            const PopupMenuItem(value: 'permissions', child: Text('Manage Permissions')),
+            const PopupMenuItem(value: 'roster', child: Text('View Roster')),
             if (!course.isPublished)
               const PopupMenuItem(value: 'publish', child: Text('Publish'))
             else
@@ -239,6 +241,13 @@ class InstitutionCoursesScreen extends ConsumerWidget {
     switch (action) {
       case 'edit':
         context.push('/institution/courses/${course.id}/edit', extra: course);
+        break;
+      case 'permissions':
+        context.push('/institution/courses/${course.id}/permissions', extra: course);
+        break;
+      case 'roster':
+        // Navigate to roster view (enrollments list)
+        context.push('/institution/courses/${course.id}/enrollments', extra: course);
         break;
       case 'publish':
         final result = await notifier.publishCourse(course.id);
