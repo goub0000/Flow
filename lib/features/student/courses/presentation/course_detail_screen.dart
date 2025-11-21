@@ -2,16 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
+import '../../providers/enrollments_provider.dart';
 
 /// Course Detail Screen
 /// Shows detailed information about a course
-class CourseDetailScreen extends ConsumerWidget {
+class CourseDetailScreen extends ConsumerStatefulWidget {
   final Course course;
 
   const CourseDetailScreen({super.key, required this.course});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CourseDetailScreen> createState() => _CourseDetailScreenState();
+}
+
+class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
+  bool _isEnrolling = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final course = widget.course;
+    final enrollmentsState = ref.watch(enrollmentsProvider);
+    final isEnrolled = enrollmentsState.enrollments
+        .any((e) => e.courseId == course.id && e.isActive);
+    final enrollment = enrollmentsState.enrollments
+        .where((e) => e.courseId == course.id && e.isActive)
+        .firstOrNull;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -113,38 +128,75 @@ class CourseDetailScreen extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Price', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-                Text(
-                  course.formattedPrice,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: course.isFree ? Colors.green : AppColors.primary,
+            if (!isEnrolled) ...[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Price', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                  Text(
+                    course.formattedPrice,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: course.isFree ? Colors.green : AppColors.primary,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: course.isFull ? null : () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Enrollment feature coming soon!')),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-                child: Text(course.isFull ? 'Course Full' : 'Enroll Now'),
+                ],
               ),
+              const SizedBox(width: 16),
+            ],
+            Expanded(
+              child: _isEnrolling
+                  ? const Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: isEnrolled
+                          ? null
+                          : (course.isFull ? null : _enrollInCourse),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: isEnrolled ? Colors.green : null,
+                      ),
+                      child: Text(
+                        isEnrolled
+                            ? 'Enrolled${enrollment?.progressPercentage != null && enrollment!.progressPercentage > 0 ? " (${enrollment.progressPercentage.toStringAsFixed(0)}%)" : ""}'
+                            : (course.isFull ? 'Course Full' : 'Enroll Now'),
+                      ),
+                    ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _enrollInCourse() async {
+    setState(() => _isEnrolling = true);
+
+    try {
+      final enrollment = await ref
+          .read(enrollmentsProvider.notifier)
+          .enrollInCourse(widget.course.id);
+
+      if (enrollment != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Successfully enrolled in course!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(ref.read(enrollmentsProvider).error ?? 'Failed to enroll'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isEnrolling = false);
+      }
+    }
   }
 }

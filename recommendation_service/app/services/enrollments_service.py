@@ -14,6 +14,7 @@ from app.schemas.enrollments import (
     EnrollmentListResponse,
     EnrollmentStatus
 )
+from app.services.enrollment_permissions_service import EnrollmentPermissionsService
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,16 @@ class EnrollmentsService:
 
             if existing.data:
                 raise Exception("Already enrolled in this course")
+
+            # Check enrollment permission (institution-restricted)
+            permissions_service = EnrollmentPermissionsService()
+            can_enroll, denial_reason = await permissions_service.check_enrollment_permission(
+                student_id,
+                enrollment_data.course_id
+            )
+
+            if not can_enroll:
+                raise Exception(denial_reason or "Not authorized to enroll in this course")
 
             # Check if course exists and is published
             course = self.db.table('courses').select('*').eq('id', enrollment_data.course_id).single().execute()

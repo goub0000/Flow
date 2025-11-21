@@ -156,6 +156,8 @@ async def list_courses(
     """
     List courses with filters and pagination
 
+    **Institution-Restricted:** Students only see courses from institutions they're admitted to
+
     **Query Parameters:**
     - page: Page number (default: 1)
     - page_size: Items per page (default: 20, max: 100)
@@ -170,6 +172,12 @@ async def list_courses(
     """
     try:
         service = CoursesService()
+
+        # Filter by student's admitted institutions
+        student_id = None
+        if current_user and current_user.role == UserRole.STUDENT:
+            student_id = current_user.id
+
         result = await service.list_courses(
             page=page,
             page_size=page_size,
@@ -177,7 +185,8 @@ async def list_courses(
             status=status,
             category=category,
             level=level,
-            search=search
+            search=search,
+            student_id=student_id  # Only show courses from admitted institutions
         )
         return result
     except Exception as e:

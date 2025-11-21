@@ -6,12 +6,13 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query, Body
 from typing import Optional
 
 from app.services.enrollments_service import EnrollmentsService
+from app.services.enrollment_permissions_service import EnrollmentPermissionsService
 from app.schemas.enrollments import (
     EnrollmentCreateRequest,
     EnrollmentResponse,
     EnrollmentListResponse
 )
-from app.utils.security import get_current_user, require_student, CurrentUser
+from app.utils.security import get_current_user, require_student, require_institution, CurrentUser
 
 router = APIRouter()
 
@@ -192,6 +193,256 @@ async def get_course_enrollments(
         service = EnrollmentsService()
         # TODO: Check if user is the course instructor/institution
         result = await service.list_course_enrollments(course_id, page, page_size, enrollment_status)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+# ============================================================
+# ENROLLMENT PERMISSIONS ENDPOINTS
+# ============================================================
+
+@router.post("/enrollments/request-permission", status_code=status.HTTP_201_CREATED)
+async def request_enrollment_permission(
+    course_id: str = Body(..., embed=True),
+    notes: Optional[str] = Body(None, embed=True),
+    current_user: CurrentUser = Depends(require_student)
+):
+    """
+    Request permission to enroll in a course (Student only)
+
+    **Requires:** Student authentication
+
+    **Request Body:**
+    - course_id: ID of the course
+    - notes: Optional message to institution
+
+    **Returns:**
+    - Created permission request
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.request_enrollment_permission(
+            current_user.id,
+            course_id,
+            notes
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/enrollments/grant-permission", status_code=status.HTTP_201_CREATED)
+async def grant_enrollment_permission(
+    student_id: str = Body(...),
+    course_id: str = Body(...),
+    notes: Optional[str] = Body(None),
+    current_user: CurrentUser = Depends(require_institution)
+):
+    """
+    Grant enrollment permission to a student (Institution only)
+
+    **Requires:** Institution authentication
+
+    **Request Body:**
+    - student_id: ID of the student
+    - course_id: ID of the course
+    - notes: Optional notes
+
+    **Returns:**
+    - Created/updated permission
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.grant_permission(
+            student_id,
+            course_id,
+            current_user.id,
+            notes=notes
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/enrollments/permissions/{permission_id}/approve")
+async def approve_permission_request(
+    permission_id: str,
+    notes: Optional[str] = Body(None, embed=True),
+    current_user: CurrentUser = Depends(require_institution)
+):
+    """
+    Approve enrollment permission request (Institution only)
+
+    **Requires:** Institution authentication
+
+    **Path Parameters:**
+    - permission_id: Permission request ID
+
+    **Returns:**
+    - Updated permission
+    """
+    try:
+        service = EnrollmentPermissionsService()
+
+        # Get the permission to extract student_id and course_id
+        permission = await service._get_permission_by_id(permission_id)
+        if not permission:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Permission request not found"
+            )
+
+        result = await service.grant_permission(
+            permission['student_id'],
+            permission['course_id'],
+            current_user.id,
+            notes=notes
+        )
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/enrollments/permissions/{permission_id}/deny")
+async def deny_permission_request(
+    permission_id: str,
+    denial_reason: str = Body(..., embed=True),
+    current_user: CurrentUser = Depends(require_institution)
+):
+    """
+    Deny enrollment permission request (Institution only)
+
+    **Requires:** Institution authentication
+
+    **Path Parameters:**
+    - permission_id: Permission request ID
+
+    **Request Body:**
+    - denial_reason: Reason for denial
+
+    **Returns:**
+    - Updated permission
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.deny_permission(
+            permission_id,
+            current_user.id,
+            denial_reason
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/enrollments/permissions/{permission_id}/revoke")
+async def revoke_permission(
+    permission_id: str,
+    reason: Optional[str] = Body(None, embed=True),
+    current_user: CurrentUser = Depends(require_institution)
+):
+    """
+    Revoke enrollment permission (Institution only)
+
+    **Requires:** Institution authentication
+
+    **Path Parameters:**
+    - permission_id: Permission ID
+
+    **Request Body:**
+    - reason: Optional reason for revocation
+
+    **Returns:**
+    - Updated permission
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.revoke_permission(
+            permission_id,
+            current_user.id,
+            reason
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/courses/{course_id}/permissions")
+async def get_course_permission_requests(
+    course_id: str,
+    permission_status: Optional[str] = Query(None, alias="status"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user: CurrentUser = Depends(require_institution)
+):
+    """
+    Get permission requests for a course (Institution only)
+
+    **Requires:** Institution authentication
+
+    **Path Parameters:**
+    - course_id: Course ID
+
+    **Query Parameters:**
+    - status: Filter by status (pending, approved, denied, revoked)
+    - page: Page number
+    - page_size: Items per page
+
+    **Returns:**
+    - Paginated list of permission requests
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.list_course_permission_requests(
+            course_id,
+            permission_status,
+            page,
+            page_size
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/students/me/enrollment-permissions")
+async def get_my_permissions(
+    current_user: CurrentUser = Depends(require_student)
+):
+    """
+    Get current student's enrollment permissions
+
+    **Requires:** Student authentication
+
+    **Returns:**
+    - List of enrollment permissions
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.list_student_permissions(current_user.id)
         return result
     except Exception as e:
         raise HTTPException(

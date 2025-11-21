@@ -26,6 +26,7 @@ import '../features/student/applications/presentation/create_application_screen.
 import '../features/student/progress/presentation/progress_screen.dart';
 import '../features/student/courses/presentation/courses_list_screen.dart';
 import '../features/student/courses/presentation/course_detail_screen.dart';
+import '../features/student/courses/presentation/my_courses_screen.dart';
 
 // Institution
 import '../features/institution/dashboard/presentation/institution_dashboard_screen.dart';
@@ -329,6 +330,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           }
           return CourseDetailScreen(course: course);
         },
+      ),
+      GoRoute(
+        path: '/student/my-courses',
+        name: 'student-my-courses',
+        builder: (context, state) => const MyCoursesScreen(),
       ),
 
       // ============================================================

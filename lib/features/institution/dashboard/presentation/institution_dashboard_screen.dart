@@ -8,6 +8,7 @@ import '../../../shared/cookies/presentation/cookie_banner.dart';
 import 'widgets/overview_tab.dart';
 import '../../applicants/presentation/applicants_list_screen.dart';
 import '../../programs/presentation/programs_list_screen.dart';
+import '../../courses/presentation/institution_courses_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 import '../../debug/institution_debug_screen.dart';
@@ -28,6 +29,7 @@ class _InstitutionDashboardScreenState
     OverviewTab(onNavigate: (index) => setState(() => _currentIndex = index)),
     const ApplicantsListScreen(),
     const ProgramsListScreen(),
+    const InstitutionCoursesScreen(),
     const ProfileScreen(showBackButton: false),
     const SettingsScreen(),
   ];
@@ -84,6 +86,11 @@ class _InstitutionDashboardScreenState
               label: 'Programs',
             ),
             DashboardNavigationItem(
+              icon: Icons.menu_book_outlined,
+              activeIcon: Icons.menu_book,
+              label: 'Courses',
+            ),
+            DashboardNavigationItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
               label: 'Profile',
@@ -104,7 +111,15 @@ class _InstitutionDashboardScreenState
                   icon: const Icon(Icons.add),
                   label: const Text('New Program'),
                 )
-              : null,
+              : _currentIndex == 3
+                  ? FloatingActionButton.extended(
+                      onPressed: () async {
+                        await context.push('/institution/courses/create');
+                      },
+                      icon: const Icon(Icons.add),
+                      label: const Text('New Course'),
+                    )
+                  : null,
         ),
         // Cookie consent banner
         const Positioned(

@@ -13,6 +13,7 @@ import '../../../shared/widgets/message_badge.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
+import '../../courses/presentation/my_courses_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 import '../../providers/student_applications_provider.dart';
@@ -48,6 +49,7 @@ class _StudentDashboardScreenState
       },
     ),
     ApplicationsListScreen(key: const PageStorageKey('applications')),
+    MyCoursesScreen(key: const PageStorageKey('my_courses')),
     ProgressScreen(key: const PageStorageKey('progress')),
     ProfileScreen(key: const PageStorageKey('profile'), showBackButton: false),
     SettingsScreen(key: const PageStorageKey('settings')),
@@ -73,10 +75,12 @@ class _StudentDashboardScreenState
       case 1:
         return 'My Applications';
       case 2:
-        return 'Progress';
+        return 'My Courses';
       case 3:
-        return 'Profile';
+        return 'Progress';
       case 4:
+        return 'Profile';
+      case 5:
         return 'Settings';
       default:
         return 'Student Dashboard';
@@ -110,7 +114,7 @@ class _StudentDashboardScreenState
               tooltip: 'Messages',
             ),
             // Edit button - only on Profile tab
-            if (_currentIndex == 3 && user != null)
+            if (_currentIndex == 4 && user != null)
               DashboardAction(
                 icon: Icons.edit,
                 onPressed: () {
@@ -136,6 +140,11 @@ class _StudentDashboardScreenState
               icon: Icons.description_outlined,
               activeIcon: Icons.description,
               label: 'Applications',
+            ),
+            DashboardNavigationItem(
+              icon: Icons.menu_book_outlined,
+              activeIcon: Icons.menu_book,
+              label: 'My Courses',
             ),
             DashboardNavigationItem(
               icon: Icons.analytics_outlined,
@@ -336,10 +345,13 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
             crossAxisCount: 4,
             actions: [
               QuickAction(
-                label: 'Browse Courses',
-                icon: Icons.explore,
+                label: 'My Courses',
+                icon: Icons.menu_book,
                 color: AppColors.primary,
-                onTap: () => context.go('/find-your-path'),
+                onTap: () {
+                  print('[DEBUG] Quick Action: My Courses clicked');
+                  widget.onNavigateToTab?.call(2); // Navigate to My Courses tab
+                },
               ),
               QuickAction(
                 label: 'My Applications',
@@ -359,7 +371,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 onTap: () {
                   // Use tab navigation instead of route navigation
                   print('[DEBUG] Quick Action: Progress clicked');
-                  widget.onNavigateToTab?.call(2); // Navigate to Progress tab
+                  widget.onNavigateToTab?.call(3); // Navigate to Progress tab
                 },
               ),
               QuickAction(

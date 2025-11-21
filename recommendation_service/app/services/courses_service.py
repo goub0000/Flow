@@ -184,21 +184,54 @@ class CoursesService:
         status: Optional[str] = None,
         category: Optional[str] = None,
         level: Optional[str] = None,
-        search: Optional[str] = None
+        search: Optional[str] = None,
+        student_id: Optional[str] = None
     ) -> CourseListResponse:
-        """List courses with filters and pagination"""
+        """List courses with filters and pagination (institution-restricted for students)"""
         try:
+            # If student, filter by admitted institutions
+            admitted_institution_ids = []
+            if student_id:
+                # Get institutions student is admitted to via accepted applications
+                apps_response = self.db.table('applications')\
+                    .select('programs!inner(institution_id)')\
+                    .eq('student_id', student_id)\
+                    .eq('status', 'accepted')\
+                    .execute()
+
+                if apps_response.data:
+                    # Extract unique institution IDs
+                    admitted_institution_ids = list(set([
+                        app['programs']['institution_id']
+                        for app in apps_response.data
+                        if app.get('programs', {}).get('institution_id')
+                    ]))
+
+                # If student not admitted anywhere, return empty
+                if not admitted_institution_ids:
+                    return CourseListResponse(
+                        courses=[],
+                        total=0,
+                        page=page,
+                        page_size=page_size,
+                        has_more=False
+                    )
+
             query = self.db.table('courses').select('*', count='exact')
 
             # Apply filters
             if institution_id:
                 query = query.eq('institution_id', institution_id)
+            elif student_id and admitted_institution_ids:
+                # Filter to only admitted institutions
+                query = query.in_('institution_id', admitted_institution_ids)
+
             if status:
                 query = query.eq('status', status)
             else:
-                # By default, only show published courses for non-institution users
-                if not institution_id:
-                    query = query.eq('is_published', True)
+                # By default, only show published courses
+                query = query.eq('is_published', True)
+
             if category:
                 query = query.eq('category', category)
             if level:

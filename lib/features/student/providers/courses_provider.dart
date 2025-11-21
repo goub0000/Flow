@@ -169,6 +169,18 @@ class CoursesNotifier extends StateNotifier<CoursesState> {
     await fetchCourses();
   }
 
+  /// Get a single course by ID
+  Future<Course?> getCourseById(String courseId) async {
+    try {
+      return await _apiService.getCourse(courseId);
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to load course: ${e.toString()}',
+      );
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _apiService.dispose();
