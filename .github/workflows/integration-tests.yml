@@ -1,0 +1,60 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    env:
+      API_BASE_URL: https://web-production-51e34.up.railway.app
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      working-directory: ./recommendation_service
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio httpx python-dotenv
+
+    - name: Wait for API to be ready
+      run: |
+        echo "Waiting for API to be available..."
+        for i in {1..30}; do
+          if curl -f $API_BASE_URL/health > /dev/null 2>&1; then
+            echo "API is ready!"
+            exit 0
+          fi
+          echo "Attempt $i: API not ready yet, waiting..."
+          sleep 2
+        done
+        echo "API did not become ready in time"
+        exit 1
+
+    - name: Run integration tests
+      working-directory: ./recommendation_service
+      run: |
+        pytest tests/integration/ -v --asyncio-mode=auto --tb=short
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: integration-test-results
+        path: recommendation_service/pytest-results/
+        retention-days: 30
