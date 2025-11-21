@@ -23,10 +23,7 @@ class InstitutionCoursesScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // Navigate to create course screen
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Create course feature coming soon!')),
-              );
+              context.push('/institution/courses/create');
             },
             tooltip: 'Create Course',
           ),
@@ -167,9 +164,7 @@ class InstitutionCoursesScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             ElevatedButton.icon(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Create course feature coming soon!')),
-                );
+                context.push('/institution/courses/create');
               },
               icon: const Icon(Icons.add),
               label: const Text('Create Your First Course'),
@@ -243,9 +238,7 @@ class InstitutionCoursesScreen extends ConsumerWidget {
 
     switch (action) {
       case 'edit':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Edit course feature coming soon!')),
-        );
+        context.push('/institution/courses/${course.id}/edit', extra: course);
         break;
       case 'publish':
         final result = await notifier.publishCourse(course.id);
