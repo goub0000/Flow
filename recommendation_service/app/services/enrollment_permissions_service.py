@@ -380,3 +380,68 @@ class EnrollmentPermissionsService:
 
         except Exception:
             return None
+
+    async def list_admitted_students(
+        self,
+        institution_id: str,
+        course_id: Optional[str] = None
+    ) -> dict:
+        """
+        List all students admitted to an institution
+        Optionally include their permission status for a specific course
+        """
+        try:
+            # Get all accepted applications for programs at this institution
+            response = self.db.table('applications')\
+                .select('student_id, users!applications_student_id_fkey(id, email, display_name), programs!inner(id, title, institution_id)')\
+                .eq('status', 'accepted')\
+                .execute()
+
+            if not response.data:
+                return {"students": [], "total": 0}
+
+            # Filter for this institution and deduplicate students
+            students_map = {}
+            for app in response.data:
+                if app.get('programs', {}).get('institution_id') == institution_id:
+                    student_data = app.get('users')
+                    if student_data and student_data['id'] not in students_map:
+                        students_map[student_data['id']] = {
+                            "student_id": student_data['id'],
+                            "email": student_data.get('email'),
+                            "display_name": student_data.get('display_name'),
+                            "permission": None
+                        }
+
+            # If course_id provided, fetch permissions for this course
+            if course_id and students_map:
+                student_ids = list(students_map.keys())
+                permissions_response = self.db.table('enrollment_permissions')\
+                    .select('*')\
+                    .eq('course_id', course_id)\
+                    .in_('student_id', student_ids)\
+                    .execute()
+
+                if permissions_response.data:
+                    for perm in permissions_response.data:
+                        student_id = perm['student_id']
+                        if student_id in students_map:
+                            students_map[student_id]['permission'] = {
+                                "id": perm['id'],
+                                "status": perm['status'],
+                                "granted_by": perm.get('granted_by'),
+                                "notes": perm.get('notes'),
+                                "created_at": perm.get('created_at'),
+                                "reviewed_at": perm.get('reviewed_at')
+                            }
+
+            students_list = list(students_map.values())
+
+            return {
+                "students": students_list,
+                "total": len(students_list)
+            }
+
+        except Exception as e:
+            logger.error(f"List admitted students error: {e}")
+            raise Exception(f"Failed to list admitted students: {str(e)}")

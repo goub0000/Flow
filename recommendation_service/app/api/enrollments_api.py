@@ -449,3 +449,33 @@ async def get_my_permissions(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+
+@router.get("/institutions/me/admitted-students")
+async def get_admitted_students(
+    course_id: Optional[str] = Query(None),
+    current_user: CurrentUser = Depends(require_institution)
+):
+    """
+    Get all students admitted to current institution (Institution only)
+
+    **Requires:** Institution authentication
+
+    **Query Parameters:**
+    - course_id: Optional course ID to include permission status for
+
+    **Returns:**
+    - List of admitted students with optional permission status
+    """
+    try:
+        service = EnrollmentPermissionsService()
+        result = await service.list_admitted_students(
+            current_user.id,
+            course_id
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
