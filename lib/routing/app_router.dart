@@ -24,6 +24,8 @@ import '../features/student/applications/presentation/applications_list_screen.d
 import '../features/student/applications/presentation/application_detail_screen.dart';
 import '../features/student/applications/presentation/create_application_screen.dart';
 import '../features/student/progress/presentation/progress_screen.dart';
+import '../features/student/courses/presentation/courses_list_screen.dart';
+import '../features/student/courses/presentation/course_detail_screen.dart';
 
 // Institution
 import '../features/institution/dashboard/presentation/institution_dashboard_screen.dart';
@@ -32,6 +34,7 @@ import '../features/institution/applicants/presentation/applicant_detail_screen.
 import '../features/institution/programs/presentation/programs_list_screen.dart';
 import '../features/institution/programs/presentation/create_program_screen.dart';
 import '../features/institution/programs/presentation/program_detail_screen.dart';
+import '../features/institution/courses/presentation/institution_courses_screen.dart';
 import '../features/institution/providers/institution_applicants_provider.dart';
 import '../core/models/applicant_model.dart';
 
@@ -304,6 +307,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'student-progress',
         builder: (context, state) => const ProgressScreen(),
       ),
+      GoRoute(
+        path: '/student/courses',
+        name: 'student-courses',
+        builder: (context, state) => const CoursesListScreen(),
+      ),
+      GoRoute(
+        path: '/student/courses/:id',
+        name: 'student-course-detail',
+        builder: (context, state) {
+          final courseId = state.pathParameters['id']!;
+          final course = state.extra as Course?;
+          if (course == null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/student/courses');
+            });
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return CourseDetailScreen(course: course);
+        },
+      ),
 
       // ============================================================
       // INSTITUTION ROUTES
@@ -362,6 +387,28 @@ final routerProvider = Provider<GoRouter>((ref) {
             );
           }
           return ProgramDetailScreen(program: program);
+        },
+      ),
+      GoRoute(
+        path: '/institution/courses',
+        name: 'institution-courses',
+        builder: (context, state) => const InstitutionCoursesScreen(),
+      ),
+      GoRoute(
+        path: '/institution/courses/:id',
+        name: 'institution-course-detail',
+        builder: (context, state) {
+          final courseId = state.pathParameters['id']!;
+          final course = state.extra as Course?;
+          if (course == null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/institution/courses');
+            });
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return CourseDetailScreen(course: course);
         },
       ),
 
