@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from supabase import Client
 from app.database.config import get_db
 from app.schemas.university import UniversityResponse, UniversitySearchResponse
+from app.cache.redis_cache import cache
 from typing import Optional
 import logging
 
@@ -77,14 +78,28 @@ def search_universities(
 
 @router.get("/universities/{university_id}", response_model=UniversityResponse)
 def get_university(university_id: int, db: Client = Depends(get_db)):
-    """Get a specific university by ID"""
+    """Get a specific university by ID (cached)"""
+    cache_key = f"university:{university_id}"
+
     try:
+        # Try cache first
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            logger.debug(f"Cache hit for university {university_id}")
+            return cached_data
+
+        # Cache miss - fetch from database
         response = db.table('universities').select('*').eq('id', university_id).execute()
 
         if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="University not found")
 
-        return response.data[0]
+        university_data = response.data[0]
+
+        # Cache for 24 hours (university data rarely changes)
+        cache.set(cache_key, university_data, ex=86400)
+
+        return university_data
 
     except HTTPException:
         raise

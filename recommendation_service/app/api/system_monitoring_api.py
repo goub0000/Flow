@@ -13,6 +13,7 @@ import logging
 
 from app.database.config import get_supabase
 from app.utils.security import RoleChecker, UserRole, CurrentUser
+from app.cache.redis_cache import cache
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -87,6 +88,16 @@ async def health_check():
             checks["memory"] = "ok"
     except:
         checks["memory"] = "unknown"
+
+    # Check Redis cache
+    try:
+        cache_health = cache.health_check()
+        checks["cache"] = cache_health.get("status", "unknown")
+        if cache_health.get("status") == "unhealthy":
+            overall_status = "degraded"
+    except Exception as e:
+        checks["cache"] = "error"
+        logger.warning(f"Cache health check failed: {e}")
 
     return HealthStatus(
         status=overall_status,
