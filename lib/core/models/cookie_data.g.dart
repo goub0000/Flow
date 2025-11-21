@@ -46,41 +46,39 @@ const _$CookieDataTypeEnumMap = {
 };
 
 _$SessionAnalyticsImpl _$$SessionAnalyticsImplFromJson(
-  Map<String, dynamic> json,
-) => _$SessionAnalyticsImpl(
-  sessionId: json['sessionId'] as String,
-  userId: json['userId'] as String,
-  startTime: DateTime.parse(json['startTime'] as String),
-  endTime: json['endTime'] == null
-      ? null
-      : DateTime.parse(json['endTime'] as String),
-  pagesVisited:
-      (json['pagesVisited'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList() ??
-      const [],
-  interactions:
-      (json['interactions'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, (e as num).toInt()),
-      ) ??
-      const {},
-  deviceType: json['deviceType'] as String?,
-  browser: json['browser'] as String?,
-  referrer: json['referrer'] as String?,
-  totalDuration: (json['totalDuration'] as num?)?.toInt() ?? 0,
-);
+        Map<String, dynamic> json) =>
+    _$SessionAnalyticsImpl(
+      sessionId: json['sessionId'] as String,
+      userId: json['userId'] as String,
+      startTime: DateTime.parse(json['startTime'] as String),
+      endTime: json['endTime'] == null
+          ? null
+          : DateTime.parse(json['endTime'] as String),
+      pagesVisited: (json['pagesVisited'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      interactions: (json['interactions'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, (e as num).toInt()),
+          ) ??
+          const {},
+      deviceType: json['deviceType'] as String?,
+      browser: json['browser'] as String?,
+      referrer: json['referrer'] as String?,
+      totalDuration: (json['totalDuration'] as num?)?.toInt() ?? 0,
+    );
 
 Map<String, dynamic> _$$SessionAnalyticsImplToJson(
-  _$SessionAnalyticsImpl instance,
-) => <String, dynamic>{
-  'sessionId': instance.sessionId,
-  'userId': instance.userId,
-  'startTime': instance.startTime.toIso8601String(),
-  'endTime': instance.endTime?.toIso8601String(),
-  'pagesVisited': instance.pagesVisited,
-  'interactions': instance.interactions,
-  'deviceType': instance.deviceType,
-  'browser': instance.browser,
-  'referrer': instance.referrer,
-  'totalDuration': instance.totalDuration,
-};
+        _$SessionAnalyticsImpl instance) =>
+    <String, dynamic>{
+      'sessionId': instance.sessionId,
+      'userId': instance.userId,
+      'startTime': instance.startTime.toIso8601String(),
+      'endTime': instance.endTime?.toIso8601String(),
+      'pagesVisited': instance.pagesVisited,
+      'interactions': instance.interactions,
+      'deviceType': instance.deviceType,
+      'browser': instance.browser,
+      'referrer': instance.referrer,
+      'totalDuration': instance.totalDuration,
+    };

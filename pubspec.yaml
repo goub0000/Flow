@@ -67,8 +67,9 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
   build_runner: ^2.4.7
-  # riverpod_generator: ^2.3.9  # Temporarily disabled due to analyzer_plugin conflict
-  # riverpod_lint: ^2.3.7  # Temporarily disabled due to analyzer_plugin conflict
+  riverpod_generator: ^2.4.0
+  riverpod_lint: ^2.3.10
+  custom_lint: ^0.6.0
   freezed: ^2.4.5
   json_serializable: ^6.7.1
 

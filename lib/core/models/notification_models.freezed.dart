@@ -12,8 +12,7 @@ part of 'notification_models.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) {
   return _AppNotification.fromJson(json);
@@ -36,12 +35,8 @@ mixin _$AppNotification {
   DateTime? get archivedAt => throw _privateConstructorUsedError;
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this AppNotification to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of AppNotification
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $AppNotificationCopyWith<AppNotification> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,26 +44,24 @@ mixin _$AppNotification {
 /// @nodoc
 abstract class $AppNotificationCopyWith<$Res> {
   factory $AppNotificationCopyWith(
-    AppNotification value,
-    $Res Function(AppNotification) then,
-  ) = _$AppNotificationCopyWithImpl<$Res, AppNotification>;
+          AppNotification value, $Res Function(AppNotification) then) =
+      _$AppNotificationCopyWithImpl<$Res, AppNotification>;
   @useResult
-  $Res call({
-    String id,
-    String userId,
-    NotificationType type,
-    String title,
-    String message,
-    Map<String, dynamic> metadata,
-    String? actionUrl,
-    bool isRead,
-    bool isArchived,
-    NotificationPriority priority,
-    DateTime createdAt,
-    DateTime? readAt,
-    DateTime? archivedAt,
-    DateTime? deletedAt,
-  });
+  $Res call(
+      {String id,
+      String userId,
+      NotificationType type,
+      String title,
+      String message,
+      Map<String, dynamic> metadata,
+      String? actionUrl,
+      bool isRead,
+      bool isArchived,
+      NotificationPriority priority,
+      DateTime createdAt,
+      DateTime? readAt,
+      DateTime? archivedAt,
+      DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -81,8 +74,6 @@ class _$AppNotificationCopyWithImpl<$Res, $Val extends AppNotification>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of AppNotification
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -101,95 +92,90 @@ class _$AppNotificationCopyWithImpl<$Res, $Val extends AppNotification>
     Object? archivedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as NotificationType,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            message: null == message
-                ? _value.message
-                : message // ignore: cast_nullable_to_non_nullable
-                      as String,
-            metadata: null == metadata
-                ? _value.metadata
-                : metadata // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>,
-            actionUrl: freezed == actionUrl
-                ? _value.actionUrl
-                : actionUrl // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            isRead: null == isRead
-                ? _value.isRead
-                : isRead // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isArchived: null == isArchived
-                ? _value.isArchived
-                : isArchived // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            priority: null == priority
-                ? _value.priority
-                : priority // ignore: cast_nullable_to_non_nullable
-                      as NotificationPriority,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            readAt: freezed == readAt
-                ? _value.readAt
-                : readAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            archivedAt: freezed == archivedAt
-                ? _value.archivedAt
-                : archivedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            deletedAt: freezed == deletedAt
-                ? _value.deletedAt
-                : deletedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      metadata: null == metadata
+          ? _value.metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      actionUrl: freezed == actionUrl
+          ? _value.actionUrl
+          : actionUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isRead: null == isRead
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isArchived: null == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool,
+      priority: null == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as NotificationPriority,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      readAt: freezed == readAt
+          ? _value.readAt
+          : readAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$AppNotificationImplCopyWith<$Res>
     implements $AppNotificationCopyWith<$Res> {
-  factory _$$AppNotificationImplCopyWith(
-    _$AppNotificationImpl value,
-    $Res Function(_$AppNotificationImpl) then,
-  ) = __$$AppNotificationImplCopyWithImpl<$Res>;
+  factory _$$AppNotificationImplCopyWith(_$AppNotificationImpl value,
+          $Res Function(_$AppNotificationImpl) then) =
+      __$$AppNotificationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String userId,
-    NotificationType type,
-    String title,
-    String message,
-    Map<String, dynamic> metadata,
-    String? actionUrl,
-    bool isRead,
-    bool isArchived,
-    NotificationPriority priority,
-    DateTime createdAt,
-    DateTime? readAt,
-    DateTime? archivedAt,
-    DateTime? deletedAt,
-  });
+  $Res call(
+      {String id,
+      String userId,
+      NotificationType type,
+      String title,
+      String message,
+      Map<String, dynamic> metadata,
+      String? actionUrl,
+      bool isRead,
+      bool isArchived,
+      NotificationPriority priority,
+      DateTime createdAt,
+      DateTime? readAt,
+      DateTime? archivedAt,
+      DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -197,12 +183,9 @@ class __$$AppNotificationImplCopyWithImpl<$Res>
     extends _$AppNotificationCopyWithImpl<$Res, _$AppNotificationImpl>
     implements _$$AppNotificationImplCopyWith<$Res> {
   __$$AppNotificationImplCopyWithImpl(
-    _$AppNotificationImpl _value,
-    $Res Function(_$AppNotificationImpl) _then,
-  ) : super(_value, _then);
+      _$AppNotificationImpl _value, $Res Function(_$AppNotificationImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of AppNotification
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -221,88 +204,86 @@ class __$$AppNotificationImplCopyWithImpl<$Res>
     Object? archivedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _$AppNotificationImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as NotificationType,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-        metadata: null == metadata
-            ? _value._metadata
-            : metadata // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>,
-        actionUrl: freezed == actionUrl
-            ? _value.actionUrl
-            : actionUrl // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        isRead: null == isRead
-            ? _value.isRead
-            : isRead // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isArchived: null == isArchived
-            ? _value.isArchived
-            : isArchived // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        priority: null == priority
-            ? _value.priority
-            : priority // ignore: cast_nullable_to_non_nullable
-                  as NotificationPriority,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        readAt: freezed == readAt
-            ? _value.readAt
-            : readAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        archivedAt: freezed == archivedAt
-            ? _value.archivedAt
-            : archivedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        deletedAt: freezed == deletedAt
-            ? _value.deletedAt
-            : deletedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-      ),
-    );
+    return _then(_$AppNotificationImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      metadata: null == metadata
+          ? _value._metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      actionUrl: freezed == actionUrl
+          ? _value.actionUrl
+          : actionUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isRead: null == isRead
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isArchived: null == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool,
+      priority: null == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as NotificationPriority,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      readAt: freezed == readAt
+          ? _value.readAt
+          : readAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AppNotificationImpl implements _AppNotification {
-  const _$AppNotificationImpl({
-    required this.id,
-    required this.userId,
-    required this.type,
-    required this.title,
-    required this.message,
-    final Map<String, dynamic> metadata = const {},
-    this.actionUrl,
-    this.isRead = false,
-    this.isArchived = false,
-    this.priority = NotificationPriority.normal,
-    required this.createdAt,
-    this.readAt,
-    this.archivedAt,
-    this.deletedAt,
-  }) : _metadata = metadata;
+  const _$AppNotificationImpl(
+      {required this.id,
+      required this.userId,
+      required this.type,
+      required this.title,
+      required this.message,
+      final Map<String, dynamic> metadata = const {},
+      this.actionUrl,
+      this.isRead = false,
+      this.isArchived = false,
+      this.priority = NotificationPriority.normal,
+      required this.createdAt,
+      this.readAt,
+      this.archivedAt,
+      this.deletedAt})
+      : _metadata = metadata;
 
   factory _$AppNotificationImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppNotificationImplFromJson(json);
@@ -378,60 +359,56 @@ class _$AppNotificationImpl implements _AppNotification {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    userId,
-    type,
-    title,
-    message,
-    const DeepCollectionEquality().hash(_metadata),
-    actionUrl,
-    isRead,
-    isArchived,
-    priority,
-    createdAt,
-    readAt,
-    archivedAt,
-    deletedAt,
-  );
+      runtimeType,
+      id,
+      userId,
+      type,
+      title,
+      message,
+      const DeepCollectionEquality().hash(_metadata),
+      actionUrl,
+      isRead,
+      isArchived,
+      priority,
+      createdAt,
+      readAt,
+      archivedAt,
+      deletedAt);
 
-  /// Create a copy of AppNotification
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AppNotificationImplCopyWith<_$AppNotificationImpl> get copyWith =>
       __$$AppNotificationImplCopyWithImpl<_$AppNotificationImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AppNotificationImplToJson(this);
+    return _$$AppNotificationImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _AppNotification implements AppNotification {
-  const factory _AppNotification({
-    required final String id,
-    required final String userId,
-    required final NotificationType type,
-    required final String title,
-    required final String message,
-    final Map<String, dynamic> metadata,
-    final String? actionUrl,
-    final bool isRead,
-    final bool isArchived,
-    final NotificationPriority priority,
-    required final DateTime createdAt,
-    final DateTime? readAt,
-    final DateTime? archivedAt,
-    final DateTime? deletedAt,
-  }) = _$AppNotificationImpl;
+  const factory _AppNotification(
+      {required final String id,
+      required final String userId,
+      required final NotificationType type,
+      required final String title,
+      required final String message,
+      final Map<String, dynamic> metadata,
+      final String? actionUrl,
+      final bool isRead,
+      final bool isArchived,
+      final NotificationPriority priority,
+      required final DateTime createdAt,
+      final DateTime? readAt,
+      final DateTime? archivedAt,
+      final DateTime? deletedAt}) = _$AppNotificationImpl;
 
   factory _AppNotification.fromJson(Map<String, dynamic> json) =
       _$AppNotificationImpl.fromJson;
@@ -464,18 +441,14 @@ abstract class _AppNotification implements AppNotification {
   DateTime? get archivedAt;
   @override
   DateTime? get deletedAt;
-
-  /// Create a copy of AppNotification
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AppNotificationImplCopyWith<_$AppNotificationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 NotificationPreference _$NotificationPreferenceFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _NotificationPreference.fromJson(json);
 }
 
@@ -492,42 +465,34 @@ mixin _$NotificationPreference {
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this NotificationPreference to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of NotificationPreference
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $NotificationPreferenceCopyWith<NotificationPreference> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $NotificationPreferenceCopyWith<$Res> {
-  factory $NotificationPreferenceCopyWith(
-    NotificationPreference value,
-    $Res Function(NotificationPreference) then,
-  ) = _$NotificationPreferenceCopyWithImpl<$Res, NotificationPreference>;
+  factory $NotificationPreferenceCopyWith(NotificationPreference value,
+          $Res Function(NotificationPreference) then) =
+      _$NotificationPreferenceCopyWithImpl<$Res, NotificationPreference>;
   @useResult
-  $Res call({
-    String id,
-    String userId,
-    NotificationType notificationType,
-    bool inAppEnabled,
-    bool emailEnabled,
-    bool pushEnabled,
-    String? quietHoursStart,
-    String? quietHoursEnd,
-    DateTime createdAt,
-    DateTime updatedAt,
-  });
+  $Res call(
+      {String id,
+      String userId,
+      NotificationType notificationType,
+      bool inAppEnabled,
+      bool emailEnabled,
+      bool pushEnabled,
+      String? quietHoursStart,
+      String? quietHoursEnd,
+      DateTime createdAt,
+      DateTime updatedAt});
 }
 
 /// @nodoc
-class _$NotificationPreferenceCopyWithImpl<
-  $Res,
-  $Val extends NotificationPreference
->
+class _$NotificationPreferenceCopyWithImpl<$Res,
+        $Val extends NotificationPreference>
     implements $NotificationPreferenceCopyWith<$Res> {
   _$NotificationPreferenceCopyWithImpl(this._value, this._then);
 
@@ -536,8 +501,6 @@ class _$NotificationPreferenceCopyWithImpl<
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of NotificationPreference
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -552,51 +515,48 @@ class _$NotificationPreferenceCopyWithImpl<
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            notificationType: null == notificationType
-                ? _value.notificationType
-                : notificationType // ignore: cast_nullable_to_non_nullable
-                      as NotificationType,
-            inAppEnabled: null == inAppEnabled
-                ? _value.inAppEnabled
-                : inAppEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            emailEnabled: null == emailEnabled
-                ? _value.emailEnabled
-                : emailEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            pushEnabled: null == pushEnabled
-                ? _value.pushEnabled
-                : pushEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            quietHoursStart: freezed == quietHoursStart
-                ? _value.quietHoursStart
-                : quietHoursStart // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            quietHoursEnd: freezed == quietHoursEnd
-                ? _value.quietHoursEnd
-                : quietHoursEnd // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            createdAt: null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            updatedAt: null == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      notificationType: null == notificationType
+          ? _value.notificationType
+          : notificationType // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      inAppEnabled: null == inAppEnabled
+          ? _value.inAppEnabled
+          : inAppEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      emailEnabled: null == emailEnabled
+          ? _value.emailEnabled
+          : emailEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pushEnabled: null == pushEnabled
+          ? _value.pushEnabled
+          : pushEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quietHoursStart: freezed == quietHoursStart
+          ? _value.quietHoursStart
+          : quietHoursStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      quietHoursEnd: freezed == quietHoursEnd
+          ? _value.quietHoursEnd
+          : quietHoursEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ) as $Val);
   }
 }
 
@@ -604,37 +564,34 @@ class _$NotificationPreferenceCopyWithImpl<
 abstract class _$$NotificationPreferenceImplCopyWith<$Res>
     implements $NotificationPreferenceCopyWith<$Res> {
   factory _$$NotificationPreferenceImplCopyWith(
-    _$NotificationPreferenceImpl value,
-    $Res Function(_$NotificationPreferenceImpl) then,
-  ) = __$$NotificationPreferenceImplCopyWithImpl<$Res>;
+          _$NotificationPreferenceImpl value,
+          $Res Function(_$NotificationPreferenceImpl) then) =
+      __$$NotificationPreferenceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String userId,
-    NotificationType notificationType,
-    bool inAppEnabled,
-    bool emailEnabled,
-    bool pushEnabled,
-    String? quietHoursStart,
-    String? quietHoursEnd,
-    DateTime createdAt,
-    DateTime updatedAt,
-  });
+  $Res call(
+      {String id,
+      String userId,
+      NotificationType notificationType,
+      bool inAppEnabled,
+      bool emailEnabled,
+      bool pushEnabled,
+      String? quietHoursStart,
+      String? quietHoursEnd,
+      DateTime createdAt,
+      DateTime updatedAt});
 }
 
 /// @nodoc
 class __$$NotificationPreferenceImplCopyWithImpl<$Res>
-    extends
-        _$NotificationPreferenceCopyWithImpl<$Res, _$NotificationPreferenceImpl>
+    extends _$NotificationPreferenceCopyWithImpl<$Res,
+        _$NotificationPreferenceImpl>
     implements _$$NotificationPreferenceImplCopyWith<$Res> {
   __$$NotificationPreferenceImplCopyWithImpl(
-    _$NotificationPreferenceImpl _value,
-    $Res Function(_$NotificationPreferenceImpl) _then,
-  ) : super(_value, _then);
+      _$NotificationPreferenceImpl _value,
+      $Res Function(_$NotificationPreferenceImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of NotificationPreference
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -649,68 +606,65 @@ class __$$NotificationPreferenceImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(
-      _$NotificationPreferenceImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        notificationType: null == notificationType
-            ? _value.notificationType
-            : notificationType // ignore: cast_nullable_to_non_nullable
-                  as NotificationType,
-        inAppEnabled: null == inAppEnabled
-            ? _value.inAppEnabled
-            : inAppEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        emailEnabled: null == emailEnabled
-            ? _value.emailEnabled
-            : emailEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        pushEnabled: null == pushEnabled
-            ? _value.pushEnabled
-            : pushEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        quietHoursStart: freezed == quietHoursStart
-            ? _value.quietHoursStart
-            : quietHoursStart // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        quietHoursEnd: freezed == quietHoursEnd
-            ? _value.quietHoursEnd
-            : quietHoursEnd // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        createdAt: null == createdAt
-            ? _value.createdAt
-            : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        updatedAt: null == updatedAt
-            ? _value.updatedAt
-            : updatedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-      ),
-    );
+    return _then(_$NotificationPreferenceImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      notificationType: null == notificationType
+          ? _value.notificationType
+          : notificationType // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      inAppEnabled: null == inAppEnabled
+          ? _value.inAppEnabled
+          : inAppEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      emailEnabled: null == emailEnabled
+          ? _value.emailEnabled
+          : emailEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pushEnabled: null == pushEnabled
+          ? _value.pushEnabled
+          : pushEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quietHoursStart: freezed == quietHoursStart
+          ? _value.quietHoursStart
+          : quietHoursStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      quietHoursEnd: freezed == quietHoursEnd
+          ? _value.quietHoursEnd
+          : quietHoursEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$NotificationPreferenceImpl implements _NotificationPreference {
-  const _$NotificationPreferenceImpl({
-    required this.id,
-    required this.userId,
-    required this.notificationType,
-    this.inAppEnabled = true,
-    this.emailEnabled = true,
-    this.pushEnabled = true,
-    this.quietHoursStart,
-    this.quietHoursEnd,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+  const _$NotificationPreferenceImpl(
+      {required this.id,
+      required this.userId,
+      required this.notificationType,
+      this.inAppEnabled = true,
+      this.emailEnabled = true,
+      this.pushEnabled = true,
+      this.quietHoursStart,
+      this.quietHoursEnd,
+      required this.createdAt,
+      required this.updatedAt});
 
   factory _$NotificationPreferenceImpl.fromJson(Map<String, dynamic> json) =>
       _$$NotificationPreferenceImplFromJson(json);
@@ -769,53 +723,48 @@ class _$NotificationPreferenceImpl implements _NotificationPreference {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    userId,
-    notificationType,
-    inAppEnabled,
-    emailEnabled,
-    pushEnabled,
-    quietHoursStart,
-    quietHoursEnd,
-    createdAt,
-    updatedAt,
-  );
+      runtimeType,
+      id,
+      userId,
+      notificationType,
+      inAppEnabled,
+      emailEnabled,
+      pushEnabled,
+      quietHoursStart,
+      quietHoursEnd,
+      createdAt,
+      updatedAt);
 
-  /// Create a copy of NotificationPreference
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationPreferenceImplCopyWith<_$NotificationPreferenceImpl>
-  get copyWith =>
-      __$$NotificationPreferenceImplCopyWithImpl<_$NotificationPreferenceImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$NotificationPreferenceImplCopyWithImpl<
+          _$NotificationPreferenceImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NotificationPreferenceImplToJson(this);
+    return _$$NotificationPreferenceImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _NotificationPreference implements NotificationPreference {
-  const factory _NotificationPreference({
-    required final String id,
-    required final String userId,
-    required final NotificationType notificationType,
-    final bool inAppEnabled,
-    final bool emailEnabled,
-    final bool pushEnabled,
-    final String? quietHoursStart,
-    final String? quietHoursEnd,
-    required final DateTime createdAt,
-    required final DateTime updatedAt,
-  }) = _$NotificationPreferenceImpl;
+  const factory _NotificationPreference(
+      {required final String id,
+      required final String userId,
+      required final NotificationType notificationType,
+      final bool inAppEnabled,
+      final bool emailEnabled,
+      final bool pushEnabled,
+      final String? quietHoursStart,
+      final String? quietHoursEnd,
+      required final DateTime createdAt,
+      required final DateTime updatedAt}) = _$NotificationPreferenceImpl;
 
   factory _NotificationPreference.fromJson(Map<String, dynamic> json) =
       _$NotificationPreferenceImpl.fromJson;
@@ -840,18 +789,14 @@ abstract class _NotificationPreference implements NotificationPreference {
   DateTime get createdAt;
   @override
   DateTime get updatedAt;
-
-  /// Create a copy of NotificationPreference
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$NotificationPreferenceImplCopyWith<_$NotificationPreferenceImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 CreateNotificationRequest _$CreateNotificationRequestFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _CreateNotificationRequest.fromJson(json);
 }
 
@@ -865,39 +810,31 @@ mixin _$CreateNotificationRequest {
   String? get actionUrl => throw _privateConstructorUsedError;
   NotificationPriority get priority => throw _privateConstructorUsedError;
 
-  /// Serializes this CreateNotificationRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CreateNotificationRequest
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CreateNotificationRequestCopyWith<CreateNotificationRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $CreateNotificationRequestCopyWith<$Res> {
-  factory $CreateNotificationRequestCopyWith(
-    CreateNotificationRequest value,
-    $Res Function(CreateNotificationRequest) then,
-  ) = _$CreateNotificationRequestCopyWithImpl<$Res, CreateNotificationRequest>;
+  factory $CreateNotificationRequestCopyWith(CreateNotificationRequest value,
+          $Res Function(CreateNotificationRequest) then) =
+      _$CreateNotificationRequestCopyWithImpl<$Res, CreateNotificationRequest>;
   @useResult
-  $Res call({
-    String userId,
-    NotificationType type,
-    String title,
-    String message,
-    Map<String, dynamic> metadata,
-    String? actionUrl,
-    NotificationPriority priority,
-  });
+  $Res call(
+      {String userId,
+      NotificationType type,
+      String title,
+      String message,
+      Map<String, dynamic> metadata,
+      String? actionUrl,
+      NotificationPriority priority});
 }
 
 /// @nodoc
-class _$CreateNotificationRequestCopyWithImpl<
-  $Res,
-  $Val extends CreateNotificationRequest
->
+class _$CreateNotificationRequestCopyWithImpl<$Res,
+        $Val extends CreateNotificationRequest>
     implements $CreateNotificationRequestCopyWith<$Res> {
   _$CreateNotificationRequestCopyWithImpl(this._value, this._then);
 
@@ -906,8 +843,6 @@ class _$CreateNotificationRequestCopyWithImpl<
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CreateNotificationRequest
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -919,39 +854,36 @@ class _$CreateNotificationRequestCopyWithImpl<
     Object? actionUrl = freezed,
     Object? priority = null,
   }) {
-    return _then(
-      _value.copyWith(
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as NotificationType,
-            title: null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
-                      as String,
-            message: null == message
-                ? _value.message
-                : message // ignore: cast_nullable_to_non_nullable
-                      as String,
-            metadata: null == metadata
-                ? _value.metadata
-                : metadata // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>,
-            actionUrl: freezed == actionUrl
-                ? _value.actionUrl
-                : actionUrl // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            priority: null == priority
-                ? _value.priority
-                : priority // ignore: cast_nullable_to_non_nullable
-                      as NotificationPriority,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      metadata: null == metadata
+          ? _value.metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      actionUrl: freezed == actionUrl
+          ? _value.actionUrl
+          : actionUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      priority: null == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as NotificationPriority,
+    ) as $Val);
   }
 }
 
@@ -959,37 +891,31 @@ class _$CreateNotificationRequestCopyWithImpl<
 abstract class _$$CreateNotificationRequestImplCopyWith<$Res>
     implements $CreateNotificationRequestCopyWith<$Res> {
   factory _$$CreateNotificationRequestImplCopyWith(
-    _$CreateNotificationRequestImpl value,
-    $Res Function(_$CreateNotificationRequestImpl) then,
-  ) = __$$CreateNotificationRequestImplCopyWithImpl<$Res>;
+          _$CreateNotificationRequestImpl value,
+          $Res Function(_$CreateNotificationRequestImpl) then) =
+      __$$CreateNotificationRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String userId,
-    NotificationType type,
-    String title,
-    String message,
-    Map<String, dynamic> metadata,
-    String? actionUrl,
-    NotificationPriority priority,
-  });
+  $Res call(
+      {String userId,
+      NotificationType type,
+      String title,
+      String message,
+      Map<String, dynamic> metadata,
+      String? actionUrl,
+      NotificationPriority priority});
 }
 
 /// @nodoc
 class __$$CreateNotificationRequestImplCopyWithImpl<$Res>
-    extends
-        _$CreateNotificationRequestCopyWithImpl<
-          $Res,
-          _$CreateNotificationRequestImpl
-        >
+    extends _$CreateNotificationRequestCopyWithImpl<$Res,
+        _$CreateNotificationRequestImpl>
     implements _$$CreateNotificationRequestImplCopyWith<$Res> {
   __$$CreateNotificationRequestImplCopyWithImpl(
-    _$CreateNotificationRequestImpl _value,
-    $Res Function(_$CreateNotificationRequestImpl) _then,
-  ) : super(_value, _then);
+      _$CreateNotificationRequestImpl _value,
+      $Res Function(_$CreateNotificationRequestImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of CreateNotificationRequest
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1001,53 +927,51 @@ class __$$CreateNotificationRequestImplCopyWithImpl<$Res>
     Object? actionUrl = freezed,
     Object? priority = null,
   }) {
-    return _then(
-      _$CreateNotificationRequestImpl(
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as NotificationType,
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-        metadata: null == metadata
-            ? _value._metadata
-            : metadata // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>,
-        actionUrl: freezed == actionUrl
-            ? _value.actionUrl
-            : actionUrl // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        priority: null == priority
-            ? _value.priority
-            : priority // ignore: cast_nullable_to_non_nullable
-                  as NotificationPriority,
-      ),
-    );
+    return _then(_$CreateNotificationRequestImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      metadata: null == metadata
+          ? _value._metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      actionUrl: freezed == actionUrl
+          ? _value.actionUrl
+          : actionUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      priority: null == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as NotificationPriority,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$CreateNotificationRequestImpl implements _CreateNotificationRequest {
-  const _$CreateNotificationRequestImpl({
-    required this.userId,
-    required this.type,
-    required this.title,
-    required this.message,
-    final Map<String, dynamic> metadata = const {},
-    this.actionUrl,
-    this.priority = NotificationPriority.normal,
-  }) : _metadata = metadata;
+  const _$CreateNotificationRequestImpl(
+      {required this.userId,
+      required this.type,
+      required this.title,
+      required this.message,
+      final Map<String, dynamic> metadata = const {},
+      this.actionUrl,
+      this.priority = NotificationPriority.normal})
+      : _metadata = metadata;
 
   factory _$CreateNotificationRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$CreateNotificationRequestImplFromJson(json);
@@ -1096,46 +1020,35 @@ class _$CreateNotificationRequestImpl implements _CreateNotificationRequest {
                 other.priority == priority));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    userId,
-    type,
-    title,
-    message,
-    const DeepCollectionEquality().hash(_metadata),
-    actionUrl,
-    priority,
-  );
+  int get hashCode => Object.hash(runtimeType, userId, type, title, message,
+      const DeepCollectionEquality().hash(_metadata), actionUrl, priority);
 
-  /// Create a copy of CreateNotificationRequest
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CreateNotificationRequestImplCopyWith<_$CreateNotificationRequestImpl>
-  get copyWith =>
-      __$$CreateNotificationRequestImplCopyWithImpl<
-        _$CreateNotificationRequestImpl
-      >(this, _$identity);
+      get copyWith => __$$CreateNotificationRequestImplCopyWithImpl<
+          _$CreateNotificationRequestImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CreateNotificationRequestImplToJson(this);
+    return _$$CreateNotificationRequestImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _CreateNotificationRequest implements CreateNotificationRequest {
-  const factory _CreateNotificationRequest({
-    required final String userId,
-    required final NotificationType type,
-    required final String title,
-    required final String message,
-    final Map<String, dynamic> metadata,
-    final String? actionUrl,
-    final NotificationPriority priority,
-  }) = _$CreateNotificationRequestImpl;
+  const factory _CreateNotificationRequest(
+      {required final String userId,
+      required final NotificationType type,
+      required final String title,
+      required final String message,
+      final Map<String, dynamic> metadata,
+      final String? actionUrl,
+      final NotificationPriority priority}) = _$CreateNotificationRequestImpl;
 
   factory _CreateNotificationRequest.fromJson(Map<String, dynamic> json) =
       _$CreateNotificationRequestImpl.fromJson;
@@ -1154,17 +1067,14 @@ abstract class _CreateNotificationRequest implements CreateNotificationRequest {
   String? get actionUrl;
   @override
   NotificationPriority get priority;
-
-  /// Create a copy of CreateNotificationRequest
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CreateNotificationRequestImplCopyWith<_$CreateNotificationRequestImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 UpdateNotificationPreferencesRequest
-_$UpdateNotificationPreferencesRequestFromJson(Map<String, dynamic> json) {
+    _$UpdateNotificationPreferencesRequestFromJson(Map<String, dynamic> json) {
   return _UpdateNotificationPreferencesRequest.fromJson(json);
 }
 
@@ -1177,44 +1087,33 @@ mixin _$UpdateNotificationPreferencesRequest {
   String? get quietHoursStart => throw _privateConstructorUsedError;
   String? get quietHoursEnd => throw _privateConstructorUsedError;
 
-  /// Serializes this UpdateNotificationPreferencesRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UpdateNotificationPreferencesRequest
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UpdateNotificationPreferencesRequestCopyWith<
-    UpdateNotificationPreferencesRequest
-  >
-  get copyWith => throw _privateConstructorUsedError;
+          UpdateNotificationPreferencesRequest>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $UpdateNotificationPreferencesRequestCopyWith<$Res> {
   factory $UpdateNotificationPreferencesRequestCopyWith(
-    UpdateNotificationPreferencesRequest value,
-    $Res Function(UpdateNotificationPreferencesRequest) then,
-  ) =
-      _$UpdateNotificationPreferencesRequestCopyWithImpl<
-        $Res,
-        UpdateNotificationPreferencesRequest
-      >;
+          UpdateNotificationPreferencesRequest value,
+          $Res Function(UpdateNotificationPreferencesRequest) then) =
+      _$UpdateNotificationPreferencesRequestCopyWithImpl<$Res,
+          UpdateNotificationPreferencesRequest>;
   @useResult
-  $Res call({
-    NotificationType notificationType,
-    bool? inAppEnabled,
-    bool? emailEnabled,
-    bool? pushEnabled,
-    String? quietHoursStart,
-    String? quietHoursEnd,
-  });
+  $Res call(
+      {NotificationType notificationType,
+      bool? inAppEnabled,
+      bool? emailEnabled,
+      bool? pushEnabled,
+      String? quietHoursStart,
+      String? quietHoursEnd});
 }
 
 /// @nodoc
-class _$UpdateNotificationPreferencesRequestCopyWithImpl<
-  $Res,
-  $Val extends UpdateNotificationPreferencesRequest
->
+class _$UpdateNotificationPreferencesRequestCopyWithImpl<$Res,
+        $Val extends UpdateNotificationPreferencesRequest>
     implements $UpdateNotificationPreferencesRequestCopyWith<$Res> {
   _$UpdateNotificationPreferencesRequestCopyWithImpl(this._value, this._then);
 
@@ -1223,8 +1122,6 @@ class _$UpdateNotificationPreferencesRequestCopyWithImpl<
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UpdateNotificationPreferencesRequest
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1235,35 +1132,32 @@ class _$UpdateNotificationPreferencesRequestCopyWithImpl<
     Object? quietHoursStart = freezed,
     Object? quietHoursEnd = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            notificationType: null == notificationType
-                ? _value.notificationType
-                : notificationType // ignore: cast_nullable_to_non_nullable
-                      as NotificationType,
-            inAppEnabled: freezed == inAppEnabled
-                ? _value.inAppEnabled
-                : inAppEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool?,
-            emailEnabled: freezed == emailEnabled
-                ? _value.emailEnabled
-                : emailEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool?,
-            pushEnabled: freezed == pushEnabled
-                ? _value.pushEnabled
-                : pushEnabled // ignore: cast_nullable_to_non_nullable
-                      as bool?,
-            quietHoursStart: freezed == quietHoursStart
-                ? _value.quietHoursStart
-                : quietHoursStart // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            quietHoursEnd: freezed == quietHoursEnd
-                ? _value.quietHoursEnd
-                : quietHoursEnd // ignore: cast_nullable_to_non_nullable
-                      as String?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      notificationType: null == notificationType
+          ? _value.notificationType
+          : notificationType // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      inAppEnabled: freezed == inAppEnabled
+          ? _value.inAppEnabled
+          : inAppEnabled // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      emailEnabled: freezed == emailEnabled
+          ? _value.emailEnabled
+          : emailEnabled // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      pushEnabled: freezed == pushEnabled
+          ? _value.pushEnabled
+          : pushEnabled // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      quietHoursStart: freezed == quietHoursStart
+          ? _value.quietHoursStart
+          : quietHoursStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      quietHoursEnd: freezed == quietHoursEnd
+          ? _value.quietHoursEnd
+          : quietHoursEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
@@ -1271,36 +1165,30 @@ class _$UpdateNotificationPreferencesRequestCopyWithImpl<
 abstract class _$$UpdateNotificationPreferencesRequestImplCopyWith<$Res>
     implements $UpdateNotificationPreferencesRequestCopyWith<$Res> {
   factory _$$UpdateNotificationPreferencesRequestImplCopyWith(
-    _$UpdateNotificationPreferencesRequestImpl value,
-    $Res Function(_$UpdateNotificationPreferencesRequestImpl) then,
-  ) = __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<$Res>;
+          _$UpdateNotificationPreferencesRequestImpl value,
+          $Res Function(_$UpdateNotificationPreferencesRequestImpl) then) =
+      __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    NotificationType notificationType,
-    bool? inAppEnabled,
-    bool? emailEnabled,
-    bool? pushEnabled,
-    String? quietHoursStart,
-    String? quietHoursEnd,
-  });
+  $Res call(
+      {NotificationType notificationType,
+      bool? inAppEnabled,
+      bool? emailEnabled,
+      bool? pushEnabled,
+      String? quietHoursStart,
+      String? quietHoursEnd});
 }
 
 /// @nodoc
 class __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<$Res>
-    extends
-        _$UpdateNotificationPreferencesRequestCopyWithImpl<
-          $Res,
-          _$UpdateNotificationPreferencesRequestImpl
-        >
+    extends _$UpdateNotificationPreferencesRequestCopyWithImpl<$Res,
+        _$UpdateNotificationPreferencesRequestImpl>
     implements _$$UpdateNotificationPreferencesRequestImplCopyWith<$Res> {
   __$$UpdateNotificationPreferencesRequestImplCopyWithImpl(
-    _$UpdateNotificationPreferencesRequestImpl _value,
-    $Res Function(_$UpdateNotificationPreferencesRequestImpl) _then,
-  ) : super(_value, _then);
+      _$UpdateNotificationPreferencesRequestImpl _value,
+      $Res Function(_$UpdateNotificationPreferencesRequestImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of UpdateNotificationPreferencesRequest
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1311,34 +1199,32 @@ class __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<$Res>
     Object? quietHoursStart = freezed,
     Object? quietHoursEnd = freezed,
   }) {
-    return _then(
-      _$UpdateNotificationPreferencesRequestImpl(
-        notificationType: null == notificationType
-            ? _value.notificationType
-            : notificationType // ignore: cast_nullable_to_non_nullable
-                  as NotificationType,
-        inAppEnabled: freezed == inAppEnabled
-            ? _value.inAppEnabled
-            : inAppEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool?,
-        emailEnabled: freezed == emailEnabled
-            ? _value.emailEnabled
-            : emailEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool?,
-        pushEnabled: freezed == pushEnabled
-            ? _value.pushEnabled
-            : pushEnabled // ignore: cast_nullable_to_non_nullable
-                  as bool?,
-        quietHoursStart: freezed == quietHoursStart
-            ? _value.quietHoursStart
-            : quietHoursStart // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        quietHoursEnd: freezed == quietHoursEnd
-            ? _value.quietHoursEnd
-            : quietHoursEnd // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
+    return _then(_$UpdateNotificationPreferencesRequestImpl(
+      notificationType: null == notificationType
+          ? _value.notificationType
+          : notificationType // ignore: cast_nullable_to_non_nullable
+              as NotificationType,
+      inAppEnabled: freezed == inAppEnabled
+          ? _value.inAppEnabled
+          : inAppEnabled // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      emailEnabled: freezed == emailEnabled
+          ? _value.emailEnabled
+          : emailEnabled // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      pushEnabled: freezed == pushEnabled
+          ? _value.pushEnabled
+          : pushEnabled // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      quietHoursStart: freezed == quietHoursStart
+          ? _value.quietHoursStart
+          : quietHoursStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      quietHoursEnd: freezed == quietHoursEnd
+          ? _value.quietHoursEnd
+          : quietHoursEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
@@ -1346,18 +1232,17 @@ class __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UpdateNotificationPreferencesRequestImpl
     implements _UpdateNotificationPreferencesRequest {
-  const _$UpdateNotificationPreferencesRequestImpl({
-    required this.notificationType,
-    this.inAppEnabled,
-    this.emailEnabled,
-    this.pushEnabled,
-    this.quietHoursStart,
-    this.quietHoursEnd,
-  });
+  const _$UpdateNotificationPreferencesRequestImpl(
+      {required this.notificationType,
+      this.inAppEnabled,
+      this.emailEnabled,
+      this.pushEnabled,
+      this.quietHoursStart,
+      this.quietHoursEnd});
 
   factory _$UpdateNotificationPreferencesRequestImpl.fromJson(
-    Map<String, dynamic> json,
-  ) => _$$UpdateNotificationPreferencesRequestImplFromJson(json);
+          Map<String, dynamic> json) =>
+      _$$UpdateNotificationPreferencesRequestImplFromJson(json);
 
   @override
   final NotificationType notificationType;
@@ -1396,51 +1281,41 @@ class _$UpdateNotificationPreferencesRequestImpl
                 other.quietHoursEnd == quietHoursEnd));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    notificationType,
-    inAppEnabled,
-    emailEnabled,
-    pushEnabled,
-    quietHoursStart,
-    quietHoursEnd,
-  );
+  int get hashCode => Object.hash(runtimeType, notificationType, inAppEnabled,
+      emailEnabled, pushEnabled, quietHoursStart, quietHoursEnd);
 
-  /// Create a copy of UpdateNotificationPreferencesRequest
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateNotificationPreferencesRequestImplCopyWith<
-    _$UpdateNotificationPreferencesRequestImpl
-  >
-  get copyWith =>
-      __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<
-        _$UpdateNotificationPreferencesRequestImpl
-      >(this, _$identity);
+          _$UpdateNotificationPreferencesRequestImpl>
+      get copyWith => __$$UpdateNotificationPreferencesRequestImplCopyWithImpl<
+          _$UpdateNotificationPreferencesRequestImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UpdateNotificationPreferencesRequestImplToJson(this);
+    return _$$UpdateNotificationPreferencesRequestImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _UpdateNotificationPreferencesRequest
     implements UpdateNotificationPreferencesRequest {
-  const factory _UpdateNotificationPreferencesRequest({
-    required final NotificationType notificationType,
-    final bool? inAppEnabled,
-    final bool? emailEnabled,
-    final bool? pushEnabled,
-    final String? quietHoursStart,
-    final String? quietHoursEnd,
-  }) = _$UpdateNotificationPreferencesRequestImpl;
+  const factory _UpdateNotificationPreferencesRequest(
+          {required final NotificationType notificationType,
+          final bool? inAppEnabled,
+          final bool? emailEnabled,
+          final bool? pushEnabled,
+          final String? quietHoursStart,
+          final String? quietHoursEnd}) =
+      _$UpdateNotificationPreferencesRequestImpl;
 
   factory _UpdateNotificationPreferencesRequest.fromJson(
-    Map<String, dynamic> json,
-  ) = _$UpdateNotificationPreferencesRequestImpl.fromJson;
+          Map<String, dynamic> json) =
+      _$UpdateNotificationPreferencesRequestImpl.fromJson;
 
   @override
   NotificationType get notificationType;
@@ -1454,20 +1329,15 @@ abstract class _UpdateNotificationPreferencesRequest
   String? get quietHoursStart;
   @override
   String? get quietHoursEnd;
-
-  /// Create a copy of UpdateNotificationPreferencesRequest
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UpdateNotificationPreferencesRequestImplCopyWith<
-    _$UpdateNotificationPreferencesRequestImpl
-  >
-  get copyWith => throw _privateConstructorUsedError;
+          _$UpdateNotificationPreferencesRequestImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 NotificationsResponse _$NotificationsResponseFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _NotificationsResponse.fromJson(json);
 }
 
@@ -1480,38 +1350,30 @@ mixin _$NotificationsResponse {
   int get limit => throw _privateConstructorUsedError;
   bool get hasMore => throw _privateConstructorUsedError;
 
-  /// Serializes this NotificationsResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of NotificationsResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $NotificationsResponseCopyWith<NotificationsResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $NotificationsResponseCopyWith<$Res> {
-  factory $NotificationsResponseCopyWith(
-    NotificationsResponse value,
-    $Res Function(NotificationsResponse) then,
-  ) = _$NotificationsResponseCopyWithImpl<$Res, NotificationsResponse>;
+  factory $NotificationsResponseCopyWith(NotificationsResponse value,
+          $Res Function(NotificationsResponse) then) =
+      _$NotificationsResponseCopyWithImpl<$Res, NotificationsResponse>;
   @useResult
-  $Res call({
-    List<AppNotification> notifications,
-    int totalCount,
-    int unreadCount,
-    int page,
-    int limit,
-    bool hasMore,
-  });
+  $Res call(
+      {List<AppNotification> notifications,
+      int totalCount,
+      int unreadCount,
+      int page,
+      int limit,
+      bool hasMore});
 }
 
 /// @nodoc
-class _$NotificationsResponseCopyWithImpl<
-  $Res,
-  $Val extends NotificationsResponse
->
+class _$NotificationsResponseCopyWithImpl<$Res,
+        $Val extends NotificationsResponse>
     implements $NotificationsResponseCopyWith<$Res> {
   _$NotificationsResponseCopyWithImpl(this._value, this._then);
 
@@ -1520,8 +1382,6 @@ class _$NotificationsResponseCopyWithImpl<
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of NotificationsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1532,35 +1392,32 @@ class _$NotificationsResponseCopyWithImpl<
     Object? limit = null,
     Object? hasMore = null,
   }) {
-    return _then(
-      _value.copyWith(
-            notifications: null == notifications
-                ? _value.notifications
-                : notifications // ignore: cast_nullable_to_non_nullable
-                      as List<AppNotification>,
-            totalCount: null == totalCount
-                ? _value.totalCount
-                : totalCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            unreadCount: null == unreadCount
-                ? _value.unreadCount
-                : unreadCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            page: null == page
-                ? _value.page
-                : page // ignore: cast_nullable_to_non_nullable
-                      as int,
-            limit: null == limit
-                ? _value.limit
-                : limit // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hasMore: null == hasMore
-                ? _value.hasMore
-                : hasMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      notifications: null == notifications
+          ? _value.notifications
+          : notifications // ignore: cast_nullable_to_non_nullable
+              as List<AppNotification>,
+      totalCount: null == totalCount
+          ? _value.totalCount
+          : totalCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      unreadCount: null == unreadCount
+          ? _value.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasMore: null == hasMore
+          ? _value.hasMore
+          : hasMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
   }
 }
 
@@ -1568,33 +1425,29 @@ class _$NotificationsResponseCopyWithImpl<
 abstract class _$$NotificationsResponseImplCopyWith<$Res>
     implements $NotificationsResponseCopyWith<$Res> {
   factory _$$NotificationsResponseImplCopyWith(
-    _$NotificationsResponseImpl value,
-    $Res Function(_$NotificationsResponseImpl) then,
-  ) = __$$NotificationsResponseImplCopyWithImpl<$Res>;
+          _$NotificationsResponseImpl value,
+          $Res Function(_$NotificationsResponseImpl) then) =
+      __$$NotificationsResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    List<AppNotification> notifications,
-    int totalCount,
-    int unreadCount,
-    int page,
-    int limit,
-    bool hasMore,
-  });
+  $Res call(
+      {List<AppNotification> notifications,
+      int totalCount,
+      int unreadCount,
+      int page,
+      int limit,
+      bool hasMore});
 }
 
 /// @nodoc
 class __$$NotificationsResponseImplCopyWithImpl<$Res>
-    extends
-        _$NotificationsResponseCopyWithImpl<$Res, _$NotificationsResponseImpl>
+    extends _$NotificationsResponseCopyWithImpl<$Res,
+        _$NotificationsResponseImpl>
     implements _$$NotificationsResponseImplCopyWith<$Res> {
-  __$$NotificationsResponseImplCopyWithImpl(
-    _$NotificationsResponseImpl _value,
-    $Res Function(_$NotificationsResponseImpl) _then,
-  ) : super(_value, _then);
+  __$$NotificationsResponseImplCopyWithImpl(_$NotificationsResponseImpl _value,
+      $Res Function(_$NotificationsResponseImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of NotificationsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1605,48 +1458,46 @@ class __$$NotificationsResponseImplCopyWithImpl<$Res>
     Object? limit = null,
     Object? hasMore = null,
   }) {
-    return _then(
-      _$NotificationsResponseImpl(
-        notifications: null == notifications
-            ? _value._notifications
-            : notifications // ignore: cast_nullable_to_non_nullable
-                  as List<AppNotification>,
-        totalCount: null == totalCount
-            ? _value.totalCount
-            : totalCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        unreadCount: null == unreadCount
-            ? _value.unreadCount
-            : unreadCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        page: null == page
-            ? _value.page
-            : page // ignore: cast_nullable_to_non_nullable
-                  as int,
-        limit: null == limit
-            ? _value.limit
-            : limit // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hasMore: null == hasMore
-            ? _value.hasMore
-            : hasMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-      ),
-    );
+    return _then(_$NotificationsResponseImpl(
+      notifications: null == notifications
+          ? _value._notifications
+          : notifications // ignore: cast_nullable_to_non_nullable
+              as List<AppNotification>,
+      totalCount: null == totalCount
+          ? _value.totalCount
+          : totalCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      unreadCount: null == unreadCount
+          ? _value.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasMore: null == hasMore
+          ? _value.hasMore
+          : hasMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$NotificationsResponseImpl implements _NotificationsResponse {
-  const _$NotificationsResponseImpl({
-    required final List<AppNotification> notifications,
-    required this.totalCount,
-    required this.unreadCount,
-    this.page = 1,
-    this.limit = 20,
-    this.hasMore = false,
-  }) : _notifications = notifications;
+  const _$NotificationsResponseImpl(
+      {required final List<AppNotification> notifications,
+      required this.totalCount,
+      required this.unreadCount,
+      this.page = 1,
+      this.limit = 20,
+      this.hasMore = false})
+      : _notifications = notifications;
 
   factory _$NotificationsResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$NotificationsResponseImplFromJson(json);
@@ -1683,10 +1534,8 @@ class _$NotificationsResponseImpl implements _NotificationsResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NotificationsResponseImpl &&
-            const DeepCollectionEquality().equals(
-              other._notifications,
-              _notifications,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._notifications, _notifications) &&
             (identical(other.totalCount, totalCount) ||
                 other.totalCount == totalCount) &&
             (identical(other.unreadCount, unreadCount) ||
@@ -1696,45 +1545,40 @@ class _$NotificationsResponseImpl implements _NotificationsResponse {
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_notifications),
-    totalCount,
-    unreadCount,
-    page,
-    limit,
-    hasMore,
-  );
+      runtimeType,
+      const DeepCollectionEquality().hash(_notifications),
+      totalCount,
+      unreadCount,
+      page,
+      limit,
+      hasMore);
 
-  /// Create a copy of NotificationsResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationsResponseImplCopyWith<_$NotificationsResponseImpl>
-  get copyWith =>
-      __$$NotificationsResponseImplCopyWithImpl<_$NotificationsResponseImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$NotificationsResponseImplCopyWithImpl<
+          _$NotificationsResponseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NotificationsResponseImplToJson(this);
+    return _$$NotificationsResponseImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _NotificationsResponse implements NotificationsResponse {
-  const factory _NotificationsResponse({
-    required final List<AppNotification> notifications,
-    required final int totalCount,
-    required final int unreadCount,
-    final int page,
-    final int limit,
-    final bool hasMore,
-  }) = _$NotificationsResponseImpl;
+  const factory _NotificationsResponse(
+      {required final List<AppNotification> notifications,
+      required final int totalCount,
+      required final int unreadCount,
+      final int page,
+      final int limit,
+      final bool hasMore}) = _$NotificationsResponseImpl;
 
   factory _NotificationsResponse.fromJson(Map<String, dynamic> json) =
       _$NotificationsResponseImpl.fromJson;
@@ -1751,13 +1595,10 @@ abstract class _NotificationsResponse implements NotificationsResponse {
   int get limit;
   @override
   bool get hasMore;
-
-  /// Create a copy of NotificationsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$NotificationsResponseImplCopyWith<_$NotificationsResponseImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 NotificationFilter _$NotificationFilterFromJson(Map<String, dynamic> json) {
@@ -1775,12 +1616,8 @@ mixin _$NotificationFilter {
   DateTime? get endDate => throw _privateConstructorUsedError;
   NotificationPriority? get priority => throw _privateConstructorUsedError;
 
-  /// Serializes this NotificationFilter to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of NotificationFilter
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $NotificationFilterCopyWith<NotificationFilter> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1788,20 +1625,18 @@ mixin _$NotificationFilter {
 /// @nodoc
 abstract class $NotificationFilterCopyWith<$Res> {
   factory $NotificationFilterCopyWith(
-    NotificationFilter value,
-    $Res Function(NotificationFilter) then,
-  ) = _$NotificationFilterCopyWithImpl<$Res, NotificationFilter>;
+          NotificationFilter value, $Res Function(NotificationFilter) then) =
+      _$NotificationFilterCopyWithImpl<$Res, NotificationFilter>;
   @useResult
-  $Res call({
-    int page,
-    int limit,
-    bool? isRead,
-    bool? isArchived,
-    List<NotificationType>? types,
-    DateTime? startDate,
-    DateTime? endDate,
-    NotificationPriority? priority,
-  });
+  $Res call(
+      {int page,
+      int limit,
+      bool? isRead,
+      bool? isArchived,
+      List<NotificationType>? types,
+      DateTime? startDate,
+      DateTime? endDate,
+      NotificationPriority? priority});
 }
 
 /// @nodoc
@@ -1814,8 +1649,6 @@ class _$NotificationFilterCopyWithImpl<$Res, $Val extends NotificationFilter>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of NotificationFilter
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1828,78 +1661,70 @@ class _$NotificationFilterCopyWithImpl<$Res, $Val extends NotificationFilter>
     Object? endDate = freezed,
     Object? priority = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            page: null == page
-                ? _value.page
-                : page // ignore: cast_nullable_to_non_nullable
-                      as int,
-            limit: null == limit
-                ? _value.limit
-                : limit // ignore: cast_nullable_to_non_nullable
-                      as int,
-            isRead: freezed == isRead
-                ? _value.isRead
-                : isRead // ignore: cast_nullable_to_non_nullable
-                      as bool?,
-            isArchived: freezed == isArchived
-                ? _value.isArchived
-                : isArchived // ignore: cast_nullable_to_non_nullable
-                      as bool?,
-            types: freezed == types
-                ? _value.types
-                : types // ignore: cast_nullable_to_non_nullable
-                      as List<NotificationType>?,
-            startDate: freezed == startDate
-                ? _value.startDate
-                : startDate // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            endDate: freezed == endDate
-                ? _value.endDate
-                : endDate // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            priority: freezed == priority
-                ? _value.priority
-                : priority // ignore: cast_nullable_to_non_nullable
-                      as NotificationPriority?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      isRead: freezed == isRead
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isArchived: freezed == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      types: freezed == types
+          ? _value.types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<NotificationType>?,
+      startDate: freezed == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      priority: freezed == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as NotificationPriority?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$NotificationFilterImplCopyWith<$Res>
     implements $NotificationFilterCopyWith<$Res> {
-  factory _$$NotificationFilterImplCopyWith(
-    _$NotificationFilterImpl value,
-    $Res Function(_$NotificationFilterImpl) then,
-  ) = __$$NotificationFilterImplCopyWithImpl<$Res>;
+  factory _$$NotificationFilterImplCopyWith(_$NotificationFilterImpl value,
+          $Res Function(_$NotificationFilterImpl) then) =
+      __$$NotificationFilterImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int page,
-    int limit,
-    bool? isRead,
-    bool? isArchived,
-    List<NotificationType>? types,
-    DateTime? startDate,
-    DateTime? endDate,
-    NotificationPriority? priority,
-  });
+  $Res call(
+      {int page,
+      int limit,
+      bool? isRead,
+      bool? isArchived,
+      List<NotificationType>? types,
+      DateTime? startDate,
+      DateTime? endDate,
+      NotificationPriority? priority});
 }
 
 /// @nodoc
 class __$$NotificationFilterImplCopyWithImpl<$Res>
     extends _$NotificationFilterCopyWithImpl<$Res, _$NotificationFilterImpl>
     implements _$$NotificationFilterImplCopyWith<$Res> {
-  __$$NotificationFilterImplCopyWithImpl(
-    _$NotificationFilterImpl _value,
-    $Res Function(_$NotificationFilterImpl) _then,
-  ) : super(_value, _then);
+  __$$NotificationFilterImplCopyWithImpl(_$NotificationFilterImpl _value,
+      $Res Function(_$NotificationFilterImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of NotificationFilter
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1912,58 +1737,56 @@ class __$$NotificationFilterImplCopyWithImpl<$Res>
     Object? endDate = freezed,
     Object? priority = freezed,
   }) {
-    return _then(
-      _$NotificationFilterImpl(
-        page: null == page
-            ? _value.page
-            : page // ignore: cast_nullable_to_non_nullable
-                  as int,
-        limit: null == limit
-            ? _value.limit
-            : limit // ignore: cast_nullable_to_non_nullable
-                  as int,
-        isRead: freezed == isRead
-            ? _value.isRead
-            : isRead // ignore: cast_nullable_to_non_nullable
-                  as bool?,
-        isArchived: freezed == isArchived
-            ? _value.isArchived
-            : isArchived // ignore: cast_nullable_to_non_nullable
-                  as bool?,
-        types: freezed == types
-            ? _value._types
-            : types // ignore: cast_nullable_to_non_nullable
-                  as List<NotificationType>?,
-        startDate: freezed == startDate
-            ? _value.startDate
-            : startDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        endDate: freezed == endDate
-            ? _value.endDate
-            : endDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        priority: freezed == priority
-            ? _value.priority
-            : priority // ignore: cast_nullable_to_non_nullable
-                  as NotificationPriority?,
-      ),
-    );
+    return _then(_$NotificationFilterImpl(
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      isRead: freezed == isRead
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isArchived: freezed == isArchived
+          ? _value.isArchived
+          : isArchived // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      types: freezed == types
+          ? _value._types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<NotificationType>?,
+      startDate: freezed == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      priority: freezed == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as NotificationPriority?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$NotificationFilterImpl implements _NotificationFilter {
-  const _$NotificationFilterImpl({
-    this.page = 1,
-    this.limit = 20,
-    this.isRead,
-    this.isArchived,
-    final List<NotificationType>? types,
-    this.startDate,
-    this.endDate,
-    this.priority,
-  }) : _types = types;
+  const _$NotificationFilterImpl(
+      {this.page = 1,
+      this.limit = 20,
+      this.isRead,
+      this.isArchived,
+      final List<NotificationType>? types,
+      this.startDate,
+      this.endDate,
+      this.priority})
+      : _types = types;
 
   factory _$NotificationFilterImpl.fromJson(Map<String, dynamic> json) =>
       _$$NotificationFilterImplFromJson(json);
@@ -2018,48 +1841,44 @@ class _$NotificationFilterImpl implements _NotificationFilter {
                 other.priority == priority));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    page,
-    limit,
-    isRead,
-    isArchived,
-    const DeepCollectionEquality().hash(_types),
-    startDate,
-    endDate,
-    priority,
-  );
+      runtimeType,
+      page,
+      limit,
+      isRead,
+      isArchived,
+      const DeepCollectionEquality().hash(_types),
+      startDate,
+      endDate,
+      priority);
 
-  /// Create a copy of NotificationFilter
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationFilterImplCopyWith<_$NotificationFilterImpl> get copyWith =>
       __$$NotificationFilterImplCopyWithImpl<_$NotificationFilterImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$NotificationFilterImplToJson(this);
+    return _$$NotificationFilterImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _NotificationFilter implements NotificationFilter {
-  const factory _NotificationFilter({
-    final int page,
-    final int limit,
-    final bool? isRead,
-    final bool? isArchived,
-    final List<NotificationType>? types,
-    final DateTime? startDate,
-    final DateTime? endDate,
-    final NotificationPriority? priority,
-  }) = _$NotificationFilterImpl;
+  const factory _NotificationFilter(
+      {final int page,
+      final int limit,
+      final bool? isRead,
+      final bool? isArchived,
+      final List<NotificationType>? types,
+      final DateTime? startDate,
+      final DateTime? endDate,
+      final NotificationPriority? priority}) = _$NotificationFilterImpl;
 
   factory _NotificationFilter.fromJson(Map<String, dynamic> json) =
       _$NotificationFilterImpl.fromJson;
@@ -2080,11 +1899,8 @@ abstract class _NotificationFilter implements NotificationFilter {
   DateTime? get endDate;
   @override
   NotificationPriority? get priority;
-
-  /// Create a copy of NotificationFilter
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$NotificationFilterImplCopyWith<_$NotificationFilterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

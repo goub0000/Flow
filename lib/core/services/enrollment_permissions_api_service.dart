@@ -150,7 +150,7 @@ class EnrollmentPermissionsApiService {
   Future<Map<String, dynamic>> denyPermission(
     String permissionId,
     String denialReason,
-  }) async {
+  ) async {
     try {
       final response = await _client.post(
         Uri.parse('$baseUrl/enrollments/permissions/$permissionId/deny'),

@@ -12,8 +12,7 @@ part of 'cookie_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 CookieData _$CookieDataFromJson(Map<String, dynamic> json) {
   return _CookieData.fromJson(json);
@@ -30,12 +29,8 @@ mixin _$CookieData {
   DateTime? get expiresAt => throw _privateConstructorUsedError;
   String? get sessionId => throw _privateConstructorUsedError;
 
-  /// Serializes this CookieData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CookieData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CookieDataCopyWith<CookieData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -43,20 +38,18 @@ mixin _$CookieData {
 /// @nodoc
 abstract class $CookieDataCopyWith<$Res> {
   factory $CookieDataCopyWith(
-    CookieData value,
-    $Res Function(CookieData) then,
-  ) = _$CookieDataCopyWithImpl<$Res, CookieData>;
+          CookieData value, $Res Function(CookieData) then) =
+      _$CookieDataCopyWithImpl<$Res, CookieData>;
   @useResult
-  $Res call({
-    String id,
-    String userId,
-    CookieDataType type,
-    DateTime timestamp,
-    Map<String, dynamic> data,
-    bool isAnonymized,
-    DateTime? expiresAt,
-    String? sessionId,
-  });
+  $Res call(
+      {String id,
+      String userId,
+      CookieDataType type,
+      DateTime timestamp,
+      Map<String, dynamic> data,
+      bool isAnonymized,
+      DateTime? expiresAt,
+      String? sessionId});
 }
 
 /// @nodoc
@@ -69,8 +62,6 @@ class _$CookieDataCopyWithImpl<$Res, $Val extends CookieData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CookieData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -83,43 +74,40 @@ class _$CookieDataCopyWithImpl<$Res, $Val extends CookieData>
     Object? expiresAt = freezed,
     Object? sessionId = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            type: null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                      as CookieDataType,
-            timestamp: null == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            data: null == data
-                ? _value.data
-                : data // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>,
-            isAnonymized: null == isAnonymized
-                ? _value.isAnonymized
-                : isAnonymized // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            expiresAt: freezed == expiresAt
-                ? _value.expiresAt
-                : expiresAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            sessionId: freezed == sessionId
-                ? _value.sessionId
-                : sessionId // ignore: cast_nullable_to_non_nullable
-                      as String?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CookieDataType,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      isAnonymized: null == isAnonymized
+          ? _value.isAnonymized
+          : isAnonymized // ignore: cast_nullable_to_non_nullable
+              as bool,
+      expiresAt: freezed == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      sessionId: freezed == sessionId
+          ? _value.sessionId
+          : sessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
@@ -127,21 +115,19 @@ class _$CookieDataCopyWithImpl<$Res, $Val extends CookieData>
 abstract class _$$CookieDataImplCopyWith<$Res>
     implements $CookieDataCopyWith<$Res> {
   factory _$$CookieDataImplCopyWith(
-    _$CookieDataImpl value,
-    $Res Function(_$CookieDataImpl) then,
-  ) = __$$CookieDataImplCopyWithImpl<$Res>;
+          _$CookieDataImpl value, $Res Function(_$CookieDataImpl) then) =
+      __$$CookieDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String userId,
-    CookieDataType type,
-    DateTime timestamp,
-    Map<String, dynamic> data,
-    bool isAnonymized,
-    DateTime? expiresAt,
-    String? sessionId,
-  });
+  $Res call(
+      {String id,
+      String userId,
+      CookieDataType type,
+      DateTime timestamp,
+      Map<String, dynamic> data,
+      bool isAnonymized,
+      DateTime? expiresAt,
+      String? sessionId});
 }
 
 /// @nodoc
@@ -149,12 +135,9 @@ class __$$CookieDataImplCopyWithImpl<$Res>
     extends _$CookieDataCopyWithImpl<$Res, _$CookieDataImpl>
     implements _$$CookieDataImplCopyWith<$Res> {
   __$$CookieDataImplCopyWithImpl(
-    _$CookieDataImpl _value,
-    $Res Function(_$CookieDataImpl) _then,
-  ) : super(_value, _then);
+      _$CookieDataImpl _value, $Res Function(_$CookieDataImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of CookieData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -167,59 +150,57 @@ class __$$CookieDataImplCopyWithImpl<$Res>
     Object? expiresAt = freezed,
     Object? sessionId = freezed,
   }) {
-    return _then(
-      _$CookieDataImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        type: null == type
-            ? _value.type
-            : type // ignore: cast_nullable_to_non_nullable
-                  as CookieDataType,
-        timestamp: null == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        data: null == data
-            ? _value._data
-            : data // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>,
-        isAnonymized: null == isAnonymized
-            ? _value.isAnonymized
-            : isAnonymized // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        expiresAt: freezed == expiresAt
-            ? _value.expiresAt
-            : expiresAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        sessionId: freezed == sessionId
-            ? _value.sessionId
-            : sessionId // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
+    return _then(_$CookieDataImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CookieDataType,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      data: null == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      isAnonymized: null == isAnonymized
+          ? _value.isAnonymized
+          : isAnonymized // ignore: cast_nullable_to_non_nullable
+              as bool,
+      expiresAt: freezed == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      sessionId: freezed == sessionId
+          ? _value.sessionId
+          : sessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$CookieDataImpl extends _CookieData {
-  const _$CookieDataImpl({
-    required this.id,
-    required this.userId,
-    required this.type,
-    required this.timestamp,
-    required final Map<String, dynamic> data,
-    this.isAnonymized = false,
-    this.expiresAt,
-    this.sessionId,
-  }) : _data = data,
-       super._();
+  const _$CookieDataImpl(
+      {required this.id,
+      required this.userId,
+      required this.type,
+      required this.timestamp,
+      required final Map<String, dynamic> data,
+      this.isAnonymized = false,
+      this.expiresAt,
+      this.sessionId})
+      : _data = data,
+        super._();
 
   factory _$CookieDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$CookieDataImplFromJson(json);
@@ -272,23 +253,20 @@ class _$CookieDataImpl extends _CookieData {
                 other.sessionId == sessionId));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    userId,
-    type,
-    timestamp,
-    const DeepCollectionEquality().hash(_data),
-    isAnonymized,
-    expiresAt,
-    sessionId,
-  );
+      runtimeType,
+      id,
+      userId,
+      type,
+      timestamp,
+      const DeepCollectionEquality().hash(_data),
+      isAnonymized,
+      expiresAt,
+      sessionId);
 
-  /// Create a copy of CookieData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CookieDataImplCopyWith<_$CookieDataImpl> get copyWith =>
@@ -296,21 +274,22 @@ class _$CookieDataImpl extends _CookieData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CookieDataImplToJson(this);
+    return _$$CookieDataImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _CookieData extends CookieData {
-  const factory _CookieData({
-    required final String id,
-    required final String userId,
-    required final CookieDataType type,
-    required final DateTime timestamp,
-    required final Map<String, dynamic> data,
-    final bool isAnonymized,
-    final DateTime? expiresAt,
-    final String? sessionId,
-  }) = _$CookieDataImpl;
+  const factory _CookieData(
+      {required final String id,
+      required final String userId,
+      required final CookieDataType type,
+      required final DateTime timestamp,
+      required final Map<String, dynamic> data,
+      final bool isAnonymized,
+      final DateTime? expiresAt,
+      final String? sessionId}) = _$CookieDataImpl;
   const _CookieData._() : super._();
 
   factory _CookieData.fromJson(Map<String, dynamic> json) =
@@ -332,11 +311,8 @@ abstract class _CookieData extends CookieData {
   DateTime? get expiresAt;
   @override
   String? get sessionId;
-
-  /// Create a copy of CookieData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CookieDataImplCopyWith<_$CookieDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -358,12 +334,8 @@ mixin _$SessionAnalytics {
   String? get referrer => throw _privateConstructorUsedError;
   int get totalDuration => throw _privateConstructorUsedError;
 
-  /// Serializes this SessionAnalytics to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of SessionAnalytics
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SessionAnalyticsCopyWith<SessionAnalytics> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -371,22 +343,20 @@ mixin _$SessionAnalytics {
 /// @nodoc
 abstract class $SessionAnalyticsCopyWith<$Res> {
   factory $SessionAnalyticsCopyWith(
-    SessionAnalytics value,
-    $Res Function(SessionAnalytics) then,
-  ) = _$SessionAnalyticsCopyWithImpl<$Res, SessionAnalytics>;
+          SessionAnalytics value, $Res Function(SessionAnalytics) then) =
+      _$SessionAnalyticsCopyWithImpl<$Res, SessionAnalytics>;
   @useResult
-  $Res call({
-    String sessionId,
-    String userId,
-    DateTime startTime,
-    DateTime? endTime,
-    List<String> pagesVisited,
-    Map<String, int> interactions,
-    String? deviceType,
-    String? browser,
-    String? referrer,
-    int totalDuration,
-  });
+  $Res call(
+      {String sessionId,
+      String userId,
+      DateTime startTime,
+      DateTime? endTime,
+      List<String> pagesVisited,
+      Map<String, int> interactions,
+      String? deviceType,
+      String? browser,
+      String? referrer,
+      int totalDuration});
 }
 
 /// @nodoc
@@ -399,8 +369,6 @@ class _$SessionAnalyticsCopyWithImpl<$Res, $Val extends SessionAnalytics>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SessionAnalytics
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -415,88 +383,80 @@ class _$SessionAnalyticsCopyWithImpl<$Res, $Val extends SessionAnalytics>
     Object? referrer = freezed,
     Object? totalDuration = null,
   }) {
-    return _then(
-      _value.copyWith(
-            sessionId: null == sessionId
-                ? _value.sessionId
-                : sessionId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            startTime: null == startTime
-                ? _value.startTime
-                : startTime // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            endTime: freezed == endTime
-                ? _value.endTime
-                : endTime // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            pagesVisited: null == pagesVisited
-                ? _value.pagesVisited
-                : pagesVisited // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
-            interactions: null == interactions
-                ? _value.interactions
-                : interactions // ignore: cast_nullable_to_non_nullable
-                      as Map<String, int>,
-            deviceType: freezed == deviceType
-                ? _value.deviceType
-                : deviceType // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            browser: freezed == browser
-                ? _value.browser
-                : browser // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            referrer: freezed == referrer
-                ? _value.referrer
-                : referrer // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            totalDuration: null == totalDuration
-                ? _value.totalDuration
-                : totalDuration // ignore: cast_nullable_to_non_nullable
-                      as int,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      sessionId: null == sessionId
+          ? _value.sessionId
+          : sessionId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      endTime: freezed == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      pagesVisited: null == pagesVisited
+          ? _value.pagesVisited
+          : pagesVisited // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      interactions: null == interactions
+          ? _value.interactions
+          : interactions // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      deviceType: freezed == deviceType
+          ? _value.deviceType
+          : deviceType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      browser: freezed == browser
+          ? _value.browser
+          : browser // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referrer: freezed == referrer
+          ? _value.referrer
+          : referrer // ignore: cast_nullable_to_non_nullable
+              as String?,
+      totalDuration: null == totalDuration
+          ? _value.totalDuration
+          : totalDuration // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$SessionAnalyticsImplCopyWith<$Res>
     implements $SessionAnalyticsCopyWith<$Res> {
-  factory _$$SessionAnalyticsImplCopyWith(
-    _$SessionAnalyticsImpl value,
-    $Res Function(_$SessionAnalyticsImpl) then,
-  ) = __$$SessionAnalyticsImplCopyWithImpl<$Res>;
+  factory _$$SessionAnalyticsImplCopyWith(_$SessionAnalyticsImpl value,
+          $Res Function(_$SessionAnalyticsImpl) then) =
+      __$$SessionAnalyticsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String sessionId,
-    String userId,
-    DateTime startTime,
-    DateTime? endTime,
-    List<String> pagesVisited,
-    Map<String, int> interactions,
-    String? deviceType,
-    String? browser,
-    String? referrer,
-    int totalDuration,
-  });
+  $Res call(
+      {String sessionId,
+      String userId,
+      DateTime startTime,
+      DateTime? endTime,
+      List<String> pagesVisited,
+      Map<String, int> interactions,
+      String? deviceType,
+      String? browser,
+      String? referrer,
+      int totalDuration});
 }
 
 /// @nodoc
 class __$$SessionAnalyticsImplCopyWithImpl<$Res>
     extends _$SessionAnalyticsCopyWithImpl<$Res, _$SessionAnalyticsImpl>
     implements _$$SessionAnalyticsImplCopyWith<$Res> {
-  __$$SessionAnalyticsImplCopyWithImpl(
-    _$SessionAnalyticsImpl _value,
-    $Res Function(_$SessionAnalyticsImpl) _then,
-  ) : super(_value, _then);
+  __$$SessionAnalyticsImplCopyWithImpl(_$SessionAnalyticsImpl _value,
+      $Res Function(_$SessionAnalyticsImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of SessionAnalytics
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -511,70 +471,68 @@ class __$$SessionAnalyticsImplCopyWithImpl<$Res>
     Object? referrer = freezed,
     Object? totalDuration = null,
   }) {
-    return _then(
-      _$SessionAnalyticsImpl(
-        sessionId: null == sessionId
-            ? _value.sessionId
-            : sessionId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        startTime: null == startTime
-            ? _value.startTime
-            : startTime // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        endTime: freezed == endTime
-            ? _value.endTime
-            : endTime // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        pagesVisited: null == pagesVisited
-            ? _value._pagesVisited
-            : pagesVisited // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
-        interactions: null == interactions
-            ? _value._interactions
-            : interactions // ignore: cast_nullable_to_non_nullable
-                  as Map<String, int>,
-        deviceType: freezed == deviceType
-            ? _value.deviceType
-            : deviceType // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        browser: freezed == browser
-            ? _value.browser
-            : browser // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        referrer: freezed == referrer
-            ? _value.referrer
-            : referrer // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        totalDuration: null == totalDuration
-            ? _value.totalDuration
-            : totalDuration // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
+    return _then(_$SessionAnalyticsImpl(
+      sessionId: null == sessionId
+          ? _value.sessionId
+          : sessionId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      endTime: freezed == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      pagesVisited: null == pagesVisited
+          ? _value._pagesVisited
+          : pagesVisited // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      interactions: null == interactions
+          ? _value._interactions
+          : interactions // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      deviceType: freezed == deviceType
+          ? _value.deviceType
+          : deviceType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      browser: freezed == browser
+          ? _value.browser
+          : browser // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referrer: freezed == referrer
+          ? _value.referrer
+          : referrer // ignore: cast_nullable_to_non_nullable
+              as String?,
+      totalDuration: null == totalDuration
+          ? _value.totalDuration
+          : totalDuration // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SessionAnalyticsImpl extends _SessionAnalytics {
-  const _$SessionAnalyticsImpl({
-    required this.sessionId,
-    required this.userId,
-    required this.startTime,
-    this.endTime,
-    final List<String> pagesVisited = const [],
-    final Map<String, int> interactions = const {},
-    this.deviceType,
-    this.browser,
-    this.referrer,
-    this.totalDuration = 0,
-  }) : _pagesVisited = pagesVisited,
-       _interactions = interactions,
-       super._();
+  const _$SessionAnalyticsImpl(
+      {required this.sessionId,
+      required this.userId,
+      required this.startTime,
+      this.endTime,
+      final List<String> pagesVisited = const [],
+      final Map<String, int> interactions = const {},
+      this.deviceType,
+      this.browser,
+      this.referrer,
+      this.totalDuration = 0})
+      : _pagesVisited = pagesVisited,
+        _interactions = interactions,
+        super._();
 
   factory _$SessionAnalyticsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SessionAnalyticsImplFromJson(json);
@@ -631,14 +589,10 @@ class _$SessionAnalyticsImpl extends _SessionAnalytics {
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
-            const DeepCollectionEquality().equals(
-              other._pagesVisited,
-              _pagesVisited,
-            ) &&
-            const DeepCollectionEquality().equals(
-              other._interactions,
-              _interactions,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._pagesVisited, _pagesVisited) &&
+            const DeepCollectionEquality()
+                .equals(other._interactions, _interactions) &&
             (identical(other.deviceType, deviceType) ||
                 other.deviceType == deviceType) &&
             (identical(other.browser, browser) || other.browser == browser) &&
@@ -648,52 +602,48 @@ class _$SessionAnalyticsImpl extends _SessionAnalytics {
                 other.totalDuration == totalDuration));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    sessionId,
-    userId,
-    startTime,
-    endTime,
-    const DeepCollectionEquality().hash(_pagesVisited),
-    const DeepCollectionEquality().hash(_interactions),
-    deviceType,
-    browser,
-    referrer,
-    totalDuration,
-  );
+      runtimeType,
+      sessionId,
+      userId,
+      startTime,
+      endTime,
+      const DeepCollectionEquality().hash(_pagesVisited),
+      const DeepCollectionEquality().hash(_interactions),
+      deviceType,
+      browser,
+      referrer,
+      totalDuration);
 
-  /// Create a copy of SessionAnalytics
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SessionAnalyticsImplCopyWith<_$SessionAnalyticsImpl> get copyWith =>
       __$$SessionAnalyticsImplCopyWithImpl<_$SessionAnalyticsImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SessionAnalyticsImplToJson(this);
+    return _$$SessionAnalyticsImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _SessionAnalytics extends SessionAnalytics {
-  const factory _SessionAnalytics({
-    required final String sessionId,
-    required final String userId,
-    required final DateTime startTime,
-    final DateTime? endTime,
-    final List<String> pagesVisited,
-    final Map<String, int> interactions,
-    final String? deviceType,
-    final String? browser,
-    final String? referrer,
-    final int totalDuration,
-  }) = _$SessionAnalyticsImpl;
+  const factory _SessionAnalytics(
+      {required final String sessionId,
+      required final String userId,
+      required final DateTime startTime,
+      final DateTime? endTime,
+      final List<String> pagesVisited,
+      final Map<String, int> interactions,
+      final String? deviceType,
+      final String? browser,
+      final String? referrer,
+      final int totalDuration}) = _$SessionAnalyticsImpl;
   const _SessionAnalytics._() : super._();
 
   factory _SessionAnalytics.fromJson(Map<String, dynamic> json) =
@@ -719,11 +669,8 @@ abstract class _SessionAnalytics extends SessionAnalytics {
   String? get referrer;
   @override
   int get totalDuration;
-
-  /// Create a copy of SessionAnalytics
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SessionAnalyticsImplCopyWith<_$SessionAnalyticsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

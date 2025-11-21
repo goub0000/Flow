@@ -12,8 +12,7 @@ part of 'user_consent.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UserConsent _$UserConsentFromJson(Map<String, dynamic> json) {
   return _UserConsent.fromJson(json);
@@ -32,12 +31,8 @@ mixin _$UserConsent {
   String? get userAgent => throw _privateConstructorUsedError;
   List<ConsentHistoryEntry> get history => throw _privateConstructorUsedError;
 
-  /// Serializes this UserConsent to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UserConsent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UserConsentCopyWith<UserConsent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,21 +40,19 @@ mixin _$UserConsent {
 /// @nodoc
 abstract class $UserConsentCopyWith<$Res> {
   factory $UserConsentCopyWith(
-    UserConsent value,
-    $Res Function(UserConsent) then,
-  ) = _$UserConsentCopyWithImpl<$Res, UserConsent>;
+          UserConsent value, $Res Function(UserConsent) then) =
+      _$UserConsentCopyWithImpl<$Res, UserConsent>;
   @useResult
-  $Res call({
-    String userId,
-    ConsentStatus status,
-    DateTime timestamp,
-    String version,
-    Map<CookieCategory, bool> categoryConsents,
-    DateTime? expiresAt,
-    String? ipAddress,
-    String? userAgent,
-    List<ConsentHistoryEntry> history,
-  });
+  $Res call(
+      {String userId,
+      ConsentStatus status,
+      DateTime timestamp,
+      String version,
+      Map<CookieCategory, bool> categoryConsents,
+      DateTime? expiresAt,
+      String? ipAddress,
+      String? userAgent,
+      List<ConsentHistoryEntry> history});
 }
 
 /// @nodoc
@@ -72,8 +65,6 @@ class _$UserConsentCopyWithImpl<$Res, $Val extends UserConsent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UserConsent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,47 +78,44 @@ class _$UserConsentCopyWithImpl<$Res, $Val extends UserConsent>
     Object? userAgent = freezed,
     Object? history = null,
   }) {
-    return _then(
-      _value.copyWith(
-            userId: null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                      as String,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as ConsentStatus,
-            timestamp: null == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            version: null == version
-                ? _value.version
-                : version // ignore: cast_nullable_to_non_nullable
-                      as String,
-            categoryConsents: null == categoryConsents
-                ? _value.categoryConsents
-                : categoryConsents // ignore: cast_nullable_to_non_nullable
-                      as Map<CookieCategory, bool>,
-            expiresAt: freezed == expiresAt
-                ? _value.expiresAt
-                : expiresAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
-            ipAddress: freezed == ipAddress
-                ? _value.ipAddress
-                : ipAddress // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            userAgent: freezed == userAgent
-                ? _value.userAgent
-                : userAgent // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            history: null == history
-                ? _value.history
-                : history // ignore: cast_nullable_to_non_nullable
-                      as List<ConsentHistoryEntry>,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ConsentStatus,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryConsents: null == categoryConsents
+          ? _value.categoryConsents
+          : categoryConsents // ignore: cast_nullable_to_non_nullable
+              as Map<CookieCategory, bool>,
+      expiresAt: freezed == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ipAddress: freezed == ipAddress
+          ? _value.ipAddress
+          : ipAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userAgent: freezed == userAgent
+          ? _value.userAgent
+          : userAgent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      history: null == history
+          ? _value.history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<ConsentHistoryEntry>,
+    ) as $Val);
   }
 }
 
@@ -135,22 +123,20 @@ class _$UserConsentCopyWithImpl<$Res, $Val extends UserConsent>
 abstract class _$$UserConsentImplCopyWith<$Res>
     implements $UserConsentCopyWith<$Res> {
   factory _$$UserConsentImplCopyWith(
-    _$UserConsentImpl value,
-    $Res Function(_$UserConsentImpl) then,
-  ) = __$$UserConsentImplCopyWithImpl<$Res>;
+          _$UserConsentImpl value, $Res Function(_$UserConsentImpl) then) =
+      __$$UserConsentImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String userId,
-    ConsentStatus status,
-    DateTime timestamp,
-    String version,
-    Map<CookieCategory, bool> categoryConsents,
-    DateTime? expiresAt,
-    String? ipAddress,
-    String? userAgent,
-    List<ConsentHistoryEntry> history,
-  });
+  $Res call(
+      {String userId,
+      ConsentStatus status,
+      DateTime timestamp,
+      String version,
+      Map<CookieCategory, bool> categoryConsents,
+      DateTime? expiresAt,
+      String? ipAddress,
+      String? userAgent,
+      List<ConsentHistoryEntry> history});
 }
 
 /// @nodoc
@@ -158,12 +144,9 @@ class __$$UserConsentImplCopyWithImpl<$Res>
     extends _$UserConsentCopyWithImpl<$Res, _$UserConsentImpl>
     implements _$$UserConsentImplCopyWith<$Res> {
   __$$UserConsentImplCopyWithImpl(
-    _$UserConsentImpl _value,
-    $Res Function(_$UserConsentImpl) _then,
-  ) : super(_value, _then);
+      _$UserConsentImpl _value, $Res Function(_$UserConsentImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of UserConsent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -177,65 +160,63 @@ class __$$UserConsentImplCopyWithImpl<$Res>
     Object? userAgent = freezed,
     Object? history = null,
   }) {
-    return _then(
-      _$UserConsentImpl(
-        userId: null == userId
-            ? _value.userId
-            : userId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as ConsentStatus,
-        timestamp: null == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        version: null == version
-            ? _value.version
-            : version // ignore: cast_nullable_to_non_nullable
-                  as String,
-        categoryConsents: null == categoryConsents
-            ? _value._categoryConsents
-            : categoryConsents // ignore: cast_nullable_to_non_nullable
-                  as Map<CookieCategory, bool>,
-        expiresAt: freezed == expiresAt
-            ? _value.expiresAt
-            : expiresAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
-        ipAddress: freezed == ipAddress
-            ? _value.ipAddress
-            : ipAddress // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        userAgent: freezed == userAgent
-            ? _value.userAgent
-            : userAgent // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        history: null == history
-            ? _value._history
-            : history // ignore: cast_nullable_to_non_nullable
-                  as List<ConsentHistoryEntry>,
-      ),
-    );
+    return _then(_$UserConsentImpl(
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ConsentStatus,
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryConsents: null == categoryConsents
+          ? _value._categoryConsents
+          : categoryConsents // ignore: cast_nullable_to_non_nullable
+              as Map<CookieCategory, bool>,
+      expiresAt: freezed == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ipAddress: freezed == ipAddress
+          ? _value.ipAddress
+          : ipAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userAgent: freezed == userAgent
+          ? _value.userAgent
+          : userAgent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      history: null == history
+          ? _value._history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<ConsentHistoryEntry>,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$UserConsentImpl extends _UserConsent {
-  const _$UserConsentImpl({
-    required this.userId,
-    required this.status,
-    required this.timestamp,
-    required this.version,
-    required final Map<CookieCategory, bool> categoryConsents,
-    this.expiresAt,
-    this.ipAddress,
-    this.userAgent,
-    final List<ConsentHistoryEntry> history = const [],
-  }) : _categoryConsents = categoryConsents,
-       _history = history,
-       super._();
+  const _$UserConsentImpl(
+      {required this.userId,
+      required this.status,
+      required this.timestamp,
+      required this.version,
+      required final Map<CookieCategory, bool> categoryConsents,
+      this.expiresAt,
+      this.ipAddress,
+      this.userAgent,
+      final List<ConsentHistoryEntry> history = const []})
+      : _categoryConsents = categoryConsents,
+        _history = history,
+        super._();
 
   factory _$UserConsentImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserConsentImplFromJson(json);
@@ -286,10 +267,8 @@ class _$UserConsentImpl extends _UserConsent {
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
             (identical(other.version, version) || other.version == version) &&
-            const DeepCollectionEquality().equals(
-              other._categoryConsents,
-              _categoryConsents,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._categoryConsents, _categoryConsents) &&
             (identical(other.expiresAt, expiresAt) ||
                 other.expiresAt == expiresAt) &&
             (identical(other.ipAddress, ipAddress) ||
@@ -299,24 +278,21 @@ class _$UserConsentImpl extends _UserConsent {
             const DeepCollectionEquality().equals(other._history, _history));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    userId,
-    status,
-    timestamp,
-    version,
-    const DeepCollectionEquality().hash(_categoryConsents),
-    expiresAt,
-    ipAddress,
-    userAgent,
-    const DeepCollectionEquality().hash(_history),
-  );
+      runtimeType,
+      userId,
+      status,
+      timestamp,
+      version,
+      const DeepCollectionEquality().hash(_categoryConsents),
+      expiresAt,
+      ipAddress,
+      userAgent,
+      const DeepCollectionEquality().hash(_history));
 
-  /// Create a copy of UserConsent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UserConsentImplCopyWith<_$UserConsentImpl> get copyWith =>
@@ -324,22 +300,23 @@ class _$UserConsentImpl extends _UserConsent {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserConsentImplToJson(this);
+    return _$$UserConsentImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _UserConsent extends UserConsent {
-  const factory _UserConsent({
-    required final String userId,
-    required final ConsentStatus status,
-    required final DateTime timestamp,
-    required final String version,
-    required final Map<CookieCategory, bool> categoryConsents,
-    final DateTime? expiresAt,
-    final String? ipAddress,
-    final String? userAgent,
-    final List<ConsentHistoryEntry> history,
-  }) = _$UserConsentImpl;
+  const factory _UserConsent(
+      {required final String userId,
+      required final ConsentStatus status,
+      required final DateTime timestamp,
+      required final String version,
+      required final Map<CookieCategory, bool> categoryConsents,
+      final DateTime? expiresAt,
+      final String? ipAddress,
+      final String? userAgent,
+      final List<ConsentHistoryEntry> history}) = _$UserConsentImpl;
   const _UserConsent._() : super._();
 
   factory _UserConsent.fromJson(Map<String, dynamic> json) =
@@ -363,11 +340,8 @@ abstract class _UserConsent extends UserConsent {
   String? get userAgent;
   @override
   List<ConsentHistoryEntry> get history;
-
-  /// Create a copy of UserConsent
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UserConsentImplCopyWith<_$UserConsentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -386,12 +360,8 @@ mixin _$ConsentHistoryEntry {
       throw _privateConstructorUsedError; // e.g., "user_updated", "auto_renewed", "admin_reset"
   String? get ipAddress => throw _privateConstructorUsedError;
 
-  /// Serializes this ConsentHistoryEntry to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ConsentHistoryEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ConsentHistoryEntryCopyWith<ConsentHistoryEntry> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -399,17 +369,15 @@ mixin _$ConsentHistoryEntry {
 /// @nodoc
 abstract class $ConsentHistoryEntryCopyWith<$Res> {
   factory $ConsentHistoryEntryCopyWith(
-    ConsentHistoryEntry value,
-    $Res Function(ConsentHistoryEntry) then,
-  ) = _$ConsentHistoryEntryCopyWithImpl<$Res, ConsentHistoryEntry>;
+          ConsentHistoryEntry value, $Res Function(ConsentHistoryEntry) then) =
+      _$ConsentHistoryEntryCopyWithImpl<$Res, ConsentHistoryEntry>;
   @useResult
-  $Res call({
-    DateTime timestamp,
-    ConsentStatus status,
-    Map<CookieCategory, bool> categoryConsents,
-    String? action,
-    String? ipAddress,
-  });
+  $Res call(
+      {DateTime timestamp,
+      ConsentStatus status,
+      Map<CookieCategory, bool> categoryConsents,
+      String? action,
+      String? ipAddress});
 }
 
 /// @nodoc
@@ -422,8 +390,6 @@ class _$ConsentHistoryEntryCopyWithImpl<$Res, $Val extends ConsentHistoryEntry>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ConsentHistoryEntry
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -433,63 +399,55 @@ class _$ConsentHistoryEntryCopyWithImpl<$Res, $Val extends ConsentHistoryEntry>
     Object? action = freezed,
     Object? ipAddress = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            timestamp: null == timestamp
-                ? _value.timestamp
-                : timestamp // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
-            status: null == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                      as ConsentStatus,
-            categoryConsents: null == categoryConsents
-                ? _value.categoryConsents
-                : categoryConsents // ignore: cast_nullable_to_non_nullable
-                      as Map<CookieCategory, bool>,
-            action: freezed == action
-                ? _value.action
-                : action // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            ipAddress: freezed == ipAddress
-                ? _value.ipAddress
-                : ipAddress // ignore: cast_nullable_to_non_nullable
-                      as String?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ConsentStatus,
+      categoryConsents: null == categoryConsents
+          ? _value.categoryConsents
+          : categoryConsents // ignore: cast_nullable_to_non_nullable
+              as Map<CookieCategory, bool>,
+      action: freezed == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ipAddress: freezed == ipAddress
+          ? _value.ipAddress
+          : ipAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ConsentHistoryEntryImplCopyWith<$Res>
     implements $ConsentHistoryEntryCopyWith<$Res> {
-  factory _$$ConsentHistoryEntryImplCopyWith(
-    _$ConsentHistoryEntryImpl value,
-    $Res Function(_$ConsentHistoryEntryImpl) then,
-  ) = __$$ConsentHistoryEntryImplCopyWithImpl<$Res>;
+  factory _$$ConsentHistoryEntryImplCopyWith(_$ConsentHistoryEntryImpl value,
+          $Res Function(_$ConsentHistoryEntryImpl) then) =
+      __$$ConsentHistoryEntryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    DateTime timestamp,
-    ConsentStatus status,
-    Map<CookieCategory, bool> categoryConsents,
-    String? action,
-    String? ipAddress,
-  });
+  $Res call(
+      {DateTime timestamp,
+      ConsentStatus status,
+      Map<CookieCategory, bool> categoryConsents,
+      String? action,
+      String? ipAddress});
 }
 
 /// @nodoc
 class __$$ConsentHistoryEntryImplCopyWithImpl<$Res>
     extends _$ConsentHistoryEntryCopyWithImpl<$Res, _$ConsentHistoryEntryImpl>
     implements _$$ConsentHistoryEntryImplCopyWith<$Res> {
-  __$$ConsentHistoryEntryImplCopyWithImpl(
-    _$ConsentHistoryEntryImpl _value,
-    $Res Function(_$ConsentHistoryEntryImpl) _then,
-  ) : super(_value, _then);
+  __$$ConsentHistoryEntryImplCopyWithImpl(_$ConsentHistoryEntryImpl _value,
+      $Res Function(_$ConsentHistoryEntryImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of ConsentHistoryEntry
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -499,43 +457,41 @@ class __$$ConsentHistoryEntryImplCopyWithImpl<$Res>
     Object? action = freezed,
     Object? ipAddress = freezed,
   }) {
-    return _then(
-      _$ConsentHistoryEntryImpl(
-        timestamp: null == timestamp
-            ? _value.timestamp
-            : timestamp // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
-        status: null == status
-            ? _value.status
-            : status // ignore: cast_nullable_to_non_nullable
-                  as ConsentStatus,
-        categoryConsents: null == categoryConsents
-            ? _value._categoryConsents
-            : categoryConsents // ignore: cast_nullable_to_non_nullable
-                  as Map<CookieCategory, bool>,
-        action: freezed == action
-            ? _value.action
-            : action // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        ipAddress: freezed == ipAddress
-            ? _value.ipAddress
-            : ipAddress // ignore: cast_nullable_to_non_nullable
-                  as String?,
-      ),
-    );
+    return _then(_$ConsentHistoryEntryImpl(
+      timestamp: null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as ConsentStatus,
+      categoryConsents: null == categoryConsents
+          ? _value._categoryConsents
+          : categoryConsents // ignore: cast_nullable_to_non_nullable
+              as Map<CookieCategory, bool>,
+      action: freezed == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ipAddress: freezed == ipAddress
+          ? _value.ipAddress
+          : ipAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ConsentHistoryEntryImpl implements _ConsentHistoryEntry {
-  const _$ConsentHistoryEntryImpl({
-    required this.timestamp,
-    required this.status,
-    required final Map<CookieCategory, bool> categoryConsents,
-    this.action,
-    this.ipAddress,
-  }) : _categoryConsents = categoryConsents;
+  const _$ConsentHistoryEntryImpl(
+      {required this.timestamp,
+      required this.status,
+      required final Map<CookieCategory, bool> categoryConsents,
+      this.action,
+      this.ipAddress})
+      : _categoryConsents = categoryConsents;
 
   factory _$ConsentHistoryEntryImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConsentHistoryEntryImplFromJson(json);
@@ -554,7 +510,7 @@ class _$ConsentHistoryEntryImpl implements _ConsentHistoryEntry {
 
   @override
   final String? action;
-  // e.g., "user_updated", "auto_renewed", "admin_reset"
+// e.g., "user_updated", "auto_renewed", "admin_reset"
   @override
   final String? ipAddress;
 
@@ -571,51 +527,45 @@ class _$ConsentHistoryEntryImpl implements _ConsentHistoryEntry {
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
             (identical(other.status, status) || other.status == status) &&
-            const DeepCollectionEquality().equals(
-              other._categoryConsents,
-              _categoryConsents,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._categoryConsents, _categoryConsents) &&
             (identical(other.action, action) || other.action == action) &&
             (identical(other.ipAddress, ipAddress) ||
                 other.ipAddress == ipAddress));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    timestamp,
-    status,
-    const DeepCollectionEquality().hash(_categoryConsents),
-    action,
-    ipAddress,
-  );
+      runtimeType,
+      timestamp,
+      status,
+      const DeepCollectionEquality().hash(_categoryConsents),
+      action,
+      ipAddress);
 
-  /// Create a copy of ConsentHistoryEntry
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ConsentHistoryEntryImplCopyWith<_$ConsentHistoryEntryImpl> get copyWith =>
       __$$ConsentHistoryEntryImplCopyWithImpl<_$ConsentHistoryEntryImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ConsentHistoryEntryImplToJson(this);
+    return _$$ConsentHistoryEntryImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _ConsentHistoryEntry implements ConsentHistoryEntry {
-  const factory _ConsentHistoryEntry({
-    required final DateTime timestamp,
-    required final ConsentStatus status,
-    required final Map<CookieCategory, bool> categoryConsents,
-    final String? action,
-    final String? ipAddress,
-  }) = _$ConsentHistoryEntryImpl;
+  const factory _ConsentHistoryEntry(
+      {required final DateTime timestamp,
+      required final ConsentStatus status,
+      required final Map<CookieCategory, bool> categoryConsents,
+      final String? action,
+      final String? ipAddress}) = _$ConsentHistoryEntryImpl;
 
   factory _ConsentHistoryEntry.fromJson(Map<String, dynamic> json) =
       _$ConsentHistoryEntryImpl.fromJson;
@@ -627,14 +577,11 @@ abstract class _ConsentHistoryEntry implements ConsentHistoryEntry {
   @override
   Map<CookieCategory, bool> get categoryConsents;
   @override
-  String? get action; // e.g., "user_updated", "auto_renewed", "admin_reset"
-  @override
+  String? get action;
+  @override // e.g., "user_updated", "auto_renewed", "admin_reset"
   String? get ipAddress;
-
-  /// Create a copy of ConsentHistoryEntry
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ConsentHistoryEntryImplCopyWith<_$ConsentHistoryEntryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

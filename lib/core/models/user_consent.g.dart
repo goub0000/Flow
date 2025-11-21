@@ -20,11 +20,9 @@ _$UserConsentImpl _$$UserConsentImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['expiresAt'] as String),
       ipAddress: json['ipAddress'] as String?,
       userAgent: json['userAgent'] as String?,
-      history:
-          (json['history'] as List<dynamic>?)
-              ?.map(
-                (e) => ConsentHistoryEntry.fromJson(e as Map<String, dynamic>),
-              )
+      history: (json['history'] as List<dynamic>?)
+              ?.map((e) =>
+                  ConsentHistoryEntry.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
     );
@@ -35,9 +33,8 @@ Map<String, dynamic> _$$UserConsentImplToJson(_$UserConsentImpl instance) =>
       'status': _$ConsentStatusEnumMap[instance.status]!,
       'timestamp': instance.timestamp.toIso8601String(),
       'version': instance.version,
-      'categoryConsents': instance.categoryConsents.map(
-        (k, e) => MapEntry(_$CookieCategoryEnumMap[k]!, e),
-      ),
+      'categoryConsents': instance.categoryConsents
+          .map((k, e) => MapEntry(_$CookieCategoryEnumMap[k]!, e)),
       'expiresAt': instance.expiresAt?.toIso8601String(),
       'ipAddress': instance.ipAddress,
       'userAgent': instance.userAgent,
@@ -59,25 +56,24 @@ const _$CookieCategoryEnumMap = {
 };
 
 _$ConsentHistoryEntryImpl _$$ConsentHistoryEntryImplFromJson(
-  Map<String, dynamic> json,
-) => _$ConsentHistoryEntryImpl(
-  timestamp: DateTime.parse(json['timestamp'] as String),
-  status: $enumDecode(_$ConsentStatusEnumMap, json['status']),
-  categoryConsents: (json['categoryConsents'] as Map<String, dynamic>).map(
-    (k, e) => MapEntry($enumDecode(_$CookieCategoryEnumMap, k), e as bool),
-  ),
-  action: json['action'] as String?,
-  ipAddress: json['ipAddress'] as String?,
-);
+        Map<String, dynamic> json) =>
+    _$ConsentHistoryEntryImpl(
+      timestamp: DateTime.parse(json['timestamp'] as String),
+      status: $enumDecode(_$ConsentStatusEnumMap, json['status']),
+      categoryConsents: (json['categoryConsents'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry($enumDecode(_$CookieCategoryEnumMap, k), e as bool),
+      ),
+      action: json['action'] as String?,
+      ipAddress: json['ipAddress'] as String?,
+    );
 
 Map<String, dynamic> _$$ConsentHistoryEntryImplToJson(
-  _$ConsentHistoryEntryImpl instance,
-) => <String, dynamic>{
-  'timestamp': instance.timestamp.toIso8601String(),
-  'status': _$ConsentStatusEnumMap[instance.status]!,
-  'categoryConsents': instance.categoryConsents.map(
-    (k, e) => MapEntry(_$CookieCategoryEnumMap[k]!, e),
-  ),
-  'action': instance.action,
-  'ipAddress': instance.ipAddress,
-};
+        _$ConsentHistoryEntryImpl instance) =>
+    <String, dynamic>{
+      'timestamp': instance.timestamp.toIso8601String(),
+      'status': _$ConsentStatusEnumMap[instance.status]!,
+      'categoryConsents': instance.categoryConsents
+          .map((k, e) => MapEntry(_$CookieCategoryEnumMap[k]!, e)),
+      'action': instance.action,
+      'ipAddress': instance.ipAddress,
+    };

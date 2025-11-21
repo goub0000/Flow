@@ -181,7 +181,7 @@ class EnrollmentPermissionsNotifier
   Future<bool> denyPermission(
     String permissionId,
     String denialReason,
-  }) async {
+  ) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
