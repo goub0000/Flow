@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../api/api_client.dart';
 import '../services/auth_service.dart';
+import '../services/secure_storage_service.dart';
 import '../services/enrollments_service.dart';
 import '../services/applications_service.dart';
 import '../services/messaging_service.dart';
@@ -18,6 +19,11 @@ import '../models/user_model.dart';
 /// Shared Preferences Provider
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError('SharedPreferences must be initialized in main()');
+});
+
+/// Secure Storage Service Provider
+final secureStorageServiceProvider = Provider<SecureStorageService>((ref) {
+  return SecureStorageService();
 });
 
 /// Supabase Client Provider
@@ -35,7 +41,8 @@ final apiClientProvider = Provider<ApiClient>((ref) {
 final authServiceProvider = Provider<AuthService>((ref) {
   final apiClient = ref.watch(apiClientProvider);
   final prefs = ref.watch(sharedPreferencesProvider);
-  return AuthService(apiClient, prefs);
+  final secureStorage = ref.watch(secureStorageServiceProvider);
+  return AuthService(apiClient, prefs, secureStorage);
 });
 
 /// Enrollments Service Provider

@@ -10,17 +10,19 @@ import '../api/api_config.dart';
 import '../api/api_response.dart';
 import '../models/user_model.dart';
 import '../constants/user_roles.dart';
+import 'secure_storage_service.dart';
 
 class AuthService {
   final _logger = Logger('AuthService');
   final ApiClient _apiClient;
-  final SharedPreferences _prefs;
+  final SharedPreferences _prefs; // For non-sensitive data (user info)
+  final SecureStorageService _secureStorage; // For sensitive data (tokens)
 
   UserModel? _currentUser;
   String? _accessToken;
   String? _refreshToken;
 
-  AuthService(this._apiClient, this._prefs) {
+  AuthService(this._apiClient, this._prefs, this._secureStorage) {
     _loadSession();
   }
 
@@ -36,9 +38,11 @@ class AuthService {
   /// Load session from storage
   Future<void> _loadSession() async {
     try {
-      _accessToken = _prefs.getString(ApiConfig.accessTokenKey);
-      _refreshToken = _prefs.getString(ApiConfig.refreshTokenKey);
+      // Load tokens from secure storage
+      _accessToken = await _secureStorage.getAccessToken();
+      _refreshToken = await _secureStorage.getRefreshToken();
 
+      // Load user data from SharedPreferences (not sensitive)
       final userData = _prefs.getString(ApiConfig.userDataKey);
       if (userData != null) {
         _currentUser = UserModel.fromJson(jsonDecode(userData));
@@ -47,6 +51,10 @@ class AuthService {
       // Set token in API client
       if (_accessToken != null) {
         await _apiClient.setToken(_accessToken!);
+      }
+
+      if (_accessToken != null) {
+        _logger.info('Session loaded from secure storage');
       }
     } catch (e) {
       _logger.warning('Error loading session', e);
@@ -64,12 +72,17 @@ class AuthService {
     _refreshToken = refreshToken;
     _currentUser = user;
 
-    await _prefs.setString(ApiConfig.accessTokenKey, accessToken);
-    await _prefs.setString(ApiConfig.refreshTokenKey, refreshToken);
+    // Save tokens to secure storage
+    await _secureStorage.saveAccessToken(accessToken);
+    await _secureStorage.saveRefreshToken(refreshToken);
+
+    // Save user data to SharedPreferences (not sensitive)
     await _prefs.setString(ApiConfig.userDataKey, jsonEncode(user.toJson()));
 
     // Set token in API client
     await _apiClient.setToken(accessToken);
+
+    _logger.info('Session saved to secure storage');
 
     // Set session in Supabase client for storage operations
     try {
@@ -92,13 +105,17 @@ class AuthService {
     _refreshToken = null;
     _currentUser = null;
 
-    await _prefs.remove(ApiConfig.accessTokenKey);
-    await _prefs.remove(ApiConfig.refreshTokenKey);
+    // Clear tokens from secure storage
+    await _secureStorage.clearTokens();
+
+    // Clear user data from SharedPreferences
     await _prefs.remove(ApiConfig.userDataKey);
     await _prefs.remove(ApiConfig.userRoleKey);
 
     // Clear token in API client
     await _apiClient.clearToken();
+
+    _logger.info('Session cleared from all storage');
   }
 
   /// Register new user
