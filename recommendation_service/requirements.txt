@@ -51,6 +51,8 @@ redis>=5.0.0
 # Monitoring & Logging
 prometheus-client>=0.18.0
 psutil>=5.9.0  # System metrics
+sentry-sdk[fastapi]>=1.40.0  # Error tracking and monitoring
+prometheus-fastapi-instrumentator>=6.1.0  # FastAPI Prometheus metrics
 
 # Machine Learning
 lightgbm>=4.1.0

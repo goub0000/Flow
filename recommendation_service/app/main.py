@@ -15,6 +15,12 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Initialize monitoring (Sentry)
+from app.monitoring import init_sentry
+sentry_enabled = init_sentry()
+if sentry_enabled:
+    logger.info("Sentry error tracking enabled")
+
 # Database setup (Supabase)
 from app.database.config import get_supabase
 
@@ -39,33 +45,176 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Find Your Path API",
     description="""
-    **University Recommendation Service for Flow EdTech Platform**
+    # University Recommendation Service for Flow EdTech Platform
 
-    A comprehensive EdTech API providing:
-    - JWT Authentication with Role-Based Access Control
-    - University & Program Management
-    - Course Management & Enrollment
-    - Application Tracking
-    - Real-time Messaging & Notifications
-    - Counseling Sessions
-    - Parent Monitoring & Grade Sync
-    - Achievements & Gamification
-    - ML-powered Recommendations
+    A comprehensive cloud-based EdTech API providing personalized university recommendations
+    and complete student lifecycle management.
 
-    **Features:**
-    - Rate limiting for API protection
-    - Comprehensive error handling
-    - Health checks & monitoring
-    - Supabase (PostgreSQL) backend
-    - Real-time capabilities
+    ## 🎯 Core Features
 
-    **Documentation:** Visit `/docs` for interactive API documentation
+    ### Authentication & Authorization
+    - **JWT-based authentication** with role-based access control (RBAC)
+    - Support for multiple roles: Student, Institution, Parent, Counselor, Admin
+    - Secure token management and refresh capabilities
+
+    ### University & Program Discovery
+    - **17,000+ universities** from around the world
+    - Advanced filtering by location, cost, programs, rankings
+    - Full-text search across universities and programs
+    - Detailed institution profiles with admissions data
+
+    ### Smart Recommendations
+    - **ML-powered recommendation engine** using LightGBM
+    - Personalized matches based on academic profile, preferences, and budget
+    - Safety/Match/Reach categorization
+    - Continuous learning from user interactions
+
+    ### Application Management
+    - Track applications across multiple universities
+    - Document upload and management
+    - Status tracking and notifications
+    - Deadline reminders
+
+    ### Educational Platform
+    - Course management and enrollment
+    - Grade tracking and GPA calculation
+    - Parent monitoring and progress reports
+    - Achievement system and gamification
+
+    ### Communication
+    - Real-time messaging between students, counselors, and institutions
+    - Notification system (email, push, in-app)
+    - Meeting scheduling for counseling sessions
+    - Recommendation letter requests
+
+    ## 🔒 Security
+
+    - Rate limiting on all endpoints
+    - CORS configuration for cross-origin requests
+    - Secure password hashing with bcrypt
+    - Input validation and sanitization
+    - SQL injection protection
+
+    ## 📊 Monitoring
+
+    - **Sentry integration** for error tracking
+    - **Prometheus metrics** at `/metrics`
+    - Health check endpoints at `/health`
+    - Detailed logging and tracing
+
+    ## 🚀 Performance
+
+    - Cloud-based architecture with Supabase (PostgreSQL)
+    - Redis caching for frequently accessed data
+    - Optimized database queries with 50+ indexes
+    - Async/await for non-blocking operations
+    - Connection pooling for database efficiency
+
+    ## 📖 Getting Started
+
+    1. **Authentication**: Start with `/api/v1/auth/register` or `/api/v1/auth/login`
+    2. **Profile Setup**: Complete your profile at `/api/v1/students/profile`
+    3. **Get Recommendations**: Generate recommendations at `/api/v1/recommendations/generate`
+    4. **Explore Universities**: Search universities at `/api/v1/universities`
+
+    ## 📞 Support
+
+    For API support or to report issues, please contact:
+    - Email: support@flowedtech.com
+    - Documentation: Visit `/docs` for interactive API testing
+
+    ## 🔗 Related Resources
+
+    - Interactive API Docs: `/docs` (Swagger UI)
+    - Alternative Docs: `/redoc` (ReDoc)
+    - OpenAPI Schema: `/openapi.json`
+    - Health Check: `/health`
+    - Metrics: `/metrics` (Prometheus)
+
+    ---
+    **Version**: 1.2.0 | **Environment**: Production | **Last Updated**: November 2025
     """,
     version="1.2.0",
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
-    openapi_url="/openapi.json"
+    openapi_url="/openapi.json",
+    contact={
+        "name": "Flow EdTech Support Team",
+        "email": "support@flowedtech.com",
+        "url": "https://flowedtech.com/support"
+    },
+    license_info={
+        "name": "Proprietary",
+        "url": "https://flowedtech.com/terms"
+    },
+    terms_of_service="https://flowedtech.com/terms",
+    openapi_tags=[
+        {
+            "name": "Authentication",
+            "description": "User authentication, registration, and token management"
+        },
+        {
+            "name": "Students",
+            "description": "Student profile management and data"
+        },
+        {
+            "name": "Universities",
+            "description": "University search, filtering, and details"
+        },
+        {
+            "name": "Recommendations",
+            "description": "ML-powered personalized university recommendations"
+        },
+        {
+            "name": "Applications",
+            "description": "Application submission and tracking"
+        },
+        {
+            "name": "Institutions",
+            "description": "Institution management and administration"
+        },
+        {
+            "name": "Courses",
+            "description": "Course creation, management, and enrollment"
+        },
+        {
+            "name": "Enrollments",
+            "description": "Student enrollment and progress tracking"
+        },
+        {
+            "name": "Messaging",
+            "description": "Real-time messaging and conversations"
+        },
+        {
+            "name": "Notifications",
+            "description": "Notification management and delivery"
+        },
+        {
+            "name": "Counseling",
+            "description": "Counseling sessions and meetings"
+        },
+        {
+            "name": "Parent Monitoring",
+            "description": "Parent access to student progress and activities"
+        },
+        {
+            "name": "Achievements",
+            "description": "Gamification and achievement tracking"
+        },
+        {
+            "name": "Grades",
+            "description": "Grade management and GPA calculation"
+        },
+        {
+            "name": "Monitoring",
+            "description": "System health checks and monitoring"
+        },
+        {
+            "name": "Admin",
+            "description": "Administrative operations and management"
+        }
+    ]
 )
 
 # Configure CORS
@@ -95,29 +244,47 @@ app.add_middleware(
 # Add middleware for error handling, rate limiting, and security
 from app.middleware import (
     limiter,
-    http_exception_handler,
-    validation_exception_handler,
-    general_exception_handler,
     ErrorHandlingMiddleware,
     SecurityHeadersMiddleware,
     log_security_headers_status
 )
+from slowapi.errors import RateLimitExceeded
+
+# Import exception handlers
+from app.exception_handlers import (
+    custom_exception_handler,
+    http_exception_handler,
+    validation_exception_handler,
+    general_exception_handler
+)
+from app.exceptions import BaseAPIException
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from slowapi.errors import RateLimitExceeded
 
 # Add rate limiting
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, http_exception_handler)
 
-# Add error handlers
+# Add error handlers (order matters - most specific first)
+app.add_exception_handler(BaseAPIException, custom_exception_handler)
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, general_exception_handler)
 
+# Initialize Prometheus metrics
+from app.monitoring import init_prometheus, create_metrics_middleware
+prometheus_enabled = init_prometheus(app)
+if prometheus_enabled:
+    logger.info("Prometheus metrics enabled at /metrics")
+
 # Add security headers middleware (MUST be added before other middleware)
 app.add_middleware(SecurityHeadersMiddleware)
 log_security_headers_status()
+
+# Add metrics collection middleware
+if prometheus_enabled:
+    MetricsMiddleware = create_metrics_middleware()
+    app.add_middleware(MetricsMiddleware)
 
 # Add timing and logging middleware
 app.add_middleware(ErrorHandlingMiddleware)
