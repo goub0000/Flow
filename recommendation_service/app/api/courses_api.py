@@ -191,7 +191,7 @@ async def list_courses(
         return result
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=400,
             detail=str(e)
         )
 
