@@ -87,19 +87,20 @@ class UserModel {
   }
 
   /// Convert to JSON (for Firebase/backend)
+  /// Uses snake_case to match backend field names for consistency
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'email': email,
-      'displayName': displayName,
-      'phoneNumber': phoneNumber,
-      'photoUrl': photoUrl,
-      'activeRole': UserRoleHelper.getRoleName(activeRole),
-      'availableRoles': availableRoles.map((r) => UserRoleHelper.getRoleName(r)).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'lastLoginAt': lastLoginAt?.toIso8601String(),
-      'isEmailVerified': isEmailVerified,
-      'isPhoneVerified': isPhoneVerified,
+      'display_name': displayName,
+      'phone_number': phoneNumber,
+      'photo_url': photoUrl,
+      'active_role': UserRoleHelper.getRoleName(activeRole),
+      'available_roles': availableRoles.map((r) => UserRoleHelper.getRoleName(r)).toList(),
+      'created_at': createdAt.toIso8601String(),
+      'last_login_at': lastLoginAt?.toIso8601String(),
+      'email_verified': isEmailVerified,
+      'phone_verified': isPhoneVerified,
       'metadata': metadata,
     };
   }

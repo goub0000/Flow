@@ -159,13 +159,18 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       );
 
       if (response.success && response.data != null) {
+        print('[DEBUG] ProfileProvider.updateProfile: Update successful, new user data received');
+        print('[DEBUG] ProfileProvider.updateProfile: displayName=${response.data!.displayName}');
+        print('[DEBUG] ProfileProvider.updateProfile: metadata=${response.data!.metadata}');
+
         state = state.copyWith(
           user: response.data,
           isUpdating: false,
         );
 
-        // Update auth provider with new data
-        ref.read(authProvider.notifier).refreshUser();
+        // Update auth provider with new data (await to ensure it completes)
+        await ref.read(authProvider.notifier).refreshUser();
+        print('[DEBUG] ProfileProvider.updateProfile: Auth provider refreshed');
         return true;
       } else {
         state = state.copyWith(
