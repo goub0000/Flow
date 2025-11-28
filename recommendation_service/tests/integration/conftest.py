@@ -21,7 +21,7 @@ def pytest_configure(config):
 @pytest.fixture(scope="session")
 def api_base_url():
     """Get API base URL from environment"""
-    return os.getenv("API_BASE_URL", "http://localhost:8000")
+    return os.getenv("API_BASE_URL", "https://web-production-51e34.up.railway.app")
 
 
 @pytest.fixture(scope="session")

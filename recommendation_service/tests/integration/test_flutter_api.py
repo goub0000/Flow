@@ -8,7 +8,7 @@ import httpx
 import os
 from datetime import datetime
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_BASE_URL = os.getenv("API_BASE_URL", "https://web-production-51e34.up.railway.app")
 
 
 @pytest.mark.asyncio
@@ -20,9 +20,12 @@ async def test_flutter_university_search_flow():
         response = await client.get("/api/v1/universities", params={"limit": 20})
         assert response.status_code == 200
         data = response.json()
-        # API returns a list directly, not wrapped in {"universities": [...]}
-        assert isinstance(data, list)
-        assert len(data) > 0
+        # API returns object with {total, universities: [...]}
+        assert isinstance(data, dict)
+        assert "universities" in data
+        assert "total" in data
+        universities = data["universities"]
+        assert len(universities) > 0
 
         # Step 2: User filters by country
         response = await client.get("/api/v1/universities", params={
@@ -31,11 +34,12 @@ async def test_flutter_university_search_flow():
         })
         assert response.status_code == 200
         filtered_data = response.json()
-        assert isinstance(filtered_data, list)
+        # API returns object with {total, universities: [...]}
+        assert isinstance(filtered_data, dict)
 
         # Step 3: User views university details
-        if data:
-            first_uni = data[0]
+        if universities:
+            first_uni = universities[0]
             uni_id = first_uni["id"]
 
             detail_response = await client.get(f"/api/v1/universities/{uni_id}")
@@ -88,12 +92,13 @@ async def test_flutter_pagination_flow():
         assert response.status_code == 200
         data = response.json()
 
-        # API returns a list directly
-        assert isinstance(data, list)
-        total = len(data)
+        # API returns object with {total, universities: [...]}
+        assert isinstance(data, dict)
+        assert "total" in data
+        total = data["total"]
 
         if total > 10:
-            # Test pagination using skip/offset
+            # Test pagination using skip (API uses 'skip' not 'offset')
             page1 = await client.get("/api/v1/universities", params={"limit": 5, "skip": 0})
             page2 = await client.get("/api/v1/universities", params={"limit": 5, "skip": 5})
 
@@ -103,9 +108,12 @@ async def test_flutter_pagination_flow():
             data1 = page1.json()
             data2 = page2.json()
 
-            # Should have different universities (API returns lists directly)
-            if data1 and data2:
-                assert data1[0]["id"] != data2[0]["id"]
+            # Should have different universities - extract from response objects
+            universities1 = data1.get("universities", []) if isinstance(data1, dict) else data1
+            universities2 = data2.get("universities", []) if isinstance(data2, dict) else data2
+
+            if universities1 and universities2:
+                assert universities1[0]["id"] != universities2[0]["id"]
 
 
 @pytest.mark.asyncio
