@@ -43,6 +43,10 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
     // Don't show banner if user is not logged in
     if (userId == null) return;
 
+    // Check if banner was already handled this session
+    final alreadyHandled = ref.read(cookieBannerHandledProvider);
+    if (alreadyHandled) return;
+
     final needsConsent = await ref.read(
       consentNeededProvider(userId).future,
     );
@@ -50,6 +54,9 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
     if (needsConsent && mounted) {
       setState(() => _isVisible = true);
       _animationController.forward();
+    } else {
+      // Consent already given, mark as handled for this session
+      ref.read(cookieBannerHandledProvider.notifier).markAsHandled();
     }
   }
 
@@ -67,6 +74,9 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
     final success = await service.acceptAll(userId);
 
     if (success && mounted) {
+      // Mark as handled for this session to prevent re-showing
+      ref.read(cookieBannerHandledProvider.notifier).markAsHandled();
+
       await _animationController.reverse();
       setState(() => _isVisible = false);
 
@@ -94,6 +104,9 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
     final success = await service.acceptEssentialOnly(userId);
 
     if (success && mounted) {
+      // Mark as handled for this session to prevent re-showing
+      ref.read(cookieBannerHandledProvider.notifier).markAsHandled();
+
       await _animationController.reverse();
       setState(() => _isVisible = false);
 
@@ -120,6 +133,8 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
       builder: (context) => CookiePreferencesModal(userId: userId),
     ).then((saved) {
       if (saved == true && mounted) {
+        // Mark as handled for this session to prevent re-showing
+        ref.read(cookieBannerHandledProvider.notifier).markAsHandled();
         _animationController.reverse();
         setState(() => _isVisible = false);
       }

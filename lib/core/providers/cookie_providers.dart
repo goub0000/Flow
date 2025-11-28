@@ -8,6 +8,21 @@ import '../services/analytics_service.dart';
 import '../models/user_consent.dart';
 import '../../features/authentication/providers/auth_provider.dart';
 
+/// Tracks whether cookie banner has been handled in this session
+/// This prevents the banner from showing multiple times during a session
+class CookieBannerState extends StateNotifier<bool> {
+  CookieBannerState() : super(false);
+
+  void markAsHandled() => state = true;
+  void reset() => state = false;
+}
+
+/// Provider to track if cookie banner was already shown/handled this session
+final cookieBannerHandledProvider =
+    StateNotifierProvider<CookieBannerState, bool>((ref) {
+  return CookieBannerState();
+});
+
 /// SharedPreferences provider
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError('SharedPreferences must be overridden in main.dart');
