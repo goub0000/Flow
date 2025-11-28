@@ -155,9 +155,21 @@ class RecommendationLettersService:
     async def get_student_requests(self, student_id: str) -> StudentRequestsSummary:
         """Get all requests for a student with summary"""
         try:
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+
             result = self.db.table('recommendation_requests')\
                 .select('*')\
-                .eq('student_id', student_id)\
+                .eq('student_id', internal_student_id)\
                 .order('requested_at', desc=True)\
                 .execute()
 
@@ -174,7 +186,7 @@ class RecommendationLettersService:
             active_requests = []
             for request in requests:
                 if request['status'] in ['pending', 'accepted', 'in_progress']:
-                    request_with_details = await self.get_request(request['id'], student_id)
+                    request_with_details = await self.get_request(request['id'], internal_student_id)
                     active_requests.append(request_with_details)
 
             return StudentRequestsSummary(

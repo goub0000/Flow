@@ -40,7 +40,7 @@ class GradesService:
         Get all grades for a student
 
         Args:
-            student_id: Student's user ID
+            student_id: Student's user ID or internal student_profiles.id
             school_year: Optional filter by school year
             semester: Optional filter by semester
 
@@ -48,10 +48,23 @@ class GradesService:
             Complete student grades with course summaries
         """
         try:
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+                # If neither, continue with original value and let it fail naturally if invalid
+
             # Get enrollments with course details
             query = self.db.table('course_enrollments')\
                 .select('*, courses(*)')\
-                .eq('student_id', student_id)\
+                .eq('student_id', internal_student_id)\
                 .eq('status', 'active')
 
             if school_year:
@@ -70,7 +83,7 @@ class GradesService:
                 # Get all grades for this course
                 grades_result = self.db.table('grades')\
                     .select('*')\
-                    .eq('student_id', student_id)\
+                    .eq('student_id', internal_student_id)\
                     .eq('course_id', course_id)\
                     .execute()
 
@@ -177,9 +190,21 @@ class GradesService:
     ) -> List[GPAHistoryResponse]:
         """Get GPA history for a student"""
         try:
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+
             result = self.db.table('gpa_history')\
                 .select('*')\
-                .eq('student_id', student_id)\
+                .eq('student_id', internal_student_id)\
                 .order('school_year', desc=True)\
                 .order('semester', desc=True)\
                 .limit(limit)\
@@ -321,7 +346,7 @@ class GradesService:
         )
 
     async def _get_current_gpa(self, student_id: str) -> Optional[Dict[str, float]]:
-        """Get most recent GPA for a student"""
+        """Get most recent GPA for a student (student_id should already be resolved to internal ID)"""
         try:
             result = self.db.table('gpa_history')\
                 .select('gpa, cumulative_gpa')\

@@ -172,9 +172,21 @@ class ParentMonitoringService:
     async def verify_parent_access(self, parent_id: str, student_id: str) -> ParentStudentLinkResponse:
         """Verify parent has access to student data"""
         try:
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+
             link = self.db.table('parent_student_links').select('*').eq(
                 'parent_id', parent_id
-            ).eq('student_id', student_id).eq('status', LinkStatus.ACTIVE.value).single().execute()
+            ).eq('student_id', internal_student_id).eq('status', LinkStatus.ACTIVE.value).single().execute()
 
             if not link.data:
                 raise Exception("No active link found")
@@ -194,13 +206,25 @@ class ParentMonitoringService:
     ) -> StudentActivityListResponse:
         """List student activities (parent view)"""
         try:
-            # Verify parent access
-            link = await self.verify_parent_access(parent_id, student_id)
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+
+            # Verify parent access (using resolved ID)
+            link = await self.verify_parent_access(parent_id, internal_student_id)
 
             if not link.can_view_activity:
                 raise Exception("Parent does not have permission to view activity")
 
-            query = self.db.table('student_activities').select('*', count='exact').eq('student_id', student_id)
+            query = self.db.table('student_activities').select('*', count='exact').eq('student_id', internal_student_id)
 
             if activity_type:
                 query = query.eq('activity_type', activity_type)
@@ -232,12 +256,25 @@ class ParentMonitoringService:
     ) -> ProgressReportResponse:
         """Generate comprehensive progress report"""
         try:
-            # Verify parent access
-            await self.verify_parent_access(parent_id, report_request.student_id)
-
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
             student_id = report_request.student_id
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id, user_id').eq('user_id', student_id).execute()
 
-            # Get student info
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id, user_id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+                    # Get the user_id for fetching user info
+                    student_id = profile_by_id.data[0].get('user_id', student_id)
+
+            # Verify parent access (using resolved ID)
+            await self.verify_parent_access(parent_id, internal_student_id)
+
+            # Get student info (using user_id for users table)
             student = self.db.table('users').select('full_name').eq('id', student_id).single().execute()
             student_name = student.data.get('full_name', 'Student') if student.data else 'Student'
 
@@ -251,7 +288,7 @@ class ParentMonitoringService:
 
             # Courses data
             if report_request.include_courses:
-                enrollments = self.db.table('enrollments').select('*').eq('student_id', student_id).execute()
+                enrollments = self.db.table('enrollments').select('*').eq('student_id', internal_student_id).execute()
 
                 if enrollments.data:
                     report.total_courses = len(enrollments.data)
@@ -276,7 +313,7 @@ class ParentMonitoringService:
 
             # Applications data
             if report_request.include_applications:
-                applications = self.db.table('applications').select('*').eq('student_id', student_id).execute()
+                applications = self.db.table('applications').select('*').eq('student_id', internal_student_id).execute()
 
                 if applications.data:
                     report.total_applications = len(applications.data)
@@ -296,7 +333,7 @@ class ParentMonitoringService:
 
             # Counseling data
             if report_request.include_counseling:
-                sessions = self.db.table('counseling_sessions').select('*').eq('student_id', student_id).execute()
+                sessions = self.db.table('counseling_sessions').select('*').eq('student_id', internal_student_id).execute()
 
                 if sessions.data:
                     report.total_counseling_sessions = len(sessions.data)
@@ -322,7 +359,7 @@ class ParentMonitoringService:
 
             # Achievements data
             if report_request.include_achievements:
-                achievements = self.db.table('student_achievements').select('*').eq('student_id', student_id).execute()
+                achievements = self.db.table('student_achievements').select('*').eq('student_id', internal_student_id).execute()
 
                 if achievements.data:
                     report.total_achievements = len(achievements.data)
@@ -343,7 +380,7 @@ class ParentMonitoringService:
                                 })
 
             # Activity summary
-            activities = self.db.table('student_activities').select('*').eq('student_id', student_id).gte(
+            activities = self.db.table('student_activities').select('*').eq('student_id', internal_student_id).gte(
                 'timestamp', report_request.report_period_start
             ).lte('timestamp', report_request.report_period_end).execute()
 
@@ -355,7 +392,7 @@ class ParentMonitoringService:
                     atype = activity.get('activity_type', 'unknown')
                     report.activities_by_type[atype] = report.activities_by_type.get(atype, 0) + 1
 
-            logger.info(f"Progress report generated for student: {student_id}")
+            logger.info(f"Progress report generated for student: {internal_student_id}")
 
             return report
 

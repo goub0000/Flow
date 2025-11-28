@@ -44,9 +44,21 @@ class ApplicationsService:
             logger.info(f"[DEBUG] program_name: {application_data.program_name}")
             logger.info(f"[DEBUG] application_fee: {application_data.application_fee}")
 
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+
             application = {
                 "id": str(uuid4()),
-                "student_id": student_id,
+                "student_id": internal_student_id,
                 "institution_id": application_data.institution_id,
                 "program_id": application_data.program_id,
                 "application_type": application_data.application_type.value,
@@ -338,7 +350,19 @@ class ApplicationsService:
     ) -> ApplicationListResponse:
         """List applications for a student"""
         try:
-            query = self.db.table('applications').select('*', count='exact').eq('student_id', student_id)
+            # Resolve student_id - handle both user_id (auth) and internal profile ID
+            internal_student_id = student_id
+            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_student_id = profile_response.data[0]['id']
+            else:
+                # Check if it's already an internal profile id
+                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    internal_student_id = student_id
+
+            query = self.db.table('applications').select('*', count='exact').eq('student_id', internal_student_id)
 
             if status:
                 query = query.eq('status', status)
