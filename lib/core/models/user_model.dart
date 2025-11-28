@@ -105,23 +105,62 @@ class UserModel {
   }
 
   /// Create from JSON (from Firebase/backend)
+  /// Handles null values gracefully with sensible defaults
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    // Safe extraction with null checks
+    final id = json['id']?.toString() ?? '';
+    final email = json['email']?.toString() ?? '';
+
+    // Handle active_role with fallback
+    final activeRoleStr = json['active_role']?.toString() ?? 'student';
+
+    // Handle available_roles with fallback
+    List<String> availableRolesStrs;
+    final rolesData = json['available_roles'];
+    if (rolesData is List && rolesData.isNotEmpty) {
+      availableRolesStrs = rolesData.map((r) => r.toString()).toList();
+    } else {
+      availableRolesStrs = [activeRoleStr];
+    }
+
+    // Handle created_at with fallback
+    DateTime createdAt;
+    final createdAtStr = json['created_at']?.toString();
+    if (createdAtStr != null && createdAtStr.isNotEmpty) {
+      try {
+        createdAt = DateTime.parse(createdAtStr);
+      } catch (_) {
+        createdAt = DateTime.now();
+      }
+    } else {
+      createdAt = DateTime.now();
+    }
+
+    // Handle last_login_at
+    DateTime? lastLoginAt;
+    final lastLoginStr = json['last_login_at']?.toString();
+    if (lastLoginStr != null && lastLoginStr.isNotEmpty) {
+      try {
+        lastLoginAt = DateTime.parse(lastLoginStr);
+      } catch (_) {
+        lastLoginAt = null;
+      }
+    }
+
     return UserModel(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      displayName: json['display_name'] as String?,
-      phoneNumber: json['phone_number'] as String?,
-      photoUrl: json['photo_url'] as String?,
-      activeRole: UserRoleExtension.fromString(json['active_role'] as String),
-      availableRoles: (json['available_roles'] as List)
-          .map((r) => UserRoleExtension.fromString(r as String))
+      id: id,
+      email: email,
+      displayName: json['display_name']?.toString(),
+      phoneNumber: json['phone_number']?.toString(),
+      photoUrl: json['photo_url']?.toString(),
+      activeRole: UserRoleExtension.fromString(activeRoleStr),
+      availableRoles: availableRolesStrs
+          .map((r) => UserRoleExtension.fromString(r))
           .toList(),
-      createdAt: DateTime.parse(json['created_at'] as String),
-      lastLoginAt: json['last_login_at'] != null
-          ? DateTime.parse(json['last_login_at'] as String)
-          : null,
-      isEmailVerified: (json['is_email_verified'] ?? json['email_verified']) as bool? ?? false,
-      isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified']) as bool? ?? false,
+      createdAt: createdAt,
+      lastLoginAt: lastLoginAt,
+      isEmailVerified: (json['is_email_verified'] ?? json['email_verified']) == true,
+      isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified']) == true,
       metadata: json['metadata'] as Map<String, dynamic>?,
     );
   }
