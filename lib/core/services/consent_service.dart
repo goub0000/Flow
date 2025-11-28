@@ -35,42 +35,48 @@ class ConsentService {
         json,
       );
 
-      // Save to Supabase for admin tracking
-      try {
-        final consentData = {
-          'user_id': consent.userId,
-          'necessary': consent.categoryConsents[CookieCategory.essential] ?? true,
-          'preferences': consent.categoryConsents[CookieCategory.functional] ?? false,
-          'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
-          'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
-          'consent_date': consent.timestamp.toIso8601String(),
-          'last_updated': DateTime.now().toIso8601String(),
-          'ip_address': consent.ipAddress,
-          'user_agent': consent.userAgent,
-        };
+      // Save to Supabase for admin tracking (only if user is authenticated)
+      // RLS policies require user_id = auth.uid(), so skip if not authenticated
+      final currentUser = _supabase.auth.currentUser;
+      if (currentUser != null && currentUser.id == consent.userId) {
+        try {
+          final consentData = {
+            'user_id': consent.userId,
+            'necessary': consent.categoryConsents[CookieCategory.essential] ?? true,
+            'preferences': consent.categoryConsents[CookieCategory.functional] ?? false,
+            'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
+            'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
+            'consent_date': consent.timestamp.toIso8601String(),
+            'last_updated': DateTime.now().toIso8601String(),
+            'ip_address': consent.ipAddress,
+            'user_agent': consent.userAgent,
+          };
 
-        // Check if consent already exists for this user
-        final existing = await _supabase
-            .from('cookie_consents')
-            .select('id')
-            .eq('user_id', consent.userId)
-            .maybeSingle();
-
-        if (existing != null) {
-          // Update existing consent
-          await _supabase
+          // Check if consent already exists for this user
+          final existing = await _supabase
               .from('cookie_consents')
-              .update(consentData)
-              .eq('user_id', consent.userId);
-        } else {
-          // Insert new consent
-          await _supabase.from('cookie_consents').insert(consentData);
-        }
+              .select('id')
+              .eq('user_id', consent.userId)
+              .maybeSingle();
 
-        print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
-      } catch (e) {
-        print('[ConsentService] Failed to save consent to Supabase: $e');
-        // Don't fail the entire operation if Supabase save fails
+          if (existing != null) {
+            // Update existing consent
+            await _supabase
+                .from('cookie_consents')
+                .update(consentData)
+                .eq('user_id', consent.userId);
+          } else {
+            // Insert new consent
+            await _supabase.from('cookie_consents').insert(consentData);
+          }
+
+          print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
+        } catch (e) {
+          print('[ConsentService] Failed to save consent to Supabase: $e');
+          // Don't fail the entire operation if Supabase save fails
+        }
+      } else {
+        print('[ConsentService] Skipping Supabase save - user not authenticated or ID mismatch');
       }
 
       return localSaveSuccess;
