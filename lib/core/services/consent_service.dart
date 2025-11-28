@@ -49,7 +49,7 @@ class ConsentService {
           };
 
           final response = await _httpClient.post(
-            Uri.parse('${ApiConfig.baseUrl}${ApiConfig.consent}'),
+            Uri.parse('${ApiConfig.apiBaseUrl}${ApiConfig.consent}'),
             headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer $accessToken',
