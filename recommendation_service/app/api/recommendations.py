@@ -3,7 +3,7 @@ Recommendations API endpoints - Cloud-Based (Supabase)
 ML-Enhanced with automatic fallback to rule-based scoring
 Phase 3.2 - Enhanced with personalized recommendations and tracking
 """
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Header
 from supabase import Client
 from app.database.config import get_db
 from app.schemas.recommendation import (
@@ -217,10 +217,11 @@ def get_favorite_recommendations(user_id: str, db: Client = Depends(get_db)):
 
 @router.get("/recommendations/personalized", response_model=PersonalizedRecommendationsResponse)
 async def get_personalized_recommendations(
-    student_id: str = Query(..., description="Student user ID"),
+    student_id: Optional[str] = Query(None, description="Student user ID (optional if authenticated)"),
     max_results: int = Query(10, ge=1, le=50, description="Maximum number of recommendations"),
     category: Optional[str] = Query(None, description="Filter by category (Safety, Match, Reach)"),
-    db: Client = Depends(get_db)
+    db: Client = Depends(get_db),
+    authorization: Optional[str] = Header(None)
 ):
     """
     Get personalized university recommendations with match explanations and tracking
@@ -248,13 +249,33 @@ async def get_personalized_recommendations(
     **Note:** Recommendations must be generated first using POST /recommendations/generate
     """
     try:
+        # If student_id not provided, try to extract from authorization token
+        effective_student_id = student_id
+        if not effective_student_id and authorization:
+            try:
+                from app.utils.security import verify_supabase_token
+                token = authorization.replace("Bearer ", "") if authorization.startswith("Bearer ") else authorization
+                token_data = await verify_supabase_token(token)
+                effective_student_id = token_data.sub
+                logger.info(f"Extracted student_id from token: {effective_student_id}")
+            except Exception as token_error:
+                logger.warning(f"Could not extract user from token: {token_error}")
+
+        if not effective_student_id:
+            raise HTTPException(
+                status_code=400,
+                detail="student_id query parameter is required, or provide Authorization header"
+            )
+
         service = PersonalizedRecommendationsService(db)
         return await service.generate_personalized_recommendations(
-            student_id=student_id,
+            student_id=effective_student_id,
             max_results=max_results,
             category_filter=category
         )
 
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:

@@ -440,9 +440,58 @@ class RecommendationCard extends StatelessWidget {
     required this.onTap,
   });
 
+  /// Get icon based on recommendation title/type
+  IconData _getRecommendationIcon() {
+    final lowerTitle = title.toLowerCase();
+    if (lowerTitle.contains('university') || lowerTitle.contains('universities')) {
+      return Icons.school;
+    } else if (lowerTitle.contains('path') || lowerTitle.contains('assessment')) {
+      return Icons.explore;
+    } else if (lowerTitle.contains('scholarship') || lowerTitle.contains('financial')) {
+      return Icons.attach_money;
+    } else if (lowerTitle.contains('computer') || lowerTitle.contains('technology') || lowerTitle.contains('data')) {
+      return Icons.computer;
+    } else if (lowerTitle.contains('business') || lowerTitle.contains('management')) {
+      return Icons.business;
+    } else if (lowerTitle.contains('health') || lowerTitle.contains('medical')) {
+      return Icons.local_hospital;
+    } else if (lowerTitle.contains('environment') || lowerTitle.contains('sustainability')) {
+      return Icons.eco;
+    } else if (lowerTitle.contains('course')) {
+      return Icons.menu_book;
+    } else if (lowerTitle.contains('program')) {
+      return Icons.school_outlined;
+    }
+    return Icons.lightbulb_outline;
+  }
+
+  /// Get color based on recommendation type
+  Color _getRecommendationColor() {
+    final lowerTitle = title.toLowerCase();
+    if (lowerTitle.contains('university') || lowerTitle.contains('universities')) {
+      return AppColors.primary;
+    } else if (lowerTitle.contains('path') || lowerTitle.contains('assessment')) {
+      return AppColors.info;
+    } else if (lowerTitle.contains('scholarship') || lowerTitle.contains('financial')) {
+      return AppColors.success;
+    } else if (lowerTitle.contains('computer') || lowerTitle.contains('technology') || lowerTitle.contains('data')) {
+      return const Color(0xFF5C6BC0); // Indigo
+    } else if (lowerTitle.contains('business') || lowerTitle.contains('management')) {
+      return const Color(0xFF26A69A); // Teal
+    } else if (lowerTitle.contains('health') || lowerTitle.contains('medical')) {
+      return const Color(0xFFEF5350); // Red
+    } else if (lowerTitle.contains('environment') || lowerTitle.contains('sustainability')) {
+      return const Color(0xFF66BB6A); // Green
+    }
+    return AppColors.primary;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final hasValidImage = imageUrl.isNotEmpty &&
+        (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'));
+    final iconColor = _getRecommendationColor();
 
     return Material(
       color: Colors.transparent,
@@ -459,25 +508,69 @@ class RecommendationCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image
+              // Image or Fallback
               Stack(
                 children: [
                   Container(
                     height: 120,
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      gradient: LinearGradient(
+                        colors: [
+                          iconColor.withValues(alpha: 0.15),
+                          iconColor.withValues(alpha: 0.05),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12),
                       ),
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.image,
-                        size: 40,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
+                    child: hasValidImage
+                        ? ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                            child: Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: 120,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Fallback to icon on image load error
+                                return Center(
+                                  child: Icon(
+                                    _getRecommendationIcon(),
+                                    size: 48,
+                                    color: iconColor,
+                                  ),
+                                );
+                              },
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    strokeWidth: 2,
+                                    color: iconColor,
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : Center(
+                            child: Icon(
+                              _getRecommendationIcon(),
+                              size: 48,
+                              color: iconColor,
+                            ),
+                          ),
                   ),
                   if (badge != null)
                     Positioned(

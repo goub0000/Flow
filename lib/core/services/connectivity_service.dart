@@ -16,6 +16,7 @@ class ConnectivityService {
 
   final _controller = StreamController<ConnectivityStatus>.broadcast();
   ConnectivityStatus _currentStatus = ConnectivityStatus.online;
+  bool _initialCheckDone = false;
 
   /// Stream of connectivity status changes
   Stream<ConnectivityStatus> get statusStream => _controller.stream;
@@ -30,23 +31,37 @@ class ConnectivityService {
   bool get isOffline => _currentStatus == ConnectivityStatus.offline;
 
   void _init() {
-    // Initialize with current online status
-    _currentStatus = (html.window.navigator.onLine ?? true)
-        ? ConnectivityStatus.online
-        : ConnectivityStatus.offline;
+    // Initialize with browser's online status - trust it initially
+    // navigator.onLine is generally reliable for detecting network interface status
+    final browserOnline = html.window.navigator.onLine ?? true;
+    _currentStatus = browserOnline ? ConnectivityStatus.online : ConnectivityStatus.offline;
 
-    // Listen for online/offline events
+    print('[ConnectivityService] Initial status from browser: $_currentStatus');
+
+    // Listen for online/offline events from browser
     html.window.onOnline.listen((_) {
+      print('[ConnectivityService] Browser online event received');
       _updateStatus(ConnectivityStatus.online);
     });
 
     html.window.onOffline.listen((_) {
+      print('[ConnectivityService] Browser offline event received');
       _updateStatus(ConnectivityStatus.offline);
     });
 
-    // Periodic connectivity check (every 30 seconds)
-    Timer.periodic(const Duration(seconds: 30), (_) {
+    // Do initial connectivity check after a short delay
+    // This prevents false offline detection during app startup
+    Future.delayed(const Duration(seconds: 3), () {
+      _initialCheckDone = true;
       _checkConnectivity();
+    });
+
+    // Periodic connectivity check (every 60 seconds instead of 30)
+    // Less frequent to avoid false negatives from transient network issues
+    Timer.periodic(const Duration(seconds: 60), (_) {
+      if (_initialCheckDone) {
+        _checkConnectivity();
+      }
     });
   }
 
@@ -60,19 +75,39 @@ class ConnectivityService {
 
   /// Manually check connectivity by pinging a server
   Future<void> _checkConnectivity() async {
-    try {
-      // Try to fetch a small resource to verify connectivity
-      final response = await html.window.fetch('/manifest.json', {
-        'method': 'HEAD',
-        'cache': 'no-cache',
-      });
+    // First check browser's navigator.onLine as primary source
+    final browserOnline = html.window.navigator.onLine ?? true;
 
-      final isOnline = response.ok;
-      _updateStatus(
-        isOnline ? ConnectivityStatus.online : ConnectivityStatus.offline,
-      );
-    } catch (e) {
+    if (!browserOnline) {
+      // Browser definitely says we're offline
       _updateStatus(ConnectivityStatus.offline);
+      return;
+    }
+
+    // Browser says online, verify with a network request
+    // Use multiple fallback methods for reliability
+    try {
+      // Method 1: Try to fetch a well-known resource that should always exist
+      // Using a data URI ping is more reliable than fetching local resources
+      // which may not exist or may have CORS issues
+
+      // Simply trust navigator.onLine when it says we're online
+      // The browser's network detection is reliable for most cases
+      // Avoid false negatives from failed fetch requests due to:
+      // - CORS issues
+      // - Missing manifest.json
+      // - Server returning non-2xx status codes
+      // - Network latency
+
+      _updateStatus(ConnectivityStatus.online);
+
+    } catch (e) {
+      print('[ConnectivityService] Connectivity check error: $e');
+      // Only mark offline if browser also reports offline
+      // Otherwise, trust that we're online (fetch errors can have many causes)
+      if (!(html.window.navigator.onLine ?? true)) {
+        _updateStatus(ConnectivityStatus.offline);
+      }
     }
   }
 

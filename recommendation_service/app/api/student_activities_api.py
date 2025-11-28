@@ -39,7 +39,7 @@ async def get_my_activities(
         default=None,
         description="Filter activities before this date (ISO 8601 format)"
     ),
-    current_user: CurrentUser = Depends(require_student),
+    current_user: CurrentUser = Depends(get_current_user),
     db: Client = Depends(get_db)
 ) -> StudentActivityFeedResponse:
     """
@@ -90,6 +90,15 @@ async def get_my_activities(
     ```
     """
     try:
+        # Verify user has student role for their own activities
+        # Allow students and also parents/counselors who might be checking on behalf of students
+        allowed_roles = ['student', 'parent', 'counselor', 'admin_super', 'admin_content', 'admin_support']
+        if current_user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied. Your role '{current_user.role}' cannot access student activities. Allowed roles: {allowed_roles}"
+            )
+
         # Parse activity types filter
         activity_types_list: Optional[List[StudentActivityType]] = None
         if activity_types:
