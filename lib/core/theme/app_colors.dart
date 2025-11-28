@@ -20,8 +20,10 @@ class AppColors {
 
   // Accent Colors (Yellow #FAA61A)
   static const Color accent = Color(0xFFFAA61A);
-  static const Color accentDark = Color(0xFFC88515);
+  static const Color accentDark = Color(0xFF8B5E10); // Darkened for text on white - 4.5:1 contrast (was #C88515 - 2.9:1)
   static const Color accentLight = Color(0xFFFBB845);
+  // Use accentDark for text on light backgrounds to meet WCAG AA
+  static const Color accentOnLight = Color(0xFF8B5E10); // 4.5:1 contrast on white
 
   // Background Colors (Pure white for premium minimalistic design)
   static const Color background = Color(0xFFFFFFFF);
@@ -29,9 +31,10 @@ class AppColors {
   static const Color surfaceVariant = Color(0xFFF8FAFB);
 
   // Text Colors
-  static const Color textPrimary = Color(0xFF000000);
-  static const Color textSecondary = Color(0xFF666666);
-  static const Color textDisabled = Color(0xFF999999);
+  // WCAG AA compliant: minimum 4.5:1 contrast ratio for normal text
+  static const Color textPrimary = Color(0xFF000000); // 21:1 on white
+  static const Color textSecondary = Color(0xFF595959); // 7:1 on white (was #666666 - 5.74:1)
+  static const Color textDisabled = Color(0xFF757575); // 4.6:1 on white (was #999999 - 2.85:1, FAILED AA)
   static const Color textOnPrimary = Color(0xFFFFFFFF);
 
   // Status Colors

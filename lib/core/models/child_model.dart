@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 /// Child model for parent monitoring
 class Child {
   final String id;
@@ -85,8 +87,14 @@ class Child {
     };
   }
 
-  /// Single mock child for development
-  static Child mockChild([int index = 0]) {
+  /// Single mock child for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
+  static Child? mockChild([int index = 0]) {
+    if (!kDebugMode) {
+      assert(false, 'mockChild should not be called in release mode');
+      return null;
+    }
+
     final now = DateTime.now();
     final names = ['Amara Okafor', 'Kwame Mensah', 'Fatima Hassan', 'Chidi Nwosu'];
     final schools = ['Lagos International School', 'Accra Academy', 'Nairobi High School', 'Cape Town College'];
@@ -107,8 +115,14 @@ class Child {
     );
   }
 
-  /// Mock children for development
+  /// Mock children for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
   static List<Child> mockChildren({String? parentId}) {
+    if (!kDebugMode) {
+      assert(false, 'mockChildren should not be called in release mode');
+      return [];
+    }
+
     final now = DateTime.now();
     return [
       Child(
@@ -218,8 +232,14 @@ class ChildApplication {
     };
   }
 
-  /// Single mock application for development
-  static ChildApplication mockApplication([int index = 0]) {
+  /// Single mock application for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
+  static ChildApplication? mockApplication([int index = 0]) {
+    if (!kDebugMode) {
+      assert(false, 'ChildApplication.mockApplication should not be called in release mode');
+      return null;
+    }
+
     final institutions = ['University of Ghana', 'Makerere University', 'University of Cape Town', 'University of Lagos'];
     final programs = ['Bachelor of Computer Science', 'MBA - Business Administration', 'Bachelor of Medicine', 'Engineering'];
     final statuses = ['under_review', 'pending', 'accepted', 'rejected'];
@@ -281,8 +301,14 @@ class CourseProgress {
     };
   }
 
-  /// Single mock course progress for development
-  static CourseProgress mockCourseProgress([int index = 0]) {
+  /// Single mock course progress for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
+  static CourseProgress? mockCourseProgress([int index = 0]) {
+    if (!kDebugMode) {
+      assert(false, 'mockCourseProgress should not be called in release mode');
+      return null;
+    }
+
     final courses = ['Mathematics', 'Physics', 'Computer Science', 'Chemistry', 'Literature'];
     final completions = [75.0, 60.0, 90.0, 55.0, 80.0];
     final grades = [88.5, 72.0, 95.0, 68.5, 85.0];
@@ -298,8 +324,14 @@ class CourseProgress {
     );
   }
 
-  /// Mock course progress
+  /// Mock course progress - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
   static List<CourseProgress> mockProgress() {
+    if (!kDebugMode) {
+      assert(false, 'mockProgress should not be called in release mode');
+      return [];
+    }
+
     final now = DateTime.now();
     return [
       CourseProgress(

@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 /// Program/Course offered by an institution
 class Program {
   final String id;
@@ -116,8 +118,14 @@ class Program {
     };
   }
 
-  /// Single mock program for development
-  static Program mockProgram([int index = 0]) {
+  /// Single mock program for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
+  static Program? mockProgram([int index = 0]) {
+    if (!kDebugMode) {
+      assert(false, 'mockProgram should not be called in release mode');
+      return null;
+    }
+
     final now = DateTime.now();
     final names = ['Bachelor of Computer Science', 'MBA - Business Administration', 'Certificate in Digital Marketing', 'Diploma in Nursing'];
     final categories = ['Technology', 'Business', 'Business', 'Health Sciences'];
@@ -148,8 +156,14 @@ class Program {
     );
   }
 
-  /// Mock programs for development
+  /// Mock programs for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
   static List<Program> mockPrograms({String? institutionId}) {
+    if (!kDebugMode) {
+      assert(false, 'mockPrograms should not be called in release mode');
+      return [];
+    }
+
     final now = DateTime.now();
     return [
       Program(

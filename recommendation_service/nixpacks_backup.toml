@@ -1,8 +1,0 @@
-# Alternative: Let Nixpacks auto-detect Python setup
-# Just delete nixpacks.toml and rely on:
-# - requirements.txt (auto-detected)
-# - Procfile or railway.toml for start command
-# - runtime.txt for Python version
-
-# If the current config fails, delete nixpacks.toml 
-# and Nixpacks will handle everything automatically

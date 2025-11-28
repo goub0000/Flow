@@ -1,7 +1,7 @@
 /// API Client
 /// Main HTTP client with authentication and error handling
 
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -270,21 +270,26 @@ class ApiClient {
     }
   }
 
-  /// Upload file
+  /// Upload file using cross-platform compatible byte data
+  /// [fileBytes] - The file content as Uint8List
+  /// [fileName] - The name of the file including extension
+  /// [mimeType] - Optional MIME type (e.g., 'application/pdf', 'image/png')
   Future<ApiResponse<T>> uploadFile<T>(
     String endpoint,
-    File file, {
+    Uint8List fileBytes, {
+    required String fileName,
     String fieldName = 'file',
+    String? mimeType,
     Map<String, dynamic>? data,
     T Function(dynamic)? fromJson,
     void Function(int, int)? onSendProgress,
   }) async {
     try {
-      final fileName = file.path.split('/').last;
       final formData = FormData.fromMap({
-        fieldName: await MultipartFile.fromFile(
-          file.path,
+        fieldName: MultipartFile.fromBytes(
+          fileBytes,
           filename: fileName,
+          contentType: mimeType != null ? DioMediaType.parse(mimeType) : null,
         ),
         ...?data,
       });

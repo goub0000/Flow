@@ -1,7 +1,7 @@
 /// Messaging Service
 /// Handles real-time messaging API calls
 
-import 'dart:io';
+import 'dart:typed_data';
 import '../api/api_client.dart';
 import '../api/api_config.dart';
 import '../api/api_response.dart';
@@ -99,18 +99,25 @@ class MessagingService {
   }
 
   /// Send a message with file attachment
+  /// [fileBytes] - The file content as Uint8List
+  /// [fileName] - The name of the file including extension
+  /// [mimeType] - Optional MIME type (e.g., 'image/png', 'application/pdf')
   Future<ApiResponse<Message>> sendMessageWithFile({
     required String conversationId,
     required String content,
-    required File file,
+    required Uint8List fileBytes,
+    required String fileName,
+    String? mimeType,
     String? replyToId,
     void Function(int, int)? onProgress,
   }) async {
     // First upload the file
     final uploadResponse = await _apiClient.uploadFile(
       '${ApiConfig.messaging}/upload',
-      file,
+      fileBytes,
+      fileName: fileName,
       fieldName: 'file',
+      mimeType: mimeType,
       onSendProgress: onProgress,
     );
 

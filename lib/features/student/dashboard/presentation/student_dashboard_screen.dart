@@ -15,7 +15,7 @@ import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
 import '../../courses/presentation/my_courses_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
-import '../../../shared/settings/settings_screen.dart';
+// Settings removed from bottom nav - accessible via profile menu in app bar
 import '../../providers/student_applications_provider.dart';
 import '../../../shared/providers/profile_provider.dart';
 import '../../providers/activity_feed_provider.dart';
@@ -38,6 +38,8 @@ class _StudentDashboardScreenState
 
   // IMPORTANT: Removed 'const' from widgets that use providers
   // ProfileScreen, ApplicationsListScreen use ConsumerWidget and need to rebuild
+  // NOTE: Consolidated to 5 navigation items per Material Design guidelines
+  // Settings is accessible via profile menu in app bar
   late final List<Widget> _pages = [
     _DashboardHomeTab(
       key: const PageStorageKey('home'),
@@ -52,7 +54,6 @@ class _StudentDashboardScreenState
     MyCoursesScreen(key: const PageStorageKey('my_courses')),
     ProgressScreen(key: const PageStorageKey('progress')),
     ProfileScreen(key: const PageStorageKey('profile'), showBackButton: false),
-    SettingsScreen(key: const PageStorageKey('settings')),
   ];
 
   @override
@@ -68,6 +69,7 @@ class _StudentDashboardScreenState
   }
 
   // Add this to prevent unnecessary navigation conflicts
+  // NOTE: Consolidated to 5 tabs - Settings removed from bottom nav
   String _getTitleForIndex(int index) {
     switch (index) {
       case 0:
@@ -80,8 +82,6 @@ class _StudentDashboardScreenState
         return 'Progress';
       case 4:
         return 'Profile';
-      case 5:
-        return 'Settings';
       default:
         return 'Student Dashboard';
     }
@@ -130,6 +130,8 @@ class _StudentDashboardScreenState
               print('[DEBUG] setState completed - new index: $_currentIndex');
             });
           },
+          // NOTE: Consolidated to 5 items per Material Design guidelines
+          // Settings is accessible via profile menu in app bar
           navigationItems: const [
             DashboardNavigationItem(
               icon: Icons.home_outlined,
@@ -144,7 +146,7 @@ class _StudentDashboardScreenState
             DashboardNavigationItem(
               icon: Icons.menu_book_outlined,
               activeIcon: Icons.menu_book,
-              label: 'My Courses',
+              label: 'Courses',
             ),
             DashboardNavigationItem(
               icon: Icons.analytics_outlined,
@@ -155,11 +157,6 @@ class _StudentDashboardScreenState
               icon: Icons.person_outline,
               activeIcon: Icons.person,
               label: 'Profile',
-            ),
-            DashboardNavigationItem(
-              icon: Icons.settings_outlined,
-              activeIcon: Icons.settings,
-              label: 'Settings',
             ),
           ],
           body: IndexedStack(

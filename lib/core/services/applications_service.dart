@@ -1,7 +1,7 @@
 /// Applications Service
 /// Handles university/program application-related API calls
 
-import 'dart:io';
+import 'dart:typed_data';
 import '../api/api_client.dart';
 import '../api/api_config.dart';
 import '../api/api_response.dart';
@@ -264,17 +264,24 @@ class ApplicationsService {
   }
 
   /// Upload application document
+  /// [fileBytes] - The document content as Uint8List
+  /// [fileName] - The name of the file including extension
+  /// [mimeType] - Optional MIME type (e.g., 'application/pdf')
   Future<ApiResponse<Map<String, dynamic>>> uploadDocument({
     required String applicationId,
-    required File file,
+    required Uint8List fileBytes,
+    required String fileName,
     required String documentType,
+    String? mimeType,
     String? description,
     void Function(int, int)? onProgress,
   }) async {
     return await _apiClient.uploadFile(
       '${ApiConfig.applications}/$applicationId/documents',
-      file,
+      fileBytes,
+      fileName: fileName,
       fieldName: 'file',
+      mimeType: mimeType,
       data: {
         'document_type': documentType,
         if (description != null) 'description': description,

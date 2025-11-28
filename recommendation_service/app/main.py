@@ -221,11 +221,11 @@ app = FastAPI(
 # Allow multiple origins for development and production
 import os
 
-# Get CORS origins from environment variable with development defaults
-# In production, set CORS_ORIGINS to include both frontend and backend URLs
+# Get CORS origins from environment variable with production defaults
+# In production, Railway will use these defaults or you can override via CORS_ORIGINS
 allowed_origins = os.getenv(
     "CORS_ORIGINS",
-    "http://localhost:8080,http://localhost:3000,http://localhost:3001"
+    "https://web-production-bcafe.up.railway.app,https://web-production-51e34.up.railway.app,http://localhost:8080,http://localhost:3000,http://localhost:3001,http://localhost:5173"
 ).split(",")
 
 # Strip whitespace from origins

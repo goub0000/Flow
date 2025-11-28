@@ -2,12 +2,14 @@
 /// Handles Supabase Realtime subscriptions for live updates
 
 import 'dart:async';
+import 'package:logging/logging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/message_model.dart';
 import '../models/notification_model.dart';
 
 class RealtimeService {
   final SupabaseClient _supabase;
+  final _logger = Logger('RealtimeService');
 
   // Stream controllers for different real-time events
   final _messagesController = StreamController<Message>.broadcast();
@@ -53,15 +55,15 @@ class RealtimeService {
                 final message = Message.fromJson(data);
                 _messagesController.add(message);
               } catch (e) {
-                print('Error parsing message: $e');
+                _logger.warning('Error parsing message: $e', e);
               }
             },
           )
           .subscribe();
 
-      print('Subscribed to conversation: $conversationId');
+      _logger.fine('Subscribed to conversation: $conversationId');
     } catch (e) {
-      print('Error subscribing to conversation: $e');
+      _logger.severe('Error subscribing to conversation: $e', e);
     }
   }
 
@@ -80,9 +82,9 @@ class RealtimeService {
           )
           .subscribe();
 
-      print('Subscribed to typing indicators: $conversationId');
+      _logger.fine('Subscribed to typing indicators: $conversationId');
     } catch (e) {
-      print('Error subscribing to typing: $e');
+      _logger.severe('Error subscribing to typing: $e', e);
     }
   }
 
@@ -106,7 +108,7 @@ class RealtimeService {
         },
       );
     } catch (e) {
-      print('Error sending typing indicator: $e');
+      _logger.warning('Error sending typing indicator: $e', e);
     }
   }
 
@@ -132,15 +134,15 @@ class RealtimeService {
                 final notification = NotificationModel.fromJson(data);
                 _notificationsController.add(notification);
               } catch (e) {
-                print('Error parsing notification: $e');
+                _logger.warning('Error parsing notification: $e', e);
               }
             },
           )
           .subscribe();
 
-      print('Subscribed to notifications for user: $userId');
+      _logger.fine('Subscribed to notifications for user: $userId');
     } catch (e) {
-      print('Error subscribing to notifications: $e');
+      _logger.severe('Error subscribing to notifications: $e', e);
     }
   }
 
@@ -150,9 +152,9 @@ class RealtimeService {
     try {
       // TODO: Implement presence tracking when needed
       // Presence tracking requires specific Supabase realtime configuration
-      print('Presence tracking not yet implemented for room: $roomId');
+      _logger.info('Presence tracking not yet implemented for room: $roomId');
     } catch (e) {
-      print('Error subscribing to presence: $e');
+      _logger.severe('Error subscribing to presence: $e', e);
     }
   }
 
@@ -161,7 +163,7 @@ class RealtimeService {
     if (_messagesChannel != null) {
       await _supabase.removeChannel(_messagesChannel!);
       _messagesChannel = null;
-      print('Unsubscribed from messages');
+      _logger.fine('Unsubscribed from messages');
     }
   }
 
@@ -170,7 +172,7 @@ class RealtimeService {
     if (_notificationsChannel != null) {
       await _supabase.removeChannel(_notificationsChannel!);
       _notificationsChannel = null;
-      print('Unsubscribed from notifications');
+      _logger.fine('Unsubscribed from notifications');
     }
   }
 
@@ -179,7 +181,7 @@ class RealtimeService {
     if (_typingChannel != null) {
       await _supabase.removeChannel(_typingChannel!);
       _typingChannel = null;
-      print('Unsubscribed from typing');
+      _logger.fine('Unsubscribed from typing');
     }
   }
 

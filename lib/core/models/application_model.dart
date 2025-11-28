@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 /// Application model for institution applications
 class Application {
   final String id;
@@ -120,8 +122,14 @@ class Application {
     };
   }
 
-  /// Single mock application for development
-  static Application mockApplication([int index = 0]) {
+  /// Single mock application for development - DEBUG ONLY
+  /// This method is only available in debug mode to prevent mock data in production
+  static Application? mockApplication([int index = 0]) {
+    if (!kDebugMode) {
+      assert(false, 'mockApplication should not be called in release mode');
+      return null;
+    }
+
     final institutions = ['University of Ghana', 'Makerere University', 'University of Cape Town', 'University of Lagos'];
     final programs = ['Bachelor of Computer Science', 'MBA - Business Administration', 'Bachelor of Medicine', 'Engineering'];
     final statuses = ['under_review', 'pending', 'accepted', 'rejected'];

@@ -1,27 +1,45 @@
 /// API Configuration
 /// Contains all API endpoints and configuration settings
 ///
-/// IMPORTANT: API keys should be provided via --dart-define flags during build:
+/// IMPORTANT: API keys MUST be provided via --dart-define flags during build:
 /// flutter build web --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
 /// flutter run --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
+///
+/// Production build example:
+/// flutter build web \
+///   --dart-define=SUPABASE_URL=https://your-project.supabase.co \
+///   --dart-define=SUPABASE_ANON_KEY=your_anon_key \
+///   --dart-define=API_BASE_URL=https://web-production-51e34.up.railway.app
 
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 
 class ApiConfig {
+  static final _logger = Logger('ApiConfig');
+
   // Base URLs - configured via environment variables
-  // Use --dart-define=API_BASE_URL=your_url to set production URL
-  static const String productionBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://localhost:8000', // Development fallback only
-  );
+  // MUST be provided via --dart-define=API_BASE_URL=your_url
+  // Production URL: https://web-production-51e34.up.railway.app
+  static const String _apiBaseUrlEnv = String.fromEnvironment('API_BASE_URL');
 
-  static const String developmentBaseUrl = 'http://localhost:8000';
+  // Production backend URL (used when API_BASE_URL is not explicitly set)
+  static const String _productionBackendUrl = 'https://web-production-51e34.up.railway.app';
 
-  // Current environment - auto-detect based on API_BASE_URL presence
-  static bool get isProduction => const String.fromEnvironment('API_BASE_URL', defaultValue: '').isNotEmpty;
+  // Current environment - auto-detect based on kReleaseMode
+  static bool get isProduction => kReleaseMode;
 
-  // Get the active base URL
-  static String get baseUrl => isProduction ? productionBaseUrl : developmentBaseUrl;
+  // Get the active base URL - prioritize explicit env var, then use production URL in release mode
+  static String get baseUrl {
+    if (_apiBaseUrlEnv.isNotEmpty) {
+      return _apiBaseUrlEnv;
+    }
+    // In release mode, default to production URL
+    if (kReleaseMode) {
+      return _productionBackendUrl;
+    }
+    // In debug mode, use localhost for development
+    return 'http://localhost:8000';
+  }
 
   // API version prefix
   static const String apiVersion = '/api/v1';
@@ -45,46 +63,44 @@ class ApiConfig {
   // flutter build web \
   //   --dart-define=SUPABASE_URL=https://your-project.supabase.co \
   //   --dart-define=SUPABASE_ANON_KEY=your_anon_key \
-  //   --dart-define=API_BASE_URL=https://your-api.railway.app
+  //   --dart-define=API_BASE_URL=https://web-production-51e34.up.railway.app
 
-  static const String supabaseUrl = String.fromEnvironment(
-    'SUPABASE_URL',
-    defaultValue: 'https://wmuarotbdjhqbyjyslqg.supabase.co', // Dev fallback only
-  );
+  // NO DEFAULT VALUES - credentials MUST be provided at build time
+  static const String supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+  static const String supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
-  static const String supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
-    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtdWFyb3RiZGpocWJ5anlzbHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDU2ODEsImV4cCI6MjA3NzQyMTY4MX0.CjfL8kn745KaxUUflPY30WnbLfMKwwVmA2RI3vFwAlM', // Dev fallback only
-  );
-
-  // Validation: Ensure critical configuration is provided
+  /// Validates that all required configuration is provided.
+  /// Throws [StateError] if critical configuration is missing.
+  /// This should be called during app initialization to fail fast.
   static void validateConfig() {
+    final errors = <String>[];
+
     if (supabaseUrl.isEmpty) {
-      // More descriptive error for debugging
-      final message = 'SUPABASE_URL not configured. '
-        'Please provide via --dart-define=SUPABASE_URL=your_url during build. '
-        'Current value: "$supabaseUrl"';
-
-      // In web, log to console for debugging
-      debugPrint('ERROR: $message');
-      throw Exception(message);
+      errors.add('SUPABASE_URL not configured. '
+          'Provide via --dart-define=SUPABASE_URL=https://your-project.supabase.co');
     }
+
     if (supabaseAnonKey.isEmpty) {
-      // More descriptive error for debugging
-      final message = 'SUPABASE_ANON_KEY not configured. '
-        'Please provide via --dart-define=SUPABASE_ANON_KEY=your_key during build. '
-        'Current value length: ${supabaseAnonKey.length}';
-
-      // In web, log to console for debugging
-      debugPrint('ERROR: $message');
-      throw Exception(message);
+      errors.add('SUPABASE_ANON_KEY not configured. '
+          'Provide via --dart-define=SUPABASE_ANON_KEY=your_anon_key');
     }
 
-    // Log successful configuration (only in debug mode)
-    debugPrint('API Configuration validated successfully:');
-    debugPrint('  - Supabase URL: ${supabaseUrl.substring(0, 20)}...');
-    debugPrint('  - API Base URL: $apiBaseUrl');
-    debugPrint('  - Environment: ${isProduction ? "Production" : "Development"}');
+    if (errors.isNotEmpty) {
+      final message = 'Missing required configuration:\n${errors.join('\n')}\n\n'
+          'Build command example:\n'
+          'flutter build web \\\n'
+          '  --dart-define=SUPABASE_URL=https://your-project.supabase.co \\\n'
+          '  --dart-define=SUPABASE_ANON_KEY=your_anon_key \\\n'
+          '  --dart-define=API_BASE_URL=https://web-production-51e34.up.railway.app';
+      _logger.severe(message);
+      throw StateError(message);
+    }
+
+    // Log successful configuration (only log URL prefix for security)
+    _logger.info('API Configuration validated successfully');
+    _logger.config('Supabase URL: ${supabaseUrl.substring(0, supabaseUrl.length.clamp(0, 30))}...');
+    _logger.config('API Base URL: $apiBaseUrl');
+    _logger.config('Environment: ${isProduction ? "Production" : "Development"}');
   }
 
   // API Endpoints

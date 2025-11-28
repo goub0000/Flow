@@ -1,9 +1,11 @@
+import 'package:logging/logging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/notification_models.dart';
 
 /// Service for managing notifications via Supabase
 class NotificationService {
   final SupabaseClient _supabase;
+  final _logger = Logger('NotificationService');
 
   NotificationService({SupabaseClient? supabase})
       : _supabase = supabase ?? Supabase.instance.client;
@@ -123,7 +125,7 @@ class NotificationService {
 
       return (response as List).length;
     } catch (e) {
-      print('Error getting unread count: $e');
+      _logger.warning('Error getting unread count: $e', e);
       return 0;
     }
   }
@@ -338,7 +340,7 @@ class NotificationService {
                   AppNotification.fromJson(payload.newRecord);
               onNotification(notification);
             } catch (e) {
-              print('Error parsing notification: $e');
+              _logger.warning('Error parsing notification: $e', e);
             }
           },
         )

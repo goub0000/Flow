@@ -2,10 +2,12 @@
 /// Handles file uploads to Supabase Storage
 
 import 'dart:typed_data';
+import 'package:logging/logging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StorageService {
   final SupabaseClient _supabase;
+  final _logger = Logger('StorageService');
 
   StorageService(this._supabase);
 
@@ -24,14 +26,13 @@ class StorageService {
     required String fileType,
   }) async {
     try {
-      print('[StorageService] Starting upload for $fileName (type: $fileType)');
-      print('[StorageService] User ID: $userId');
-      print('[StorageService] File size: ${fileBytes.length} bytes');
+      _logger.fine('Starting upload for $fileName (type: $fileType)');
+      _logger.finer('User ID: $userId, File size: ${fileBytes.length} bytes');
 
       // Create a unique file path: userId/fileType/timestamp_filename
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final filePath = '$userId/$fileType/${timestamp}_$fileName';
-      print('[StorageService] Upload path: $filePath');
+      _logger.finer('Upload path: $filePath');
 
       // Determine content type from file extension
       String contentType = 'application/octet-stream';
@@ -54,10 +55,10 @@ class StorageService {
           contentType = 'image/png';
           break;
       }
-      print('[StorageService] Content type: $contentType');
+      _logger.finer('Content type: $contentType');
 
       // Upload to Supabase Storage using uploadBinary for byte arrays
-      print('[StorageService] Starting Supabase upload...');
+      _logger.fine('Starting Supabase upload...');
       await _supabase.storage
           .from('documents')
           .uploadBinary(
@@ -70,15 +71,14 @@ class StorageService {
             ),
           );
 
-      print('[StorageService] Upload successful!');
+      _logger.info('Upload successful for $fileName');
       // Return storage path in Supabase format: bucket/path
       // Backend and institutions can generate URLs as needed
       final storagePath = 'documents/$filePath';
-      print('[StorageService] Returning path: $storagePath');
+      _logger.finer('Returning path: $storagePath');
       return storagePath;
     } catch (e) {
-      print('[StorageService] Upload failed: $e');
-      print('[StorageService] Error type: ${e.runtimeType}');
+      _logger.severe('Upload failed: $e', e);
       throw Exception('Failed to upload document: $e');
     }
   }

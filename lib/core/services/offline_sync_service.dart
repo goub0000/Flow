@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'connectivity_service.dart';
 
 /// Represents an offline action to be synced
@@ -50,6 +51,7 @@ class OfflineSyncService {
   final ConnectivityService _connectivityService;
   final _queueController = StreamController<List<OfflineAction>>.broadcast();
   final List<OfflineAction> _queue = [];
+  final _logger = Logger('OfflineSyncService');
   bool _isSyncing = false;
 
   static const _storageKey = 'offline_actions_queue';
@@ -106,7 +108,7 @@ class OfflineSyncService {
     await _saveQueue();
     _queueController.add(queue);
 
-    print('[OfflineSyncService] Action queued: $type');
+    _logger.fine('Action queued: $type');
 
     // Try to sync immediately if online
     if (_connectivityService.isOnline) {
@@ -118,12 +120,12 @@ class OfflineSyncService {
   Future<void> syncAll() async {
     if (_isSyncing || _queue.isEmpty) return;
     if (!_connectivityService.isOnline) {
-      print('[OfflineSyncService] Cannot sync: offline');
+      _logger.fine('Cannot sync: offline');
       return;
     }
 
     _isSyncing = true;
-    print('[OfflineSyncService] Starting sync of ${_queue.length} actions');
+    _logger.info('Starting sync of ${_queue.length} actions');
 
     final actionsToSync = List<OfflineAction>.from(_queue);
 
@@ -134,13 +136,13 @@ class OfflineSyncService {
         await _saveQueue();
         _queueController.add(queue);
       } catch (e) {
-        print('[OfflineSyncService] Failed to sync action ${action.id}: $e');
+        _logger.warning('Failed to sync action ${action.id}: $e', e);
         // Continue with next action
       }
     }
 
     _isSyncing = false;
-    print('[OfflineSyncService] Sync complete. Remaining: ${_queue.length}');
+    _logger.info('Sync complete. Remaining: ${_queue.length}');
   }
 
   /// Sync a single action
@@ -158,9 +160,9 @@ class OfflineSyncService {
         throw Exception('HTTP ${response.status}: ${response.statusText}');
       }
 
-      print('[OfflineSyncService] Successfully synced action: ${action.type}');
+      _logger.fine('Successfully synced action: ${action.type}');
     } catch (e) {
-      print('[OfflineSyncService] Error syncing action: $e');
+      _logger.warning('Error syncing action: $e', e);
       rethrow;
     }
   }
@@ -177,7 +179,7 @@ class OfflineSyncService {
     _queue.clear();
     await _saveQueue();
     _queueController.add(queue);
-    print('[OfflineSyncService] Queue cleared');
+    _logger.fine('Queue cleared');
   }
 
   /// Load queue from localStorage
@@ -191,10 +193,10 @@ class OfflineSyncService {
         _queue.addAll(
           decoded.map((json) => OfflineAction.fromJson(json)).toList(),
         );
-        print('[OfflineSyncService] Loaded ${_queue.length} queued actions');
+        _logger.fine('Loaded ${_queue.length} queued actions');
       }
     } catch (e) {
-      print('[OfflineSyncService] Error loading queue: $e');
+      _logger.warning('Error loading queue: $e', e);
     }
   }
 
@@ -205,7 +207,7 @@ class OfflineSyncService {
       final queueJson = jsonEncode(_queue.map((a) => a.toJson()).toList());
       storage[_storageKey] = queueJson;
     } catch (e) {
-      print('[OfflineSyncService] Error saving queue: $e');
+      _logger.warning('Error saving queue: $e', e);
     }
   }
 

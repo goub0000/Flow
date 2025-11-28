@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import '../constants/user_roles.dart';
 
 /// User model representing a user in the Flow EdTech platform
@@ -125,14 +126,21 @@ class UserModel {
     );
   }
 
-  /// Create a mock user for development
-  factory UserModel.mock({
+  /// Create a mock user for development - DEBUG ONLY
+  /// This factory is only available in debug mode to prevent mock data in production
+  /// Returns null in release mode
+  static UserModel? mock({
     String id = 'mock-user-id',
     String email = 'user@example.com',
     String? displayName = 'Test User',
     UserRole activeRole = UserRole.student,
     List<UserRole>? availableRoles,
   }) {
+    if (!kDebugMode) {
+      assert(false, 'UserModel.mock should not be called in release mode');
+      return null;
+    }
+
     return UserModel(
       id: id,
       email: email,

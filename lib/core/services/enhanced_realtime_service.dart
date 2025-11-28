@@ -3,6 +3,7 @@
 /// and proper cleanup mechanisms
 
 import 'dart:async';
+import 'package:logging/logging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -18,6 +19,7 @@ class EnhancedRealtimeService {
   final SupabaseClient _supabase;
   final Map<String, RealtimeChannel> _channels = {};
   final Map<String, Timer> _reconnectTimers = {};
+  final _logger = Logger('EnhancedRealtimeService');
 
   // Connection management
   final _connectionStatusController = StreamController<ConnectionStatus>.broadcast();
@@ -65,13 +67,13 @@ class EnhancedRealtimeService {
   }
 
   void _handleOffline() {
-    print('[RealtimeService] Network offline detected');
+    _logger.info('Network offline detected');
     _updateConnectionStatus(ConnectionStatus.disconnected);
     _pauseAllChannels();
   }
 
   void _handleOnline() {
-    print('[RealtimeService] Network online detected');
+    _logger.info('Network online detected');
     if (_currentStatus == ConnectionStatus.disconnected) {
       _updateConnectionStatus(ConnectionStatus.connecting);
       _reconnectAll();
@@ -82,7 +84,7 @@ class EnhancedRealtimeService {
     if (_currentStatus != status) {
       _currentStatus = status;
       _connectionStatusController.add(status);
-      print('[RealtimeService] Connection status: $status');
+      _logger.fine('Connection status: $status');
     }
   }
 
@@ -114,7 +116,7 @@ class EnhancedRealtimeService {
         unsubscribe(channelName);
       }
 
-      print('[RealtimeService] Subscribing to $table with channel: $channelName');
+      _logger.fine('Subscribing to $table with channel: $channelName');
 
       final channel = _supabase.channel(channelName);
 
@@ -126,11 +128,11 @@ class EnhancedRealtimeService {
           table: table,
           filter: filter,
           callback: (payload) {
-            print('[RealtimeService] INSERT event on $table: ${payload.newRecord}');
+            _logger.finer('INSERT event on $table');
             try {
               onInsert(payload.newRecord);
             } catch (e) {
-              print('[RealtimeService] Error handling INSERT: $e');
+              _logger.warning('Error handling INSERT: $e', e);
               onError?.call('Error handling INSERT: $e');
             }
           },
@@ -145,11 +147,11 @@ class EnhancedRealtimeService {
           table: table,
           filter: filter,
           callback: (payload) {
-            print('[RealtimeService] UPDATE event on $table: ${payload.newRecord}');
+            _logger.finer('UPDATE event on $table');
             try {
               onUpdate(payload.newRecord);
             } catch (e) {
-              print('[RealtimeService] Error handling UPDATE: $e');
+              _logger.warning('Error handling UPDATE: $e', e);
               onError?.call('Error handling UPDATE: $e');
             }
           },
@@ -164,11 +166,11 @@ class EnhancedRealtimeService {
           table: table,
           filter: filter,
           callback: (payload) {
-            print('[RealtimeService] DELETE event on $table: ${payload.oldRecord}');
+            _logger.finer('DELETE event on $table');
             try {
               onDelete(payload.oldRecord);
             } catch (e) {
-              print('[RealtimeService] Error handling DELETE: $e');
+              _logger.warning('Error handling DELETE: $e', e);
               onError?.call('Error handling DELETE: $e');
             }
           },
@@ -178,14 +180,14 @@ class EnhancedRealtimeService {
       // Subscribe the channel
       channel.subscribe((status, [error]) async {
         if (status == RealtimeSubscribeStatus.subscribed) {
-          print('[RealtimeService] Successfully subscribed to $channelName');
+          _logger.fine('Successfully subscribed to $channelName');
           _updateConnectionStatus(ConnectionStatus.connected);
           _reconnectAttempts = 0;
         } else if (status == RealtimeSubscribeStatus.closed) {
-          print('[RealtimeService] Channel $channelName closed');
+          _logger.info('Channel $channelName closed');
           _scheduleReconnect(channelName);
         } else if (status == RealtimeSubscribeStatus.channelError) {
-          print('[RealtimeService] Channel $channelName error: $error');
+          _logger.warning('Channel $channelName error: $error');
           onError?.call('Channel error: $error');
           _scheduleReconnect(channelName);
         }
@@ -195,7 +197,7 @@ class EnhancedRealtimeService {
       return channel;
 
     } catch (e) {
-      print('[RealtimeService] Error subscribing to $table: $e');
+      _logger.severe('Error subscribing to $table: $e', e);
       onError?.call('Subscription error: $e');
       _updateConnectionStatus(ConnectionStatus.error);
       return null;
@@ -259,7 +261,7 @@ class EnhancedRealtimeService {
   /// Schedule reconnection for a specific channel
   void _scheduleReconnect(String channelName) {
     if (_reconnectAttempts >= _maxReconnectAttempts) {
-      print('[RealtimeService] Max reconnect attempts reached for $channelName');
+      _logger.warning('Max reconnect attempts reached for $channelName');
       _updateConnectionStatus(ConnectionStatus.error);
       return;
     }
@@ -267,7 +269,7 @@ class EnhancedRealtimeService {
     _reconnectTimers[channelName]?.cancel();
     _reconnectTimers[channelName] = Timer(_reconnectDelay, () {
       _reconnectAttempts++;
-      print('[RealtimeService] Reconnect attempt $_reconnectAttempts for $channelName');
+      _logger.fine('Reconnect attempt $_reconnectAttempts for $channelName');
       _reconnectChannel(channelName);
     });
   }
@@ -279,7 +281,7 @@ class EnhancedRealtimeService {
       try {
         channel.subscribe();
       } catch (e) {
-        print('[RealtimeService] Failed to reconnect $channelName: $e');
+        _logger.warning('Failed to reconnect $channelName: $e', e);
         _scheduleReconnect(channelName);
       }
     }
@@ -303,7 +305,7 @@ class EnhancedRealtimeService {
 
   /// Force reconnect all subscriptions
   Future<void> reconnectAll() async {
-    print('[RealtimeService] Forcing reconnection of all channels');
+    _logger.info('Forcing reconnection of all channels');
     _updateConnectionStatus(ConnectionStatus.connecting);
     _reconnectAll();
   }
@@ -317,16 +319,16 @@ class EnhancedRealtimeService {
         _channels.remove(channelName);
         _reconnectTimers[channelName]?.cancel();
         _reconnectTimers.remove(channelName);
-        print('[RealtimeService] Unsubscribed from $channelName');
+        _logger.fine('Unsubscribed from $channelName');
       }
     } catch (e) {
-      print('[RealtimeService] Error unsubscribing from $channelName: $e');
+      _logger.warning('Error unsubscribing from $channelName: $e', e);
     }
   }
 
   /// Unsubscribe from all channels
   Future<void> unsubscribeAll() async {
-    print('[RealtimeService] Unsubscribing from all channels');
+    _logger.fine('Unsubscribing from all channels');
 
     // Cancel all reconnect timers
     for (final timer in _reconnectTimers.values) {
@@ -354,7 +356,7 @@ class EnhancedRealtimeService {
 
   /// Dispose resources
   void dispose() {
-    print('[RealtimeService] Disposing realtime service');
+    _logger.fine('Disposing realtime service');
 
     // Cancel connectivity subscription
     _connectivitySubscription?.cancel();

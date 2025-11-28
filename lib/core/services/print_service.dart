@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 /// Print Service
 /// Provides print functionality for admin dashboard
 class PrintService {
   PrintService._();
 
+  static final _logger = Logger('PrintService');
+
   /// Print current page
   /// TODO: Implement with package:web and dart:js_interop for web support
   static void printPage() {
     // TODO: Re-implement using package:web when migrating to Flutter 3.7+
-    debugPrint('Print page requested');
+    _logger.fine('Print page requested');
   }
 
   /// Print specific widget
@@ -37,9 +40,7 @@ class PrintService {
   }) {
     // TODO: Re-implement using package:web when migrating to Flutter 3.7+
     // For now, this is a placeholder for backend integration
-    debugPrint('Print table: $title');
-    debugPrint('Headers: ${headers.join(", ")}');
-    debugPrint('Rows: ${rows.length}');
+    _logger.fine('Print table: $title (${headers.length} columns, ${rows.length} rows)');
   }
 
   /// Print report
@@ -52,10 +53,7 @@ class PrintService {
   }) {
     // TODO: Re-implement using package:web when migrating to Flutter 3.7+
     // For now, this is a placeholder for backend integration
-    debugPrint('Print report: $title');
-    if (subtitle != null) debugPrint('Subtitle: $subtitle');
-    debugPrint('Content length: ${content.length} characters');
-    if (footer != null) debugPrint('Footer: $footer');
+    _logger.fine('Print report: $title (${content.length} characters)');
   }
 
   static String _generateTableHTML(

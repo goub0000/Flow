@@ -19,16 +19,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize logging
-  Logger.root.level = Level.ALL;
+  final mainLogger = Logger('Main');
+  Logger.root.level = kDebugMode ? Level.ALL : Level.INFO;
   Logger.root.onRecord.listen((record) {
     // Only log to console in debug mode
     // In production, logs will be captured by Sentry
-    debugPrint('[${record.level.name}] ${record.loggerName}: ${record.message}');
-    if (record.error != null) {
-      debugPrint('Error: ${record.error}');
-    }
-    if (record.stackTrace != null) {
-      debugPrint('Stack trace: ${record.stackTrace}');
+    if (kDebugMode) {
+      debugPrint('[${record.level.name}] ${record.loggerName}: ${record.message}');
+      if (record.error != null) {
+        debugPrint('Error: ${record.error}');
+      }
+      if (record.stackTrace != null) {
+        debugPrint('Stack trace: ${record.stackTrace}');
+      }
     }
   });
 
@@ -44,34 +47,33 @@ void main() async {
       url: ApiConfig.supabaseUrl,
       anonKey: ApiConfig.supabaseAnonKey,
     );
-    debugPrint('✅ Supabase initialized successfully');
+    mainLogger.info('Supabase initialized successfully');
 
     // Clear any invalid sessions from previous deployments
     try {
       final session = Supabase.instance.client.auth.currentSession;
       if (session != null) {
-        debugPrint('Found existing session, validating...');
+        mainLogger.fine('Found existing session, validating...');
         // Try to refresh - if it fails, clear the session
         final response = await Supabase.instance.client.auth.refreshSession();
         if (response.session == null) {
-          debugPrint('Session refresh failed, clearing invalid session...');
+          mainLogger.warning('Session refresh failed, clearing invalid session...');
           await Supabase.instance.client.auth.signOut();
         } else {
-          debugPrint('✅ Session is valid');
+          mainLogger.fine('Session is valid');
         }
       }
     } catch (e) {
-      debugPrint('Invalid session detected, clearing: $e');
+      mainLogger.warning('Invalid session detected, clearing: $e');
       try {
         await Supabase.instance.client.auth.signOut();
-        debugPrint('✅ Cleared invalid session');
+        mainLogger.fine('Cleared invalid session');
       } catch (signOutError) {
-        debugPrint('Failed to clear session: $signOutError');
+        mainLogger.warning('Failed to clear session: $signOutError');
       }
     }
   } catch (e, stackTrace) {
-    debugPrint('❌ Supabase initialization failed: $e');
-    debugPrint('Stack trace: $stackTrace');
+    mainLogger.severe('Supabase initialization failed: $e', e, stackTrace);
     // Continue anyway - app can work without Supabase for some features
   }
 
@@ -79,10 +81,9 @@ void main() async {
   late final SharedPreferences prefs;
   try {
     prefs = await SharedPreferences.getInstance();
-    debugPrint('✅ SharedPreferences initialized successfully');
+    mainLogger.info('SharedPreferences initialized successfully');
   } catch (e, stackTrace) {
-    debugPrint('❌ SharedPreferences initialization failed: $e');
-    debugPrint('Stack trace: $stackTrace');
+    mainLogger.severe('SharedPreferences initialization failed: $e', e, stackTrace);
     rethrow; // This is critical, can't continue without it
   }
 
@@ -91,11 +92,11 @@ void main() async {
   const sentryDsn = String.fromEnvironment('SENTRY_DSN', defaultValue: '');
 
   try {
-    debugPrint('🚀 Starting app initialization...');
+    mainLogger.info('Starting app initialization...');
 
     // Skip Sentry on web for now - it can cause initialization issues
     if (kIsWeb || sentryDsn.isEmpty) {
-      debugPrint('ℹ️ Sentry disabled (web platform or no DSN)');
+      mainLogger.config('Sentry disabled (web platform or no DSN)');
       runApp(
         ProviderScope(
           overrides: [
@@ -110,7 +111,7 @@ void main() async {
         ),
       );
     } else {
-      debugPrint('📊 Initializing Sentry...');
+      mainLogger.config('Initializing Sentry...');
       await SentryFlutter.init(
         (options) {
           options.dsn = sentryDsn;
@@ -138,10 +139,9 @@ void main() async {
         ),
       );
     }
-    debugPrint('✅ App started successfully');
+    mainLogger.info('App started successfully');
   } catch (e, stackTrace) {
-    debugPrint('❌ Fatal error during app startup: $e');
-    debugPrint('Stack trace: $stackTrace');
+    mainLogger.severe('Fatal error during app startup: $e', e, stackTrace);
     rethrow;
   }
 }
