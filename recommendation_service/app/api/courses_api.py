@@ -62,7 +62,7 @@ async def list_courses(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     institution_id: Optional[str] = None,
-    course_status: Optional[str] = None,
+    course_status: Optional[str] = Query(None, alias="status"),  # Accept both 'status' and 'course_status'
     category: Optional[str] = None,
     level: Optional[str] = None,
     search: Optional[str] = None,
