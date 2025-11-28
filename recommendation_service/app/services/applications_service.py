@@ -29,6 +29,27 @@ class ApplicationsService:
     def __init__(self):
         self.db = get_supabase()
 
+    def _is_student_authorized(self, app_student_id: str, auth_user_id: str) -> bool:
+        """
+        Check if the auth user is authorized to access an application.
+        Handles both UUID (auth user_id) and BIGSERIAL (internal profile ID) formats.
+        """
+        # Direct match (new applications with UUID)
+        if str(app_student_id) == str(auth_user_id):
+            return True
+
+        # Check if auth_user_id maps to app_student_id via profile lookup
+        try:
+            profile_response = self.db.table('student_profiles').select('id, user_id').eq('user_id', auth_user_id).execute()
+            if profile_response.data and len(profile_response.data) > 0:
+                internal_id = str(profile_response.data[0]['id'])
+                if str(app_student_id) == internal_id:
+                    return True
+        except Exception as e:
+            logger.warning(f"Error checking student authorization: {e}")
+
+        return False
+
     async def create_application(
         self,
         student_id: str,
@@ -117,7 +138,7 @@ class ApplicationsService:
         try:
             # Verify ownership and submission status
             app = await self.get_application(application_id)
-            if app.student_id != student_id:
+            if not self._is_student_authorized(app.student_id, student_id):
                 raise Exception("Not authorized to update this application")
             if app.is_submitted:
                 raise Exception("Cannot update a submitted application")
@@ -159,7 +180,7 @@ class ApplicationsService:
         """Submit application (finalize)"""
         try:
             app = await self.get_application(application_id)
-            if app.student_id != student_id:
+            if not self._is_student_authorized(app.student_id, student_id):
                 raise Exception("Not authorized to submit this application")
             if app.is_submitted:
                 raise Exception("Application already submitted")
@@ -223,7 +244,9 @@ class ApplicationsService:
         """Withdraw application"""
         try:
             app = await self.get_application(application_id)
-            if app.student_id != student_id:
+
+            # Verify ownership - handles both UUID and BIGSERIAL formats
+            if not self._is_student_authorized(app.student_id, student_id):
                 raise Exception("Not authorized to withdraw this application")
 
             update_data = {
