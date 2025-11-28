@@ -159,9 +159,14 @@ class _StudentDashboardScreenState
               label: 'Profile',
             ),
           ],
-          body: IndexedStack(
-            index: _currentIndex,
-            children: _pages,
+          body: Builder(
+            builder: (context) {
+              print('[DEBUG] IndexedStack rendering with index: $_currentIndex');
+              return IndexedStack(
+                index: _currentIndex,
+                children: _pages,
+              );
+            },
           ),
         ),
         // Cookie consent banner
