@@ -37,7 +37,7 @@ class ConsentService {
 
       // Save to Supabase for admin tracking
       try {
-        await _supabase.from('cookie_consents').upsert({
+        final consentData = {
           'user_id': consent.userId,
           'necessary': consent.categoryConsents[CookieCategory.essential] ?? true,
           'preferences': consent.categoryConsents[CookieCategory.functional] ?? false,
@@ -47,7 +47,25 @@ class ConsentService {
           'last_updated': DateTime.now().toIso8601String(),
           'ip_address': consent.ipAddress,
           'user_agent': consent.userAgent,
-        }, onConflict: 'user_id');
+        };
+
+        // Check if consent already exists for this user
+        final existing = await _supabase
+            .from('cookie_consents')
+            .select('id')
+            .eq('user_id', consent.userId)
+            .maybeSingle();
+
+        if (existing != null) {
+          // Update existing consent
+          await _supabase
+              .from('cookie_consents')
+              .update(consentData)
+              .eq('user_id', consent.userId);
+        } else {
+          // Insert new consent
+          await _supabase.from('cookie_consents').insert(consentData);
+        }
 
         print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
       } catch (e) {
