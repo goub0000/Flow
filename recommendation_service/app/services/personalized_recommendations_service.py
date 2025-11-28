@@ -87,7 +87,8 @@ class PersonalizedRecommendationsService:
             # Convert to PersonalizedRecommendation format with explanations
             personalized_recs = []
             for idx, rec_data in enumerate(recommendations_data, start=1):
-                university = rec_data.get('universities', {})
+                # Handle case where universities might be None instead of missing
+                university = rec_data.get('universities') or {}
 
                 # Generate match explanation based on score and category
                 match_explanation = self._generate_match_explanation(
