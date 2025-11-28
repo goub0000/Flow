@@ -342,6 +342,7 @@ class AuthService {
     String? fullName,
     String? phoneNumber,
     String? bio,
+    Map<String, dynamic>? metadata,
   }) async {
     try {
       final response = await _apiClient.patch(
@@ -349,7 +350,7 @@ class AuthService {
         data: {
           if (fullName != null) 'display_name': fullName,
           if (phoneNumber != null) 'phone_number': phoneNumber,
-          if (bio != null) 'bio': bio,
+          if (metadata != null) 'metadata': metadata,
         },
         fromJson: (data) {
           final user = UserModel.fromJson(data);

@@ -57,6 +57,7 @@ class UpdateProfileRequest(BaseModel):
     phone_number: Optional[str] = None
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
 
 
 class SwitchRoleRequest(BaseModel):
@@ -487,9 +488,9 @@ class AuthService:
             if profile_data.avatar_url is not None:
                 update_data["photo_url"] = profile_data.avatar_url
 
-            # Note: bio column needs to be added to users table if needed
-            # if profile_data.bio is not None:
-            #     update_data["bio"] = profile_data.bio
+            # Update metadata JSONB column with role-specific data
+            if profile_data.metadata is not None:
+                update_data["metadata"] = profile_data.metadata
 
             # Update in database
             response = self.db.table('users').update(update_data).eq('id', user_id).execute()

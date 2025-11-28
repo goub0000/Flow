@@ -154,7 +154,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       final response = await _authService.updateProfile(
         fullName: nameToUpdate,
         phoneNumber: phoneNumber,
-        bio: bio,
+        bio: additionalMetadata?['bio'] as String?,
+        metadata: additionalMetadata,
       );
 
       if (response.success && response.data != null) {
