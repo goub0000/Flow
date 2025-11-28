@@ -47,12 +47,14 @@ class PersonalizedRecommendationsService:
         try:
             # Get student profile - handle both user_id (auth) and internal student_profiles.id
             student_profile = None
+            auth_user_id = None  # The actual auth.users UUID for tracking
 
             # First, try to find by user_id (auth ID)
             profile_response = self.db.table('student_profiles').select('*').eq('user_id', student_id).execute()
 
             if profile_response.data and len(profile_response.data) > 0:
                 student_profile = profile_response.data[0]
+                auth_user_id = student_profile.get('user_id')  # This is the auth UUID
                 logger.info(f"Found student profile by user_id: {student_id}")
             else:
                 # Not found by user_id - check if it's already an internal student_profiles.id
@@ -60,7 +62,8 @@ class PersonalizedRecommendationsService:
 
                 if profile_by_id.data and len(profile_by_id.data) > 0:
                     student_profile = profile_by_id.data[0]
-                    logger.info(f"Found student profile by internal id: {student_id}")
+                    auth_user_id = student_profile.get('user_id')  # Get the auth UUID from profile
+                    logger.info(f"Found student profile by internal id: {student_id}, auth_user_id: {auth_user_id}")
                 else:
                     raise ValueError("Student profile not found")
 
@@ -105,35 +108,47 @@ class PersonalizedRecommendationsService:
                     match_reasons, rec_data
                 )
 
+                # Safely extract match_score (handle None)
+                raw_match_score = rec_data.get('match_score')
+                match_score = round(raw_match_score, 2) if raw_match_score is not None else 0.0
+
+                # Safely get cost estimate (try both field names)
+                cost_estimate = university.get('tuition_fee') or university.get('tuition_out_state')
+
                 personalized_rec = PersonalizedRecommendation(
                     university_id=rec_data['university_id'],
-                    university_name=university.get('name', 'Unknown'),
+                    university_name=university.get('name') or 'Unknown',
                     university_city=university.get('city'),
                     university_country=university.get('country'),
                     university_logo_url=university.get('logo_url'),
-                    match_score=round(rec_data.get('match_score', 0), 2),
-                    category=rec_data.get('category', 'Match'),
+                    match_score=match_score,
+                    category=rec_data.get('category') or 'Match',
                     rank=idx,
                     match_explanation=match_explanation,
                     match_reasons=match_reasons,
                     matching_factors=matching_factors,
-                    confidence_score=rec_data.get('confidence_score', 0.75),
-                    program_matches=rec_data.get('matching_programs', []),
-                    cost_estimate=university.get('tuition_fee'),
+                    confidence_score=rec_data.get('confidence_score') or 0.75,
+                    program_matches=rec_data.get('matching_programs') or [],
+                    cost_estimate=cost_estimate,
                     acceptance_rate=university.get('acceptance_rate')
                 )
 
                 personalized_recs.append(personalized_rec)
 
             # Track impressions in database (async - don't block response)
-            try:
-                self._track_impressions_batch(
-                    student_id=student_id,
-                    session_id=session_id,
-                    recommendations=personalized_recs
-                )
-            except Exception as e:
-                logger.warning(f"Failed to track impressions: {e}")
+            # IMPORTANT: Use auth_user_id for impressions table (FK to auth.users)
+            if auth_user_id:
+                try:
+                    self._track_impressions_batch(
+                        student_id=auth_user_id,  # Must be auth UUID, not internal profile ID
+                        session_id=session_id,
+                        recommendations=personalized_recs
+                    )
+                except Exception as e:
+                    # Don't fail the entire request if impression tracking fails
+                    logger.warning(f"Failed to track impressions (non-critical): {e}")
+            else:
+                logger.warning(f"Cannot track impressions: auth_user_id not found for student_id={student_id}")
 
             # Count by category
             safety_count = sum(1 for r in personalized_recs if r.category == "Safety")
@@ -162,8 +177,9 @@ class PersonalizedRecommendationsService:
     def _generate_match_explanation(self, rec_data: Dict, student_profile: Dict) -> str:
         """Generate human-readable explanation for why this university was recommended"""
         category = rec_data.get('category', 'Match')
-        score = rec_data.get('match_score', 0)
-        university_name = rec_data.get('universities', {}).get('name', 'this university')
+        score = rec_data.get('match_score', 0) or 0  # Handle None score
+        universities_data = rec_data.get('universities') or {}
+        university_name = universities_data.get('name', 'this university') if universities_data else 'this university'
 
         if category == "Safety":
             return f"{university_name} is a safety school with a {score:.0f}% match. Your profile exceeds the typical requirements, making admission highly likely."
@@ -187,26 +203,30 @@ class PersonalizedRecommendationsService:
             "extracurricular_alignment": False
         }
 
+        # Safely get university data (can be None)
+        universities_data = rec_data.get('universities') or {}
+
         # Check GPA match (example logic - adjust based on actual data structure)
-        student_gpa = student_profile.get('gpa', 0)
-        if student_gpa >= 3.0:
+        student_gpa = student_profile.get('gpa') or 0
+        if student_gpa and student_gpa >= 3.0:
             reasons["gpa_match"] = True
 
         # Check major/interest match
-        student_interests = student_profile.get('interests', [])
-        if student_interests and len(student_interests) > 0:
+        student_interests = student_profile.get('interests') or []
+        intended_major = student_profile.get('intended_major')
+        if (student_interests and len(student_interests) > 0) or intended_major:
             reasons["major_match"] = True
 
         # Check location preference
-        preferred_countries = student_profile.get('preferred_countries', [])
-        university_country = rec_data.get('universities', {}).get('country')
-        if preferred_countries and university_country in preferred_countries:
+        preferred_countries = student_profile.get('preferred_countries') or []
+        university_country = universities_data.get('country') if universities_data else None
+        if preferred_countries and university_country and university_country in preferred_countries:
             reasons["location_match"] = True
 
         # Check budget
-        max_budget = student_profile.get('max_budget', 0)
-        tuition = rec_data.get('universities', {}).get('tuition_fee', 0)
-        if max_budget > 0 and tuition > 0 and tuition <= max_budget:
+        max_budget = student_profile.get('max_budget_per_year') or student_profile.get('max_budget') or 0
+        tuition = universities_data.get('tuition_out_state') or universities_data.get('tuition_fee') or 0 if universities_data else 0
+        if max_budget and max_budget > 0 and tuition and tuition > 0 and tuition <= max_budget:
             reasons["budget_match"] = True
 
         # Program availability (default to true if recommendation exists)
@@ -256,22 +276,29 @@ class PersonalizedRecommendationsService:
         session_id: str,
         recommendations: List[PersonalizedRecommendation]
     ):
-        """Track impressions for a batch of recommendations"""
+        """Track impressions for a batch of recommendations
+
+        Note: student_id must be a valid auth.users UUID, not an internal profile ID
+        """
         impressions_data = []
+        now_iso = datetime.utcnow().isoformat()
 
         for rec in recommendations:
+            # Convert match_reasons dict to JSON-serializable format
+            match_reasons_json = dict(rec.match_reasons) if rec.match_reasons else {}
+
             impression = {
-                'student_id': student_id,
+                'student_id': student_id,  # Must be auth.users UUID
                 'university_id': rec.university_id,
-                'match_score': rec.match_score,
+                'match_score': float(rec.match_score) if rec.match_score is not None else None,
                 'category': rec.category,
                 'position': rec.rank,
-                'recommendation_session_id': session_id,
+                'recommendation_session_id': session_id,  # UUID string is fine for Supabase
                 'source': 'dashboard',
-                'match_reasons': rec.match_reasons,
+                'match_reasons': match_reasons_json,
                 'match_explanation': rec.match_explanation,
-                'shown_at': datetime.utcnow().isoformat(),
-                'created_at': datetime.utcnow().isoformat()
+                'shown_at': now_iso,
+                'created_at': now_iso
             }
             impressions_data.append(impression)
 
@@ -283,17 +310,24 @@ class PersonalizedRecommendationsService:
     def track_click(self, click_data: RecommendationClickCreate) -> Dict:
         """Track when a user clicks on a recommendation"""
         try:
+            now_iso = datetime.utcnow().isoformat()
+
+            # Build click record - only include impression_id if provided
+            # (the DB schema may have changed to allow NULL)
             click_record = {
-                'impression_id': click_data.impression_id,
                 'student_id': click_data.student_id,
                 'university_id': click_data.university_id,
                 'action_type': click_data.action_type.value,
                 'time_to_click_seconds': click_data.time_to_click_seconds,
                 'device_type': click_data.device_type,
                 'referrer': click_data.referrer,
-                'clicked_at': datetime.utcnow().isoformat(),
-                'created_at': datetime.utcnow().isoformat()
+                'clicked_at': now_iso,
+                'created_at': now_iso
             }
+
+            # Only add impression_id if it's provided (not None)
+            if click_data.impression_id:
+                click_record['impression_id'] = click_data.impression_id
 
             result = self.db.table('recommendation_clicks').insert(click_record).execute()
             logger.info(f"Tracked click for university {click_data.university_id}")
