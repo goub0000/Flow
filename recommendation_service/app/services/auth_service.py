@@ -485,10 +485,11 @@ class AuthService:
                 update_data["phone_number"] = profile_data.phone_number
 
             if profile_data.avatar_url is not None:
-                update_data["avatar_url"] = profile_data.avatar_url
+                update_data["photo_url"] = profile_data.avatar_url
 
-            if profile_data.bio is not None:
-                update_data["bio"] = profile_data.bio
+            # Note: bio column needs to be added to users table if needed
+            # if profile_data.bio is not None:
+            #     update_data["bio"] = profile_data.bio
 
             # Update in database
             response = self.db.table('users').update(update_data).eq('id', user_id).execute()
