@@ -172,19 +172,23 @@ def get_application_success_rate(user_id: str, db: Client = Depends(get_db)):
     """
     try:
         # Get student profile - handle both user_id (auth) and internal profile ID
-        profile_response = db.table('student_profiles').select('id').eq('user_id', user_id).execute()
+        # We need to find the auth user_id (UUID) for querying applications table
+        auth_user_id = user_id  # Assume it's already the auth UUID
+
+        profile_response = db.table('student_profiles').select('id, user_id').eq('user_id', user_id).execute()
 
         if not profile_response.data or len(profile_response.data) == 0:
-            # Try by internal profile id
-            profile_response = db.table('student_profiles').select('id').eq('id', user_id).execute()
+            # Try by internal profile id - in this case we need to get the user_id
+            profile_response = db.table('student_profiles').select('id, user_id').eq('id', user_id).execute()
+            if profile_response.data and len(profile_response.data) > 0:
+                auth_user_id = profile_response.data[0].get('user_id', user_id)
 
         if not profile_response.data or len(profile_response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
 
-        student_id = profile_response.data[0]['id']
-
-        # Get all applications for this student
-        applications_response = db.table('applications').select('status').eq('student_id', student_id).execute()
+        # Use auth user_id (UUID) for applications table query
+        # applications.student_id references auth.users(id) which is UUID
+        applications_response = db.table('applications').select('status').eq('student_id', auth_user_id).execute()
 
         if not applications_response.data:
             return {
@@ -266,24 +270,29 @@ def get_gpa_trend(user_id: str, db: Client = Depends(get_db)):
     """
     try:
         # Get student profile with current GPA - handle both user_id (auth) and internal ID
-        profile_response = db.table('student_profiles').select('id, gpa').eq('user_id', user_id).execute()
+        # We need both the profile data and the auth user_id for gpa_history query
+        auth_user_id = user_id  # Assume it's already the auth UUID
+
+        profile_response = db.table('student_profiles').select('id, user_id, gpa').eq('user_id', user_id).execute()
 
         if not profile_response.data or len(profile_response.data) == 0:
-            # Try by internal profile id
-            profile_response = db.table('student_profiles').select('id, gpa').eq('id', user_id).execute()
+            # Try by internal profile id - get the user_id for gpa_history query
+            profile_response = db.table('student_profiles').select('id, user_id, gpa').eq('id', user_id).execute()
+            if profile_response.data and len(profile_response.data) > 0:
+                auth_user_id = profile_response.data[0].get('user_id', user_id)
 
         if not profile_response.data or len(profile_response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
 
         student_profile = profile_response.data[0]
-        student_id = student_profile['id']
         current_gpa = student_profile.get('gpa', 0.0)
 
         # Try to get GPA history from gpa_history table (Phase 3.4)
+        # gpa_history.student_id references auth.users(id) which is UUID
         try:
             gpa_history_response = db.table('gpa_history').select(
-                'semester, year, gpa, recorded_at'
-            ).eq('student_id', student_id).order('year, semester').execute()
+                'semester, school_year, gpa, calculated_at'
+            ).eq('student_id', auth_user_id).order('school_year, semester').execute()
 
             if gpa_history_response.data and len(gpa_history_response.data) > 0:
                 # We have historical data
@@ -295,9 +304,9 @@ def get_gpa_trend(user_id: str, db: Client = Depends(get_db)):
                     gpas.append(gpa)
 
                     data_points.append({
-                        "date": record.get('recorded_at'),
+                        "date": record.get('calculated_at'),
                         "gpa": round(gpa, 2),
-                        "semester": f"{record.get('semester', '')} {record.get('year', '')}"
+                        "semester": f"{record.get('semester', '')} {record.get('school_year', '')}"
                     })
 
                 # Calculate trend

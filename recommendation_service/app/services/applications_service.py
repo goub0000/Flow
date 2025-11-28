@@ -36,29 +36,30 @@ class ApplicationsService:
     ) -> ApplicationResponse:
         """Create a new application"""
         try:
-            # DEPLOYMENT VERSION CHECK - v1.0.1
-            logger.info(f"[VERSION] ApplicationsService v1.0.1 - create_application called")
+            # DEPLOYMENT VERSION CHECK - v1.0.2
+            logger.info(f"[VERSION] ApplicationsService v1.0.2 - create_application called")
             # DEBUG: Log incoming data
             logger.info(f"[DEBUG] Received application data:")
             logger.info(f"[DEBUG] institution_name: {application_data.institution_name}")
             logger.info(f"[DEBUG] program_name: {application_data.program_name}")
             logger.info(f"[DEBUG] application_fee: {application_data.application_fee}")
 
-            # Resolve student_id - handle both user_id (auth) and internal profile ID
-            internal_student_id = student_id
-            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+            # Resolve student_id - applications.student_id references auth.users(id) which is UUID
+            # We need to use the auth user_id (UUID), not the internal profile ID (BIGSERIAL)
+            auth_user_id = student_id  # Assume it's already the auth UUID
 
-            if profile_response.data and len(profile_response.data) > 0:
-                internal_student_id = profile_response.data[0]['id']
-            else:
-                # Check if it's already an internal profile id
-                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+            # Verify the profile exists and get the correct auth user_id
+            profile_response = self.db.table('student_profiles').select('id, user_id').eq('user_id', student_id).execute()
+
+            if not profile_response.data or len(profile_response.data) == 0:
+                # Maybe it's an internal profile id - in that case, get the user_id
+                profile_by_id = self.db.table('student_profiles').select('id, user_id').eq('id', student_id).execute()
                 if profile_by_id.data and len(profile_by_id.data) > 0:
-                    internal_student_id = student_id
+                    auth_user_id = profile_by_id.data[0].get('user_id', student_id)
 
             application = {
                 "id": str(uuid4()),
-                "student_id": internal_student_id,
+                "student_id": auth_user_id,  # Use auth user_id (UUID) not internal profile ID
                 "institution_id": application_data.institution_id,
                 "program_id": application_data.program_id,
                 "application_type": application_data.application_type.value,
@@ -350,19 +351,21 @@ class ApplicationsService:
     ) -> ApplicationListResponse:
         """List applications for a student"""
         try:
-            # Resolve student_id - handle both user_id (auth) and internal profile ID
-            internal_student_id = student_id
-            profile_response = self.db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+            # Resolve student_id - applications.student_id references auth.users(id) which is UUID
+            # We need to use the auth user_id (UUID), not the internal profile ID (BIGSERIAL)
+            auth_user_id = student_id  # Assume it's already the auth UUID
 
-            if profile_response.data and len(profile_response.data) > 0:
-                internal_student_id = profile_response.data[0]['id']
-            else:
-                # Check if it's already an internal profile id
-                profile_by_id = self.db.table('student_profiles').select('id').eq('id', student_id).execute()
+            # Check if this is a user_id (auth UUID) by looking up the profile
+            profile_response = self.db.table('student_profiles').select('id, user_id').eq('user_id', student_id).execute()
+
+            if not profile_response.data or len(profile_response.data) == 0:
+                # Maybe it's an internal profile id - in that case, get the user_id
+                profile_by_id = self.db.table('student_profiles').select('id, user_id').eq('id', student_id).execute()
                 if profile_by_id.data and len(profile_by_id.data) > 0:
-                    internal_student_id = student_id
+                    auth_user_id = profile_by_id.data[0].get('user_id', student_id)
 
-            query = self.db.table('applications').select('*', count='exact').eq('student_id', internal_student_id)
+            # Query applications with auth user_id (UUID)
+            query = self.db.table('applications').select('*', count='exact').eq('student_id', auth_user_id)
 
             if status:
                 query = query.eq('status', status)
