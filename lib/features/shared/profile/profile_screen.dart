@@ -177,76 +177,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       );
     }
 
-  /// Simple fallback profile content when main content fails
-  Widget _buildSimpleProfileFallback(dynamic user, ThemeData theme, BuildContext context) {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 32),
-          CircleAvatar(
-            radius: 50,
-            backgroundColor: AppColors.primary,
-            child: Text(
-              user.initials ?? 'U',
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            user.displayName ?? user.email ?? 'User',
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            user.email ?? '',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text('Role'),
-                    subtitle: Text(user.role?.toString() ?? 'Student'),
-                  ),
-                  if (user.phoneNumber != null)
-                    ListTile(
-                      leading: const Icon(Icons.phone),
-                      title: const Text('Phone'),
-                      subtitle: Text(user.phoneNumber),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              context.push('/profile/edit');
-            },
-            icon: const Icon(Icons.edit),
-            label: const Text('Edit Profile'),
-          ),
-        ],
-      ),
-    );
-  }
-
     // Original behavior for standalone profile screen (with back button)
     // Handle error state first for standalone screen
     if (error != null && user == null) {
@@ -371,6 +301,76 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           await ref.read(profileProvider.notifier).refresh();
         },
         child: _buildProfileContent(user, completeness, theme, context),
+      ),
+    );
+  }
+
+  /// Simple fallback profile content when main content fails
+  Widget _buildSimpleProfileFallback(dynamic user, ThemeData theme, BuildContext context) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 32),
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: AppColors.primary,
+            child: Text(
+              user.initials ?? 'U',
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            user.displayName ?? user.email ?? 'User',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            user.email ?? '',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Role'),
+                    subtitle: Text(user.activeRole?.displayName ?? 'Student'),
+                  ),
+                  if (user.phoneNumber != null)
+                    ListTile(
+                      leading: const Icon(Icons.phone),
+                      title: const Text('Phone'),
+                      subtitle: Text(user.phoneNumber),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              context.push('/profile/edit');
+            },
+            icon: const Icon(Icons.edit),
+            label: const Text('Edit Profile'),
+          ),
+        ],
       ),
     );
   }
