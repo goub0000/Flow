@@ -190,6 +190,9 @@ async def get_student_recommendation_analytics(
     """
     Get aggregated analytics for a student's recommendation interactions
 
+    **Path Parameters:**
+    - student_id: Student's user ID or internal student_profiles.id
+
     **Returns:**
     - Total impressions (recommendations shown)
     - Total clicks
@@ -207,14 +210,28 @@ async def get_student_recommendation_analytics(
     - Personalizing future recommendations
     """
     try:
+        # Resolve student_id - handle both user_id (auth) and internal profile ID
+        profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        resolved_student_id = profile_response.data[0]['id']
+
         service = PersonalizedRecommendationsService(db)
-        result = service.get_student_interaction_summary(student_id)
+        result = service.get_student_interaction_summary(resolved_student_id)
 
         if result is None:
             return None  # No interactions yet
 
         return result
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error getting analytics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -228,8 +245,12 @@ def generate_recommendations(
 ):
     """Generate university recommendations for a student"""
     try:
-        # Get student profile from Supabase
+        # Get student profile from Supabase - handle both user_id (auth) and internal profile ID
         response = db.table('student_profiles').select('*').eq('user_id', request.user_id).execute()
+
+        if not response.data or len(response.data) == 0:
+            # Try by internal profile id
+            response = db.table('student_profiles').select('*').eq('id', request.user_id).execute()
 
         if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
@@ -284,10 +305,14 @@ def generate_recommendations(
 
 @router.get("/recommendations/{user_id}", response_model=RecommendationListResponse)
 def get_recommendations(user_id: str, db: Client = Depends(get_db)):
-    """Get existing recommendations for a student"""
+    """Get existing recommendations for a student by user_id or internal profile ID"""
     try:
-        # Get student profile
+        # Get student profile - handle both user_id (auth) and internal profile ID
         response = db.table('student_profiles').select('*').eq('user_id', user_id).execute()
+
+        if not response.data or len(response.data) == 0:
+            # Try by internal profile id
+            response = db.table('student_profiles').select('*').eq('id', user_id).execute()
 
         if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
@@ -374,10 +399,14 @@ def update_recommendation(
 
 @router.get("/recommendations/{user_id}/favorites", response_model=list[RecommendationResponse])
 def get_favorite_recommendations(user_id: str, db: Client = Depends(get_db)):
-    """Get favorited recommendations for a student"""
+    """Get favorited recommendations for a student by user_id or internal profile ID"""
     try:
-        # Get student profile
+        # Get student profile - handle both user_id (auth) and internal profile ID
         response = db.table('student_profiles').select('*').eq('user_id', user_id).execute()
+
+        if not response.data or len(response.data) == 0:
+            # Try by internal profile id
+            response = db.table('student_profiles').select('*').eq('id', user_id).execute()
 
         if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")

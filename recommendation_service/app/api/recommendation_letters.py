@@ -113,13 +113,29 @@ async def get_student_requests(
     """
     Get all recommendation requests for a student
 
+    **Path Parameters:**
+    - student_id: Student's user ID or internal student_profiles.id
+
     **Returns:**
     - Summary statistics (total, pending, accepted, declined, completed)
     - List of active requests with details
     """
     try:
+        # Resolve student_id - handle both user_id (auth) and internal profile ID
+        profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            from fastapi import HTTPException
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        resolved_student_id = profile_response.data[0]['id']
+
         service = RecommendationLettersService(db)
-        return await service.get_student_requests(student_id)
+        return await service.get_student_requests(resolved_student_id)
 
     except Exception as e:
         raise HTTPException(

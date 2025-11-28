@@ -31,7 +31,7 @@ async def get_student_grades(
     Get all grades for a student
 
     **Path Parameters:**
-    - student_id: Student's user ID
+    - student_id: Student's user ID or internal student_profiles.id
 
     **Query Parameters:**
     - school_year: Optional filter (e.g., "2024-2025")
@@ -43,8 +43,20 @@ async def get_student_grades(
     - Missing and late assignments count
     """
     try:
+        # Resolve student_id - handle both user_id (auth) and internal profile ID
+        profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        resolved_student_id = profile_response.data[0]['id']
+
         service = GradesService(db)
-        return await service.get_student_grades(student_id, school_year, semester)
+        return await service.get_student_grades(resolved_student_id, school_year, semester)
 
     except Exception as e:
         raise HTTPException(
@@ -63,7 +75,7 @@ async def get_student_gpa_history(
     Get GPA history for a student
 
     **Path Parameters:**
-    - student_id: Student's user ID
+    - student_id: Student's user ID or internal student_profiles.id
 
     **Query Parameters:**
     - limit: Maximum records to return (1-50, default 10)
@@ -74,8 +86,20 @@ async def get_student_gpa_history(
     - Class rank history
     """
     try:
+        # Resolve student_id - handle both user_id (auth) and internal profile ID
+        profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        resolved_student_id = profile_response.data[0]['id']
+
         service = GradesService(db)
-        return await service.get_gpa_history(student_id, limit)
+        return await service.get_gpa_history(resolved_student_id, limit)
 
     except Exception as e:
         raise HTTPException(
@@ -272,7 +296,7 @@ async def get_grade_statistics(
     Get grade statistics and analytics for a student
 
     **Path Parameters:**
-    - student_id: Student's user ID
+    - student_id: Student's user ID or internal student_profiles.id
 
     **Returns:**
     - Overall grade average
@@ -281,9 +305,21 @@ async def get_grade_statistics(
     - Comparison to class averages (if available)
     """
     try:
+        # Resolve student_id - handle both user_id (auth) and internal profile ID
+        profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('id', student_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        resolved_student_id = profile_response.data[0]['id']
+
         # Get all student grades
         service = GradesService(db)
-        student_grades = await service.get_student_grades(student_id)
+        student_grades = await service.get_student_grades(resolved_student_id)
 
         # Calculate statistics
         all_percentages = []

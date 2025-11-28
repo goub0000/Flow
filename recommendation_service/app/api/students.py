@@ -119,16 +119,22 @@ def update_student_profile(
 
 @router.delete("/students/profile/{user_id}")
 def delete_student_profile(user_id: str, db: Client = Depends(get_db)):
-    """Delete a student profile"""
+    """Delete a student profile by user ID or internal profile ID"""
     try:
-        # Check if profile exists
+        # Check if profile exists - handle both user_id (auth) and internal profile ID
         response = db.table('student_profiles').select('id').eq('user_id', user_id).execute()
+        lookup_field = 'user_id'
+
+        if not response.data or len(response.data) == 0:
+            # Try by internal profile id
+            response = db.table('student_profiles').select('id').eq('id', user_id).execute()
+            lookup_field = 'id'
 
         if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
 
-        # Delete the profile
-        db.table('student_profiles').delete().eq('user_id', user_id).execute()
+        # Delete the profile using the correct lookup field
+        db.table('student_profiles').delete().eq(lookup_field, user_id).execute()
 
         logger.info(f"Deleted profile for user: {user_id}")
         return {"message": "Profile deleted successfully"}
