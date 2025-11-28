@@ -108,28 +108,41 @@ class UserModel {
   /// Create from JSON (from Firebase/backend)
   /// Handles both snake_case (backend) and camelCase (legacy cached) formats
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    // Helper to get value from either snake_case or camelCase key
-    T? getField<T>(String snakeCase, String camelCase) {
-      return (json[snakeCase] ?? json[camelCase]) as T?;
-    }
+    // Get display name from either format
+    final displayName = json['display_name'] ?? json['displayName'];
+
+    // Get phone number from either format
+    final phoneNumber = json['phone_number'] ?? json['phoneNumber'];
+
+    // Get photo URL from either format
+    final photoUrl = json['photo_url'] ?? json['photoUrl'];
+
+    // Get active role from either format, default to 'student'
+    final activeRoleStr = json['active_role'] ?? json['activeRole'] ?? 'student';
+
+    // Get available roles from either format, default to ['student']
+    final availableRolesRaw = json['available_roles'] ?? json['availableRoles'] ?? ['student'];
+    final availableRolesList = availableRolesRaw is List ? availableRolesRaw : ['student'];
+
+    // Get created_at from either format, default to now
+    final createdAtStr = json['created_at'] ?? json['createdAt'] ?? DateTime.now().toIso8601String();
+
+    // Get last_login_at from either format
+    final lastLoginAtStr = json['last_login_at'] ?? json['lastLoginAt'];
 
     return UserModel(
       id: json['id'] as String,
       email: json['email'] as String,
-      displayName: getField<String>('display_name', 'displayName'),
-      phoneNumber: getField<String>('phone_number', 'phoneNumber'),
-      photoUrl: getField<String>('photo_url', 'photoUrl'),
-      activeRole: UserRoleExtension.fromString(
-        getField<String>('active_role', 'activeRole') ?? 'student',
-      ),
-      availableRoles: (getField<List>('available_roles', 'availableRoles') ?? ['student'])
+      displayName: displayName as String?,
+      phoneNumber: phoneNumber as String?,
+      photoUrl: photoUrl as String?,
+      activeRole: UserRoleExtension.fromString(activeRoleStr as String),
+      availableRoles: availableRolesList
           .map((r) => UserRoleExtension.fromString(r as String))
           .toList(),
-      createdAt: DateTime.parse(
-        getField<String>('created_at', 'createdAt') ?? DateTime.now().toIso8601String(),
-      ),
-      lastLoginAt: getField<String>('last_login_at', 'lastLoginAt') != null
-          ? DateTime.parse(getField<String>('last_login_at', 'lastLoginAt')!)
+      createdAt: DateTime.parse(createdAtStr as String),
+      lastLoginAt: lastLoginAtStr != null
+          ? DateTime.parse(lastLoginAtStr as String)
           : null,
       isEmailVerified: (json['is_email_verified'] ?? json['email_verified'] ?? json['isEmailVerified']) as bool? ?? false,
       isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified'] ?? json['isPhoneVerified']) as bool? ?? false,
