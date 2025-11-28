@@ -379,6 +379,29 @@ async def update_current_user_profile(
         )
 
 
+@router.patch("/auth/profile")
+async def patch_profile(
+    profile_data: UpdateProfileRequest,
+    current_user: CurrentUser = Depends(get_current_user)
+) -> Dict[str, Any]:
+    """
+    Update current user's profile (PATCH method alias for PUT /auth/me)
+
+    **Requires:** Authentication
+
+    **Request Body:**
+    - display_name: Optional new display name
+    - phone_number: Optional new phone number
+    - avatar_url: Optional new avatar URL
+    - bio: Optional bio/description
+
+    **Returns:**
+    - Updated user profile
+    """
+    # Delegate to the same logic as PUT /auth/me
+    return await update_current_user_profile(profile_data, current_user)
+
+
 @router.post("/auth/switch-role")
 async def switch_role(
     role_data: SwitchRoleRequest,
