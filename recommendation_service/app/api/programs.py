@@ -104,7 +104,8 @@ async def get_programs(
                 users_response = db.table('auth.users').select('id').execute()
                 registered_institution_ids = [u['id'] for u in users_response.data if u.get('raw_user_meta_data', {}).get('role') == 'institution']
             else:
-                registered_institution_ids = auth_response.data
+                # Extract user_id from the response (function returns TABLE(user_id UUID))
+                registered_institution_ids = [row['user_id'] for row in auth_response.data if row.get('user_id')]
 
         except Exception as auth_error:
             logger.warning(f"Could not fetch registered institutions: {auth_error}")
