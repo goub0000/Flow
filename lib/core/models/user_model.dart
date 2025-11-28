@@ -87,62 +87,42 @@ class UserModel {
   }
 
   /// Convert to JSON (for Firebase/backend)
-  /// Uses snake_case to match backend field names for consistency
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'email': email,
-      'display_name': displayName,
-      'phone_number': phoneNumber,
-      'photo_url': photoUrl,
-      'active_role': UserRoleHelper.getRoleName(activeRole),
-      'available_roles': availableRoles.map((r) => UserRoleHelper.getRoleName(r)).toList(),
-      'created_at': createdAt.toIso8601String(),
-      'last_login_at': lastLoginAt?.toIso8601String(),
-      'email_verified': isEmailVerified,
-      'phone_verified': isPhoneVerified,
+      'displayName': displayName,
+      'phoneNumber': phoneNumber,
+      'photoUrl': photoUrl,
+      'activeRole': UserRoleHelper.getRoleName(activeRole),
+      'availableRoles': availableRoles.map((r) => UserRoleHelper.getRoleName(r)).toList(),
+      'createdAt': createdAt.toIso8601String(),
+      'lastLoginAt': lastLoginAt?.toIso8601String(),
+      'isEmailVerified': isEmailVerified,
+      'isPhoneVerified': isPhoneVerified,
       'metadata': metadata,
     };
   }
 
   /// Create from JSON (from Firebase/backend)
-  /// Handles both snake_case (backend) and camelCase (legacy cached) formats
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    // Get display name from either format
-    final displayName = json['display_name'] ?? json['displayName'];
-
-    // Get phone number from either format
-    final phoneNumber = json['phone_number'] ?? json['phoneNumber'];
-
-    // Get photo URL from either format
-    final photoUrl = json['photo_url'] ?? json['photoUrl'];
-
-    // Get active role from either format, default to 'student'
-    final activeRoleStr = json['active_role'] ?? json['activeRole'] ?? 'student';
-
-    // Get available roles from either format, default to ['student']
-    final availableRolesRaw = json['available_roles'] ?? json['availableRoles'] ?? ['student'];
-    final availableRolesList = availableRolesRaw is List ? availableRolesRaw : ['student'];
-
-    // Get created_at from either format, default to now
-    final createdAtStr = json['created_at'] ?? json['createdAt'] ?? DateTime.now().toIso8601String();
-
-    // Get last_login_at from either format
-    final lastLoginAtStr = json['last_login_at'] ?? json['lastLoginAt'];
-
     return UserModel(
       id: json['id'] as String,
       email: json['email'] as String,
-      displayName: displayName as String?,
-      phoneNumber: phoneNumber as String?,
-      photoUrl: photoUrl as String?,
-      activeRole: UserRoleExtension.fromString(activeRoleStr as String),
-      availableRoles: availableRolesList
+      displayName: (json['display_name'] ?? json['displayName']) as String?,
+      phoneNumber: (json['phone_number'] ?? json['phoneNumber']) as String?,
+      photoUrl: (json['photo_url'] ?? json['photoUrl']) as String?,
+      activeRole: UserRoleExtension.fromString(
+        (json['active_role'] ?? json['activeRole'] ?? 'student') as String,
+      ),
+      availableRoles: ((json['available_roles'] ?? json['availableRoles'] ?? ['student']) as List)
           .map((r) => UserRoleExtension.fromString(r as String))
           .toList(),
-      createdAt: DateTime.parse(createdAtStr as String),
-      lastLoginAt: lastLoginAtStr != null
-          ? DateTime.parse(lastLoginAtStr as String)
+      createdAt: DateTime.parse(
+        (json['created_at'] ?? json['createdAt'] ?? DateTime.now().toIso8601String()) as String,
+      ),
+      lastLoginAt: (json['last_login_at'] ?? json['lastLoginAt']) != null
+          ? DateTime.parse((json['last_login_at'] ?? json['lastLoginAt']) as String)
           : null,
       isEmailVerified: (json['is_email_verified'] ?? json['email_verified'] ?? json['isEmailVerified']) as bool? ?? false,
       isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified'] ?? json['isPhoneVerified']) as bool? ?? false,
