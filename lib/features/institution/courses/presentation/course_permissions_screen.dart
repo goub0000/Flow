@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../../core/models/enrollment_permission_model.dart';
+import '../../../../core/services/enrollment_permissions_api_service.dart';
+import '../../../authentication/providers/auth_provider.dart';
 import '../../providers/enrollment_permissions_provider.dart';
 
 /// Course Permissions Management Screen
