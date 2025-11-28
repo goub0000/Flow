@@ -41,7 +41,7 @@ class StudentActivitiesService:
         Get aggregated activities for a student
 
         Args:
-            student_id: The student's user ID
+            student_id: The student's user ID (Supabase auth user ID)
             filters: Optional filters for pagination and filtering
             db: Optional database client (will create if not provided)
 
@@ -59,46 +59,66 @@ class StudentActivitiesService:
         activities = []
 
         try:
+            # First, get the internal student_id from the student_profiles table
+            # The passed student_id is the Supabase auth user_id, but we need the internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+
+            if not profile_response.data or len(profile_response.data) == 0:
+                # No student profile found - return empty activities
+                logger.warning(f"No student profile found for user_id: {student_id}")
+                return StudentActivityFeedResponse(
+                    activities=[],
+                    total_count=0,
+                    page=filters.page,
+                    limit=filters.limit,
+                    has_more=False
+                )
+
+            # Use the internal student profile id for database queries
+            internal_student_id = profile_response.data[0]['id']
+            logger.info(f"Resolved user_id {student_id} to internal student_id {internal_student_id}")
+
             # First, try to get from dedicated student_activities table
             stored_activities = await self._get_stored_activities(
-                student_id, filters, db
+                internal_student_id, filters, db
             )
 
             if stored_activities:
                 # If we have stored activities, use them (they're more efficient)
                 activities.extend(stored_activities)
-                logger.info(f"Retrieved {len(stored_activities)} stored activities for student {student_id}")
+                logger.info(f"Retrieved {len(stored_activities)} stored activities for student {internal_student_id}")
             else:
                 # Fallback to real-time aggregation from various tables
-                logger.info(f"No stored activities found, aggregating from source tables for student {student_id}")
+                logger.info(f"No stored activities found, aggregating from source tables for student {internal_student_id}")
 
                 # 1. Application Activities
                 application_activities = await self._get_application_activities(
-                    student_id, filters, db
+                    internal_student_id, filters, db
                 )
                 activities.extend(application_activities)
 
                 # 2. Achievement Activities
                 achievement_activities = await self._get_achievement_activities(
-                    student_id, filters, db
+                    internal_student_id, filters, db
                 )
                 activities.extend(achievement_activities)
 
                 # 3. Meeting Activities
                 meeting_activities = await self._get_meeting_activities(
-                    student_id, filters, db
+                    internal_student_id, filters, db
                 )
                 activities.extend(meeting_activities)
 
                 # 4. Message Activities (recent unread messages)
+                # Note: Messages use receiver_id which is the auth user_id, not internal_student_id
                 message_activities = await self._get_message_activities(
-                    student_id, filters, db
+                    student_id, filters, db  # Use original user_id for messages
                 )
                 activities.extend(message_activities)
 
                 # 5. Enrollment Activities
                 enrollment_activities = await self._get_enrollment_activities(
-                    student_id, filters, db
+                    internal_student_id, filters, db
                 )
                 activities.extend(enrollment_activities)
 

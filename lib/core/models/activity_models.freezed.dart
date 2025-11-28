@@ -461,7 +461,7 @@ class _$StudentActivityFeedResponseImpl
     implements _StudentActivityFeedResponse {
   const _$StudentActivityFeedResponseImpl(
       {required final List<StudentActivity> activities,
-      required this.totalCount,
+      this.totalCount = 0,
       this.page = 1,
       this.limit = 10,
       this.hasMore = false})
@@ -480,6 +480,7 @@ class _$StudentActivityFeedResponseImpl
   }
 
   @override
+  @JsonKey()
   final int totalCount;
   @override
   @JsonKey()
@@ -539,7 +540,7 @@ abstract class _StudentActivityFeedResponse
     implements StudentActivityFeedResponse {
   const factory _StudentActivityFeedResponse(
       {required final List<StudentActivity> activities,
-      required final int totalCount,
+      final int totalCount,
       final int page,
       final int limit,
       final bool hasMore}) = _$StudentActivityFeedResponseImpl;

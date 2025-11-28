@@ -70,7 +70,7 @@ class StudentActivity with _$StudentActivity {
 class StudentActivityFeedResponse with _$StudentActivityFeedResponse {
   const factory StudentActivityFeedResponse({
     required List<StudentActivity> activities,
-    required int totalCount,
+    @Default(0) int totalCount,
     @Default(1) int page,
     @Default(10) int limit,
     @Default(false) bool hasMore,

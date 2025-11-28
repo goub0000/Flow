@@ -49,7 +49,7 @@ _$StudentActivityFeedResponseImpl _$$StudentActivityFeedResponseImplFromJson(
       activities: (json['activities'] as List<dynamic>)
           .map((e) => StudentActivity.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalCount: (json['totalCount'] as num).toInt(),
+      totalCount: (json['totalCount'] as num?)?.toInt() ?? 0,
       page: (json['page'] as num?)?.toInt() ?? 1,
       limit: (json['limit'] as num?)?.toInt() ?? 10,
       hasMore: json['hasMore'] as bool? ?? false,
