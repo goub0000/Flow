@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/utils/auth_error_mapper.dart';
 import '../../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -18,6 +19,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  String? _errorMessage;
+  AuthErrorType? _errorType;
 
   @override
   void dispose() {
@@ -27,6 +30,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
+    // Clear previous error
+    setState(() {
+      _errorMessage = null;
+      _errorType = null;
+    });
+
     if (_formKey.currentState!.validate()) {
       await ref.read(authProvider.notifier).signIn(
             _emailController.text.trim(),
@@ -36,18 +45,117 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (mounted) {
         final authState = ref.read(authProvider);
         if (authState.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(authState.error!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          // Parse error type from the error message
+          final errorInfo = AuthErrorMapper.mapError(authState.error);
+          setState(() {
+            _errorMessage = authState.error;
+            _errorType = errorInfo.errorType;
+          });
         } else if (authState.user != null) {
           // Login successful - navigate to dashboard immediately
           context.go(authState.user!.activeRole.dashboardRoute);
         }
       }
     }
+  }
+
+  void _clearError() {
+    if (_errorMessage != null) {
+      setState(() {
+        _errorMessage = null;
+        _errorType = null;
+      });
+    }
+  }
+
+  Widget _buildErrorWidget() {
+    if (_errorMessage == null) return const SizedBox.shrink();
+
+    final showForgotPasswordHint = _errorType == AuthErrorType.invalidCredentials;
+    final showRegisterHint = _errorType == AuthErrorType.userNotFound;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.error.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: AppColors.error,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  _errorMessage!,
+                  style: TextStyle(
+                    color: AppColors.error,
+                    fontSize: 14,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: _clearError,
+                child: Icon(
+                  Icons.close,
+                  color: AppColors.error.withValues(alpha: 0.7),
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
+          if (showForgotPasswordHint) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const SizedBox(width: 32),
+                TextButton.icon(
+                  onPressed: () => context.push('/forgot-password'),
+                  icon: const Icon(Icons.lock_reset, size: 16),
+                  label: const Text('Reset Password'),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (showRegisterHint) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const SizedBox(width: 32),
+                TextButton.icon(
+                  onPressed: () => context.push('/register'),
+                  icon: const Icon(Icons.person_add, size: 16),
+                  label: const Text('Create Account'),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   @override
@@ -116,7 +224,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
+
+                  // Error display widget
+                  _buildErrorWidget(),
 
                   // Email Field
                   TextFormField(
@@ -128,6 +239,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     validator: Validators.email,
                     enabled: !authState.isLoading,
+                    onChanged: (_) => _clearError(),
                   ),
                   const SizedBox(height: 16),
 
@@ -161,6 +273,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                     enabled: !authState.isLoading,
+                    onChanged: (_) => _clearError(),
                   ),
                   const SizedBox(height: 8),
 

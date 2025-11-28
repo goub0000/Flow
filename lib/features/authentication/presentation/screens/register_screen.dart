@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/utils/auth_error_mapper.dart';
 import '../../providers/auth_provider.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -23,6 +24,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   UserRole? _selectedRole;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  String? _errorMessage;
+  AuthErrorType? _errorType;
 
   @override
   void dispose() {
@@ -34,6 +37,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    // Clear previous error
+    setState(() {
+      _errorMessage = null;
+      _errorType = null;
+    });
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       await ref.read(authProvider.notifier).signUp(
@@ -47,17 +56,111 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (mounted) {
         final authState = ref.read(authProvider);
         if (authState.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(authState.error!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          // Parse error type from the error message
+          final errorInfo = AuthErrorMapper.mapError(authState.error);
+          setState(() {
+            _errorMessage = authState.error;
+            _errorType = errorInfo.errorType;
+          });
         }
         // If successful, router will automatically redirect to dashboard
         // via the redirect logic in app_router.dart (lines 151-155)
       }
     }
+  }
+
+  void _clearError() {
+    if (_errorMessage != null) {
+      setState(() {
+        _errorMessage = null;
+        _errorType = null;
+      });
+    }
+  }
+
+  Widget _buildErrorWidget() {
+    if (_errorMessage == null) return const SizedBox.shrink();
+
+    final showLoginHint = _errorType == AuthErrorType.emailAlreadyExists;
+    final showForgotPasswordHint = _errorType == AuthErrorType.emailAlreadyExists;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.error.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: AppColors.error,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  _errorMessage!,
+                  style: TextStyle(
+                    color: AppColors.error,
+                    fontSize: 14,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: _clearError,
+                child: Icon(
+                  Icons.close,
+                  color: AppColors.error.withValues(alpha: 0.7),
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
+          if (showLoginHint) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const SizedBox(width: 32),
+                TextButton.icon(
+                  onPressed: () => context.go('/login'),
+                  icon: const Icon(Icons.login, size: 16),
+                  label: const Text('Login Instead'),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+                if (showForgotPasswordHint) ...[
+                  const SizedBox(width: 8),
+                  TextButton.icon(
+                    onPressed: () => context.push('/forgot-password'),
+                    icon: const Icon(Icons.lock_reset, size: 16),
+                    label: const Text('Reset Password'),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   @override
@@ -138,7 +241,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
+
+                // Error display widget
+                _buildErrorWidget(),
 
                 // Name Field
                 TextFormField(
@@ -149,6 +255,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   validator: Validators.fullName,
                   enabled: !authState.isLoading,
+                  onChanged: (_) => _clearError(),
                 ),
                 const SizedBox(height: 16),
 
@@ -162,6 +269,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   validator: Validators.email,
                   enabled: !authState.isLoading,
+                  onChanged: (_) => _clearError(),
                 ),
                 const SizedBox(height: 16),
 
@@ -220,6 +328,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   validator: Validators.password,
                   enabled: !authState.isLoading,
+                  onChanged: (_) => _clearError(),
                 ),
                 const SizedBox(height: 16),
 
@@ -253,6 +362,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     return null;
                   },
                   enabled: !authState.isLoading,
+                  onChanged: (_) => _clearError(),
                 ),
                 const SizedBox(height: 32),
 

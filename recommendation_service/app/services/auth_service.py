@@ -1,16 +1,22 @@
 """
 Authentication Service - Supabase Auth Integration
 Handles user registration, login, logout, password reset, and profile management
-Updated: 2025-11-10 - Enhanced error handling and orphaned user recovery
+Updated: 2025-11-27 - Enhanced error handling with structured error responses
 """
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 import logging
 from pydantic import BaseModel, EmailStr
+from fastapi import status
 
 from app.database.config import get_supabase
 from app.utils.security import UserRole
 from app.utils.activity_logger import log_activity_sync, ActivityType
+from app.utils.exceptions import (
+    AuthException,
+    AuthErrorCode,
+    parse_supabase_auth_error
+)
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +79,11 @@ class AuthService:
         try:
             # Validate role
             if signup_data.role not in UserRole.all_roles():
-                raise ValueError(f"Invalid role: {signup_data.role}")
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_ROLE,
+                    message=f"Invalid role: {signup_data.role}. Valid roles are: {', '.join(UserRole.all_roles())}",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
 
             # 1. Create auth user with Supabase Auth
             auth_response = self.db.auth.sign_up({
@@ -88,7 +98,11 @@ class AuthService:
             })
 
             if not auth_response.user:
-                raise Exception("Failed to create auth user")
+                raise AuthException(
+                    error_code=AuthErrorCode.REGISTRATION_FAILED,
+                    message="Failed to create user account. Please try again.",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
 
             user_id = auth_response.user.id
 
@@ -132,18 +146,39 @@ class AuthService:
                 "requires_verification": True
             }
 
+        except AuthException:
+            # Re-raise our custom exceptions
+            raise
         except Exception as e:
             error_message = str(e).lower()
             logger.error(f"Sign up error: {e}")
 
             # Check if error is due to duplicate email
-            if "already" in error_message or "duplicate" in error_message or "exists" in error_message:
-                raise Exception(
-                    "This email address is already registered. "
-                    "Please log in to your account or use the 'Forgot Password' option to reset your password."
+            if "already" in error_message or "duplicate" in error_message or "exists" in error_message or "registered" in error_message:
+                raise AuthException(
+                    error_code=AuthErrorCode.EMAIL_ALREADY_EXISTS,
+                    message="This email address is already registered.",
+                    status_code=status.HTTP_409_CONFLICT
                 )
 
-            raise Exception(f"Registration failed: {str(e)}")
+            # Check for weak password
+            if "password" in error_message and any(term in error_message for term in ["weak", "short", "simple", "least"]):
+                raise AuthException(
+                    error_code=AuthErrorCode.WEAK_PASSWORD,
+                    message="Password does not meet security requirements. It must be at least 8 characters long.",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Check for invalid email format
+            if "email" in error_message and any(term in error_message for term in ["invalid", "format", "valid"]):
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_EMAIL_FORMAT,
+                    message="Please enter a valid email address.",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Parse other Supabase errors
+            raise parse_supabase_auth_error(str(e))
 
     async def sign_in(self, signin_data: SignInRequest) -> SignInResponse:
         """
@@ -158,7 +193,11 @@ class AuthService:
             })
 
             if not auth_response.user or not auth_response.session:
-                raise Exception("Invalid credentials")
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_CREDENTIALS,
+                    message="Invalid email or password.",
+                    status_code=status.HTTP_401_UNAUTHORIZED
+                )
 
             # Fetch user profile
             user_response = self.db.table('users').select('*').eq('id', auth_response.user.id).execute()
@@ -193,6 +232,14 @@ class AuthService:
             else:
                 user_data = user_response.data[0]
 
+            # Check if account is disabled
+            if user_data.get('is_active') is False:
+                raise AuthException(
+                    error_code=AuthErrorCode.ACCOUNT_DISABLED,
+                    message="This account has been disabled.",
+                    status_code=status.HTTP_403_FORBIDDEN
+                )
+
             # Update last login timestamp
             self.db.table('users').update({
                 "last_login_at": datetime.utcnow().isoformat()
@@ -220,9 +267,31 @@ class AuthService:
                 expires_in=auth_response.session.expires_in or 3600
             )
 
+        except AuthException:
+            # Re-raise our custom exceptions
+            raise
         except Exception as e:
+            error_message = str(e).lower()
             logger.error(f"Sign in error: {e}")
-            raise Exception(f"Login failed: {str(e)}")
+
+            # Check for invalid credentials
+            if any(term in error_message for term in ["invalid", "credentials", "password", "email"]):
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_CREDENTIALS,
+                    message="Invalid email or password.",
+                    status_code=status.HTTP_401_UNAUTHORIZED
+                )
+
+            # Check for email not verified
+            if "not confirmed" in error_message or "verify" in error_message:
+                raise AuthException(
+                    error_code=AuthErrorCode.EMAIL_NOT_VERIFIED,
+                    message="Please verify your email address before logging in.",
+                    status_code=status.HTTP_403_FORBIDDEN
+                )
+
+            # Parse other Supabase errors
+            raise parse_supabase_auth_error(str(e))
 
     async def sign_out(self, access_token: str) -> Dict[str, str]:
         """
@@ -267,7 +336,11 @@ class AuthService:
             auth_response = self.db.auth.refresh_session(refresh_token)
 
             if not auth_response.session:
-                raise Exception("Failed to refresh token")
+                raise AuthException(
+                    error_code=AuthErrorCode.REFRESH_TOKEN_INVALID,
+                    message="Invalid refresh token. Please log in again.",
+                    status_code=status.HTTP_401_UNAUTHORIZED
+                )
 
             return {
                 "access_token": auth_response.session.access_token,
@@ -275,9 +348,24 @@ class AuthService:
                 "expires_in": auth_response.session.expires_in or 3600
             }
 
+        except AuthException:
+            raise
         except Exception as e:
+            error_message = str(e).lower()
             logger.error(f"Refresh token error: {e}")
-            raise Exception(f"Token refresh failed: {str(e)}")
+
+            if "expired" in error_message:
+                raise AuthException(
+                    error_code=AuthErrorCode.REFRESH_TOKEN_EXPIRED,
+                    message="Your refresh token has expired. Please log in again.",
+                    status_code=status.HTTP_401_UNAUTHORIZED
+                )
+
+            raise AuthException(
+                error_code=AuthErrorCode.REFRESH_TOKEN_INVALID,
+                message="Invalid refresh token. Please log in again.",
+                status_code=status.HTTP_401_UNAUTHORIZED
+            )
 
     async def request_password_reset(self, email: str) -> Dict[str, str]:
         """
@@ -362,13 +450,23 @@ class AuthService:
             response = self.db.table('users').select('*').eq('id', user_id).single().execute()
 
             if not response.data:
-                raise Exception("User not found")
+                raise AuthException(
+                    error_code=AuthErrorCode.USER_NOT_FOUND,
+                    message="User profile not found.",
+                    status_code=status.HTTP_404_NOT_FOUND
+                )
 
             return response.data
 
+        except AuthException:
+            raise
         except Exception as e:
             logger.error(f"Get profile error: {e}")
-            raise Exception(f"Failed to fetch user profile: {str(e)}")
+            raise AuthException(
+                error_code=AuthErrorCode.USER_NOT_FOUND,
+                message="Failed to fetch user profile.",
+                status_code=status.HTTP_404_NOT_FOUND
+            )
 
     async def update_user_profile(self, user_id: str, profile_data: UpdateProfileRequest) -> Dict[str, Any]:
         """
@@ -396,15 +494,25 @@ class AuthService:
             response = self.db.table('users').update(update_data).eq('id', user_id).execute()
 
             if not response.data:
-                raise Exception("Failed to update profile")
+                raise AuthException(
+                    error_code=AuthErrorCode.PROFILE_UPDATE_FAILED,
+                    message="Failed to update profile.",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
 
             logger.info(f"Profile updated for user: {user_id}")
 
             return response.data[0]
 
+        except AuthException:
+            raise
         except Exception as e:
             logger.error(f"Update profile error: {e}")
-            raise Exception(f"Profile update failed: {str(e)}")
+            raise AuthException(
+                error_code=AuthErrorCode.PROFILE_UPDATE_FAILED,
+                message="Failed to update profile. Please try again.",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
 
     async def switch_role(self, user_id: str, new_role: str) -> Dict[str, Any]:
         """
@@ -415,13 +523,21 @@ class AuthService:
             user_response = self.db.table('users').select('available_roles, active_role, display_name, email').eq('id', user_id).single().execute()
 
             if not user_response.data:
-                raise Exception("User not found")
+                raise AuthException(
+                    error_code=AuthErrorCode.USER_NOT_FOUND,
+                    message="User not found.",
+                    status_code=status.HTTP_404_NOT_FOUND
+                )
 
             available_roles = user_response.data.get('available_roles', [])
             old_role = user_response.data.get('active_role')
 
             if new_role not in available_roles:
-                raise Exception(f"User does not have access to role: {new_role}")
+                raise AuthException(
+                    error_code=AuthErrorCode.ROLE_NOT_AVAILABLE,
+                    message=f"You do not have access to role: {new_role}. Your available roles are: {', '.join(available_roles)}",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
 
             # Update active role
             response = self.db.table('users').update({
@@ -447,9 +563,15 @@ class AuthService:
 
             return response.data[0]
 
+        except AuthException:
+            raise
         except Exception as e:
             logger.error(f"Switch role error: {e}")
-            raise Exception(f"Role switch failed: {str(e)}")
+            raise AuthException(
+                error_code=AuthErrorCode.INTERNAL_ERROR,
+                message="Failed to switch role. Please try again.",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
 
     async def add_role_to_user(self, user_id: str, new_role: str) -> Dict[str, Any]:
         """
@@ -457,18 +579,26 @@ class AuthService:
         """
         try:
             if new_role not in UserRole.all_roles():
-                raise ValueError(f"Invalid role: {new_role}")
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_ROLE,
+                    message=f"Invalid role: {new_role}. Valid roles are: {', '.join(UserRole.all_roles())}",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
 
             # Fetch current roles
             user_response = self.db.table('users').select('available_roles').eq('id', user_id).single().execute()
 
             if not user_response.data:
-                raise Exception("User not found")
+                raise AuthException(
+                    error_code=AuthErrorCode.USER_NOT_FOUND,
+                    message="User not found.",
+                    status_code=status.HTTP_404_NOT_FOUND
+                )
 
             available_roles = user_response.data.get('available_roles', [])
 
             if new_role in available_roles:
-                return {"message": "User already has this role"}
+                return {"message": "User already has this role", "available_roles": available_roles}
 
             # Add new role
             available_roles.append(new_role)
@@ -482,9 +612,15 @@ class AuthService:
 
             return response.data[0]
 
+        except AuthException:
+            raise
         except Exception as e:
             logger.error(f"Add role error: {e}")
-            raise Exception(f"Failed to add role: {str(e)}")
+            raise AuthException(
+                error_code=AuthErrorCode.INTERNAL_ERROR,
+                message="Failed to add role. Please try again.",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
 
     async def delete_user(self, user_id: str) -> Dict[str, str]:
         """

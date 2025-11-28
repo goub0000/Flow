@@ -1,9 +1,11 @@
 """
 Authentication API Endpoints
 Handles user registration, login, logout, password management, and profile operations
+Updated: 2025-11-27 - Enhanced error handling with structured error responses
 """
 from fastapi import APIRouter, Depends, HTTPException, status, Body
 from typing import Dict, Any
+import logging
 
 from app.services.auth_service import (
     AuthService,
@@ -20,6 +22,14 @@ from app.utils.security import (
     CurrentUser,
     require_admin
 )
+from app.utils.exceptions import (
+    AuthException,
+    AuthErrorCode,
+    parse_supabase_auth_error,
+    create_error_response
+)
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -43,16 +53,25 @@ async def register(
     - user: Created user profile
     - message: Success message
     - requires_verification: Whether email verification is required
+
+    **Error Responses:**
+    - 409 EMAIL_ALREADY_EXISTS: Email is already registered
+    - 400 INVALID_ROLE: Invalid role specified
+    - 400 WEAK_PASSWORD: Password does not meet requirements
+    - 400 REGISTRATION_FAILED: General registration failure
     """
     try:
         auth_service = AuthService()
         result = await auth_service.sign_up(signup_data)
         return result
+    except AuthException as e:
+        logger.warning(f"Registration failed for {signup_data.email}: {e.error_code.value}")
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        logger.error(f"Unexpected registration error for {signup_data.email}: {e}")
+        # Parse Supabase errors and convert to structured response
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.post("/auth/login")
@@ -71,16 +90,24 @@ async def login(
     - refresh_token: Refresh token for obtaining new access tokens
     - user: User profile data
     - expires_in: Token expiration time in seconds
+
+    **Error Responses:**
+    - 401 INVALID_CREDENTIALS: Invalid email or password
+    - 404 EMAIL_NOT_FOUND: No account with this email
+    - 403 EMAIL_NOT_VERIFIED: Email not verified
+    - 403 ACCOUNT_DISABLED: Account has been disabled
     """
     try:
         auth_service = AuthService()
         result = await auth_service.sign_in(signin_data)
         return result
+    except AuthException as e:
+        logger.warning(f"Login failed for {signin_data.email}: {e.error_code.value}")
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(e)
-        )
+        logger.error(f"Unexpected login error for {signin_data.email}: {e}")
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.post("/auth/logout")
@@ -100,10 +127,16 @@ async def logout(
         # Pass the access token from current user context
         result = await auth_service.sign_out("")
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Logout error for user {current_user.id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.INTERNAL_ERROR,
+                "Failed to sign out. Please try again."
+            )
         )
 
 
@@ -121,16 +154,21 @@ async def refresh_token(
     - access_token: New JWT access token
     - refresh_token: New refresh token
     - expires_in: Token expiration time in seconds
+
+    **Error Responses:**
+    - 401 REFRESH_TOKEN_INVALID: Refresh token is invalid
+    - 401 REFRESH_TOKEN_EXPIRED: Refresh token has expired
     """
     try:
         auth_service = AuthService()
         result = await auth_service.refresh_token(refresh_token)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(e)
-        )
+        logger.error(f"Token refresh error: {e}")
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.post("/auth/forgot-password")
@@ -145,16 +183,27 @@ async def forgot_password(
 
     **Returns:**
     - message: Success message (email sent)
+
+    **Error Responses:**
+    - 400 PASSWORD_RESET_FAILED: Failed to send reset email
+    - 404 EMAIL_NOT_FOUND: No account with this email (optional security consideration)
     """
     try:
         auth_service = AuthService()
         result = await auth_service.request_password_reset(reset_data.email)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        logger.error(f"Password reset request error for {reset_data.email}: {e}")
+        # For security, we don't reveal if email exists or not
+        # We return success message but log the actual error
+        error_msg = str(e).lower()
+        if "not found" in error_msg or "no user" in error_msg:
+            # Return success to prevent email enumeration attacks
+            return {"message": "If an account exists with this email, a password reset link will be sent."}
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.post("/auth/reset-password")
@@ -171,6 +220,11 @@ async def reset_password(
 
     **Returns:**
     - message: Success message
+
+    **Error Responses:**
+    - 400 TOKEN_INVALID: Reset token is invalid
+    - 400 TOKEN_EXPIRED: Reset token has expired
+    - 400 WEAK_PASSWORD: New password does not meet requirements
     """
     try:
         auth_service = AuthService()
@@ -178,11 +232,12 @@ async def reset_password(
         # For now, this is a placeholder
         result = {"message": "Password reset feature requires additional implementation"}
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        logger.error(f"Password reset error: {e}")
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.post("/auth/update-password")
@@ -201,17 +256,23 @@ async def update_password(
 
     **Returns:**
     - message: Success message
+
+    **Error Responses:**
+    - 400 CURRENT_PASSWORD_INCORRECT: Current password is wrong
+    - 400 WEAK_PASSWORD: New password does not meet requirements
+    - 400 PASSWORD_UPDATE_FAILED: Failed to update password
     """
     try:
         auth_service = AuthService()
         # TODO: Verify current password before updating
         result = await auth_service.update_password(current_user.id, update_data.new_password)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        logger.error(f"Password update error for user {current_user.id}: {e}")
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.get("/auth/verify-email")
@@ -226,16 +287,21 @@ async def verify_email(
 
     **Returns:**
     - message: Success message
+
+    **Error Responses:**
+    - 400 TOKEN_INVALID: Verification token is invalid
+    - 400 TOKEN_EXPIRED: Verification token has expired
     """
     try:
         auth_service = AuthService()
         result = await auth_service.verify_email(token)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        logger.error(f"Email verification error: {e}")
+        auth_error = parse_supabase_auth_error(str(e))
+        raise auth_error.to_http_exception()
 
 
 @router.get("/auth/me")
@@ -252,15 +318,24 @@ async def get_current_user_profile(
       - id, email, display_name
       - active_role, available_roles
       - profile information
+
+    **Error Responses:**
+    - 404 USER_NOT_FOUND: User profile not found
     """
     try:
         auth_service = AuthService()
         result = await auth_service.get_user_profile(current_user.id)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Get profile error for user {current_user.id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.USER_NOT_FOUND,
+                "User profile not found."
+            )
         )
 
 
@@ -282,15 +357,25 @@ async def update_current_user_profile(
 
     **Returns:**
     - Updated user profile
+
+    **Error Responses:**
+    - 400 PROFILE_UPDATE_FAILED: Failed to update profile
+    - 400 VALIDATION_ERROR: Invalid profile data
     """
     try:
         auth_service = AuthService()
         result = await auth_service.update_user_profile(current_user.id, profile_data)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Profile update error for user {current_user.id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.PROFILE_UPDATE_FAILED,
+                "Failed to update profile. Please try again."
+            )
         )
 
 
@@ -309,15 +394,34 @@ async def switch_role(
 
     **Returns:**
     - Updated user profile with new active_role
+
+    **Error Responses:**
+    - 400 ROLE_NOT_AVAILABLE: User does not have access to this role
+    - 400 INVALID_ROLE: Invalid role specified
     """
     try:
         auth_service = AuthService()
         result = await auth_service.switch_role(current_user.id, role_data.new_role)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Role switch error for user {current_user.id}: {e}")
+        error_msg = str(e).lower()
+        if "does not have access" in error_msg or "not available" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=create_error_response(
+                    AuthErrorCode.ROLE_NOT_AVAILABLE,
+                    f"You do not have access to the role: {role_data.new_role}"
+                )
+            )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.INTERNAL_ERROR,
+                "Failed to switch role. Please try again."
+            )
         )
 
 
@@ -332,15 +436,24 @@ async def delete_account(
 
     **Returns:**
     - message: Success message
+
+    **Error Responses:**
+    - 400 INTERNAL_ERROR: Failed to delete account
     """
     try:
         auth_service = AuthService()
         result = await auth_service.delete_user(current_user.id)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Account deletion error for user {current_user.id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.INTERNAL_ERROR,
+                "Failed to delete account. Please try again or contact support."
+            )
         )
 
 
@@ -364,15 +477,42 @@ async def add_role_to_user(
 
     **Returns:**
     - Updated user profile
+
+    **Error Responses:**
+    - 400 INVALID_ROLE: Invalid role specified
+    - 404 USER_NOT_FOUND: User not found
     """
     try:
         auth_service = AuthService()
         result = await auth_service.add_role_to_user(user_id, new_role)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Add role error for user {user_id}: {e}")
+        error_msg = str(e).lower()
+        if "invalid role" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=create_error_response(
+                    AuthErrorCode.INVALID_ROLE,
+                    f"Invalid role: {new_role}"
+                )
+            )
+        if "not found" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=create_error_response(
+                    AuthErrorCode.USER_NOT_FOUND,
+                    "User not found."
+                )
+            )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.INTERNAL_ERROR,
+                "Failed to add role. Please try again."
+            )
         )
 
 
@@ -391,13 +531,22 @@ async def get_user_by_id(
 
     **Returns:**
     - User profile data
+
+    **Error Responses:**
+    - 404 USER_NOT_FOUND: User not found
     """
     try:
         auth_service = AuthService()
         result = await auth_service.get_user_profile(user_id)
         return result
+    except AuthException as e:
+        raise e.to_http_exception()
     except Exception as e:
+        logger.error(f"Get user by ID error for {user_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            detail=create_error_response(
+                AuthErrorCode.USER_NOT_FOUND,
+                "User not found."
+            )
         )

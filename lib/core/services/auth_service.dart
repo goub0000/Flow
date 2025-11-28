@@ -10,6 +10,7 @@ import '../api/api_config.dart';
 import '../api/api_response.dart';
 import '../models/user_model.dart';
 import '../constants/user_roles.dart';
+import '../utils/auth_error_mapper.dart';
 import 'secure_storage_service.dart';
 
 class AuthService {
@@ -129,7 +130,14 @@ class AuthService {
   }) async {
     // Password confirmation is validated on frontend, not sent to backend
     if (password != confirmPassword) {
-      throw Exception('Passwords do not match');
+      return ApiResponse.error(
+        message: 'Passwords do not match. Please make sure both passwords are identical.',
+        error: {
+          'message': 'Passwords do not match.',
+          'suggestion': 'Please make sure both passwords are identical.',
+          'errorType': 'passwordMismatch',
+        },
+      );
     }
 
     try {
@@ -161,9 +169,31 @@ class AuthService {
         },
       );
 
+      // If response has an error, map it to user-friendly message
+      if (!response.success && response.message != null) {
+        final errorInfo = AuthErrorMapper.mapError(response.message);
+        return ApiResponse.error(
+          message: errorInfo.fullMessage,
+          statusCode: response.statusCode,
+          error: {
+            'message': errorInfo.message,
+            'suggestion': errorInfo.suggestion,
+            'errorType': errorInfo.errorType.name,
+          },
+        );
+      }
+
       return response;
     } catch (e) {
-      return ApiResponse.error(message: e.toString());
+      final errorInfo = AuthErrorMapper.mapError(e.toString());
+      return ApiResponse.error(
+        message: errorInfo.fullMessage,
+        error: {
+          'message': errorInfo.message,
+          'suggestion': errorInfo.suggestion,
+          'errorType': errorInfo.errorType.name,
+        },
+      );
     }
   }
 
@@ -197,9 +227,31 @@ class AuthService {
         },
       );
 
+      // If response has an error, map it to user-friendly message
+      if (!response.success && response.message != null) {
+        final errorInfo = AuthErrorMapper.mapError(response.message);
+        return ApiResponse.error(
+          message: errorInfo.fullMessage,
+          statusCode: response.statusCode,
+          error: {
+            'message': errorInfo.message,
+            'suggestion': errorInfo.suggestion,
+            'errorType': errorInfo.errorType.name,
+          },
+        );
+      }
+
       return response;
     } catch (e) {
-      return ApiResponse.error(message: e.toString());
+      final errorInfo = AuthErrorMapper.mapError(e.toString());
+      return ApiResponse.error(
+        message: errorInfo.fullMessage,
+        error: {
+          'message': errorInfo.message,
+          'suggestion': errorInfo.suggestion,
+          'errorType': errorInfo.errorType.name,
+        },
+      );
     }
   }
 
