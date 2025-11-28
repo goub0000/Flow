@@ -165,8 +165,12 @@ def get_application_success_rate(user_id: str, db: Client = Depends(get_db)):
     - distributions: Array of {status, count, percentage} for chart
     """
     try:
-        # Get student profile
+        # Get student profile - handle both user_id (auth) and internal profile ID
         profile_response = db.table('student_profiles').select('id').eq('user_id', user_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id').eq('id', user_id).execute()
 
         if not profile_response.data or len(profile_response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
@@ -255,8 +259,12 @@ def get_gpa_trend(user_id: str, db: Client = Depends(get_db)):
     - average_gpa: Average GPA across all semesters
     """
     try:
-        # Get student profile with current GPA
+        # Get student profile with current GPA - handle both user_id (auth) and internal ID
         profile_response = db.table('student_profiles').select('id, gpa').eq('user_id', user_id).execute()
+
+        if not profile_response.data or len(profile_response.data) == 0:
+            # Try by internal profile id
+            profile_response = db.table('student_profiles').select('id, gpa').eq('id', user_id).execute()
 
         if not profile_response.data or len(profile_response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
