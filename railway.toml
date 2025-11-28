@@ -4,6 +4,8 @@
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
+# Pass environment variables as build arguments for Flutter build
+buildArgs = ["SUPABASE_URL", "SUPABASE_ANON_KEY", "API_BASE_URL"]
 
 [deploy]
 startCommand = "node server.js"
