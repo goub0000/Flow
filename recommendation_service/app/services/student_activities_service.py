@@ -59,80 +59,68 @@ class StudentActivitiesService:
         activities = []
 
         try:
-            # The passed student_id could be either:
-            # 1. A Supabase auth user_id (from /students/me/activities)
-            # 2. An internal student_profiles.id (from /students/{id}/activities)
-            # We need to handle both cases
+            # The passed student_id is the Supabase auth user_id (UUID)
+            # Most tables (applications, achievements, meetings, enrollments) use user_id as student_id
+            # Only student_profiles has an internal integer id, but other tables reference the UUID
 
-            internal_student_id = None
+            # Verify the student exists by checking student_profiles
+            profile_response = db.table('student_profiles').select('id, user_id').eq('user_id', student_id).execute()
 
-            # First, try to find by user_id (auth ID)
-            profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+            if not profile_response.data or len(profile_response.data) == 0:
+                # No student profile found
+                logger.warning(f"No student profile found for user_id: {student_id}")
+                return StudentActivityFeedResponse(
+                    activities=[],
+                    total_count=0,
+                    page=filters.page,
+                    limit=filters.limit,
+                    has_more=False
+                )
 
-            if profile_response.data and len(profile_response.data) > 0:
-                # Found by user_id - use the internal id
-                internal_student_id = profile_response.data[0]['id']
-                logger.info(f"Resolved user_id {student_id} to internal student_id {internal_student_id}")
-            else:
-                # Not found by user_id - check if it's already an internal student_profiles.id
-                profile_by_id = db.table('student_profiles').select('id').eq('id', student_id).execute()
-
-                if profile_by_id.data and len(profile_by_id.data) > 0:
-                    # It's already an internal student_profiles.id
-                    internal_student_id = student_id
-                    logger.info(f"Using passed ID as internal student_id: {internal_student_id}")
-                else:
-                    # No student profile found by either method
-                    logger.warning(f"No student profile found for id: {student_id}")
-                    return StudentActivityFeedResponse(
-                        activities=[],
-                        total_count=0,
-                        page=filters.page,
-                        limit=filters.limit,
-                        has_more=False
-                    )
+            # Use the UUID user_id for all queries (tables use UUID, not internal integer ID)
+            user_id = student_id
+            logger.info(f"Fetching activities for user_id: {user_id}")
 
             # First, try to get from dedicated student_activities table
             stored_activities = await self._get_stored_activities(
-                internal_student_id, filters, db
+                user_id, filters, db
             )
 
             if stored_activities:
                 # If we have stored activities, use them (they're more efficient)
                 activities.extend(stored_activities)
-                logger.info(f"Retrieved {len(stored_activities)} stored activities for student {internal_student_id}")
+                logger.info(f"Retrieved {len(stored_activities)} stored activities for student {user_id}")
             else:
                 # Fallback to real-time aggregation from various tables
-                logger.info(f"No stored activities found, aggregating from source tables for student {internal_student_id}")
+                logger.info(f"No stored activities found, aggregating from source tables for student {user_id}")
 
-                # 1. Application Activities
+                # 1. Application Activities (uses user_id as student_id)
                 application_activities = await self._get_application_activities(
-                    internal_student_id, filters, db
+                    user_id, filters, db
                 )
                 activities.extend(application_activities)
 
-                # 2. Achievement Activities
+                # 2. Achievement Activities - table may not exist yet, gracefully handle
                 achievement_activities = await self._get_achievement_activities(
-                    internal_student_id, filters, db
+                    user_id, filters, db
                 )
                 activities.extend(achievement_activities)
 
-                # 3. Meeting Activities
+                # 3. Meeting Activities (uses user_id as student_id)
                 meeting_activities = await self._get_meeting_activities(
-                    internal_student_id, filters, db
+                    user_id, filters, db
                 )
                 activities.extend(meeting_activities)
 
-                # 4. Message Activities (recent unread messages)
-                # Note: Messages use receiver_id which is the auth user_id, not internal_student_id
+                # 4. Message Activities (uses user_id as receiver_id)
                 message_activities = await self._get_message_activities(
-                    student_id, filters, db  # Use original user_id for messages
+                    user_id, filters, db
                 )
                 activities.extend(message_activities)
 
-                # 5. Enrollment Activities
+                # 5. Enrollment Activities (uses user_id as student_id)
                 enrollment_activities = await self._get_enrollment_activities(
-                    internal_student_id, filters, db
+                    user_id, filters, db
                 )
                 activities.extend(enrollment_activities)
 
@@ -403,36 +391,46 @@ class StudentActivitiesService:
         activities = []
 
         try:
-            # Build query for received messages
-            query = db.table('messages').select('*').eq('receiver_id', student_id)
+            # Try different column names for receiver - schema may vary
+            # Common names: recipient_id, to_user_id, receiver_id, user_id
+            possible_columns = ['recipient_id', 'to_user_id', 'receiver_id']
+            result = None
 
-            # Apply date filters
-            if filters.start_date:
-                query = query.gte('created_at', filters.start_date.isoformat())
-            if filters.end_date:
-                query = query.lte('created_at', filters.end_date.isoformat())
+            for col in possible_columns:
+                try:
+                    query = db.table('messages').select('*').eq(col, student_id)
 
-            # Execute query - only get recent messages
-            result = query.order('created_at', desc=True).limit(10).execute()
+                    # Apply date filters
+                    if filters.start_date:
+                        query = query.gte('created_at', filters.start_date.isoformat())
+                    if filters.end_date:
+                        query = query.lte('created_at', filters.end_date.isoformat())
 
-            for message in result.data:
-                # Only show unread or recent messages (last 7 days)
-                message_date = datetime.fromisoformat(message['created_at'].replace('Z', '+00:00'))
-                if not message.get('is_read') or (datetime.now() - message_date).days <= 7:
-                    activities.append(StudentActivity(
-                        id=f"message_{message['id']}",
-                        timestamp=message_date,
-                        type=StudentActivityType.MESSAGE_RECEIVED,
-                        title=f"New Message from {message.get('sender_name', 'Unknown')}",
-                        description=message.get('subject', 'You have a new message'),
-                        icon="💬",
-                        related_entity_id=message['id'],
-                        metadata={
-                            'sender_name': message.get('sender_name'),
-                            'subject': message.get('subject'),
-                            'is_read': message.get('is_read', False)
-                        }
-                    ))
+                    result = query.order('created_at', desc=True).limit(10).execute()
+                    if result.data is not None:
+                        break  # Found working column
+                except Exception:
+                    continue
+
+            if result and result.data:
+                for message in result.data:
+                    # Only show unread or recent messages (last 7 days)
+                    message_date = datetime.fromisoformat(message['created_at'].replace('Z', '+00:00'))
+                    if not message.get('is_read') or (datetime.now() - message_date).days <= 7:
+                        activities.append(StudentActivity(
+                            id=f"message_{message['id']}",
+                            timestamp=message_date,
+                            type=StudentActivityType.MESSAGE_RECEIVED,
+                            title=f"New Message from {message.get('sender_name', 'Unknown')}",
+                            description=message.get('subject', 'You have a new message'),
+                            icon="💬",
+                            related_entity_id=message['id'],
+                            metadata={
+                                'sender_name': message.get('sender_name'),
+                                'subject': message.get('subject'),
+                                'is_read': message.get('is_read', False)
+                            }
+                        ))
 
         except Exception as e:
             logger.error(f"Error fetching message activities: {e}")
@@ -449,8 +447,8 @@ class StudentActivitiesService:
         activities = []
 
         try:
-            # Build query
-            query = db.table('enrollments').select('*, course:courses(*)').eq('student_id', student_id)
+            # Build query - don't assume courses relationship exists
+            query = db.table('enrollments').select('*').eq('student_id', student_id)
 
             # Apply date filters
             if filters.start_date:
@@ -462,23 +460,26 @@ class StudentActivitiesService:
             result = query.order('enrolled_at', desc=True).limit(20).execute()
 
             for enrollment in result.data:
-                course = enrollment.get('course', {})
+                # Get course name from enrollment or use placeholder
+                course_name = enrollment.get('course_name') or enrollment.get('program_name') or 'a course'
+                course_code = enrollment.get('course_code') or enrollment.get('program_code') or ''
 
                 # Course enrollment
-                activities.append(StudentActivity(
-                    id=f"enrollment_{enrollment['id']}",
-                    timestamp=datetime.fromisoformat(enrollment['enrolled_at'].replace('Z', '+00:00')),
-                    type=StudentActivityType.COURSE_COMPLETED,  # Using this for now
-                    title="Course Enrolled",
-                    description=f"Enrolled in {course.get('name', 'a course')}",
-                    icon="📚",
-                    related_entity_id=enrollment['id'],
-                    metadata={
-                        'course_name': course.get('name'),
-                        'course_code': course.get('code'),
-                        'status': enrollment.get('status')
-                    }
-                ))
+                if enrollment.get('enrolled_at'):
+                    activities.append(StudentActivity(
+                        id=f"enrollment_{enrollment['id']}",
+                        timestamp=datetime.fromisoformat(enrollment['enrolled_at'].replace('Z', '+00:00')),
+                        type=StudentActivityType.COURSE_COMPLETED,  # Using this for now
+                        title="Course Enrolled",
+                        description=f"Enrolled in {course_name}",
+                        icon="📚",
+                        related_entity_id=str(enrollment['id']),
+                        metadata={
+                            'course_name': course_name,
+                            'course_code': course_code,
+                            'status': enrollment.get('status')
+                        }
+                    ))
 
                 # Course completion
                 if enrollment.get('completed_at'):
@@ -487,12 +488,12 @@ class StudentActivitiesService:
                         timestamp=datetime.fromisoformat(enrollment['completed_at'].replace('Z', '+00:00')),
                         type=StudentActivityType.COURSE_COMPLETED,
                         title="Course Completed",
-                        description=f"Completed {course.get('name', 'a course')}",
+                        description=f"Completed {course_name}",
                         icon="🎓",
-                        related_entity_id=enrollment['id'],
+                        related_entity_id=str(enrollment['id']),
                         metadata={
-                            'course_name': course.get('name'),
-                            'course_code': course.get('code'),
+                            'course_name': course_name,
+                            'course_code': course_code,
                             'grade': enrollment.get('final_grade')
                         }
                     ))
