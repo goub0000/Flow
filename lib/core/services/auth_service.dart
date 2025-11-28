@@ -342,23 +342,17 @@ class AuthService {
     String? fullName,
     String? phoneNumber,
     String? bio,
-    Map<String, dynamic>? metadata,
   }) async {
     try {
-      final requestData = {
-        if (fullName != null) 'display_name': fullName,
-        if (phoneNumber != null) 'phone_number': phoneNumber,
-        if (metadata != null) 'metadata': metadata,
-      };
-      _logger.info('updateProfile: Sending PATCH with data: $requestData');
-
       final response = await _apiClient.patch(
         '${ApiConfig.auth}/profile',
-        data: requestData,
+        data: {
+          if (fullName != null) 'full_name': fullName,
+          if (phoneNumber != null) 'phone_number': phoneNumber,
+          if (bio != null) 'bio': bio,
+        },
         fromJson: (data) {
-          _logger.info('updateProfile: Received response data: $data');
           final user = UserModel.fromJson(data);
-          _logger.info('updateProfile: Parsed user - displayName: ${user.displayName}, metadata: ${user.metadata}');
           _currentUser = user;
 
           // Update stored user data
@@ -368,10 +362,8 @@ class AuthService {
         },
       );
 
-      _logger.info('updateProfile: Response success: ${response.success}');
       return response;
     } catch (e) {
-      _logger.severe('updateProfile: Error - $e');
       return ApiResponse.error(message: e.toString());
     }
   }

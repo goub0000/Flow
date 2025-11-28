@@ -109,23 +109,19 @@ class UserModel {
     return UserModel(
       id: json['id'] as String,
       email: json['email'] as String,
-      displayName: (json['display_name'] ?? json['displayName']) as String?,
-      phoneNumber: (json['phone_number'] ?? json['phoneNumber']) as String?,
-      photoUrl: (json['photo_url'] ?? json['photoUrl']) as String?,
-      activeRole: UserRoleExtension.fromString(
-        (json['active_role'] ?? json['activeRole'] ?? 'student') as String,
-      ),
-      availableRoles: ((json['available_roles'] ?? json['availableRoles'] ?? ['student']) as List)
+      displayName: json['display_name'] as String?,
+      phoneNumber: json['phone_number'] as String?,
+      photoUrl: json['photo_url'] as String?,
+      activeRole: UserRoleExtension.fromString(json['active_role'] as String),
+      availableRoles: (json['available_roles'] as List)
           .map((r) => UserRoleExtension.fromString(r as String))
           .toList(),
-      createdAt: DateTime.parse(
-        (json['created_at'] ?? json['createdAt'] ?? DateTime.now().toIso8601String()) as String,
-      ),
-      lastLoginAt: (json['last_login_at'] ?? json['lastLoginAt']) != null
-          ? DateTime.parse((json['last_login_at'] ?? json['lastLoginAt']) as String)
+      createdAt: DateTime.parse(json['created_at'] as String),
+      lastLoginAt: json['last_login_at'] != null
+          ? DateTime.parse(json['last_login_at'] as String)
           : null,
-      isEmailVerified: (json['is_email_verified'] ?? json['email_verified'] ?? json['isEmailVerified']) as bool? ?? false,
-      isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified'] ?? json['isPhoneVerified']) as bool? ?? false,
+      isEmailVerified: (json['is_email_verified'] ?? json['email_verified']) as bool? ?? false,
+      isPhoneVerified: (json['is_phone_verified'] ?? json['phone_verified']) as bool? ?? false,
       metadata: json['metadata'] as Map<String, dynamic>?,
     );
   }
