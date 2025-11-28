@@ -167,9 +167,21 @@ async def get_student_activities(
     - Student activity feed response
     """
     try:
+        # Resolve the student_id - it could be auth user_id OR internal student_profiles.id
+        # First check if it matches current user's auth id directly
+        is_own_profile = (current_user.id == student_id)
+
+        # If not a direct match, check if student_id is an internal profile id
+        # that belongs to the current user
+        if not is_own_profile:
+            profile_check = db.table('student_profiles').select('user_id').eq('id', student_id).execute()
+            if profile_check.data and len(profile_check.data) > 0:
+                profile_user_id = profile_check.data[0].get('user_id')
+                is_own_profile = (profile_user_id == current_user.id)
+
         # Authorization check
         # Student can only view their own activities
-        if current_user.role == 'student' and current_user.id != student_id:
+        if current_user.role == 'student' and not is_own_profile:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="You can only view your own activities"
@@ -179,7 +191,7 @@ async def get_student_activities(
         # (This would require additional logic to verify relationship)
         # For now, we'll allow admins, parents, and counselors
         allowed_roles = ['admin_super', 'admin_content', 'parent', 'counselor']
-        if current_user.role not in allowed_roles and current_user.id != student_id:
+        if current_user.role not in allowed_roles and not is_own_profile:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Not authorized to view this student's activities"
