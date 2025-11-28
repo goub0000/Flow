@@ -154,39 +154,98 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
       // Return the profile content wrapped in RefreshIndicator
       print('[DEBUG] ProfileScreen: Rendering profile content for user: ${user.email}');
+      print('[DEBUG] ProfileScreen: user.displayName: ${user.displayName}');
+      print('[DEBUG] ProfileScreen: user.photoUrl: ${user.photoUrl}');
+
+      // Build profile content with error boundary
+      Widget profileContent;
       try {
-        return RefreshIndicator(
-          onRefresh: () async {
-            await ref.read(profileProvider.notifier).refresh();
-          },
-          child: _buildProfileContent(user, completeness, theme, context),
-        );
+        profileContent = _buildProfileContent(user, completeness, theme, context);
+        print('[DEBUG] ProfileScreen: _buildProfileContent succeeded');
       } catch (e, stack) {
-        print('[ERROR] ProfileScreen: Error rendering profile content: $e');
+        print('[ERROR] ProfileScreen: Error in _buildProfileContent: $e');
         print('[ERROR] Stack trace: $stack');
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                const SizedBox(height: 24),
-                Text('Error rendering profile', style: theme.textTheme.headlineSmall),
-                const SizedBox(height: 12),
-                Text(e.toString(), textAlign: TextAlign.center),
-                const SizedBox(height: 24),
-                ElevatedButton.icon(
-                  onPressed: () => ref.read(profileProvider.notifier).loadProfile(),
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
-                ),
-              ],
+        // Return simple fallback content
+        profileContent = _buildSimpleProfileFallback(user, theme, context);
+      }
+
+      return RefreshIndicator(
+        onRefresh: () async {
+          await ref.read(profileProvider.notifier).refresh();
+        },
+        child: profileContent,
+      );
+    }
+
+  /// Simple fallback profile content when main content fails
+  Widget _buildSimpleProfileFallback(dynamic user, ThemeData theme, BuildContext context) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 32),
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: AppColors.primary,
+            child: Text(
+              user.initials ?? 'U',
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
-        );
-      }
-    }
+          const SizedBox(height: 16),
+          Text(
+            user.displayName ?? user.email ?? 'User',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            user.email ?? '',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Role'),
+                    subtitle: Text(user.role?.toString() ?? 'Student'),
+                  ),
+                  if (user.phoneNumber != null)
+                    ListTile(
+                      leading: const Icon(Icons.phone),
+                      title: const Text('Phone'),
+                      subtitle: Text(user.phoneNumber),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {
+              context.push('/profile/edit');
+            },
+            icon: const Icon(Icons.edit),
+            label: const Text('Edit Profile'),
+          ),
+        ],
+      ),
+    );
+  }
 
     // Original behavior for standalone profile screen (with back button)
     // Handle error state first for standalone screen
