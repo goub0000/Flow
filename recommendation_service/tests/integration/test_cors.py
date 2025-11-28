@@ -207,7 +207,7 @@ class TestCORSOnDifferentEndpoints:
         """Test CORS on universities endpoint"""
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{API_BASE_URL}/api/universities",
+                f"{API_BASE_URL}/api/v1/universities",
                 headers={"Origin": FRONTEND_URL}
             )
 
