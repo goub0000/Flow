@@ -35,13 +35,15 @@ class ConsentService {
         json,
       );
 
-      // Save to Supabase for admin tracking (only if user is authenticated)
-      // RLS policies require user_id = auth.uid(), so skip if not authenticated
+      // Save to Supabase for admin tracking
+      // RLS policies require user_id = auth.uid()
       final currentUser = _supabase.auth.currentUser;
-      if (currentUser != null && currentUser.id == consent.userId) {
+      if (currentUser != null) {
         try {
+          // Use the authenticated user's ID to satisfy RLS policies
+          final userId = currentUser.id;
           final consentData = {
-            'user_id': consent.userId,
+            'user_id': userId,
             'necessary': consent.categoryConsents[CookieCategory.essential] ?? true,
             'preferences': consent.categoryConsents[CookieCategory.functional] ?? false,
             'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
@@ -56,7 +58,7 @@ class ConsentService {
           final existing = await _supabase
               .from('cookie_consents')
               .select('id')
-              .eq('user_id', consent.userId)
+              .eq('user_id', userId)
               .maybeSingle();
 
           if (existing != null) {
@@ -64,19 +66,19 @@ class ConsentService {
             await _supabase
                 .from('cookie_consents')
                 .update(consentData)
-                .eq('user_id', consent.userId);
+                .eq('user_id', userId);
           } else {
             // Insert new consent
             await _supabase.from('cookie_consents').insert(consentData);
           }
 
-          print('[ConsentService] Successfully saved consent to Supabase for user: ${consent.userId}');
+          print('[ConsentService] Successfully saved consent to Supabase for user: $userId');
         } catch (e) {
           print('[ConsentService] Failed to save consent to Supabase: $e');
           // Don't fail the entire operation if Supabase save fails
         }
       } else {
-        print('[ConsentService] Skipping Supabase save - user not authenticated or ID mismatch');
+        print('[ConsentService] Skipping Supabase save - user not authenticated');
       }
 
       return localSaveSuccess;
