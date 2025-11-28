@@ -1688,26 +1688,41 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
       }
 
       // Update profile via provider
-      await ref.read(profileProvider.notifier).updateProfile(
+      final success = await ref.read(profileProvider.notifier).updateProfile(
         displayName: _nameController.text,
         phoneNumber: _phoneController.text,
         additionalMetadata: metadata,
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile updated successfully!'),
-            backgroundColor: AppColors.success,
-          ),
-        );
+        if (success) {
+          // Refresh the profile to ensure we have the latest data
+          await ref.read(profileProvider.notifier).refresh();
 
-        setState(() {
-          _hasUnsavedChanges = false;
-          _isSubmitting = false;
-        });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Profile updated successfully!'),
+              backgroundColor: AppColors.success,
+            ),
+          );
 
-        context.pop();
+          setState(() {
+            _hasUnsavedChanges = false;
+            _isSubmitting = false;
+          });
+
+          context.pop();
+        } else {
+          // Get error from provider state
+          final error = ref.read(profileProvider).error ?? 'Failed to update profile';
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: AppColors.error,
+            ),
+          );
+          setState(() => _isSubmitting = false);
+        }
       }
     } catch (e) {
       if (mounted) {

@@ -151,10 +151,14 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       // Use displayName as fullName if provided
       final nameToUpdate = displayName ?? fullName;
 
+      // Extract bio from additionalMetadata if not provided directly
+      final bioToUpdate = bio ?? additionalMetadata?['bio'] as String?;
+
       final response = await _authService.updateProfile(
         fullName: nameToUpdate,
         phoneNumber: phoneNumber,
-        bio: bio,
+        bio: bioToUpdate,
+        metadata: additionalMetadata,
       );
 
       if (response.success && response.data != null) {
