@@ -288,7 +288,13 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
             ? null
             : IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () => context.pop(),
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.go('/login');
+                  }
+                },
               ),
       ),
       body: _isLoading && !_isDeviceSupported
@@ -560,7 +566,13 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         ),
         const SizedBox(height: 32),
         ElevatedButton(
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/login');
+            }
+          },
           child: const Text('Go Back'),
         ),
       ],
@@ -619,7 +631,13 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         ),
         const SizedBox(height: 12),
         TextButton(
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/login');
+            }
+          },
           child: const Text('Go Back'),
         ),
       ],

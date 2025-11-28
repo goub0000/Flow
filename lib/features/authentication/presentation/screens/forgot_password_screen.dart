@@ -103,7 +103,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            // Use canPop to check if there's something to pop, otherwise go to login
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/login');
+            }
+          },
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -202,7 +209,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
           // Back to Login
           TextButton(
-            onPressed: _isLoading ? null : () => context.pop(),
+            onPressed: _isLoading ? null : () => context.go('/login'),
             child: const Text('Back to Login'),
           ),
         ],
@@ -325,7 +332,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
         // Back to Login
         TextButton(
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/login'),
           child: const Text('Back to Login'),
         ),
       ],
