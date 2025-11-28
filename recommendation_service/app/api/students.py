@@ -285,14 +285,14 @@ def get_gpa_trend(user_id: str, db: Client = Depends(get_db)):
             raise HTTPException(status_code=404, detail="Student profile not found")
 
         student_profile = profile_response.data[0]
-        current_gpa = student_profile.get('gpa', 0.0)
+        current_gpa = student_profile.get('gpa') or 0.0  # Handle None values
 
         # Try to get GPA history from gpa_history table (Phase 3.4)
         # gpa_history.student_id references auth.users(id) which is UUID
         try:
             gpa_history_response = db.table('gpa_history').select(
                 'semester, school_year, gpa, calculated_at'
-            ).eq('student_id', auth_user_id).order('school_year, semester').execute()
+            ).eq('student_id', auth_user_id).order('school_year').order('semester').execute()
 
             if gpa_history_response.data and len(gpa_history_response.data) > 0:
                 # We have historical data
