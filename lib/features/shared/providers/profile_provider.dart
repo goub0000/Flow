@@ -37,11 +37,37 @@ class ProfileState {
 class ProfileNotifier extends StateNotifier<ProfileState> {
   final Ref ref;
   final AuthService _authService;
+  bool _isListeningToAuth = false;
 
   ProfileNotifier(this.ref, this._authService) : super(const ProfileState()) {
     // Load profile immediately
     print('[DEBUG] ProfileNotifier initialized - loading profile');
     loadProfile();
+
+    // Listen to auth state changes to reload profile when auth becomes available
+    _listenToAuthChanges();
+  }
+
+  /// Listen to auth state changes and reload profile when user becomes available
+  void _listenToAuthChanges() {
+    if (_isListeningToAuth) return;
+    _isListeningToAuth = true;
+
+    ref.listen(currentUserProvider, (previous, next) {
+      print('[DEBUG] ProfileNotifier: Auth state changed - previous: ${previous != null}, next: ${next != null}');
+
+      // If user just became available and we don't have profile data, reload
+      if (previous == null && next != null && state.user == null) {
+        print('[DEBUG] ProfileNotifier: User just logged in, reloading profile');
+        loadProfile();
+      }
+
+      // If user logged out, clear profile
+      if (previous != null && next == null) {
+        print('[DEBUG] ProfileNotifier: User logged out, clearing profile');
+        state = const ProfileState();
+      }
+    });
   }
 
   /// Load user profile from backend API
@@ -50,10 +76,26 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
+      // Wait for auth service session to load first
+      await _authService.waitForSessionLoad();
+
       // Get current user from auth provider
       final currentUser = ref.read(currentUserProvider);
 
+      // If auth is still loading, wait a moment and check again
+      if (currentUser == null && ref.read(authProvider).isLoading) {
+        print('[DEBUG] ProfileNotifier: Auth still loading, waiting...');
+        // Wait for a short time to allow auth to complete
+        await Future.delayed(const Duration(milliseconds: 500));
+        final retryUser = ref.read(currentUserProvider);
+        if (retryUser != null) {
+          print('[DEBUG] ProfileNotifier: Auth completed after wait');
+          return _loadProfileForUser(retryUser);
+        }
+      }
+
       if (currentUser == null) {
+        print('[DEBUG] ProfileNotifier: No user logged in');
         state = state.copyWith(
           error: 'No user logged in',
           isLoading: false,
@@ -61,28 +103,33 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         return;
       }
 
-      // Fetch fresh user data from backend
-      final response = await _authService.getCurrentUser();
-
-      if (response.success && response.data != null) {
-        print('[DEBUG] Profile loaded successfully');
-        state = state.copyWith(
-          user: response.data,
-          isLoading: false,
-        );
-
-        // Update auth provider with fresh data
-        ref.read(authProvider.notifier).refreshUser();
-      } else {
-        print('[DEBUG] Profile load failed, using cached user');
-        state = state.copyWith(
-          user: currentUser,
-          isLoading: false,
-        );
-      }
+      await _loadProfileForUser(currentUser);
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to load profile: ${e.toString()}',
+        isLoading: false,
+      );
+    }
+  }
+
+  /// Helper to load profile for a specific user
+  Future<void> _loadProfileForUser(UserModel currentUser) async {
+    // Fetch fresh user data from backend
+    final response = await _authService.getCurrentUser();
+
+    if (response.success && response.data != null) {
+      print('[DEBUG] Profile loaded successfully');
+      state = state.copyWith(
+        user: response.data,
+        isLoading: false,
+      );
+
+      // Update auth provider with fresh data
+      ref.read(authProvider.notifier).refreshUser();
+    } else {
+      print('[DEBUG] Profile load failed, using cached user');
+      state = state.copyWith(
+        user: currentUser,
         isLoading: false,
       );
     }

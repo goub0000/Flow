@@ -23,8 +23,12 @@ class AuthService {
   String? _accessToken;
   String? _refreshToken;
 
+  /// Completer to track session loading state
+  late final Future<void> _sessionLoadFuture;
+  bool _sessionLoaded = false;
+
   AuthService(this._apiClient, this._prefs, this._secureStorage) {
-    _loadSession();
+    _sessionLoadFuture = _loadSession();
   }
 
   /// Get current user
@@ -35,6 +39,12 @@ class AuthService {
 
   /// Get current access token
   String? get accessToken => _accessToken;
+
+  /// Check if session has been loaded from storage
+  bool get isSessionLoaded => _sessionLoaded;
+
+  /// Wait for the session to be loaded from storage
+  Future<void> waitForSessionLoad() => _sessionLoadFuture;
 
   /// Load session from storage
   Future<void> _loadSession() async {
@@ -57,9 +67,11 @@ class AuthService {
       if (_accessToken != null) {
         _logger.info('Session loaded from secure storage');
       }
+      _sessionLoaded = true;
     } catch (e) {
       _logger.warning('Error loading session', e);
       await clearSession();
+      _sessionLoaded = true; // Mark as loaded even on error
     }
   }
 

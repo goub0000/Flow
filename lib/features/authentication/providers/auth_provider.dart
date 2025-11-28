@@ -60,12 +60,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true);
 
     try {
+      // Wait for the session to be loaded from storage first
+      await _authService.waitForSessionLoad();
+
       // Check if user is already logged in
       if (_authService.isAuthenticated) {
         final user = _authService.currentUser;
         final token = _authService.accessToken;
+        _logger.info('Session restored for user: ${user?.email}');
         state = state.copyWith(user: user, accessToken: token, isLoading: false);
       } else {
+        _logger.info('No stored session found');
         state = state.copyWith(isLoading: false);
       }
     } catch (e) {
