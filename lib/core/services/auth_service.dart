@@ -347,7 +347,7 @@ class AuthService {
       final response = await _apiClient.patch(
         '${ApiConfig.auth}/profile',
         data: {
-          if (fullName != null) 'full_name': fullName,
+          if (fullName != null) 'display_name': fullName,
           if (phoneNumber != null) 'phone_number': phoneNumber,
           if (bio != null) 'bio': bio,
         },
