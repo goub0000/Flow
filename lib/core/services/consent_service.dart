@@ -1,16 +1,17 @@
 // lib/core/services/consent_service.dart
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/user_consent.dart';
 import '../constants/cookie_constants.dart';
+import '../api/api_config.dart';
 
 class ConsentService {
   final SharedPreferences _prefs;
-  final SupabaseClient _supabase;
+  final http.Client _httpClient;
 
-  ConsentService(this._prefs) : _supabase = Supabase.instance.client;
+  ConsentService(this._prefs) : _httpClient = http.Client();
 
   /// Get current user consent
   Future<UserConsent?> getUserConsent(String userId) async {
@@ -25,8 +26,8 @@ class ConsentService {
     }
   }
 
-  /// Save user consent (both locally and to Supabase)
-  Future<bool> saveUserConsent(UserConsent consent) async {
+  /// Save user consent (both locally and to backend API)
+  Future<bool> saveUserConsent(UserConsent consent, {String? accessToken}) async {
     try {
       // Save to local storage for quick access
       final json = jsonEncode(consent.toJson());
@@ -35,50 +36,38 @@ class ConsentService {
         json,
       );
 
-      // Save to Supabase for admin tracking
-      // RLS policies require user_id = auth.uid()
-      final currentUser = _supabase.auth.currentUser;
-      if (currentUser != null) {
+      // Save to backend API for server-side tracking
+      if (accessToken != null && accessToken.isNotEmpty) {
         try {
-          // Use the authenticated user's ID to satisfy RLS policies
-          final userId = currentUser.id;
           final consentData = {
-            'user_id': userId,
             'necessary': consent.categoryConsents[CookieCategory.essential] ?? true,
             'preferences': consent.categoryConsents[CookieCategory.functional] ?? false,
             'analytics': consent.categoryConsents[CookieCategory.analytics] ?? false,
             'marketing': consent.categoryConsents[CookieCategory.marketing] ?? false,
-            'consent_date': consent.timestamp.toIso8601String(),
-            'last_updated': DateTime.now().toIso8601String(),
             'ip_address': consent.ipAddress,
             'user_agent': consent.userAgent,
           };
 
-          // Check if consent already exists for this user
-          final existing = await _supabase
-              .from('cookie_consents')
-              .select('id')
-              .eq('user_id', userId)
-              .maybeSingle();
+          final response = await _httpClient.post(
+            Uri.parse('${ApiConfig.baseUrl}${ApiConfig.consent}'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $accessToken',
+            },
+            body: jsonEncode(consentData),
+          );
 
-          if (existing != null) {
-            // Update existing consent
-            await _supabase
-                .from('cookie_consents')
-                .update(consentData)
-                .eq('user_id', userId);
+          if (response.statusCode == 201 || response.statusCode == 200) {
+            print('[ConsentService] Successfully saved consent to backend');
           } else {
-            // Insert new consent
-            await _supabase.from('cookie_consents').insert(consentData);
+            print('[ConsentService] Backend save failed: ${response.statusCode} - ${response.body}');
           }
-
-          print('[ConsentService] Successfully saved consent to Supabase for user: $userId');
         } catch (e) {
-          print('[ConsentService] Failed to save consent to Supabase: $e');
-          // Don't fail the entire operation if Supabase save fails
+          print('[ConsentService] Failed to save consent to backend: $e');
+          // Don't fail the entire operation if backend save fails
         }
       } else {
-        print('[ConsentService] Skipping Supabase save - user not authenticated');
+        print('[ConsentService] Skipping backend save - no access token');
       }
 
       return localSaveSuccess;
@@ -89,22 +78,23 @@ class ConsentService {
   }
 
   /// Accept all cookies
-  Future<bool> acceptAll(String userId) async {
+  Future<bool> acceptAll(String userId, {String? accessToken}) async {
     final consent = UserConsent.acceptAll(userId);
-    return await saveUserConsent(consent);
+    return await saveUserConsent(consent, accessToken: accessToken);
   }
 
   /// Accept essential only
-  Future<bool> acceptEssentialOnly(String userId) async {
+  Future<bool> acceptEssentialOnly(String userId, {String? accessToken}) async {
     final consent = UserConsent.essentialOnly(userId);
-    return await saveUserConsent(consent);
+    return await saveUserConsent(consent, accessToken: accessToken);
   }
 
   /// Update category consents
   Future<bool> updateConsent(
     String userId,
-    Map<CookieCategory, bool> categories,
-  ) async {
+    Map<CookieCategory, bool> categories, {
+    String? accessToken,
+  }) async {
     final current = await getUserConsent(userId);
     if (current == null) {
       // Create new consent with custom categories
@@ -121,11 +111,11 @@ class ConsentService {
           Duration(days: CookieConstants.consentValidityDays),
         ),
       );
-      return await saveUserConsent(consent);
+      return await saveUserConsent(consent, accessToken: accessToken);
     }
 
     final updated = current.updateCategories(categories);
-    return await saveUserConsent(updated);
+    return await saveUserConsent(updated, accessToken: accessToken);
   }
 
   /// Check if consent is needed
@@ -174,68 +164,29 @@ class ConsentService {
     }
   }
 
-  /// Get consent statistics (for admin dashboard) - Queries Supabase for global data
+  /// Get consent statistics (for admin dashboard)
+  /// Note: Admin statistics should be fetched from a backend admin endpoint
+  /// This method returns empty stats as a placeholder
   Future<Map<String, dynamic>> getConsentStatistics() async {
-    try {
-      // Query all cookie consents from Supabase
-      final consents = await _supabase.from('cookie_consents').select('*') as List<dynamic>;
-
-      int total = consents.length;
-      int fullConsent = 0; // Users who consented to all categories
-      int partialConsent = 0; // Users who consented to some categories
-      int essentialOnly = 0; // Users who only have essential (necessary) cookies
-
-      Map<String, int> categoryStats = {
+    // Admin statistics should be implemented via a backend admin endpoint
+    // This is a placeholder that returns empty stats
+    print('[ConsentService] getConsentStatistics: Use backend admin endpoint for statistics');
+    return {
+      'totalUsers': 0,
+      'fullConsent': 0,
+      'partialConsent': 0,
+      'essentialOnly': 0,
+      'categoryStats': {
         'necessary': 0,
         'preferences': 0,
         'analytics': 0,
         'marketing': 0,
-      };
+      },
+    };
+  }
 
-      for (final consent in consents) {
-        // Count category consents
-        final necessary = consent['necessary'] == true;
-        final preferences = consent['preferences'] == true;
-        final analytics = consent['analytics'] == true;
-        final marketing = consent['marketing'] == true;
-
-        if (necessary) categoryStats['necessary'] = (categoryStats['necessary'] ?? 0) + 1;
-        if (preferences) categoryStats['preferences'] = (categoryStats['preferences'] ?? 0) + 1;
-        if (analytics) categoryStats['analytics'] = (categoryStats['analytics'] ?? 0) + 1;
-        if (marketing) categoryStats['marketing'] = (categoryStats['marketing'] ?? 0) + 1;
-
-        // Categorize user consent level
-        if (necessary && preferences && analytics && marketing) {
-          fullConsent++;
-        } else if (preferences || analytics || marketing) {
-          partialConsent++;
-        } else {
-          essentialOnly++;
-        }
-      }
-
-      return {
-        'totalUsers': total,
-        'fullConsent': fullConsent,
-        'partialConsent': partialConsent,
-        'essentialOnly': essentialOnly,
-        'categoryStats': categoryStats,
-      };
-    } catch (e) {
-      print('[ConsentService] Error fetching consent statistics from Supabase: $e');
-      // Fallback to empty stats
-      return {
-        'totalUsers': 0,
-        'fullConsent': 0,
-        'partialConsent': 0,
-        'essentialOnly': 0,
-        'categoryStats': {
-          'necessary': 0,
-          'preferences': 0,
-          'analytics': 0,
-          'marketing': 0,
-        },
-      };
-    }
+  /// Dispose resources
+  void dispose() {
+    _httpClient.close();
   }
 }

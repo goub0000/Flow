@@ -84,3 +84,9 @@ final currentUserIdProvider = Provider<String?>((ref) {
   final authState = ref.watch(authProvider);
   return authState.user?.id;
 });
+
+/// Access token provider (from auth)
+final accessTokenProvider = Provider<String?>((ref) {
+  final authState = ref.watch(authProvider);
+  return authState.accessToken;
+});

@@ -71,7 +71,8 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
     if (userId == null) return;
 
     final service = ref.read(consentServiceProvider);
-    final success = await service.acceptAll(userId);
+    final accessToken = ref.read(accessTokenProvider);
+    final success = await service.acceptAll(userId, accessToken: accessToken);
 
     if (success && mounted) {
       // Mark as handled for this session to prevent re-showing
@@ -101,7 +102,8 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
     if (userId == null) return;
 
     final service = ref.read(consentServiceProvider);
-    final success = await service.acceptEssentialOnly(userId);
+    final accessToken = ref.read(accessTokenProvider);
+    final success = await service.acceptEssentialOnly(userId, accessToken: accessToken);
 
     if (success && mounted) {
       // Mark as handled for this session to prevent re-showing

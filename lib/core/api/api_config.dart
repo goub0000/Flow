@@ -122,6 +122,7 @@ class ApiConfig {
   static const String admin = '/admin';
   static const String recommender = '/recommender';
   static const String documents = '/documents';
+  static const String consent = '/consent';
 
   // Storage keys
   static const String accessTokenKey = 'access_token';
