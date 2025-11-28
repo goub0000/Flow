@@ -54,14 +54,22 @@ def create_or_update_student_profile(
 
 @router.get("/students/profile/{user_id}", response_model=StudentProfileResponse)
 def get_student_profile(user_id: str, db: Client = Depends(get_db)):
-    """Get a student profile by user ID"""
+    """Get a student profile by user ID or internal profile ID"""
     try:
+        # First try to find by user_id (auth ID)
         response = db.table('student_profiles').select('*').eq('user_id', user_id).execute()
 
-        if not response.data or len(response.data) == 0:
-            raise HTTPException(status_code=404, detail="Student profile not found")
+        if response.data and len(response.data) > 0:
+            return response.data[0]
 
-        return response.data[0]
+        # If not found, try by internal profile id
+        response = db.table('student_profiles').select('*').eq('id', user_id).execute()
+
+        if response.data and len(response.data) > 0:
+            logger.info(f"Found profile by internal id: {user_id}")
+            return response.data[0]
+
+        raise HTTPException(status_code=404, detail="Student profile not found")
 
     except HTTPException:
         raise
@@ -74,10 +82,17 @@ def get_student_profile(user_id: str, db: Client = Depends(get_db)):
 def update_student_profile(
     user_id: str, profile_data: StudentProfileUpdate, db: Client = Depends(get_db)
 ):
-    """Update a student profile"""
+    """Update a student profile by user ID or internal profile ID"""
     try:
-        # Check if profile exists
-        response = db.table('student_profiles').select('id').eq('user_id', user_id).execute()
+        # First try to find by user_id (auth ID)
+        response = db.table('student_profiles').select('id, user_id').eq('user_id', user_id).execute()
+        lookup_field = 'user_id'
+        lookup_value = user_id
+
+        if not response.data or len(response.data) == 0:
+            # Try by internal profile id
+            response = db.table('student_profiles').select('id, user_id').eq('id', user_id).execute()
+            lookup_field = 'id'
 
         if not response.data or len(response.data) == 0:
             raise HTTPException(status_code=404, detail="Student profile not found")
@@ -87,10 +102,10 @@ def update_student_profile(
 
         if not update_data:
             # No fields to update
-            response = db.table('student_profiles').select('*').eq('user_id', user_id).execute()
+            response = db.table('student_profiles').select('*').eq(lookup_field, lookup_value).execute()
             return response.data[0]
 
-        result = db.table('student_profiles').update(update_data).eq('user_id', user_id).execute()
+        result = db.table('student_profiles').update(update_data).eq(lookup_field, lookup_value).execute()
 
         logger.info(f"Updated profile for user: {user_id}")
         return result.data[0]
