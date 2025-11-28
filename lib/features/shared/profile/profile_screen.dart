@@ -153,12 +153,39 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
 
       // Return the profile content wrapped in RefreshIndicator
-      return RefreshIndicator(
-        onRefresh: () async {
-          await ref.read(profileProvider.notifier).refresh();
-        },
-        child: _buildProfileContent(user, completeness, theme, context),
-      );
+      print('[DEBUG] ProfileScreen: Rendering profile content for user: ${user.email}');
+      try {
+        return RefreshIndicator(
+          onRefresh: () async {
+            await ref.read(profileProvider.notifier).refresh();
+          },
+          child: _buildProfileContent(user, completeness, theme, context),
+        );
+      } catch (e, stack) {
+        print('[ERROR] ProfileScreen: Error rendering profile content: $e');
+        print('[ERROR] Stack trace: $stack');
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 24),
+                Text('Error rendering profile', style: theme.textTheme.headlineSmall),
+                const SizedBox(height: 12),
+                Text(e.toString(), textAlign: TextAlign.center),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: () => ref.read(profileProvider.notifier).loadProfile(),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
     }
 
     // Original behavior for standalone profile screen (with back button)

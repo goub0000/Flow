@@ -192,23 +192,29 @@ class CoursesService:
             # If student, filter by admitted institutions
             admitted_institution_ids = []
             if student_id:
-                # Get institutions student is admitted to via accepted applications
-                apps_response = self.db.table('applications')\
-                    .select('programs!inner(institution_id)')\
-                    .eq('student_id', student_id)\
-                    .eq('status', 'accepted')\
-                    .execute()
+                try:
+                    # Get institutions student is admitted to via accepted applications
+                    # First try to get from applications with institution_id directly
+                    apps_response = self.db.table('applications')\
+                        .select('institution_id')\
+                        .eq('student_id', student_id)\
+                        .eq('status', 'accepted')\
+                        .execute()
 
-                if apps_response.data:
-                    # Extract unique institution IDs
-                    admitted_institution_ids = list(set([
-                        app['programs']['institution_id']
-                        for app in apps_response.data
-                        if app.get('programs', {}).get('institution_id')
-                    ]))
+                    if apps_response.data:
+                        # Extract unique institution IDs
+                        admitted_institution_ids = list(set([
+                            app['institution_id']
+                            for app in apps_response.data
+                            if app.get('institution_id')
+                        ]))
+                except Exception as e:
+                    logger.warning(f"Error getting admitted institutions for student {student_id}: {e}")
+                    # Fall through to show no courses
 
-                # If student not admitted anywhere, return empty
+                # If student not admitted anywhere, return empty with friendly message
                 if not admitted_institution_ids:
+                    logger.info(f"Student {student_id} has no admitted institutions - returning empty courses list")
                     return CourseListResponse(
                         courses=[],
                         total=0,
