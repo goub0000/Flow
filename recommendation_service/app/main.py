@@ -217,8 +217,7 @@ app = FastAPI(
     ]
 )
 
-# Configure CORS
-# Allow multiple origins for development and production
+# Configure CORS origins (middleware will be added after other middleware)
 import os
 
 # Get CORS origins from environment variable with production defaults
@@ -233,13 +232,8 @@ allowed_origins = [origin.strip() for origin in allowed_origins]
 
 logger.info(f"CORS configured with {len(allowed_origins)} allowed origins: {allowed_origins}")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# NOTE: CORS middleware is added AFTER all other middleware (see below)
+# This ensures CORS headers are added to ALL responses, including error responses
 
 # Add middleware for error handling, rate limiting, and security
 from app.middleware import (
@@ -288,6 +282,18 @@ if prometheus_enabled:
 
 # Add timing and logging middleware
 app.add_middleware(ErrorHandlingMiddleware)
+
+# Add CORS middleware LAST - this makes it the OUTERMOST middleware
+# This ensures CORS headers are added to ALL responses, including error responses
+# Critical for proper handling of preflight requests and error scenarios
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+logger.info("CORS middleware added as outermost layer")
 
 # Import and include routers
 # NOTE: All APIs now migrated to Supabase (Cloud-Based)
