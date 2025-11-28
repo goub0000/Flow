@@ -45,13 +45,24 @@ class PersonalizedRecommendationsService:
             Personalized recommendations with explanations and tracking session ID
         """
         try:
-            # Get student profile
+            # Get student profile - handle both user_id (auth) and internal student_profiles.id
+            student_profile = None
+
+            # First, try to find by user_id (auth ID)
             profile_response = self.db.table('student_profiles').select('*').eq('user_id', student_id).execute()
 
-            if not profile_response.data or len(profile_response.data) == 0:
-                raise ValueError("Student profile not found")
+            if profile_response.data and len(profile_response.data) > 0:
+                student_profile = profile_response.data[0]
+                logger.info(f"Found student profile by user_id: {student_id}")
+            else:
+                # Not found by user_id - check if it's already an internal student_profiles.id
+                profile_by_id = self.db.table('student_profiles').select('*').eq('id', student_id).execute()
 
-            student_profile = profile_response.data[0]
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    student_profile = profile_by_id.data[0]
+                    logger.info(f"Found student profile by internal id: {student_id}")
+                else:
+                    raise ValueError("Student profile not found")
 
             # Get existing recommendations from the recommendations table
             recs_response = self.db.table('recommendations').select(

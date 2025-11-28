@@ -59,24 +59,38 @@ class StudentActivitiesService:
         activities = []
 
         try:
-            # First, get the internal student_id from the student_profiles table
-            # The passed student_id is the Supabase auth user_id, but we need the internal profile id
+            # The passed student_id could be either:
+            # 1. A Supabase auth user_id (from /students/me/activities)
+            # 2. An internal student_profiles.id (from /students/{id}/activities)
+            # We need to handle both cases
+
+            internal_student_id = None
+
+            # First, try to find by user_id (auth ID)
             profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
 
-            if not profile_response.data or len(profile_response.data) == 0:
-                # No student profile found - return empty activities
-                logger.warning(f"No student profile found for user_id: {student_id}")
-                return StudentActivityFeedResponse(
-                    activities=[],
-                    total_count=0,
-                    page=filters.page,
-                    limit=filters.limit,
-                    has_more=False
-                )
+            if profile_response.data and len(profile_response.data) > 0:
+                # Found by user_id - use the internal id
+                internal_student_id = profile_response.data[0]['id']
+                logger.info(f"Resolved user_id {student_id} to internal student_id {internal_student_id}")
+            else:
+                # Not found by user_id - check if it's already an internal student_profiles.id
+                profile_by_id = db.table('student_profiles').select('id').eq('id', student_id).execute()
 
-            # Use the internal student profile id for database queries
-            internal_student_id = profile_response.data[0]['id']
-            logger.info(f"Resolved user_id {student_id} to internal student_id {internal_student_id}")
+                if profile_by_id.data and len(profile_by_id.data) > 0:
+                    # It's already an internal student_profiles.id
+                    internal_student_id = student_id
+                    logger.info(f"Using passed ID as internal student_id: {internal_student_id}")
+                else:
+                    # No student profile found by either method
+                    logger.warning(f"No student profile found for id: {student_id}")
+                    return StudentActivityFeedResponse(
+                        activities=[],
+                        total_count=0,
+                        page=filters.page,
+                        limit=filters.limit,
+                        has_more=False
+                    )
 
             # First, try to get from dedicated student_activities table
             stored_activities = await self._get_stored_activities(
