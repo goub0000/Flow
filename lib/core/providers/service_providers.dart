@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../api/api_client.dart';
 import '../services/auth_service.dart';
 import '../services/secure_storage_service.dart';
+import '../services/storage_service.dart';
 import '../services/enrollments_service.dart';
 import '../services/applications_service.dart';
 import '../services/messaging_service.dart';
@@ -29,6 +30,12 @@ final secureStorageServiceProvider = Provider<SecureStorageService>((ref) {
 /// Supabase Client Provider
 final supabaseClientProvider = Provider<SupabaseClient>((ref) {
   return Supabase.instance.client;
+});
+
+/// Storage Service Provider (for file uploads to Supabase Storage)
+final storageServiceProvider = Provider<StorageService>((ref) {
+  final supabase = ref.watch(supabaseClientProvider);
+  return StorageService(supabase);
 });
 
 /// API Client Provider

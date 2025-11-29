@@ -1,6 +1,8 @@
+import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/services/auth_service.dart';
+import '../../../core/services/storage_service.dart';
 import '../../../core/providers/service_providers.dart' hide currentUserProvider;
 import '../../authentication/providers/auth_provider.dart';
 
@@ -37,9 +39,10 @@ class ProfileState {
 class ProfileNotifier extends StateNotifier<ProfileState> {
   final Ref ref;
   final AuthService _authService;
+  final StorageService _storageService;
   bool _isListeningToAuth = false;
 
-  ProfileNotifier(this.ref, this._authService) : super(const ProfileState()) {
+  ProfileNotifier(this.ref, this._authService, this._storageService) : super(const ProfileState()) {
     // Load profile immediately
     print('[DEBUG] ProfileNotifier initialized - loading profile');
     loadProfile();
@@ -142,6 +145,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     String? phoneNumber,
     String? bio,
     Map<String, dynamic>? additionalMetadata,
+    Uint8List? photoBytes,
+    String? photoFileName,
   }) async {
     if (state.user == null) return false;
 
@@ -154,11 +159,28 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       // Extract bio from additionalMetadata if not provided directly
       final bioToUpdate = bio ?? additionalMetadata?['bio'] as String?;
 
+      // Upload photo if provided
+      String? photoUrl;
+      if (photoBytes != null && photoFileName != null) {
+        try {
+          photoUrl = await _storageService.uploadProfilePhoto(
+            userId: state.user!.id,
+            fileBytes: photoBytes,
+            fileName: photoFileName,
+          );
+          print('[DEBUG] Photo uploaded successfully: $photoUrl');
+        } catch (e) {
+          print('[DEBUG] Photo upload failed: $e');
+          // Continue without photo - don't fail the whole update
+        }
+      }
+
       final response = await _authService.updateProfile(
         fullName: nameToUpdate,
         phoneNumber: phoneNumber,
         bio: bioToUpdate,
         metadata: additionalMetadata,
+        photoUrl: photoUrl,
       );
 
       if (response.success && response.data != null) {
@@ -234,25 +256,46 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     );
   }
 
-  /// Upload profile photo
-  /// TODO: Upload to storage service when implemented
-  Future<bool> uploadProfilePhoto(String localFilePath) async {
+  /// Upload profile photo with bytes (for web compatibility)
+  /// Returns the public URL of the uploaded photo on success
+  Future<String?> uploadProfilePhotoBytes({
+    required Uint8List fileBytes,
+    required String fileName,
+  }) async {
+    if (state.user == null) return null;
+
     state = state.copyWith(isUpdating: true, error: null);
 
     try {
-      // TODO: Implement file upload to Supabase Storage or other storage service
-      // For now, this is a placeholder
-      state = state.copyWith(
-        error: 'Photo upload not yet implemented',
-        isUpdating: false,
+      final photoUrl = await _storageService.uploadProfilePhoto(
+        userId: state.user!.id,
+        fileBytes: fileBytes,
+        fileName: fileName,
       );
-      return false;
+
+      // Update user profile with new photo URL
+      final response = await _authService.updateProfile(photoUrl: photoUrl);
+
+      if (response.success && response.data != null) {
+        state = state.copyWith(
+          user: response.data,
+          isUpdating: false,
+        );
+        ref.read(authProvider.notifier).refreshUser();
+        return photoUrl;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update profile with photo',
+          isUpdating: false,
+        );
+        return null;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to upload photo: ${e.toString()}',
         isUpdating: false,
       );
-      return false;
+      return null;
     }
   }
 
@@ -343,7 +386,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 /// Provider for profile state
 final profileProvider = StateNotifierProvider<ProfileNotifier, ProfileState>((ref) {
   final authService = ref.watch(authServiceProvider);
-  return ProfileNotifier(ref, authService);
+  final storageService = ref.watch(storageServiceProvider);
+  return ProfileNotifier(ref, authService, storageService);
 });
 
 /// Provider for current profile user

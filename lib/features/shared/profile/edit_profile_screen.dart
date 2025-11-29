@@ -25,6 +25,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
   bool _hasUnsavedChanges = false;
   bool _isSubmitting = false;
   Uint8List? _selectedPhotoBytes;
+  String? _selectedPhotoFileName;
 
   // Basic Info Controllers (All roles)
   final _nameController = TextEditingController();
@@ -536,6 +537,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         if (file.bytes != null) {
           setState(() {
             _selectedPhotoBytes = file.bytes;
+            _selectedPhotoFileName = file.name;
             _hasUnsavedChanges = true;
           });
 
@@ -1692,6 +1694,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         displayName: _nameController.text,
         phoneNumber: _phoneController.text,
         additionalMetadata: metadata,
+        photoBytes: _selectedPhotoBytes,
+        photoFileName: _selectedPhotoFileName,
       );
 
       if (mounted) {

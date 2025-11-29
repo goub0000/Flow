@@ -83,6 +83,68 @@ class StorageService {
     }
   }
 
+  /// Upload a profile photo to the avatars bucket
+  ///
+  /// [userId] - User ID for unique file naming
+  /// [fileBytes] - Image content as bytes
+  /// [fileName] - Original file name (used to determine extension)
+  ///
+  /// Returns the public URL of the uploaded avatar
+  Future<String> uploadProfilePhoto({
+    required String userId,
+    required Uint8List fileBytes,
+    required String fileName,
+  }) async {
+    try {
+      _logger.fine('Starting profile photo upload for user: $userId');
+      _logger.finer('File size: ${fileBytes.length} bytes');
+
+      // Get file extension
+      final extension = fileName.toLowerCase().split('.').last;
+
+      // Determine content type
+      String contentType = 'image/jpeg';
+      if (extension == 'png') {
+        contentType = 'image/png';
+      } else if (extension == 'gif') {
+        contentType = 'image/gif';
+      } else if (extension == 'webp') {
+        contentType = 'image/webp';
+      }
+
+      // Create unique file path: userId/avatar_timestamp.extension
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final filePath = '$userId/avatar_$timestamp.$extension';
+      _logger.finer('Upload path: $filePath');
+
+      // Upload to Supabase Storage avatars bucket
+      await _supabase.storage
+          .from('avatars')
+          .uploadBinary(
+            filePath,
+            fileBytes,
+            fileOptions: FileOptions(
+              contentType: contentType,
+              cacheControl: '3600',
+              upsert: true,
+            ),
+          );
+
+      _logger.info('Profile photo uploaded successfully');
+
+      // Get the public URL for the uploaded avatar
+      final publicUrl = _supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+
+      _logger.finer('Public URL: $publicUrl');
+      return publicUrl;
+    } catch (e) {
+      _logger.severe('Profile photo upload failed: $e', e);
+      throw Exception('Failed to upload profile photo: $e');
+    }
+  }
+
   /// Delete a document from storage
   Future<void> deleteDocument(String filePath) async {
     try {
