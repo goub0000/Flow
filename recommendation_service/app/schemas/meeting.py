@@ -206,7 +206,7 @@ class StaffListItem(BaseModel):
     display_name: str
     email: str
     active_role: str
-    avatar_url: Optional[str] = None
+    photo_url: Optional[str] = None  # Matches database column name
     bio: Optional[str] = None
 
     class Config:

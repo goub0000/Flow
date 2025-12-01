@@ -449,7 +449,19 @@ async def upload_profile_photo(
 
         # Upload to Supabase Storage using service role (bypasses RLS)
         auth_service = AuthService()
-        storage = auth_service.db.storage.from_('user-profiles')
+        bucket_name = 'user-profiles'
+
+        # Check if bucket exists, create if not
+        try:
+            buckets = auth_service.db.storage.list_buckets()
+            bucket_exists = any(b.name == bucket_name for b in buckets)
+            if not bucket_exists:
+                logger.info(f"Creating bucket: {bucket_name}")
+                auth_service.db.storage.create_bucket(bucket_name, options={"public": True})
+        except Exception as e:
+            logger.warning(f"Error checking/creating bucket: {e}")
+
+        storage = auth_service.db.storage.from_(bucket_name)
 
         storage.upload(
             file_path,

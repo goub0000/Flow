@@ -639,7 +639,7 @@ class MeetingService:
         Get list of available teachers and counselors
         """
         try:
-            query = self.db.table('users').select('id, display_name, email, active_role, avatar_url, bio')
+            query = self.db.table('users').select('id, display_name, email, active_role, photo_url, bio')
 
             if role:
                 if role not in ['teacher', 'counselor']:
@@ -735,7 +735,7 @@ class MeetingService:
     async def _get_user_info(self, user_id: str) -> Dict[str, Any]:
         """Get user information"""
         try:
-            response = self.db.table('users').select('id, display_name, email, active_role, avatar_url').eq('id', user_id).single().execute()
+            response = self.db.table('users').select('id, display_name, email, active_role, photo_url').eq('id', user_id).single().execute()
             return response.data if response.data else {}
         except:
             return {}
