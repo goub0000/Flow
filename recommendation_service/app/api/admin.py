@@ -429,6 +429,97 @@ async def get_activity_stats(
         )
 
 
+@router.delete("/admin/data/courses")
+async def clear_all_courses(
+    confirm: bool = Query(False, description="Set to true to confirm deletion"),
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict:
+    """
+    Clear all courses from the database (Admin only)
+
+    This is a destructive operation - use with caution!
+
+    **Query Parameters:**
+    - confirm: Must be set to true to confirm deletion
+
+    **Returns:**
+    - deleted_count: Number of courses deleted
+    - message: Success message
+    """
+    if not confirm:
+        raise HTTPException(
+            status_code=400,
+            detail="Please set confirm=true to delete all courses"
+        )
+
+    try:
+        db = get_supabase()
+
+        # Get count before deletion
+        count_response = db.table('courses').select('id', count='exact').execute()
+        count = count_response.count or 0
+
+        if count == 0:
+            return {"deleted_count": 0, "message": "No courses to delete"}
+
+        # Delete all courses
+        db.table('courses').delete().neq('id', 'impossible-id-that-wont-match').execute()
+
+        logger.info(f"Admin {current_user.id} deleted all {count} courses")
+
+        return {
+            "deleted_count": count,
+            "message": f"Successfully deleted {count} courses"
+        }
+
+    except Exception as e:
+        logger.error(f"Error clearing courses: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to clear courses: {str(e)}"
+        )
+
+
+@router.get("/admin/data/courses/count")
+async def get_courses_count(
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict:
+    """
+    Get count of courses in the database (Admin only)
+
+    **Returns:**
+    - count: Total number of courses
+    - by_status: Breakdown by status (draft, published, archived)
+    """
+    try:
+        db = get_supabase()
+
+        # Get total count
+        total_response = db.table('courses').select('id', count='exact').execute()
+        total = total_response.count or 0
+
+        # Get breakdown by status
+        all_courses = db.table('courses').select('status').execute()
+
+        by_status = {"draft": 0, "published": 0, "archived": 0}
+        if all_courses.data:
+            for course in all_courses.data:
+                status = course.get('status', 'draft')
+                by_status[status] = by_status.get(status, 0) + 1
+
+        return {
+            "count": total,
+            "by_status": by_status
+        }
+
+    except Exception as e:
+        logger.error(f"Error getting courses count: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get courses count: {str(e)}"
+        )
+
+
 @router.get("/admin/dashboard/user-activity/{user_id}")
 async def get_user_activity(
     user_id: str,
