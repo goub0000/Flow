@@ -68,16 +68,43 @@ class MessagingService:
                         conv_participants = conv.get('participant_ids', [])
                         if set(participant_ids) == set(conv_participants):
                             logger.info(f"Found existing conversation: {conv['id']}")
+                            # Enrich with title if missing
+                            if not conv.get('title'):
+                                other_user_id = [pid for pid in conv_participants if pid != user_id][0] if len(conv_participants) > 1 else None
+                                if other_user_id:
+                                    try:
+                                        user_result = self.db.table('users').select('display_name, email').eq('id', other_user_id).single().execute()
+                                        if user_result.data:
+                                            conv['title'] = user_result.data.get('display_name') or user_result.data.get('email', 'Unknown User')
+                                            # Also update in database for future
+                                            self.db.table('conversations').update({'title': conv['title']}).eq('id', conv['id']).execute()
+                                    except Exception as e:
+                                        logger.warning(f"Could not fetch other user's name: {e}")
                             return ConversationResponse(**conv)
                 except Exception as e:
                     logger.warning(f"Error checking existing conversations: {e}")
                     # Continue to create new conversation
 
+            # For direct conversations, get the other user's display name as the title
+            title = conversation_data.title
+            if conversation_data.conversation_type == ConversationType.DIRECT and not title:
+                # Get the other participant's display name
+                other_user_id = [pid for pid in participant_ids if pid != user_id][0] if len(participant_ids) > 1 else None
+                if other_user_id:
+                    try:
+                        user_result = self.db.table('users').select('display_name, email').eq('id', other_user_id).single().execute()
+                        if user_result.data:
+                            title = user_result.data.get('display_name') or user_result.data.get('email', 'Unknown User')
+                            logger.info(f"Set conversation title to: {title}")
+                    except Exception as e:
+                        logger.warning(f"Could not fetch other user's name: {e}")
+                        title = "Chat"
+
             # Let PostgreSQL generate the UUID for id instead of passing our own
             # This avoids potential UUID format issues
             conversation = {
                 "conversation_type": conversation_data.conversation_type.value,
-                "title": conversation_data.title,
+                "title": title,
                 "participant_ids": participant_ids,
                 "metadata": conversation_data.metadata or {},
                 "created_at": datetime.utcnow().isoformat(),
@@ -127,7 +154,23 @@ class MessagingService:
             if user_id not in response.data.get('participant_ids', []):
                 raise Exception("Not authorized to access this conversation")
 
-            return ConversationResponse(**response.data)
+            conv = response.data
+            # Enrich with title if missing
+            if not conv.get('title') and conv.get('conversation_type') == 'direct':
+                participant_ids = conv.get('participant_ids', [])
+                other_user_id = [pid for pid in participant_ids if pid != user_id][0] if len(participant_ids) > 1 else None
+                if other_user_id:
+                    try:
+                        user_result = self.db.table('users').select('display_name, email').eq('id', other_user_id).single().execute()
+                        if user_result.data:
+                            conv['title'] = user_result.data.get('display_name') or user_result.data.get('email', 'Unknown User')
+                            # Update in database for future
+                            self.db.table('conversations').update({'title': conv['title']}).eq('id', conv['id']).execute()
+                    except Exception as e:
+                        logger.warning(f"Could not fetch other user's name: {e}")
+                        conv['title'] = 'Chat'
+
+            return ConversationResponse(**conv)
 
         except Exception as e:
             logger.error(f"Get conversation error: {e}")
@@ -148,7 +191,26 @@ class MessagingService:
 
             response = query.execute()
 
-            conversations = [ConversationResponse(**c) for c in response.data] if response.data else []
+            # Enrich conversations with titles from other participants
+            enriched_data = []
+            for conv in (response.data or []):
+                # If title is missing for direct conversations, get the other user's name
+                if not conv.get('title') and conv.get('conversation_type') == 'direct':
+                    participant_ids = conv.get('participant_ids', [])
+                    other_user_id = [pid for pid in participant_ids if pid != user_id][0] if len(participant_ids) > 1 else None
+                    if other_user_id:
+                        try:
+                            user_result = self.db.table('users').select('display_name, email').eq('id', other_user_id).single().execute()
+                            if user_result.data:
+                                conv['title'] = user_result.data.get('display_name') or user_result.data.get('email', 'Unknown User')
+                                # Update in database for future
+                                self.db.table('conversations').update({'title': conv['title']}).eq('id', conv['id']).execute()
+                        except Exception as e:
+                            logger.warning(f"Could not fetch other user's name for conv {conv.get('id')}: {e}")
+                            conv['title'] = 'Chat'
+                enriched_data.append(conv)
+
+            conversations = [ConversationResponse(**c) for c in enriched_data]
             total = response.count or 0
 
             return ConversationListResponse(

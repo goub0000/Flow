@@ -2,9 +2,12 @@
 Messaging API Endpoints
 RESTful API for real-time messaging system
 """
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
+from uuid import uuid4
+from datetime import datetime
 
 from app.services.messaging_service import MessagingService
+from app.database.config import get_supabase
 from app.schemas.messaging import (
     ConversationCreateRequest,
     ConversationResponse,
@@ -305,6 +308,114 @@ async def mark_messages_as_read(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
+        )
+
+
+@router.post("/upload")
+async def upload_file(
+    file: UploadFile = File(...),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Upload a file for messaging attachments
+
+    **Requires:** Authentication
+
+    **Request Body:**
+    - file: The file to upload (multipart/form-data)
+
+    **Returns:**
+    - url: Public URL of the uploaded file
+    - type: File type (image, document, etc.)
+    - name: Original filename
+    - size: File size in bytes
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+
+    try:
+        # Validate file size (max 10MB)
+        MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+        contents = await file.read()
+        file_size = len(contents)
+
+        if file_size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"File too large. Maximum size is 10MB, got {file_size / 1024 / 1024:.2f}MB"
+            )
+
+        # Determine file type from content type
+        content_type = file.content_type or "application/octet-stream"
+        if content_type.startswith("image/"):
+            file_type = "image"
+        elif content_type.startswith("video/"):
+            file_type = "video"
+        elif content_type.startswith("audio/"):
+            file_type = "audio"
+        elif content_type in ["application/pdf", "application/msword",
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                              "text/plain"]:
+            file_type = "document"
+        else:
+            file_type = "file"
+
+        # Generate unique filename
+        original_filename = file.filename or "unknown"
+        extension = original_filename.split(".")[-1] if "." in original_filename else ""
+        unique_filename = f"{current_user.id}/{uuid4()}.{extension}" if extension else f"{current_user.id}/{uuid4()}"
+
+        logger.info(f"Uploading file: {original_filename} -> {unique_filename}, type: {file_type}, size: {file_size}")
+
+        # Upload to Supabase Storage
+        supabase = get_supabase()
+
+        # Try to upload to messaging-attachments bucket
+        bucket_name = "messaging-attachments"
+
+        try:
+            # Check if bucket exists, create if not
+            buckets = supabase.storage.list_buckets()
+            bucket_exists = any(b.name == bucket_name for b in buckets)
+
+            if not bucket_exists:
+                logger.info(f"Creating bucket: {bucket_name}")
+                supabase.storage.create_bucket(bucket_name, options={"public": True})
+
+            # Upload the file
+            result = supabase.storage.from_(bucket_name).upload(
+                unique_filename,
+                contents,
+                file_options={"content-type": content_type}
+            )
+            logger.info(f"Upload result: {result}")
+
+            # Get public URL
+            public_url = supabase.storage.from_(bucket_name).get_public_url(unique_filename)
+            logger.info(f"Public URL: {public_url}")
+
+            return {
+                "url": public_url,
+                "type": file_type,
+                "name": original_filename,
+                "size": file_size,
+                "content_type": content_type
+            }
+
+        except Exception as storage_error:
+            logger.error(f"Storage error: {storage_error}", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to upload file to storage: {str(storage_error)}"
+            )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Upload error: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to upload file: {str(e)}"
         )
 
 

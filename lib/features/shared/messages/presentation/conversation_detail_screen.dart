@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/models/message_model.dart';
@@ -29,6 +32,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
   bool _isSending = false;
+  bool _isUploading = false;
 
   @override
   void dispose() {
@@ -77,6 +81,203 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
     } finally {
       if (mounted) {
         setState(() => _isSending = false);
+      }
+    }
+  }
+
+  /// Show attachment options (image or file)
+  void _showAttachmentOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: AppColors.primary),
+              title: const Text('Photo from Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: AppColors.primary),
+              title: const Text('Take Photo'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_file, color: AppColors.primary),
+              title: const Text('Document'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickFile();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Pick an image using image_picker
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: source,
+        maxWidth: 1920,
+        maxHeight: 1920,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        final bytes = await image.readAsBytes();
+        await _uploadAndSendFile(
+          bytes: bytes,
+          fileName: image.name,
+          mimeType: 'image/${image.name.split('.').last}',
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to pick image: $e')),
+        );
+      }
+    }
+  }
+
+  /// Pick a file using file_picker
+  Future<void> _pickFile() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'gif'],
+        withData: true,
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        final file = result.files.first;
+        if (file.bytes != null) {
+          await _uploadAndSendFile(
+            bytes: file.bytes!,
+            fileName: file.name,
+            mimeType: _getMimeType(file.extension ?? ''),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to pick file: $e')),
+        );
+      }
+    }
+  }
+
+  String _getMimeType(String extension) {
+    switch (extension.toLowerCase()) {
+      case 'pdf':
+        return 'application/pdf';
+      case 'doc':
+        return 'application/msword';
+      case 'docx':
+        return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      case 'xls':
+        return 'application/vnd.ms-excel';
+      case 'xlsx':
+        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      case 'ppt':
+        return 'application/vnd.ms-powerpoint';
+      case 'pptx':
+        return 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+      case 'txt':
+        return 'text/plain';
+      case 'png':
+        return 'image/png';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'gif':
+        return 'image/gif';
+      default:
+        return 'application/octet-stream';
+    }
+  }
+
+  /// Upload file and send as message
+  Future<void> _uploadAndSendFile({
+    required Uint8List bytes,
+    required String fileName,
+    String? mimeType,
+  }) async {
+    if (_isUploading) return;
+
+    setState(() => _isUploading = true);
+
+    // Show uploading indicator
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+            ),
+            const SizedBox(width: 12),
+            Text('Uploading $fileName...'),
+          ],
+        ),
+        duration: const Duration(seconds: 30),
+      ),
+    );
+
+    try {
+      final messagingService = ref.read(messagingServiceProvider);
+
+      // Use the sendMessageWithFile method which handles upload + send
+      final response = await messagingService.sendMessageWithFile(
+        conversationId: widget.conversationId,
+        content: fileName, // Use filename as content
+        fileBytes: bytes,
+        fileName: fileName,
+        mimeType: mimeType,
+      );
+
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+      if (response.success) {
+        _scrollToBottom();
+        // Refresh the conversation to show the new message
+        ref.read(conversationRealtimeProvider(widget.conversationId).notifier).refresh();
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to send file: ${response.message}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isUploading = false);
       }
     }
   }
@@ -366,12 +567,14 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.attach_file),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Attachments coming soon')),
-                      );
-                    },
+                    icon: _isUploading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.attach_file),
+                    onPressed: _isUploading ? null : _showAttachmentOptions,
                   ),
                   Expanded(
                     child: TextField(
