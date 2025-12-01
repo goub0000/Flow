@@ -488,20 +488,19 @@ async def get_applicant_demographics(
             )
 
         # Fetch student profiles (batch fetch, limit to 1000 for performance)
+        # Use correct column names: current_country, current_region, nationality, grading_system
         profiles_response = db.table('student_profiles').select(
-            'user_id, location, date_of_birth, education_level'
-        ).in_('id', student_ids[:1000]).execute()
+            'user_id, current_country, current_region, nationality, grading_system, field_of_study'
+        ).in_('user_id', student_ids[:1000]).execute()
 
         profiles = profiles_response.data if profiles_response.data else []
 
-        # Process location distribution
+        # Process location distribution (using current_country)
         location_counts = defaultdict(int)
         for profile in profiles:
-            location = profile.get('location', 'Unknown')
-            if location:
-                location_parts = location.split(',')
-                main_location = location_parts[-1].strip() if location_parts else 'Unknown'
-                location_counts[main_location] += 1
+            location = profile.get('current_country') or profile.get('nationality') or 'Unknown'
+            if location and location != 'Unknown':
+                location_counts[location] += 1
             else:
                 location_counts['Unknown'] += 1
 
@@ -515,48 +514,25 @@ async def get_applicant_demographics(
         ]
 
         # Process age distribution
+        # Note: student_profiles doesn't have date_of_birth, so we get this from users table if available
         age_counts = defaultdict(int)
-        for profile in profiles:
-            dob = profile.get('date_of_birth')
-            if dob:
-                try:
-                    birth_date = datetime.fromisoformat(dob.replace('Z', '+00:00'))
-                    age = (datetime.now() - birth_date).days // 365
+        # For now, mark all as "Not Available" since we don't have DOB data
+        age_counts['Not Available'] = len(profiles) if profiles else 0
 
-                    if age < 18:
-                        age_range = 'Under 18'
-                    elif age < 22:
-                        age_range = '18-21'
-                    elif age < 26:
-                        age_range = '22-25'
-                    elif age < 30:
-                        age_range = '26-29'
-                    elif age < 35:
-                        age_range = '30-34'
-                    else:
-                        age_range = '35+'
-
-                    age_counts[age_range] += 1
-                except:
-                    age_counts['Unknown'] += 1
-            else:
-                age_counts['Unknown'] += 1
-
-        age_order = ['Under 18', '18-21', '22-25', '26-29', '30-34', '35+', 'Unknown']
         age_distribution = [
             DemographicDistribution(
-                label=age_range,
-                count=age_counts[age_range],
-                percentage=round(age_counts[age_range] / len(profiles) * 100, 1) if profiles else 0
+                label='Not Available',
+                count=age_counts['Not Available'],
+                percentage=100.0 if profiles else 0
             )
-            for age_range in age_order if age_counts[age_range] > 0
-        ]
+        ] if profiles else []
 
-        # Process academic background
+        # Process academic background (using field_of_study or grading_system)
         education_counts = defaultdict(int)
         for profile in profiles:
-            education = profile.get('education_level', 'Not Specified')
-            education_counts[education] += 1
+            # Use field_of_study as academic background indicator
+            field = profile.get('field_of_study') or profile.get('grading_system') or 'Not Specified'
+            education_counts[field] += 1
 
         academic_background_distribution = [
             DemographicDistribution(
@@ -564,7 +540,7 @@ async def get_applicant_demographics(
                 count=count,
                 percentage=round(count / len(profiles) * 100, 1) if profiles else 0
             )
-            for education, count in sorted(education_counts.items(), key=lambda x: x[1], reverse=True)
+            for education, count in sorted(education_counts.items(), key=lambda x: x[1], reverse=True)[:10]
         ]
 
         return ApplicantDemographicsResponse(
