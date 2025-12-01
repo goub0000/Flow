@@ -117,9 +117,9 @@ class StorageService {
       final filePath = '$userId/avatar_$timestamp.$extension';
       _logger.finer('Upload path: $filePath');
 
-      // Upload to Supabase Storage avatars bucket
+      // Upload to Supabase Storage user-profiles bucket
       await _supabase.storage
-          .from('avatars')
+          .from('user-profiles')
           .uploadBinary(
             filePath,
             fileBytes,
@@ -134,7 +134,7 @@ class StorageService {
 
       // Get the public URL for the uploaded avatar
       final publicUrl = _supabase.storage
-          .from('avatars')
+          .from('user-profiles')
           .getPublicUrl(filePath);
 
       _logger.finer('Public URL: $publicUrl');
