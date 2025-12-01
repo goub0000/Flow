@@ -85,9 +85,19 @@ class MessagingService:
 
             logger.info(f"Inserting conversation: {conversation}")
 
-            response = self.db.table('conversations').insert(conversation).execute()
-
-            logger.info(f"Insert response: {response}")
+            try:
+                response = self.db.table('conversations').insert(conversation).execute()
+                logger.info(f"Insert response: {response}")
+            except Exception as insert_error:
+                logger.error(f"Supabase insert error: {insert_error}", exc_info=True)
+                logger.error(f"Error type: {type(insert_error).__name__}")
+                if hasattr(insert_error, 'message'):
+                    logger.error(f"Error message: {insert_error.message}")
+                if hasattr(insert_error, 'details'):
+                    logger.error(f"Error details: {insert_error.details}")
+                if hasattr(insert_error, 'code'):
+                    logger.error(f"Error code: {insert_error.code}")
+                raise Exception(f"Database insert failed: {str(insert_error)}")
 
             if not response.data:
                 raise Exception("Failed to create conversation - no data returned")

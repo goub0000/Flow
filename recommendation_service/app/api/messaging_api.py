@@ -432,6 +432,69 @@ async def check_messaging_setup(
         )
 
 
+@router.post("/setup/test-insert")
+async def test_conversation_insert(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Test inserting a conversation to debug issues
+    """
+    import logging
+    from uuid import uuid4
+    from datetime import datetime
+    logger = logging.getLogger(__name__)
+
+    try:
+        service = MessagingService()
+        supabase = service.db
+
+        # Test with a simple insert
+        test_id = str(uuid4())
+        test_data = {
+            "id": test_id,
+            "conversation_type": "direct",
+            "title": None,
+            "participant_ids": [current_user.id],  # Just the current user for test
+            "metadata": {},
+            "created_at": datetime.utcnow().isoformat(),
+            "updated_at": datetime.utcnow().isoformat(),
+        }
+
+        logger.info(f"Test insert data: {test_data}")
+        logger.info(f"Current user ID: {current_user.id}")
+        logger.info(f"Current user ID type: {type(current_user.id)}")
+
+        try:
+            response = supabase.table('conversations').insert(test_data).execute()
+            logger.info(f"Test insert response: {response}")
+
+            # Clean up - delete the test conversation
+            supabase.table('conversations').delete().eq('id', test_id).execute()
+
+            return {
+                "success": True,
+                "message": "Test insert succeeded",
+                "data": response.data[0] if response.data else None
+            }
+        except Exception as insert_error:
+            logger.error(f"Test insert error: {insert_error}", exc_info=True)
+            return {
+                "success": False,
+                "error": str(insert_error),
+                "error_type": type(insert_error).__name__,
+                "test_data": test_data,
+                "user_id": current_user.id,
+                "user_id_type": str(type(current_user.id))
+            }
+
+    except Exception as e:
+        logger.error(f"Test error: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
 @router.post("/setup/migrate")
 async def run_messaging_migration(
     current_user: CurrentUser = Depends(get_current_user)
