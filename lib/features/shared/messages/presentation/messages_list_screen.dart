@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/message_widgets.dart' hide Conversation;
 import '../../../shared/providers/conversations_realtime_provider.dart';
 import '../../../../core/models/conversation_model.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// Messages List Screen
 ///
@@ -32,6 +34,54 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  /// Show dialog to search and select a user for new conversation
+  void _showNewConversationDialog() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _NewConversationSheet(
+        onUserSelected: (userId, userName) async {
+          Navigator.pop(context);
+
+          // Show loading indicator
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                  ),
+                  const SizedBox(width: 12),
+                  Text('Starting conversation with $userName...'),
+                ],
+              ),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+
+          // Get or create conversation
+          final conversation = await ref
+              .read(conversationsRealtimeProvider.notifier)
+              .getOrCreateDirectConversation(userId);
+
+          if (conversation != null && mounted) {
+            context.push('/messages/${conversation.id}');
+          } else if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Failed to create conversation'),
+                backgroundColor: AppColors.error,
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 
   List<Conversation> _getFilteredConversations(List<Conversation> conversations) {
@@ -215,14 +265,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                     ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'messages_fab',
-        onPressed: () {
-          // TODO: Implement new conversation flow with user search
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('New conversation feature - Coming soon'),
-            ),
-          );
-        },
+        onPressed: _showNewConversationDialog,
         child: const Icon(Icons.edit),
       ),
     );
@@ -361,5 +404,257 @@ class _ConversationListTile extends StatelessWidget {
     } else {
       return '${dateTime.day}/${dateTime.month}';
     }
+  }
+}
+
+/// Bottom sheet for searching and selecting a user to start a new conversation
+class _NewConversationSheet extends ConsumerStatefulWidget {
+  final Function(String userId, String userName) onUserSelected;
+
+  const _NewConversationSheet({required this.onUserSelected});
+
+  @override
+  ConsumerState<_NewConversationSheet> createState() => _NewConversationSheetState();
+}
+
+class _NewConversationSheetState extends ConsumerState<_NewConversationSheet> {
+  final _searchController = TextEditingController();
+  List<Map<String, dynamic>> _users = [];
+  bool _isLoading = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsers();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadUsers() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final currentUser = ref.read(currentUserProvider);
+      final supabase = Supabase.instance.client;
+
+      // Query users table, excluding current user
+      final response = await supabase
+          .from('users')
+          .select('id, email, display_name, active_role, photo_url')
+          .neq('id', currentUser?.id ?? '')
+          .order('display_name', ascending: true)
+          .limit(50);
+
+      setState(() {
+        _users = List<Map<String, dynamic>>.from(response);
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load users: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  List<Map<String, dynamic>> _getFilteredUsers() {
+    final query = _searchController.text.toLowerCase();
+    if (query.isEmpty) return _users;
+
+    return _users.where((user) {
+      final name = (user['display_name'] ?? '').toString().toLowerCase();
+      final email = (user['email'] ?? '').toString().toLowerCase();
+      return name.contains(query) || email.contains(query);
+    }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final filteredUsers = _getFilteredUsers();
+
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.75,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Handle bar
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Title
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Text(
+                  'New Conversation',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+
+          // Search field
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: _searchController,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: 'Search by name or email...',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: AppColors.surface,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              onChanged: (value) => setState(() {}),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Users list
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                            const SizedBox(height: 16),
+                            Text(_error!, style: const TextStyle(color: Colors.red)),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: _loadUsers,
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      )
+                    : filteredUsers.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.person_search, size: 48, color: Colors.grey[400]),
+                                const SizedBox(height: 16),
+                                Text(
+                                  _searchController.text.isEmpty
+                                      ? 'No users found'
+                                      : 'No users match "${_searchController.text}"',
+                                  style: TextStyle(color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredUsers.length,
+                            itemBuilder: (context, index) {
+                              final user = filteredUsers[index];
+                              final userId = user['id'] as String;
+                              final displayName = user['display_name'] as String? ?? 'Unknown User';
+                              final email = user['email'] as String? ?? '';
+                              final role = user['active_role'] as String? ?? 'user';
+                              final photoUrl = user['photo_url'] as String?;
+
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+                                  child: photoUrl == null
+                                      ? Text(
+                                          displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
+                                          style: const TextStyle(
+                                            color: AppColors.primary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      : null,
+                                ),
+                                title: Text(
+                                  displayName,
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                subtitle: Text(email),
+                                trailing: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: _getRoleColor(role).withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    _formatRole(role),
+                                    style: TextStyle(
+                                      color: _getRoleColor(role),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () => widget.onUserSelected(userId, displayName),
+                              );
+                            },
+                          ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getRoleColor(String role) {
+    switch (role.toLowerCase()) {
+      case 'student':
+        return AppColors.primary;
+      case 'counselor':
+        return Colors.green;
+      case 'parent':
+        return Colors.orange;
+      case 'institution':
+        return Colors.purple;
+      case 'admin':
+      case 'super_admin':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String _formatRole(String role) {
+    return role.split('_').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ');
   }
 }
