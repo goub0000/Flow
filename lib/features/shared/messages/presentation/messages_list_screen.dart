@@ -233,6 +233,35 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                     },
                     child: const Text('Check Database Setup'),
                   ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () async {
+                      final messagingService = ref.read(messagingServiceProvider);
+                      final result = await messagingService.testInsert();
+                      if (mounted) {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Test Insert Result'),
+                            content: SingleChildScrollView(
+                              child: Text(
+                                result.success
+                                    ? 'SUCCESS!\n\n${result.data}'
+                                    : 'FAILED!\n\nError: ${result.message}\n\nData: ${result.data}',
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('Test Insert'),
+                  ),
                 ],
               ),
             )

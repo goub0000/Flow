@@ -289,4 +289,12 @@ class MessagingService {
       fromJson: (data) => data as Map<String, dynamic>,
     );
   }
+
+  /// Test database insert operation for debugging
+  Future<ApiResponse<Map<String, dynamic>>> testInsert() async {
+    return await _apiClient.post(
+      '${ApiConfig.messaging}/setup/test-insert',
+      fromJson: (data) => data as Map<String, dynamic>,
+    );
+  }
 }
