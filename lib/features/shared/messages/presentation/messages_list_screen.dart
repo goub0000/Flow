@@ -186,13 +186,52 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                 children: [
                   const Icon(Icons.error_outline, size: 48, color: Colors.red),
                   const SizedBox(height: 16),
-                  Text(error, style: const TextStyle(color: Colors.red)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      error,
+                      style: const TextStyle(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       ref.read(conversationsRealtimeProvider.notifier).refresh();
                     },
                     child: const Text('Retry'),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () async {
+                      final messagingService = ref.read(messagingServiceProvider);
+                      final result = await messagingService.checkSetup();
+                      if (mounted) {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Database Setup Status'),
+                            content: SingleChildScrollView(
+                              child: Text(
+                                result.success
+                                    ? 'Ready: ${result.data?['ready']}\n'
+                                      'Conversations table: ${result.data?['conversations_table']}\n'
+                                      'Messages table: ${result.data?['messages_table']}\n\n'
+                                      'Info: ${result.data?['tables_info']}'
+                                    : 'Error: ${result.message}',
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('Check Database Setup'),
                   ),
                 ],
               ),

@@ -281,4 +281,12 @@ class MessagingService {
       },
     );
   }
+
+  /// Check if messaging tables are set up in the database
+  Future<ApiResponse<Map<String, dynamic>>> checkSetup() async {
+    return await _apiClient.get(
+      '${ApiConfig.messaging}/setup/check',
+      fromJson: (data) => data as Map<String, dynamic>,
+    );
+  }
 }
