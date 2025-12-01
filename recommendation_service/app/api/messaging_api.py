@@ -329,3 +329,52 @@ async def get_unread_count(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+
+@router.get("/users/search")
+async def search_users(
+    q: str = Query("", description="Search query for name or email"),
+    limit: int = Query(50, ge=1, le=100),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Search users for starting a new conversation
+
+    **Requires:** Authentication
+
+    **Query Parameters:**
+    - q: Search query (optional, searches name and email)
+    - limit: Max results (default: 50)
+
+    **Returns:**
+    - List of users (excluding current user)
+    """
+    try:
+        service = MessagingService()
+        # Get supabase client from service
+        supabase = service.db
+
+        # Build query - exclude current user
+        query = supabase.table('users').select(
+            'id, email, display_name, active_role, photo_url'
+        ).neq('id', current_user.id)
+
+        # Add search filter if provided
+        if q:
+            # Search in display_name or email
+            query = query.or_(f"display_name.ilike.%{q}%,email.ilike.%{q}%")
+
+        # Order and limit
+        query = query.order('display_name').limit(limit)
+
+        result = query.execute()
+
+        return {
+            "users": result.data if result.data else [],
+            "count": len(result.data) if result.data else 0
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )

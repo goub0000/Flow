@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/message_widgets.dart' hide Conversation;
 import '../../../shared/providers/conversations_realtime_provider.dart';
@@ -442,21 +441,21 @@ class _NewConversationSheetState extends ConsumerState<_NewConversationSheet> {
     });
 
     try {
-      final currentUser = ref.read(currentUserProvider);
-      final supabase = Supabase.instance.client;
+      // Use backend API to search users
+      final messagingService = ref.read(messagingServiceProvider);
+      final response = await messagingService.searchUsers();
 
-      // Query users table, excluding current user
-      final response = await supabase
-          .from('users')
-          .select('id, email, display_name, active_role, photo_url')
-          .neq('id', currentUser?.id ?? '')
-          .order('display_name', ascending: true)
-          .limit(50);
-
-      setState(() {
-        _users = List<Map<String, dynamic>>.from(response);
-        _isLoading = false;
-      });
+      if (response.success && response.data != null) {
+        setState(() {
+          _users = response.data!;
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _error = response.message ?? 'Failed to load users';
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         _error = 'Failed to load users: $e';

@@ -262,4 +262,22 @@ class MessagingService {
       },
     );
   }
+
+  /// Search users for starting a new conversation
+  Future<ApiResponse<List<Map<String, dynamic>>>> searchUsers({
+    String query = '',
+    int limit = 50,
+  }) async {
+    return await _apiClient.get(
+      '${ApiConfig.messaging}/users/search',
+      queryParameters: {
+        if (query.isNotEmpty) 'q': query,
+        'limit': limit,
+      },
+      fromJson: (data) {
+        final users = data['users'] as List<dynamic>? ?? [];
+        return users.cast<Map<String, dynamic>>();
+      },
+    );
+  }
 }
