@@ -378,3 +378,135 @@ async def search_users(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+
+@router.get("/setup/check")
+async def check_messaging_setup(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Check if messaging tables exist and return their status
+
+    **Requires:** Authentication
+    """
+    try:
+        service = MessagingService()
+        supabase = service.db
+
+        results = {
+            "conversations_table": False,
+            "messages_table": False,
+            "tables_info": {}
+        }
+
+        # Check conversations table
+        try:
+            conv_check = supabase.table('conversations').select('id').limit(1).execute()
+            results["conversations_table"] = True
+            results["tables_info"]["conversations"] = "exists"
+        except Exception as e:
+            results["tables_info"]["conversations"] = f"error: {str(e)}"
+
+        # Check messages table
+        try:
+            msg_check = supabase.table('messages').select('id').limit(1).execute()
+            results["messages_table"] = True
+            results["tables_info"]["messages"] = "exists"
+        except Exception as e:
+            results["tables_info"]["messages"] = f"error: {str(e)}"
+
+        results["ready"] = results["conversations_table"] and results["messages_table"]
+
+        return results
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+@router.post("/setup/migrate")
+async def run_messaging_migration(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Create messaging tables if they don't exist
+
+    **Requires:** Authentication (admin only in production)
+    """
+    try:
+        service = MessagingService()
+        supabase = service.db
+
+        results = {
+            "conversations_created": False,
+            "messages_created": False,
+            "errors": []
+        }
+
+        # Create conversations table
+        try:
+            # Try to query first to see if exists
+            supabase.table('conversations').select('id').limit(1).execute()
+            results["conversations_created"] = "already_exists"
+        except:
+            # Table doesn't exist, create it using raw SQL via RPC or postgrest
+            # Note: Supabase client can't run raw SQL directly
+            # We'll need to create via Supabase dashboard or use the service role
+            results["errors"].append("conversations table needs to be created via Supabase SQL Editor")
+
+        # Create messages table
+        try:
+            supabase.table('messages').select('id').limit(1).execute()
+            results["messages_created"] = "already_exists"
+        except:
+            results["errors"].append("messages table needs to be created via Supabase SQL Editor")
+
+        if results["errors"]:
+            results["sql_to_run"] = """
+-- Run this in Supabase SQL Editor:
+
+CREATE TABLE IF NOT EXISTS public.conversations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_type TEXT DEFAULT 'direct',
+  title TEXT,
+  participant_ids UUID[] NOT NULL,
+  last_message_at TIMESTAMPTZ,
+  last_message_preview TEXT,
+  unread_count INTEGER DEFAULT 0,
+  metadata JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id UUID NOT NULL REFERENCES public.conversations(id) ON DELETE CASCADE,
+  sender_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  message_type TEXT DEFAULT 'text',
+  attachment_url TEXT,
+  reply_to_id UUID,
+  is_edited BOOLEAN DEFAULT FALSE,
+  is_deleted BOOLEAN DEFAULT FALSE,
+  read_by UUID[] DEFAULT ARRAY[]::UUID[],
+  delivered_at TIMESTAMPTZ,
+  read_at TIMESTAMPTZ,
+  metadata JSONB DEFAULT '{}'::jsonb,
+  timestamp TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_conversations_participant_ids ON public.conversations USING GIN (participant_ids);
+CREATE INDEX IF NOT EXISTS idx_messages_conversation ON public.messages(conversation_id, timestamp DESC);
+"""
+
+        return results
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
