@@ -50,7 +50,8 @@ class MessagingService {
     return await _apiClient.post(
       '${ApiConfig.messaging}/conversations',
       data: {
-        'participant_id': participantId,
+        'participant_ids': [participantId],
+        'conversation_type': 'direct',
       },
       fromJson: (data) => Conversation.fromJson(data),
     );
