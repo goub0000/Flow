@@ -1,13 +1,12 @@
 /// Messaging Real-Time Provider
-/// Manages real-time subscriptions for conversations and messages
+/// Manages messages within conversations via backend API with periodic refresh
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/conversation_model.dart';
 import '../../../core/models/message_model.dart';
 import '../../../core/providers/service_providers.dart';
-import '../../../core/services/enhanced_realtime_service.dart';
+import '../../../core/services/messaging_service.dart';
 
 /// State class for real-time conversation
 class RealtimeConversationState {
@@ -69,25 +68,18 @@ class RealtimeConversationState {
   }
 }
 
-/// StateNotifier for managing real-time conversation
+/// StateNotifier for managing conversation messages via backend API
 class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationState> {
   final String conversationId;
   final Ref ref;
-  final EnhancedRealtimeService _realtimeService;
-  final SupabaseClient _supabase;
+  final MessagingService _messagingService;
 
-  RealtimeChannel? _messagesChannel;
-  RealtimeChannel? _conversationChannel;
-  RealtimeChannel? _typingChannel;
-  StreamSubscription<ConnectionStatus>? _connectionSubscription;
-  Timer? _typingCleanupTimer;
-  Timer? _readReceiptTimer;
+  Timer? _refreshTimer;
 
   ConversationRealtimeNotifier(
     this.conversationId,
     this.ref,
-    this._realtimeService,
-    this._supabase,
+    this._messagingService,
   ) : super(const RealtimeConversationState()) {
     _initialize();
   }
@@ -96,22 +88,11 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
     // Initial fetch
     _fetchConversationAndMessages();
 
-    // Setup real-time subscriptions
-    _setupMessageSubscription();
-    _setupConversationSubscription();
-    _setupTypingSubscription();
-
-    // Monitor connection status
-    _monitorConnectionStatus();
-
-    // Setup periodic typing cleanup
-    _setupTypingCleanup();
-
-    // Setup auto-read receipts
-    _setupAutoReadReceipts();
+    // Setup periodic refresh (every 3 seconds for near-realtime chat)
+    _setupPeriodicRefresh();
   }
 
-  /// Fetch conversation and messages from database
+  /// Fetch conversation and messages from backend API
   Future<void> _fetchConversationAndMessages() async {
     state = state.copyWith(isLoading: true, error: null);
 
@@ -128,344 +109,141 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
       print('[RealtimeMessaging] Fetching conversation: $conversationId');
 
       // Fetch conversation
-      final conversationResponse = await _supabase
-          .from('conversations')
-          .select('*')
-          .eq('id', conversationId)
-          .single();
+      final conversationResponse = await _messagingService.getConversationById(conversationId);
 
-      final conversation = Conversation.fromJson(conversationResponse);
+      if (!conversationResponse.success || conversationResponse.data == null) {
+        state = state.copyWith(
+          error: conversationResponse.message ?? 'Failed to fetch conversation',
+          isLoading: false,
+          isConnected: false,
+        );
+        return;
+      }
+
+      final conversation = conversationResponse.data!;
 
       // Fetch messages
-      final messagesResponse = await _supabase
-          .from('messages')
-          .select('*')
-          .eq('conversation_id', conversationId)
-          .order('timestamp', ascending: true)
-          .limit(100); // Last 100 messages
+      final messagesResponse = await _messagingService.getMessages(
+        conversationId: conversationId,
+        page: 1,
+        pageSize: 100,
+      );
 
-      final messages = (messagesResponse as List<dynamic>)
-          .map((json) => Message.fromJson(json))
-          .toList();
+      List<Message> messages = [];
+      if (messagesResponse.success && messagesResponse.data != null) {
+        messages = messagesResponse.data!.items;
+      }
 
       state = state.copyWith(
         conversation: conversation,
         messages: messages,
         isLoading: false,
+        isConnected: true,
         lastUpdate: DateTime.now(),
       );
 
       print('[RealtimeMessaging] Fetched ${messages.length} messages');
 
-      // Mark unread messages as read
-      _markMessagesAsRead();
+      // Mark conversation as read
+      _markConversationAsRead();
 
     } catch (e) {
       print('[RealtimeMessaging] Error fetching: $e');
       state = state.copyWith(
         error: 'Failed to fetch conversation: $e',
         isLoading: false,
+        isConnected: false,
       );
     }
   }
 
-  /// Setup real-time subscription for messages
-  void _setupMessageSubscription() {
-    final channelName = 'conversation_messages_$conversationId';
-
-    print('[RealtimeMessaging] Setting up messages subscription');
-
-    _messagesChannel = _realtimeService.subscribeToTable(
-      table: 'messages',
-      channelName: channelName,
-      filter: PostgresChangeFilter(
-        type: PostgresChangeFilterType.eq,
-        column: 'conversation_id',
-        value: conversationId,
-      ),
-      onInsert: _handleMessageInsert,
-      onUpdate: _handleMessageUpdate,
-      onDelete: _handleMessageDelete,
-      onError: (error) {
-        print('[RealtimeMessaging] Messages subscription error: $error');
-        state = state.copyWith(error: error);
-      },
-    );
+  /// Setup periodic refresh for near-realtime chat updates
+  void _setupPeriodicRefresh() {
+    // Refresh every 3 seconds for chat (more frequent than conversations list)
+    _refreshTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      _fetchMessages(); // Only fetch messages, not full conversation
+    });
   }
 
-  /// Setup real-time subscription for conversation updates
-  void _setupConversationSubscription() {
-    final channelName = 'conversation_update_$conversationId';
-
-    print('[RealtimeMessaging] Setting up conversation subscription');
-
-    _conversationChannel = _realtimeService.subscribeToRecord(
-      table: 'conversations',
-      channelName: channelName,
-      recordId: conversationId,
-      onUpdate: _handleConversationUpdate,
-      onError: (error) {
-        print('[RealtimeMessaging] Conversation subscription error: $error');
-      },
-    );
-  }
-
-  /// Setup real-time subscription for typing indicators
-  void _setupTypingSubscription() {
-    final channelName = 'conversation_typing_$conversationId';
-
-    print('[RealtimeMessaging] Setting up typing subscription');
-
-    _typingChannel = _realtimeService.subscribeToTable(
-      table: 'typing_indicators',
-      channelName: channelName,
-      filter: PostgresChangeFilter(
-        type: PostgresChangeFilterType.eq,
-        column: 'conversation_id',
-        value: conversationId,
-      ),
-      onInsert: _handleTypingInsert,
-      onUpdate: _handleTypingUpdate,
-      onDelete: _handleTypingDelete,
-      onError: (error) {
-        print('[RealtimeMessaging] Typing subscription error: $error');
-      },
-    );
-  }
-
-  /// Handle new message
-  void _handleMessageInsert(Map<String, dynamic> payload) {
+  /// Fetch only messages (for periodic refresh)
+  Future<void> _fetchMessages() async {
     try {
-      print('[RealtimeMessaging] New message inserted: ${payload['id']}');
-
-      final newMessage = Message.fromJson(payload);
-      final updatedMessages = [...state.messages, newMessage];
-
-      state = state.copyWith(
-        messages: updatedMessages,
-        lastUpdate: DateTime.now(),
-        latestMessage: newMessage,
+      final messagesResponse = await _messagingService.getMessages(
+        conversationId: conversationId,
+        page: 1,
+        pageSize: 100,
       );
 
-      // Auto-mark as read if from another user
-      final currentUser = ref.read(currentUserProvider);
-      if (currentUser != null && newMessage.senderId != currentUser.id) {
-        _markMessagesAsRead();
-      }
+      if (messagesResponse.success && messagesResponse.data != null) {
+        final messages = messagesResponse.data!.items;
 
-    } catch (e) {
-      print('[RealtimeMessaging] Error handling message insert: $e');
-    }
-  }
-
-  /// Handle message update (edited, read receipts, etc.)
-  void _handleMessageUpdate(Map<String, dynamic> payload) {
-    try {
-      print('[RealtimeMessaging] Message updated: ${payload['id']}');
-
-      final updatedMessage = Message.fromJson(payload);
-      final updatedMessages = state.messages.map((message) {
-        if (message.id == updatedMessage.id) {
-          return updatedMessage;
+        // Check if there are new messages
+        if (messages.length != state.messages.length ||
+            (messages.isNotEmpty && state.messages.isNotEmpty &&
+             messages.last.id != state.messages.last.id)) {
+          state = state.copyWith(
+            messages: messages,
+            lastUpdate: DateTime.now(),
+            latestMessage: messages.isNotEmpty ? messages.last : null,
+          );
         }
-        return message;
-      }).toList();
-
-      state = state.copyWith(
-        messages: updatedMessages,
-        lastUpdate: DateTime.now(),
-      );
-
-    } catch (e) {
-      print('[RealtimeMessaging] Error handling message update: $e');
-    }
-  }
-
-  /// Handle message delete
-  void _handleMessageDelete(Map<String, dynamic> payload) {
-    try {
-      print('[RealtimeMessaging] Message deleted: ${payload['id']}');
-
-      final deletedId = payload['id'] as String;
-      final updatedMessages = state.messages
-          .where((message) => message.id != deletedId)
-          .toList();
-
-      state = state.copyWith(
-        messages: updatedMessages,
-        lastUpdate: DateTime.now(),
-      );
-
-    } catch (e) {
-      print('[RealtimeMessaging] Error handling message delete: $e');
-    }
-  }
-
-  /// Handle conversation update
-  void _handleConversationUpdate(Map<String, dynamic> payload) {
-    try {
-      print('[RealtimeMessaging] Conversation updated');
-
-      final updatedConversation = Conversation.fromJson(payload);
-
-      state = state.copyWith(
-        conversation: updatedConversation,
-        lastUpdate: DateTime.now(),
-      );
-
-    } catch (e) {
-      print('[RealtimeMessaging] Error handling conversation update: $e');
-    }
-  }
-
-  /// Handle typing indicator insert
-  void _handleTypingInsert(Map<String, dynamic> payload) {
-    try {
-      final userId = payload['user_id'] as String;
-      final isTyping = payload['is_typing'] as bool? ?? true;
-
-      print('[RealtimeMessaging] User $userId typing: $isTyping');
-
-      final updatedTypingUsers = Map<String, bool>.from(state.typingUsers);
-      updatedTypingUsers[userId] = isTyping;
-
-      state = state.copyWith(typingUsers: updatedTypingUsers);
-
-    } catch (e) {
-      print('[RealtimeMessaging] Error handling typing insert: $e');
-    }
-  }
-
-  /// Handle typing indicator update
-  void _handleTypingUpdate(Map<String, dynamic> payload) {
-    _handleTypingInsert(payload); // Same logic
-  }
-
-  /// Handle typing indicator delete
-  void _handleTypingDelete(Map<String, dynamic> payload) {
-    try {
-      final userId = payload['user_id'] as String;
-
-      print('[RealtimeMessaging] User $userId stopped typing');
-
-      final updatedTypingUsers = Map<String, bool>.from(state.typingUsers);
-      updatedTypingUsers.remove(userId);
-
-      state = state.copyWith(typingUsers: updatedTypingUsers);
-
-    } catch (e) {
-      print('[RealtimeMessaging] Error handling typing delete: $e');
-    }
-  }
-
-  /// Setup periodic typing indicators cleanup
-  void _setupTypingCleanup() {
-    _typingCleanupTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      // Remove typing indicators that haven't been updated
-      final updatedTypingUsers = Map<String, bool>.from(state.typingUsers);
-      updatedTypingUsers.removeWhere((_, isTyping) => !isTyping);
-
-      if (updatedTypingUsers.length != state.typingUsers.length) {
-        state = state.copyWith(typingUsers: updatedTypingUsers);
       }
-    });
-  }
-
-  /// Setup auto read receipts
-  void _setupAutoReadReceipts() {
-    // Mark messages as read after 2 seconds of viewing
-    _readReceiptTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      _markMessagesAsRead();
-    });
-  }
-
-  /// Mark unread messages as read
-  Future<void> _markMessagesAsRead() async {
-    try {
-      final user = ref.read(currentUserProvider);
-      if (user == null) return;
-
-      final unreadMessages = state.getUnreadMessages(user.id);
-      if (unreadMessages.isEmpty) return;
-
-      final messageIds = unreadMessages.map((m) => m.id).toList();
-
-      print('[RealtimeMessaging] Marking ${messageIds.length} messages as read');
-
-      // Update in database - add user to read_by array
-      for (final messageId in messageIds) {
-        await _supabase
-            .from('messages')
-            .update({
-              'read_by': [...unreadMessages.firstWhere((m) => m.id == messageId).readBy, user.id],
-              'read_at': DateTime.now().toIso8601String(),
-            })
-            .eq('id', messageId);
-      }
-
     } catch (e) {
-      print('[RealtimeMessaging] Error marking messages as read: $e');
+      print('[RealtimeMessaging] Error fetching messages: $e');
     }
   }
 
-  /// Send typing indicator
+  /// Mark conversation as read via backend API
+  Future<void> _markConversationAsRead() async {
+    try {
+      await _messagingService.markConversationAsRead(conversationId);
+      print('[RealtimeMessaging] Marked conversation as read');
+    } catch (e) {
+      print('[RealtimeMessaging] Error marking conversation as read: $e');
+    }
+  }
+
+  /// Send typing indicator via backend API
   Future<void> sendTypingIndicator(bool isTyping) async {
     try {
-      final user = ref.read(currentUserProvider);
-      if (user == null) return;
-
-      await _supabase
-          .from('typing_indicators')
-          .upsert({
-            'conversation_id': conversationId,
-            'user_id': user.id,
-            'is_typing': isTyping,
-            'expires_at': DateTime.now().add(const Duration(seconds: 10)).toIso8601String(),
-          });
-
+      await _messagingService.sendTypingIndicator(
+        conversationId: conversationId,
+        isTyping: isTyping,
+      );
     } catch (e) {
       print('[RealtimeMessaging] Error sending typing indicator: $e');
     }
   }
 
-  /// Send message
+  /// Send message via backend API
   Future<Message?> sendMessage(String content, {MessageType type = MessageType.text}) async {
     try {
-      final user = ref.read(currentUserProvider);
-      if (user == null) return null;
+      final response = await _messagingService.sendMessage(
+        conversationId: conversationId,
+        content: content,
+      );
 
-      final response = await _supabase
-          .from('messages')
-          .insert({
-            'conversation_id': conversationId,
-            'sender_id': user.id,
-            'content': content,
-            'message_type': type.toJson(),
-            'timestamp': DateTime.now().toIso8601String(),
-          })
-          .select()
-          .single();
+      if (response.success && response.data != null) {
+        // Add message to local state immediately for responsiveness
+        final newMessage = response.data!;
+        final updatedMessages = [...state.messages, newMessage];
 
-      return Message.fromJson(response);
+        state = state.copyWith(
+          messages: updatedMessages,
+          lastUpdate: DateTime.now(),
+          latestMessage: newMessage,
+        );
 
+        return newMessage;
+      } else {
+        state = state.copyWith(error: response.message ?? 'Failed to send message');
+        return null;
+      }
     } catch (e) {
       print('[RealtimeMessaging] Error sending message: $e');
       state = state.copyWith(error: 'Failed to send message: $e');
       return null;
     }
-  }
-
-  /// Monitor connection status
-  void _monitorConnectionStatus() {
-    _connectionSubscription = _realtimeService.connectionStatus.listen((status) {
-      final isConnected = status == ConnectionStatus.connected;
-      state = state.copyWith(isConnected: isConnected);
-
-      if (status == ConnectionStatus.connected && state.lastUpdate == null) {
-        // First connection - fetch data
-        _fetchConversationAndMessages();
-      }
-    });
   }
 
   /// Manual refresh
@@ -475,26 +253,17 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
 
   @override
   void dispose() {
-    // Clean up subscriptions
-    _realtimeService.unsubscribe('conversation_messages_$conversationId');
-    _realtimeService.unsubscribe('conversation_update_$conversationId');
-    _realtimeService.unsubscribe('conversation_typing_$conversationId');
-
-    _connectionSubscription?.cancel();
-    _typingCleanupTimer?.cancel();
-    _readReceiptTimer?.cancel();
-
+    _refreshTimer?.cancel();
     super.dispose();
   }
 }
 
-/// Provider family for real-time conversation
+/// Provider family for conversation messages (via backend API)
 final conversationRealtimeProvider = StateNotifierProvider.family.autoDispose<
     ConversationRealtimeNotifier, RealtimeConversationState, String>((ref, conversationId) {
-  final realtimeService = ref.watch(enhancedRealtimeServiceProvider);
-  final supabase = ref.watch(supabaseClientProvider);
+  final messagingService = ref.watch(messagingServiceProvider);
 
-  return ConversationRealtimeNotifier(conversationId, ref, realtimeService, supabase);
+  return ConversationRealtimeNotifier(conversationId, ref, messagingService);
 });
 
 /// Provider for messages in a conversation
