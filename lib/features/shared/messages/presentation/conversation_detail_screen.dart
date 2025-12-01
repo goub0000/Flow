@@ -1,224 +1,111 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../shared/widgets/message_widgets.dart';
+import '../../../../core/providers/service_providers.dart';
+import '../../../../core/models/message_model.dart';
+import '../../../shared/providers/messaging_realtime_provider.dart';
+import '../../../shared/widgets/message_widgets.dart' hide Message;
 
 /// Conversation Detail Screen
 ///
-/// Displays a single conversation with message history and input field.
-/// Features:
-/// - Message bubbles (sent/received)
-/// - Date dividers
-/// - Typing indicators
-/// - Message status indicators
-/// - Auto-scroll to bottom
-///
-/// Backend Integration TODO:
-/// - Integrate with MessagingService to fetch and send messages
-/// - Implement WebSocket for real-time message updates
-/// - Add message delivery/read status tracking
-/// - Implement attachment support (images, files)
-/// - Add message reactions and replies
-/// - Implement message deletion/editing
+/// Displays a single conversation with real-time message updates.
+/// Uses backend API for fetching and sending messages.
 
-class ConversationDetailScreen extends StatefulWidget {
+class ConversationDetailScreen extends ConsumerStatefulWidget {
   final String conversationId;
-  final Conversation? conversation;
 
   const ConversationDetailScreen({
     super.key,
     required this.conversationId,
-    this.conversation,
   });
 
   @override
-  State<ConversationDetailScreen> createState() =>
+  ConsumerState<ConversationDetailScreen> createState() =>
       _ConversationDetailScreenState();
 }
 
-class _ConversationDetailScreenState extends State<ConversationDetailScreen> {
+class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScreen> {
   final ScrollController _scrollController = ScrollController();
-  bool _showTypingIndicator = false;
+  final TextEditingController _messageController = TextEditingController();
+  bool _isSending = false;
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _messageController.dispose();
     super.dispose();
   }
 
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
     }
   }
 
-  // Mock messages - replace with actual API integration
-  List<Message> _mockMessages = [];
+  Future<void> _handleSendMessage() async {
+    final content = _messageController.text.trim();
+    if (content.isEmpty || _isSending) return;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadMockMessages();
-    // Scroll to bottom after build
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-  }
+    setState(() => _isSending = true);
+    _messageController.clear();
 
-  void _loadMockMessages() {
-    _mockMessages = [
-      Message(
-        id: '1',
-        conversationId: widget.conversationId,
-        senderId: 'counselor1',
-        senderName: widget.conversation?.title ?? 'User',
-        content: 'Hi! I hope you\'re doing well. I wanted to discuss your application.',
-        timestamp: DateTime.now().subtract(const Duration(days: 2, hours: 3)),
-        isCurrentUser: false,
-        status: MessageStatus.read,
-      ),
-      Message(
-        id: '2',
-        conversationId: widget.conversationId,
-        senderId: 'current_user',
-        senderName: 'You',
-        content: 'Hello! Yes, I\'m looking forward to hearing your feedback.',
-        timestamp: DateTime.now().subtract(const Duration(days: 2, hours: 2)),
-        isCurrentUser: true,
-        status: MessageStatus.read,
-      ),
-      Message(
-        id: '3',
-        conversationId: widget.conversationId,
-        senderId: 'counselor1',
-        senderName: widget.conversation?.title ?? 'User',
-        content: 'Your academic records are impressive. Have you considered applying for the merit scholarship?',
-        timestamp: DateTime.now().subtract(const Duration(days: 2, hours: 2)),
-        isCurrentUser: false,
-        status: MessageStatus.read,
-      ),
-      Message(
-        id: '4',
-        conversationId: widget.conversationId,
-        senderId: 'current_user',
-        senderName: 'You',
-        content: 'That sounds great! What are the requirements?',
-        timestamp: DateTime.now().subtract(const Duration(days: 2, hours: 1)),
-        isCurrentUser: true,
-        status: MessageStatus.read,
-      ),
-      Message(
-        id: '5',
-        conversationId: widget.conversationId,
-        senderId: 'counselor1',
-        senderName: widget.conversation?.title ?? 'User',
-        content: 'You\'ll need to submit your transcripts, a recommendation letter, and a personal statement. The deadline is next month.',
-        timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 8)),
-        isCurrentUser: false,
-        status: MessageStatus.read,
-      ),
-      Message(
-        id: '6',
-        conversationId: widget.conversationId,
-        senderId: 'current_user',
-        senderName: 'You',
-        content: 'Perfect! I already have most of those documents ready.',
-        timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 7)),
-        isCurrentUser: true,
-        status: MessageStatus.read,
-      ),
-      Message(
-        id: '7',
-        conversationId: widget.conversationId,
-        senderId: 'counselor1',
-        senderName: widget.conversation?.title ?? 'User',
-        content: 'Great! I\'ve reviewed your application. Let\'s discuss the scholarship opportunities.',
-        timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
-        isCurrentUser: false,
-        status: MessageStatus.delivered,
-      ),
-    ];
-  }
+    try {
+      final notifier = ref.read(conversationRealtimeProvider(widget.conversationId).notifier);
+      final message = await notifier.sendMessage(content);
 
-  void _handleSendMessage(String content) {
-    setState(() {
-      // Add new message to list
-      _mockMessages.add(
-        Message(
-          id: 'msg_${DateTime.now().millisecondsSinceEpoch}',
-          conversationId: widget.conversationId,
-          senderId: 'current_user',
-          senderName: 'You',
-          content: content,
-          timestamp: DateTime.now(),
-          isCurrentUser: true,
-          status: MessageStatus.sending,
-        ),
-      );
-
-      // Simulate typing indicator
-      _showTypingIndicator = true;
-    });
-
-    // Scroll to bottom
-    Future.delayed(const Duration(milliseconds: 100), _scrollToBottom);
-
-    // Simulate message being sent and response
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        setState(() {
-          // Update message status to sent
-          final lastMessageIndex = _mockMessages.length - 1;
-          _mockMessages[lastMessageIndex] = Message(
-            id: _mockMessages[lastMessageIndex].id,
-            conversationId: _mockMessages[lastMessageIndex].conversationId,
-            senderId: _mockMessages[lastMessageIndex].senderId,
-            senderName: _mockMessages[lastMessageIndex].senderName,
-            content: _mockMessages[lastMessageIndex].content,
-            timestamp: _mockMessages[lastMessageIndex].timestamp,
-            isCurrentUser: _mockMessages[lastMessageIndex].isCurrentUser,
-            status: MessageStatus.sent,
-          );
-        });
-      }
-    });
-
-    // Simulate response after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          _showTypingIndicator = false;
-          _mockMessages.add(
-            Message(
-              id: 'msg_${DateTime.now().millisecondsSinceEpoch}',
-              conversationId: widget.conversationId,
-              senderId: 'counselor1',
-              senderName: widget.conversation?.title ?? 'User',
-              content: 'Thanks for your message! I\'ll get back to you shortly.',
-              timestamp: DateTime.now(),
-              isCurrentUser: false,
-              status: MessageStatus.delivered,
+      if (message != null) {
+        _scrollToBottom();
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to send message'),
+              backgroundColor: Colors.red,
             ),
           );
-        });
-        Future.delayed(const Duration(milliseconds: 100), _scrollToBottom);
+        }
       }
-    });
-
-    // TODO: Replace with actual API call
-    // await messagingService.sendMessage(
-    //   conversationId: widget.conversationId,
-    //   content: content,
-    // );
+    } finally {
+      if (mounted) {
+        setState(() => _isSending = false);
+      }
+    }
   }
 
-  Widget _buildMessageList() {
-    final groupedMessages = <DateTime, List<Message>>{};
+  Widget _buildMessageList(List<Message> messages, String currentUserId) {
+    if (messages.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text(
+              'No messages yet',
+              style: TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Send a message to start the conversation',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
 
     // Group messages by date
-    for (final message in _mockMessages) {
+    final groupedMessages = <DateTime, List<Message>>{};
+    for (final message in messages) {
       final date = DateTime(
         message.timestamp.year,
         message.timestamp.month,
@@ -231,73 +118,108 @@ class _ConversationDetailScreenState extends State<ConversationDetailScreen> {
 
     return ListView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      itemCount: sortedDates.length + (_showTypingIndicator ? 1 : 0),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      itemCount: sortedDates.length,
       itemBuilder: (context, index) {
-        // Show typing indicator at the end
-        if (_showTypingIndicator && index == sortedDates.length) {
-          return TypingIndicator(
-            userName: widget.conversation?.title ?? 'User',
-          );
-        }
-
         final date = sortedDates[index];
-        final messages = groupedMessages[date]!;
+        final dayMessages = groupedMessages[date]!;
 
         return Column(
           children: [
-            MessageDateDivider(date: date),
-            ...messages.map((message) => MessageBubble(
-                  message: message,
-                  onLongPress: () {
-                    _showMessageOptions(message);
-                  },
-                )),
+            // Date divider
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Row(
+                children: [
+                  const Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      _formatDate(date),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  const Expanded(child: Divider()),
+                ],
+              ),
+            ),
+            // Messages for this date
+            ...dayMessages.map((message) => _buildMessageBubble(message, currentUserId)),
           ],
         );
       },
     );
   }
 
-  void _showMessageOptions(Message message) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => SafeArea(
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    if (date == today) {
+      return 'Today';
+    } else if (date == yesterday) {
+      return 'Yesterday';
+    } else {
+      return '${date.day}/${date.month}/${date.year}';
+    }
+  }
+
+  Widget _buildMessageBubble(Message message, String currentUserId) {
+    final isCurrentUser = message.senderId == currentUserId;
+
+    return Align(
+      alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.75,
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isCurrentUser ? AppColors.primary : Colors.grey[200],
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(16),
+            topRight: const Radius.circular(16),
+            bottomLeft: Radius.circular(isCurrentUser ? 16 : 4),
+            bottomRight: Radius.circular(isCurrentUser ? 4 : 16),
+          ),
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            if (message.isCurrentUser)
-              ListTile(
-                leading: const Icon(Icons.delete_outline),
-                title: const Text('Delete Message'),
-                onTap: () {
-                  context.pop();
-                  // TODO: Implement delete functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Delete message - Backend integration required'),
-                    ),
-                  );
-                },
+            Text(
+              message.content,
+              style: TextStyle(
+                color: isCurrentUser ? Colors.white : Colors.black87,
+                fontSize: 15,
               ),
-            ListTile(
-              leading: const Icon(Icons.copy),
-              title: const Text('Copy Text'),
-              onTap: () {
-                context.pop();
-                // TODO: Implement copy to clipboard
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Text copied to clipboard')),
-                );
-              },
             ),
-            ListTile(
-              leading: const Icon(Icons.reply),
-              title: const Text('Reply'),
-              onTap: () {
-                context.pop();
-                // TODO: Implement reply functionality
-              },
+            const SizedBox(height: 4),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _formatTime(message.timestamp),
+                  style: TextStyle(
+                    color: isCurrentUser ? Colors.white70 : Colors.grey,
+                    fontSize: 11,
+                  ),
+                ),
+                if (isCurrentUser) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    message.isDeleted
+                        ? Icons.block
+                        : Icons.done_all,
+                    size: 14,
+                    color: Colors.white70,
+                  ),
+                ],
+              ],
             ),
           ],
         ),
@@ -305,9 +227,35 @@ class _ConversationDetailScreenState extends State<ConversationDetailScreen> {
     );
   }
 
+  String _formatTime(DateTime timestamp) {
+    final hour = timestamp.hour.toString().padLeft(2, '0');
+    final minute = timestamp.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final conversation = widget.conversation;
+    final conversationState = ref.watch(conversationRealtimeProvider(widget.conversationId));
+    final currentUser = ref.watch(currentUserProvider);
+    final conversation = conversationState.conversation;
+    final messages = conversationState.messages;
+    final isLoading = conversationState.isLoading;
+    final error = conversationState.error;
+
+    // Scroll to bottom when new messages arrive
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (messages.isNotEmpty) {
+        _scrollToBottom();
+      }
+    });
+
+    // Get other participant's name for the title
+    String title = 'Conversation';
+    if (conversation != null && currentUser != null) {
+      // For direct conversations, show the other person's name
+      // For now, just show a generic title - we'd need to fetch user details
+      title = conversation.title ?? 'Chat';
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -315,39 +263,16 @@ class _ConversationDetailScreenState extends State<ConversationDetailScreen> {
         titleSpacing: 0,
         title: Row(
           children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                  backgroundImage: conversation?.avatar != null
-                      ? NetworkImage(conversation!.avatar!)
-                      : null,
-                  child: conversation?.avatar == null
-                      ? Text(
-                          (conversation?.title ?? 'U')[0].toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      : null,
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+              child: Text(
+                title.isNotEmpty ? title[0].toUpperCase() : 'U',
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
                 ),
-                if (conversation?.isOnline ?? false)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: AppColors.success,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                      ),
-                    ),
-                  ),
-              ],
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -355,28 +280,21 @@ class _ConversationDetailScreenState extends State<ConversationDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    conversation?.title ?? 'Conversation',
+                    title,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  if (conversation?.subtitle != null)
-                    Text(
-                      conversation!.subtitle!,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                      ),
-                    )
-                  else if (conversation?.isOnline ?? false)
-                    const Text(
-                      'Online',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.success,
-                      ),
+                  Text(
+                    conversationState.isConnected ? 'Online' : 'Connecting...',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: conversationState.isConnected
+                          ? AppColors.success
+                          : Colors.grey,
                     ),
+                  ),
                 ],
               ),
             ),
@@ -384,59 +302,117 @@ class _ConversationDetailScreenState extends State<ConversationDetailScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.videocam_outlined),
+            icon: const Icon(Icons.refresh),
             onPressed: () {
-              // TODO: Implement video call
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Video call - Feature coming soon'),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.call_outlined),
-            onPressed: () {
-              // TODO: Implement voice call
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Voice call - Feature coming soon'),
-                ),
-              );
+              ref.read(conversationRealtimeProvider(widget.conversationId).notifier).refresh();
             },
           ),
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () {
-              // TODO: Show more options
+              // Show options
             },
           ),
         ],
       ),
       body: Column(
         children: [
+          // Error banner
+          if (error != null)
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.red[100],
+              child: Row(
+                children: [
+                  const Icon(Icons.error, color: Colors.red, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      error,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh, size: 20),
+                    onPressed: () {
+                      ref.read(conversationRealtimeProvider(widget.conversationId).notifier).refresh();
+                    },
+                  ),
+                ],
+              ),
+            ),
+
           // Messages list
           Expanded(
-            child: _mockMessages.isEmpty
-                ? const EmptyMessagesState(
-                    message: 'No messages yet\nSend a message to start the conversation',
-                    icon: Icons.chat_bubble_outline,
-                  )
-                : _buildMessageList(),
+            child: isLoading && messages.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : _buildMessageList(messages, currentUser?.id ?? ''),
           ),
 
           // Message input field
-          MessageInputField(
-            onSend: _handleSendMessage,
-            onAttachment: () {
-              // TODO: Implement attachment picker
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Attachments - Backend integration required'),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, -2),
                 ),
-              );
-            },
-            placeholder: 'Type a message...',
+              ],
+            ),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.attach_file),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Attachments coming soon')),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        hintText: 'Type a message...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                      ),
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (_) => _handleSendMessage(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  CircleAvatar(
+                    backgroundColor: AppColors.primary,
+                    child: IconButton(
+                      icon: _isSending
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Icon(Icons.send, color: Colors.white, size: 20),
+                      onPressed: _isSending ? null : _handleSendMessage,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

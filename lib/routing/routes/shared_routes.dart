@@ -94,10 +94,8 @@ List<RouteBase> sharedRoutes = [
     name: 'chat',
     builder: (context, state) {
       final conversationId = state.pathParameters['id']!;
-      final conversation = state.extra as msg_widgets.Conversation?;
       return ConversationDetailScreen(
         conversationId: conversationId,
-        conversation: conversation,
       );
     },
   ),
