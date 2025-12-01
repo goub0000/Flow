@@ -246,6 +246,39 @@ async def delete_message(
         )
 
 
+@router.post("/conversations/{conversation_id}/read")
+async def mark_conversation_as_read(
+    conversation_id: str,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Mark all messages in a conversation as read
+    """
+    try:
+        service = MessagingService()
+        # Get all unread messages in this conversation
+        messages_response = await service.get_conversation_messages(
+            conversation_id, current_user.id, page=1, page_size=100
+        )
+
+        # Mark them as read
+        message_ids = [m.id for m in messages_response.messages if current_user.id not in (m.read_by or [])]
+
+        if message_ids:
+            result = await service.mark_messages_as_read(
+                current_user.id,
+                ReadReceiptRequest(message_ids=message_ids)
+            )
+            return result
+
+        return {"success": True, "marked_count": 0}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
 @router.post("/messages/read")
 async def mark_messages_as_read(
     read_receipt_data: ReadReceiptRequest,
