@@ -3,9 +3,10 @@ Authentication API Endpoints
 Handles user registration, login, logout, password management, and profile operations
 Updated: 2025-11-27 - Enhanced error handling with structured error responses
 """
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, UploadFile, File
 from typing import Dict, Any
 import logging
+from datetime import datetime
 
 from app.services.auth_service import (
     AuthService,
@@ -400,6 +401,86 @@ async def patch_profile(
     """
     # Delegate to the same logic as PUT /auth/me
     return await update_current_user_profile(profile_data, current_user)
+
+
+@router.post("/auth/upload-photo")
+async def upload_profile_photo(
+    file: UploadFile = File(...),
+    current_user: CurrentUser = Depends(get_current_user)
+) -> Dict[str, Any]:
+    """
+    Upload profile photo to Supabase Storage
+
+    **Requires:** Authentication
+
+    **Request Body:**
+    - file: Image file (multipart/form-data)
+
+    **Returns:**
+    - photo_url: Public URL of the uploaded photo
+    - message: Success message
+
+    **Error Responses:**
+    - 400 INVALID_FILE_TYPE: File type not allowed
+    - 400 FILE_TOO_LARGE: File exceeds size limit
+    - 500 UPLOAD_FAILED: Failed to upload file
+    """
+    try:
+        # Validate file type
+        allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+        if file.content_type not in allowed_types:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={"error": "Invalid file type. Allowed: JPEG, PNG, GIF, WEBP"}
+            )
+
+        # Validate file size (5MB max)
+        contents = await file.read()
+        if len(contents) > 5 * 1024 * 1024:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={"error": "File too large. Maximum size is 5MB"}
+            )
+
+        # Generate unique filename
+        extension = file.filename.split('.')[-1] if file.filename else 'jpg'
+        timestamp = int(datetime.now().timestamp() * 1000)
+        file_path = f"{current_user.id}/avatar_{timestamp}.{extension}"
+
+        # Upload to Supabase Storage using service role (bypasses RLS)
+        auth_service = AuthService()
+        storage = auth_service.db.storage.from_('user-profiles')
+
+        storage.upload(
+            file_path,
+            contents,
+            file_options={"content-type": file.content_type, "upsert": "true"}
+        )
+
+        # Get public URL
+        public_url = storage.get_public_url(file_path)
+
+        # Update user profile with new photo URL
+        await auth_service.update_user_profile(
+            current_user.id,
+            UpdateProfileRequest(avatar_url=public_url)
+        )
+
+        logger.info(f"Profile photo uploaded for user {current_user.id}")
+
+        return {
+            "photo_url": public_url,
+            "message": "Photo uploaded successfully"
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Photo upload error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"error": f"Failed to upload photo: {str(e)}"}
+        )
 
 
 @router.post("/auth/switch-role")

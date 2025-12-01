@@ -2,7 +2,8 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/services/auth_service.dart';
-import '../../../core/services/storage_service.dart';
+import '../../../core/api/api_client.dart';
+import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart' hide currentUserProvider;
 import '../../authentication/providers/auth_provider.dart';
 
@@ -39,10 +40,10 @@ class ProfileState {
 class ProfileNotifier extends StateNotifier<ProfileState> {
   final Ref ref;
   final AuthService _authService;
-  final StorageService _storageService;
+  final ApiClient _apiClient;
   bool _isListeningToAuth = false;
 
-  ProfileNotifier(this.ref, this._authService, this._storageService) : super(const ProfileState()) {
+  ProfileNotifier(this.ref, this._authService, this._apiClient) : super(const ProfileState()) {
     // Load profile immediately
     print('[DEBUG] ProfileNotifier initialized - loading profile');
     loadProfile();
@@ -159,16 +160,31 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       // Extract bio from additionalMetadata if not provided directly
       final bioToUpdate = bio ?? additionalMetadata?['bio'] as String?;
 
-      // Upload photo if provided
+      // Upload photo if provided - use backend API (bypasses RLS)
       String? photoUrl;
       if (photoBytes != null && photoFileName != null) {
         try {
-          photoUrl = await _storageService.uploadProfilePhoto(
-            userId: state.user!.id,
-            fileBytes: photoBytes,
+          // Determine mime type from file extension
+          final ext = photoFileName.toLowerCase().split('.').last;
+          String mimeType = 'image/jpeg';
+          if (ext == 'png') mimeType = 'image/png';
+          else if (ext == 'gif') mimeType = 'image/gif';
+          else if (ext == 'webp') mimeType = 'image/webp';
+
+          final uploadResponse = await _apiClient.uploadFile<Map<String, dynamic>>(
+            '${ApiConfig.auth}/upload-photo',
+            photoBytes,
             fileName: photoFileName,
+            mimeType: mimeType,
+            fromJson: (data) => data as Map<String, dynamic>,
           );
-          print('[DEBUG] Photo uploaded successfully: $photoUrl');
+
+          if (uploadResponse.success && uploadResponse.data != null) {
+            photoUrl = uploadResponse.data!['photo_url'] as String?;
+            print('[DEBUG] Photo uploaded successfully via backend: $photoUrl');
+          } else {
+            print('[DEBUG] Photo upload failed: ${uploadResponse.message}');
+          }
         } catch (e) {
           print('[DEBUG] Photo upload failed: $e');
           // Continue without photo - don't fail the whole update
@@ -180,7 +196,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         phoneNumber: phoneNumber,
         bio: bioToUpdate,
         metadata: additionalMetadata,
-        photoUrl: photoUrl,
+        // Don't pass photoUrl here - backend already updated it
       );
 
       if (response.success && response.data != null) {
@@ -267,25 +283,34 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     state = state.copyWith(isUpdating: true, error: null);
 
     try {
-      final photoUrl = await _storageService.uploadProfilePhoto(
-        userId: state.user!.id,
-        fileBytes: fileBytes,
+      // Determine mime type from file extension
+      final ext = fileName.toLowerCase().split('.').last;
+      String mimeType = 'image/jpeg';
+      if (ext == 'png') mimeType = 'image/png';
+      else if (ext == 'gif') mimeType = 'image/gif';
+      else if (ext == 'webp') mimeType = 'image/webp';
+
+      // Upload via backend API (bypasses Supabase RLS)
+      final uploadResponse = await _apiClient.uploadFile<Map<String, dynamic>>(
+        '${ApiConfig.auth}/upload-photo',
+        fileBytes,
         fileName: fileName,
+        mimeType: mimeType,
+        fromJson: (data) => data as Map<String, dynamic>,
       );
 
-      // Update user profile with new photo URL
-      final response = await _authService.updateProfile(photoUrl: photoUrl);
+      if (uploadResponse.success && uploadResponse.data != null) {
+        final photoUrl = uploadResponse.data!['photo_url'] as String?;
 
-      if (response.success && response.data != null) {
-        state = state.copyWith(
-          user: response.data,
-          isUpdating: false,
-        );
+        // Refresh profile to get updated data
+        await loadProfile();
         ref.read(authProvider.notifier).refreshUser();
+
+        state = state.copyWith(isUpdating: false);
         return photoUrl;
       } else {
         state = state.copyWith(
-          error: response.message ?? 'Failed to update profile with photo',
+          error: uploadResponse.message ?? 'Failed to upload photo',
           isUpdating: false,
         );
         return null;
@@ -386,8 +411,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 /// Provider for profile state
 final profileProvider = StateNotifierProvider<ProfileNotifier, ProfileState>((ref) {
   final authService = ref.watch(authServiceProvider);
-  final storageService = ref.watch(storageServiceProvider);
-  return ProfileNotifier(ref, authService, storageService);
+  final apiClient = ref.watch(apiClientProvider);
+  return ProfileNotifier(ref, authService, apiClient);
 });
 
 /// Provider for current profile user
