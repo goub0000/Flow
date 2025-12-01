@@ -104,14 +104,20 @@ class PaginatedResponse<T> {
     Map<String, dynamic> json,
     T Function(Map<String, dynamic>) fromJsonT,
   ) {
-    final itemsList = json['items'] as List? ?? [];
+    // Support multiple field names for the list items
+    // Backend may return 'items', 'conversations', 'messages', 'data', etc.
+    final itemsList = (json['items'] ??
+                       json['conversations'] ??
+                       json['messages'] ??
+                       json['data'] ??
+                       []) as List;
     return PaginatedResponse(
       items: itemsList.map((item) => fromJsonT(item as Map<String, dynamic>)).toList(),
       total: json['total'] ?? 0,
       page: json['page'] ?? 1,
       pageSize: json['page_size'] ?? itemsList.length,
       totalPages: json['total_pages'] ?? 1,
-      hasNext: json['has_next'] ?? false,
+      hasNext: json['has_next'] ?? json['has_more'] ?? false,
       hasPrevious: json['has_previous'] ?? false,
     );
   }
