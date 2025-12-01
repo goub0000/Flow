@@ -91,8 +91,9 @@ class MessagingService {
     return await _apiClient.post(
       '${ApiConfig.messaging}/conversations/$conversationId/messages',
       data: {
+        'conversation_id': conversationId,
         'content': content,
-        'type': 'text',
+        'message_type': 'text',
         if (replyToId != null) 'reply_to_id': replyToId,
       },
       fromJson: (data) => Message.fromJson(data),
