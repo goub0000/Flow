@@ -312,7 +312,7 @@ app.include_router(institutions_api.router, prefix="/api/v1", tags=["Institution
 app.include_router(courses_api.router, prefix="/api/v1", tags=["Courses"])  # Re-enabled for compatibility
 app.include_router(applications.router, prefix="/api/v1", tags=["Applications"])
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
-app.include_router(messaging_api.router, prefix="/api/v1", tags=["Messaging"])
+app.include_router(messaging_api.router, prefix="/api/v1/messages", tags=["Messaging"])
 app.include_router(notifications_api.router, prefix="/api/v1", tags=["Notifications"])
 app.include_router(counseling_api.router, prefix="/api/v1", tags=["Counseling"])
 app.include_router(parent_monitoring_api.router, prefix="/api/v1", tags=["Parent Monitoring"])
