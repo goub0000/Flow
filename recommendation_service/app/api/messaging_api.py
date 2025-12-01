@@ -448,10 +448,8 @@ async def test_conversation_insert(
         service = MessagingService()
         supabase = service.db
 
-        # Test with a simple insert
-        test_id = str(uuid4())
+        # Test with a simple insert - let PostgreSQL generate the ID
         test_data = {
-            "id": test_id,
             "conversation_type": "direct",
             "title": None,
             "participant_ids": [current_user.id],  # Just the current user for test
@@ -468,8 +466,11 @@ async def test_conversation_insert(
             response = supabase.table('conversations').insert(test_data).execute()
             logger.info(f"Test insert response: {response}")
 
-            # Clean up - delete the test conversation
-            supabase.table('conversations').delete().eq('id', test_id).execute()
+            # Clean up - delete the test conversation using the returned ID
+            if response.data and len(response.data) > 0:
+                test_id = response.data[0].get('id')
+                if test_id:
+                    supabase.table('conversations').delete().eq('id', test_id).execute()
 
             return {
                 "success": True,

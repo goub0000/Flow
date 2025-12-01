@@ -73,8 +73,9 @@ class MessagingService:
                     logger.warning(f"Error checking existing conversations: {e}")
                     # Continue to create new conversation
 
+            # Let PostgreSQL generate the UUID for id instead of passing our own
+            # This avoids potential UUID format issues
             conversation = {
-                "id": str(uuid4()),
                 "conversation_type": conversation_data.conversation_type.value,
                 "title": conversation_data.title,
                 "participant_ids": participant_ids,
