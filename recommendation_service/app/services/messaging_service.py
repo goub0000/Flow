@@ -38,46 +38,66 @@ class MessagingService:
     ) -> ConversationResponse:
         """Create a new conversation"""
         try:
-            # Validate participants
-            if user_id not in conversation_data.participant_ids:
-                conversation_data.participant_ids.append(user_id)
+            logger.info(f"create_conversation called: user_id={user_id}, data={conversation_data}")
+
+            # Validate participants - make a copy to avoid modifying the original
+            participant_ids = list(conversation_data.participant_ids)
+            if user_id not in participant_ids:
+                participant_ids.append(user_id)
+
+            logger.info(f"Participants after adding user: {participant_ids}")
 
             # For direct conversations, ensure exactly 2 participants
             if conversation_data.conversation_type == ConversationType.DIRECT:
-                if len(conversation_data.participant_ids) != 2:
-                    raise Exception("Direct conversations must have exactly 2 participants")
+                if len(participant_ids) != 2:
+                    raise Exception(f"Direct conversations must have exactly 2 participants, got {len(participant_ids)}")
 
             # Check if direct conversation already exists between these users
             if conversation_data.conversation_type == ConversationType.DIRECT:
-                existing = self.db.table('conversations').select('*').eq(
-                    'conversation_type', ConversationType.DIRECT.value
-                ).contains('participant_ids', conversation_data.participant_ids).execute()
+                logger.info("Checking for existing direct conversation...")
+                try:
+                    # Use a simpler query - just get all direct conversations and filter
+                    all_convos = self.db.table('conversations').select('*').eq(
+                        'conversation_type', 'direct'
+                    ).execute()
 
-                if existing.data:
-                    # Return existing conversation instead of creating duplicate
-                    return ConversationResponse(**existing.data[0])
+                    logger.info(f"Found {len(all_convos.data) if all_convos.data else 0} direct conversations")
+
+                    # Check if any existing conversation has both participants
+                    for conv in (all_convos.data or []):
+                        conv_participants = conv.get('participant_ids', [])
+                        if set(participant_ids) == set(conv_participants):
+                            logger.info(f"Found existing conversation: {conv['id']}")
+                            return ConversationResponse(**conv)
+                except Exception as e:
+                    logger.warning(f"Error checking existing conversations: {e}")
+                    # Continue to create new conversation
 
             conversation = {
                 "id": str(uuid4()),
                 "conversation_type": conversation_data.conversation_type.value,
                 "title": conversation_data.title,
-                "participant_ids": conversation_data.participant_ids,
+                "participant_ids": participant_ids,
                 "metadata": conversation_data.metadata or {},
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat(),
             }
 
+            logger.info(f"Inserting conversation: {conversation}")
+
             response = self.db.table('conversations').insert(conversation).execute()
 
+            logger.info(f"Insert response: {response}")
+
             if not response.data:
-                raise Exception("Failed to create conversation")
+                raise Exception("Failed to create conversation - no data returned")
 
             logger.info(f"Conversation created: {response.data[0]['id']}")
 
             return ConversationResponse(**response.data[0])
 
         except Exception as e:
-            logger.error(f"Create conversation error: {e}")
+            logger.error(f"Create conversation error: {e}", exc_info=True)
             raise Exception(f"Failed to create conversation: {str(e)}")
 
     async def get_conversation(

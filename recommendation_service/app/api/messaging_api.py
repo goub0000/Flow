@@ -40,11 +40,17 @@ async def create_conversation(
     **Returns:**
     - Created conversation data
     """
+    import logging
+    logger = logging.getLogger(__name__)
+
     try:
+        logger.info(f"Creating conversation: user={current_user.id}, participants={conversation_data.participant_ids}, type={conversation_data.conversation_type}")
         service = MessagingService()
         result = await service.create_conversation(current_user.id, conversation_data)
+        logger.info(f"Conversation created successfully: {result.id}")
         return result
     except Exception as e:
+        logger.error(f"Failed to create conversation: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
