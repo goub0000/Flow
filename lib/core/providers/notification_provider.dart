@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/notification_models.dart';
 import '../services/notification_service.dart';
+import '../../features/authentication/providers/auth_provider.dart';
 
 // ==================== SERVICE PROVIDERS ====================
 
@@ -308,11 +309,16 @@ final notificationsProvider =
   final service = ref.watch(notificationServiceProvider);
   final notifier = NotificationsNotifier(service);
 
-  // Auto-fetch on creation
-  Future.microtask(() {
-    notifier.fetchNotifications();
-    notifier.subscribeToRealtime(); // Subscribe to real-time updates
-  });
+  // Watch auth state and only fetch when authenticated
+  final authState = ref.watch(authProvider);
+
+  // Auto-fetch when authenticated
+  if (authState.isAuthenticated) {
+    Future.microtask(() {
+      notifier.fetchNotifications();
+      notifier.subscribeToRealtime(); // Subscribe to real-time updates
+    });
+  }
 
   // Cleanup on dispose
   ref.onDispose(() {
