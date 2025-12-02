@@ -5,8 +5,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/notification_model.dart';
-import '../../../core/providers/service_providers.dart';
+import '../../../core/providers/service_providers.dart' hide currentUserProvider;
 import '../../../core/services/enhanced_realtime_service.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 /// State class for real-time notifications
 class RealtimeNotificationsState {
