@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
@@ -101,14 +102,27 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
                 _pickImage(ImageSource.gallery);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt, color: AppColors.primary),
-              title: const Text('Take Photo'),
-              onTap: () {
-                Navigator.pop(context);
-                _pickImage(ImageSource.camera);
-              },
-            ),
+            // Camera option - works differently on web vs mobile
+            if (!kIsWeb) ...[
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: AppColors.primary),
+                title: const Text('Take Photo'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+            ] else ...[
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: AppColors.primary),
+                title: const Text('Take Photo'),
+                subtitle: const Text('Opens camera on mobile devices'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageWithCameraFallback();
+                },
+              ),
+            ],
             ListTile(
               leading: const Icon(Icons.attach_file, color: AppColors.primary),
               title: const Text('Document'),
@@ -123,6 +137,42 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
     );
   }
 
+  /// Pick image with camera - for web, use file picker with image filter as fallback
+  Future<void> _pickImageWithCameraFallback() async {
+    try {
+      // First try camera
+      final picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 1920,
+        maxHeight: 1920,
+        imageQuality: 85,
+        preferredCameraDevice: CameraDevice.rear,
+      );
+
+      if (image != null) {
+        final bytes = await image.readAsBytes();
+        final extension = image.name.split('.').last.toLowerCase();
+        final mimeType = _getImageMimeType(extension);
+        await _uploadAndSendFile(
+          bytes: bytes,
+          fileName: image.name,
+          mimeType: mimeType,
+        );
+      }
+    } catch (e) {
+      // On web, camera might not be available - show helpful message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Camera not available in browser. Use "Photo from Gallery" to select an image.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
   /// Pick an image using image_picker
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -132,22 +182,49 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
         maxWidth: 1920,
         maxHeight: 1920,
         imageQuality: 85,
+        preferredCameraDevice: CameraDevice.rear,
       );
 
       if (image != null) {
         final bytes = await image.readAsBytes();
+        final extension = image.name.split('.').last.toLowerCase();
+        final mimeType = _getImageMimeType(extension);
         await _uploadAndSendFile(
           bytes: bytes,
           fileName: image.name,
-          mimeType: 'image/${image.name.split('.').last}',
+          mimeType: mimeType,
         );
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = 'Failed to pick image';
+        if (e.toString().contains('camera_access_denied')) {
+          errorMessage = 'Camera access denied. Please enable camera permissions.';
+        } else if (e.toString().contains('no_camera')) {
+          errorMessage = 'No camera available on this device.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick image: $e')),
+          SnackBar(content: Text(errorMessage)),
         );
       }
+    }
+  }
+
+  String _getImageMimeType(String extension) {
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'gif':
+        return 'image/gif';
+      case 'webp':
+        return 'image/webp';
+      case 'heic':
+        return 'image/heic';
+      default:
+        return 'image/$extension';
     }
   }
 
