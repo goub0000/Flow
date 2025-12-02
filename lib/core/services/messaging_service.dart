@@ -136,9 +136,10 @@ class MessagingService {
     return await _apiClient.post(
       '${ApiConfig.messaging}/conversations/$conversationId/messages',
       data: {
+        'conversation_id': conversationId,
         'content': content,
-        'type': fileType == 'image' ? 'image' : 'file',
-        'attachments': [fileUrl],
+        'message_type': fileType == 'image' ? 'image' : 'file',
+        'attachment_url': fileUrl,
         if (replyToId != null) 'reply_to_id': replyToId,
       },
       fromJson: (data) => Message.fromJson(data),
