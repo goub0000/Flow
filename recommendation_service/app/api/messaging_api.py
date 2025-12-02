@@ -311,6 +311,79 @@ async def mark_messages_as_read(
         )
 
 
+@router.get("/storage/diagnose")
+async def diagnose_storage(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Diagnose storage bucket status and configuration
+    """
+    import logging
+    import os
+    logger = logging.getLogger(__name__)
+
+    supabase = get_supabase()
+    bucket_name = "messaging-attachments"
+
+    diagnosis = {
+        "bucket_name": bucket_name,
+        "bucket_exists": False,
+        "bucket_public": None,
+        "all_buckets": [],
+        "supabase_key_type": "unknown",
+        "errors": []
+    }
+
+    # Check what type of key is being used (anon vs service_role)
+    key = os.environ.get('SUPABASE_KEY', '')
+    if key:
+        # Service role keys typically contain "service_role" in decoded JWT
+        # Anon keys are shorter and contain "anon"
+        if len(key) > 200:
+            diagnosis["supabase_key_type"] = "likely_service_role (long key)"
+        else:
+            diagnosis["supabase_key_type"] = "likely_anon (short key)"
+
+    try:
+        # List all buckets
+        buckets = supabase.storage.list_buckets()
+        diagnosis["all_buckets"] = [{"name": b.name, "public": b.public, "id": b.id} for b in buckets]
+
+        # Check if our bucket exists
+        for b in buckets:
+            if b.name == bucket_name:
+                diagnosis["bucket_exists"] = True
+                diagnosis["bucket_public"] = b.public
+                break
+
+        # If bucket doesn't exist, try to create it
+        if not diagnosis["bucket_exists"]:
+            logger.info(f"Bucket {bucket_name} doesn't exist, attempting to create...")
+            try:
+                supabase.storage.create_bucket(bucket_name, options={"public": True})
+                diagnosis["bucket_created"] = True
+                diagnosis["bucket_exists"] = True
+                diagnosis["bucket_public"] = True
+            except Exception as create_error:
+                diagnosis["errors"].append(f"Failed to create bucket: {str(create_error)}")
+
+        # Try to list files in the bucket
+        if diagnosis["bucket_exists"]:
+            try:
+                files = supabase.storage.from_(bucket_name).list()
+                diagnosis["can_list_files"] = True
+                diagnosis["file_count"] = len(files) if files else 0
+            except Exception as list_error:
+                diagnosis["can_list_files"] = False
+                diagnosis["errors"].append(f"Cannot list files: {str(list_error)}")
+
+    except Exception as e:
+        diagnosis["errors"].append(f"Diagnosis error: {str(e)}")
+        logger.error(f"Storage diagnosis error: {e}", exc_info=True)
+
+    return diagnosis
+
+
 @router.post("/upload")
 async def upload_file(
     file: UploadFile = File(...),
@@ -331,6 +404,7 @@ async def upload_file(
     - size: File size in bytes
     """
     import logging
+    import os
     logger = logging.getLogger(__name__)
 
     try:
@@ -360,33 +434,41 @@ async def upload_file(
         else:
             file_type = "file"
 
-        # Generate unique filename
+        # Generate unique filename - use simple path without user subfolder to avoid policy issues
         original_filename = file.filename or "unknown"
         extension = original_filename.split(".")[-1] if "." in original_filename else ""
-        unique_filename = f"{current_user.id}/{uuid4()}.{extension}" if extension else f"{current_user.id}/{uuid4()}"
+        # Use flat structure: just uuid.extension
+        unique_filename = f"{uuid4()}.{extension}" if extension else str(uuid4())
 
         logger.info(f"Uploading file: {original_filename} -> {unique_filename}, type: {file_type}, size: {file_size}")
 
         # Upload to Supabase Storage
         supabase = get_supabase()
-
-        # Try to upload to messaging-attachments bucket
         bucket_name = "messaging-attachments"
 
         try:
-            # Check if bucket exists, create if not
+            # Check if bucket exists
             buckets = supabase.storage.list_buckets()
             bucket_exists = any(b.name == bucket_name for b in buckets)
+            logger.info(f"Existing buckets: {[b.name for b in buckets]}")
 
             if not bucket_exists:
                 logger.info(f"Creating bucket: {bucket_name}")
-                supabase.storage.create_bucket(bucket_name, options={"public": True})
+                try:
+                    supabase.storage.create_bucket(bucket_name, options={"public": True})
+                    logger.info(f"Bucket {bucket_name} created successfully")
+                except Exception as bucket_error:
+                    logger.warning(f"Bucket creation warning (may already exist): {bucket_error}")
 
-            # Upload the file
+            # Upload the file with upsert option
+            logger.info(f"Uploading to bucket {bucket_name}, file: {unique_filename}")
             result = supabase.storage.from_(bucket_name).upload(
-                unique_filename,
-                contents,
-                file_options={"content-type": content_type}
+                path=unique_filename,
+                file=contents,
+                file_options={
+                    "content-type": content_type,
+                    "upsert": "true"
+                }
             )
             logger.info(f"Upload result: {result}")
 
@@ -403,10 +485,29 @@ async def upload_file(
             }
 
         except Exception as storage_error:
+            error_str = str(storage_error)
             logger.error(f"Storage error: {storage_error}", exc_info=True)
+
+            # Provide more helpful error message
+            if "row-level security" in error_str.lower() or "rls" in error_str.lower():
+                detail = (
+                    f"Storage RLS policy error. Please run this SQL in Supabase SQL Editor:\n\n"
+                    f"-- Create bucket if not exists\n"
+                    f"INSERT INTO storage.buckets (id, name, public) "
+                    f"VALUES ('{bucket_name}', '{bucket_name}', true) "
+                    f"ON CONFLICT (id) DO UPDATE SET public = true;\n\n"
+                    f"-- Allow all operations for authenticated users\n"
+                    f"CREATE POLICY \"Allow all for authenticated\" ON storage.objects "
+                    f"FOR ALL TO authenticated USING (bucket_id = '{bucket_name}') "
+                    f"WITH CHECK (bucket_id = '{bucket_name}');\n\n"
+                    f"Original error: {error_str}"
+                )
+            else:
+                detail = f"Failed to upload file to storage: {error_str}"
+
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Failed to upload file to storage: {str(storage_error)}"
+                detail=detail
             )
 
     except HTTPException:
