@@ -3,6 +3,7 @@ Cookie Consent API Endpoints
 Handles user cookie consent preferences
 """
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
@@ -38,11 +39,11 @@ class ConsentResponse(BaseModel):
     last_updated: datetime
 
 
-@router.post("/consent", status_code=status.HTTP_201_CREATED)
+@router.post("/consent")
 async def save_consent(
     consent_data: ConsentRequest,
     current_user: CurrentUser = Depends(get_current_user)
-) -> ConsentResponse:
+):
     """
     Save user's cookie consent preferences
 
@@ -57,7 +58,7 @@ async def save_consent(
     - user_agent: Optional user agent for audit
 
     **Returns:**
-    - Saved consent data
+    - Saved consent data (201 for new, 200 for update)
     """
     try:
         db = get_supabase()
@@ -80,7 +81,9 @@ async def save_consent(
         # Check if consent already exists
         existing = db.table('cookie_consents').select('id').eq('user_id', user_id).execute()
 
-        if existing.data and len(existing.data) > 0:
+        is_update = existing.data and len(existing.data) > 0
+
+        if is_update:
             # Update existing consent
             response = db.table('cookie_consents').update({
                 'necessary': consent_data.necessary,
@@ -99,9 +102,9 @@ async def save_consent(
             raise Exception("Failed to save consent")
 
         data = response.data[0]
-        logger.info(f"Cookie consent saved for user: {user_id}")
+        logger.info(f"Cookie consent {'updated' if is_update else 'created'} for user: {user_id}")
 
-        return ConsentResponse(
+        result = ConsentResponse(
             id=data['id'],
             user_id=data['user_id'],
             necessary=data['necessary'],
@@ -110,6 +113,12 @@ async def save_consent(
             marketing=data['marketing'],
             consent_date=data['consent_date'],
             last_updated=data['last_updated'],
+        )
+
+        # Return 200 for update, 201 for create
+        return JSONResponse(
+            content=result.model_dump(mode='json'),
+            status_code=200 if is_update else 201
         )
 
     except Exception as e:
