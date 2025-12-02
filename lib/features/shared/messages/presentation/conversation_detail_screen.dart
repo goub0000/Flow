@@ -557,7 +557,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
                     width: 150,
                     height: 150,
                     color: isCurrentUser
-                        ? Colors.white.withValues(alpha: 0.2)
+                        ? Colors.white.withOpacity(0.2)
                         : Colors.grey[300],
                     child: Center(
                       child: CircularProgressIndicator(
@@ -577,7 +577,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
                     height: 100,
                     decoration: BoxDecoration(
                       color: isCurrentUser
-                          ? Colors.white.withValues(alpha: 0.2)
+                          ? Colors.white.withOpacity(0.2)
                           : Colors.grey[300],
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -644,7 +644,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: isCurrentUser
-              ? Colors.white.withValues(alpha: 0.2)
+              ? Colors.white.withOpacity(0.2)
               : Colors.grey[300],
           borderRadius: BorderRadius.circular(8),
         ),
@@ -655,8 +655,8 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: isCurrentUser
-                    ? Colors.white.withValues(alpha: 0.3)
-                    : AppColors.primary.withValues(alpha: 0.1),
+                    ? Colors.white.withOpacity(0.3)
+                    : AppColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -866,7 +866,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+              backgroundColor: AppColors.primary.withOpacity(0.1),
               child: Text(
                 title.isNotEmpty ? title[0].toUpperCase() : 'U',
                 style: const TextStyle(
@@ -957,7 +957,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withValues(alpha: 0.2),
+                  color: Colors.grey.withOpacity(0.2),
                   blurRadius: 4,
                   offset: const Offset(0, -2),
                 ),
