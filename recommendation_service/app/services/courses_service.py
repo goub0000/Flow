@@ -234,8 +234,9 @@ class CoursesService:
 
             if status:
                 query = query.eq('status', status)
-            else:
-                # By default, only show published courses
+            elif not institution_id:
+                # By default, only show published courses (for public/student views)
+                # But if filtering by institution_id (institution viewing own courses), show all
                 query = query.eq('is_published', True)
 
             if category:
