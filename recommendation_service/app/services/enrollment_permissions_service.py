@@ -320,8 +320,9 @@ class EnrollmentPermissionsService:
     ) -> dict:
         """List permission requests for a course"""
         try:
+            # First get permissions without join
             query = self.db.table('enrollment_permissions')\
-                .select('*, users!enrollment_permissions_student_id_fkey(email, display_name)', count='exact')\
+                .select('*', count='exact')\
                 .eq('course_id', course_id)
 
             if status:
@@ -334,6 +335,23 @@ class EnrollmentPermissionsService:
 
             permissions = response.data if response.data else []
             total = response.count or 0
+
+            # Enrich with user data if we have permissions
+            if permissions:
+                student_ids = [p['student_id'] for p in permissions]
+                users_response = self.db.table('users')\
+                    .select('id, email, display_name')\
+                    .in_('id', student_ids)\
+                    .execute()
+
+                users_map = {u['id']: u for u in (users_response.data or [])}
+
+                for perm in permissions:
+                    user_data = users_map.get(perm['student_id'], {})
+                    perm['student'] = {
+                        'email': user_data.get('email'),
+                        'display_name': user_data.get('display_name')
+                    }
 
             return {
                 "permissions": permissions,
@@ -393,25 +411,36 @@ class EnrollmentPermissionsService:
         try:
             # Get all accepted applications for programs at this institution
             response = self.db.table('applications')\
-                .select('student_id, users!applications_student_id_fkey(id, email, display_name), programs!inner(id, title, institution_id)')\
+                .select('student_id, programs!inner(id, title, institution_id)')\
                 .eq('status', 'accepted')\
                 .execute()
 
             if not response.data:
                 return {"students": [], "total": 0}
 
-            # Filter for this institution and deduplicate students
-            students_map = {}
+            # Filter for this institution and collect student IDs
+            student_ids_for_institution = set()
             for app in response.data:
                 if app.get('programs', {}).get('institution_id') == institution_id:
-                    student_data = app.get('users')
-                    if student_data and student_data['id'] not in students_map:
-                        students_map[student_data['id']] = {
-                            "student_id": student_data['id'],
-                            "email": student_data.get('email'),
-                            "display_name": student_data.get('display_name'),
-                            "permission": None
-                        }
+                    student_ids_for_institution.add(app['student_id'])
+
+            if not student_ids_for_institution:
+                return {"students": [], "total": 0}
+
+            # Fetch user details separately
+            users_response = self.db.table('users')\
+                .select('id, email, display_name')\
+                .in_('id', list(student_ids_for_institution))\
+                .execute()
+
+            students_map = {}
+            for user in (users_response.data or []):
+                students_map[user['id']] = {
+                    "student_id": user['id'],
+                    "email": user.get('email'),
+                    "display_name": user.get('display_name'),
+                    "permission": None
+                }
 
             # If course_id provided, fetch permissions for this course
             if course_id and students_map:
