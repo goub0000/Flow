@@ -79,25 +79,20 @@ class EnrollmentPermissionsService:
     ) -> bool:
         """Check if student has accepted application to institution"""
         try:
-            # Query applications through programs
+            # Query applications directly - applications table has institution_id
             response = self.db.table('applications')\
-                .select('status, programs!inner(institution_id)')\
+                .select('id')\
                 .eq('student_id', student_id)\
+                .eq('institution_id', institution_id)\
                 .eq('status', 'accepted')\
+                .single()\
                 .execute()
 
-            if not response.data:
-                return False
-
-            # Check if any accepted application is for this institution
-            for app in response.data:
-                if app.get('programs', {}).get('institution_id') == institution_id:
-                    return True
-
-            return False
+            return response.data is not None
 
         except Exception as e:
-            logger.error(f"Check admission error: {e}")
+            # single() throws exception if no match or multiple matches
+            logger.debug(f"Check admission: {e}")
             return False
 
     async def _get_permission(
@@ -409,19 +404,21 @@ class EnrollmentPermissionsService:
         Optionally include their permission status for a specific course
         """
         try:
-            # Get all accepted applications for programs at this institution
+            # Get all accepted applications directly for this institution
+            # Applications table has institution_id directly, no need to join through programs
             response = self.db.table('applications')\
-                .select('student_id, programs!inner(id, title, institution_id)')\
+                .select('student_id')\
+                .eq('institution_id', institution_id)\
                 .eq('status', 'accepted')\
                 .execute()
 
             if not response.data:
                 return {"students": [], "total": 0}
 
-            # Filter for this institution and collect student IDs
+            # Collect unique student IDs
             student_ids_for_institution = set()
             for app in response.data:
-                if app.get('programs', {}).get('institution_id') == institution_id:
+                if app.get('student_id'):
                     student_ids_for_institution.add(app['student_id'])
 
             if not student_ids_for_institution:
