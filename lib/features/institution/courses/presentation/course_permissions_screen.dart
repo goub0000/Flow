@@ -79,19 +79,402 @@ class _CoursePermissionsScreenState
   }
 
   void _showGrantPermissionDialog() {
-    // TODO: Implement grant permission dialog
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Grant Enrollment Permission'),
-        content: const Text('Grant permission feature coming soon. Select admitted students to grant access to this course.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _GrantPermissionBottomSheet(course: widget.course),
+    );
+  }
+}
+
+/// Bottom sheet for granting permissions to admitted students
+class _GrantPermissionBottomSheet extends ConsumerStatefulWidget {
+  final Course course;
+
+  const _GrantPermissionBottomSheet({required this.course});
+
+  @override
+  ConsumerState<_GrantPermissionBottomSheet> createState() =>
+      _GrantPermissionBottomSheetState();
+}
+
+class _GrantPermissionBottomSheetState
+    extends ConsumerState<_GrantPermissionBottomSheet> {
+  List<dynamic> _students = [];
+  List<dynamic> _filteredStudents = [];
+  bool _isLoading = true;
+  String? _error;
+  final _searchController = TextEditingController();
+  final Set<String> _selectedStudentIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAdmittedStudents();
+    _searchController.addListener(_filterStudents);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterStudents() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredStudents = _students;
+      } else {
+        _filteredStudents = _students.where((s) {
+          final name = (s['display_name'] ?? '').toLowerCase();
+          final email = (s['email'] ?? '').toLowerCase();
+          return name.contains(query) || email.contains(query);
+        }).toList();
+      }
+    });
+  }
+
+  Future<void> _fetchAdmittedStudents() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final accessToken = ref.read(authProvider).accessToken;
+      final apiService =
+          EnrollmentPermissionsApiService(accessToken: accessToken);
+
+      final result =
+          await apiService.getAdmittedStudents(courseId: widget.course.id);
+
+      if (mounted) {
+        final allStudents = result['students'] as List? ?? [];
+        // Filter out students who already have approved or pending permissions
+        final availableStudents = allStudents.where((s) {
+          final permission = s['permission'] as Map<String, dynamic>?;
+          if (permission == null) return true;
+          final status = permission['status'];
+          return status != 'approved' && status != 'pending';
+        }).toList();
+
+        setState(() {
+          _students = availableStudents;
+          _filteredStudents = availableStudents;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = 'Failed to load students: ${e.toString()}';
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _grantPermissions() async {
+    if (_selectedStudentIds.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one student')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    int successCount = 0;
+    int failCount = 0;
+
+    for (final studentId in _selectedStudentIds) {
+      final success = await ref
+          .read(enrollmentPermissionsProvider(widget.course.id).notifier)
+          .grantPermission(studentId);
+
+      if (success) {
+        successCount++;
+      } else {
+        failCount++;
+      }
+    }
+
+    if (mounted) {
+      Navigator.pop(context);
+
+      if (successCount > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Granted permission to $successCount student(s)'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+
+      if (failCount > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to grant permission to $failCount student(s)'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.85,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Handle
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Grant Enrollment Permission',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Select students to grant access to this course',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+          ),
+
+          // Search
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search students...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          // Selection count
+          if (_selectedStudentIds.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '${_selectedStudentIds.length} selected',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: () => setState(() => _selectedStudentIds.clear()),
+                    child: const Text('Clear'),
+                  ),
+                ],
+              ),
+            ),
+
+          // Student List
+          Expanded(
+            child: _buildStudentList(),
+          ),
+
+          // Action buttons
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, -5),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
+                      onPressed:
+                          _selectedStudentIds.isEmpty ? null : _grantPermissions,
+                      child: Text(
+                        _selectedStudentIds.isEmpty
+                            ? 'Select Students'
+                            : 'Grant to ${_selectedStudentIds.length} Student(s)',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStudentList() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
+            const SizedBox(height: 16),
+            Text(_error!, style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _fetchAdmittedStudents,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_students.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.people_outline, size: 48, color: Colors.grey[400]),
+            const SizedBox(height: 16),
+            const Text(
+              'No students available',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'All admitted students already have permissions',
+              style: TextStyle(color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_filteredStudents.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.search_off, size: 48, color: Colors.grey[400]),
+            const SizedBox(height: 16),
+            const Text(
+              'No matching students',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: _filteredStudents.length,
+      itemBuilder: (context, index) {
+        final student = _filteredStudents[index];
+        final studentId = student['student_id'] as String;
+        final isSelected = _selectedStudentIds.contains(studentId);
+
+        return Card(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: CheckboxListTile(
+            value: isSelected,
+            onChanged: (value) {
+              setState(() {
+                if (value == true) {
+                  _selectedStudentIds.add(studentId);
+                } else {
+                  _selectedStudentIds.remove(studentId);
+                }
+              });
+            },
+            secondary: CircleAvatar(
+              backgroundColor:
+                  isSelected ? AppColors.primary : Colors.grey[200],
+              child: Text(
+                (student['display_name'] ?? 'S')[0].toUpperCase(),
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.grey[700],
+                ),
+              ),
+            ),
+            title: Text(
+              student['display_name'] ?? 'Student',
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            subtitle: Text(student['email'] ?? ''),
+            activeColor: AppColors.primary,
+          ),
+        );
+      },
     );
   }
 }
