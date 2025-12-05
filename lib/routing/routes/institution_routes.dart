@@ -13,8 +13,8 @@ import '../../features/institution/programs/presentation/program_detail_screen.d
 import '../../features/institution/courses/presentation/institution_courses_screen.dart';
 import '../../features/institution/courses/presentation/create_course_screen.dart';
 import '../../features/institution/courses/presentation/course_permissions_screen.dart';
+import '../../features/institution/courses/presentation/institution_course_detail_screen.dart';
 import '../../features/institution/providers/institution_applicants_provider.dart';
-import '../../features/student/courses/presentation/course_detail_screen.dart';
 
 /// Institution-specific routes
 List<RouteBase> institutionRoutes = [
@@ -97,7 +97,7 @@ List<RouteBase> institutionRoutes = [
           body: Center(child: CircularProgressIndicator()),
         );
       }
-      return CourseDetailScreen(course: course);
+      return InstitutionCourseDetailScreen(course: course);
     },
   ),
   GoRoute(
