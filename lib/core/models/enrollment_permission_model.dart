@@ -47,8 +47,9 @@ class EnrollmentPermission {
   });
 
   factory EnrollmentPermission.fromJson(Map<String, dynamic> json) {
-    // Handle nested user data from join
-    final userData = json['users'] as Map<String, dynamic>?;
+    // Handle nested user data from join - backend may return as 'student' or 'users'
+    final userData = (json['student'] as Map<String, dynamic>?) ??
+        (json['users'] as Map<String, dynamic>?);
     final courseData = json['courses'] as Map<String, dynamic>?;
 
     return EnrollmentPermission(
@@ -57,7 +58,7 @@ class EnrollmentPermission {
       courseId: json['course_id'] as String,
       institutionId: json['institution_id'] as String,
       status: PermissionStatus.fromString(json['status'] as String),
-      grantedBy: PermissionGrantedBy.fromString(json['granted_by'] as String),
+      grantedBy: PermissionGrantedBy.fromString(json['granted_by'] as String? ?? 'institution'),
       grantedByUserId: json['granted_by_user_id'] as String?,
       reviewedAt: json['reviewed_at'] != null
           ? DateTime.parse(json['reviewed_at'] as String)
