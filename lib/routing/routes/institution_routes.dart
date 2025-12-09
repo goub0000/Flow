@@ -13,6 +13,7 @@ import '../../features/institution/programs/presentation/program_detail_screen.d
 import '../../features/institution/courses/presentation/institution_courses_screen.dart';
 import '../../features/institution/courses/presentation/create_course_screen.dart';
 import '../../features/institution/courses/presentation/course_permissions_screen.dart';
+import '../../features/institution/courses/presentation/course_enrollments_screen.dart';
 import '../../features/institution/courses/presentation/institution_course_detail_screen.dart';
 import '../../features/institution/providers/institution_applicants_provider.dart';
 
@@ -132,6 +133,22 @@ List<RouteBase> institutionRoutes = [
         );
       }
       return CoursePermissionsScreen(course: course);
+    },
+  ),
+  GoRoute(
+    path: '/institution/courses/:id/enrollments',
+    name: 'institution-course-enrollments',
+    builder: (context, state) {
+      final course = state.extra as Course?;
+      if (course == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.go('/institution/courses');
+        });
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      return CourseEnrollmentsScreen(course: course);
     },
   ),
 ];
