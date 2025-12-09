@@ -40,8 +40,11 @@ class InstitutionCoursesState {
     String? error,
     String? searchQuery,
     CourseStatus? filterStatus,
+    bool clearFilterStatus = false,
     String? filterCategory,
+    bool clearFilterCategory = false,
     CourseLevel? filterLevel,
+    bool clearFilterLevel = false,
     int? currentPage,
     int? pageSize,
     bool? hasMore,
@@ -53,9 +56,9 @@ class InstitutionCoursesState {
       isLoading: isLoading ?? this.isLoading,
       error: error,
       searchQuery: searchQuery ?? this.searchQuery,
-      filterStatus: filterStatus ?? this.filterStatus,
-      filterCategory: filterCategory ?? this.filterCategory,
-      filterLevel: filterLevel ?? this.filterLevel,
+      filterStatus: clearFilterStatus ? null : (filterStatus ?? this.filterStatus),
+      filterCategory: clearFilterCategory ? null : (filterCategory ?? this.filterCategory),
+      filterLevel: clearFilterLevel ? null : (filterLevel ?? this.filterLevel),
       currentPage: currentPage ?? this.currentPage,
       pageSize: pageSize ?? this.pageSize,
       hasMore: hasMore ?? this.hasMore,
@@ -306,19 +309,31 @@ class InstitutionCoursesNotifier
 
   /// Update status filter
   Future<void> filterByStatus(CourseStatus? status) async {
-    state = state.copyWith(filterStatus: status);
+    if (status == null) {
+      state = state.copyWith(clearFilterStatus: true);
+    } else {
+      state = state.copyWith(filterStatus: status);
+    }
     await fetchCourses();
   }
 
   /// Update category filter
   Future<void> filterByCategory(String? category) async {
-    state = state.copyWith(filterCategory: category);
+    if (category == null) {
+      state = state.copyWith(clearFilterCategory: true);
+    } else {
+      state = state.copyWith(filterCategory: category);
+    }
     await fetchCourses();
   }
 
   /// Update level filter
   Future<void> filterByLevel(CourseLevel? level) async {
-    state = state.copyWith(filterLevel: level);
+    if (level == null) {
+      state = state.copyWith(clearFilterLevel: true);
+    } else {
+      state = state.copyWith(filterLevel: level);
+    }
     await fetchCourses();
   }
 
