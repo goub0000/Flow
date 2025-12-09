@@ -139,33 +139,47 @@ class EnrollmentPermissionsNotifier
     try {
       await _apiService.approvePermission(permissionId, notes: notes);
 
-      // Update in local state
-      final updatedPermissions = state.permissions.map((p) {
-        if (p.id == permissionId) {
-          return EnrollmentPermission(
-            id: p.id,
-            studentId: p.studentId,
-            courseId: p.courseId,
-            institutionId: p.institutionId,
-            status: PermissionStatus.approved,
-            grantedBy: p.grantedBy,
-            grantedByUserId: p.grantedByUserId,
-            reviewedAt: DateTime.now(),
-            notes: notes ?? p.notes,
-            createdAt: p.createdAt,
-            updatedAt: DateTime.now(),
-            studentEmail: p.studentEmail,
-            studentDisplayName: p.studentDisplayName,
-            courseTitle: p.courseTitle,
-          );
-        }
-        return p;
-      }).toList();
+      // If we're filtering by a specific status (e.g., pending),
+      // remove the item from the list since its status changed
+      if (state.filterStatus != null && state.filterStatus != PermissionStatus.approved) {
+        final updatedPermissions = state.permissions
+            .where((p) => p.id != permissionId)
+            .toList();
 
-      state = state.copyWith(
-        permissions: updatedPermissions,
-        isLoading: false,
-      );
+        state = state.copyWith(
+          permissions: updatedPermissions,
+          total: state.total > 0 ? state.total - 1 : 0,
+          isLoading: false,
+        );
+      } else {
+        // Update status in local state
+        final updatedPermissions = state.permissions.map((p) {
+          if (p.id == permissionId) {
+            return EnrollmentPermission(
+              id: p.id,
+              studentId: p.studentId,
+              courseId: p.courseId,
+              institutionId: p.institutionId,
+              status: PermissionStatus.approved,
+              grantedBy: p.grantedBy,
+              grantedByUserId: p.grantedByUserId,
+              reviewedAt: DateTime.now(),
+              notes: notes ?? p.notes,
+              createdAt: p.createdAt,
+              updatedAt: DateTime.now(),
+              studentEmail: p.studentEmail,
+              studentDisplayName: p.studentDisplayName,
+              courseTitle: p.courseTitle,
+            );
+          }
+          return p;
+        }).toList();
+
+        state = state.copyWith(
+          permissions: updatedPermissions,
+          isLoading: false,
+        );
+      }
 
       return true;
     } catch (e) {
@@ -187,33 +201,47 @@ class EnrollmentPermissionsNotifier
     try {
       await _apiService.denyPermission(permissionId, denialReason);
 
-      // Update in local state
-      final updatedPermissions = state.permissions.map((p) {
-        if (p.id == permissionId) {
-          return EnrollmentPermission(
-            id: p.id,
-            studentId: p.studentId,
-            courseId: p.courseId,
-            institutionId: p.institutionId,
-            status: PermissionStatus.denied,
-            grantedBy: p.grantedBy,
-            grantedByUserId: p.grantedByUserId,
-            reviewedAt: DateTime.now(),
-            denialReason: denialReason,
-            createdAt: p.createdAt,
-            updatedAt: DateTime.now(),
-            studentEmail: p.studentEmail,
-            studentDisplayName: p.studentDisplayName,
-            courseTitle: p.courseTitle,
-          );
-        }
-        return p;
-      }).toList();
+      // If we're filtering by a specific status (e.g., pending),
+      // remove the item from the list since its status changed
+      if (state.filterStatus != null && state.filterStatus != PermissionStatus.denied) {
+        final updatedPermissions = state.permissions
+            .where((p) => p.id != permissionId)
+            .toList();
 
-      state = state.copyWith(
-        permissions: updatedPermissions,
-        isLoading: false,
-      );
+        state = state.copyWith(
+          permissions: updatedPermissions,
+          total: state.total > 0 ? state.total - 1 : 0,
+          isLoading: false,
+        );
+      } else {
+        // Update status in local state
+        final updatedPermissions = state.permissions.map((p) {
+          if (p.id == permissionId) {
+            return EnrollmentPermission(
+              id: p.id,
+              studentId: p.studentId,
+              courseId: p.courseId,
+              institutionId: p.institutionId,
+              status: PermissionStatus.denied,
+              grantedBy: p.grantedBy,
+              grantedByUserId: p.grantedByUserId,
+              reviewedAt: DateTime.now(),
+              denialReason: denialReason,
+              createdAt: p.createdAt,
+              updatedAt: DateTime.now(),
+              studentEmail: p.studentEmail,
+              studentDisplayName: p.studentDisplayName,
+              courseTitle: p.courseTitle,
+            );
+          }
+          return p;
+        }).toList();
+
+        state = state.copyWith(
+          permissions: updatedPermissions,
+          isLoading: false,
+        );
+      }
 
       return true;
     } catch (e) {
@@ -235,33 +263,47 @@ class EnrollmentPermissionsNotifier
     try {
       await _apiService.revokePermission(permissionId, reason: reason);
 
-      // Update in local state
-      final updatedPermissions = state.permissions.map((p) {
-        if (p.id == permissionId) {
-          return EnrollmentPermission(
-            id: p.id,
-            studentId: p.studentId,
-            courseId: p.courseId,
-            institutionId: p.institutionId,
-            status: PermissionStatus.revoked,
-            grantedBy: p.grantedBy,
-            grantedByUserId: p.grantedByUserId,
-            reviewedAt: DateTime.now(),
-            denialReason: reason,
-            createdAt: p.createdAt,
-            updatedAt: DateTime.now(),
-            studentEmail: p.studentEmail,
-            studentDisplayName: p.studentDisplayName,
-            courseTitle: p.courseTitle,
-          );
-        }
-        return p;
-      }).toList();
+      // If we're filtering by a specific status (e.g., approved),
+      // remove the item from the list since its status changed
+      if (state.filterStatus != null && state.filterStatus != PermissionStatus.revoked) {
+        final updatedPermissions = state.permissions
+            .where((p) => p.id != permissionId)
+            .toList();
 
-      state = state.copyWith(
-        permissions: updatedPermissions,
-        isLoading: false,
-      );
+        state = state.copyWith(
+          permissions: updatedPermissions,
+          total: state.total > 0 ? state.total - 1 : 0,
+          isLoading: false,
+        );
+      } else {
+        // Update status in local state
+        final updatedPermissions = state.permissions.map((p) {
+          if (p.id == permissionId) {
+            return EnrollmentPermission(
+              id: p.id,
+              studentId: p.studentId,
+              courseId: p.courseId,
+              institutionId: p.institutionId,
+              status: PermissionStatus.revoked,
+              grantedBy: p.grantedBy,
+              grantedByUserId: p.grantedByUserId,
+              reviewedAt: DateTime.now(),
+              denialReason: reason,
+              createdAt: p.createdAt,
+              updatedAt: DateTime.now(),
+              studentEmail: p.studentEmail,
+              studentDisplayName: p.studentDisplayName,
+              courseTitle: p.courseTitle,
+            );
+          }
+          return p;
+        }).toList();
+
+        state = state.copyWith(
+          permissions: updatedPermissions,
+          isLoading: false,
+        );
+      }
 
       return true;
     } catch (e) {
