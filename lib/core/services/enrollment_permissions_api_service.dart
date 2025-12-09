@@ -128,6 +128,8 @@ class EnrollmentPermissionsApiService {
     String? notes,
   }) async {
     try {
+      print('[EnrollmentPermissionsAPI] Approving permission: $permissionId');
+
       final response = await _client.post(
         Uri.parse('$baseUrl/enrollments/permissions/$permissionId/approve'),
         headers: _buildHeaders(),
@@ -136,12 +138,18 @@ class EnrollmentPermissionsApiService {
         }),
       );
 
+      print('[EnrollmentPermissionsAPI] Approve response status: ${response.statusCode}');
+      print('[EnrollmentPermissionsAPI] Approve response body: ${response.body}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        throw Exception('Failed to approve permission: ${response.statusCode}');
+        final errorBody = response.body;
+        print('[EnrollmentPermissionsAPI] Approve error: $errorBody');
+        throw Exception('Failed to approve permission: ${response.statusCode} - $errorBody');
       }
     } catch (e) {
+      print('[EnrollmentPermissionsAPI] Approve exception: $e');
       throw Exception('Error approving permission: $e');
     }
   }
@@ -152,6 +160,8 @@ class EnrollmentPermissionsApiService {
     String denialReason,
   ) async {
     try {
+      print('[EnrollmentPermissionsAPI] Denying permission: $permissionId');
+
       final response = await _client.post(
         Uri.parse('$baseUrl/enrollments/permissions/$permissionId/deny'),
         headers: _buildHeaders(),
@@ -160,12 +170,18 @@ class EnrollmentPermissionsApiService {
         }),
       );
 
+      print('[EnrollmentPermissionsAPI] Deny response status: ${response.statusCode}');
+      print('[EnrollmentPermissionsAPI] Deny response body: ${response.body}');
+
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        throw Exception('Failed to deny permission: ${response.statusCode}');
+        final errorBody = response.body;
+        print('[EnrollmentPermissionsAPI] Deny error: $errorBody');
+        throw Exception('Failed to deny permission: ${response.statusCode} - $errorBody');
       }
     } catch (e) {
+      print('[EnrollmentPermissionsAPI] Deny exception: $e');
       throw Exception('Error denying permission: $e');
     }
   }
