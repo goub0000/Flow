@@ -64,6 +64,7 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
   StreamSubscription<ConnectionStatus>? _connectionSubscription;
   Timer? _refreshTimer;
   Timer? _newNotificationTimer;
+  bool _disposed = false;
 
   NotificationsRealtimeNotifier(
     this.ref,
@@ -94,10 +95,15 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
     try {
       final user = ref.read(currentUserProvider);
       if (user == null) {
+        print('[RealtimeNotifications] User not yet loaded, waiting...');
         state = state.copyWith(
-          error: 'User not authenticated',
+          error: null, // Don't show error - just waiting for auth
           isLoading: false,
         );
+        // Retry after a short delay
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (!_disposed) _fetchNotifications();
+        });
         return;
       }
 
@@ -139,7 +145,11 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
   void _setupRealtimeSubscription() {
     final user = ref.read(currentUserProvider);
     if (user == null) {
-      print('[RealtimeNotifications] Cannot setup subscription - no user');
+      print('[RealtimeNotifications] Cannot setup subscription - no user, retrying...');
+      // Retry after auth is loaded
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (!_disposed) _setupRealtimeSubscription();
+      });
       return;
     }
 
@@ -460,6 +470,8 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
 
   @override
   void dispose() {
+    _disposed = true;
+
     // Clean up subscriptions
     final user = ref.read(currentUserProvider);
     if (user != null) {
