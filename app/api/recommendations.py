@@ -200,3 +200,35 @@ def get_favorite_recommendations(user_id: str, db: Client = Depends(get_db)):
     except Exception as e:
         logger.error(f"Error fetching favorite recommendations: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/recommendations/{recommendation_id}/favorite")
+def toggle_favorite(recommendation_id: int, db: Client = Depends(get_db)):
+    """Toggle favorite status for a recommendation (legacy endpoint for compatibility)"""
+    try:
+        # Check if recommendation exists and get current favorited status
+        response = db.table('recommendations').select('id, favorited').eq('id', recommendation_id).execute()
+
+        if not response.data or len(response.data) == 0:
+            raise HTTPException(status_code=404, detail="Recommendation not found")
+
+        current_favorited = response.data[0].get('favorited', 0)
+
+        # Toggle the favorite status
+        new_favorited = 0 if current_favorited == 1 else 1
+
+        # Update the recommendation
+        db.table('recommendations').update({'favorited': new_favorited}).eq('id', recommendation_id).execute()
+
+        logger.info(f"Toggled favorite for recommendation {recommendation_id}: {bool(new_favorited)}")
+
+        return {
+            "recommendation_id": recommendation_id,
+            "favorited": bool(new_favorited)
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error toggling favorite status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

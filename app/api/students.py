@@ -123,3 +123,22 @@ def delete_student_profile(user_id: str, db: Client = Depends(get_db)):
     except Exception as e:
         logger.error(f"Error deleting student profile: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/students/profile/{user_id}/exists")
+def check_profile_exists(user_id: str, db: Client = Depends(get_db)):
+    """Check if a student profile exists for a user"""
+    try:
+        response = db.table('student_profiles').select('id').eq('user_id', user_id).execute()
+
+        exists = response.data and len(response.data) > 0
+
+        logger.info(f"Profile exists check for user {user_id}: {exists}")
+        return {
+            "user_id": user_id,
+            "exists": exists
+        }
+
+    except Exception as e:
+        logger.error(f"Error checking profile existence: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
