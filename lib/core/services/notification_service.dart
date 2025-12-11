@@ -167,80 +167,65 @@ class NotificationService {
   }
 
   /// Mark a notification as unread
-  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
   Future<void> markAsUnread(String notificationId, {String? userId}) async {
     try {
-      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
-      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
-      if (effectiveUserId == null) {
-        _logger.warning('Cannot mark notification as unread - no user ID provided');
-        throw Exception('Please wait for the app to finish loading, then try again.');
-      }
+      final response = await _apiClient.post(
+        '${ApiConfig.notifications}/$notificationId/mark-unread',
+      );
 
-      await _supabase.from('notifications').update({
-        'is_read': false,
-        'read_at': null,
-      }).eq('id', notificationId).eq('user_id', effectiveUserId);
+      if (!response.success) {
+        throw Exception(response.message ?? 'Failed to mark notification as unread');
+      }
     } catch (e) {
+      _logger.severe('Failed to mark notification as unread: $e');
       throw Exception('Failed to mark notification as unread: $e');
     }
   }
 
   /// Archive a notification
-  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
   Future<void> archiveNotification(String notificationId, {String? userId}) async {
     try {
-      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
-      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
-      if (effectiveUserId == null) {
-        _logger.warning('Cannot archive notification - no user ID provided');
-        throw Exception('Please wait for the app to finish loading, then try again.');
-      }
+      final response = await _apiClient.post(
+        '${ApiConfig.notifications}/$notificationId/archive',
+      );
 
-      await _supabase.from('notifications').update({
-        'is_archived': true,
-        'archived_at': DateTime.now().toIso8601String(),
-      }).eq('id', notificationId).eq('user_id', effectiveUserId);
+      if (!response.success) {
+        throw Exception(response.message ?? 'Failed to archive notification');
+      }
     } catch (e) {
+      _logger.severe('Failed to archive notification: $e');
       throw Exception('Failed to archive notification: $e');
     }
   }
 
   /// Unarchive a notification
-  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
   Future<void> unarchiveNotification(String notificationId, {String? userId}) async {
     try {
-      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
-      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
-      if (effectiveUserId == null) {
-        _logger.warning('Cannot unarchive notification - no user ID provided');
-        throw Exception('Please wait for the app to finish loading, then try again.');
-      }
+      final response = await _apiClient.post(
+        '${ApiConfig.notifications}/$notificationId/unarchive',
+      );
 
-      await _supabase.from('notifications').update({
-        'is_archived': false,
-        'archived_at': null,
-      }).eq('id', notificationId).eq('user_id', effectiveUserId);
+      if (!response.success) {
+        throw Exception(response.message ?? 'Failed to unarchive notification');
+      }
     } catch (e) {
+      _logger.severe('Failed to unarchive notification: $e');
       throw Exception('Failed to unarchive notification: $e');
     }
   }
 
   /// Delete a notification (soft delete)
-  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
   Future<void> deleteNotification(String notificationId, {String? userId}) async {
     try {
-      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
-      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
-      if (effectiveUserId == null) {
-        _logger.warning('Cannot delete notification - no user ID provided');
-        throw Exception('Please wait for the app to finish loading, then try again.');
-      }
+      final response = await _apiClient.delete(
+        '${ApiConfig.notifications}/$notificationId',
+      );
 
-      await _supabase.from('notifications').update({
-        'deleted_at': DateTime.now().toIso8601String(),
-      }).eq('id', notificationId).eq('user_id', effectiveUserId);
+      if (!response.success) {
+        throw Exception(response.message ?? 'Failed to delete notification');
+      }
     } catch (e) {
+      _logger.severe('Failed to delete notification: $e');
       throw Exception('Failed to delete notification: $e');
     }
   }
