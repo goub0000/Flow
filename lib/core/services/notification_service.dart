@@ -1,14 +1,20 @@
 import 'package:logging/logging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/notification_models.dart';
+import '../api/api_client.dart';
+import '../api/api_config.dart';
 
 /// Service for managing notifications via Supabase
 class NotificationService {
   final SupabaseClient _supabase;
+  final ApiClient _apiClient;
   final _logger = Logger('NotificationService');
 
-  NotificationService({SupabaseClient? supabase})
-      : _supabase = supabase ?? Supabase.instance.client;
+  NotificationService({
+    SupabaseClient? supabase,
+    required ApiClient apiClient,
+  })  : _supabase = supabase ?? Supabase.instance.client,
+        _apiClient = apiClient;
 
   /// Get notifications for current user with optional filters
   Future<NotificationsResponse> getNotifications({
@@ -326,43 +332,17 @@ class NotificationService {
   }
 
   /// Create default preferences for current user
-  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
+  /// Uses backend API with service role to bypass RLS restrictions
   Future<void> createDefaultPreferences({String? userId}) async {
     try {
-      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
-      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
-      if (effectiveUserId == null) {
-        _logger.warning('Cannot create default preferences - no user ID provided');
-        return;
+      // Call backend API endpoint which uses service role (bypasses RLS)
+      final response = await _apiClient.post('${ApiConfig.notifications}/preferences/defaults');
+
+      if (!response.success) {
+        throw Exception(response.message ?? 'Failed to create default preferences');
       }
 
-      // Create default preferences for all notification types
-      final notificationTypes = [
-        'application_status',
-        'grade_posted',
-        'message_received',
-        'meeting_scheduled',
-        'meeting_reminder',
-        'achievement_earned',
-        'deadline_reminder',
-        'recommendation_ready',
-        'system_announcement',
-        'comment_received',
-        'mention',
-        'event_reminder',
-      ];
-
-      for (final type in notificationTypes) {
-        await _supabase.from('notification_preferences').upsert({
-          'user_id': effectiveUserId,
-          'notification_type': type,
-          'in_app_enabled': true,
-          'email_enabled': true,
-          'push_enabled': true,
-        });
-      }
-
-      _logger.info('Successfully created default notification preferences');
+      _logger.info('Successfully created default notification preferences via backend API');
     } catch (e) {
       _logger.severe('Failed to create default preferences: $e');
       throw Exception('Failed to create default preferences: $e');

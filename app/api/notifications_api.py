@@ -214,6 +214,31 @@ async def update_notification_preferences(
         )
 
 
+@router.post("/notifications/preferences/defaults")
+async def create_default_preferences(
+    current_user: CurrentUser = Depends(get_current_user)
+) -> dict:
+    """
+    Create default notification preferences for the current user
+
+    **Requires:** Authentication
+
+    **Returns:**
+    - success: Boolean indicating if preferences were created
+    - message: Status message
+    """
+    try:
+        service = NotificationsService()
+        # Service uses service_role key which bypasses RLS
+        await service.create_default_notification_preferences(current_user.id)
+        return {"success": True, "message": "Default preferences created successfully"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
 @router.get("/notifications/stats/me")
 async def get_notification_stats(
     current_user: CurrentUser = Depends(get_current_user)
