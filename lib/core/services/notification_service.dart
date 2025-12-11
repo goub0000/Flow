@@ -17,7 +17,16 @@ class NotificationService {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated');
+        _logger.warning('Cannot fetch notifications - user not authenticated yet');
+        // Return empty response instead of throwing - allows graceful retry
+        return NotificationsResponse(
+          notifications: [],
+          totalCount: 0,
+          unreadCount: 0,
+          page: filter?.page ?? 1,
+          limit: filter?.limit ?? 20,
+          hasMore: false,
+        );
       }
 
       // Start building query - use dynamic to handle type changes through the chain
