@@ -433,6 +433,128 @@ class NotificationsService:
             logger.error(f"Get notification stats error: {e}")
             raise Exception(f"Failed to get notification stats: {str(e)}")
 
+    async def mark_as_unread(
+        self,
+        notification_id: str,
+        user_id: str
+    ) -> Dict[str, Any]:
+        """Mark a notification as unread"""
+        try:
+            # Verify ownership
+            notification = await self.get_notification(notification_id, user_id)
+
+            update = {
+                "is_read": False,
+                "read_at": None,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('notifications').update(update).eq('id', notification_id).execute()
+
+            logger.info(f"Notification marked as unread: {notification_id}")
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Mark notification as unread error: {e}")
+            raise Exception(f"Failed to mark notification as unread: {str(e)}")
+
+    async def archive_notification(
+        self,
+        notification_id: str,
+        user_id: str
+    ) -> Dict[str, Any]:
+        """Archive a notification"""
+        try:
+            # Verify ownership
+            notification = await self.get_notification(notification_id, user_id)
+
+            update = {
+                "is_archived": True,
+                "archived_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('notifications').update(update).eq('id', notification_id).execute()
+
+            logger.info(f"Notification archived: {notification_id}")
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Archive notification error: {e}")
+            raise Exception(f"Failed to archive notification: {str(e)}")
+
+    async def unarchive_notification(
+        self,
+        notification_id: str,
+        user_id: str
+    ) -> Dict[str, Any]:
+        """Unarchive a notification"""
+        try:
+            # Verify ownership
+            notification = await self.get_notification(notification_id, user_id)
+
+            update = {
+                "is_archived": False,
+                "archived_at": None,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('notifications').update(update).eq('id', notification_id).execute()
+
+            logger.info(f"Notification unarchived: {notification_id}")
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Unarchive notification error: {e}")
+            raise Exception(f"Failed to unarchive notification: {str(e)}")
+
+    async def create_default_notification_preferences(self, user_id: str) -> Dict[str, Any]:
+        """Create default notification preferences for all notification types"""
+        try:
+            notification_types = [
+                'application_status',
+                'application_deadline',
+                'document_request',
+                'message_received',
+                'system_update',
+                'account_activity',
+                'recommendation_update',
+                'institution_update',
+                'scholarship_alert',
+                'progress_milestone',
+                'counseling_session',
+                'event_reminder'
+            ]
+
+            preferences_records = []
+            for notification_type in notification_types:
+                preferences_records.append({
+                    "user_id": user_id,
+                    "notification_type": notification_type,
+                    "in_app_enabled": True,
+                    "email_enabled": True,
+                    "push_enabled": True,
+                    "created_at": datetime.utcnow().isoformat(),
+                    "updated_at": datetime.utcnow().isoformat(),
+                })
+
+            # Use upsert to handle duplicates
+            response = self.db.table('notification_preferences').upsert(preferences_records).execute()
+
+            logger.info(f"Created default notification preferences for user {user_id}")
+
+            return {
+                "success": True,
+                "message": f"Created {len(notification_types)} default notification preferences"
+            }
+
+        except Exception as e:
+            logger.error(f"Create default notification preferences error: {e}")
+            raise Exception(f"Failed to create default notification preferences: {str(e)}")
+
     async def _get_user_preferences(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Internal: Get user preferences"""
         try:

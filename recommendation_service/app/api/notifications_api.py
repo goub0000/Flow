@@ -158,6 +158,87 @@ async def delete_notification(
         )
 
 
+@router.post("/notifications/{notification_id}/mark-unread")
+async def mark_notification_as_unread(
+    notification_id: str,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Mark a notification as unread
+
+    **Requires:** Authentication (must be notification owner)
+
+    **Path Parameters:**
+    - notification_id: Notification ID
+
+    **Returns:**
+    - Success status
+    """
+    try:
+        service = NotificationsService()
+        await service.mark_as_unread(notification_id, current_user.id)
+        return {"success": True, "message": "Notification marked as unread"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/notifications/{notification_id}/archive")
+async def archive_notification(
+    notification_id: str,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Archive a notification
+
+    **Requires:** Authentication (must be notification owner)
+
+    **Path Parameters:**
+    - notification_id: Notification ID
+
+    **Returns:**
+    - Success status
+    """
+    try:
+        service = NotificationsService()
+        await service.archive_notification(notification_id, current_user.id)
+        return {"success": True, "message": "Notification archived"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/notifications/{notification_id}/unarchive")
+async def unarchive_notification(
+    notification_id: str,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Unarchive a notification
+
+    **Requires:** Authentication (must be notification owner)
+
+    **Path Parameters:**
+    - notification_id: Notification ID
+
+    **Returns:**
+    - Success status
+    """
+    try:
+        service = NotificationsService()
+        await service.unarchive_notification(notification_id, current_user.id)
+        return {"success": True, "message": "Notification unarchived"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
 @router.get("/notifications/preferences/me")
 async def get_notification_preferences(
     current_user: CurrentUser = Depends(get_current_user)
@@ -207,6 +288,31 @@ async def update_notification_preferences(
         service = NotificationsService()
         result = await service.update_notification_preferences(current_user.id, update_data)
         return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/notifications/preferences/defaults")
+async def create_default_preferences(
+    current_user: CurrentUser = Depends(get_current_user)
+) -> dict:
+    """
+    Create default notification preferences for the current user
+
+    **Requires:** Authentication
+
+    **Returns:**
+    - success: Boolean indicating if preferences were created
+    - message: Status message
+    """
+    try:
+        service = NotificationsService()
+        # Service uses service_role key which bypasses RLS
+        await service.create_default_notification_preferences(current_user.id)
+        return {"success": True, "message": "Default preferences created successfully"}
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
