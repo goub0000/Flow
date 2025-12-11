@@ -316,11 +316,12 @@ class NotificationService {
   }
 
   /// Subscribe to real-time notification updates
-  RealtimeChannel subscribeToNotifications(
+  RealtimeChannel? subscribeToNotifications(
       void Function(AppNotification) onNotification) {
     final userId = _supabase.auth.currentUser?.id;
     if (userId == null) {
-      throw Exception('User not authenticated');
+      _logger.warning('Cannot subscribe to notifications - user not authenticated yet');
+      return null;
     }
 
     final channel = _supabase

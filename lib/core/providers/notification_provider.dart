@@ -271,7 +271,7 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   /// Subscribe to real-time updates
   void subscribeToRealtime() {
     try {
-      _realtimeChannel = _service.subscribeToNotifications((notification) {
+      final channel = _service.subscribeToNotifications((notification) {
         // Add new notification to the top of the list
         final updatedNotifications = [notification, ...state.notifications];
 
@@ -281,6 +281,17 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
           unreadCount: state.unreadCount + 1,
         );
       });
+
+      if (channel == null) {
+        // User not authenticated yet, retry after delay
+        print('Notification subscription deferred - waiting for auth');
+        Future.delayed(const Duration(milliseconds: 500), () {
+          subscribeToRealtime();
+        });
+        return;
+      }
+
+      _realtimeChannel = channel;
     } catch (e) {
       print('Error subscribing to realtime updates: $e');
     }
