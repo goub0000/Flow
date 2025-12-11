@@ -543,7 +543,10 @@ class NotificationsService:
 
             # Use admin client to bypass RLS
             admin_db = get_supabase_admin()
-            response = admin_db.table('notification_preferences').upsert(preferences_records).execute()
+            response = admin_db.table('notification_preferences').upsert(
+                preferences_records,
+                on_conflict='user_id,notification_type'
+            ).execute()
 
             logger.info(f"Created default notification preferences for user {user_id}")
 
