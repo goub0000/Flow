@@ -315,6 +315,7 @@ class NotificationService {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
+        _logger.warning('Cannot create default preferences - user not authenticated yet');
         throw Exception('User not authenticated');
       }
 
