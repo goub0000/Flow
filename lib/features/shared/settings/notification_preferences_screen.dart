@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
+import '../../../core/providers/service_providers.dart';
 
 /// Notification preferences screen
 class NotificationPreferencesScreen extends ConsumerStatefulWidget {
@@ -68,6 +69,10 @@ class _NotificationPreferencesScreenState
           }
 
           if (preferences.isEmpty) {
+            // Watch current user to enable/disable button
+            final currentUser = ref.watch(currentUserProvider);
+            final isAuthReady = currentUser != null;
+
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -77,9 +82,19 @@ class _NotificationPreferencesScreenState
                   const Text('No notification preferences found'),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _initializePreferences,
-                    child: const Text('Create Default Preferences'),
+                    onPressed: isAuthReady ? _initializePreferences : null,
+                    child: Text(isAuthReady
+                      ? 'Create Default Preferences'
+                      : 'Waiting for authentication...'),
                   ),
+                  if (!isAuthReady) ...[
+                    const SizedBox(height: 8),
+                    const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ],
                 ],
               ),
             );

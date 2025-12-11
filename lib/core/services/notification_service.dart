@@ -316,7 +316,7 @@ class NotificationService {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
         _logger.warning('Cannot create default preferences - user not authenticated yet.');
-        throw Exception('Please wait a moment for the app to finish loading, then try again.');
+        return; // Button is disabled until auth ready, so this shouldn't happen
       }
 
       // Create default preferences for all notification types
