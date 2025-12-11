@@ -64,19 +64,12 @@ class AuthService {
         await _apiClient.setToken(_accessToken!);
       }
 
-      // CRITICAL: Restore Supabase auth session after page reload
-      if (_accessToken != null && _refreshToken != null && _currentUser != null) {
-        try {
-          _logger.info('Restoring Supabase session for user ${_currentUser!.email}');
-
-          // Set session using setSession (proper way for custom JWT)
-          await Supabase.instance.client.auth.setSession(_accessToken!);
-
-          _logger.info('✅ Supabase session restored successfully');
-        } catch (e) {
-          _logger.warning('Failed to restore Supabase session (notifications may not work)', e);
-          // Don't fail the entire session load if Supabase fails
-        }
+      // Note: We cannot set Supabase auth session with custom JWTs
+      // Supabase auth only works with Supabase-issued tokens
+      // Instead, notification methods will use user ID from AuthService directly
+      if (_accessToken != null && _currentUser != null) {
+        _logger.info('Loaded session for user ${_currentUser!.email} (ID: ${_currentUser!.id})');
+        _logger.info('Supabase operations will use user ID: ${_currentUser!.id}');
       }
 
       if (_accessToken != null) {
@@ -112,18 +105,9 @@ class AuthService {
 
     _logger.info('Session saved to secure storage');
 
-    // Set session in Supabase client for storage/realtime operations
-    try {
-      _logger.info('Setting Supabase session for user ${user.email}');
-
-      // Use setSession with our custom JWT token
-      await Supabase.instance.client.auth.setSession(accessToken);
-
-      _logger.info('✅ Supabase session set successfully');
-    } catch (e) {
-      _logger.warning('Failed to set Supabase session (notifications may not work)', e);
-      // Don't throw - session save should continue even if Supabase session fails
-    }
+    // Note: Cannot set Supabase auth with custom JWTs
+    // Notification operations will use user ID from AuthService
+    _logger.info('Saved session for user ${user.email} (ID: ${user.id})');
   }
 
   /// Clear session from storage

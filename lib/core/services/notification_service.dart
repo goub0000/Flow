@@ -311,12 +311,14 @@ class NotificationService {
   }
 
   /// Create default preferences for current user
-  Future<void> createDefaultPreferences() async {
+  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
+  Future<void> createDefaultPreferences({String? userId}) async {
     try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        _logger.warning('Cannot create default preferences - user not authenticated yet.');
-        return; // Button is disabled until auth ready, so this shouldn't happen
+      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
+      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
+      if (effectiveUserId == null) {
+        _logger.warning('Cannot create default preferences - no user ID provided');
+        return;
       }
 
       // Create default preferences for all notification types
@@ -337,7 +339,7 @@ class NotificationService {
 
       for (final type in notificationTypes) {
         await _supabase.from('notification_preferences').upsert({
-          'user_id': userId,
+          'user_id': effectiveUserId,
           'notification_type': type,
           'in_app_enabled': true,
           'email_enabled': true,

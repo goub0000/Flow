@@ -400,10 +400,12 @@ final updateNotificationPreferenceProvider =
 });
 
 /// Provider for creating default preferences
+/// Pass user ID from AuthService since Supabase auth doesn't work with custom JWTs
 final createDefaultPreferencesProvider = Provider<Future<void> Function()>((ref) {
   final service = ref.watch(notificationServiceProvider);
+  final currentUser = ref.watch(currentUserProvider);
   return () async {
-    await service.createDefaultPreferences();
+    await service.createDefaultPreferences(userId: currentUser?.id);
     ref.invalidate(notificationPreferencesProvider);
   };
 });
