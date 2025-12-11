@@ -37,6 +37,14 @@ class _NotificationPreferencesScreenState
           try {
             await ref.read(createDefaultPreferencesProvider)();
             ref.invalidate(notificationPreferencesProvider);
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Default notification preferences created successfully!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
           } catch (e) {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
