@@ -252,7 +252,9 @@ class NotificationService {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated');
+        _logger.warning('Cannot fetch notification preferences - user not authenticated yet');
+        // Return empty list instead of throwing - allows graceful retry
+        return [];
       }
 
       final response = await _supabase
