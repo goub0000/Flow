@@ -83,9 +83,16 @@ final currentUserProvider = StateProvider<UserModel?>((ref) {
 });
 
 /// Supabase Auth State Provider (watches real Supabase auth)
-final supabaseAuthUserProvider = StreamProvider<User?>((ref) {
+final supabaseAuthUserProvider = StreamProvider<User?>((ref) async* {
   final supabase = ref.watch(supabaseClientProvider);
-  return supabase.auth.onAuthStateChange.map((data) => data.session?.user);
+
+  // Emit current user immediately
+  yield supabase.auth.currentUser;
+
+  // Then listen to auth state changes
+  await for (final authState in supabase.auth.onAuthStateChange) {
+    yield authState.session?.user;
+  }
 });
 
 /// Authentication State Provider
