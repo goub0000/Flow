@@ -64,6 +64,21 @@ class AuthService {
         await _apiClient.setToken(_accessToken!);
       }
 
+      // CRITICAL: Restore Supabase auth session after page reload
+      if (_accessToken != null && _refreshToken != null && _currentUser != null) {
+        try {
+          _logger.info('Restoring Supabase session for user ${_currentUser!.email}');
+
+          // Set session using setSession (proper way for custom JWT)
+          await Supabase.instance.client.auth.setSession(_accessToken!);
+
+          _logger.info('✅ Supabase session restored successfully');
+        } catch (e) {
+          _logger.warning('Failed to restore Supabase session (notifications may not work)', e);
+          // Don't fail the entire session load if Supabase fails
+        }
+      }
+
       if (_accessToken != null) {
         _logger.info('Session loaded from secure storage');
       }
@@ -97,17 +112,16 @@ class AuthService {
 
     _logger.info('Session saved to secure storage');
 
-    // Set session in Supabase client for storage operations
+    // Set session in Supabase client for storage/realtime operations
     try {
-      _logger.info('Setting Supabase session with both access and refresh tokens');
+      _logger.info('Setting Supabase session for user ${user.email}');
 
-      // Fix: Pass both tokens as a combined string (Supabase format)
-      // Format: "accessToken.refreshToken"
-      await Supabase.instance.client.auth.recoverSession('$accessToken.$refreshToken');
+      // Use setSession with our custom JWT token
+      await Supabase.instance.client.auth.setSession(accessToken);
 
-      _logger.info('✅ Supabase session set successfully with both tokens');
+      _logger.info('✅ Supabase session set successfully');
     } catch (e) {
-      _logger.severe('Failed to set Supabase session', e);
+      _logger.warning('Failed to set Supabase session (notifications may not work)', e);
       // Don't throw - session save should continue even if Supabase session fails
     }
   }
