@@ -72,9 +72,10 @@ class NotificationsState {
 /// Notifier for managing notifications
 class NotificationsNotifier extends StateNotifier<NotificationsState> {
   final NotificationService _service;
+  final Ref _ref;
   RealtimeChannel? _realtimeChannel;
 
-  NotificationsNotifier(this._service) : super(const NotificationsState());
+  NotificationsNotifier(this._service, this._ref) : super(const NotificationsState());
 
   /// Fetch notifications with optional filter
   Future<void> fetchNotifications({
@@ -177,7 +178,8 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   /// Mark notification as unread
   Future<void> markAsUnread(String notificationId) async {
     try {
-      await _service.markAsUnread(notificationId);
+      final currentUser = _ref.read(currentUserProvider);
+      await _service.markAsUnread(notificationId, userId: currentUser?.id);
 
       // Optimistically update UI
       final updatedNotifications = state.notifications.map((n) {
@@ -217,7 +219,8 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   /// Archive notification
   Future<void> archiveNotification(String notificationId) async {
     try {
-      await _service.archiveNotification(notificationId);
+      final currentUser = _ref.read(currentUserProvider);
+      await _service.archiveNotification(notificationId, userId: currentUser?.id);
 
       // Remove from list
       final updatedNotifications =
@@ -235,7 +238,8 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   /// Delete notification
   Future<void> deleteNotification(String notificationId) async {
     try {
-      await _service.deleteNotification(notificationId);
+      final currentUser = _ref.read(currentUserProvider);
+      await _service.deleteNotification(notificationId, userId: currentUser?.id);
 
       // Remove from list
       final updatedNotifications =
@@ -318,7 +322,7 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 final notificationsProvider =
     StateNotifierProvider<NotificationsNotifier, NotificationsState>((ref) {
   final service = ref.watch(notificationServiceProvider);
-  final notifier = NotificationsNotifier(service);
+  final notifier = NotificationsNotifier(service, ref);
 
   // Watch auth state and only fetch when authenticated
   final authState = ref.watch(authProvider);
@@ -388,12 +392,14 @@ final notificationPreferenceProvider = Provider.family<
 });
 
 /// Provider for updating notification preferences
+/// Pass user ID from AuthService since Supabase auth doesn't work with custom JWTs
 final updateNotificationPreferenceProvider =
     Provider<Future<void> Function(UpdateNotificationPreferencesRequest)>(
         (ref) {
   final service = ref.watch(notificationServiceProvider);
+  final currentUser = ref.watch(currentUserProvider);
   return (request) async {
-    await service.updatePreference(request);
+    await service.updatePreference(request, userId: currentUser?.id);
     // Refresh preferences after update
     ref.invalidate(notificationPreferencesProvider);
   };

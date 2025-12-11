@@ -161,67 +161,79 @@ class NotificationService {
   }
 
   /// Mark a notification as unread
-  Future<void> markAsUnread(String notificationId) async {
+  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
+  Future<void> markAsUnread(String notificationId, {String? userId}) async {
     try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        throw Exception('User not authenticated');
+      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
+      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
+      if (effectiveUserId == null) {
+        _logger.warning('Cannot mark notification as unread - no user ID provided');
+        throw Exception('Please wait for the app to finish loading, then try again.');
       }
 
       await _supabase.from('notifications').update({
         'is_read': false,
         'read_at': null,
-      }).eq('id', notificationId).eq('user_id', userId);
+      }).eq('id', notificationId).eq('user_id', effectiveUserId);
     } catch (e) {
       throw Exception('Failed to mark notification as unread: $e');
     }
   }
 
   /// Archive a notification
-  Future<void> archiveNotification(String notificationId) async {
+  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
+  Future<void> archiveNotification(String notificationId, {String? userId}) async {
     try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        throw Exception('User not authenticated');
+      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
+      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
+      if (effectiveUserId == null) {
+        _logger.warning('Cannot archive notification - no user ID provided');
+        throw Exception('Please wait for the app to finish loading, then try again.');
       }
 
       await _supabase.from('notifications').update({
         'is_archived': true,
         'archived_at': DateTime.now().toIso8601String(),
-      }).eq('id', notificationId).eq('user_id', userId);
+      }).eq('id', notificationId).eq('user_id', effectiveUserId);
     } catch (e) {
       throw Exception('Failed to archive notification: $e');
     }
   }
 
   /// Unarchive a notification
-  Future<void> unarchiveNotification(String notificationId) async {
+  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
+  Future<void> unarchiveNotification(String notificationId, {String? userId}) async {
     try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        throw Exception('User not authenticated');
+      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
+      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
+      if (effectiveUserId == null) {
+        _logger.warning('Cannot unarchive notification - no user ID provided');
+        throw Exception('Please wait for the app to finish loading, then try again.');
       }
 
       await _supabase.from('notifications').update({
         'is_archived': false,
         'archived_at': null,
-      }).eq('id', notificationId).eq('user_id', userId);
+      }).eq('id', notificationId).eq('user_id', effectiveUserId);
     } catch (e) {
       throw Exception('Failed to unarchive notification: $e');
     }
   }
 
   /// Delete a notification (soft delete)
-  Future<void> deleteNotification(String notificationId) async {
+  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
+  Future<void> deleteNotification(String notificationId, {String? userId}) async {
     try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        throw Exception('User not authenticated');
+      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
+      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
+      if (effectiveUserId == null) {
+        _logger.warning('Cannot delete notification - no user ID provided');
+        throw Exception('Please wait for the app to finish loading, then try again.');
       }
 
       await _supabase.from('notifications').update({
         'deleted_at': DateTime.now().toIso8601String(),
-      }).eq('id', notificationId).eq('user_id', userId);
+      }).eq('id', notificationId).eq('user_id', effectiveUserId);
     } catch (e) {
       throw Exception('Failed to delete notification: $e');
     }
@@ -272,12 +284,15 @@ class NotificationService {
   }
 
   /// Update notification preference
+  /// Pass [userId] from AuthService since Supabase auth doesn't work with custom JWTs
   Future<void> updatePreference(
-      UpdateNotificationPreferencesRequest request) async {
+      UpdateNotificationPreferencesRequest request, {String? userId}) async {
     try {
-      final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) {
-        throw Exception('User not authenticated');
+      // Use provided userId or fall back to Supabase auth (won't work with custom JWT)
+      final effectiveUserId = userId ?? _supabase.auth.currentUser?.id;
+      if (effectiveUserId == null) {
+        _logger.warning('Cannot update notification preference - no user ID provided');
+        throw Exception('Please wait for the app to finish loading, then try again.');
       }
 
       final updates = <String, dynamic>{};
@@ -302,7 +317,7 @@ class NotificationService {
       await _supabase
           .from('notification_preferences')
           .update(updates)
-          .eq('user_id', userId)
+          .eq('user_id', effectiveUserId)
           .eq('notification_type',
               _notificationTypeToString(request.notificationType));
     } catch (e) {
