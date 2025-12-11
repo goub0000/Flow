@@ -7,7 +7,7 @@ from datetime import datetime
 import logging
 from uuid import uuid4
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.schemas.notifications import (
     NotificationCreateRequest,
     NotificationResponse,
@@ -541,8 +541,9 @@ class NotificationsService:
                     "updated_at": datetime.utcnow().isoformat(),
                 })
 
-            # Use upsert to handle duplicates
-            response = self.db.table('notification_preferences').upsert(preferences_records).execute()
+            # Use admin client to bypass RLS
+            admin_db = get_supabase_admin()
+            response = admin_db.table('notification_preferences').upsert(preferences_records).execute()
 
             logger.info(f"Created default notification preferences for user {user_id}")
 

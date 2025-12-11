@@ -7,6 +7,7 @@ import os
 from typing import Optional
 
 _supabase_client: Optional[Client] = None
+_supabase_admin_client: Optional[Client] = None
 
 
 def get_supabase() -> Client:
@@ -36,6 +37,32 @@ def get_supabase() -> Client:
         _supabase_client = create_client(url, key)
 
     return _supabase_client
+
+
+def get_supabase_admin() -> Client:
+    """
+    Get Supabase admin client with service role key (bypasses RLS)
+
+    Returns:
+        Supabase admin client for privileged operations
+    """
+    global _supabase_admin_client
+
+    if _supabase_admin_client is None:
+        url = os.environ.get('SUPABASE_URL')
+        # Try service role key first, fall back to SUPABASE_KEY
+        service_role_key = os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or os.environ.get('SUPABASE_KEY')
+
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"Creating admin client with service role key: {'SET' if service_role_key else 'NOT SET'}")
+
+        if not url or not service_role_key:
+            raise ValueError("SUPABASE_URL and service role key are required for admin operations")
+
+        _supabase_admin_client = create_client(url, service_role_key)
+
+    return _supabase_admin_client
 
 
 # Dependency for FastAPI endpoints
