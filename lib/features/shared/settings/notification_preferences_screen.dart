@@ -70,12 +70,9 @@ class _NotificationPreferencesScreenState
           }
 
           if (preferences.isEmpty) {
-            // Watch Supabase auth state reactively
-            final supabaseAuth = ref.watch(supabaseAuthUserProvider);
-            final isAuthReady = supabaseAuth.maybeWhen(
-              data: (user) => user != null,
-              orElse: () => false,
-            );
+            // Watch AuthService (works with custom JWT) not Supabase auth
+            final currentUser = ref.watch(currentUserProvider);
+            final isAuthReady = currentUser != null;
 
             return Center(
               child: Column(
