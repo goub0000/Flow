@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
 import '../../../core/providers/service_providers.dart';
@@ -69,9 +70,9 @@ class _NotificationPreferencesScreenState
           }
 
           if (preferences.isEmpty) {
-            // Watch current user to enable/disable button
-            final currentUser = ref.watch(currentUserProvider);
-            final isAuthReady = currentUser != null;
+            // Watch Supabase auth state directly (not AuthService)
+            final supabase = Supabase.instance.client;
+            final isAuthReady = supabase.auth.currentUser != null;
 
             return Center(
               child: Column(
