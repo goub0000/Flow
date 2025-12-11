@@ -516,16 +516,16 @@ class NotificationsService:
         try:
             notification_types = [
                 'application_status',
-                'application_deadline',
-                'document_request',
+                'grade_posted',
                 'message_received',
-                'system_update',
-                'account_activity',
-                'recommendation_update',
-                'institution_update',
-                'scholarship_alert',
-                'progress_milestone',
-                'counseling_session',
+                'meeting_scheduled',
+                'meeting_reminder',
+                'achievement_earned',
+                'deadline_reminder',
+                'recommendation_ready',
+                'system_announcement',
+                'comment_received',
+                'mention',
                 'event_reminder'
             ]
 
