@@ -319,9 +319,31 @@ class NotificationService {
         throw Exception('User not authenticated');
       }
 
-      await _supabase.rpc('create_default_notification_preferences', params: {
-        'target_user_id': userId,
-      });
+      // Create default preferences for all notification types
+      final notificationTypes = [
+        'application_status',
+        'grade_posted',
+        'message_received',
+        'meeting_scheduled',
+        'meeting_reminder',
+        'achievement_earned',
+        'deadline_reminder',
+        'recommendation_ready',
+        'system_announcement',
+        'comment_received',
+        'mention',
+        'event_reminder',
+      ];
+
+      for (final type in notificationTypes) {
+        await _supabase.from('notification_preferences').upsert({
+          'user_id': userId,
+          'notification_type': type,
+          'in_app_enabled': true,
+          'email_enabled': true,
+          'push_enabled': true,
+        });
+      }
     } catch (e) {
       throw Exception('Failed to create default preferences: $e');
     }
