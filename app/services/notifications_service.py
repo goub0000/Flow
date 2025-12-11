@@ -441,6 +441,50 @@ class NotificationsService:
         except:
             return None
 
+    async def create_default_notification_preferences(self, user_id: str) -> Dict[str, Any]:
+        """Create default notification preferences for all notification types"""
+        try:
+            notification_types = [
+                'application_status',
+                'application_deadline',
+                'document_request',
+                'message_received',
+                'system_update',
+                'account_activity',
+                'recommendation_update',
+                'institution_update',
+                'scholarship_alert',
+                'progress_milestone',
+                'counseling_session',
+                'event_reminder'
+            ]
+
+            preferences_records = []
+            for notification_type in notification_types:
+                preferences_records.append({
+                    "user_id": user_id,
+                    "notification_type": notification_type,
+                    "in_app_enabled": True,
+                    "email_enabled": True,
+                    "push_enabled": True,
+                    "created_at": datetime.utcnow().isoformat(),
+                    "updated_at": datetime.utcnow().isoformat(),
+                })
+
+            # Use upsert to handle duplicates
+            response = self.db.table('notification_preferences').upsert(preferences_records).execute()
+
+            logger.info(f"Created default notification preferences for user {user_id}")
+
+            return {
+                "success": True,
+                "message": f"Created {len(notification_types)} default notification preferences"
+            }
+
+        except Exception as e:
+            logger.error(f"Create default notification preferences error: {e}")
+            raise Exception(f"Failed to create default notification preferences: {str(e)}")
+
     async def _create_default_preferences(self, user_id: str) -> NotificationPreferencesResponse:
         """Internal: Create default notification preferences"""
         try:
