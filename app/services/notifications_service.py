@@ -324,6 +324,84 @@ class NotificationsService:
             logger.error(f"Delete notification error: {e}")
             raise Exception(f"Failed to delete notification: {str(e)}")
 
+    async def mark_as_unread(
+        self,
+        notification_id: str,
+        user_id: str
+    ) -> Dict[str, Any]:
+        """Mark a notification as unread"""
+        try:
+            # Verify ownership
+            notification = await self.get_notification(notification_id, user_id)
+
+            update = {
+                "is_read": False,
+                "read_at": None,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('notifications').update(update).eq('id', notification_id).execute()
+
+            logger.info(f"Notification marked as unread: {notification_id}")
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Mark notification as unread error: {e}")
+            raise Exception(f"Failed to mark notification as unread: {str(e)}")
+
+    async def archive_notification(
+        self,
+        notification_id: str,
+        user_id: str
+    ) -> Dict[str, Any]:
+        """Archive a notification"""
+        try:
+            # Verify ownership
+            notification = await self.get_notification(notification_id, user_id)
+
+            update = {
+                "is_archived": True,
+                "archived_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('notifications').update(update).eq('id', notification_id).execute()
+
+            logger.info(f"Notification archived: {notification_id}")
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Archive notification error: {e}")
+            raise Exception(f"Failed to archive notification: {str(e)}")
+
+    async def unarchive_notification(
+        self,
+        notification_id: str,
+        user_id: str
+    ) -> Dict[str, Any]:
+        """Unarchive a notification"""
+        try:
+            # Verify ownership
+            notification = await self.get_notification(notification_id, user_id)
+
+            update = {
+                "is_archived": False,
+                "archived_at": None,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('notifications').update(update).eq('id', notification_id).execute()
+
+            logger.info(f"Notification unarchived: {notification_id}")
+
+            return {"success": True}
+
+        except Exception as e:
+            logger.error(f"Unarchive notification error: {e}")
+            raise Exception(f"Failed to unarchive notification: {str(e)}")
+
     async def get_notification_preferences(
         self,
         user_id: str
