@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/notification_models.dart';
 import '../services/notification_service.dart';
 import '../../features/authentication/providers/auth_provider.dart';
-import 'service_providers.dart' show apiClientProvider;
+import 'service_providers.dart' show apiClientProvider, currentUserProvider;
 
 // ==================== SERVICE PROVIDERS ====================
 
