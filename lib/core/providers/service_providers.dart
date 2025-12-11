@@ -82,6 +82,12 @@ final currentUserProvider = StateProvider<UserModel?>((ref) {
   return authService.currentUser;
 });
 
+/// Supabase Auth State Provider (watches real Supabase auth)
+final supabaseAuthUserProvider = StreamProvider<User?>((ref) {
+  final supabase = ref.watch(supabaseClientProvider);
+  return supabase.auth.onAuthStateChange.map((data) => data.session?.user);
+});
+
 /// Authentication State Provider
 final isAuthenticatedProvider = Provider<bool>((ref) {
   final user = ref.watch(currentUserProvider);
