@@ -315,8 +315,8 @@ class NotificationService {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        _logger.warning('Cannot create default preferences - user not authenticated yet');
-        throw Exception('User not authenticated');
+        _logger.warning('Cannot create default preferences - user not authenticated yet. Please wait a moment and try again.');
+        return; // Return silently, user can retry
       }
 
       // Create default preferences for all notification types
@@ -344,7 +344,10 @@ class NotificationService {
           'push_enabled': true,
         });
       }
+
+      _logger.info('Successfully created default notification preferences');
     } catch (e) {
+      _logger.severe('Failed to create default preferences: $e');
       throw Exception('Failed to create default preferences: $e');
     }
   }
