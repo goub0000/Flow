@@ -72,7 +72,10 @@ class _NotificationPreferencesScreenState
           if (preferences.isEmpty) {
             // Watch Supabase auth state reactively
             final supabaseAuth = ref.watch(supabaseAuthUserProvider);
-            final isAuthReady = supabaseAuth.value != null;
+            final isAuthReady = supabaseAuth.maybeWhen(
+              data: (user) => user != null,
+              orElse: () => false,
+            );
 
             return Center(
               child: Column(
