@@ -15,6 +15,7 @@ import '../../features/institution/courses/presentation/create_course_screen.dar
 import '../../features/institution/courses/presentation/course_permissions_screen.dart';
 import '../../features/institution/courses/presentation/course_enrollments_screen.dart';
 import '../../features/institution/courses/presentation/institution_course_detail_screen.dart';
+import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
 import '../../features/institution/providers/institution_applicants_provider.dart';
 
 /// Institution-specific routes
@@ -149,6 +150,18 @@ List<RouteBase> institutionRoutes = [
         );
       }
       return CourseEnrollmentsScreen(course: course);
+    },
+  ),
+  GoRoute(
+    path: '/institution/courses/:id/content',
+    name: 'institution-course-content',
+    builder: (context, state) {
+      final courseId = state.pathParameters['id']!;
+      final course = state.extra as Course?;
+      return CourseContentBuilderScreen(
+        courseId: courseId,
+        course: course,
+      );
     },
   ),
 ];

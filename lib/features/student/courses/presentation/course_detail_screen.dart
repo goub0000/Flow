@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../../core/models/enrollment_permission_model.dart';
@@ -268,7 +269,15 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
   }
 
   VoidCallback? _getButtonAction(bool isEnrolled) {
-    if (isEnrolled) return null;
+    if (isEnrolled) {
+      return () {
+        context.goNamed(
+          'student-course-learn',
+          pathParameters: {'id': widget.course.id},
+          extra: widget.course,
+        );
+      };
+    }
     if (widget.course.isFull) return null;
     if (_permission?.isPending == true) return null;
 
@@ -286,7 +295,11 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
 
   String _getButtonText(bool isEnrolled, dynamic enrollment) {
     if (isEnrolled) {
-      return 'Enrolled${enrollment?.progressPercentage != null && enrollment!.progressPercentage > 0 ? " (${enrollment.progressPercentage.toStringAsFixed(0)}%)" : ""}';
+      final progress = enrollment?.progressPercentage ?? 0;
+      if (progress > 0) {
+        return 'Continue Learning (${progress.toStringAsFixed(0)}%)';
+      }
+      return 'Start Learning';
     }
 
     if (widget.course.isFull) return 'Course Full';

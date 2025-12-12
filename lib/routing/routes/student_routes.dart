@@ -10,6 +10,7 @@ import '../../features/student/progress/presentation/progress_screen.dart';
 import '../../features/student/courses/presentation/courses_list_screen.dart';
 import '../../features/student/courses/presentation/course_detail_screen.dart';
 import '../../features/student/courses/presentation/my_courses_screen.dart';
+import '../../features/student/courses/presentation/course_learning_screen.dart';
 
 /// Student-specific routes
 List<RouteBase> studentRoutes = [
@@ -77,5 +78,21 @@ List<RouteBase> studentRoutes = [
     path: '/student/my-courses',
     name: 'student-my-courses',
     builder: (context, state) => const MyCoursesScreen(),
+  ),
+  GoRoute(
+    path: '/student/courses/:id/learn',
+    name: 'student-course-learn',
+    builder: (context, state) {
+      final course = state.extra as Course?;
+      if (course == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.go('/student/my-courses');
+        });
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      return CourseLearningScreen(course: course);
+    },
   ),
 ];
