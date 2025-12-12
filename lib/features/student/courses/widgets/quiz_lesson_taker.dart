@@ -29,11 +29,15 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
   void initState() {
     super.initState();
     _startTime = DateTime.now();
+    // Load quiz content on init
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(contentProvider.notifier).fetchQuizContent(widget.lessonId);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final contentState = ref.watch(lessonContentProvider(widget.lessonId));
+    final contentState = ref.watch(contentProvider);
 
     if (contentState.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -56,7 +60,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
-                  ref.read(lessonContentProvider(widget.lessonId).notifier).loadContent();
+                  ref.read(contentProvider.notifier).fetchQuizContent(widget.lessonId);
                 },
                 icon: const Icon(Icons.refresh),
                 label: const Text('Retry'),
@@ -82,6 +86,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
   }
 
   Widget _buildQuizView(QuizContent content) {
+    final questions = content.questions ?? [];
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -92,7 +97,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
           const SizedBox(height: 32),
 
           // Questions
-          ...content.questions.asMap().entries.map((entry) {
+          ...questions.asMap().entries.map((entry) {
             final index = entry.key;
             final question = entry.value;
             return Padding(
@@ -122,8 +127,9 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
   }
 
   Widget _buildQuizInfo(QuizContent content) {
-    final timeLimit = content.timeLimit;
+    final timeLimit = content.timeLimitMinutes;
     final elapsedMinutes = DateTime.now().difference(_startTime!).inMinutes;
+    final questions = content.questions ?? [];
 
     return Card(
       child: Padding(
@@ -140,7 +146,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
               children: [
                 const Icon(Icons.quiz, size: 20),
                 const SizedBox(width: 8),
-                Text('${content.questions.length} questions'),
+                Text('${questions.length} questions'),
               ],
             ),
             const SizedBox(height: 8),
@@ -235,7 +241,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
   }
 
   Widget _buildAnswerInput(QuizQuestion question) {
-    switch (question.type) {
+    switch (question.questionType) {
       case QuestionType.multipleChoice:
         return _buildMultipleChoiceInput(question);
       case QuestionType.trueFalse:
@@ -248,8 +254,9 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
   }
 
   Widget _buildMultipleChoiceInput(QuizQuestion question) {
+    final options = question.options ?? [];
     return Column(
-      children: question.options.map((option) {
+      children: options.map((option) {
         final isSelected = _answers[question.id] == option.id;
         return RadioListTile<String>(
           value: option.id,
@@ -331,26 +338,30 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
     _endTime = DateTime.now();
 
     // Calculate score for auto-gradable questions
-    final contentState = ref.read(lessonContentProvider(widget.lessonId));
+    final contentState = ref.read(contentProvider);
     final content = contentState.content as QuizContent;
+    final questions = content.questions ?? [];
 
     int totalPoints = 0;
     int earnedPoints = 0;
 
-    for (final question in content.questions) {
+    for (final question in questions) {
       totalPoints += question.points;
 
-      if (question.type == QuestionType.multipleChoice) {
+      if (question.questionType == QuestionType.multipleChoice) {
         final selectedOptionId = _answers[question.id] as String?;
-        final correctOption = question.options.firstWhere(
-          (opt) => opt.isCorrect,
-          orElse: () => question.options.first,
-        );
+        final options = question.options ?? [];
+        if (options.isNotEmpty) {
+          final correctOption = options.firstWhere(
+            (opt) => opt.isCorrect,
+            orElse: () => options.first,
+          );
 
-        if (selectedOptionId == correctOption.id) {
-          earnedPoints += question.points;
+          if (selectedOptionId == correctOption.id) {
+            earnedPoints += question.points;
+          }
         }
-      } else if (question.type == QuestionType.trueFalse) {
+      } else if (question.questionType == QuestionType.trueFalse) {
         // This would need correct answer stored in backend
         // For now, we'll mark as needing manual grading
       }
@@ -442,7 +453,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            ...content.questions.asMap().entries.map((entry) {
+            ...(content.questions ?? []).asMap().entries.map((entry) {
               final index = entry.key;
               final question = entry.value;
               return _buildReviewCard(question, index + 1);
@@ -490,11 +501,12 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
   Widget _buildReviewCard(QuizQuestion question, int questionNumber) {
     final userAnswer = _answers[question.id];
     bool? isCorrect;
+    final options = question.options ?? [];
 
-    if (question.type == QuestionType.multipleChoice) {
-      final correctOption = question.options.firstWhere(
+    if (question.questionType == QuestionType.multipleChoice && options.isNotEmpty) {
+      final correctOption = options.firstWhere(
         (opt) => opt.isCorrect,
-        orElse: () => question.options.first,
+        orElse: () => options.first,
       );
       isCorrect = userAnswer == correctOption.id;
     }
@@ -526,8 +538,8 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            if (question.type == QuestionType.multipleChoice) ...[
-              ...question.options.map((option) {
+            if (question.questionType == QuestionType.multipleChoice) ...[
+              ...options.map((option) {
                 final isUserAnswer = userAnswer == option.id;
                 return Container(
                   padding: const EdgeInsets.all(8),

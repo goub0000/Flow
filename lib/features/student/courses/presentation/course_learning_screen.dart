@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
-import '../../../../core/models/course_module_model.dart';
-import '../../../../core/models/course_lesson_model.dart';
+import '../../../../core/models/course_content_models.dart';
 import '../../../institution/providers/course_content_provider.dart';
 import '../widgets/video_lesson_player.dart';
 import '../widgets/text_lesson_reader.dart';
@@ -38,9 +37,8 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
 
     // Load course content
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(courseModulesProvider(widget.course.id).notifier).loadModules();
-      ref.read(lessonsProvider.notifier).loadAllLessonsForCourse(widget.course.id);
-      ref.read(progressProvider(widget.course.id).notifier).loadProgress();
+      ref.read(courseModulesProvider(widget.course.id).notifier).fetchModules();
+      ref.read(progressProvider.notifier).fetchProgress(widget.course.id);
     });
   }
 
@@ -48,7 +46,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
   Widget build(BuildContext context) {
     final modulesState = ref.watch(courseModulesProvider(widget.course.id));
     final lessonsState = ref.watch(lessonsProvider);
-    final progressState = ref.watch(progressProvider(widget.course.id));
+    final progressState = ref.watch(progressProvider);
     final isMobile = MediaQuery.of(context).size.width < 768;
 
     return Scaffold(
@@ -58,21 +56,21 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(widget.course.title, style: const TextStyle(fontSize: 18)),
-            if (progressState.courseProgress != null)
+            if (progressState.progress != null)
               Text(
-                '${progressState.courseProgress!.completedLessons}/${progressState.courseProgress!.totalLessons} lessons completed',
+                '${progressState.progress!.completedLessons}/${progressState.progress!.totalLessons} lessons completed',
                 style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
               ),
           ],
         ),
         actions: [
-          if (progressState.courseProgress != null)
+          if (progressState.progress != null)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Chip(
                   label: Text(
-                    '${progressState.courseProgress!.progress.toStringAsFixed(0)}%',
+                    '${progressState.progress!.progressPercentage.toStringAsFixed(0)}%',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   backgroundColor: Colors.green[100],
@@ -136,7 +134,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
-                  ref.read(courseModulesProvider(widget.course.id).notifier).loadModules();
+                  ref.read(courseModulesProvider(widget.course.id).notifier).fetchModules();
                 },
                 icon: const Icon(Icons.refresh),
                 label: const Text('Retry'),
@@ -184,7 +182,8 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
         itemBuilder: (context, index) {
           final module = modulesState.modules[index];
           final lessons = lessonsState.lessonsByModule[module.id] ?? [];
-          final completedLessons = progressState.completedLessonIds
+          final completedLessonIds = progressState.progress?.completedLessonIds ?? [];
+          final completedLessons = completedLessonIds
               .where((id) => lessons.any((l) => l.id == id))
               .length;
 
@@ -192,7 +191,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             module,
             lessons,
             completedLessons,
-            progressState.completedLessonIds,
+            completedLessonIds.toSet(),
           );
         },
       ),
@@ -257,9 +256,13 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             ),
             onTap: () {
               final expanded = ref.read(expandedModulesProvider);
-              ref.read(expandedModulesProvider.notifier).state = isExpanded
-                  ? {...expanded}..remove(module.id)
-                  : {...expanded, module.id};
+              if (isExpanded) {
+                final newSet = Set<String>.from(expanded);
+                newSet.remove(module.id);
+                ref.read(expandedModulesProvider.notifier).state = newSet;
+              } else {
+                ref.read(expandedModulesProvider.notifier).state = {...expanded, module.id};
+              }
             },
           ),
           if (isExpanded) ...[
@@ -282,8 +285,8 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
         leading: Icon(
-          lesson.type.icon,
-          color: isCurrent ? AppColors.primary : lesson.type.color,
+          lesson.lessonType.icon,
+          color: isCurrent ? AppColors.primary : Colors.grey[600],
           size: 20,
         ),
         title: Text(
@@ -294,9 +297,9 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             color: isCurrent ? AppColors.primary : null,
           ),
         ),
-        subtitle: lesson.duration != null
+        subtitle: lesson.durationMinutes > 0
             ? Text(
-                '${lesson.duration} min',
+                '${lesson.durationMinutes} min',
                 style: const TextStyle(fontSize: 12),
               )
             : null,
@@ -341,7 +344,8 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
       return _buildWelcomeScreen();
     }
 
-    final isCompleted = progressState.completedLessonIds.contains(currentLesson.id);
+    final completedLessonIds = progressState.progress?.completedLessonIds ?? [];
+    final isCompleted = completedLessonIds.contains(currentLesson.id);
 
     return Column(
       children: [
@@ -357,7 +361,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             children: [
               Row(
                 children: [
-                  Icon(currentLesson.type.icon, color: currentLesson.type.color),
+                  Icon(currentLesson.lessonType.icon, color: AppColors.primary),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -451,7 +455,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
   }
 
   Widget _buildLessonContent(CourseLesson lesson) {
-    switch (lesson.type) {
+    switch (lesson.lessonType) {
       case LessonType.video:
         return VideoLessonPlayer(lessonId: lesson.id);
       case LessonType.text:
@@ -511,8 +515,8 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             ElevatedButton.icon(
               onPressed: () {
                 ref
-                    .read(progressProvider(widget.course.id).notifier)
-                    .markLessonComplete(currentLesson.id);
+                    .read(progressProvider.notifier)
+                    .markLessonComplete(currentLesson.id, widget.course.id);
               },
               icon: const Icon(Icons.check),
               label: const Text('Mark as Complete'),

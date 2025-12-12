@@ -7,7 +7,7 @@ import '../../../institution/providers/course_content_provider.dart';
 
 /// Text Lesson Reader
 /// Displays text/reading content for students
-class TextLessonReader extends ConsumerWidget {
+class TextLessonReader extends ConsumerStatefulWidget {
   final String lessonId;
 
   const TextLessonReader({
@@ -16,8 +16,22 @@ class TextLessonReader extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final contentState = ref.watch(lessonContentProvider(lessonId));
+  ConsumerState<TextLessonReader> createState() => _TextLessonReaderState();
+}
+
+class _TextLessonReaderState extends ConsumerState<TextLessonReader> {
+  @override
+  void initState() {
+    super.initState();
+    // Load text content on init
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(contentProvider.notifier).fetchTextContent(widget.lessonId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final contentState = ref.watch(contentProvider);
 
     if (contentState.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -40,7 +54,7 @@ class TextLessonReader extends ConsumerWidget {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
-                  ref.read(lessonContentProvider(lessonId).notifier).loadContent();
+                  ref.read(contentProvider.notifier).fetchTextContent(widget.lessonId);
                 },
                 icon: const Icon(Icons.refresh),
                 label: const Text('Retry'),
@@ -77,7 +91,7 @@ class TextLessonReader extends ConsumerWidget {
                 Icon(Icons.access_time, size: 16, color: Colors.blue[700]),
                 const SizedBox(width: 8),
                 Text(
-                  '${content.estimatedReadingTime} min read',
+                  '${content.estimatedReadingTime ?? 5} min read',
                   style: TextStyle(
                     color: Colors.blue[700],
                     fontWeight: FontWeight.bold,
@@ -162,11 +176,11 @@ class TextLessonReader extends ConsumerWidget {
             const SizedBox(height: 32),
             const Divider(),
             const SizedBox(height: 16),
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.attach_file),
-                const SizedBox(width: 8),
-                const Text(
+                Icon(Icons.attach_file),
+                SizedBox(width: 8),
+                Text(
                   'Attachments',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -174,16 +188,18 @@ class TextLessonReader extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             ...content.attachments.map((attachment) {
+              final url = attachment['url'] as String? ?? '';
+              final name = attachment['name'] as String? ?? _getFileNameFromUrl(url);
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   leading: const Icon(Icons.insert_drive_file),
                   title: Text(
-                    _getFileNameFromUrl(attachment),
+                    name,
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                   subtitle: Text(
-                    attachment,
+                    url,
                     style: const TextStyle(fontSize: 12),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -193,7 +209,7 @@ class TextLessonReader extends ConsumerWidget {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Downloading: ${_getFileNameFromUrl(attachment)}'),
+                          content: Text('Downloading: $name'),
                         ),
                       );
                       // Implement actual download logic
@@ -203,7 +219,7 @@ class TextLessonReader extends ConsumerWidget {
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Opening: ${_getFileNameFromUrl(attachment)}'),
+                        content: Text('Opening: $name'),
                       ),
                     );
                     // Open file in browser or viewer

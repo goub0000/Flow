@@ -22,6 +22,15 @@ class _VideoLessonPlayerState extends ConsumerState<VideoLessonPlayer> {
   YoutubePlayerController? _controller;
 
   @override
+  void initState() {
+    super.initState();
+    // Load video content on init
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(contentProvider.notifier).fetchVideoContent(widget.lessonId);
+    });
+  }
+
+  @override
   void dispose() {
     _controller?.close();
     super.dispose();
@@ -62,7 +71,7 @@ class _VideoLessonPlayerState extends ConsumerState<VideoLessonPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final contentState = ref.watch(lessonContentProvider(widget.lessonId));
+    final contentState = ref.watch(contentProvider);
 
     if (contentState.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -85,7 +94,7 @@ class _VideoLessonPlayerState extends ConsumerState<VideoLessonPlayer> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
-                  ref.read(lessonContentProvider(widget.lessonId).notifier).loadContent();
+                  ref.read(contentProvider.notifier).fetchVideoContent(widget.lessonId);
                 },
                 icon: const Icon(Icons.refresh),
                 label: const Text('Retry'),
@@ -173,7 +182,7 @@ class _VideoLessonPlayerState extends ConsumerState<VideoLessonPlayer> {
             children: [
               const Icon(Icons.access_time, size: 20),
               const SizedBox(width: 8),
-              Text('Duration: ${content.duration} minutes'),
+              Text('Duration: ${content.durationDisplay}'),
               const Spacer(),
               if (content.allowDownload)
                 TextButton.icon(

@@ -37,8 +37,17 @@ class _AssignmentLessonSubmitterState
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Load content on init
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(contentProvider.notifier).fetchContent(widget.lessonId);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final contentState = ref.watch(lessonContentProvider(widget.lessonId));
+    final contentState = ref.watch(contentProvider);
 
     if (contentState.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -62,8 +71,8 @@ class _AssignmentLessonSubmitterState
               ElevatedButton.icon(
                 onPressed: () {
                   ref
-                      .read(lessonContentProvider(widget.lessonId).notifier)
-                      .loadContent();
+                      .read(contentProvider.notifier)
+                      .fetchContent(widget.lessonId);
                 },
                 icon: const Icon(Icons.refresh),
                 label: const Text('Retry'),
@@ -86,6 +95,20 @@ class _AssignmentLessonSubmitterState
     }
 
     return _buildSubmissionView(content);
+  }
+
+  /// Helper method to get icon for submission type
+  IconData _getSubmissionTypeIcon(SubmissionType type) {
+    switch (type) {
+      case SubmissionType.text:
+        return Icons.text_fields;
+      case SubmissionType.file:
+        return Icons.upload_file;
+      case SubmissionType.url:
+        return Icons.link;
+      case SubmissionType.both:
+        return Icons.attach_file;
+    }
   }
 
   Widget _buildSubmissionView(AssignmentContent content) {
@@ -118,9 +141,9 @@ class _AssignmentLessonSubmitterState
           ),
 
           // Rubric
-          if (content.rubric != null && content.rubric!.isNotEmpty) ...[
+          if (content.rubric.isNotEmpty) ...[
             const SizedBox(height: 32),
-            _buildRubric(content.rubric!),
+            _buildRubric(content.rubric),
           ],
 
           const SizedBox(height: 32),
@@ -240,13 +263,12 @@ class _AssignmentLessonSubmitterState
             const SizedBox(height: 8),
             Row(
               children: [
-                Icon(content.submissionType.icon, size: 20),
+                Icon(_getSubmissionTypeIcon(content.submissionType), size: 20),
                 const SizedBox(width: 8),
                 Text('Submission type: ${content.submissionType.displayName}'),
               ],
             ),
-            if (content.allowedFileTypes != null &&
-                content.allowedFileTypes!.isNotEmpty) ...[
+            if (content.allowedFileTypes.isNotEmpty) ...[
               const SizedBox(height: 8),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,19 +277,19 @@ class _AssignmentLessonSubmitterState
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Allowed file types: ${content.allowedFileTypes!.join(', ')}',
+                      'Allowed file types: ${content.allowedFileTypes.join(', ')}',
                     ),
                   ),
                 ],
               ),
             ],
-            if (content.maxFileSize != null) ...[
+            if (content.maxFileSizeMb > 0) ...[
               const SizedBox(height: 8),
               Row(
                 children: [
                   const Icon(Icons.storage, size: 20),
                   const SizedBox(width: 8),
-                  Text('Max file size: ${content.maxFileSize} MB'),
+                  Text('Max file size: ${content.maxFileSizeMb} MB'),
                 ],
               ),
             ],
@@ -408,13 +430,13 @@ class _AssignmentLessonSubmitterState
 
   Future<void> _selectFiles() async {
     try {
-      final contentState = ref.read(lessonContentProvider(widget.lessonId));
+      final contentState = ref.read(contentProvider);
       final content = contentState.content as AssignmentContent?;
 
       // Determine allowed file extensions
       List<String>? allowedExtensions;
-      if (content?.allowedFileTypes != null && content!.allowedFileTypes!.isNotEmpty) {
-        allowedExtensions = content.allowedFileTypes!
+      if (content != null && content.allowedFileTypes.isNotEmpty) {
+        allowedExtensions = content.allowedFileTypes
             .map((type) => type.replaceAll('.', '').toLowerCase())
             .toList();
       }
@@ -431,13 +453,13 @@ class _AssignmentLessonSubmitterState
         setState(() {
           for (final file in result.files) {
             // Check file size if max size is specified
-            if (content?.maxFileSize != null && file.size > 0) {
-              final maxSizeBytes = (content!.maxFileSize! * 1024 * 1024).toInt();
+            if (content != null && content.maxFileSizeMb > 0 && file.size > 0) {
+              final maxSizeBytes = (content.maxFileSizeMb * 1024 * 1024).toInt();
               if (file.size > maxSizeBytes) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      '${file.name} exceeds max file size of ${content.maxFileSize} MB',
+                      '${file.name} exceeds max file size of ${content.maxFileSizeMb} MB',
                     ),
                     backgroundColor: Colors.orange,
                   ),

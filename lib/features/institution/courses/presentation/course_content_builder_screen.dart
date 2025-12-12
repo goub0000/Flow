@@ -227,10 +227,10 @@ class _CourseContentBuilderScreenState
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        if (module.description.isNotEmpty) ...[
+                        if (module.description != null && module.description!.isNotEmpty) ...[
                           const SizedBox(height: 4),
                           Text(
-                            module.description,
+                            module.description!,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
@@ -248,7 +248,7 @@ class _CourseContentBuilderScreenState
                     avatar: const Icon(Icons.playlist_play, size: 18),
                   ),
                   const SizedBox(width: 8),
-                  if (module.duration != null)
+                  if (module.durationMinutes > 0)
                     Chip(
                       label: Text(module.durationDisplay),
                       avatar: const Icon(Icons.access_time, size: 18),
@@ -383,17 +383,17 @@ class _CourseContentBuilderScreenState
       elevation: 1,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: _getLessonTypeColor(lesson.type),
+          backgroundColor: _getLessonTypeColor(lesson.lessonType),
           child: Icon(
-            lesson.type.icon,
+            lesson.lessonType.icon,
             color: Colors.white,
             size: 20,
           ),
         ),
         title: Text(lesson.title),
-        subtitle: lesson.description.isNotEmpty
+        subtitle: (lesson.description != null && lesson.description!.isNotEmpty)
             ? Text(
-                lesson.description,
+                lesson.description!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               )
@@ -401,7 +401,7 @@ class _CourseContentBuilderScreenState
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (lesson.duration != null)
+            if (lesson.durationMinutes > 0)
               Chip(
                 label: Text(lesson.durationDisplay),
                 avatar: const Icon(Icons.access_time, size: 16),
@@ -553,7 +553,6 @@ class _CourseContentBuilderScreenState
             onPressed: () async {
               if (_moduleFormKey.currentState!.validate()) {
                 final request = ModuleRequest(
-                  courseId: widget.courseId,
                   title: _moduleTitleController.text,
                   description: _moduleDescriptionController.text,
                   orderIndex: ref.read(courseModulesProvider(widget.courseId)).modules.length + 1,
@@ -581,7 +580,7 @@ class _CourseContentBuilderScreenState
 
   void _showEditModuleDialog(CourseModule module) {
     _moduleTitleController.text = module.title;
-    _moduleDescriptionController.text = module.description;
+    _moduleDescriptionController.text = module.description ?? '';
 
     showDialog(
       context: context,
@@ -626,7 +625,6 @@ class _CourseContentBuilderScreenState
             onPressed: () async {
               if (_moduleFormKey.currentState!.validate()) {
                 final request = ModuleRequest(
-                  courseId: widget.courseId,
                   title: _moduleTitleController.text,
                   description: _moduleDescriptionController.text,
                   orderIndex: module.orderIndex,
@@ -725,17 +723,16 @@ class _CourseContentBuilderScreenState
                 if (_lessonFormKey.currentState!.validate()) {
                   final lessons = ref.read(lessonsProvider).getLessonsForModule(moduleId);
                   final request = LessonRequest(
-                    moduleId: moduleId,
                     title: _lessonTitleController.text,
                     description: _lessonDescriptionController.text,
-                    type: selectedType,
+                    lessonType: selectedType,
                     orderIndex: lessons.length + 1,
                     isMandatory: false,
                   );
 
                   final result = await ref
                       .read(lessonsProvider.notifier)
-                      .createLesson(moduleId, request, null);
+                      .createLesson(moduleId, request);
 
                   if (result != null && context.mounted) {
                     Navigator.pop(context);
@@ -755,7 +752,7 @@ class _CourseContentBuilderScreenState
 
   void _showEditLessonDialog(CourseLesson lesson, String moduleId) {
     _lessonTitleController.text = lesson.title;
-    _lessonDescriptionController.text = lesson.description;
+    _lessonDescriptionController.text = lesson.description ?? '';
 
     showDialog(
       context: context,
@@ -800,10 +797,9 @@ class _CourseContentBuilderScreenState
             onPressed: () async {
               if (_lessonFormKey.currentState!.validate()) {
                 final request = LessonRequest(
-                  moduleId: moduleId,
                   title: _lessonTitleController.text,
                   description: _lessonDescriptionController.text,
-                  type: lesson.type,
+                  lessonType: lesson.lessonType,
                   orderIndex: lesson.orderIndex,
                   isMandatory: lesson.isMandatory,
                 );

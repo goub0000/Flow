@@ -149,7 +149,8 @@ class ModulesNotifier extends StateNotifier<ModulesState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      await _apiService.reorderModules(state.courseId!, orderData);
+      final reorderRequest = ModuleReorderRequest(moduleOrders: orderData);
+      await _apiService.reorderModules(state.courseId!, reorderRequest);
 
       // Refresh modules to get updated order
       await fetchModules();
@@ -171,7 +172,6 @@ class ModulesNotifier extends StateNotifier<ModulesState> {
 
   @override
   void dispose() {
-    _apiService.dispose();
     super.dispose();
   }
 }
@@ -241,12 +241,11 @@ class LessonsNotifier extends StateNotifier<LessonsState> {
   Future<CourseLesson?> createLesson(
     String moduleId,
     LessonRequest lessonData,
-    Map<String, dynamic>? content,
   ) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final lesson = await _apiService.createLesson(moduleId, lessonData, content);
+      final lesson = await _apiService.createLesson(moduleId, lessonData);
 
       final currentLessons = state.getLessonsForModule(moduleId);
       final updatedLessonsByModule = Map<String, List<CourseLesson>>.from(state.lessonsByModule);
@@ -334,7 +333,8 @@ class LessonsNotifier extends StateNotifier<LessonsState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      await _apiService.reorderLessons(moduleId, orderData);
+      final reorderRequest = LessonReorderRequest(lessonOrders: orderData);
+      await _apiService.reorderLessons(moduleId, reorderRequest);
 
       // Refresh lessons to get updated order
       await fetchModuleLessons(moduleId);
@@ -356,7 +356,6 @@ class LessonsNotifier extends StateNotifier<LessonsState> {
 
   @override
   void dispose() {
-    _apiService.dispose();
     super.dispose();
   }
 }
@@ -400,12 +399,46 @@ class ContentNotifier extends StateNotifier<ContentState> {
     _apiService = CourseContentApiService(accessToken: accessToken);
   }
 
-  /// Fetch lesson content
-  Future<void> fetchContent(String lessonId) async {
+  /// Fetch lesson content based on lesson type
+  Future<void> fetchContent(String lessonId, {LessonType? lessonType}) async {
     state = state.copyWith(isLoading: true, error: null, lessonId: lessonId);
 
     try {
-      final content = await _apiService.getLessonContent(lessonId);
+      dynamic content;
+
+      // If lesson type is provided, fetch specific content
+      if (lessonType != null) {
+        switch (lessonType) {
+          case LessonType.video:
+            content = await _apiService.getVideoContent(lessonId);
+            break;
+          case LessonType.text:
+            content = await _apiService.getTextContent(lessonId);
+            break;
+          case LessonType.quiz:
+            content = await _apiService.getQuizContent(lessonId);
+            break;
+          case LessonType.assignment:
+            content = await _apiService.getAssignmentContent(lessonId);
+            break;
+        }
+      } else {
+        // Try to fetch any type (fallback approach)
+        try {
+          content = await _apiService.getVideoContent(lessonId);
+        } catch (_) {
+          try {
+            content = await _apiService.getTextContent(lessonId);
+          } catch (_) {
+            try {
+              content = await _apiService.getQuizContent(lessonId);
+            } catch (_) {
+              content = await _apiService.getAssignmentContent(lessonId);
+            }
+          }
+        }
+      }
+
       state = state.copyWith(
         content: content,
         isLoading: false,
@@ -418,23 +451,47 @@ class ContentNotifier extends StateNotifier<ContentState> {
     }
   }
 
-  /// Update lesson content
-  Future<bool> updateContent(String lessonId, Map<String, dynamic> content) async {
-    state = state.copyWith(isLoading: true, error: null);
-
+  /// Fetch video content specifically
+  Future<void> fetchVideoContent(String lessonId) async {
+    state = state.copyWith(isLoading: true, error: null, lessonId: lessonId);
     try {
-      await _apiService.updateLessonContent(lessonId, content);
-
-      // Refresh content
-      await fetchContent(lessonId);
-
-      return true;
+      final content = await _apiService.getVideoContent(lessonId);
+      state = state.copyWith(content: content, isLoading: false);
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to update content: ${e.toString()}',
-        isLoading: false,
-      );
-      return false;
+      state = state.copyWith(error: 'Failed to fetch video content: ${e.toString()}', isLoading: false);
+    }
+  }
+
+  /// Fetch text content specifically
+  Future<void> fetchTextContent(String lessonId) async {
+    state = state.copyWith(isLoading: true, error: null, lessonId: lessonId);
+    try {
+      final content = await _apiService.getTextContent(lessonId);
+      state = state.copyWith(content: content, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(error: 'Failed to fetch text content: ${e.toString()}', isLoading: false);
+    }
+  }
+
+  /// Fetch quiz content specifically
+  Future<void> fetchQuizContent(String lessonId) async {
+    state = state.copyWith(isLoading: true, error: null, lessonId: lessonId);
+    try {
+      final content = await _apiService.getQuizContent(lessonId);
+      state = state.copyWith(content: content, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(error: 'Failed to fetch quiz content: ${e.toString()}', isLoading: false);
+    }
+  }
+
+  /// Fetch assignment content specifically
+  Future<void> fetchAssignmentContent(String lessonId) async {
+    state = state.copyWith(isLoading: true, error: null, lessonId: lessonId);
+    try {
+      final content = await _apiService.getAssignmentContent(lessonId);
+      state = state.copyWith(content: content, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(error: 'Failed to fetch assignment content: ${e.toString()}', isLoading: false);
     }
   }
 
@@ -445,7 +502,6 @@ class ContentNotifier extends StateNotifier<ContentState> {
 
   @override
   void dispose() {
-    _apiService.dispose();
     super.dispose();
   }
 }
@@ -479,18 +535,25 @@ class ProgressState {
 class ProgressNotifier extends StateNotifier<ProgressState> {
   final Ref _ref;
   late final CourseContentApiService _apiService;
+  String? _currentUserId;
 
   ProgressNotifier(this._ref) : super(const ProgressState()) {
     final accessToken = _ref.read(authProvider).accessToken;
+    _currentUserId = _ref.read(authProvider).user?.id;
     _apiService = CourseContentApiService(accessToken: accessToken);
   }
 
   /// Fetch course progress
   Future<void> fetchProgress(String courseId) async {
+    if (_currentUserId == null) {
+      state = state.copyWith(error: 'User not authenticated', isLoading: false);
+      return;
+    }
+
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final progress = await _apiService.getCourseProgress(courseId);
+      final progress = await _apiService.getCourseProgress(courseId, _currentUserId!);
       state = state.copyWith(
         progress: progress,
         isLoading: false,
@@ -505,10 +568,15 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
 
   /// Mark a lesson as complete
   Future<bool> markLessonComplete(String lessonId, String courseId) async {
+    if (_currentUserId == null) {
+      state = state.copyWith(error: 'User not authenticated', isLoading: false);
+      return false;
+    }
+
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      await _apiService.markLessonComplete(lessonId);
+      await _apiService.markLessonComplete(lessonId, _currentUserId!, 0);
 
       // Refresh progress
       await fetchProgress(courseId);
@@ -525,7 +593,6 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
 
   @override
   void dispose() {
-    _apiService.dispose();
     super.dispose();
   }
 }
