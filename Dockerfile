@@ -1,34 +1,12 @@
-# Multi-stage Dockerfile for Flutter Web using official Flutter image
-# Stage 1: Build Flutter web app
-FROM ghcr.io/cirruslabs/flutter:stable AS build-env
+# Dockerfile for Flutter Web (Pre-built)
+# Uses pre-built Flutter web files from build/web directory
 
-# Create app directory
-WORKDIR /app
-
-# Copy source code
-COPY pubspec.yaml pubspec.lock ./
-RUN flutter pub get
-
-COPY . .
-
-# Build arguments for environment variables
-ARG SUPABASE_URL
-ARG SUPABASE_ANON_KEY
-ARG API_BASE_URL
-
-# Build Flutter web app with environment variables
-RUN flutter build web --release \
-    --dart-define=SUPABASE_URL=${SUPABASE_URL} \
-    --dart-define=SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY} \
-    --dart-define=API_BASE_URL=${API_BASE_URL}
-
-# Stage 2: Serve the app with Node.js
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy built Flutter web files from build stage
-COPY --from=build-env /app/build/web /app/build/web
+# Copy pre-built Flutter web files
+COPY build/web /app/build/web
 
 # Copy server and dependencies
 COPY server.js package.json ./
