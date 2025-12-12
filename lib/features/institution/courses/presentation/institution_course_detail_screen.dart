@@ -116,6 +116,17 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: _ActionCard(
+                          icon: Icons.menu_book,
+                          title: 'Content',
+                          subtitle: 'Manage course content',
+                          onTap: () {
+                            context.push('/institution/courses/${course.id}/content', extra: course);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _ActionCard(
                           icon: Icons.security,
                           title: 'Permissions',
                           subtitle: 'Manage student access',
@@ -124,7 +135,11 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                           },
                         ),
                       ),
-                      const SizedBox(width: 12),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
                       Expanded(
                         child: _ActionCard(
                           icon: Icons.edit,
@@ -132,6 +147,17 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                           subtitle: 'Update course details',
                           onTap: () {
                             context.push('/institution/courses/${course.id}/edit', extra: course);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _ActionCard(
+                          icon: Icons.people,
+                          title: 'Enrollments',
+                          subtitle: 'View enrolled students',
+                          onTap: () {
+                            context.push('/institution/courses/${course.id}/enrollments', extra: course);
                           },
                         ),
                       ),
