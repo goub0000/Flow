@@ -8,7 +8,7 @@ from datetime import datetime
 import logging
 from fastapi import HTTPException, status
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase_admin
 
 logger = logging.getLogger(__name__)
 
@@ -23,10 +23,13 @@ class CourseContentService:
     - Lesson content (videos, texts, quizzes, assignments)
     - Quiz questions and options
     - Student progress tracking
+
+    Note: Uses admin client to bypass RLS policies for backend operations.
     """
 
     def __init__(self, db=None):
-        self.supabase = get_supabase()
+        # Use admin client to bypass RLS policies for backend operations
+        self.supabase = get_supabase_admin()
 
     # =========================================================================
     # MODULE OPERATIONS
@@ -35,11 +38,25 @@ class CourseContentService:
     def create_module(self, course_id: str, module_data) -> Dict[str, Any]:
         """Create a new course module"""
         try:
+            # If order_index is 0 (default), calculate the next available index
+            order_index = module_data.order_index
+            if order_index == 0:
+                # Get the maximum order_index for this course
+                existing_modules = self.supabase.table("course_modules")\
+                    .select("order_index")\
+                    .eq("course_id", course_id)\
+                    .order("order_index", desc=True)\
+                    .limit(1)\
+                    .execute()
+
+                if existing_modules.data:
+                    order_index = existing_modules.data[0]["order_index"] + 1
+
             data = {
                 "course_id": course_id,
                 "title": module_data.title,
                 "description": module_data.description,
-                "order_index": module_data.order_index,
+                "order_index": order_index,
                 "learning_objectives": module_data.learning_objectives or [],
                 "is_published": module_data.is_published
             }
@@ -54,9 +71,14 @@ class CourseContentService:
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Failed to create module"
                 )
+        except HTTPException:
+            raise
         except Exception as e:
             logger.error(f"Error creating module: {e}")
-            raise
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to create module: {str(e)}"
+            )
 
     def get_course_modules(self, course_id: str) -> List[Dict[str, Any]]:
         """Get all modules for a course, ordered by order_index"""

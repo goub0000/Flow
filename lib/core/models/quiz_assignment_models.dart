@@ -109,6 +109,7 @@ class QuizContentRequest {
   final bool? shuffleOptions;
   final bool? showCorrectAnswers;
   final bool? showFeedback;
+  final List<QuizQuestionRequest>? questions;
 
   QuizContentRequest({
     this.title,
@@ -120,6 +121,7 @@ class QuizContentRequest {
     this.shuffleOptions,
     this.showCorrectAnswers,
     this.showFeedback,
+    this.questions,
   });
 
   Map<String, dynamic> toJson() {
@@ -136,6 +138,9 @@ class QuizContentRequest {
       json['show_correct_answers'] = showCorrectAnswers;
     }
     if (showFeedback != null) json['show_feedback'] = showFeedback;
+    if (questions != null) {
+      json['questions'] = questions!.map((q) => q.toJson()).toList();
+    }
 
     return json;
   }
@@ -294,6 +299,7 @@ class QuizQuestionRequest {
   final String? explanation;
   final String? hint;
   final bool? isRequired;
+  final List<QuestionOptionRequest>? options;
 
   QuizQuestionRequest({
     required this.questionText,
@@ -305,7 +311,34 @@ class QuizQuestionRequest {
     this.explanation,
     this.hint,
     this.isRequired,
+    this.options,
   });
+
+  QuizQuestionRequest copyWith({
+    String? questionText,
+    QuestionType? questionType,
+    int? orderIndex,
+    int? points,
+    String? correctAnswer,
+    String? sampleAnswer,
+    String? explanation,
+    String? hint,
+    bool? isRequired,
+    List<QuestionOptionRequest>? options,
+  }) {
+    return QuizQuestionRequest(
+      questionText: questionText ?? this.questionText,
+      questionType: questionType ?? this.questionType,
+      orderIndex: orderIndex ?? this.orderIndex,
+      points: points ?? this.points,
+      correctAnswer: correctAnswer ?? this.correctAnswer,
+      sampleAnswer: sampleAnswer ?? this.sampleAnswer,
+      explanation: explanation ?? this.explanation,
+      hint: hint ?? this.hint,
+      isRequired: isRequired ?? this.isRequired,
+      options: options ?? this.options,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
@@ -391,6 +424,20 @@ class QuestionOptionRequest {
     this.isCorrect,
     this.feedback,
   });
+
+  QuestionOptionRequest copyWith({
+    String? optionText,
+    int? orderIndex,
+    bool? isCorrect,
+    String? feedback,
+  }) {
+    return QuestionOptionRequest(
+      optionText: optionText ?? this.optionText,
+      orderIndex: orderIndex ?? this.orderIndex,
+      isCorrect: isCorrect ?? this.isCorrect,
+      feedback: feedback ?? this.feedback,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
