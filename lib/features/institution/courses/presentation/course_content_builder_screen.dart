@@ -4,6 +4,7 @@ import '../../../../core/models/course_content_models.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../institution/providers/course_content_provider.dart';
 import 'lesson_editor_screen.dart';
+import '../widgets/advanced_module_editor.dart';
 
 class CourseContentBuilderScreen extends ConsumerStatefulWidget {
   final String courseId;
@@ -509,145 +510,71 @@ class _CourseContentBuilderScreenState
   }
 
   void _showAddModuleDialog() {
-    _moduleTitleController.clear();
-    _moduleDescriptionController.clear();
+    final modulesState = ref.read(courseModulesProvider(widget.courseId));
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Module'),
-        content: Form(
-          key: _moduleFormKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _moduleTitleController,
-                decoration: const InputDecoration(
-                  labelText: 'Module Title',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _moduleDescriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 3,
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_moduleFormKey.currentState!.validate()) {
-                final request = ModuleRequest(
-                  title: _moduleTitleController.text,
-                  description: _moduleDescriptionController.text,
-                  orderIndex: ref.read(courseModulesProvider(widget.courseId)).modules.length + 1,
-                  learningObjectives: [],
-                );
+      barrierDismissible: false,
+      builder: (context) => AdvancedModuleEditor(
+        allModules: modulesState.modules,
+        onSave: (request) async {
+          final orderIndex = modulesState.modules.length + 1;
+          final fullRequest = ModuleRequest(
+            title: request.title,
+            description: request.description,
+            orderIndex: orderIndex,
+            learningObjectives: request.learningObjectives,
+            isPublished: request.isPublished,
+          );
 
-                final result = await ref
-                    .read(courseModulesProvider(widget.courseId).notifier)
-                    .createModule(request);
+          final result = await ref
+              .read(courseModulesProvider(widget.courseId).notifier)
+              .createModule(fullRequest);
 
-                if (result != null && context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Module created successfully')),
-                  );
-                }
-              }
-            },
-            child: const Text('Create'),
-          ),
-        ],
+          if (result != null && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Module "${request.title}" created successfully'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        },
       ),
     );
   }
 
   void _showEditModuleDialog(CourseModule module) {
-    _moduleTitleController.text = module.title;
-    _moduleDescriptionController.text = module.description ?? '';
+    final modulesState = ref.read(courseModulesProvider(widget.courseId));
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Module'),
-        content: Form(
-          key: _moduleFormKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _moduleTitleController,
-                decoration: const InputDecoration(
-                  labelText: 'Module Title',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _moduleDescriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 3,
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_moduleFormKey.currentState!.validate()) {
-                final request = ModuleRequest(
-                  title: _moduleTitleController.text,
-                  description: _moduleDescriptionController.text,
-                  orderIndex: module.orderIndex,
-                  learningObjectives: module.learningObjectives,
-                );
+      barrierDismissible: false,
+      builder: (context) => AdvancedModuleEditor(
+        existingModule: module,
+        allModules: modulesState.modules,
+        onSave: (request) async {
+          final fullRequest = ModuleRequest(
+            title: request.title,
+            description: request.description,
+            orderIndex: module.orderIndex,
+            learningObjectives: request.learningObjectives,
+            isPublished: request.isPublished,
+          );
 
-                final result = await ref
-                    .read(courseModulesProvider(widget.courseId).notifier)
-                    .updateModule(module.id, request);
+          final result = await ref
+              .read(courseModulesProvider(widget.courseId).notifier)
+              .updateModule(module.id, fullRequest);
 
-                if (result != null && context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Module updated successfully')),
-                  );
-                }
-              }
-            },
-            child: const Text('Update'),
-          ),
-        ],
+          if (result != null && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Module "${request.title}" updated successfully'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        },
       ),
     );
   }

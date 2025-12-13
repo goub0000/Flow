@@ -25,19 +25,23 @@ class LessonEditorScreen extends ConsumerStatefulWidget {
   ConsumerState<LessonEditorScreen> createState() => _LessonEditorScreenState();
 }
 
-class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen> {
+class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
+    with SingleTickerProviderStateMixin {
   final _basicInfoFormKey = GlobalKey<FormState>();
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
+  late TabController _tabController;
   late int _durationMinutes;
   late bool _isMandatory;
   late bool _isPublished;
 
   bool _isSaving = false;
+  bool _hasUnsavedChanges = false;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _titleController = TextEditingController(text: widget.lesson.title);
     _descriptionController = TextEditingController(text: widget.lesson.description ?? '');
     _durationMinutes = widget.lesson.durationMinutes;
@@ -47,6 +51,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _titleController.dispose();
     _descriptionController.dispose();
     super.dispose();
