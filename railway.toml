@@ -1,5 +1,6 @@
 # Railway Configuration File - Flutter Web Frontend
 # https://docs.railway.app/deploy/config-as-code
+# Last updated: 2025-12-12 - College-grade content editors deployment
 
 [build]
 builder = "DOCKERFILE"
