@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/course_content_models.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../institution/providers/course_content_provider.dart';
+import 'lesson_editor_screen.dart';
 
 class CourseContentBuilderScreen extends ConsumerStatefulWidget {
   final String courseId;
@@ -382,6 +383,7 @@ class _CourseContentBuilderScreenState
       margin: const EdgeInsets.only(bottom: 8),
       elevation: 1,
       child: ListTile(
+        onTap: () => _showEditLessonDialog(lesson, moduleId),
         leading: CircleAvatar(
           backgroundColor: _getLessonTypeColor(lesson.lessonType),
           child: Icon(
@@ -750,77 +752,23 @@ class _CourseContentBuilderScreenState
     );
   }
 
-  void _showEditLessonDialog(CourseLesson lesson, String moduleId) {
-    _lessonTitleController.text = lesson.title;
-    _lessonDescriptionController.text = lesson.description ?? '';
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Lesson'),
-        content: Form(
-          key: _lessonFormKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _lessonTitleController,
-                decoration: const InputDecoration(
-                  labelText: 'Lesson Title',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _lessonDescriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 3,
-              ),
-            ],
-          ),
+  Future<void> _showEditLessonDialog(CourseLesson lesson, String moduleId) async {
+    // Navigate to the lesson editor screen with the college-grade content editors
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LessonEditorScreen(
+          lessonId: lesson.id,
+          moduleId: moduleId,
+          lesson: lesson,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_lessonFormKey.currentState!.validate()) {
-                final request = LessonRequest(
-                  title: _lessonTitleController.text,
-                  description: _lessonDescriptionController.text,
-                  lessonType: lesson.lessonType,
-                  orderIndex: lesson.orderIndex,
-                  isMandatory: lesson.isMandatory,
-                );
-
-                final result = await ref
-                    .read(lessonsProvider.notifier)
-                    .updateLesson(lesson.id, moduleId, request);
-
-                if (result != null && context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Lesson updated successfully')),
-                  );
-                }
-              }
-            },
-            child: const Text('Update'),
-          ),
-        ],
       ),
     );
+
+    // Refresh lessons if changes were made
+    if (result == true) {
+      ref.read(lessonsProvider.notifier).fetchModuleLessons(moduleId);
+    }
   }
 
   Future<void> _deleteModule(String moduleId) async {

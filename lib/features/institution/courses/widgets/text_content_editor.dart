@@ -504,7 +504,7 @@ class _TextContentEditorState extends State<TextContentEditor>
                                 _buildMarkdownIconButton(Icons.link, '[', '](url)', 'Link'),
                                 _buildMarkdownIconButton(Icons.image, '![alt](', ')', 'Image'),
                                 _buildMarkdownIconButton(Icons.code, '`', '`', 'Inline Code'),
-                                _buildMarkdownButton('```', '\n```\n', '\n```\n', 'Code Block'),
+                                _buildMarkdownButton('```', '\n```\n', 'Code Block'),
                                 const VerticalDivider(width: 16),
                                 _buildMarkdownIconButton(Icons.table_chart, '\n| Header | Header |\n|--------|--------|\n| Cell   | Cell   |', '', 'Table'),
                               ],
