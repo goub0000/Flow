@@ -132,9 +132,9 @@ app = FastAPI(
     - Metrics: `/metrics` (Prometheus)
 
     ---
-    **Version**: 1.2.0 | **Environment**: Production | **Last Updated**: November 2025
+    **Version**: 1.2.2 | **Environment**: Production | **Last Updated**: December 2025
     """,
-    version="1.2.0",
+    version="1.2.2",
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
