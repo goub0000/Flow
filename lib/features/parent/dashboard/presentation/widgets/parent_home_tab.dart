@@ -558,24 +558,24 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      color: color.withValues(alpha: 0.18),
+      color: color,
       child: Column(
         children: [
-          Icon(icon, color: color, size: 32),
+          Icon(icon, color: Colors.white, size: 32),
           const SizedBox(height: 8),
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: color,
+                  color: Colors.white,
                 ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w500,
+                  color: Colors.white.withValues(alpha: 0.9),
+                  fontWeight: FontWeight.w600,
                 ),
           ),
         ],
