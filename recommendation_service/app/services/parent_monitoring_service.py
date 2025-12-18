@@ -289,8 +289,8 @@ class ParentMonitoringService:
             await self.verify_parent_access(parent_id, internal_student_id)
 
             # Get student info (using user_id for users table)
-            student = self.db.table('users').select('full_name').eq('id', student_id).single().execute()
-            student_name = student.data.get('full_name', 'Student') if student.data else 'Student'
+            student = self.db.table('users').select('display_name').eq('id', student_id).single().execute()
+            student_name = student.data.get('display_name', 'Student') if student.data else 'Student'
 
             report = ProgressReportResponse(
                 student_id=student_id,
@@ -359,8 +359,8 @@ class ParentMonitoringService:
 
                     # Session summaries
                     for session in sessions.data[:10]:  # Last 10 sessions
-                        counselor = self.db.table('users').select('full_name').eq('id', session['counselor_id']).single().execute()
-                        counselor_name = counselor.data.get('full_name', 'Unknown') if counselor.data else 'Unknown'
+                        counselor = self.db.table('users').select('display_name').eq('id', session['counselor_id']).single().execute()
+                        counselor_name = counselor.data.get('display_name', 'Unknown') if counselor.data else 'Unknown'
 
                         report.counseling_sessions.append(CounselingSessionSummary(
                             session_id=session['id'],
@@ -434,8 +434,8 @@ class ParentMonitoringService:
                 student_id = link.student_id
 
                 # Get student info
-                student = self.db.table('users').select('full_name').eq('id', student_id).single().execute()
-                student_name = student.data.get('full_name', 'Student') if student.data else 'Student'
+                student = self.db.table('users').select('display_name').eq('id', student_id).single().execute()
+                student_name = student.data.get('display_name', 'Student') if student.data else 'Student'
 
                 stats = ParentDashboardStats(
                     student_id=student_id,
@@ -641,7 +641,7 @@ class ParentMonitoringService:
             return ChildResponse(
                 id=student_id,
                 parentId=parent_id,
-                name=user_data.get('full_name', user_data.get('email', 'Unknown')),
+                name=user_data.get('display_name', user_data.get('email', 'Unknown')),
                 email=user_data.get('email', ''),
                 dateOfBirth=profile_data.get('date_of_birth', '2005-01-01'),
                 photoUrl=user_data.get('avatar_url'),
@@ -748,8 +748,8 @@ class ParentMonitoringService:
     ) -> LinkByEmailResponse:
         """Create parent-student link by student's email address"""
         try:
-            # Find student by email
-            student = self.db.table('users').select('id, display_name, full_name, roles, available_roles').eq(
+            # Find student by email - only select columns that exist in users table
+            student = self.db.table('users').select('id, display_name, email, roles, available_roles, active_role').eq(
                 'email', request.student_email.lower().strip()
             ).single().execute()
 
@@ -761,14 +761,15 @@ class ParentMonitoringService:
 
             # Check if user is a student
             roles = student.data.get('roles', []) or student.data.get('available_roles', []) or []
-            if 'student' not in roles:
+            active_role = student.data.get('active_role', '')
+            if 'student' not in roles and active_role != 'student':
                 return LinkByEmailResponse(
                     success=False,
                     message="The user with this email is not registered as a student"
                 )
 
             student_id = student.data['id']
-            student_name = student.data.get('display_name') or student.data.get('full_name') or 'Student'
+            student_name = student.data.get('display_name') or 'Student'
 
             # Check if link already exists
             existing = self.db.table('parent_student_links').select('*').eq(
@@ -966,11 +967,11 @@ class ParentMonitoringService:
             student_id = code_data['student_id']
 
             # Get student info
-            student = self.db.table('users').select('display_name, full_name, email').eq('id', student_id).single().execute()
+            student = self.db.table('users').select('display_name, email').eq('id', student_id).single().execute()
             student_name = 'Student'
             student_email = ''
             if student.data:
-                student_name = student.data.get('display_name') or student.data.get('full_name') or 'Student'
+                student_name = student.data.get('display_name') or 'Student'
                 student_email = student.data.get('email', '')
 
             # Check if link already exists
@@ -1045,14 +1046,14 @@ class ParentMonitoringService:
             if links.data:
                 for link in links.data:
                     # Get parent info
-                    parent = self.db.table('users').select('display_name, full_name, email').eq(
+                    parent = self.db.table('users').select('display_name, email').eq(
                         'id', link['parent_id']
                     ).single().execute()
 
                     parent_name = 'Parent'
                     parent_email = ''
                     if parent.data:
-                        parent_name = parent.data.get('display_name') or parent.data.get('full_name') or 'Parent'
+                        parent_name = parent.data.get('display_name') or 'Parent'
                         parent_email = parent.data.get('email', '')
 
                     pending_links.append(PendingLinkResponse(
