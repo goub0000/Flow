@@ -557,20 +557,17 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use higher opacity for better visibility and accessibility
-    // 0.15 provides good color visibility while maintaining readability
     return CustomCard(
-      color: color.withValues(alpha: 0.15),
+      color: color.withValues(alpha: 0.18),
       child: Column(
         children: [
-          // Darker icon for better contrast
-          Icon(icon, color: _getDarkerColor(color), size: 32),
+          Icon(icon, color: color, size: 32),
           const SizedBox(height: 8),
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: _getDarkerColor(color),
+                  color: color,
                 ),
           ),
           const SizedBox(height: 4),
@@ -584,12 +581,6 @@ class _StatCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  // Get darker shade for better contrast on light backgrounds
-  Color _getDarkerColor(Color color) {
-    final hsl = HSLColor.fromColor(color);
-    return hsl.withLightness((hsl.lightness * 0.7).clamp(0.0, 1.0)).toColor();
   }
 }
 
