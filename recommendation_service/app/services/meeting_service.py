@@ -639,7 +639,8 @@ class MeetingService:
         Get list of available teachers and counselors
         """
         try:
-            query = self.db.table('users').select('id, display_name, email, active_role, photo_url, bio')
+            # Query users table - only select columns that exist
+            query = self.db.table('users').select('id, display_name, email, active_role')
 
             if role:
                 if role not in ['teacher', 'counselor']:
@@ -648,14 +649,26 @@ class MeetingService:
             else:
                 query = query.in_('active_role', ['teacher', 'counselor'])
 
-            query = query.eq('is_active', True).order('display_name')
+            # Order by display_name (removed is_active filter as column doesn't exist)
+            query = query.order('display_name')
 
             response = query.execute()
 
             if not response.data:
                 return []
 
-            return [StaffListItem(**staff) for staff in response.data]
+            # Map to StaffListItem with default values for optional fields
+            staff_list = []
+            for staff in response.data:
+                staff_list.append(StaffListItem(
+                    id=staff['id'],
+                    display_name=staff.get('display_name', 'Unknown'),
+                    email=staff.get('email', ''),
+                    active_role=staff.get('active_role', 'teacher'),
+                    photo_url=None,
+                    bio=None
+                ))
+            return staff_list
 
         except Exception as e:
             logger.error(f"Error getting staff list: {e}")
