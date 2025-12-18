@@ -350,3 +350,88 @@ class AddChildRequest(BaseModel):
     """Request model for adding a child"""
     student_id: str
     relationship: str = "parent"
+
+
+# Email-based Linking Models
+class LinkByEmailRequest(BaseModel):
+    """Request model for creating parent-student link by email"""
+    student_email: str = Field(..., description="Student's email address")
+    relationship: str = Field("parent", max_length=50)  # e.g., "father", "mother", "guardian"
+    can_view_grades: bool = True
+    can_view_activity: bool = True
+    can_view_messages: bool = False  # Privacy setting
+    can_receive_alerts: bool = True
+
+
+class LinkByEmailResponse(BaseModel):
+    """Response model for email-based link request"""
+    success: bool
+    message: str
+    link_id: Optional[str] = None
+    student_name: Optional[str] = None
+    status: str = "pending"
+
+
+# Invite Code Models
+class InviteCodeCreateRequest(BaseModel):
+    """Request model for generating invite code"""
+    expires_in_days: int = Field(7, ge=1, le=30, description="Days until code expires")
+    max_uses: int = Field(1, ge=1, le=5, description="Maximum number of times code can be used")
+
+
+class InviteCodeResponse(BaseModel):
+    """Response model for invite code"""
+    id: str
+    code: str
+    student_id: str
+    expires_at: str
+    max_uses: int
+    uses_remaining: int
+    is_active: bool
+    created_at: str
+
+    class Config:
+        from_attributes = True
+
+
+class InviteCodeListResponse(BaseModel):
+    """Response model for invite code list"""
+    codes: List[InviteCodeResponse]
+    total: int
+
+
+class UseInviteCodeRequest(BaseModel):
+    """Request model for parent using invite code"""
+    code: str = Field(..., min_length=6, max_length=12, description="Invite code from student")
+    relationship: str = Field("parent", max_length=50)
+
+
+class UseInviteCodeResponse(BaseModel):
+    """Response model for using invite code"""
+    success: bool
+    message: str
+    link_id: Optional[str] = None
+    student_name: Optional[str] = None
+    student_email: Optional[str] = None
+    status: str = "pending"
+
+
+# Pending Links for Student View
+class PendingLinkResponse(BaseModel):
+    """Response model for pending link (student view)"""
+    id: str
+    parent_id: str
+    parent_name: str
+    parent_email: str
+    relationship: str
+    requested_permissions: Dict[str, bool]
+    created_at: str
+
+    class Config:
+        from_attributes = True
+
+
+class PendingLinksListResponse(BaseModel):
+    """Response model for pending links list"""
+    links: List[PendingLinkResponse]
+    total: int

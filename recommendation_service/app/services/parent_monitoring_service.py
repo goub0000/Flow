@@ -5,6 +5,8 @@ Business logic for parent monitoring and student activity tracking
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
 import logging
+import secrets
+import string
 from uuid import uuid4
 
 from app.database.config import get_supabase
@@ -29,7 +31,16 @@ from app.schemas.parent_monitoring import (
     LinkStatus,
     ChildResponse,
     ChildApplicationResponse,
-    ChildEnrollmentResponse
+    ChildEnrollmentResponse,
+    LinkByEmailRequest,
+    LinkByEmailResponse,
+    InviteCodeCreateRequest,
+    InviteCodeResponse,
+    InviteCodeListResponse,
+    UseInviteCodeRequest,
+    UseInviteCodeResponse,
+    PendingLinkResponse,
+    PendingLinksListResponse
 )
 
 logger = logging.getLogger(__name__)
@@ -727,3 +738,369 @@ class ParentMonitoringService:
         except Exception as e:
             logger.error(f"Get child applications error: {e}")
             raise Exception(f"Failed to get applications: {str(e)}")
+
+    # ==================== Email-Based Linking ====================
+
+    async def create_link_by_email(
+        self,
+        parent_id: str,
+        request: LinkByEmailRequest
+    ) -> LinkByEmailResponse:
+        """Create parent-student link by student's email address"""
+        try:
+            # Find student by email
+            student = self.db.table('users').select('id, display_name, full_name, roles, available_roles').eq(
+                'email', request.student_email.lower().strip()
+            ).single().execute()
+
+            if not student.data:
+                return LinkByEmailResponse(
+                    success=False,
+                    message=f"No student found with email: {request.student_email}"
+                )
+
+            # Check if user is a student
+            roles = student.data.get('roles', []) or student.data.get('available_roles', []) or []
+            if 'student' not in roles:
+                return LinkByEmailResponse(
+                    success=False,
+                    message="The user with this email is not registered as a student"
+                )
+
+            student_id = student.data['id']
+            student_name = student.data.get('display_name') or student.data.get('full_name') or 'Student'
+
+            # Check if link already exists
+            existing = self.db.table('parent_student_links').select('*').eq(
+                'parent_id', parent_id
+            ).eq('student_id', student_id).execute()
+
+            if existing.data:
+                existing_link = existing.data[0]
+                status = existing_link.get('status', 'unknown')
+                if status == 'active':
+                    return LinkByEmailResponse(
+                        success=False,
+                        message=f"You are already linked with {student_name}"
+                    )
+                elif status == 'pending':
+                    return LinkByEmailResponse(
+                        success=False,
+                        message=f"A link request to {student_name} is already pending approval"
+                    )
+                elif status == 'declined':
+                    # Delete the old declined link and allow new request
+                    self.db.table('parent_student_links').delete().eq('id', existing_link['id']).execute()
+
+            # Create the link request
+            link_request = ParentStudentLinkCreateRequest(
+                student_id=student_id,
+                relationship=request.relationship,
+                can_view_grades=request.can_view_grades,
+                can_view_activity=request.can_view_activity,
+                can_view_messages=request.can_view_messages,
+                can_receive_alerts=request.can_receive_alerts
+            )
+
+            link = await self.create_parent_link(parent_id, link_request)
+
+            logger.info(f"Link request created by email: parent={parent_id}, student={student_id}")
+
+            return LinkByEmailResponse(
+                success=True,
+                message=f"Link request sent to {student_name}. Awaiting their approval.",
+                link_id=link.id,
+                student_name=student_name,
+                status="pending"
+            )
+
+        except Exception as e:
+            logger.error(f"Create link by email error: {e}")
+            return LinkByEmailResponse(
+                success=False,
+                message=f"Failed to create link request: {str(e)}"
+            )
+
+    # ==================== Invite Code System ====================
+
+    def _generate_invite_code(self) -> str:
+        """Generate a random 8-character invite code (excludes confusing characters)"""
+        # Exclude 0, O, 1, I, l to avoid confusion
+        chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+        return ''.join(secrets.choice(chars) for _ in range(8))
+
+    async def create_invite_code(
+        self,
+        student_id: str,
+        request: InviteCodeCreateRequest
+    ) -> InviteCodeResponse:
+        """Student generates an invite code for their parent"""
+        try:
+            # Generate unique code
+            code = self._generate_invite_code()
+
+            # Ensure uniqueness
+            attempts = 0
+            while attempts < 5:
+                existing = self.db.table('student_invite_codes').select('id').eq('code', code).execute()
+                if not existing.data:
+                    break
+                code = self._generate_invite_code()
+                attempts += 1
+
+            expires_at = datetime.utcnow() + timedelta(days=request.expires_in_days)
+
+            invite = {
+                "id": str(uuid4()),
+                "code": code,
+                "student_id": student_id,
+                "expires_at": expires_at.isoformat(),
+                "max_uses": request.max_uses,
+                "uses_remaining": request.max_uses,
+                "is_active": True,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            response = self.db.table('student_invite_codes').insert(invite).execute()
+
+            if not response.data:
+                raise Exception("Failed to create invite code")
+
+            logger.info(f"Invite code created: {code} for student {student_id}")
+
+            return InviteCodeResponse(**response.data[0])
+
+        except Exception as e:
+            logger.error(f"Create invite code error: {e}")
+            raise Exception(f"Failed to create invite code: {str(e)}")
+
+    async def list_invite_codes(self, student_id: str) -> InviteCodeListResponse:
+        """List all invite codes for a student"""
+        try:
+            response = self.db.table('student_invite_codes').select('*').eq(
+                'student_id', student_id
+            ).order('created_at', desc=True).execute()
+
+            codes = []
+            if response.data:
+                for code_data in response.data:
+                    # Check if expired
+                    expires_at = datetime.fromisoformat(code_data['expires_at'].replace('Z', '+00:00'))
+                    is_active = code_data['is_active'] and expires_at > datetime.utcnow() and code_data['uses_remaining'] > 0
+                    code_data['is_active'] = is_active
+                    codes.append(InviteCodeResponse(**code_data))
+
+            return InviteCodeListResponse(codes=codes, total=len(codes))
+
+        except Exception as e:
+            logger.error(f"List invite codes error: {e}")
+            raise Exception(f"Failed to list invite codes: {str(e)}")
+
+    async def delete_invite_code(self, student_id: str, code_id: str) -> Dict[str, Any]:
+        """Delete/deactivate an invite code"""
+        try:
+            # Verify ownership
+            code = self.db.table('student_invite_codes').select('*').eq('id', code_id).single().execute()
+
+            if not code.data:
+                raise Exception("Invite code not found")
+
+            if code.data['student_id'] != student_id:
+                raise Exception("Not authorized to delete this code")
+
+            # Deactivate the code
+            self.db.table('student_invite_codes').update({
+                'is_active': False,
+                'updated_at': datetime.utcnow().isoformat()
+            }).eq('id', code_id).execute()
+
+            logger.info(f"Invite code deactivated: {code_id}")
+
+            return {"success": True, "message": "Invite code deleted"}
+
+        except Exception as e:
+            logger.error(f"Delete invite code error: {e}")
+            raise Exception(f"Failed to delete invite code: {str(e)}")
+
+    async def use_invite_code(
+        self,
+        parent_id: str,
+        request: UseInviteCodeRequest
+    ) -> UseInviteCodeResponse:
+        """Parent uses an invite code to link with student"""
+        try:
+            code_str = request.code.upper().strip()
+
+            # Find the code
+            code = self.db.table('student_invite_codes').select('*').eq('code', code_str).single().execute()
+
+            if not code.data:
+                return UseInviteCodeResponse(
+                    success=False,
+                    message="Invalid invite code"
+                )
+
+            code_data = code.data
+
+            # Check if code is valid
+            if not code_data['is_active']:
+                return UseInviteCodeResponse(
+                    success=False,
+                    message="This invite code has been deactivated"
+                )
+
+            expires_at = datetime.fromisoformat(code_data['expires_at'].replace('Z', '+00:00'))
+            if expires_at < datetime.utcnow():
+                return UseInviteCodeResponse(
+                    success=False,
+                    message="This invite code has expired"
+                )
+
+            if code_data['uses_remaining'] <= 0:
+                return UseInviteCodeResponse(
+                    success=False,
+                    message="This invite code has been used up"
+                )
+
+            student_id = code_data['student_id']
+
+            # Get student info
+            student = self.db.table('users').select('display_name, full_name, email').eq('id', student_id).single().execute()
+            student_name = 'Student'
+            student_email = ''
+            if student.data:
+                student_name = student.data.get('display_name') or student.data.get('full_name') or 'Student'
+                student_email = student.data.get('email', '')
+
+            # Check if link already exists
+            existing = self.db.table('parent_student_links').select('*').eq(
+                'parent_id', parent_id
+            ).eq('student_id', student_id).execute()
+
+            if existing.data:
+                existing_link = existing.data[0]
+                status = existing_link.get('status', 'unknown')
+                if status == 'active':
+                    return UseInviteCodeResponse(
+                        success=False,
+                        message=f"You are already linked with {student_name}"
+                    )
+                elif status == 'pending':
+                    return UseInviteCodeResponse(
+                        success=False,
+                        message=f"A link request to {student_name} is already pending"
+                    )
+                elif status in ['declined', 'revoked']:
+                    # Delete old link and create new one
+                    self.db.table('parent_student_links').delete().eq('id', existing_link['id']).execute()
+
+            # Create the link (with pending status for approval)
+            link_request = ParentStudentLinkCreateRequest(
+                student_id=student_id,
+                relationship=request.relationship,
+                can_view_grades=True,
+                can_view_activity=True,
+                can_view_messages=False,
+                can_receive_alerts=True
+            )
+
+            link = await self.create_parent_link(parent_id, link_request)
+
+            # Decrement uses remaining
+            self.db.table('student_invite_codes').update({
+                'uses_remaining': code_data['uses_remaining'] - 1,
+                'updated_at': datetime.utcnow().isoformat()
+            }).eq('id', code_data['id']).execute()
+
+            logger.info(f"Invite code used: {code_str} by parent {parent_id} for student {student_id}")
+
+            return UseInviteCodeResponse(
+                success=True,
+                message=f"Link request sent to {student_name}. Awaiting their approval.",
+                link_id=link.id,
+                student_name=student_name,
+                student_email=student_email,
+                status="pending"
+            )
+
+        except Exception as e:
+            logger.error(f"Use invite code error: {e}")
+            return UseInviteCodeResponse(
+                success=False,
+                message=f"Failed to use invite code: {str(e)}"
+            )
+
+    # ==================== Pending Links for Students ====================
+
+    async def get_pending_links_for_student(self, student_id: str) -> PendingLinksListResponse:
+        """Get all pending link requests for a student to approve/decline"""
+        try:
+            # Get pending links
+            links = self.db.table('parent_student_links').select('*').eq(
+                'student_id', student_id
+            ).eq('status', LinkStatus.PENDING.value).execute()
+
+            pending_links = []
+            if links.data:
+                for link in links.data:
+                    # Get parent info
+                    parent = self.db.table('users').select('display_name, full_name, email').eq(
+                        'id', link['parent_id']
+                    ).single().execute()
+
+                    parent_name = 'Parent'
+                    parent_email = ''
+                    if parent.data:
+                        parent_name = parent.data.get('display_name') or parent.data.get('full_name') or 'Parent'
+                        parent_email = parent.data.get('email', '')
+
+                    pending_links.append(PendingLinkResponse(
+                        id=link['id'],
+                        parent_id=link['parent_id'],
+                        parent_name=parent_name,
+                        parent_email=parent_email,
+                        relationship=link['relationship'],
+                        requested_permissions={
+                            "can_view_grades": link['can_view_grades'],
+                            "can_view_activity": link['can_view_activity'],
+                            "can_view_messages": link['can_view_messages'],
+                            "can_receive_alerts": link['can_receive_alerts']
+                        },
+                        created_at=link['created_at']
+                    ))
+
+            return PendingLinksListResponse(links=pending_links, total=len(pending_links))
+
+        except Exception as e:
+            logger.error(f"Get pending links error: {e}")
+            raise Exception(f"Failed to get pending links: {str(e)}")
+
+    async def decline_parent_link(self, link_id: str, student_id: str) -> Dict[str, Any]:
+        """Student declines a parent link request"""
+        try:
+            link = self.db.table('parent_student_links').select('*').eq('id', link_id).single().execute()
+
+            if not link.data:
+                raise Exception("Link not found")
+
+            if link.data['student_id'] != student_id:
+                raise Exception("Not authorized")
+
+            if link.data['status'] != LinkStatus.PENDING.value:
+                raise Exception(f"Cannot decline link with status: {link.data['status']}")
+
+            update = {
+                "status": LinkStatus.DECLINED.value,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            self.db.table('parent_student_links').update(update).eq('id', link_id).execute()
+
+            logger.info(f"Parent link declined: {link_id}")
+
+            return {"success": True, "message": "Link request declined"}
+
+        except Exception as e:
+            logger.error(f"Decline link error: {e}")
+            raise Exception(f"Failed to decline link: {str(e)}")

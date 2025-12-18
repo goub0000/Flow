@@ -8,6 +8,7 @@ import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 import '../../providers/parent_children_provider.dart';
+import 'add_child_dialog.dart';
 
 class ChildrenListScreen extends ConsumerWidget {
   const ChildrenListScreen({super.key});
@@ -43,34 +44,60 @@ class ChildrenListScreen extends ConsumerWidget {
     }
 
     if (children.isEmpty) {
-      return const EmptyState(
+      return EmptyState(
         icon: Icons.people_outline,
         title: 'No Children',
         message: 'Add your children to monitor their progress',
         actionLabel: 'Add Child',
+        onAction: () async {
+          final result = await showAddChildDialog(context);
+          if (result == true) {
+            ref.read(parentChildrenProvider.notifier).fetchChildren();
+          }
+        },
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        await ref.read(parentChildrenProvider.notifier).fetchChildren();
-      },
-      child: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: children.length,
-        itemBuilder: (context, index) {
-          final child = children[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: _ChildCard(
-              child: child,
-              onTap: () {
-                context.go('/parent/children/${child.id}');
-              },
-            ),
-          );
-        },
-      ),
+    return Stack(
+      children: [
+        RefreshIndicator(
+          onRefresh: () async {
+            await ref.read(parentChildrenProvider.notifier).fetchChildren();
+          },
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: children.length,
+            itemBuilder: (context, index) {
+              final child = children[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _ChildCard(
+                  child: child,
+                  onTap: () {
+                    context.go('/parent/children/${child.id}');
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+        Positioned(
+          right: 16,
+          bottom: 16,
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              final result = await showAddChildDialog(context);
+              if (result == true) {
+                ref.read(parentChildrenProvider.notifier).fetchChildren();
+              }
+            },
+            icon: const Icon(Icons.person_add),
+            label: const Text('Add Child'),
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -18,7 +18,15 @@ from app.schemas.parent_monitoring import (
     ChildResponse,
     ChildApplicationResponse,
     ChildEnrollmentResponse,
-    AddChildRequest
+    AddChildRequest,
+    LinkByEmailRequest,
+    LinkByEmailResponse,
+    InviteCodeCreateRequest,
+    InviteCodeResponse,
+    InviteCodeListResponse,
+    UseInviteCodeRequest,
+    UseInviteCodeResponse,
+    PendingLinksListResponse
 )
 from app.utils.security import get_current_user, RoleChecker, UserRole, CurrentUser
 
@@ -416,5 +424,201 @@ async def get_child_applications(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e)
+        )
+
+
+# ==================== Email-Based Linking Endpoints ====================
+
+@router.post("/parent/links/by-email", status_code=status.HTTP_201_CREATED)
+async def create_link_by_email(
+    request: LinkByEmailRequest,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+) -> LinkByEmailResponse:
+    """
+    Create parent-student link by student's email address
+
+    **Requires:** Parent authentication
+
+    **Request Body:**
+    - student_email: Student's email address
+    - relationship: Relationship type (default: "parent")
+    - can_view_grades: Permission to view grades (default: true)
+    - can_view_activity: Permission to view activity (default: true)
+    - can_view_messages: Permission to view messages (default: false)
+    - can_receive_alerts: Permission to receive alerts (default: true)
+
+    **Returns:**
+    - Success status and link details if student found
+    - Error message if student not found or already linked
+
+    **Note:** Creates a PENDING link request that the student must approve
+    """
+    service = ParentMonitoringService()
+    result = await service.create_link_by_email(current_user.id, request)
+    return result
+
+
+# ==================== Invite Code Endpoints (Student) ====================
+
+@router.post("/student/invite-codes", status_code=status.HTTP_201_CREATED)
+async def create_invite_code(
+    request: InviteCodeCreateRequest,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.STUDENT]))
+) -> InviteCodeResponse:
+    """
+    Generate an invite code for parent linking (Student only)
+
+    **Requires:** Student authentication
+
+    **Request Body:**
+    - expires_in_days: Days until code expires (1-30, default: 7)
+    - max_uses: Maximum uses allowed (1-5, default: 1)
+
+    **Returns:**
+    - Generated invite code with expiration info
+
+    **Note:** Share this code with your parent so they can link their account
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.create_invite_code(current_user.id, request)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/student/invite-codes")
+async def list_invite_codes(
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.STUDENT]))
+) -> InviteCodeListResponse:
+    """
+    List all invite codes for current student
+
+    **Requires:** Student authentication
+
+    **Returns:**
+    - List of all invite codes (active and expired)
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.list_invite_codes(current_user.id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.delete("/student/invite-codes/{code_id}")
+async def delete_invite_code(
+    code_id: str,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.STUDENT]))
+):
+    """
+    Delete/deactivate an invite code
+
+    **Requires:** Student authentication (owner of code)
+
+    **Path Parameters:**
+    - code_id: Invite code ID
+
+    **Returns:**
+    - Success status
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.delete_invite_code(current_user.id, code_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+# ==================== Use Invite Code (Parent) ====================
+
+@router.post("/parent/links/use-code")
+async def use_invite_code(
+    request: UseInviteCodeRequest,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+) -> UseInviteCodeResponse:
+    """
+    Use an invite code to link with student (Parent only)
+
+    **Requires:** Parent authentication
+
+    **Request Body:**
+    - code: The 8-character invite code from student
+    - relationship: Relationship type (default: "parent")
+
+    **Returns:**
+    - Success status and student info if code valid
+    - Error message if code invalid, expired, or already used
+
+    **Note:** Creates a PENDING link request that the student must approve
+    """
+    service = ParentMonitoringService()
+    result = await service.use_invite_code(current_user.id, request)
+    return result
+
+
+# ==================== Pending Links (Student View) ====================
+
+@router.get("/student/pending-links")
+async def get_pending_links(
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.STUDENT]))
+) -> PendingLinksListResponse:
+    """
+    Get all pending parent link requests (Student only)
+
+    **Requires:** Student authentication
+
+    **Returns:**
+    - List of pending link requests with parent info and requested permissions
+
+    **Note:** Use this to review and approve/decline parent link requests
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.get_pending_links_for_student(current_user.id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/student/links/{link_id}/decline")
+async def decline_parent_link(
+    link_id: str,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.STUDENT]))
+):
+    """
+    Decline a parent link request (Student only)
+
+    **Requires:** Student authentication
+
+    **Path Parameters:**
+    - link_id: Link ID to decline
+
+    **Returns:**
+    - Success status
+
+    **Note:** The parent will be notified that the request was declined
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.decline_parent_link(link_id, current_user.id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )

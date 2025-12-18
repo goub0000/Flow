@@ -4,6 +4,21 @@ import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart';
 
+/// Result class for link operations
+class LinkResult {
+  final bool success;
+  final String message;
+  final String? studentName;
+  final String? studentEmail;
+
+  const LinkResult({
+    required this.success,
+    required this.message,
+    this.studentName,
+    this.studentEmail,
+  });
+}
+
 /// State class for managing parent's children
 class ParentChildrenState {
   final List<Child> children;
@@ -97,6 +112,97 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
         error: 'Failed to add child: ${e.toString()}',
       );
       return false;
+    }
+  }
+
+  /// Link a child by email address
+  Future<LinkResult> linkByEmail({
+    required String studentEmail,
+    String relationship = 'parent',
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.parent}/links/by-email',
+        data: {
+          'student_email': studentEmail,
+          'relationship': relationship,
+          'can_view_grades': true,
+          'can_view_activity': true,
+          'can_view_messages': false,
+          'can_receive_alerts': true,
+        },
+        fromJson: (data) => data,
+      );
+
+      if (response.success && response.data != null) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] == true) {
+          return LinkResult(
+            success: true,
+            message: data['message'] ?? 'Link request sent successfully',
+            studentName: data['student_name'],
+          );
+        } else {
+          return LinkResult(
+            success: false,
+            message: data['message'] ?? 'Failed to send link request',
+          );
+        }
+      } else {
+        return LinkResult(
+          success: false,
+          message: response.message ?? 'Failed to send link request',
+        );
+      }
+    } catch (e) {
+      return LinkResult(
+        success: false,
+        message: 'Failed to send link request: ${e.toString()}',
+      );
+    }
+  }
+
+  /// Link a child using invite code
+  Future<LinkResult> linkByCode({
+    required String code,
+    String relationship = 'parent',
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.parent}/links/use-code',
+        data: {
+          'code': code,
+          'relationship': relationship,
+        },
+        fromJson: (data) => data,
+      );
+
+      if (response.success && response.data != null) {
+        final data = response.data as Map<String, dynamic>;
+        if (data['success'] == true) {
+          return LinkResult(
+            success: true,
+            message: data['message'] ?? 'Link request sent successfully',
+            studentName: data['student_name'],
+            studentEmail: data['student_email'],
+          );
+        } else {
+          return LinkResult(
+            success: false,
+            message: data['message'] ?? 'Failed to use invite code',
+          );
+        }
+      } else {
+        return LinkResult(
+          success: false,
+          message: response.message ?? 'Failed to use invite code',
+        );
+      }
+    } catch (e) {
+      return LinkResult(
+        success: false,
+        message: 'Failed to use invite code: ${e.toString()}',
+      );
     }
   }
 
