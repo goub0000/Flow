@@ -14,7 +14,11 @@ from app.schemas.parent_monitoring import (
     StudentActivityListResponse,
     ProgressReportRequest,
     ProgressReportResponse,
-    MultiStudentDashboardResponse
+    MultiStudentDashboardResponse,
+    ChildResponse,
+    ChildApplicationResponse,
+    ChildEnrollmentResponse,
+    AddChildRequest
 )
 from app.utils.security import get_current_user, RoleChecker, UserRole, CurrentUser
 
@@ -263,5 +267,154 @@ async def get_parent_dashboard(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+# ==================== Children Endpoints (Frontend Compatibility) ====================
+
+@router.get("/parent/children")
+async def list_children(
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+) -> List[ChildResponse]:
+    """
+    List all linked children for parent (frontend compatibility endpoint)
+
+    **Requires:** Parent authentication
+
+    **Returns:**
+    - List of children with full details matching frontend Child model
+    """
+    try:
+        service = ParentMonitoringService()
+        children = await service.get_children_for_parent(current_user.id)
+        return children
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/parent/children", status_code=status.HTTP_201_CREATED)
+async def add_child(
+    request: AddChildRequest,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+) -> ChildResponse:
+    """
+    Add a child by linking to student account
+
+    **Requires:** Parent authentication
+
+    **Request Body:**
+    - student_id: Student's user ID to link
+    - relationship: Relationship type (default: "parent")
+
+    **Returns:**
+    - Created child object
+    """
+    try:
+        service = ParentMonitoringService()
+
+        # Create link request
+        link_request = ParentStudentLinkCreateRequest(
+            student_id=request.student_id,
+            relationship=request.relationship,
+            can_view_grades=True,
+            can_view_activity=True,
+            can_view_messages=False,
+            can_receive_alerts=True
+        )
+
+        # Create the link
+        await service.create_parent_link(current_user.id, link_request)
+
+        # Get the child data
+        child = await service.get_child_by_id(current_user.id, request.student_id)
+        return child
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.delete("/parent/children/{child_id}")
+async def remove_child(
+    child_id: str,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+):
+    """
+    Remove child link
+
+    **Requires:** Parent authentication
+
+    **Path Parameters:**
+    - child_id: Child's user ID
+
+    **Returns:**
+    - Success status
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.remove_child_link(current_user.id, child_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/parent/children/{child_id}/enrollments")
+async def get_child_enrollments(
+    child_id: str,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+) -> List[ChildEnrollmentResponse]:
+    """
+    Get child's course enrollments
+
+    **Requires:** Parent authentication with active link
+
+    **Path Parameters:**
+    - child_id: Child's user ID
+
+    **Returns:**
+    - List of course enrollments with progress
+    """
+    try:
+        service = ParentMonitoringService()
+        enrollments = await service.get_child_enrollments(current_user.id, child_id)
+        return enrollments
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e)
+        )
+
+
+@router.get("/parent/children/{child_id}/applications")
+async def get_child_applications(
+    child_id: str,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.PARENT]))
+) -> List[ChildApplicationResponse]:
+    """
+    Get child's applications
+
+    **Requires:** Parent authentication with active link
+
+    **Path Parameters:**
+    - child_id: Child's user ID
+
+    **Returns:**
+    - List of applications
+    """
+    try:
+        service = ParentMonitoringService()
+        applications = await service.get_child_applications(current_user.id, child_id)
+        return applications
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
             detail=str(e)
         )
