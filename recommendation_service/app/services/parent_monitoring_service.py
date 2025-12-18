@@ -60,10 +60,15 @@ class ParentMonitoringService:
         """Create a parent-student link (pending approval)"""
         try:
             # Verify student exists
-            student = self.db.table('users').select('id, roles').eq('id', link_data.student_id).single().execute()
+            student = self.db.table('users').select('id, available_roles, active_role').eq('id', link_data.student_id).single().execute()
 
-            if not student.data or 'student' not in student.data.get('roles', []):
+            if not student.data:
                 raise Exception("Invalid student ID")
+
+            available_roles = student.data.get('available_roles', []) or []
+            active_role = student.data.get('active_role', '')
+            if 'student' not in available_roles and active_role != 'student':
+                raise Exception("User is not a student")
 
             # Check if link already exists
             existing = self.db.table('parent_student_links').select('*').eq(
@@ -749,7 +754,7 @@ class ParentMonitoringService:
         """Create parent-student link by student's email address"""
         try:
             # Find student by email - only select columns that exist in users table
-            student = self.db.table('users').select('id, display_name, email, roles, available_roles, active_role').eq(
+            student = self.db.table('users').select('id, display_name, email, available_roles, active_role').eq(
                 'email', request.student_email.lower().strip()
             ).single().execute()
 
@@ -760,9 +765,9 @@ class ParentMonitoringService:
                 )
 
             # Check if user is a student
-            roles = student.data.get('roles', []) or student.data.get('available_roles', []) or []
+            available_roles = student.data.get('available_roles', []) or []
             active_role = student.data.get('active_role', '')
-            if 'student' not in roles and active_role != 'student':
+            if 'student' not in available_roles and active_role != 'student':
                 return LinkByEmailResponse(
                     success=False,
                     message="The user with this email is not registered as a student"
