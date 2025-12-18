@@ -298,3 +298,55 @@ class MultiStudentDashboardResponse(BaseModel):
     students: List[ParentDashboardStats]
     total_students: int
     summary: Dict[str, Any] = Field(default_factory=dict)
+
+
+# Child Models (for frontend compatibility)
+class ChildApplicationResponse(BaseModel):
+    """Child application for parent view"""
+    id: str
+    institutionName: str
+    programName: str
+    status: str
+    submittedAt: str
+
+
+class ChildResponse(BaseModel):
+    """Child response model matching frontend Child model"""
+    id: str
+    parentId: str
+    name: str
+    email: str
+    dateOfBirth: str
+    photoUrl: Optional[str] = None
+    schoolName: Optional[str] = None
+    grade: str
+    enrolledCourses: List[str] = Field(default_factory=list)
+    applications: List[ChildApplicationResponse] = Field(default_factory=list)
+    averageGrade: float = 0.0
+    lastActive: str
+
+    class Config:
+        from_attributes = True
+
+
+class ChildListResponse(BaseModel):
+    """Response model for children list"""
+    children: List[ChildResponse]
+    total: int
+
+
+class ChildEnrollmentResponse(BaseModel):
+    """Enrollment response for child"""
+    id: str
+    courseName: str
+    completionPercentage: float = 0.0
+    currentGrade: float = 0.0
+    assignmentsCompleted: int = 0
+    totalAssignments: int = 0
+    lastActivity: str
+
+
+class AddChildRequest(BaseModel):
+    """Request model for adding a child"""
+    student_id: str
+    relationship: str = "parent"

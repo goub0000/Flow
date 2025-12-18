@@ -26,7 +26,10 @@ from app.schemas.parent_monitoring import (
     ParentAlertListResponse,
     ParentDashboardStats,
     MultiStudentDashboardResponse,
-    LinkStatus
+    LinkStatus,
+    ChildResponse,
+    ChildApplicationResponse,
+    ChildEnrollmentResponse
 )
 
 logger = logging.getLogger(__name__)
@@ -523,3 +526,204 @@ class ParentMonitoringService:
         except Exception as e:
             logger.error(f"Get dashboard error: {e}")
             raise Exception(f"Failed to get dashboard: {str(e)}")
+
+    # ==================== Children Methods (Frontend Compatibility) ====================
+
+    async def get_children_for_parent(self, parent_id: str) -> List[ChildResponse]:
+        """Get all linked children for a parent with full details"""
+        try:
+            # Get all active links for parent
+            links = self.db.table('parent_student_links').select('*').eq(
+                'parent_id', parent_id
+            ).eq('status', LinkStatus.ACTIVE.value).execute()
+
+            if not links.data:
+                return []
+
+            children = []
+            for link in links.data:
+                student_id = link['student_id']
+                child = await self._build_child_response(parent_id, student_id)
+                if child:
+                    children.append(child)
+
+            return children
+
+        except Exception as e:
+            logger.error(f"Get children error: {e}")
+            raise Exception(f"Failed to get children: {str(e)}")
+
+    async def get_child_by_id(self, parent_id: str, student_id: str) -> ChildResponse:
+        """Get single child by ID"""
+        try:
+            # Verify link exists
+            link = self.db.table('parent_student_links').select('*').eq(
+                'parent_id', parent_id
+            ).eq('student_id', student_id).execute()
+
+            if not link.data:
+                raise Exception("Child not linked to parent")
+
+            child = await self._build_child_response(parent_id, student_id)
+            if not child:
+                raise Exception("Failed to build child data")
+
+            return child
+
+        except Exception as e:
+            logger.error(f"Get child by ID error: {e}")
+            raise Exception(f"Failed to get child: {str(e)}")
+
+    async def _build_child_response(self, parent_id: str, student_id: str) -> Optional[ChildResponse]:
+        """Build ChildResponse from database"""
+        try:
+            # Get student/user info
+            user = self.db.table('users').select('*').eq('id', student_id).single().execute()
+            if not user.data:
+                return None
+
+            user_data = user.data
+
+            # Get student profile for additional info
+            profile = self.db.table('student_profiles').select('*').eq('user_id', student_id).single().execute()
+            profile_data = profile.data if profile.data else {}
+
+            # Get applications
+            apps = self.db.table('applications').select('*').eq('student_id', student_id).execute()
+            applications = []
+            if apps.data:
+                for app in apps.data:
+                    applications.append(ChildApplicationResponse(
+                        id=app['id'],
+                        institutionName=app.get('institution_name', 'Unknown'),
+                        programName=app.get('program_name', 'Unknown'),
+                        status=app.get('status', 'pending'),
+                        submittedAt=app.get('submitted_at', app.get('created_at', datetime.utcnow().isoformat()))
+                    ))
+
+            # Get enrollments for course list
+            enrollments = self.db.table('enrollments').select('course_id, courses(title)').eq('student_id', student_id).execute()
+            enrolled_courses = []
+            if enrollments.data:
+                for enr in enrollments.data:
+                    course_title = enr.get('courses', {}).get('title') if enr.get('courses') else f"Course {enr.get('course_id', 'Unknown')}"
+                    enrolled_courses.append(course_title)
+
+            # Get last activity
+            last_activity = self.db.table('student_activities').select('timestamp').eq(
+                'student_id', student_id
+            ).order('timestamp', desc=True).limit(1).execute()
+
+            last_active = datetime.utcnow().isoformat()
+            if last_activity.data:
+                last_active = last_activity.data[0]['timestamp']
+
+            # Calculate average grade from enrollments
+            grades = self.db.table('enrollments').select('grade').eq('student_id', student_id).not_.is_('grade', 'null').execute()
+            average_grade = 0.0
+            if grades.data:
+                grade_values = [g['grade'] for g in grades.data if g.get('grade') is not None]
+                if grade_values:
+                    average_grade = sum(grade_values) / len(grade_values)
+
+            # Build response
+            return ChildResponse(
+                id=student_id,
+                parentId=parent_id,
+                name=user_data.get('full_name', user_data.get('email', 'Unknown')),
+                email=user_data.get('email', ''),
+                dateOfBirth=profile_data.get('date_of_birth', '2005-01-01'),
+                photoUrl=user_data.get('avatar_url'),
+                schoolName=profile_data.get('school_name', profile_data.get('institution_name')),
+                grade=profile_data.get('grade_level', profile_data.get('education_level', 'Unknown')),
+                enrolledCourses=enrolled_courses,
+                applications=applications,
+                averageGrade=average_grade,
+                lastActive=last_active
+            )
+
+        except Exception as e:
+            logger.error(f"Build child response error: {e}")
+            return None
+
+    async def remove_child_link(self, parent_id: str, child_id: str) -> Dict[str, Any]:
+        """Remove parent-child link"""
+        try:
+            # Find the link
+            link = self.db.table('parent_student_links').select('id').eq(
+                'parent_id', parent_id
+            ).eq('student_id', child_id).single().execute()
+
+            if not link.data:
+                raise Exception("Link not found")
+
+            # Revoke the link
+            return await self.revoke_parent_link(link.data['id'], parent_id)
+
+        except Exception as e:
+            logger.error(f"Remove child link error: {e}")
+            raise Exception(f"Failed to remove child: {str(e)}")
+
+    async def get_child_enrollments(self, parent_id: str, child_id: str) -> List[ChildEnrollmentResponse]:
+        """Get child's course enrollments"""
+        try:
+            # Verify access
+            await self.verify_parent_access(parent_id, child_id)
+
+            # Get enrollments with course info
+            enrollments = self.db.table('enrollments').select(
+                '*, courses(title, total_lessons)'
+            ).eq('student_id', child_id).execute()
+
+            result = []
+            if enrollments.data:
+                for enr in enrollments.data:
+                    course = enr.get('courses', {}) or {}
+                    course_title = course.get('title', f"Course {enr.get('course_id', 'Unknown')}")
+                    total_lessons = course.get('total_lessons', 10)
+
+                    # Calculate completion
+                    completed_lessons = enr.get('completed_lessons', 0)
+                    completion_pct = (completed_lessons / total_lessons * 100) if total_lessons > 0 else 0
+
+                    result.append(ChildEnrollmentResponse(
+                        id=enr.get('id', ''),
+                        courseName=course_title,
+                        completionPercentage=completion_pct,
+                        currentGrade=enr.get('grade', 0.0) or 0.0,
+                        assignmentsCompleted=enr.get('assignments_completed', 0) or 0,
+                        totalAssignments=enr.get('total_assignments', 10) or 10,
+                        lastActivity=enr.get('last_activity', enr.get('updated_at', datetime.utcnow().isoformat()))
+                    ))
+
+            return result
+
+        except Exception as e:
+            logger.error(f"Get child enrollments error: {e}")
+            raise Exception(f"Failed to get enrollments: {str(e)}")
+
+    async def get_child_applications(self, parent_id: str, child_id: str) -> List[ChildApplicationResponse]:
+        """Get child's applications"""
+        try:
+            # Verify access
+            await self.verify_parent_access(parent_id, child_id)
+
+            # Get applications
+            apps = self.db.table('applications').select('*').eq('student_id', child_id).execute()
+
+            result = []
+            if apps.data:
+                for app in apps.data:
+                    result.append(ChildApplicationResponse(
+                        id=app['id'],
+                        institutionName=app.get('institution_name', 'Unknown'),
+                        programName=app.get('program_name', 'Unknown'),
+                        status=app.get('status', 'pending'),
+                        submittedAt=app.get('submitted_at', app.get('created_at', datetime.utcnow().isoformat()))
+                    ))
+
+            return result
+
+        except Exception as e:
+            logger.error(f"Get child applications error: {e}")
+            raise Exception(f"Failed to get applications: {str(e)}")
