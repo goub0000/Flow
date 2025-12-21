@@ -121,18 +121,18 @@ async def get_student_requests(
     - List of active requests with details
     """
     try:
-        # Resolve student_id - handle both user_id (auth) and internal profile ID
-        profile_response = db.table('student_profiles').select('id').eq('user_id', student_id).execute()
+        # Verify student exists - check by user_id (auth UUID)
+        # The student_id parameter should be the auth.users.id UUID
+        profile_response = db.table('student_profiles').select('user_id').eq('user_id', student_id).execute()
 
         if not profile_response.data or len(profile_response.data) == 0:
-            # Try by internal profile id
-            profile_response = db.table('student_profiles').select('id').eq('id', student_id).execute()
-
-        if not profile_response.data or len(profile_response.data) == 0:
+            # Student profile not found for this user
             from fastapi import HTTPException
             raise HTTPException(status_code=404, detail="Student profile not found")
 
-        resolved_student_id = profile_response.data[0]['id']
+        # Use the auth user_id (UUID) as student_id for recommendation_requests
+        # recommendation_requests.student_id references auth.users.id, not student_profiles.id
+        resolved_student_id = student_id
 
         service = RecommendationLettersService(db)
         return await service.get_student_requests(resolved_student_id)
