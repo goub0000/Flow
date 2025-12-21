@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/models/counseling_models.dart';
+import '../../../../core/models/recommendation_letter_models.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
@@ -22,7 +22,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -36,8 +36,9 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
     final isLoading = ref.watch(recommenderRequestsLoadingProvider);
     final error = ref.watch(recommenderRequestsErrorProvider);
     final allRequests = ref.watch(recommenderRequestsListProvider);
-    final pendingRequests = ref.watch(pendingRequestsProvider);
-    final submittedRequests = ref.watch(submittedRequestsProvider);
+    final pendingRequests = ref.watch(pendingRecommendationRequestsProvider);
+    final inProgressRequests = ref.watch(inProgressRecommendationRequestsProvider);
+    final completedRequests = ref.watch(completedRecommendationRequestsProvider);
 
     if (error != null) {
       return Center(
@@ -50,7 +51,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                ref.read(recommenderRequestsProvider.notifier).fetchRequests();
+                ref.read(recommenderRequestsProvider.notifier).refresh();
               },
               child: const Text('Retry'),
             ),
@@ -69,10 +70,12 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
           controller: _tabController,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
+          isScrollable: true,
           tabs: [
             Tab(text: 'All (${allRequests.length})'),
             Tab(text: 'Pending (${pendingRequests.length})'),
-            Tab(text: 'Submitted (${submittedRequests.length})'),
+            Tab(text: 'In Progress (${inProgressRequests.length})'),
+            Tab(text: 'Completed (${completedRequests.length})'),
           ],
         ),
         Expanded(
@@ -81,7 +84,8 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
             children: [
               _buildRequestsList(allRequests, 'all'),
               _buildRequestsList(pendingRequests, 'pending'),
-              _buildRequestsList(submittedRequests, 'submitted'),
+              _buildRequestsList(inProgressRequests, 'in_progress'),
+              _buildRequestsList(completedRequests, 'completed'),
             ],
           ),
         ),
@@ -89,15 +93,18 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
     );
   }
 
-  Widget _buildRequestsList(List<Recommendation> requests, String type) {
+  Widget _buildRequestsList(List<RecommendationRequest> requests, String type) {
     if (requests.isEmpty) {
       String message;
       switch (type) {
         case 'pending':
           message = 'No pending recommendation requests';
           break;
-        case 'submitted':
-          message = 'No submitted recommendations yet';
+        case 'in_progress':
+          message = 'No letters in progress';
+          break;
+        case 'completed':
+          message = 'No completed recommendations yet';
           break;
         default:
           message = 'No recommendation requests';
@@ -112,7 +119,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
 
     return RefreshIndicator(
       onRefresh: () async {
-        await ref.read(recommenderRequestsProvider.notifier).fetchRequests();
+        await ref.read(recommenderRequestsProvider.notifier).refresh();
       },
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -129,7 +136,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
                   extra: request,
                 );
                 if (context.mounted) {
-                  ref.read(recommenderRequestsProvider.notifier).fetchRequests();
+                  ref.read(recommenderRequestsProvider.notifier).refresh();
                 }
               },
             ),
@@ -141,7 +148,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
 }
 
 class _RequestCard extends StatelessWidget {
-  final Recommendation request;
+  final RecommendationRequest request;
   final VoidCallback onTap;
 
   const _RequestCard({
@@ -151,7 +158,7 @@ class _RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final daysLeft = request.deadline?.difference(DateTime.now()).inDays;
+    final daysLeft = request.deadline.difference(DateTime.now()).inDays;
     final isOverdue = request.isOverdue;
 
     return CustomCard(
@@ -168,7 +175,7 @@ class _RequestCard extends StatelessWidget {
                 radius: 24,
                 backgroundColor: AppColors.primary,
                 child: Text(
-                  request.studentName.substring(0, 1),
+                  (request.studentName ?? 'S').substring(0, 1),
                   style: const TextStyle(
                     color: AppColors.textOnPrimary,
                     fontWeight: FontWeight.bold,
@@ -182,14 +189,14 @@ class _RequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      request.studentName,
+                      request.studentName ?? 'Student',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      request.institutionName,
+                      request.institutionName ?? 'Institution',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -205,11 +212,13 @@ class _RequestCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            request.programName,
+            request.purpose,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w500,
                 ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 12),
           Row(
@@ -221,28 +230,43 @@ class _RequestCard extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                request.deadline != null
-                    ? isOverdue
-                        ? 'Overdue!'
-                        : '$daysLeft days left'
-                    : 'No deadline',
+                isOverdue
+                    ? 'Overdue!'
+                    : daysLeft <= 0
+                        ? 'Due today'
+                        : '$daysLeft days left',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: isOverdue ? AppColors.error : AppColors.textSecondary,
                       fontWeight: isOverdue ? FontWeight.bold : FontWeight.normal,
                     ),
               ),
               const Spacer(),
-              if (request.isDraft)
-                const Icon(
-                  Icons.edit,
-                  size: 16,
-                  color: AppColors.warning,
+              if (request.isUrgent)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    'URGENT',
+                    style: TextStyle(
+                      color: AppColors.error,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              if (request.isSubmitted)
-                const Icon(
-                  Icons.check_circle,
+              const SizedBox(width: 8),
+              if (request.hasLetter)
+                Icon(
+                  request.letterStatus == LetterStatus.submitted
+                      ? Icons.check_circle
+                      : Icons.edit,
                   size: 16,
-                  color: AppColors.success,
+                  color: request.letterStatus == LetterStatus.submitted
+                      ? AppColors.success
+                      : AppColors.warning,
                 ),
             ],
           ),
@@ -253,7 +277,7 @@ class _RequestCard extends StatelessWidget {
 }
 
 class _StatusChip extends StatelessWidget {
-  final String status;
+  final RecommendationRequestStatus status;
   final bool isOverdue;
 
   const _StatusChip({
@@ -266,22 +290,35 @@ class _StatusChip extends StatelessWidget {
     Color color;
     String label;
 
-    if (isOverdue) {
+    if (isOverdue && status != RecommendationRequestStatus.completed) {
       color = AppColors.error;
       label = 'OVERDUE';
     } else {
       switch (status) {
-        case 'draft':
-          color = AppColors.warning;
-          label = 'DRAFT';
+        case RecommendationRequestStatus.pending:
+          color = AppColors.info;
+          label = 'PENDING';
           break;
-        case 'submitted':
+        case RecommendationRequestStatus.accepted:
           color = AppColors.success;
-          label = 'SUBMITTED';
+          label = 'ACCEPTED';
           break;
-        default:
+        case RecommendationRequestStatus.inProgress:
+          color = AppColors.warning;
+          label = 'IN PROGRESS';
+          break;
+        case RecommendationRequestStatus.completed:
+          color = AppColors.success;
+          label = 'COMPLETED';
+          break;
+        case RecommendationRequestStatus.declined:
+          color = AppColors.error;
+          label = 'DECLINED';
+          break;
+        case RecommendationRequestStatus.cancelled:
           color = AppColors.textSecondary;
-          label = status.toUpperCase();
+          label = 'CANCELLED';
+          break;
       }
     }
 

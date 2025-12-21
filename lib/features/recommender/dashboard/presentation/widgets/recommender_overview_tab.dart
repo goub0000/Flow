@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/models/counseling_models.dart';
+import '../../../../../core/models/recommendation_letter_models.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
 import '../../../../shared/widgets/refresh_utilities.dart';
@@ -26,9 +26,9 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
     return handleRefresh(() async {
       try {
         // Refresh all data sources in parallel
-        await Future.wait([
+        await Future.wait<void>([
           ref.read(recommenderDashboardProvider.notifier).loadDashboardData(),
-          ref.read(recommenderRequestsProvider.notifier).fetchRequests(),
+          ref.read(recommenderRequestsProvider.notifier).refresh(),
         ]);
 
         // Update last refresh time
@@ -231,11 +231,11 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
             ),
             const SizedBox(height: 12),
             ...recommendations.where((r) {
-              if (r.deadline == null) return false;
-              final daysLeft = r.deadline!.difference(DateTime.now()).inDays;
-              return daysLeft <= 7 && r.isDraft;
+              final daysLeft = r.deadline.difference(DateTime.now()).inDays;
+              final isDraft = !r.hasLetter || r.letterStatus == LetterStatus.draft;
+              return daysLeft <= 7 && isDraft;
             }).map((rec) {
-              final daysLeft = rec.deadline!.difference(DateTime.now()).inDays;
+              final daysLeft = rec.deadline.difference(DateTime.now()).inDays;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: CustomCard(
@@ -253,14 +253,14 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  rec.studentName,
+                                  rec.studentName ?? 'Unknown Student',
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  rec.institutionName,
+                                  rec.institutionName ?? 'Institution not specified',
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
@@ -301,7 +301,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        rec.programName,
+                        rec.purpose,
                         style: theme.textTheme.bodySmall,
                       ),
                       const SizedBox(height: 12),
@@ -370,8 +370,9 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
             )
           else
             ...recommendations.take(5).map((rec) {
-              final daysLeft = rec.deadline?.difference(DateTime.now()).inDays;
-              final progress = rec.isDraft ? 0.2 : 1.0;
+              final daysLeft = rec.deadline.difference(DateTime.now()).inDays;
+              final isDraft = !rec.hasLetter || rec.letterStatus == LetterStatus.draft;
+              final progress = isDraft ? 0.2 : 1.0;
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
@@ -389,15 +390,15 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: rec.isDraft
+                              color: isDraft
                                   ? AppColors.warning.withValues(alpha: 0.1)
                                   : AppColors.success.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
-                              rec.isDraft ? Icons.edit : Icons.check_circle,
+                              isDraft ? Icons.edit : Icons.check_circle,
                               color:
-                                  rec.isDraft ? AppColors.warning : AppColors.success,
+                                  isDraft ? AppColors.warning : AppColors.success,
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -406,14 +407,14 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  rec.studentName,
+                                  rec.studentName ?? 'Unknown Student',
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  rec.institutionName,
+                                  rec.institutionName ?? 'Institution not specified',
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
@@ -421,7 +422,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                               ],
                             ),
                           ),
-                          if (daysLeft != null && rec.isDraft)
+                          if (isDraft)
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
@@ -453,15 +454,15 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                               value: progress,
                               backgroundColor: AppColors.surface,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                rec.isDraft ? AppColors.warning : AppColors.success,
+                                isDraft ? AppColors.warning : AppColors.success,
                               ),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            rec.isDraft ? 'Draft' : 'Submitted',
+                            isDraft ? 'Draft' : 'Submitted',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: rec.isDraft
+                              color: isDraft
                                   ? AppColors.warning
                                   : AppColors.success,
                               fontWeight: FontWeight.w600,

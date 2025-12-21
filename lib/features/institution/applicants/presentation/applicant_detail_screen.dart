@@ -230,7 +230,11 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Documents
+            // Recommendation Letters Section
+            _buildRecommendationLettersSection(),
+            const SizedBox(height: 24),
+
+            // Other Documents
             Text(
               'Documents',
               style: Theme.of(context).textTheme.titleLarge,
@@ -239,7 +243,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
             CustomCard(
               padding: EdgeInsets.zero,
               child: Column(
-                children: _applicant.documents.map((doc) {
+                children: _applicant.documents.where((doc) => doc.type != 'recommendation').map((doc) {
                   return Column(
                     children: [
                       ListTile(
@@ -287,7 +291,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                           ],
                         ),
                       ),
-                      if (doc != _applicant.documents.last)
+                      if (doc != _applicant.documents.where((d) => d.type != 'recommendation').last)
                         const Divider(height: 1),
                     ],
                   );
@@ -448,6 +452,221 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
       default:
         return 'Document';
     }
+  }
+
+  Widget _buildRecommendationLettersSection() {
+    // Get recommendation documents
+    final recommendationDocs = _applicant.documents
+        .where((doc) => doc.type == 'recommendation')
+        .toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'Recommendation Letters',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: recommendationDocs.isEmpty
+                    ? AppColors.warning.withValues(alpha: 0.1)
+                    : AppColors.success.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                '${recommendationDocs.length} received',
+                style: TextStyle(
+                  color: recommendationDocs.isEmpty
+                      ? AppColors.warning
+                      : AppColors.success,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        if (recommendationDocs.isEmpty)
+          CustomCard(
+            color: AppColors.warning.withValues(alpha: 0.05),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.warning,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'No Recommendation Letters Yet',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'The applicant has not submitted any recommendation letters with this application.',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          CustomCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: recommendationDocs.asMap().entries.map((entry) {
+                final index = entry.key;
+                final doc = entry.value;
+                return Column(
+                  children: [
+                    _RecommendationLetterTile(
+                      document: doc,
+                      onView: () => _viewRecommendationLetter(doc),
+                      onDownload: () => _downloadRecommendationLetter(doc),
+                    ),
+                    if (index < recommendationDocs.length - 1)
+                      const Divider(height: 1),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _viewRecommendationLetter(dynamic doc) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.recommend, color: AppColors.primary),
+            const SizedBox(width: 8),
+            Expanded(child: Text(doc.name)),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _RecommendationDetailRow(
+                label: 'Type',
+                value: 'Recommendation Letter',
+              ),
+              _RecommendationDetailRow(
+                label: 'Submitted',
+                value: doc.uploadedAt != null
+                    ? _formatDate(doc.uploadedAt)
+                    : 'Unknown',
+              ),
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.article, size: 20, color: AppColors.textSecondary),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Letter Preview',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    if (doc.url != null && doc.url.isNotEmpty)
+                      Text(
+                        'Click "View Full" to open the complete recommendation letter.',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    else
+                      Text(
+                        'Letter content preview not available.',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textSecondary,
+                              fontStyle: FontStyle.italic,
+                            ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+          if (doc.url != null && doc.url.isNotEmpty)
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pop(context);
+                _openLetterUrl(doc.url);
+              },
+              icon: const Icon(Icons.open_in_new),
+              label: const Text('View Full'),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _downloadRecommendationLetter(dynamic doc) {
+    if (doc.url != null && doc.url.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Downloading ${doc.name}...'),
+          backgroundColor: AppColors.info,
+        ),
+      );
+      // TODO: Implement actual download
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Download not available'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+
+  void _openLetterUrl(String url) {
+    // TODO: Implement URL launcher or in-app viewer
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Opening letter: $url'),
+        backgroundColor: AppColors.info,
+      ),
+    );
   }
 
   String _formatDate(DateTime date) {
@@ -649,6 +868,126 @@ class _InfoRow extends StatelessWidget {
                       ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecommendationLetterTile extends StatelessWidget {
+  final dynamic document;
+  final VoidCallback onView;
+  final VoidCallback onDownload;
+
+  const _RecommendationLetterTile({
+    required this.document,
+    required this.onView,
+    required this.onDownload,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColors.success.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: const Icon(
+          Icons.recommend,
+          color: AppColors.success,
+        ),
+      ),
+      title: Text(
+        document.name,
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.success.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text(
+                  'RECEIVED',
+                  style: TextStyle(
+                    color: AppColors.success,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Recommendation Letter',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.visibility),
+            onPressed: onView,
+            tooltip: 'View Letter',
+          ),
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: onDownload,
+            tooltip: 'Download',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecommendationDetailRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _RecommendationDetailRow({
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
         ],

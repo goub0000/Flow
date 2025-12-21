@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/models/counseling_models.dart';
+import '../../core/models/recommendation_letter_models.dart';
 import '../../features/recommender/dashboard/presentation/recommender_dashboard_screen.dart';
 import '../../features/recommender/requests/presentation/requests_list_screen.dart';
 import '../../features/recommender/requests/presentation/write_recommendation_screen.dart';
@@ -21,8 +21,8 @@ List<RouteBase> recommenderRoutes = [
     path: '/recommender/requests/:id',
     name: 'recommender-write-recommendation',
     builder: (context, state) {
-      // Get recommendation from provider using state.extra
-      final request = state.extra as Recommendation;
+      // Get recommendation request from state.extra
+      final request = state.extra as RecommendationRequest;
       return WriteRecommendationScreen(request: request);
     },
   ),

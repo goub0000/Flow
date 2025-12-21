@@ -23,6 +23,7 @@ import '../../providers/recommendations_provider.dart';
 import '../../providers/dashboard_statistics_provider.dart';
 import '../../providers/student_applications_realtime_provider.dart';
 import '../../../../core/providers/student_activities_provider.dart';
+import '../../providers/student_recommendation_requests_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -356,7 +357,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'My Applications',
+                label: 'Applications',
                 icon: Icons.description,
                 color: AppColors.info,
                 badgeCount: pendingApplicationsCount,
@@ -367,21 +368,23 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
+                label: 'Letters',
+                icon: Icons.recommend,
+                color: AppColors.success,
+                onTap: () {
+                  print('[DEBUG] Quick Action: Recommendation Letters clicked');
+                  context.push('/student/recommendations');
+                },
+              ),
+              QuickAction(
                 label: 'Progress',
                 icon: Icons.analytics,
-                color: AppColors.success,
+                color: AppColors.warning,
                 onTap: () {
                   // Use tab navigation instead of route navigation
                   print('[DEBUG] Quick Action: Progress clicked');
                   widget.onNavigateToTab?.call(3); // Navigate to Progress tab
                 },
-              ),
-              QuickAction(
-                label: 'Messages',
-                icon: Icons.message,
-                color: AppColors.warning,
-                badgeCount: messagesCount,  // Use real count or null
-                onTap: () => context.go('/messages'),
               ),
             ],
           ),

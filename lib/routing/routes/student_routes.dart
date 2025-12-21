@@ -11,6 +11,8 @@ import '../../features/student/courses/presentation/courses_list_screen.dart';
 import '../../features/student/courses/presentation/course_detail_screen.dart';
 import '../../features/student/courses/presentation/my_courses_screen.dart';
 import '../../features/student/courses/presentation/course_learning_screen.dart';
+import '../../features/student/recommendations/presentation/recommendation_requests_screen.dart';
+import '../../features/student/parent_linking/presentation/parent_linking_screen.dart';
 
 /// Student-specific routes
 List<RouteBase> studentRoutes = [
@@ -94,5 +96,15 @@ List<RouteBase> studentRoutes = [
       }
       return CourseLearningScreen(course: course);
     },
+  ),
+  GoRoute(
+    path: '/student/recommendations',
+    name: 'student-recommendations',
+    builder: (context, state) => const RecommendationRequestsScreen(),
+  ),
+  GoRoute(
+    path: '/student/parent-linking',
+    name: 'student-parent-linking',
+    builder: (context, state) => const ParentLinkingScreen(),
   ),
 ];
