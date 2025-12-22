@@ -178,6 +178,79 @@ class StudentRecommendationRequestsNotifier
     }
   }
 
+  /// Create recommendation requests by email (for each selected institution)
+  /// POST /api/v1/recommendation-requests/by-email
+  /// This sends an invitation to the recommender if they don't have an account
+  Future<bool> createRequestByEmail({
+    required String recommenderEmail,
+    required String recommenderName,
+    required String requestType,
+    required String purpose,
+    required DateTime deadline,
+    required List<String> institutionNames,
+    String priority = 'normal',
+    String? studentMessage,
+    String? achievements,
+    String? goals,
+    String? relationshipContext,
+  }) async {
+    if (_studentId == null) return false;
+
+    try {
+      // Create a request for each selected institution
+      final response = await _apiClient.post(
+        '/recommendation-requests/by-email',
+        data: {
+          'student_id': _studentId,
+          'recommender_email': recommenderEmail,
+          'recommender_name': recommenderName,
+          'request_type': requestType,
+          'purpose': purpose,
+          'institution_names': institutionNames,
+          'deadline': deadline.toIso8601String().split('T')[0],
+          'priority': priority,
+          'student_message': studentMessage,
+          'achievements': achievements,
+          'goals': goals,
+          'relationship_context': relationshipContext,
+        },
+        fromJson: (data) {
+          // Response may contain a list of created requests
+          if (data is Map && data['requests'] != null) {
+            return (data['requests'] as List)
+                .map((e) => RecommendationRequest.fromJson(e as Map<String, dynamic>))
+                .toList();
+          }
+          if (data is List) {
+            return data
+                .map((e) => RecommendationRequest.fromJson(e as Map<String, dynamic>))
+                .toList();
+          }
+          // Single request
+          return [RecommendationRequest.fromJson(data as Map<String, dynamic>)];
+        },
+      );
+
+      if (response.success && response.data != null) {
+        // Add new requests to local state
+        state = state.copyWith(
+          requests: [...state.requests, ...response.data!],
+        );
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to create request',
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to create request: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
   /// Cancel a recommendation request
   /// DELETE /api/v1/recommendation-requests/{request_id}?student_id={student_id}
   Future<bool> cancelRequest(String requestId) async {

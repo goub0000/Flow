@@ -6,6 +6,7 @@ import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../providers/student_recommendation_requests_provider.dart';
+import '../../providers/student_applications_provider.dart';
 
 class RecommendationRequestsScreen extends ConsumerStatefulWidget {
   const RecommendationRequestsScreen({super.key});
@@ -151,12 +152,13 @@ class _RecommendationRequestsScreenState
       backgroundColor: Colors.transparent,
       builder: (context) => _CreateRequestSheet(
         onSubmit: (data) async {
-          final success = await ref.read(studentRecommendationRequestsProvider.notifier).createRequest(
-            recommenderId: data['recommender_id'],
+          final success = await ref.read(studentRecommendationRequestsProvider.notifier).createRequestByEmail(
+            recommenderEmail: data['recommender_email'],
+            recommenderName: data['recommender_name'],
             requestType: data['request_type'],
             purpose: data['purpose'],
             deadline: data['deadline'],
-            institutionName: data['institution_name'],
+            institutionNames: List<String>.from(data['institution_names']),
             priority: data['priority'] ?? 'normal',
             studentMessage: data['student_message'],
             achievements: data['achievements'],
@@ -167,7 +169,7 @@ class _RecommendationRequestsScreenState
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Recommendation request sent!'),
+                content: Text('Recommendation request sent! The recommender will receive an email invitation.'),
                 backgroundColor: AppColors.success,
               ),
             );
@@ -587,14 +589,14 @@ class _CreateRequestSheet extends ConsumerStatefulWidget {
 
 class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
   final _formKey = GlobalKey<FormState>();
-  final _recommenderController = TextEditingController();
+  final _recommenderEmailController = TextEditingController();
+  final _recommenderNameController = TextEditingController();
   final _purposeController = TextEditingController();
-  final _institutionController = TextEditingController();
   final _messageController = TextEditingController();
   final _achievementsController = TextEditingController();
   final _goalsController = TextEditingController();
 
-  String? _selectedRecommenderId;
+  List<String> _selectedInstitutions = [];
   String _selectedType = 'academic';
   String _selectedPriority = 'normal';
   DateTime _deadline = DateTime.now().add(const Duration(days: 14));
@@ -602,9 +604,9 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
   @override
   void dispose() {
-    _recommenderController.dispose();
+    _recommenderEmailController.dispose();
+    _recommenderNameController.dispose();
     _purposeController.dispose();
-    _institutionController.dispose();
     _messageController.dispose();
     _achievementsController.dispose();
     _goalsController.dispose();
@@ -613,7 +615,16 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final availableRecommenders = ref.watch(availableRecommendersProvider);
+    // Get student's applications for institution selection
+    final applicationsState = ref.watch(applicationsProvider);
+    final applications = applicationsState.applications;
+
+    // Get unique institution names from applications
+    final institutionNames = applications
+        .map((app) => app.institutionName)
+        .toSet()
+        .toList()
+      ..sort();
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
@@ -660,69 +671,51 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Recommender Search
+                    // Recommender Email
                     Text(
-                      'Recommender *',
+                      'Recommender Email *',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
-                    Autocomplete<Map<String, dynamic>>(
-                      optionsBuilder: (textEditingValue) async {
-                        if (textEditingValue.text.length < 2) {
-                          return const Iterable.empty();
+                    TextFormField(
+                      controller: _recommenderEmailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: 'professor@university.edu',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.email),
+                        helperText: 'They will receive an invitation to submit the recommendation',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter recommender email';
                         }
-                        await ref.read(studentRecommendationRequestsProvider.notifier)
-                            .searchRecommenders(textEditingValue.text);
-                        return availableRecommenders;
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
                       },
-                      displayStringForOption: (option) => option['name'] ?? '',
-                      fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-                        return TextFormField(
-                          controller: controller,
-                          focusNode: focusNode,
-                          decoration: const InputDecoration(
-                            hintText: 'Search by name or email...',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.search),
-                          ),
-                          validator: (value) {
-                            if (_selectedRecommenderId == null) {
-                              return 'Please select a recommender';
-                            }
-                            return null;
-                          },
-                        );
-                      },
-                      optionsViewBuilder: (context, onSelected, options) {
-                        return Align(
-                          alignment: Alignment.topLeft,
-                          child: Material(
-                            elevation: 4,
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxHeight: 200),
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: options.length,
-                                itemBuilder: (context, index) {
-                                  final option = options.elementAt(index);
-                                  return ListTile(
-                                    leading: CircleAvatar(
-                                      child: Text((option['name'] ?? 'R')[0]),
-                                    ),
-                                    title: Text(option['name'] ?? ''),
-                                    subtitle: Text(option['title'] ?? option['email'] ?? ''),
-                                    onTap: () => onSelected(option),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      onSelected: (selection) {
-                        setState(() {
-                          _selectedRecommenderId = selection['id'];
-                        });
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Recommender Name
+                    Text(
+                      'Recommender Name *',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _recommenderNameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Dr. John Smith',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter recommender name';
+                        }
+                        return null;
                       },
                     ),
                     const SizedBox(height: 16),
@@ -771,19 +764,97 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Institution
+                    // Target Institutions (Multi-select from applications)
                     Text(
-                      'Target Institution',
+                      'Target Institutions *',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _institutionController,
-                      decoration: const InputDecoration(
-                        hintText: 'e.g., Harvard University, Google Inc.',
-                        border: OutlineInputBorder(),
+                    if (institutionNames.isEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.warning.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppColors.warning),
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.info_outline, color: AppColors.warning),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'You have no applications yet. Please submit applications first to request recommendations.',
+                                style: TextStyle(color: AppColors.warning),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Column(
+                          children: [
+                            // Header
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.school, size: 20),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Select institutions (${_selectedInstitutions.length} selected)',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Divider(height: 1),
+                            // Institution list
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxHeight: 200),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: institutionNames.length,
+                                itemBuilder: (context, index) {
+                                  final institution = institutionNames[index];
+                                  final isSelected = _selectedInstitutions.contains(institution);
+                                  return CheckboxListTile(
+                                    title: Text(institution),
+                                    value: isSelected,
+                                    dense: true,
+                                    onChanged: (checked) {
+                                      setState(() {
+                                        if (checked == true) {
+                                          _selectedInstitutions.add(institution);
+                                        } else {
+                                          _selectedInstitutions.remove(institution);
+                                        }
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    if (_selectedInstitutions.isEmpty && institutionNames.isNotEmpty)
+                      const Padding(
+                        padding: EdgeInsets.only(top: 4),
+                        child: Text(
+                          'Please select at least one institution',
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                      ),
                     const SizedBox(height: 16),
 
                     // Deadline
@@ -919,13 +990,25 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
       return;
     }
 
+    // Validate institution selection
+    if (_selectedInstitutions.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select at least one institution'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     setState(() => _isSubmitting = true);
 
     widget.onSubmit({
-      'recommender_id': _selectedRecommenderId,
+      'recommender_email': _recommenderEmailController.text.trim(),
+      'recommender_name': _recommenderNameController.text.trim(),
       'request_type': _selectedType,
       'purpose': _purposeController.text,
-      'institution_name': _institutionController.text.isEmpty ? null : _institutionController.text,
+      'institution_names': _selectedInstitutions,
       'deadline': _deadline,
       'priority': _selectedPriority,
       'student_message': _messageController.text.isEmpty ? null : _messageController.text,

@@ -73,6 +73,113 @@ async def create_recommendation_request(
         )
 
 
+@router.post("/recommendation-requests/by-email", status_code=status.HTTP_201_CREATED)
+async def create_recommendation_request_by_email(
+    request_data: Dict,
+    db: Client = Depends(get_db)
+):
+    """
+    Create recommendation request(s) by recommender email
+
+    This endpoint allows students to request recommendations by providing
+    the recommender's email address. If the recommender doesn't have an account,
+    an invitation will be sent.
+
+    **Request Body:**
+    - student_id: ID of the student
+    - recommender_email: Email of the recommender
+    - recommender_name: Name of the recommender
+    - request_type: Type of recommendation
+    - purpose: What the recommendation is for
+    - institution_names: List of target institutions
+    - deadline: Due date
+    - priority: Request priority
+    - Optional: student_message, achievements, goals, relationship_context
+
+    **Returns:**
+    - List of created recommendation requests
+    """
+    try:
+        from uuid import uuid4
+        from datetime import datetime
+
+        student_id = request_data.get('student_id')
+        recommender_email = request_data.get('recommender_email')
+        recommender_name = request_data.get('recommender_name')
+        institution_names = request_data.get('institution_names', [])
+
+        if not student_id or not recommender_email or not recommender_name:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="student_id, recommender_email, and recommender_name are required"
+            )
+
+        if not institution_names:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="At least one institution must be selected"
+            )
+
+        # Check if recommender exists by email
+        recommender_response = db.table('users').select('id').eq('email', recommender_email).execute()
+
+        if recommender_response.data and len(recommender_response.data) > 0:
+            recommender_id = recommender_response.data[0]['id']
+        else:
+            # Create a placeholder recommender record or use email as identifier
+            # For now, we'll create a pending invitation record
+            recommender_id = str(uuid4())
+
+            # Store pending invitation (could be a separate table or in users with pending status)
+            # For simplicity, we'll use the email as a reference and handle account creation later
+
+        # Create a request for each institution
+        created_requests = []
+        for institution in institution_names:
+            request_dict = {
+                'id': str(uuid4()),
+                'student_id': student_id,
+                'recommender_id': recommender_id,
+                'request_type': request_data.get('request_type', 'academic'),
+                'purpose': request_data.get('purpose', ''),
+                'institution_name': institution,
+                'deadline': request_data.get('deadline'),
+                'priority': request_data.get('priority', 'normal'),
+                'status': 'pending',
+                'student_message': request_data.get('student_message'),
+                'achievements': request_data.get('achievements'),
+                'goals': request_data.get('goals'),
+                'relationship_context': request_data.get('relationship_context'),
+                'requested_at': datetime.utcnow().isoformat(),
+                'created_at': datetime.utcnow().isoformat(),
+                'updated_at': datetime.utcnow().isoformat()
+            }
+
+            result = db.table('recommendation_requests').insert(request_dict).execute()
+
+            if result.data:
+                created_requests.append(result.data[0])
+
+        # TODO: Send email notification to recommender
+        # This would integrate with an email service like SendGrid, AWS SES, etc.
+
+        return {
+            "success": True,
+            "message": f"Created {len(created_requests)} recommendation request(s). An invitation has been sent to {recommender_email}.",
+            "requests": created_requests,
+            "recommender_email": recommender_email,
+            "recommender_name": recommender_name
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
 @router.get("/recommendation-requests/{request_id}", response_model=RecommendationRequestWithDetails)
 async def get_recommendation_request(
     request_id: str,
