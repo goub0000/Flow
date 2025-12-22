@@ -222,28 +222,17 @@ async def get_student_requests(
     Get all recommendation requests for a student
 
     **Path Parameters:**
-    - student_id: Student's user ID or internal student_profiles.id
+    - student_id: Student's auth user ID (UUID)
 
     **Returns:**
     - Summary statistics (total, pending, accepted, declined, completed)
     - List of active requests with details
     """
     try:
-        # Verify student exists - check by user_id (auth UUID)
-        # The student_id parameter should be the auth.users.id UUID
-        profile_response = db.table('student_profiles').select('user_id').eq('user_id', student_id).execute()
-
-        if not profile_response.data or len(profile_response.data) == 0:
-            # Student profile not found for this user
-            from fastapi import HTTPException
-            raise HTTPException(status_code=404, detail="Student profile not found")
-
-        # Use the auth user_id (UUID) as student_id for recommendation_requests
-        # recommendation_requests.student_id references auth.users.id, not student_profiles.id
-        resolved_student_id = student_id
-
+        # No need to verify student profile - just query requests directly
+        # The student_id is the auth.users.id UUID
         service = RecommendationLettersService(db)
-        return await service.get_student_requests(resolved_student_id)
+        return await service.get_student_requests(student_id)
 
     except Exception as e:
         raise HTTPException(
