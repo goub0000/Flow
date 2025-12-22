@@ -120,18 +120,14 @@ async def create_recommendation_request_by_email(
                 detail="At least one institution must be selected"
             )
 
-        # Check if recommender exists by email
+        # Check if recommender exists by email in auth.users
         recommender_response = db.table('users').select('id').eq('email', recommender_email).execute()
 
+        recommender_id = None
         if recommender_response.data and len(recommender_response.data) > 0:
             recommender_id = recommender_response.data[0]['id']
-        else:
-            # Create a placeholder recommender record or use email as identifier
-            # For now, we'll create a pending invitation record
-            recommender_id = str(uuid4())
-
-            # Store pending invitation (could be a separate table or in users with pending status)
-            # For simplicity, we'll use the email as a reference and handle account creation later
+        # If recommender doesn't exist, we'll store their email/name and leave recommender_id as null
+        # When they create an account and accept, we'll link them
 
         # Create a request for each institution
         created_requests = []
@@ -139,7 +135,6 @@ async def create_recommendation_request_by_email(
             request_dict = {
                 'id': str(uuid4()),
                 'student_id': student_id,
-                'recommender_id': recommender_id,
                 'request_type': request_data.get('request_type', 'academic'),
                 'purpose': request_data.get('purpose', ''),
                 'institution_name': institution,
@@ -150,10 +145,16 @@ async def create_recommendation_request_by_email(
                 'achievements': request_data.get('achievements'),
                 'goals': request_data.get('goals'),
                 'relationship_context': request_data.get('relationship_context'),
+                'recommender_email': recommender_email,
+                'recommender_name': recommender_name,
                 'requested_at': datetime.utcnow().isoformat(),
                 'created_at': datetime.utcnow().isoformat(),
                 'updated_at': datetime.utcnow().isoformat()
             }
+
+            # Only include recommender_id if we found a user
+            if recommender_id:
+                request_dict['recommender_id'] = recommender_id
 
             result = db.table('recommendation_requests').insert(request_dict).execute()
 
