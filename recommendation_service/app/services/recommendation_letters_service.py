@@ -111,8 +111,10 @@ class RecommendationLettersService:
 
             request = result.data
 
-            # Verify access
-            if request['student_id'] != user_id and request['recommender_id'] != user_id:
+            # Verify access (recommender_id may be null if they haven't registered yet)
+            is_student = request['student_id'] == user_id
+            is_recommender = request.get('recommender_id') and request['recommender_id'] == user_id
+            if not is_student and not is_recommender:
                 raise ValueError("Access denied")
 
             # Get student info
@@ -122,12 +124,19 @@ class RecommendationLettersService:
                 .single()\
                 .execute()
 
-            # Get recommender info
-            recommender_result = self.db.table('users')\
-                .select('display_name, email')\
-                .eq('id', request['recommender_id'])\
-                .single()\
-                .execute()
+            # Get recommender info (may be null if recommender hasn't registered yet)
+            recommender_name = request.get('recommender_name')
+            recommender_email = request.get('recommender_email')
+
+            if request.get('recommender_id'):
+                recommender_result = self.db.table('users')\
+                    .select('display_name, email')\
+                    .eq('id', request['recommender_id'])\
+                    .execute()
+
+                if recommender_result.data and len(recommender_result.data) > 0:
+                    recommender_name = recommender_result.data[0].get('display_name') or recommender_name
+                    recommender_email = recommender_result.data[0].get('email') or recommender_email
 
             # Check if letter exists
             letter_result = self.db.table('letter_of_recommendations')\
@@ -140,10 +149,10 @@ class RecommendationLettersService:
 
             return RecommendationRequestWithDetails(
                 **request,
-                student_name=student_result.data.get('display_name'),
-                student_email=student_result.data.get('email'),
-                recommender_name=recommender_result.data.get('display_name'),
-                recommender_email=recommender_result.data.get('email'),
+                student_name=student_result.data.get('display_name') if student_result.data else None,
+                student_email=student_result.data.get('email') if student_result.data else None,
+                recommender_name=recommender_name,
+                recommender_email=recommender_email,
                 has_letter=has_letter,
                 letter_status=letter_status
             )
