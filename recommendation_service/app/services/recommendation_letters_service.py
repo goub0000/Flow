@@ -125,9 +125,11 @@ class RecommendationLettersService:
                 .execute()
 
             # Get recommender info (may be null if recommender hasn't registered yet)
+            # Start with values from the request record itself
             recommender_name = request.get('recommender_name')
             recommender_email = request.get('recommender_email')
 
+            # If recommender_id exists, try to get their actual user info
             if request.get('recommender_id'):
                 recommender_result = self.db.table('users')\
                     .select('display_name, email')\
@@ -147,8 +149,11 @@ class RecommendationLettersService:
             has_letter = len(letter_result.data or []) > 0
             letter_status = letter_result.data[0]['status'] if has_letter else None
 
+            # Remove recommender_name and recommender_email from request dict to avoid duplicate kwargs
+            request_copy = {k: v for k, v in request.items() if k not in ['recommender_name', 'recommender_email']}
+
             return RecommendationRequestWithDetails(
-                **request,
+                **request_copy,
                 student_name=student_result.data.get('display_name') if student_result.data else None,
                 student_email=student_result.data.get('email') if student_result.data else None,
                 recommender_name=recommender_name,
