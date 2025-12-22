@@ -143,7 +143,7 @@ class StudentRecommendationRequestsNotifier
       final response = await _apiClient.post(
         '/recommendation-requests',
         data: CreateRecommendationRequestDto(
-          studentId: _studentId!,
+          studentId: _studentId,
           recommenderId: recommenderId,
           requestType: requestType,
           purpose: purpose,
@@ -277,6 +277,61 @@ class StudentRecommendationRequestsNotifier
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to cancel request: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  /// Update a recommendation request
+  /// PUT /api/v1/recommendation-requests/{request_id}?user_id={student_id}
+  Future<bool> updateRequest({
+    required String requestId,
+    String? purpose,
+    String? institutionName,
+    DateTime? deadline,
+    String? priority,
+    String? studentMessage,
+    String? achievements,
+    String? goals,
+  }) async {
+    if (_studentId == null) return false;
+
+    try {
+      final updateData = <String, dynamic>{};
+      if (purpose != null) updateData['purpose'] = purpose;
+      if (institutionName != null) updateData['institution_name'] = institutionName;
+      if (deadline != null) updateData['deadline'] = deadline.toIso8601String().split('T')[0];
+      if (priority != null) updateData['priority'] = priority;
+      if (studentMessage != null) updateData['student_message'] = studentMessage;
+      if (achievements != null) updateData['achievements'] = achievements;
+      if (goals != null) updateData['goals'] = goals;
+
+      final response = await _apiClient.put(
+        '/recommendation-requests/$requestId?user_id=$_studentId',
+        data: updateData,
+        fromJson: (data) => RecommendationRequest.fromJson(data as Map<String, dynamic>),
+      );
+
+      if (response.success && response.data != null) {
+        // Update in local state
+        state = state.copyWith(
+          requests: state.requests.map((r) {
+            if (r.id == requestId) {
+              return response.data!;
+            }
+            return r;
+          }).toList(),
+        );
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update request',
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to update request: ${e.toString()}',
       );
       return false;
     }

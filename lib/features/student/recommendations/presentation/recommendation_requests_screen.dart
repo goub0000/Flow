@@ -132,6 +132,9 @@ class _RecommendationRequestsScreenState
             child: _RequestCard(
               request: request,
               onTap: () => _showRequestDetailsDialog(context, request),
+              onEdit: request.isPending
+                  ? () => _showEditRequestDialog(context, request)
+                  : null,
               onCancel: request.isPending
                   ? () => _cancelRequest(request.id)
                   : null,
@@ -318,17 +321,59 @@ class _RecommendationRequestsScreenState
         return 'Cancelled';
     }
   }
+
+  Future<void> _showEditRequestDialog(BuildContext context, RecommendationRequest request) async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _EditRequestSheet(
+        request: request,
+        onSubmit: (data) async {
+          final success = await ref.read(studentRecommendationRequestsProvider.notifier).updateRequest(
+            requestId: request.id,
+            purpose: data['purpose'],
+            institutionName: data['institution_name'],
+            deadline: data['deadline'],
+            priority: data['priority'],
+            studentMessage: data['student_message'],
+            achievements: data['achievements'],
+            goals: data['goals'],
+          );
+
+          if (success && mounted) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Request updated successfully!'),
+                backgroundColor: AppColors.success,
+              ),
+            );
+          } else if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Failed to update request'),
+                backgroundColor: AppColors.error,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
 }
 
 class _RequestCard extends StatelessWidget {
   final RecommendationRequest request;
   final VoidCallback onTap;
+  final VoidCallback? onEdit;
   final VoidCallback? onCancel;
   final VoidCallback? onRemind;
 
   const _RequestCard({
     required this.request,
     required this.onTap,
+    this.onEdit,
     this.onCancel,
     this.onRemind,
   });
@@ -428,6 +473,15 @@ class _RequestCard extends StatelessWidget {
                     ),
               ),
               const Spacer(),
+              if (onEdit != null)
+                TextButton(
+                  onPressed: onEdit,
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.primary,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  child: const Text('Edit'),
+                ),
               if (onCancel != null)
                 TextButton(
                   onPressed: onCancel,
@@ -727,7 +781,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: _selectedType,
+                      initialValue: _selectedType,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -899,7 +953,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: _selectedPriority,
+                      initialValue: _selectedPriority,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
@@ -1009,6 +1063,321 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
       'request_type': _selectedType,
       'purpose': _purposeController.text,
       'institution_names': _selectedInstitutions,
+      'deadline': _deadline,
+      'priority': _selectedPriority,
+      'student_message': _messageController.text.isEmpty ? null : _messageController.text,
+      'achievements': _achievementsController.text.isEmpty ? null : _achievementsController.text,
+      'goals': _goalsController.text.isEmpty ? null : _goalsController.text,
+    });
+
+    setState(() => _isSubmitting = false);
+  }
+}
+
+class _EditRequestSheet extends StatefulWidget {
+  final RecommendationRequest request;
+  final Function(Map<String, dynamic>) onSubmit;
+
+  const _EditRequestSheet({
+    required this.request,
+    required this.onSubmit,
+  });
+
+  @override
+  State<_EditRequestSheet> createState() => _EditRequestSheetState();
+}
+
+class _EditRequestSheetState extends State<_EditRequestSheet> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _purposeController;
+  late TextEditingController _institutionController;
+  late TextEditingController _messageController;
+  late TextEditingController _achievementsController;
+  late TextEditingController _goalsController;
+
+  late String _selectedPriority;
+  late DateTime _deadline;
+  bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _purposeController = TextEditingController(text: widget.request.purpose);
+    _institutionController = TextEditingController(text: widget.request.institutionName ?? '');
+    _messageController = TextEditingController(text: widget.request.studentMessage ?? '');
+    _achievementsController = TextEditingController(text: widget.request.achievements ?? '');
+    _goalsController = TextEditingController(text: widget.request.goals ?? '');
+    _selectedPriority = widget.request.priority.name;
+    _deadline = widget.request.deadline;
+  }
+
+  @override
+  void dispose() {
+    _purposeController.dispose();
+    _institutionController.dispose();
+    _messageController.dispose();
+    _achievementsController.dispose();
+    _goalsController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.85,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Handle
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          // Title
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Text(
+                  'Edit Request',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          // Form
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Recommender info (read-only)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.person, color: AppColors.primary),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.request.recommenderName ?? 'Recommender',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                if (widget.request.recommenderEmail != null)
+                                  Text(
+                                    widget.request.recommenderEmail!,
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: AppColors.textSecondary,
+                                        ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Purpose
+                    Text(
+                      'Purpose *',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _purposeController,
+                      decoration: const InputDecoration(
+                        hintText: 'e.g., Graduate school application, Job application',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().length < 10) {
+                          return 'Please describe the purpose (min 10 characters)';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Institution
+                    Text(
+                      'Target Institution',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _institutionController,
+                      decoration: const InputDecoration(
+                        hintText: 'Institution name',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Deadline
+                    Text(
+                      'Deadline *',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    InkWell(
+                      onTap: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: _deadline,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(const Duration(days: 365)),
+                        );
+                        if (date != null) {
+                          setState(() => _deadline = date);
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.calendar_today),
+                            const SizedBox(width: 12),
+                            Text('${_deadline.day}/${_deadline.month}/${_deadline.year}'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Priority
+                    Text(
+                      'Priority',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    DropdownButtonFormField<String>(
+                      initialValue: _selectedPriority,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                      items: const [
+                        DropdownMenuItem(value: 'low', child: Text('Low')),
+                        DropdownMenuItem(value: 'normal', child: Text('Normal')),
+                        DropdownMenuItem(value: 'high', child: Text('High')),
+                        DropdownMenuItem(value: 'urgent', child: Text('Urgent')),
+                      ],
+                      onChanged: (value) {
+                        setState(() => _selectedPriority = value!);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Message to recommender
+                    Text(
+                      'Message to Recommender',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _messageController,
+                      decoration: const InputDecoration(
+                        hintText: 'Any specific points you\'d like them to highlight?',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Achievements
+                    Text(
+                      'Your Achievements',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _achievementsController,
+                      decoration: const InputDecoration(
+                        hintText: 'List relevant achievements to help the recommender',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Goals
+                    Text(
+                      'Your Goals',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _goalsController,
+                      decoration: const InputDecoration(
+                        hintText: 'What are your career/academic goals?',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Submit
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _isSubmitting ? null : _submitUpdate,
+                        child: _isSubmitting
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text('Save Changes'),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submitUpdate() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    setState(() => _isSubmitting = true);
+
+    widget.onSubmit({
+      'purpose': _purposeController.text,
+      'institution_name': _institutionController.text.isEmpty ? null : _institutionController.text,
       'deadline': _deadline,
       'priority': _selectedPriority,
       'student_message': _messageController.text.isEmpty ? null : _messageController.text,

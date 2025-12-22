@@ -389,6 +389,74 @@ async def decline_recommendation_request(
         )
 
 
+@router.delete("/recommendation-requests/{request_id}")
+async def delete_recommendation_request(
+    request_id: str,
+    student_id: str = Query(..., description="Student's user ID"),
+    db: Client = Depends(get_db)
+):
+    """
+    Delete/Cancel a recommendation request
+
+    **Authorization:**
+    - Only the student who created the request can delete it
+    - Can only delete requests that are still pending or declined
+
+    **Effect:**
+    - Permanently removes the request from the database
+    - Any associated letter drafts are also removed
+
+    **Returns:**
+    - Success message
+    """
+    try:
+        # Verify the request exists and belongs to this student
+        request_response = db.table('recommendation_requests').select('*').eq('id', request_id).execute()
+
+        if not request_response.data or len(request_response.data) == 0:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Recommendation request not found"
+            )
+
+        request_data = request_response.data[0]
+
+        # Verify the student owns this request
+        if request_data.get('student_id') != student_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only delete your own requests"
+            )
+
+        # Check if the request can be deleted (only pending or declined)
+        status_value = request_data.get('status', '')
+        if status_value not in ['pending', 'declined']:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Cannot delete a request with status '{status_value}'. Only pending or declined requests can be deleted."
+            )
+
+        # Delete any associated letters first (if any)
+        db.table('letters_of_recommendation').delete().eq('request_id', request_id).execute()
+
+        # Delete the request
+        delete_response = db.table('recommendation_requests').delete().eq('id', request_id).execute()
+
+        return {
+            "success": True,
+            "message": "Recommendation request deleted successfully",
+            "deleted_id": request_id
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
 # ==================== Letter Endpoints ====================
 
 @router.post("/recommendation-letters", response_model=LetterOfRecommendationResponse, status_code=status.HTTP_201_CREATED)
