@@ -52,7 +52,9 @@ async def create_counseling_session(
     try:
         service = CounselingService()
         # Determine user role from roles array
-        user_role = "counselor" if "counselor" in current_user.roles else "student"
+        user_role = current_user.role if current_user.role in ["counselor", "student"] else (
+            "counselor" if "counselor" in current_user.available_roles else "student"
+        )
         result = await service.create_session(current_user.id, user_role, session_data)
         return result
     except Exception as e:
@@ -236,7 +238,9 @@ async def list_counseling_sessions(
     """
     try:
         service = CounselingService()
-        user_role = "counselor" if "counselor" in current_user.roles else "student"
+        user_role = current_user.role if current_user.role in ["counselor", "student"] else (
+            "counselor" if "counselor" in current_user.available_roles else "student"
+        )
         result = await service.list_sessions(current_user.id, user_role, page, page_size, status, session_type)
         return result
     except Exception as e:
@@ -337,7 +341,9 @@ async def get_session_notes(
     """
     try:
         service = CounselingService()
-        user_role = "counselor" if "counselor" in current_user.roles else "student"
+        user_role = current_user.role if current_user.role in ["counselor", "student"] else (
+            "counselor" if "counselor" in current_user.available_roles else "student"
+        )
         result = await service.get_session_notes(notes_id, current_user.id, user_role)
         return result
     except Exception as e:
@@ -431,7 +437,9 @@ async def get_my_counseling_stats(
     """
     try:
         service = CounselingService()
-        user_role = "counselor" if "counselor" in current_user.roles else "student"
+        user_role = current_user.role if current_user.role in ["counselor", "student"] else (
+            "counselor" if "counselor" in current_user.available_roles else "student"
+        )
         result = await service.get_counseling_stats(current_user.id, user_role)
         return result
     except Exception as e:
