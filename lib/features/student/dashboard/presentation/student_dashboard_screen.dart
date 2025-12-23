@@ -24,6 +24,7 @@ import '../../providers/dashboard_statistics_provider.dart';
 import '../../providers/student_applications_realtime_provider.dart';
 import '../../../../core/providers/student_activities_provider.dart';
 import '../../providers/student_recommendation_requests_provider.dart';
+import '../../providers/student_parent_linking_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -377,13 +378,13 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Progress',
-                icon: Icons.analytics,
-                color: AppColors.warning,
+                label: 'Parent Link',
+                icon: Icons.family_restroom,
+                color: AppColors.parentRole,
+                badgeCount: ref.watch(pendingLinksCountProvider),
                 onTap: () {
-                  // Use tab navigation instead of route navigation
-                  print('[DEBUG] Quick Action: Progress clicked');
-                  widget.onNavigateToTab?.call(3); // Navigate to Progress tab
+                  print('[DEBUG] Quick Action: Parent Linking clicked');
+                  context.push('/student/parent-linking');
                 },
               ),
             ],
