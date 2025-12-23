@@ -140,7 +140,10 @@ async def list_parent_links(
     """
     try:
         service = ParentMonitoringService()
-        user_role = "parent" if "parent" in current_user.roles else "student"
+        # Check role from active_role or available_roles
+        user_role = current_user.role if current_user.role in ["parent", "student"] else (
+            "parent" if "parent" in current_user.available_roles else "student"
+        )
         result = await service.list_parent_links(current_user.id, user_role)
         return result
     except Exception as e:
