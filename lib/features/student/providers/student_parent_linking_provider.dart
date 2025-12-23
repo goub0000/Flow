@@ -118,7 +118,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
 
     try {
       final response = await _apiClient.get(
-        '/api/v1/student/pending-links',
+        '/student/pending-links',
         fromJson: (data) => data,
       );
 
@@ -146,7 +146,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
   Future<void> fetchInviteCodes() async {
     try {
       final response = await _apiClient.get(
-        '/api/v1/student/invite-codes',
+        '/student/invite-codes',
         fromJson: (data) => data,
       );
 
@@ -166,7 +166,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
   Future<bool> approveLink(String linkId) async {
     try {
       final response = await _apiClient.post(
-        '/api/v1/parent/links/$linkId/approve',
+        '/parent/links/$linkId/approve',
         fromJson: (data) => data,
       );
 
@@ -189,7 +189,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
   Future<bool> declineLink(String linkId) async {
     try {
       final response = await _apiClient.post(
-        '/api/v1/student/links/$linkId/decline',
+        '/student/links/$linkId/decline',
         fromJson: (data) => data,
       );
 
@@ -212,7 +212,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
   Future<InviteCode?> generateInviteCode({int expiresInDays = 7, int maxUses = 1}) async {
     try {
       final response = await _apiClient.post(
-        '/api/v1/student/invite-codes',
+        '/student/invite-codes',
         data: {
           'expires_in_days': expiresInDays,
           'max_uses': maxUses,
@@ -238,7 +238,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
   /// Delete/deactivate an invite code
   Future<bool> deleteInviteCode(String codeId) async {
     try {
-      await _apiClient.delete('/api/v1/student/invite-codes/$codeId');
+      await _apiClient.delete('/student/invite-codes/$codeId');
 
       final updatedCodes = state.inviteCodes.where((c) => c.id != codeId).toList();
       state = state.copyWith(inviteCodes: updatedCodes);
