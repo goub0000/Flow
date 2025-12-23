@@ -69,6 +69,8 @@ class ParentStudentLinkResponse(BaseModel):
     # Optional fields for enriched data
     student_name: Optional[str] = None
     student_email: Optional[str] = None
+    parent_name: Optional[str] = None
+    parent_email: Optional[str] = None
 
     class Config:
         from_attributes = True

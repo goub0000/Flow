@@ -35,6 +35,44 @@ class PendingParentLink {
   }
 }
 
+/// Model for a linked parent (active link)
+class LinkedParent {
+  final String id;
+  final String parentId;
+  final String parentName;
+  final String parentEmail;
+  final String relationship;
+  final Map<String, bool> permissions;
+  final DateTime linkedAt;
+
+  const LinkedParent({
+    required this.id,
+    required this.parentId,
+    required this.parentName,
+    required this.parentEmail,
+    required this.relationship,
+    required this.permissions,
+    required this.linkedAt,
+  });
+
+  factory LinkedParent.fromJson(Map<String, dynamic> json) {
+    return LinkedParent(
+      id: json['id'] ?? '',
+      parentId: json['parent_id'] ?? '',
+      parentName: json['parent_name'] ?? 'Unknown Parent',
+      parentEmail: json['parent_email'] ?? '',
+      relationship: json['relationship'] ?? 'parent',
+      permissions: {
+        'can_view_grades': json['can_view_grades'] ?? false,
+        'can_view_activity': json['can_view_activity'] ?? false,
+        'can_view_messages': json['can_view_messages'] ?? false,
+        'can_receive_alerts': json['can_receive_alerts'] ?? false,
+      },
+      linkedAt: DateTime.tryParse(json['linked_at'] ?? json['created_at'] ?? '') ?? DateTime.now(),
+    );
+  }
+}
+
 /// Model for an invite code
 class InviteCode {
   final String id;
@@ -77,12 +115,14 @@ class InviteCode {
 /// State for student parent linking
 class StudentParentLinkingState {
   final List<PendingParentLink> pendingLinks;
+  final List<LinkedParent> linkedParents;
   final List<InviteCode> inviteCodes;
   final bool isLoading;
   final String? error;
 
   const StudentParentLinkingState({
     this.pendingLinks = const [],
+    this.linkedParents = const [],
     this.inviteCodes = const [],
     this.isLoading = false,
     this.error,
@@ -90,12 +130,14 @@ class StudentParentLinkingState {
 
   StudentParentLinkingState copyWith({
     List<PendingParentLink>? pendingLinks,
+    List<LinkedParent>? linkedParents,
     List<InviteCode>? inviteCodes,
     bool? isLoading,
     String? error,
   }) {
     return StudentParentLinkingState(
       pendingLinks: pendingLinks ?? this.pendingLinks,
+      linkedParents: linkedParents ?? this.linkedParents,
       inviteCodes: inviteCodes ?? this.inviteCodes,
       isLoading: isLoading ?? this.isLoading,
       error: error,
@@ -109,6 +151,7 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
 
   StudentParentLinkingNotifier(this._apiClient) : super(const StudentParentLinkingState()) {
     fetchPendingLinks();
+    fetchLinkedParents();
     fetchInviteCodes();
   }
 
@@ -139,6 +182,27 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
         error: 'Failed to fetch pending links: ${e.toString()}',
         isLoading: false,
       );
+    }
+  }
+
+  /// Fetch linked parents (active links)
+  Future<void> fetchLinkedParents() async {
+    try {
+      final response = await _apiClient.get(
+        '/parent/links',
+        fromJson: (data) => data,
+      );
+
+      if (response.success && response.data != null) {
+        final data = response.data as Map<String, dynamic>;
+        final parents = (data['links'] as List? ?? [])
+            .where((l) => l['status'] == 'active')
+            .map((l) => LinkedParent.fromJson(l))
+            .toList();
+        state = state.copyWith(linkedParents: parents);
+      }
+    } catch (e) {
+      // Silently fail - linked parents are supplementary
     }
   }
 
@@ -174,6 +238,8 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
         // Remove the approved link from pending
         final updatedLinks = state.pendingLinks.where((l) => l.id != linkId).toList();
         state = state.copyWith(pendingLinks: updatedLinks);
+        // Refresh linked parents to show the new parent
+        fetchLinkedParents();
         return true;
       } else {
         state = state.copyWith(error: response.message ?? 'Failed to approve link');
@@ -272,4 +338,16 @@ final pendingLinksCountProvider = Provider<int>((ref) {
 final activeInviteCodesProvider = Provider<List<InviteCode>>((ref) {
   final state = ref.watch(studentParentLinkingProvider);
   return state.inviteCodes.where((c) => c.isUsable).toList();
+});
+
+/// Provider for linked parents
+final linkedParentsProvider = Provider<List<LinkedParent>>((ref) {
+  final state = ref.watch(studentParentLinkingProvider);
+  return state.linkedParents;
+});
+
+/// Provider for linked parents count
+final linkedParentsCountProvider = Provider<int>((ref) {
+  final state = ref.watch(studentParentLinkingProvider);
+  return state.linkedParents.length;
 });

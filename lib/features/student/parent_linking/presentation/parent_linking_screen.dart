@@ -14,7 +14,7 @@ class ParentLinkingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Parent Linking'),
@@ -23,6 +23,14 @@ class ParentLinkingScreen extends ConsumerWidget {
             unselectedLabelColor: AppColors.textSecondary,
             indicatorColor: AppColors.primary,
             tabs: [
+              Tab(
+                icon: Badge(
+                  isLabelVisible: ref.watch(linkedParentsCountProvider) > 0,
+                  label: Text('${ref.watch(linkedParentsCountProvider)}'),
+                  child: const Icon(Icons.family_restroom),
+                ),
+                text: 'Linked',
+              ),
               Tab(
                 icon: Badge(
                   isLabelVisible: ref.watch(pendingLinksCountProvider) > 0,
@@ -40,12 +48,183 @@ class ParentLinkingScreen extends ConsumerWidget {
         ),
         body: const TabBarView(
           children: [
+            _LinkedParentsTab(),
             _PendingLinksTab(),
             _InviteCodesTab(),
           ],
         ),
       ),
     );
+  }
+}
+
+/// Tab for viewing linked parents
+class _LinkedParentsTab extends ConsumerWidget {
+  const _LinkedParentsTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final linkedParents = ref.watch(linkedParentsProvider);
+    final state = ref.watch(studentParentLinkingProvider);
+
+    if (state.isLoading) {
+      return const LoadingIndicator(message: 'Loading linked parents...');
+    }
+
+    if (linkedParents.isEmpty) {
+      return EmptyState(
+        icon: Icons.family_restroom,
+        title: 'No Linked Parents',
+        message: 'When a parent links their account to yours, they will appear here.',
+        onAction: () => ref.read(studentParentLinkingProvider.notifier).fetchLinkedParents(),
+        actionLabel: 'Refresh',
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => ref.read(studentParentLinkingProvider.notifier).fetchLinkedParents(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: linkedParents.length,
+        itemBuilder: (context, index) {
+          final parent = linkedParents[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _LinkedParentCard(parent: parent),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Card for a linked parent
+class _LinkedParentCard extends StatelessWidget {
+  final LinkedParent parent;
+
+  const _LinkedParentCard({required this.parent});
+
+  @override
+  Widget build(BuildContext context) {
+    final permissions = parent.permissions;
+
+    return CustomCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: AppColors.success.withValues(alpha: 0.1),
+                child: Icon(Icons.person, color: AppColors.success),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      parent.parentName,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      parent.parentEmail,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.success.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.check_circle, size: 14, color: AppColors.success),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Linked',
+                      style: TextStyle(
+                        color: AppColors.success,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Permissions
+          Text(
+            'Permissions:',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              if (permissions['can_view_grades'] == true)
+                _PermissionChip(label: 'View Grades', icon: Icons.grade),
+              if (permissions['can_view_activity'] == true)
+                _PermissionChip(label: 'View Activity', icon: Icons.timeline),
+              if (permissions['can_view_messages'] == true)
+                _PermissionChip(label: 'View Messages', icon: Icons.message, isPrivate: true),
+              if (permissions['can_receive_alerts'] == true)
+                _PermissionChip(label: 'Receive Alerts', icon: Icons.notifications),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Relationship and linked date
+          Row(
+            children: [
+              Text(
+                parent.relationship[0].toUpperCase() + parent.relationship.substring(1),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '• Linked ${_timeAgo(parent.linkedAt)}',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _timeAgo(DateTime dateTime) {
+    final difference = DateTime.now().difference(dateTime);
+    if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()} month${(difference.inDays / 30).floor() > 1 ? 's' : ''} ago';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+    } else {
+      return 'Just now';
+    }
   }
 }
 

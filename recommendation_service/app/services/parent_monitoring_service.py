@@ -186,6 +186,12 @@ class ParentMonitoringService:
                         if student.data:
                             link['student_name'] = student.data.get('display_name', 'Unknown')
                             link['student_email'] = student.data.get('email', '')
+                    # Enrich with parent info for student view
+                    elif user_role == "student":
+                        parent = self.db.table('users').select('display_name, email').eq('id', link['parent_id']).single().execute()
+                        if parent.data:
+                            link['parent_name'] = parent.data.get('display_name', 'Unknown')
+                            link['parent_email'] = parent.data.get('email', '')
                     links.append(ParentStudentLinkResponse(**link))
 
             return ParentStudentLinkListResponse(
