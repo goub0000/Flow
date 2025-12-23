@@ -58,18 +58,25 @@ class ChildrenListScreen extends ConsumerWidget {
       );
     }
 
+    final pendingLinks = ref.watch(parentPendingLinksProvider);
+
     return Stack(
       children: [
         RefreshIndicator(
           onRefresh: () async {
             await ref.read(parentChildrenProvider.notifier).fetchChildren();
+            await ref.read(parentChildrenProvider.notifier).fetchPendingLinks();
           },
-          child: ListView.builder(
+          child: ListView(
             padding: const EdgeInsets.all(16),
-            itemCount: children.length,
-            itemBuilder: (context, index) {
-              final child = children[index];
-              return Padding(
+            children: [
+              // Pending link requests section
+              if (pendingLinks.isNotEmpty) ...[
+                _PendingLinksSection(pendingLinks: pendingLinks),
+                const SizedBox(height: 16),
+              ],
+              // Children list
+              ...children.map((child) => Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: _ChildCard(
                   child: child,
@@ -77,8 +84,8 @@ class ChildrenListScreen extends ConsumerWidget {
                     context.go('/parent/children/${child.id}');
                   },
                 ),
-              );
-            },
+              )),
+            ],
           ),
         ),
         Positioned(
@@ -291,6 +298,125 @@ class _StatItem extends StatelessWidget {
               ),
         ),
       ],
+    );
+  }
+}
+
+/// Section showing pending link requests
+class _PendingLinksSection extends StatelessWidget {
+  final List<PendingLinkRequest> pendingLinks;
+
+  const _PendingLinksSection({required this.pendingLinks});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.hourglass_empty, color: AppColors.warning, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              'Pending Link Requests',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: AppColors.warning.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                '${pendingLinks.length}',
+                style: TextStyle(
+                  color: AppColors.warning,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Waiting for student approval',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+        ),
+        const SizedBox(height: 12),
+        ...pendingLinks.map((link) => Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: _PendingLinkCard(link: link),
+        )),
+      ],
+    );
+  }
+}
+
+/// Card for a pending link request
+class _PendingLinkCard extends StatelessWidget {
+  final PendingLinkRequest link;
+
+  const _PendingLinkCard({required this.link});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.warning.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.warning.withValues(alpha: 0.1),
+            child: Icon(Icons.person_outline, color: AppColors.warning, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  link.studentName,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                Text(
+                  link.studentEmail.isNotEmpty ? link.studentEmail : 'Awaiting approval',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.warning.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              'Pending',
+              style: TextStyle(
+                color: AppColors.warning,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -177,7 +177,16 @@ class ParentMonitoringService:
             else:
                 raise Exception("Invalid role")
 
-            links = [ParentStudentLinkResponse(**link) for link in links_response.data] if links_response.data else []
+            links = []
+            if links_response.data:
+                for link in links_response.data:
+                    # Enrich with student info for parent view
+                    if user_role == "parent":
+                        student = self.db.table('users').select('display_name, email').eq('id', link['student_id']).single().execute()
+                        if student.data:
+                            link['student_name'] = student.data.get('display_name', 'Unknown')
+                            link['student_email'] = student.data.get('email', '')
+                    links.append(ParentStudentLinkResponse(**link))
 
             return ParentStudentLinkListResponse(
                 links=links,
