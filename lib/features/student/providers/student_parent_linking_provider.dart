@@ -315,6 +315,52 @@ class StudentParentLinkingNotifier extends StateNotifier<StudentParentLinkingSta
     }
   }
 
+  /// Update permissions for a linked parent
+  Future<bool> updateLinkPermissions(String linkId, Map<String, bool> permissions) async {
+    try {
+      final response = await _apiClient.put(
+        '/parent/links/$linkId/permissions',
+        data: permissions,
+        fromJson: (data) => data,
+      );
+
+      if (response.success) {
+        // Refresh linked parents to show updated permissions
+        fetchLinkedParents();
+        return true;
+      } else {
+        state = state.copyWith(error: response.message ?? 'Failed to update permissions');
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(error: 'Failed to update permissions: ${e.toString()}');
+      return false;
+    }
+  }
+
+  /// Unlink/revoke a parent link
+  Future<bool> unlinkParent(String linkId) async {
+    try {
+      final response = await _apiClient.post(
+        '/parent/links/$linkId/revoke',
+        fromJson: (data) => data,
+      );
+
+      if (response.success) {
+        // Remove the unlinked parent from state
+        final updatedParents = state.linkedParents.where((p) => p.id != linkId).toList();
+        state = state.copyWith(linkedParents: updatedParents);
+        return true;
+      } else {
+        state = state.copyWith(error: response.message ?? 'Failed to unlink parent');
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(error: 'Failed to unlink parent: ${e.toString()}');
+      return false;
+    }
+  }
+
   /// Clear error
   void clearError() {
     state = state.copyWith(error: null);

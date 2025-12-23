@@ -98,14 +98,157 @@ class _LinkedParentsTab extends ConsumerWidget {
   }
 }
 
-/// Card for a linked parent
-class _LinkedParentCard extends StatelessWidget {
+/// Card for a linked parent with management options
+class _LinkedParentCard extends ConsumerStatefulWidget {
   final LinkedParent parent;
 
   const _LinkedParentCard({required this.parent});
 
   @override
+  ConsumerState<_LinkedParentCard> createState() => _LinkedParentCardState();
+}
+
+class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
+  bool _isProcessing = false;
+
+  Future<void> _showManagePermissionsDialog() async {
+    final parent = widget.parent;
+    bool canViewGrades = parent.permissions['can_view_grades'] ?? false;
+    bool canViewActivity = parent.permissions['can_view_activity'] ?? false;
+    bool canViewMessages = parent.permissions['can_view_messages'] ?? false;
+    bool canReceiveAlerts = parent.permissions['can_receive_alerts'] ?? false;
+
+    final result = await showDialog<Map<String, bool>>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text('Manage Permissions for ${parent.parentName}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Control what this parent can see:',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: 16),
+              SwitchListTile(
+                title: const Text('View Grades'),
+                subtitle: const Text('Allow viewing your academic grades'),
+                value: canViewGrades,
+                onChanged: (v) => setState(() => canViewGrades = v),
+                activeColor: AppColors.primary,
+              ),
+              SwitchListTile(
+                title: const Text('View Activity'),
+                subtitle: const Text('Allow viewing your app activity'),
+                value: canViewActivity,
+                onChanged: (v) => setState(() => canViewActivity = v),
+                activeColor: AppColors.primary,
+              ),
+              SwitchListTile(
+                title: const Text('View Messages'),
+                subtitle: const Text('Allow viewing your messages (private)'),
+                value: canViewMessages,
+                onChanged: (v) => setState(() => canViewMessages = v),
+                activeColor: AppColors.warning,
+              ),
+              SwitchListTile(
+                title: const Text('Receive Alerts'),
+                subtitle: const Text('Send alerts about important updates'),
+                value: canReceiveAlerts,
+                onChanged: (v) => setState(() => canReceiveAlerts = v),
+                activeColor: AppColors.primary,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop({
+                'can_view_grades': canViewGrades,
+                'can_view_activity': canViewActivity,
+                'can_view_messages': canViewMessages,
+                'can_receive_alerts': canReceiveAlerts,
+              }),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Save'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (result != null) {
+      setState(() => _isProcessing = true);
+      final success = await ref
+          .read(studentParentLinkingProvider.notifier)
+          .updateLinkPermissions(parent.id, result);
+      if (mounted) {
+        setState(() => _isProcessing = false);
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Permissions updated'),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> _showUnlinkDialog() async {
+    final parent = widget.parent;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Unlink Parent'),
+        content: Text(
+          'Are you sure you want to unlink ${parent.parentName}? '
+          'They will no longer be able to view your information.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
+            child: const Text('Unlink'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      setState(() => _isProcessing = true);
+      final success = await ref
+          .read(studentParentLinkingProvider.notifier)
+          .unlinkParent(parent.id);
+      if (mounted) {
+        setState(() => _isProcessing = false);
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${parent.parentName} has been unlinked'),
+              backgroundColor: AppColors.info,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final parent = widget.parent;
     final permissions = parent.permissions;
 
     return CustomCard(
@@ -204,6 +347,35 @@ class _LinkedParentCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Action buttons
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _isProcessing ? null : _showManagePermissionsDialog,
+                  icon: const Icon(Icons.settings, size: 18),
+                  label: const Text('Manage'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.primary,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _isProcessing ? null : _showUnlinkDialog,
+                  icon: const Icon(Icons.link_off, size: 18),
+                  label: const Text('Unlink'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.error,
+                    side: BorderSide(color: AppColors.error),
+                  ),
+                ),
               ),
             ],
           ),
