@@ -3,7 +3,7 @@ Parent Monitoring Service
 Business logic for parent monitoring and student activity tracking
 """
 from typing import Optional, List, Dict, Any
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import logging
 import secrets
 import string
@@ -893,7 +893,7 @@ class ParentMonitoringService:
                 for code_data in response.data:
                     # Check if expired
                     expires_at = datetime.fromisoformat(code_data['expires_at'].replace('Z', '+00:00'))
-                    is_active = code_data['is_active'] and expires_at > datetime.utcnow() and code_data['uses_remaining'] > 0
+                    is_active = code_data['is_active'] and expires_at > datetime.now(timezone.utc) and code_data['uses_remaining'] > 0
                     code_data['is_active'] = is_active
                     codes.append(InviteCodeResponse(**code_data))
 
@@ -957,7 +957,7 @@ class ParentMonitoringService:
                 )
 
             expires_at = datetime.fromisoformat(code_data['expires_at'].replace('Z', '+00:00'))
-            if expires_at < datetime.utcnow():
+            if expires_at < datetime.now(timezone.utc):
                 return UseInviteCodeResponse(
                     success=False,
                     message="This invite code has expired"
