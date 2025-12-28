@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/providers/auth_provider.dart';
+import '../../authentication/providers/auth_provider.dart';
 import '../../shared/counseling/models/counseling_models.dart';
 import '../services/student_counseling_service.dart';
 
 /// Provider for the counseling service
 final studentCounselingServiceProvider = Provider<StudentCounselingService>((ref) {
-  final authState = ref.watch(authStateProvider);
-  final token = authState.value?.session?.accessToken;
+  final authState = ref.watch(authProvider);
+  final token = authState.accessToken;
   return StudentCounselingService(authToken: token);
 });
 
