@@ -95,6 +95,42 @@ async def approve_parent_link(
         )
 
 
+@router.put("/parent/links/{link_id}/permissions")
+async def update_link_permissions(
+    link_id: str,
+    permissions: LinkPermissionsUpdateRequest,
+    current_user: CurrentUser = Depends(get_current_user)
+) -> ParentStudentLinkResponse:
+    """
+    Update permissions for a parent-student link
+
+    **Requires:** Authentication (student involved in link)
+
+    **Path Parameters:**
+    - link_id: Link ID
+
+    **Request Body:**
+    - can_view_grades: Permission to view grades
+    - can_view_activity: Permission to view activity
+    - can_view_messages: Permission to view messages
+    - can_receive_alerts: Permission to receive alerts
+
+    **Returns:**
+    - Updated link with new permissions
+
+    **Note:** Only the student can update permissions for their linked parents
+    """
+    try:
+        service = ParentMonitoringService()
+        result = await service.update_link_permissions(link_id, current_user.id, permissions)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
 @router.post("/parent/links/{link_id}/revoke")
 async def revoke_parent_link(
     link_id: str,

@@ -167,6 +167,53 @@ class ParentMonitoringService:
             logger.error(f"Revoke link error: {e}")
             raise Exception(f"Failed to revoke link: {str(e)}")
 
+    async def update_link_permissions(
+        self,
+        link_id: str,
+        user_id: str,
+        permissions: LinkPermissionsUpdateRequest
+    ) -> ParentStudentLinkResponse:
+        """Update permissions for a parent-student link (student only)"""
+        try:
+            link = self.db.table('parent_student_links').select('*').eq('id', link_id).single().execute()
+
+            if not link.data:
+                raise Exception("Link not found")
+
+            # Only the student can update permissions
+            if link.data['student_id'] != user_id:
+                raise Exception("Not authorized - only the student can update permissions")
+
+            if link.data['status'] != LinkStatus.ACTIVE.value:
+                raise Exception(f"Cannot update permissions for link with status: {link.data['status']}")
+
+            update = {
+                "can_view_grades": permissions.can_view_grades,
+                "can_view_activity": permissions.can_view_activity,
+                "can_view_messages": permissions.can_view_messages,
+                "can_receive_alerts": permissions.can_receive_alerts,
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            response = self.db.table('parent_student_links').update(update).eq('id', link_id).execute()
+
+            if not response.data:
+                raise Exception("Failed to update permissions")
+
+            logger.info(f"Link permissions updated: {link_id}")
+
+            # Enrich with parent info for response
+            parent = self.db.table('users').select('display_name, email').eq('id', response.data[0]['parent_id']).single().execute()
+            if parent.data:
+                response.data[0]['parent_name'] = parent.data.get('display_name', 'Unknown')
+                response.data[0]['parent_email'] = parent.data.get('email', '')
+
+            return ParentStudentLinkResponse(**response.data[0])
+
+        except Exception as e:
+            logger.error(f"Update permissions error: {e}")
+            raise Exception(f"Failed to update permissions: {str(e)}")
+
     async def list_parent_links(self, user_id: str, user_role: str) -> ParentStudentLinkListResponse:
         """List parent-student links"""
         try:
