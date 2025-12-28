@@ -9,7 +9,7 @@ import secrets
 import string
 from uuid import uuid4
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase_admin
 from app.schemas.parent_monitoring import (
     ParentStudentLinkCreateRequest,
     ParentStudentLinkResponse,
@@ -50,7 +50,7 @@ class ParentMonitoringService:
     """Service for parent monitoring features"""
 
     def __init__(self):
-        self.db = get_supabase()
+        self.db = get_supabase_admin()
 
     async def create_parent_link(
         self,
