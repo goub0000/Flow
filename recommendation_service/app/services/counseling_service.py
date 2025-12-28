@@ -962,22 +962,34 @@ class CounselingService:
                         if search_lower not in name and search_lower not in email:
                             continue
 
-                    # Get counselor stats
-                    sessions = self.db.table('counseling_sessions').select('id, status, feedback_rating').eq(
-                        'counselor_id', user['id']
-                    ).execute()
+                    # Get counselor stats (handle missing table gracefully)
+                    total_sessions = 0
+                    completed = 0
+                    avg_rating = None
+                    try:
+                        sessions = self.db.table('counseling_sessions').select('id, status, feedback_rating').eq(
+                            'counselor_id', user['id']
+                        ).execute()
 
-                    session_data = sessions.data or []
-                    total_sessions = len(session_data)
-                    completed = len([s for s in session_data if s.get('status') == SessionStatus.COMPLETED.value])
-                    ratings = [s.get('feedback_rating') for s in session_data if s.get('feedback_rating')]
-                    avg_rating = sum(ratings) / len(ratings) if ratings else None
+                        session_data = sessions.data or []
+                        total_sessions = len(session_data)
+                        completed = len([s for s in session_data if s.get('status') == SessionStatus.COMPLETED.value])
+                        ratings = [s.get('feedback_rating') for s in session_data if s.get('feedback_rating')]
+                        avg_rating = sum(ratings) / len(ratings) if ratings else None
+                    except Exception:
+                        # Table might not exist yet
+                        pass
 
-                    # Get assigned students count
-                    students = self.db.table('student_counselor_assignments').select('id').eq(
-                        'counselor_id', user['id']
-                    ).eq('is_active', True).execute()
-                    student_count = len(students.data) if students.data else 0
+                    # Get assigned students count (handle missing table gracefully)
+                    student_count = 0
+                    try:
+                        students = self.db.table('student_counselor_assignments').select('id').eq(
+                            'counselor_id', user['id']
+                        ).eq('is_active', True).execute()
+                        student_count = len(students.data) if students.data else 0
+                    except Exception:
+                        # Table might not exist yet
+                        student_count = 0
 
                     counselors.append({
                         "id": user.get('id'),
