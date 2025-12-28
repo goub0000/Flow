@@ -662,7 +662,7 @@ async def list_institution_counselors(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     search: Optional[str] = None,
-    current_user: CurrentUser = Depends(RoleChecker([UserRole.ADMIN]))
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.INSTITUTION]))
 ):
     """
     List all counselors in institution (Admin only)
@@ -694,7 +694,7 @@ async def list_institution_counselors(
 async def assign_counselor_to_student(
     counselor_id: str = Body(...),
     student_id: str = Body(...),
-    current_user: CurrentUser = Depends(RoleChecker([UserRole.ADMIN]))
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.INSTITUTION]))
 ):
     """
     Assign a counselor to a student (Admin only)
@@ -725,7 +725,7 @@ async def assign_counselor_to_student(
 
 @router.get("/counseling/institution/stats")
 async def get_institution_counseling_stats(
-    current_user: CurrentUser = Depends(RoleChecker([UserRole.ADMIN]))
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.INSTITUTION]))
 ):
     """
     Get institution-wide counseling statistics (Admin only)
