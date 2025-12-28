@@ -412,13 +412,13 @@ async def get_counselor_availability(
         )
 
 
-# Students List Endpoint (for counselors)
+# Students List Endpoint (for counselors and institutions)
 @router.get("/counseling/students")
 async def list_students_for_counselor(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     search: Optional[str] = None,
-    current_user: CurrentUser = Depends(RoleChecker([UserRole.COUNSELOR]))
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.COUNSELOR, UserRole.INSTITUTION]))
 ):
     """
     List students for counselor to schedule sessions with
