@@ -732,24 +732,35 @@ class CounselingService:
             if not counselor.data:
                 return None
 
-            # Get counselor's availability
-            availability = await self.get_counselor_availability(counselor_id)
+            # Get counselor's availability (handle errors gracefully)
+            availability = []
+            try:
+                avail_response = await self.get_counselor_availability(counselor_id)
+                if avail_response and avail_response.availability:
+                    availability = [a.model_dump() for a in avail_response.availability]
+            except Exception:
+                availability = []
 
-            # Get counselor's stats (completed sessions, rating)
-            stats_query = self.db.table('counseling_sessions').select('*').eq(
-                'counselor_id', counselor_id
-            ).eq('status', SessionStatus.COMPLETED.value).execute()
+            # Get counselor's stats (handle errors gracefully)
+            completed_sessions = 0
+            avg_rating = None
+            try:
+                stats_query = self.db.table('counseling_sessions').select('*').eq(
+                    'counselor_id', counselor_id
+                ).eq('status', SessionStatus.COMPLETED.value).execute()
 
-            completed_sessions = len(stats_query.data) if stats_query.data else 0
-            ratings = [s.get('feedback_rating') for s in (stats_query.data or []) if s.get('feedback_rating')]
-            avg_rating = sum(ratings) / len(ratings) if ratings else None
+                completed_sessions = len(stats_query.data) if stats_query.data else 0
+                ratings = [s.get('feedback_rating') for s in (stats_query.data or []) if s.get('feedback_rating')]
+                avg_rating = sum(ratings) / len(ratings) if ratings else None
+            except Exception:
+                pass
 
             return {
                 "id": counselor.data['id'],
                 "name": counselor.data.get('display_name', counselor.data.get('email', 'Unknown')),
                 "email": counselor.data.get('email', ''),
                 "assigned_at": assignment.data.get('assigned_at'),
-                "availability": [a.model_dump() for a in availability.availability] if availability.availability else [],
+                "availability": availability,
                 "completed_sessions": completed_sessions,
                 "average_rating": avg_rating
             }
