@@ -546,36 +546,32 @@ class CounselingService:
     ) -> Dict[str, Any]:
         """List students for counselor to schedule sessions with"""
         try:
-            # Query users with student role
-            query = self.db.table('users').select(
-                'id, email, display_name, avatar_url, created_at'
-            )
-
-            # Filter for students
-            query = query.or_('active_role.eq.student,available_roles.cs.{student}')
-
-            # Apply search if provided
-            if search:
-                query = query.or_(f'display_name.ilike.%{search}%,email.ilike.%{search}%')
-
-            # Get total count
-            count_response = query.execute()
-            total = len(count_response.data) if count_response.data else 0
-
-            # Apply pagination
-            offset = (page - 1) * page_size
-            query = self.db.table('users').select(
-                'id, email, display_name, avatar_url, created_at'
-            ).or_('active_role.eq.student,available_roles.cs.{student}')
-
-            if search:
-                query = query.or_(f'display_name.ilike.%{search}%,email.ilike.%{search}%')
-
-            response = query.range(offset, offset + page_size - 1).execute()
+            # Query users with student role - simpler approach
+            # Get all users and filter in Python for reliability
+            response = self.db.table('users').select(
+                'id, email, display_name, avatar_url, created_at, active_role, available_roles'
+            ).execute()
 
             students = []
             if response.data:
                 for user in response.data:
+                    # Check if user is a student
+                    active_role = user.get('active_role', '')
+                    available_roles = user.get('available_roles', []) or []
+
+                    is_student = active_role == 'student' or 'student' in available_roles
+
+                    if not is_student:
+                        continue
+
+                    # Apply search filter if provided
+                    if search:
+                        search_lower = search.lower()
+                        name = (user.get('display_name') or '').lower()
+                        email = (user.get('email') or '').lower()
+                        if search_lower not in name and search_lower not in email:
+                            continue
+
                     students.append({
                         "id": user.get('id'),
                         "name": user.get('display_name', user.get('email', 'Unknown')),
@@ -584,8 +580,13 @@ class CounselingService:
                         "created_at": user.get('created_at')
                     })
 
+            # Calculate pagination
+            total = len(students)
+            offset = (page - 1) * page_size
+            paginated_students = students[offset:offset + page_size]
+
             return {
-                "students": students,
+                "students": paginated_students,
                 "total": total,
                 "page": page,
                 "page_size": page_size,
