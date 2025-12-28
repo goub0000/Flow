@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/constants/user_roles.dart';
 import '../widgets/focus_tools_widgets.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 /// Study Sessions Screen
 ///
@@ -16,14 +20,14 @@ import '../widgets/focus_tools_widgets.dart';
 /// - Edit session details
 /// - Export reports
 
-class StudySessionsScreen extends StatefulWidget {
+class StudySessionsScreen extends ConsumerStatefulWidget {
   const StudySessionsScreen({super.key});
 
   @override
-  State<StudySessionsScreen> createState() => _StudySessionsScreenState();
+  ConsumerState<StudySessionsScreen> createState() => _StudySessionsScreenState();
 }
 
-class _StudySessionsScreenState extends State<StudySessionsScreen>
+class _StudySessionsScreenState extends ConsumerState<StudySessionsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late List<FocusSession> _sessions;

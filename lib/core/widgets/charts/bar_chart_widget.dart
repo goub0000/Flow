@@ -4,7 +4,7 @@ import '../../theme/app_colors.dart';
 
 /// Bar Chart Widget - Customizable bar chart component
 class BarChartWidget extends StatelessWidget {
-  final List<BarChartData> data;
+  final List<BarChartDataItem> data;
   final String? title;
   final String? xAxisLabel;
   final String? yAxisLabel;
@@ -173,12 +173,12 @@ class BarChartWidget extends StatelessWidget {
 }
 
 /// Bar Chart Data Model
-class BarChartData {
+class BarChartDataItem {
   final String label;
   final double value;
   final Color? color;
 
-  BarChartData({
+  BarChartDataItem({
     required this.label,
     required this.value,
     this.color,

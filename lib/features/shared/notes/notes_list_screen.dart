@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/constants/user_roles.dart';
 import '../widgets/notes_widgets.dart';
 import '../../authentication/providers/auth_provider.dart';
 import 'note_editor_screen.dart';
@@ -21,16 +22,16 @@ import 'note_editor_screen.dart';
 /// - Handle offline mode
 /// - Implement search indexing
 
-class NotesListScreen extends StatefulWidget {
+class NotesListScreen extends ConsumerStatefulWidget {
   const NotesListScreen({super.key});
 
   @override
-  State<NotesListScreen> createState() => _NotesListScreenState();
+  ConsumerState<NotesListScreen> createState() => _NotesListScreenState();
 }
 
 enum ViewMode { list, grid }
 
-class _NotesListScreenState extends State<NotesListScreen>
+class _NotesListScreenState extends ConsumerState<NotesListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late List<NoteModel> _allNotes;
@@ -186,7 +187,7 @@ class _NotesListScreenState extends State<NotesListScreen>
       }
 
       // Attachments filter
-      if (_onlyWithAttachments && note.attachments.isEmpty) {
+      if (_onlyWithAttachments && (note.attachments?.isEmpty ?? true)) {
         return false;
       }
 

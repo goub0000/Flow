@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/constants/user_roles.dart';
 import '../widgets/task_widgets.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 /// Tasks List Screen
 ///
@@ -18,14 +22,14 @@ import '../widgets/task_widgets.dart';
 /// - Collaborative task sharing
 /// - Cloud backup and restore
 
-class TasksListScreen extends StatefulWidget {
+class TasksListScreen extends ConsumerStatefulWidget {
   const TasksListScreen({super.key});
 
   @override
-  State<TasksListScreen> createState() => _TasksListScreenState();
+  ConsumerState<TasksListScreen> createState() => _TasksListScreenState();
 }
 
-class _TasksListScreenState extends State<TasksListScreen>
+class _TasksListScreenState extends ConsumerState<TasksListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();

@@ -150,7 +150,7 @@ class ErrorView extends StatelessWidget {
                       child: Text(
                         errorInfo.helpText!,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.info.shade700,
+                          color: AppColors.info,
                         ),
                       ),
                     ),
@@ -364,7 +364,7 @@ class InlineErrorView extends StatelessWidget {
             child: Text(
               customMessage ?? 'Failed to load data',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.error.shade700,
+                color: AppColors.error,
               ),
             ),
           ),

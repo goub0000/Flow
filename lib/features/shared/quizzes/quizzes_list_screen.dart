@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/constants/user_roles.dart';
 import '../widgets/quiz_widgets.dart';
+import '../../authentication/providers/auth_provider.dart';
 
 /// Quizzes List Screen
 ///
@@ -17,7 +21,7 @@ import '../widgets/quiz_widgets.dart';
 /// - Check quiz availability/prerequisites
 /// - Handle quiz locking/unlocking
 
-class QuizzesListScreen extends StatefulWidget {
+class QuizzesListScreen extends ConsumerStatefulWidget {
   final String? courseId;
   final String? lessonId;
 
@@ -28,10 +32,10 @@ class QuizzesListScreen extends StatefulWidget {
   });
 
   @override
-  State<QuizzesListScreen> createState() => _QuizzesListScreenState();
+  ConsumerState<QuizzesListScreen> createState() => _QuizzesListScreenState();
 }
 
-class _QuizzesListScreenState extends State<QuizzesListScreen>
+class _QuizzesListScreenState extends ConsumerState<QuizzesListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   QuizDifficulty? _selectedDifficulty;

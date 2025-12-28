@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/providers/notification_provider.dart';
+import '../../../core/models/notification_models.dart';
 
 /// Notification bell icon with unread count badge
 class NotificationBell extends ConsumerWidget {

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/constants/user_roles.dart';
 import '../../widgets/progress_analytics_widgets.dart';
+import '../../../authentication/providers/auth_provider.dart';
 
 /// Achievements Screen
 ///
 /// Displays earned and locked achievements/badges.
 
-class AchievementsScreen extends StatefulWidget {
+class AchievementsScreen extends ConsumerStatefulWidget {
   const AchievementsScreen({super.key});
 
   @override
-  State<AchievementsScreen> createState() => _AchievementsScreenState();
+  ConsumerState<AchievementsScreen> createState() => _AchievementsScreenState();
 }
 
-class _AchievementsScreenState extends State<AchievementsScreen>
+class _AchievementsScreenState extends ConsumerState<AchievementsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late List<Achievement> _achievements;
