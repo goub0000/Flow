@@ -639,6 +639,76 @@ class CounselingService:
             logger.error(f"List students error: {e}")
             raise Exception(f"Failed to list students: {str(e)}")
 
+    async def list_assigned_students(
+        self,
+        counselor_id: str,
+        page: int = 1,
+        page_size: int = 20,
+        search: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """List students assigned to a specific counselor"""
+        try:
+            # Get assigned student IDs from assignments table
+            assignments = self.db.table('student_counselor_assignments').select(
+                'student_id, assigned_at'
+            ).eq('counselor_id', counselor_id).eq('is_active', True).execute()
+
+            if not assignments.data:
+                return {
+                    "students": [],
+                    "total": 0,
+                    "page": page,
+                    "page_size": page_size,
+                    "total_pages": 0
+                }
+
+            student_ids = [a['student_id'] for a in assignments.data]
+            assignment_dates = {a['student_id']: a['assigned_at'] for a in assignments.data}
+
+            # Get student details
+            students = []
+            for student_id in student_ids:
+                try:
+                    user = self.db.table('users').select(
+                        'id, email, display_name, created_at'
+                    ).eq('id', student_id).single().execute()
+
+                    if user.data:
+                        # Apply search filter if provided
+                        if search:
+                            search_lower = search.lower()
+                            name = (user.data.get('display_name') or '').lower()
+                            email = (user.data.get('email') or '').lower()
+                            if search_lower not in name and search_lower not in email:
+                                continue
+
+                        students.append({
+                            "id": user.data.get('id'),
+                            "name": user.data.get('display_name', user.data.get('email', 'Unknown')),
+                            "email": user.data.get('email', ''),
+                            "created_at": user.data.get('created_at'),
+                            "assigned_at": assignment_dates.get(student_id)
+                        })
+                except Exception:
+                    continue
+
+            # Calculate pagination
+            total = len(students)
+            offset = (page - 1) * page_size
+            paginated_students = students[offset:offset + page_size]
+
+            return {
+                "students": paginated_students,
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": (total + page_size - 1) // page_size if total > 0 else 0
+            }
+
+        except Exception as e:
+            logger.error(f"List assigned students error: {e}")
+            raise Exception(f"Failed to list assigned students: {str(e)}")
+
     # ==================== STUDENT ACCESS METHODS ====================
 
     async def get_student_counselor(self, student_id: str) -> Optional[Dict[str, Any]]:

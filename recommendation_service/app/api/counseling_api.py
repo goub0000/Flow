@@ -423,7 +423,7 @@ async def list_students_for_counselor(
     """
     List students for counselor to schedule sessions with
 
-    **Requires:** Counselor authentication
+    **Requires:** Counselor or Institution authentication
 
     **Query Parameters:**
     - page: Page number (default: 1)
@@ -431,11 +431,17 @@ async def list_students_for_counselor(
     - search: Optional search by name or email
 
     **Returns:**
-    - List of students with basic info
+    - For counselors: List of assigned students
+    - For institutions: List of all students
     """
     try:
         service = CounselingService()
-        result = await service.list_students(page, page_size, search)
+        # If counselor, return only assigned students
+        if current_user.role == UserRole.COUNSELOR:
+            result = await service.list_assigned_students(current_user.id, page, page_size, search)
+        else:
+            # Institution gets all students
+            result = await service.list_students(page, page_size, search)
         return result
     except Exception as e:
         raise HTTPException(
