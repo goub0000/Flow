@@ -10,12 +10,16 @@ List<RouteBase> parentRoutes = [
   GoRoute(
     path: '/parent/dashboard',
     name: 'parent-dashboard',
-    builder: (context, state) => const ParentDashboardScreen(),
+    builder: (context, state) {
+      // Check for tab query parameter
+      final tabIndex = int.tryParse(state.uri.queryParameters['tab'] ?? '0') ?? 0;
+      return ParentDashboardScreen(initialTab: tabIndex);
+    },
   ),
   GoRoute(
     path: '/parent/children',
     name: 'parent-children',
-    builder: (context, state) => const ChildrenListScreen(),
+    redirect: (context, state) => '/parent/dashboard?tab=1',
   ),
   GoRoute(
     path: '/parent/children/:id',

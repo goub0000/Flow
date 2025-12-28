@@ -9,7 +9,9 @@ import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 
 class ParentDashboardScreen extends ConsumerStatefulWidget {
-  const ParentDashboardScreen({super.key});
+  final int initialTab;
+
+  const ParentDashboardScreen({super.key, this.initialTab = 0});
 
   @override
   ConsumerState<ParentDashboardScreen> createState() =>
@@ -17,12 +19,13 @@ class ParentDashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
-  int _currentIndex = 0;
+  late int _currentIndex;
   late final List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialTab.clamp(0, 4);
     _screens = [
       ParentHomeTab(
         onNavigateToChildren: () => setState(() => _currentIndex = 1),
