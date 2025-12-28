@@ -412,6 +412,38 @@ async def get_counselor_availability(
         )
 
 
+# Students List Endpoint (for counselors)
+@router.get("/counseling/students")
+async def list_students_for_counselor(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    search: Optional[str] = None,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.COUNSELOR]))
+):
+    """
+    List students for counselor to schedule sessions with
+
+    **Requires:** Counselor authentication
+
+    **Query Parameters:**
+    - page: Page number (default: 1)
+    - page_size: Items per page (default: 20, max: 100)
+    - search: Optional search by name or email
+
+    **Returns:**
+    - List of students with basic info
+    """
+    try:
+        service = CounselingService()
+        result = await service.list_students(page, page_size, search)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
 # Statistics Endpoints
 @router.get("/counseling/stats/me")
 async def get_my_counseling_stats(

@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import logging
 from uuid import uuid4
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase_admin
 from app.schemas.counseling import (
     CounselingSessionCreateRequest,
     CounselingSessionUpdateRequest,
@@ -35,7 +35,7 @@ class CounselingService:
     """Service for managing counseling sessions"""
 
     def __init__(self):
-        self.db = get_supabase()
+        self.db = get_supabase_admin()
 
     async def create_session(
         self,
@@ -537,3 +537,61 @@ class CounselingService:
         except Exception as e:
             logger.error(f"Get stats error: {e}")
             raise Exception(f"Failed to get statistics: {str(e)}")
+
+    async def list_students(
+        self,
+        page: int = 1,
+        page_size: int = 20,
+        search: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """List students for counselor to schedule sessions with"""
+        try:
+            # Query users with student role
+            query = self.db.table('users').select(
+                'id, email, display_name, avatar_url, created_at'
+            )
+
+            # Filter for students
+            query = query.or_('active_role.eq.student,available_roles.cs.{student}')
+
+            # Apply search if provided
+            if search:
+                query = query.or_(f'display_name.ilike.%{search}%,email.ilike.%{search}%')
+
+            # Get total count
+            count_response = query.execute()
+            total = len(count_response.data) if count_response.data else 0
+
+            # Apply pagination
+            offset = (page - 1) * page_size
+            query = self.db.table('users').select(
+                'id, email, display_name, avatar_url, created_at'
+            ).or_('active_role.eq.student,available_roles.cs.{student}')
+
+            if search:
+                query = query.or_(f'display_name.ilike.%{search}%,email.ilike.%{search}%')
+
+            response = query.range(offset, offset + page_size - 1).execute()
+
+            students = []
+            if response.data:
+                for user in response.data:
+                    students.append({
+                        "id": user.get('id'),
+                        "name": user.get('display_name', user.get('email', 'Unknown')),
+                        "email": user.get('email', ''),
+                        "avatar_url": user.get('avatar_url'),
+                        "created_at": user.get('created_at')
+                    })
+
+            return {
+                "students": students,
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": (total + page_size - 1) // page_size if total > 0 else 0
+            }
+
+        except Exception as e:
+            logger.error(f"List students error: {e}")
+            raise Exception(f"Failed to list students: {str(e)}")
