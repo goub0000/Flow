@@ -648,10 +648,18 @@ class CounselingService:
     ) -> Dict[str, Any]:
         """List students assigned to a specific counselor"""
         try:
+            logger.info(f"Looking for students assigned to counselor: {counselor_id}")
+
             # Get assigned student IDs from assignments table
             assignments = self.db.table('student_counselor_assignments').select(
-                'student_id, assigned_at'
+                'student_id, counselor_id, assigned_at, is_active'
             ).eq('counselor_id', counselor_id).eq('is_active', True).execute()
+
+            logger.info(f"Assignments query result: {assignments.data}")
+
+            # Also check all assignments for debugging
+            all_assignments = self.db.table('student_counselor_assignments').select('*').execute()
+            logger.info(f"All assignments in table: {all_assignments.data}")
 
             if not assignments.data:
                 return {
