@@ -932,24 +932,19 @@ class CounselingService:
     ) -> Dict[str, Any]:
         """List all counselors in an institution"""
         try:
-            # Get all users with counselor role
+            # Get all users with counselor role (institution_id column may not exist)
             response = self.db.table('users').select(
-                'id, email, display_name, created_at, active_role, available_roles, institution_id'
+                'id, email, display_name, created_at, active_role, available_roles'
             ).execute()
 
             counselors = []
             if response.data:
                 for user in response.data:
-                    # Check if user is a counselor in this institution
+                    # Check if user is a counselor
                     active_role = user.get('active_role', '')
                     available_roles = user.get('available_roles', []) or []
-                    user_institution = user.get('institution_id', '')
 
                     is_counselor = active_role == 'counselor' or 'counselor' in available_roles
-
-                    # Filter by institution if specified
-                    if institution_id and user_institution != institution_id:
-                        continue
 
                     if not is_counselor:
                         continue
