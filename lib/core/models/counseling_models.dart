@@ -11,27 +11,29 @@ class StudentRecord {
   final List<String> strengths;
   final List<String> challenges;
   final int totalSessions;
-  final DateTime lastSessionDate;
+  final DateTime? lastSessionDate;
   final String status; // active, inactive, graduated
   final List<String> goals;
   final int upcomingSessions;
+  final DateTime? assignedAt;
 
   StudentRecord({
     required this.id,
     required this.name,
     required this.email,
     this.photoUrl,
-    required this.grade,
-    required this.gpa,
-    required this.schoolName,
-    required this.interests,
-    required this.strengths,
-    required this.challenges,
-    required this.totalSessions,
-    required this.lastSessionDate,
-    required this.status,
+    this.grade = '-',
+    this.gpa = 0.0,
+    this.schoolName = '-',
+    this.interests = const [],
+    this.strengths = const [],
+    this.challenges = const [],
+    this.totalSessions = 0,
+    this.lastSessionDate,
+    this.status = 'active',
     this.goals = const [],
     this.upcomingSessions = 0,
+    this.assignedAt,
   });
 
   String get initials {
@@ -44,21 +46,26 @@ class StudentRecord {
 
   factory StudentRecord.fromJson(Map<String, dynamic> json) {
     return StudentRecord(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      photoUrl: json['photoUrl'] as String?,
-      grade: json['grade'] as String,
-      gpa: (json['gpa'] as num).toDouble(),
-      schoolName: json['schoolName'] as String,
-      interests: List<String>.from(json['interests'] as List),
-      strengths: List<String>.from(json['strengths'] as List),
-      challenges: List<String>.from(json['challenges'] as List),
-      totalSessions: json['totalSessions'] as int,
-      lastSessionDate: DateTime.parse(json['lastSessionDate'] as String),
-      status: json['status'] as String,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? json['display_name'] as String? ?? 'Unknown',
+      email: json['email'] as String? ?? '',
+      photoUrl: json['photoUrl'] as String? ?? json['photo_url'] as String?,
+      grade: json['grade'] as String? ?? '-',
+      gpa: json['gpa'] != null ? (json['gpa'] as num).toDouble() : 0.0,
+      schoolName: json['schoolName'] as String? ?? json['school_name'] as String? ?? '-',
+      interests: json['interests'] != null ? List<String>.from(json['interests'] as List) : const [],
+      strengths: json['strengths'] != null ? List<String>.from(json['strengths'] as List) : const [],
+      challenges: json['challenges'] != null ? List<String>.from(json['challenges'] as List) : const [],
+      totalSessions: json['totalSessions'] as int? ?? json['total_sessions'] as int? ?? 0,
+      lastSessionDate: json['lastSessionDate'] != null
+          ? DateTime.parse(json['lastSessionDate'] as String)
+          : json['last_session_date'] != null
+              ? DateTime.parse(json['last_session_date'] as String)
+              : null,
+      status: json['status'] as String? ?? 'active',
       goals: json['goals'] != null ? List<String>.from(json['goals'] as List) : const [],
-      upcomingSessions: json['upcomingSessions'] as int? ?? 0,
+      upcomingSessions: json['upcomingSessions'] as int? ?? json['upcoming_sessions'] as int? ?? 0,
+      assignedAt: json['assigned_at'] != null ? DateTime.parse(json['assigned_at'] as String) : null,
     );
   }
 
@@ -75,10 +82,11 @@ class StudentRecord {
       'strengths': strengths,
       'challenges': challenges,
       'totalSessions': totalSessions,
-      'lastSessionDate': lastSessionDate.toIso8601String(),
+      'lastSessionDate': lastSessionDate?.toIso8601String(),
       'status': status,
       'goals': goals,
       'upcomingSessions': upcomingSessions,
+      'assigned_at': assignedAt?.toIso8601String(),
     };
   }
 

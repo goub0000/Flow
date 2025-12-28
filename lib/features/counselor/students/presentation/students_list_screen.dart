@@ -272,7 +272,10 @@ class _StudentCard extends StatelessWidget {
   }
 
   String _getLastSessionText() {
-    final difference = DateTime.now().difference(student.lastSessionDate);
+    if (student.lastSessionDate == null) {
+      return 'No sessions yet';
+    }
+    final difference = DateTime.now().difference(student.lastSessionDate!);
     if (difference.inDays == 0) {
       return 'Today';
     } else if (difference.inDays == 1) {

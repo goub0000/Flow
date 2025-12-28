@@ -44,10 +44,16 @@ class CounselorStudentsNotifier extends StateNotifier<CounselorStudentsState> {
 
     try {
       // Try to fetch student records from counseling API
-      // Backend might need to implement: GET /api/v1/counseling/students
+      // Backend returns: { "students": [...], "total": ..., "page": ... }
       final response = await _apiClient.get(
         '${ApiConfig.counseling}/students',
         fromJson: (data) {
+          if (data is Map<String, dynamic>) {
+            final studentsList = data['students'] as List?;
+            if (studentsList != null) {
+              return studentsList.map((studentJson) => StudentRecord.fromJson(studentJson as Map<String, dynamic>)).toList();
+            }
+          }
           if (data is List) {
             return data.map((studentJson) => StudentRecord.fromJson(studentJson)).toList();
           }
