@@ -97,8 +97,10 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
     if (state.counselor == null) {
       return NoCounselorAssigned(
         onContactAdmin: () {
-          // Navigate to support/contact
-          context.push('/student/help');
+          // Show a message since help page isn't implemented yet
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please contact your institution administrator for counselor assignment.')),
+          );
         },
       );
     }

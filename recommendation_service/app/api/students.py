@@ -170,21 +170,40 @@ def get_application_success_rate(user_id: str, db: Client = Depends(get_db)):
     - acceptance_rate: Percentage of applications accepted
     - distributions: Array of {status, count, percentage} for chart
     """
+    # Default response for missing data
+    default_response = {
+        "total_applications": 0,
+        "accepted_count": 0,
+        "pending_count": 0,
+        "rejected_count": 0,
+        "withdrawn_count": 0,
+        "acceptance_rate": 0.0,
+        "distributions": []
+    }
+
     try:
         # Get student profile - handle both user_id (auth) and internal profile ID
         # We need to find the auth user_id (UUID) for querying applications table
         auth_user_id = user_id  # Assume it's already the auth UUID
 
-        profile_response = db.table('student_profiles').select('id, user_id').eq('user_id', user_id).execute()
+        try:
+            profile_response = db.table('student_profiles').select('id, user_id').eq('user_id', user_id).execute()
+        except Exception as table_error:
+            logger.warning(f"Could not query student_profiles: {table_error}")
+            return default_response
 
         if not profile_response.data or len(profile_response.data) == 0:
             # Try by internal profile id - in this case we need to get the user_id
-            profile_response = db.table('student_profiles').select('id, user_id').eq('id', user_id).execute()
-            if profile_response.data and len(profile_response.data) > 0:
-                auth_user_id = profile_response.data[0].get('user_id', user_id)
+            try:
+                profile_response = db.table('student_profiles').select('id, user_id').eq('id', user_id).execute()
+                if profile_response.data and len(profile_response.data) > 0:
+                    auth_user_id = profile_response.data[0].get('user_id', user_id)
+            except Exception:
+                pass
 
         if not profile_response.data or len(profile_response.data) == 0:
-            raise HTTPException(status_code=404, detail="Student profile not found")
+            # No profile found, return default response
+            return default_response
 
         # Use auth user_id (UUID) for applications table query
         # applications.student_id references auth.users(id) which is UUID
@@ -268,21 +287,39 @@ def get_gpa_trend(user_id: str, db: Client = Depends(get_db)):
     - trend: "improving", "declining", or "stable"
     - average_gpa: Average GPA across all semesters
     """
+    # Default response for missing data
+    default_response = {
+        "current_gpa": 0.0,
+        "goal_gpa": 4.0,
+        "data_points": [],
+        "trend": "stable",
+        "average_gpa": 0.0
+    }
+
     try:
         # Get student profile with current GPA - handle both user_id (auth) and internal ID
         # We need both the profile data and the auth user_id for gpa_history query
         auth_user_id = user_id  # Assume it's already the auth UUID
 
-        profile_response = db.table('student_profiles').select('id, user_id, gpa').eq('user_id', user_id).execute()
+        try:
+            profile_response = db.table('student_profiles').select('id, user_id, gpa').eq('user_id', user_id).execute()
+        except Exception as table_error:
+            # student_profiles table might not exist
+            logger.warning(f"Could not query student_profiles: {table_error}")
+            return default_response
 
         if not profile_response.data or len(profile_response.data) == 0:
             # Try by internal profile id - get the user_id for gpa_history query
-            profile_response = db.table('student_profiles').select('id, user_id, gpa').eq('id', user_id).execute()
-            if profile_response.data and len(profile_response.data) > 0:
-                auth_user_id = profile_response.data[0].get('user_id', user_id)
+            try:
+                profile_response = db.table('student_profiles').select('id, user_id, gpa').eq('id', user_id).execute()
+                if profile_response.data and len(profile_response.data) > 0:
+                    auth_user_id = profile_response.data[0].get('user_id', user_id)
+            except Exception:
+                pass
 
         if not profile_response.data or len(profile_response.data) == 0:
-            raise HTTPException(status_code=404, detail="Student profile not found")
+            # No profile found, return default response
+            return default_response
 
         student_profile = profile_response.data[0]
         current_gpa = student_profile.get('gpa') or 0.0  # Handle None values
