@@ -610,10 +610,14 @@ class ParentMonitoringService:
     async def get_children_for_parent(self, parent_id: str) -> List[ChildResponse]:
         """Get all linked children for a parent with full details"""
         try:
+            logger.info(f"Getting children for parent: {parent_id}")
+
             # Get all active links for parent
             links = self.db.table('parent_student_links').select('*').eq(
                 'parent_id', parent_id
             ).eq('status', LinkStatus.ACTIVE.value).execute()
+
+            logger.info(f"Found {len(links.data) if links.data else 0} active links")
 
             if not links.data:
                 return []
@@ -621,10 +625,15 @@ class ParentMonitoringService:
             children = []
             for link in links.data:
                 student_id = link['student_id']
+                logger.info(f"Building child response for student: {student_id}")
                 child = await self._build_child_response(parent_id, student_id)
                 if child:
                     children.append(child)
+                    logger.info(f"Successfully built child: {child.name}")
+                else:
+                    logger.warning(f"Failed to build child response for student: {student_id}")
 
+            logger.info(f"Returning {len(children)} children")
             return children
 
         except Exception as e:
@@ -655,54 +664,71 @@ class ParentMonitoringService:
     async def _build_child_response(self, parent_id: str, student_id: str) -> Optional[ChildResponse]:
         """Build ChildResponse from database"""
         try:
-            # Get student/user info
-            user = self.db.table('users').select('*').eq('id', student_id).single().execute()
-            if not user.data:
+            # Get student/user info (required)
+            user = self.db.table('users').select('*').eq('id', student_id).execute()
+            if not user.data or len(user.data) == 0:
+                logger.error(f"No user found for student_id: {student_id}")
                 return None
 
-            user_data = user.data
+            user_data = user.data[0]
+            logger.info(f"Found user: {user_data.get('display_name', 'Unknown')}")
 
-            # Get student profile for additional info
-            profile = self.db.table('student_profiles').select('*').eq('user_id', student_id).single().execute()
-            profile_data = profile.data if profile.data else {}
+            # Get student profile for additional info (optional)
+            profile_data = {}
+            try:
+                profile = self.db.table('student_profiles').select('*').eq('user_id', student_id).execute()
+                if profile.data and len(profile.data) > 0:
+                    profile_data = profile.data[0]
+            except Exception as e:
+                logger.warning(f"Could not fetch student profile: {e}")
 
-            # Get applications
-            apps = self.db.table('applications').select('*').eq('student_id', student_id).execute()
+            # Get applications (optional)
             applications = []
-            if apps.data:
-                for app in apps.data:
-                    applications.append(ChildApplicationResponse(
-                        id=app['id'],
-                        institutionName=app.get('institution_name', 'Unknown'),
-                        programName=app.get('program_name', 'Unknown'),
-                        status=app.get('status', 'pending'),
-                        submittedAt=app.get('submitted_at', app.get('created_at', datetime.utcnow().isoformat()))
-                    ))
+            try:
+                apps = self.db.table('applications').select('*').eq('student_id', student_id).execute()
+                if apps.data:
+                    for app in apps.data:
+                        applications.append(ChildApplicationResponse(
+                            id=app['id'],
+                            institutionName=app.get('institution_name', 'Unknown'),
+                            programName=app.get('program_name', 'Unknown'),
+                            status=app.get('status', 'pending'),
+                            submittedAt=app.get('submitted_at', app.get('created_at', datetime.utcnow().isoformat()))
+                        ))
+            except Exception as e:
+                logger.warning(f"Could not fetch applications: {e}")
 
-            # Get enrollments for course list
-            enrollments = self.db.table('enrollments').select('course_id, courses(title)').eq('student_id', student_id).execute()
+            # Get enrollments for course list (optional)
             enrolled_courses = []
-            if enrollments.data:
-                for enr in enrollments.data:
-                    course_title = enr.get('courses', {}).get('title') if enr.get('courses') else f"Course {enr.get('course_id', 'Unknown')}"
-                    enrolled_courses.append(course_title)
+            try:
+                enrollments = self.db.table('enrollments').select('course_id').eq('student_id', student_id).execute()
+                if enrollments.data:
+                    for enr in enrollments.data:
+                        enrolled_courses.append(f"Course {enr.get('course_id', 'Unknown')}")
+            except Exception as e:
+                logger.warning(f"Could not fetch enrollments: {e}")
 
-            # Get last activity
-            last_activity = self.db.table('student_activities').select('timestamp').eq(
-                'student_id', student_id
-            ).order('timestamp', desc=True).limit(1).execute()
-
+            # Get last activity (optional)
             last_active = datetime.utcnow().isoformat()
-            if last_activity.data:
-                last_active = last_activity.data[0]['timestamp']
+            try:
+                last_activity = self.db.table('student_activities').select('timestamp').eq(
+                    'student_id', student_id
+                ).order('timestamp', desc=True).limit(1).execute()
+                if last_activity.data:
+                    last_active = last_activity.data[0]['timestamp']
+            except Exception as e:
+                logger.warning(f"Could not fetch last activity: {e}")
 
-            # Calculate average grade from enrollments
-            grades = self.db.table('enrollments').select('grade').eq('student_id', student_id).not_.is_('grade', 'null').execute()
+            # Calculate average grade from enrollments (optional)
             average_grade = 0.0
-            if grades.data:
-                grade_values = [g['grade'] for g in grades.data if g.get('grade') is not None]
-                if grade_values:
-                    average_grade = sum(grade_values) / len(grade_values)
+            try:
+                grades = self.db.table('enrollments').select('grade').eq('student_id', student_id).execute()
+                if grades.data:
+                    grade_values = [g['grade'] for g in grades.data if g.get('grade') is not None]
+                    if grade_values:
+                        average_grade = sum(grade_values) / len(grade_values)
+            except Exception as e:
+                logger.warning(f"Could not fetch grades: {e}")
 
             # Build response
             return ChildResponse(
