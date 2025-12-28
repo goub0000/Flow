@@ -287,10 +287,11 @@ class CounselingService:
                 query = query.eq('status', status)
 
             if session_type:
-                query = query.eq('session_type', session_type)
+                query = query.eq('type', session_type)  # Table uses 'type' not 'session_type'
 
             offset = (page - 1) * page_size
-            query = query.order('scheduled_start', desc=True).range(offset, offset + page_size - 1)
+            # Table uses 'scheduled_date' not 'scheduled_start'
+            query = query.order('scheduled_date', desc=True).range(offset, offset + page_size - 1)
 
             response = query.execute()
 
@@ -298,7 +299,35 @@ class CounselingService:
             if response.data:
                 for s in response.data:
                     try:
-                        sessions.append(CounselingSessionResponse(**s))
+                        # Transform database schema to response schema
+                        scheduled_date = s.get('scheduled_date', '')
+                        duration = s.get('duration_minutes', 30)
+
+                        # Calculate end time from duration
+                        scheduled_end = scheduled_date
+                        if scheduled_date:
+                            try:
+                                start_dt = datetime.fromisoformat(scheduled_date.replace('Z', '+00:00'))
+                                end_dt = start_dt + timedelta(minutes=duration)
+                                scheduled_end = end_dt.isoformat()
+                            except:
+                                pass
+
+                        session_data = {
+                            'id': s.get('id', ''),
+                            'counselor_id': s.get('counselor_id', ''),
+                            'student_id': s.get('student_id', ''),
+                            'session_type': s.get('type', 'general'),
+                            'session_mode': 'video',  # Default since table doesn't have this
+                            'status': s.get('status', 'scheduled'),
+                            'scheduled_start': scheduled_date,
+                            'scheduled_end': scheduled_end,
+                            'topic': s.get('notes', ''),  # Use notes as topic
+                            'description': s.get('summary', ''),
+                            'created_at': s.get('created_at', ''),
+                            'updated_at': s.get('updated_at', ''),
+                        }
+                        sessions.append(CounselingSessionResponse(**session_data))
                     except Exception as e:
                         logger.warning(f"Could not parse session {s.get('id')}: {e}")
 
