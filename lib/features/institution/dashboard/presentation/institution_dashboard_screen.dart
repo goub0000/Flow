@@ -9,6 +9,7 @@ import 'widgets/overview_tab.dart';
 import '../../applicants/presentation/applicants_list_screen.dart';
 import '../../programs/presentation/programs_list_screen.dart';
 import '../../courses/presentation/institution_courses_screen.dart';
+import '../../counselors/presentation/counselors_management_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 import '../../debug/institution_debug_screen.dart';
@@ -30,6 +31,7 @@ class _InstitutionDashboardScreenState
     const ApplicantsListScreen(),
     const ProgramsListScreen(),
     const InstitutionCoursesScreen(),
+    const CounselorsManagementScreen(),
     const ProfileScreen(showBackButton: false),
     const SettingsScreen(),
   ];
@@ -89,6 +91,11 @@ class _InstitutionDashboardScreenState
               icon: Icons.menu_book_outlined,
               activeIcon: Icons.menu_book,
               label: 'Courses',
+            ),
+            DashboardNavigationItem(
+              icon: Icons.psychology_outlined,
+              activeIcon: Icons.psychology,
+              label: 'Counselors',
             ),
             DashboardNavigationItem(
               icon: Icons.person_outline,

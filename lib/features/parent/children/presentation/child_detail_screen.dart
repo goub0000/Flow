@@ -6,6 +6,7 @@ import '../../../../core/models/child_model.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/loading_indicator.dart';
 import '../../providers/parent_monitoring_provider.dart' as monitoring;
+import 'widgets/child_counseling_tab.dart';
 
 class ChildDetailScreen extends ConsumerStatefulWidget {
   final Child child;
@@ -26,7 +27,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     // Select this child in the monitoring provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(monitoring.childMonitoringProvider.notifier).selectChild(widget.child.id);
@@ -51,10 +52,12 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
         title: Text(widget.child.name),
         bottom: TabBar(
           controller: _tabController,
+          isScrollable: true,
           tabs: const [
             Tab(text: 'Overview'),
             Tab(text: 'Courses'),
             Tab(text: 'Applications'),
+            Tab(text: 'Counseling'),
           ],
         ),
       ),
@@ -64,6 +67,10 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
           _buildOverviewTab(),
           _buildCoursesTab(),
           _buildApplicationsTab(),
+          ChildCounselingTab(
+            childId: widget.child.id,
+            childName: widget.child.name,
+          ),
         ],
       ),
     );

@@ -479,3 +479,274 @@ async def get_my_counseling_stats(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
+
+
+# ==================== STUDENT ACCESS ENDPOINTS ====================
+
+@router.get("/counseling/my-counselor")
+async def get_my_counselor(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get assigned counselor for current student
+
+    **Requires:** Student authentication
+
+    **Returns:**
+    - Counselor info including name, email, availability
+    - Counselor stats (completed sessions, rating)
+    - Returns null if no counselor assigned
+    """
+    try:
+        service = CounselingService()
+        result = await service.get_student_counselor(current_user.id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/counseling/available-slots/{counselor_id}")
+async def get_available_slots(
+    counselor_id: str,
+    start_date: str = Query(..., description="Start date (ISO format)"),
+    end_date: str = Query(..., description="End date (ISO format)"),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get available booking slots for a counselor
+
+    **Requires:** Authentication
+
+    **Path Parameters:**
+    - counselor_id: Counselor's user ID
+
+    **Query Parameters:**
+    - start_date: Start of date range (ISO format)
+    - end_date: End of date range (ISO format)
+
+    **Returns:**
+    - List of available time slots with start/end times
+    """
+    try:
+        service = CounselingService()
+        result = await service.get_available_slots(counselor_id, start_date, end_date)
+        return {"slots": result}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/counseling/sessions/book", status_code=status.HTTP_201_CREATED)
+async def book_session_as_student(
+    counselor_id: str = Body(...),
+    scheduled_start: str = Body(...),
+    session_type: str = Body("general"),
+    topic: Optional[str] = Body(None),
+    description: Optional[str] = Body(None),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Book a counseling session (Student-initiated)
+
+    **Requires:** Student authentication
+
+    **Request Body:**
+    - counselor_id: ID of the counselor to book with
+    - scheduled_start: Session start time (ISO datetime)
+    - session_type: Type of session (academic, career, personal, etc.)
+    - topic: Optional session topic
+    - description: Optional description
+
+    **Returns:**
+    - Created session data
+    """
+    try:
+        service = CounselingService()
+        result = await service.book_session_as_student(
+            student_id=current_user.id,
+            counselor_id=counselor_id,
+            scheduled_start=scheduled_start,
+            session_type=session_type,
+            topic=topic,
+            description=description
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+# ==================== PARENT ACCESS ENDPOINTS ====================
+
+@router.get("/counseling/children/{child_id}/counselor")
+async def get_child_counselor(
+    child_id: str,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get child's assigned counselor (Parent access)
+
+    **Requires:** Parent authentication with valid parent-child link
+
+    **Path Parameters:**
+    - child_id: Child's user ID
+
+    **Returns:**
+    - Counselor info including name, email, availability
+    - Returns null if no counselor assigned
+    """
+    try:
+        service = CounselingService()
+        result = await service.get_child_counselor(child_id, current_user.id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e)
+        )
+
+
+@router.get("/counseling/children/{child_id}/sessions")
+async def get_child_sessions(
+    child_id: str,
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    status: Optional[str] = None,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get child's counseling sessions (Parent access)
+
+    **Requires:** Parent authentication with valid parent-child link
+
+    **Path Parameters:**
+    - child_id: Child's user ID
+
+    **Query Parameters:**
+    - page: Page number (default: 1)
+    - page_size: Items per page (default: 20, max: 100)
+    - status: Filter by status
+
+    **Returns:**
+    - Paginated list of child's counseling sessions
+    - Parents only see shared notes, not private counselor notes
+    """
+    try:
+        service = CounselingService()
+        result = await service.get_child_sessions(
+            child_id=child_id,
+            parent_id=current_user.id,
+            page=page,
+            page_size=page_size,
+            status_filter=status
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e)
+        )
+
+
+# ==================== INSTITUTION ACCESS ENDPOINTS ====================
+
+@router.get("/counseling/institution/counselors")
+async def list_institution_counselors(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    search: Optional[str] = None,
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.ADMIN]))
+):
+    """
+    List all counselors in institution (Admin only)
+
+    **Requires:** Admin authentication
+
+    **Query Parameters:**
+    - page: Page number (default: 1)
+    - page_size: Items per page (default: 20, max: 100)
+    - search: Search by name or email
+
+    **Returns:**
+    - Paginated list of counselors with stats
+    """
+    try:
+        service = CounselingService()
+        # Get institution_id from current user
+        institution_id = getattr(current_user, 'institution_id', None)
+        result = await service.list_institution_counselors(institution_id, page, page_size, search)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/counseling/assign")
+async def assign_counselor_to_student(
+    counselor_id: str = Body(...),
+    student_id: str = Body(...),
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.ADMIN]))
+):
+    """
+    Assign a counselor to a student (Admin only)
+
+    **Requires:** Admin authentication
+
+    **Request Body:**
+    - counselor_id: ID of the counselor
+    - student_id: ID of the student
+
+    **Returns:**
+    - Assignment record
+    """
+    try:
+        service = CounselingService()
+        result = await service.assign_counselor_to_student(
+            counselor_id=counselor_id,
+            student_id=student_id,
+            assigned_by=current_user.id
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/counseling/institution/stats")
+async def get_institution_counseling_stats(
+    current_user: CurrentUser = Depends(RoleChecker([UserRole.ADMIN]))
+):
+    """
+    Get institution-wide counseling statistics (Admin only)
+
+    **Requires:** Admin authentication
+
+    **Returns:**
+    - Total counselors
+    - Total students assigned
+    - Total/completed/upcoming sessions
+    - Average rating
+    - Sessions by type
+    - Counselor performance summary
+    """
+    try:
+        service = CounselingService()
+        institution_id = getattr(current_user, 'institution_id', None)
+        result = await service.get_institution_counseling_stats(institution_id)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )

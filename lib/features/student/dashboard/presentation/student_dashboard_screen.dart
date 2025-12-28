@@ -25,6 +25,7 @@ import '../../providers/student_applications_realtime_provider.dart';
 import '../../../../core/providers/student_activities_provider.dart';
 import '../../providers/student_recommendation_requests_provider.dart';
 import '../../providers/student_parent_linking_provider.dart';
+import '../../providers/student_counseling_provider.dart';
 
 class StudentDashboardScreen extends ConsumerStatefulWidget {
   const StudentDashboardScreen({super.key});
@@ -385,6 +386,50 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 onTap: () {
                   print('[DEBUG] Quick Action: Parent Linking clicked');
                   context.push('/student/parent-linking');
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Second row of quick actions
+          QuickActionsGrid(
+            crossAxisCount: 4,
+            actions: [
+              QuickAction(
+                label: 'Counseling',
+                icon: Icons.psychology,
+                color: Colors.teal,
+                badgeCount: ref.watch(studentCounselingProvider).upcomingSessions.length,
+                onTap: () {
+                  print('[DEBUG] Quick Action: Counseling clicked');
+                  context.push('/student/counseling');
+                },
+              ),
+              QuickAction(
+                label: 'Schedule',
+                icon: Icons.calendar_month,
+                color: Colors.orange,
+                onTap: () {
+                  print('[DEBUG] Quick Action: Schedule clicked');
+                  context.push('/schedule');
+                },
+              ),
+              QuickAction(
+                label: 'Resources',
+                icon: Icons.library_books,
+                color: Colors.purple,
+                onTap: () {
+                  print('[DEBUG] Quick Action: Resources clicked');
+                  context.push('/resources');
+                },
+              ),
+              QuickAction(
+                label: 'Help',
+                icon: Icons.help_outline,
+                color: Colors.grey,
+                onTap: () {
+                  print('[DEBUG] Quick Action: Help clicked');
+                  context.push('/help');
                 },
               ),
             ],

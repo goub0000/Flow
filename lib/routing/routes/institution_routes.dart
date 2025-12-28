@@ -16,6 +16,7 @@ import '../../features/institution/courses/presentation/course_permissions_scree
 import '../../features/institution/courses/presentation/course_enrollments_screen.dart';
 import '../../features/institution/courses/presentation/institution_course_detail_screen.dart';
 import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
+import '../../features/institution/counselors/presentation/counselors_management_screen.dart';
 import '../../features/institution/providers/institution_applicants_provider.dart';
 
 /// Institution-specific routes
@@ -163,6 +164,12 @@ List<RouteBase> institutionRoutes = [
         course: course,
       );
     },
+  ),
+  // Counselors management
+  GoRoute(
+    path: '/institution/counselors',
+    name: 'institution-counselors',
+    builder: (context, state) => const CounselorsManagementScreen(),
   ),
 ];
 

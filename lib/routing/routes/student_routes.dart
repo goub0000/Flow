@@ -13,6 +13,9 @@ import '../../features/student/courses/presentation/my_courses_screen.dart';
 import '../../features/student/courses/presentation/course_learning_screen.dart';
 import '../../features/student/recommendations/presentation/recommendation_requests_screen.dart';
 import '../../features/student/parent_linking/presentation/parent_linking_screen.dart';
+import '../../features/student/counseling/presentation/student_counseling_tab.dart';
+import '../../features/student/counseling/presentation/book_counseling_session_screen.dart';
+import '../../features/shared/counseling/models/counseling_models.dart';
 
 /// Student-specific routes
 List<RouteBase> studentRoutes = [
@@ -106,5 +109,32 @@ List<RouteBase> studentRoutes = [
     path: '/student/parent-linking',
     name: 'student-parent-linking',
     builder: (context, state) => const ParentLinkingScreen(),
+  ),
+  // Counseling routes
+  GoRoute(
+    path: '/student/counseling',
+    name: 'student-counseling',
+    builder: (context, state) => Scaffold(
+      appBar: AppBar(
+        title: const Text('My Counselor'),
+      ),
+      body: const StudentCounselingTab(),
+    ),
+  ),
+  GoRoute(
+    path: '/student/counseling/book',
+    name: 'student-counseling-book',
+    builder: (context, state) {
+      final counselor = state.extra as CounselorInfo?;
+      if (counselor == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.go('/student/counseling');
+        });
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      return BookCounselingSessionScreen(counselor: counselor);
+    },
   ),
 ];

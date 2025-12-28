@@ -638,3 +638,498 @@ class CounselingService:
         except Exception as e:
             logger.error(f"List students error: {e}")
             raise Exception(f"Failed to list students: {str(e)}")
+
+    # ==================== STUDENT ACCESS METHODS ====================
+
+    async def get_student_counselor(self, student_id: str) -> Optional[Dict[str, Any]]:
+        """Get assigned counselor for a student"""
+        try:
+            # Check student_counselor_assignments table first
+            assignment = self.db.table('student_counselor_assignments').select(
+                'counselor_id, assigned_at'
+            ).eq('student_id', student_id).eq('is_active', True).single().execute()
+
+            if not assignment.data:
+                return None
+
+            counselor_id = assignment.data['counselor_id']
+
+            # Get counselor details
+            counselor = self.db.table('users').select(
+                'id, email, display_name, created_at'
+            ).eq('id', counselor_id).single().execute()
+
+            if not counselor.data:
+                return None
+
+            # Get counselor's availability
+            availability = await self.get_counselor_availability(counselor_id)
+
+            # Get counselor's stats (completed sessions, rating)
+            stats_query = self.db.table('counseling_sessions').select('*').eq(
+                'counselor_id', counselor_id
+            ).eq('status', SessionStatus.COMPLETED.value).execute()
+
+            completed_sessions = len(stats_query.data) if stats_query.data else 0
+            ratings = [s.get('feedback_rating') for s in (stats_query.data or []) if s.get('feedback_rating')]
+            avg_rating = sum(ratings) / len(ratings) if ratings else None
+
+            return {
+                "id": counselor.data['id'],
+                "name": counselor.data.get('display_name', counselor.data.get('email', 'Unknown')),
+                "email": counselor.data.get('email', ''),
+                "assigned_at": assignment.data.get('assigned_at'),
+                "availability": [a.model_dump() for a in availability.availability] if availability.availability else [],
+                "completed_sessions": completed_sessions,
+                "average_rating": avg_rating
+            }
+
+        except Exception as e:
+            logger.error(f"Get student counselor error: {e}")
+            return None
+
+    async def get_available_slots(
+        self,
+        counselor_id: str,
+        start_date: str,
+        end_date: str
+    ) -> List[Dict[str, Any]]:
+        """Get available booking slots for a counselor within date range"""
+        try:
+            # Get counselor availability
+            availability_response = await self.get_counselor_availability(counselor_id)
+            availability = availability_response.availability if availability_response else []
+
+            if not availability:
+                return []
+
+            # Parse dates
+            start = datetime.fromisoformat(start_date.replace('Z', '+00:00'))
+            end = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
+
+            # Get existing sessions in the date range
+            existing_sessions = self.db.table('counseling_sessions').select(
+                'scheduled_date, duration_minutes, status'
+            ).eq('counselor_id', counselor_id).gte(
+                'scheduled_date', start_date
+            ).lte('scheduled_date', end_date).in_(
+                'status', [SessionStatus.SCHEDULED.value, SessionStatus.IN_PROGRESS.value]
+            ).execute()
+
+            booked_slots = set()
+            if existing_sessions.data:
+                for session in existing_sessions.data:
+                    if session.get('scheduled_date'):
+                        booked_slots.add(session['scheduled_date'][:16])  # Compare by minute
+
+            # Generate available slots
+            available_slots = []
+            current_date = start.date()
+            end_date_obj = end.date()
+
+            while current_date <= end_date_obj:
+                day_of_week = current_date.weekday()  # 0=Monday, 6=Sunday
+
+                # Find availability for this day
+                day_availability = [a for a in availability if a.day_of_week == day_of_week]
+
+                for avail in day_availability:
+                    # Parse start and end times
+                    start_time_parts = avail.start_time.split(':')
+                    end_time_parts = avail.end_time.split(':')
+
+                    slot_start = datetime.combine(
+                        current_date,
+                        datetime.strptime(avail.start_time, '%H:%M').time()
+                    )
+                    slot_end = datetime.combine(
+                        current_date,
+                        datetime.strptime(avail.end_time, '%H:%M').time()
+                    )
+
+                    duration = avail.session_duration or 30
+
+                    # Generate slots
+                    while slot_start + timedelta(minutes=duration) <= slot_end:
+                        slot_key = slot_start.isoformat()[:16]
+
+                        # Check if not booked and not in the past
+                        if slot_key not in booked_slots and slot_start > datetime.now():
+                            available_slots.append({
+                                "start": slot_start.isoformat(),
+                                "end": (slot_start + timedelta(minutes=duration)).isoformat(),
+                                "duration_minutes": duration,
+                                "counselor_id": counselor_id
+                            })
+
+                        slot_start += timedelta(minutes=duration)
+
+                current_date += timedelta(days=1)
+
+            return available_slots
+
+        except Exception as e:
+            logger.error(f"Get available slots error: {e}")
+            return []
+
+    async def book_session_as_student(
+        self,
+        student_id: str,
+        counselor_id: str,
+        scheduled_start: str,
+        session_type: str = "general",
+        topic: Optional[str] = None,
+        description: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Book a counseling session as a student"""
+        try:
+            # Verify counselor exists
+            counselor = self.db.table('users').select('id, active_role, available_roles').eq(
+                'id', counselor_id
+            ).single().execute()
+
+            if not counselor.data:
+                raise Exception("Counselor not found")
+
+            # Check if slot is available
+            start_dt = datetime.fromisoformat(scheduled_start.replace('Z', '+00:00'))
+            end_dt = start_dt + timedelta(minutes=30)  # Default 30 min sessions
+
+            conflicts = self.db.table('counseling_sessions').select('id').eq(
+                'counselor_id', counselor_id
+            ).eq('scheduled_date', scheduled_start[:10]).in_(
+                'status', [SessionStatus.SCHEDULED.value, SessionStatus.IN_PROGRESS.value]
+            ).execute()
+
+            # Check for time overlap
+            if conflicts.data:
+                for conflict in conflicts.data:
+                    raise Exception("This time slot is no longer available")
+
+            # Create session
+            session = {
+                "id": str(uuid4()),
+                "counselor_id": counselor_id,
+                "student_id": student_id,
+                "type": session_type,
+                "status": SessionStatus.SCHEDULED.value,
+                "scheduled_date": scheduled_start,
+                "duration_minutes": 30,
+                "notes": topic or "",
+                "summary": description or "",
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat(),
+            }
+
+            response = self.db.table('counseling_sessions').insert(session).execute()
+
+            if not response.data:
+                raise Exception("Failed to book session")
+
+            logger.info(f"Session booked by student: {response.data[0]['id']}")
+
+            return response.data[0]
+
+        except Exception as e:
+            logger.error(f"Book session as student error: {e}")
+            raise Exception(f"Failed to book session: {str(e)}")
+
+    # ==================== PARENT ACCESS METHODS ====================
+
+    async def get_child_counselor(self, child_id: str, parent_id: str) -> Optional[Dict[str, Any]]:
+        """Get child's assigned counselor (for parent viewing)"""
+        try:
+            # Verify parent-child relationship
+            relationship = self.db.table('parent_child_links').select('id').eq(
+                'parent_id', parent_id
+            ).eq('child_id', child_id).eq('status', 'active').single().execute()
+
+            if not relationship.data:
+                raise Exception("Not authorized to view this child's information")
+
+            # Get the child's counselor
+            return await self.get_student_counselor(child_id)
+
+        except Exception as e:
+            logger.error(f"Get child counselor error: {e}")
+            raise Exception(f"Failed to get child's counselor: {str(e)}")
+
+    async def get_child_sessions(
+        self,
+        child_id: str,
+        parent_id: str,
+        page: int = 1,
+        page_size: int = 20,
+        status_filter: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Get child's counseling sessions (for parent viewing)"""
+        try:
+            # Verify parent-child relationship
+            relationship = self.db.table('parent_child_links').select('id').eq(
+                'parent_id', parent_id
+            ).eq('child_id', child_id).eq('status', 'active').single().execute()
+
+            if not relationship.data:
+                raise Exception("Not authorized to view this child's sessions")
+
+            # Get sessions
+            query = self.db.table('counseling_sessions').select('*').eq('student_id', child_id)
+
+            if status_filter:
+                query = query.eq('status', status_filter)
+
+            offset = (page - 1) * page_size
+            query = query.order('scheduled_date', desc=True).range(offset, offset + page_size - 1)
+
+            response = query.execute()
+
+            sessions = []
+            if response.data:
+                for s in response.data:
+                    # Get counselor info
+                    counselor = self.db.table('users').select('display_name, email').eq(
+                        'id', s.get('counselor_id')
+                    ).single().execute()
+
+                    counselor_name = "Unknown"
+                    if counselor.data:
+                        counselor_name = counselor.data.get('display_name', counselor.data.get('email', 'Unknown'))
+
+                    sessions.append({
+                        "id": s.get('id'),
+                        "counselor_id": s.get('counselor_id'),
+                        "counselor_name": counselor_name,
+                        "type": s.get('type', 'general'),
+                        "status": s.get('status'),
+                        "scheduled_date": s.get('scheduled_date'),
+                        "duration_minutes": s.get('duration_minutes', 30),
+                        "notes": s.get('notes'),  # Shared notes only
+                        "created_at": s.get('created_at')
+                    })
+
+            total = len(response.data) if response.data else 0
+
+            return {
+                "sessions": sessions,
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "has_more": (offset + page_size) < total
+            }
+
+        except Exception as e:
+            logger.error(f"Get child sessions error: {e}")
+            raise Exception(f"Failed to get child's sessions: {str(e)}")
+
+    # ==================== INSTITUTION ACCESS METHODS ====================
+
+    async def list_institution_counselors(
+        self,
+        institution_id: str,
+        page: int = 1,
+        page_size: int = 20,
+        search: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """List all counselors in an institution"""
+        try:
+            # Get all users with counselor role
+            response = self.db.table('users').select(
+                'id, email, display_name, created_at, active_role, available_roles, institution_id'
+            ).execute()
+
+            counselors = []
+            if response.data:
+                for user in response.data:
+                    # Check if user is a counselor in this institution
+                    active_role = user.get('active_role', '')
+                    available_roles = user.get('available_roles', []) or []
+                    user_institution = user.get('institution_id', '')
+
+                    is_counselor = active_role == 'counselor' or 'counselor' in available_roles
+
+                    # Filter by institution if specified
+                    if institution_id and user_institution != institution_id:
+                        continue
+
+                    if not is_counselor:
+                        continue
+
+                    # Apply search filter
+                    if search:
+                        search_lower = search.lower()
+                        name = (user.get('display_name') or '').lower()
+                        email = (user.get('email') or '').lower()
+                        if search_lower not in name and search_lower not in email:
+                            continue
+
+                    # Get counselor stats
+                    sessions = self.db.table('counseling_sessions').select('id, status, feedback_rating').eq(
+                        'counselor_id', user['id']
+                    ).execute()
+
+                    session_data = sessions.data or []
+                    total_sessions = len(session_data)
+                    completed = len([s for s in session_data if s.get('status') == SessionStatus.COMPLETED.value])
+                    ratings = [s.get('feedback_rating') for s in session_data if s.get('feedback_rating')]
+                    avg_rating = sum(ratings) / len(ratings) if ratings else None
+
+                    # Get assigned students count
+                    students = self.db.table('student_counselor_assignments').select('id').eq(
+                        'counselor_id', user['id']
+                    ).eq('is_active', True).execute()
+                    student_count = len(students.data) if students.data else 0
+
+                    counselors.append({
+                        "id": user.get('id'),
+                        "name": user.get('display_name', user.get('email', 'Unknown')),
+                        "email": user.get('email', ''),
+                        "created_at": user.get('created_at'),
+                        "total_sessions": total_sessions,
+                        "completed_sessions": completed,
+                        "average_rating": avg_rating,
+                        "assigned_students": student_count
+                    })
+
+            # Calculate pagination
+            total = len(counselors)
+            offset = (page - 1) * page_size
+            paginated_counselors = counselors[offset:offset + page_size]
+
+            return {
+                "counselors": paginated_counselors,
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": (total + page_size - 1) // page_size if total > 0 else 0
+            }
+
+        except Exception as e:
+            logger.error(f"List institution counselors error: {e}")
+            raise Exception(f"Failed to list counselors: {str(e)}")
+
+    async def assign_counselor_to_student(
+        self,
+        counselor_id: str,
+        student_id: str,
+        assigned_by: str
+    ) -> Dict[str, Any]:
+        """Assign a counselor to a student"""
+        try:
+            # Verify counselor exists and has counselor role
+            counselor = self.db.table('users').select('id, active_role, available_roles').eq(
+                'id', counselor_id
+            ).single().execute()
+
+            if not counselor.data:
+                raise Exception("Counselor not found")
+
+            active_role = counselor.data.get('active_role', '')
+            available_roles = counselor.data.get('available_roles', []) or []
+            if active_role != 'counselor' and 'counselor' not in available_roles:
+                raise Exception("User is not a counselor")
+
+            # Verify student exists
+            student = self.db.table('users').select('id').eq('id', student_id).single().execute()
+            if not student.data:
+                raise Exception("Student not found")
+
+            # Deactivate any existing assignment
+            self.db.table('student_counselor_assignments').update({
+                'is_active': False,
+                'updated_at': datetime.utcnow().isoformat()
+            }).eq('student_id', student_id).eq('is_active', True).execute()
+
+            # Create new assignment
+            assignment = {
+                "id": str(uuid4()),
+                "student_id": student_id,
+                "counselor_id": counselor_id,
+                "assigned_by": assigned_by,
+                "assigned_at": datetime.utcnow().isoformat(),
+                "is_active": True,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+
+            response = self.db.table('student_counselor_assignments').insert(assignment).execute()
+
+            if not response.data:
+                raise Exception("Failed to create assignment")
+
+            logger.info(f"Counselor {counselor_id} assigned to student {student_id}")
+
+            return response.data[0]
+
+        except Exception as e:
+            logger.error(f"Assign counselor error: {e}")
+            raise Exception(f"Failed to assign counselor: {str(e)}")
+
+    async def get_institution_counseling_stats(self, institution_id: str) -> Dict[str, Any]:
+        """Get institution-wide counseling statistics"""
+        try:
+            # Get all counselors in institution
+            counselors_response = await self.list_institution_counselors(institution_id, page_size=1000)
+            counselors = counselors_response.get('counselors', [])
+            counselor_ids = [c['id'] for c in counselors]
+
+            if not counselor_ids:
+                return {
+                    "total_counselors": 0,
+                    "total_students_assigned": 0,
+                    "total_sessions": 0,
+                    "completed_sessions": 0,
+                    "upcoming_sessions": 0,
+                    "average_rating": None,
+                    "sessions_by_type": {},
+                    "sessions_by_month": []
+                }
+
+            # Get all sessions for these counselors
+            all_sessions = []
+            for counselor_id in counselor_ids:
+                sessions = self.db.table('counseling_sessions').select('*').eq(
+                    'counselor_id', counselor_id
+                ).execute()
+                if sessions.data:
+                    all_sessions.extend(sessions.data)
+
+            total_sessions = len(all_sessions)
+            completed = len([s for s in all_sessions if s.get('status') == SessionStatus.COMPLETED.value])
+            upcoming = len([s for s in all_sessions if s.get('status') == SessionStatus.SCHEDULED.value])
+
+            # Average rating
+            ratings = [s.get('feedback_rating') for s in all_sessions if s.get('feedback_rating')]
+            avg_rating = sum(ratings) / len(ratings) if ratings else None
+
+            # Sessions by type
+            by_type = {}
+            for s in all_sessions:
+                stype = s.get('type', 'general')
+                by_type[stype] = by_type.get(stype, 0) + 1
+
+            # Total students assigned
+            total_students = sum(c.get('assigned_students', 0) for c in counselors)
+
+            return {
+                "total_counselors": len(counselors),
+                "total_students_assigned": total_students,
+                "total_sessions": total_sessions,
+                "completed_sessions": completed,
+                "upcoming_sessions": upcoming,
+                "average_rating": avg_rating,
+                "sessions_by_type": by_type,
+                "counselor_performance": [
+                    {
+                        "id": c['id'],
+                        "name": c['name'],
+                        "sessions": c['total_sessions'],
+                        "rating": c['average_rating'],
+                        "students": c['assigned_students']
+                    }
+                    for c in counselors[:10]  # Top 10
+                ]
+            }
+
+        except Exception as e:
+            logger.error(f"Get institution stats error: {e}")
+            raise Exception(f"Failed to get institution statistics: {str(e)}")
