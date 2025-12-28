@@ -592,7 +592,7 @@ class CounselingService:
             # Query users with student role - simpler approach
             # Get all users and filter in Python for reliability
             response = self.db.table('users').select(
-                'id, email, display_name, avatar_url, created_at, active_role, available_roles'
+                'id, email, display_name, created_at, active_role, available_roles'
             ).execute()
 
             students = []
@@ -619,7 +619,6 @@ class CounselingService:
                         "id": user.get('id'),
                         "name": user.get('display_name', user.get('email', 'Unknown')),
                         "email": user.get('email', ''),
-                        "avatar_url": user.get('avatar_url'),
                         "created_at": user.get('created_at')
                     })
 
