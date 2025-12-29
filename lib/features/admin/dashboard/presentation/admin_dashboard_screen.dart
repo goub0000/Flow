@@ -8,6 +8,7 @@ import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
 import '../../shared/providers/admin_support_provider.dart';
+import '../../shared/providers/admin_users_provider.dart';
 import '../../shared/widgets/admin_shell.dart';
 
 /// Admin Dashboard Screen - Main dashboard with KPIs and stats
@@ -48,6 +49,7 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
         await Future.wait([
           ref.read(adminAnalyticsProvider.notifier).fetchAnalytics(),
           ref.read(adminSupportProvider.notifier).fetchTickets(),
+          ref.read(adminUsersProvider.notifier).fetchAllUsers(),
         ]);
 
         // Update last refresh time
@@ -77,6 +79,10 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
     final theme = Theme.of(context);
     final metrics = ref.watch(adminAnalyticsMetricsProvider);
     final isLoading = ref.watch(adminAnalyticsLoadingProvider);
+
+    // Get real user statistics from Supabase
+    final userStats = ref.watch(userStatisticsProvider);
+    final isUsersLoading = ref.watch(adminUsersLoadingProvider);
 
     if (adminUser == null) {
       return const Center(
@@ -208,35 +214,35 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
             children: [
               _KPICard(
                 title: 'Total Users',
-                value: isLoading ? '--' : '${metrics['totalUsers'] ?? 0}',
+                value: isUsersLoading ? '--' : '${userStats['total'] ?? 0}',
                 icon: Icons.people,
                 color: AppColors.primary,
-                change: isLoading ? '--' : '+${metrics['userGrowthRate'] ?? 0}%',
+                change: isUsersLoading ? '--' : '${userStats['active'] ?? 0} active',
                 isPositive: true,
               ),
               _KPICard(
-                title: 'Active Sessions',
-                value: isLoading ? '--' : '${metrics['dailyActiveUsers'] ?? 0}',
-                icon: Icons.trending_up,
+                title: 'Students',
+                value: isUsersLoading ? '--' : '${userStats['students'] ?? 0}',
+                icon: Icons.school,
                 color: AppColors.success,
-                change: isLoading ? '--' : '${metrics['weeklyActiveUsers'] ?? 0} weekly',
+                change: isUsersLoading ? '--' : '${userStats['parents'] ?? 0} parents',
                 isPositive: true,
               ),
               _KPICard(
-                title: 'Revenue',
-                value: isLoading ? '--' : '\$${(metrics['totalRevenue'] ?? 0).toStringAsFixed(0)}',
-                icon: Icons.attach_money,
+                title: 'Institutions',
+                value: isUsersLoading ? '--' : '${userStats['institutions'] ?? 0}',
+                icon: Icons.business,
                 color: AppColors.accent,
-                change: isLoading ? '--' : '+${metrics['revenueGrowthRate'] ?? 0}%',
+                change: isUsersLoading ? '--' : '${userStats['counselors'] ?? 0} counselors',
                 isPositive: true,
               ),
               _KPICard(
-                title: 'Applications',
-                value: isLoading ? '--' : '${metrics['pendingApplications'] ?? 0}',
-                icon: Icons.assignment,
+                title: 'Recommenders',
+                value: isUsersLoading ? '--' : '${userStats['recommenders'] ?? 0}',
+                icon: Icons.rate_review,
                 color: AppColors.info,
-                change: isLoading ? '--' : '${metrics['totalApplications'] ?? 0} total',
-                isPositive: true,
+                change: isUsersLoading ? '--' : '${userStats['inactive'] ?? 0} inactive',
+                isPositive: (userStats['inactive'] ?? 0) == 0,
               ),
             ],
           ),
