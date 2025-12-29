@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/admin_user_model.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';
+import '../../../../core/providers/service_providers.dart';
+import '../../../../core/services/auth_service.dart';
 
 /// Admin authentication state
 class AdminAuthState {
@@ -34,46 +36,86 @@ class AdminAuthState {
 
 /// Admin authentication provider
 class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
-  AdminAuthNotifier() : super(const AdminAuthState()) {
-    // TEMPORARY: Mock login for testing UI only
-    // TODO: REMOVE this before production - Replace with actual authentication
-    _mockLoginForTesting();
+  final AuthService _authService;
+
+  AdminAuthNotifier(this._authService) : super(const AdminAuthState()) {
+    // Check if there's an existing admin session
+    _initializeFromAuthState();
   }
 
-  // TODO: Initialize authentication state from backend
-  // - Check for existing session/token
-  // - Validate session with backend
-  // - Load admin user data and permissions
+  /// Initialize admin state from main auth state
+  Future<void> _initializeFromAuthState() async {
+    state = state.copyWith(isLoading: true);
 
-  /// TEMPORARY: Mock login for testing purposes only
-  /// TODO: REMOVE before production
-  ///
-  /// TESTING HIERARCHY:
-  /// Change the adminRole below to test different admin levels:
-  /// - UserRole.superAdmin (Level 3) - Can manage ALL admin types
-  /// - UserRole.regionalAdmin (Level 2) - Can manage specialized admins only
-  /// - UserRole.contentAdmin (Level 1) - Cannot manage any admin types
-  /// - UserRole.supportAdmin (Level 1) - Cannot manage any admin types
-  /// - UserRole.financeAdmin (Level 1) - Cannot manage any admin types
-  /// - UserRole.analyticsAdmin (Level 1) - Cannot manage any admin types
-  void _mockLoginForTesting() {
-    final mockAdmin = AdminUser(
-      id: 'mock-admin-001',
-      email: 'admin@test.com',
-      displayName: 'Test Super Admin',
-      adminRole: UserRole.superAdmin, // <-- CHANGE THIS TO TEST DIFFERENT ADMIN LEVELS
-      permissions: AdminPermissions.superAdmin(),
+    try {
+      final response = await _authService.getCurrentUser();
+      if (response.success && response.data != null) {
+        final userData = response.data!;
+        final role = UserRoleHelper.getRoleName(userData.activeRole).toLowerCase();
+        // Check if user is an admin
+        if (role.contains('admin')) {
+          final adminUser = _createAdminUserFromUserModel(userData, role);
+          state = AdminAuthState(
+            currentAdmin: adminUser,
+            isAuthenticated: true,
+            isLoading: false,
+          );
+          return;
+        }
+      }
+      // Not an admin or not logged in
+      state = const AdminAuthState(isLoading: false);
+    } catch (e) {
+      state = AdminAuthState(isLoading: false, error: e.toString());
+    }
+  }
+
+  /// Create AdminUser from UserModel
+  AdminUser _createAdminUserFromUserModel(dynamic userData, String role) {
+    // Map role string to UserRole enum
+    UserRole adminRole;
+    AdminPermissions permissions;
+
+    if (role == 'superadmin' || role == 'admin_super') {
+      adminRole = UserRole.superAdmin;
+      permissions = AdminPermissions.superAdmin();
+    } else if (role == 'regionaladmin' || role == 'admin_regional') {
+      adminRole = UserRole.regionalAdmin;
+      permissions = AdminPermissions.regionalAdmin('global');
+    } else if (role == 'contentadmin' || role == 'admin_content') {
+      adminRole = UserRole.contentAdmin;
+      permissions = AdminPermissions.contentAdmin();
+    } else if (role == 'supportadmin' || role == 'admin_support') {
+      adminRole = UserRole.supportAdmin;
+      permissions = AdminPermissions.supportAdmin();
+    } else if (role == 'financeadmin' || role == 'admin_finance') {
+      adminRole = UserRole.financeAdmin;
+      permissions = AdminPermissions.financeAdmin();
+    } else if (role == 'analyticsadmin' || role == 'admin_analytics') {
+      adminRole = UserRole.analyticsAdmin;
+      permissions = AdminPermissions.analyticsAdmin();
+    } else {
+      // Default to support admin for unknown admin types
+      adminRole = UserRole.supportAdmin;
+      permissions = AdminPermissions.supportAdmin();
+    }
+
+    return AdminUser(
+      id: userData.id ?? '',
+      email: userData.email ?? '',
+      displayName: userData.displayName ?? 'Admin',
+      adminRole: adminRole,
+      permissions: permissions,
       mfaEnabled: false,
-      createdAt: DateTime.now().subtract(const Duration(days: 30)),
+      createdAt: userData.createdAt ?? DateTime.now(),
       lastLogin: DateTime.now(),
       isActive: true,
     );
+  }
 
-    state = AdminAuthState(
-      currentAdmin: mockAdmin,
-      isAuthenticated: true,
-      isLoading: false,
-    );
+  /// Refresh admin state from auth
+  Future<void> refreshFromAuth() async {
+    await _initializeFromAuthState();
   }
 
   /// Sign in admin user with email, password, and MFA code
@@ -127,18 +169,14 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      // TODO: Implement actual Firebase sign out
-      // Clear session
-      // Log audit event
+      // Sign out from Supabase auth
+      await _authService.logout();
 
-      await Future.delayed(const Duration(milliseconds: 500));
-
+      // Clear admin state
       state = const AdminAuthState();
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
+      // Even if there's an error, clear the local state
+      state = const AdminAuthState(error: 'Sign out error');
     }
   }
 
@@ -248,7 +286,8 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
 /// Admin authentication state provider
 final adminAuthProvider =
     StateNotifierProvider<AdminAuthNotifier, AdminAuthState>((ref) {
-  return AdminAuthNotifier();
+  final authService = ref.watch(authServiceProvider);
+  return AdminAuthNotifier(authService);
 });
 
 /// Current admin user provider (convenience)
