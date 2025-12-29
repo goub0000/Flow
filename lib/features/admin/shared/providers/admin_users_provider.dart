@@ -328,6 +328,17 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
     return state.users.where((user) => user.availableRoles.any((r) => UserRoleHelper.getRoleName(r) == role)).toList();
   }
 
+  /// Get all admin users (users with any admin role)
+  List<UserModel> getAdminUsers() {
+    final adminRoles = [
+      'superadmin', 'regionaladmin', 'contentadmin',
+      'supportadmin', 'financeadmin', 'analyticsadmin'
+    ];
+    return state.users.where((user) =>
+      user.availableRoles.any((r) => adminRoles.contains(UserRoleHelper.getRoleName(r)))
+    ).toList();
+  }
+
   /// Get user statistics
   Map<String, int> getUserStatistics() {
     return {
@@ -389,6 +400,12 @@ final adminCounselorsProvider = Provider<List<UserModel>>((ref) {
 final adminRecommendersProvider = Provider<List<UserModel>>((ref) {
   final notifier = ref.watch(adminUsersProvider.notifier);
   return notifier.getUsersByRole('recommender');
+});
+
+/// Provider for admin users list (all admin roles)
+final adminAdminsProvider = Provider<List<UserModel>>((ref) {
+  final notifier = ref.watch(adminUsersProvider.notifier);
+  return notifier.getAdminUsers();
 });
 
 /// Provider for checking if users are loading

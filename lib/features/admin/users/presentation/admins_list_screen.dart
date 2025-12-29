@@ -5,6 +5,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/models/admin_user_model.dart';
+import '../../../../core/models/user_model.dart';
 import '../../shared/widgets/admin_shell.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
@@ -15,6 +16,7 @@ import '../../shared/services/export_service.dart';
 import '../../shared/services/bulk_operations_service.dart';
 import '../../shared/utils/debouncer.dart';
 import '../../shared/providers/admin_auth_provider.dart';
+import '../../shared/providers/admin_users_provider.dart';
 
 /// Admins List Screen - Manage admin user accounts
 ///
@@ -461,18 +463,33 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
   }
 
   List<AdminRowData> _getFilteredAdmins() {
-    // TODO: Replace with actual data from backend
-    final mockAdmins = _getMockAdmins();
+    // Get admin users from provider
+    final adminUsers = ref.watch(adminAdminsProvider);
 
     // Get current admin to check hierarchy
     final currentAdmin = ref.read(currentAdminUserProvider);
 
-    return mockAdmins.where((admin) {
+    // Convert UserModel to AdminRowData and filter
+    return adminUsers.map((user) {
+      final roleName = UserRoleHelper.getRoleName(user.activeRole);
+      final isActive = user.metadata?['isActive'] ?? true;
+      return AdminRowData(
+        id: user.id,
+        name: user.displayName ?? 'Unknown',
+        email: user.email,
+        role: roleName,
+        status: isActive ? 'Active' : 'Inactive',
+        isActive: isActive,
+        lastLogin: user.lastLoginAt != null
+            ? _formatLastLogin(user.lastLoginAt!)
+            : 'Never',
+        joinedDate: user.createdAt.toIso8601String().substring(0, 10),
+      );
+    }).where((admin) {
       // HIERARCHY FILTER: Only show admins that the current admin can manage
-      // This prevents lower-level admins from seeing/managing higher-level admins
       if (currentAdmin != null) {
         final adminRole = UserRole.values.firstWhere(
-          (r) => r.name == admin.role,
+          (r) => UserRoleHelper.getRoleName(r) == admin.role,
           orElse: () => UserRole.superAdmin,
         );
 
@@ -499,69 +516,19 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
     }).toList();
   }
 
-  List<AdminRowData> _getMockAdmins() {
-    return [
-      AdminRowData(
-        id: '1',
-        name: 'John Admin',
-        email: 'john.admin@flow.edu',
-        role: 'superAdmin',
-        status: 'Active',
-        isActive: true,
-        lastLogin: '2 hours ago',
-        joinedDate: '2024-01-15',
-      ),
-      AdminRowData(
-        id: '2',
-        name: 'Sarah Manager',
-        email: 'sarah.manager@flow.edu',
-        role: 'regionalAdmin',
-        status: 'Active',
-        isActive: true,
-        lastLogin: '1 day ago',
-        joinedDate: '2024-02-20',
-      ),
-      AdminRowData(
-        id: '3',
-        name: 'Mike Content',
-        email: 'mike.content@flow.edu',
-        role: 'contentAdmin',
-        status: 'Active',
-        isActive: true,
-        lastLogin: '3 hours ago',
-        joinedDate: '2024-03-10',
-      ),
-      AdminRowData(
-        id: '4',
-        name: 'Lisa Support',
-        email: 'lisa.support@flow.edu',
-        role: 'supportAdmin',
-        status: 'Active',
-        isActive: true,
-        lastLogin: '30 mins ago',
-        joinedDate: '2024-04-05',
-      ),
-      AdminRowData(
-        id: '5',
-        name: 'David Finance',
-        email: 'david.finance@flow.edu',
-        role: 'financeAdmin',
-        status: 'Inactive',
-        isActive: false,
-        lastLogin: '2 weeks ago',
-        joinedDate: '2024-05-12',
-      ),
-      AdminRowData(
-        id: '6',
-        name: 'Emma Analytics',
-        email: 'emma.analytics@flow.edu',
-        role: 'analyticsAdmin',
-        status: 'Active',
-        isActive: true,
-        lastLogin: '5 hours ago',
-        joinedDate: '2024-06-18',
-      ),
-    ];
+  String _formatLastLogin(DateTime lastLogin) {
+    final now = DateTime.now();
+    final difference = now.difference(lastLogin);
+
+    if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} mins ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} days ago';
+    } else {
+      return lastLogin.toIso8601String().substring(0, 10);
+    }
   }
 
   Future<void> _handleBulkActivate() async {
