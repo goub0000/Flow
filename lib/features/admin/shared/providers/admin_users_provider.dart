@@ -111,8 +111,36 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
             isEmailVerified: userData['is_email_verified'] as bool? ?? false,
             isPhoneVerified: userData['is_phone_verified'] as bool? ?? false,
             metadata: {
+              // General fields
               'isActive': userData['is_active'] ?? true,
               'onboarding_completed': userData['onboarding_completed'] ?? false,
+              'bio': userData['bio'],
+              'address': userData['address'],
+              'city': userData['city'],
+              'country': userData['country'],
+              // Student fields
+              'school': userData['school'],
+              'grade': userData['grade'],
+              'graduation_year': userData['graduation_year'],
+              // Institution fields
+              'institution_type': userData['institution_type'],
+              'location': userData['location'],
+              'website': userData['website'],
+              'programs_count': userData['programs_count'],
+              // Counselor fields
+              'specialty': userData['specialty'],
+              'students_count': userData['students_count'],
+              'sessions_count': userData['sessions_count'],
+              'years_experience': userData['years_experience'],
+              // Recommender fields
+              'recommender_type': userData['recommender_type'],
+              'organization': userData['organization'],
+              'position': userData['position'],
+              'requests_count': userData['requests_count'],
+              'completed_count': userData['completed_count'],
+              // Parent fields
+              'children_count': userData['children_count'],
+              'occupation': userData['occupation'],
             },
           );
         } catch (e) {
