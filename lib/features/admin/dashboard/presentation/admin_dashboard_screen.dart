@@ -8,7 +8,6 @@ import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
 import '../../shared/providers/admin_support_provider.dart';
-import '../../shared/providers/admin_users_provider.dart';
 import '../../shared/widgets/admin_shell.dart';
 
 /// Admin Dashboard Screen - Main dashboard with KPIs and stats
@@ -49,7 +48,7 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
         await Future.wait([
           ref.read(adminAnalyticsProvider.notifier).fetchAnalytics(),
           ref.read(adminSupportProvider.notifier).fetchTickets(),
-          ref.read(adminUsersProvider.notifier).fetchAllUsers(),
+          _loadRoleDistribution(),
         ]);
 
         // Update last refresh time
@@ -73,16 +72,53 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
     });
   }
 
+  // Store role distribution data for KPI cards
+  Map<String, dynamic>? _roleDistribution;
+  bool _isLoadingRoleData = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRoleDistribution();
+  }
+
+  Future<void> _loadRoleDistribution() async {
+    setState(() => _isLoadingRoleData = true);
+    try {
+      final data = await ref.read(adminAnalyticsProvider.notifier).fetchRoleDistribution();
+      if (mounted) {
+        setState(() {
+          _roleDistribution = data;
+          _isLoadingRoleData = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoadingRoleData = false);
+      }
+    }
+  }
+
+  /// Get count for a specific role from the distribution data
+  int _getRoleCount(String role) {
+    if (_roleDistribution == null) return 0;
+    final distributions = _roleDistribution!['distributions'] as List<dynamic>?;
+    if (distributions == null) return 0;
+
+    for (final dist in distributions) {
+      if ((dist['label'] as String).toLowerCase() == role.toLowerCase()) {
+        return (dist['value'] as num).toInt();
+      }
+    }
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final adminUser = ref.watch(currentAdminUserProvider);
     final theme = Theme.of(context);
     final metrics = ref.watch(adminAnalyticsMetricsProvider);
     final isLoading = ref.watch(adminAnalyticsLoadingProvider);
-
-    // Get real user statistics from Supabase
-    final userStats = ref.watch(userStatisticsProvider);
-    final isUsersLoading = ref.watch(adminUsersLoadingProvider);
 
     if (adminUser == null) {
       return const Center(
@@ -203,7 +239,7 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
           const LastRefreshIndicator(providerKey: 'admin_dashboard'),
           const SizedBox(height: 24),
 
-          // KPI Cards Grid
+          // KPI Cards Grid - using backend API data
           GridView.count(
             crossAxisCount: 4,
             crossAxisSpacing: 16,
@@ -214,35 +250,35 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
             children: [
               _KPICard(
                 title: 'Total Users',
-                value: isUsersLoading ? '--' : '${userStats['total'] ?? 0}',
+                value: _isLoadingRoleData ? '--' : '${_roleDistribution?['total_users'] ?? 0}',
                 icon: Icons.people,
                 color: AppColors.primary,
-                change: isUsersLoading ? '--' : '${userStats['active'] ?? 0} active',
+                change: _isLoadingRoleData ? '--' : '${_getRoleCount('student')} students',
                 isPositive: true,
               ),
               _KPICard(
                 title: 'Students',
-                value: isUsersLoading ? '--' : '${userStats['students'] ?? 0}',
+                value: _isLoadingRoleData ? '--' : '${_getRoleCount('student')}',
                 icon: Icons.school,
                 color: AppColors.success,
-                change: isUsersLoading ? '--' : '${userStats['parents'] ?? 0} parents',
+                change: _isLoadingRoleData ? '--' : '${_getRoleCount('parent')} parents',
                 isPositive: true,
               ),
               _KPICard(
                 title: 'Institutions',
-                value: isUsersLoading ? '--' : '${userStats['institutions'] ?? 0}',
+                value: _isLoadingRoleData ? '--' : '${_getRoleCount('institution')}',
                 icon: Icons.business,
                 color: AppColors.accent,
-                change: isUsersLoading ? '--' : '${userStats['counselors'] ?? 0} counselors',
+                change: _isLoadingRoleData ? '--' : '${_getRoleCount('counselor')} counselors',
                 isPositive: true,
               ),
               _KPICard(
                 title: 'Recommenders',
-                value: isUsersLoading ? '--' : '${userStats['recommenders'] ?? 0}',
+                value: _isLoadingRoleData ? '--' : '${_getRoleCount('recommender')}',
                 icon: Icons.rate_review,
                 color: AppColors.info,
-                change: isUsersLoading ? '--' : '${userStats['inactive'] ?? 0} inactive',
-                isPositive: (userStats['inactive'] ?? 0) == 0,
+                change: _isLoadingRoleData ? '--' : '${_getRoleCount('superadmin')} admins',
+                isPositive: true,
               ),
             ],
           ),
