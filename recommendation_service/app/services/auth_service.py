@@ -76,13 +76,36 @@ class AuthService:
         """
         Register a new user
         Creates auth user and user profile in database
+
+        SECURITY: Admin roles cannot be created through public registration.
+        Admin accounts must be created directly in the database by a system administrator.
         """
         try:
-            # Validate role
-            if signup_data.role not in UserRole.all_roles():
+            # SECURITY: Block admin role registration through public API
+            # Admin accounts should only be created directly in the database
+            role_lower = signup_data.role.lower()
+            if 'admin' in role_lower:
+                logger.warning(f"Attempted admin registration blocked for email: {signup_data.email}")
                 raise AuthException(
                     error_code=AuthErrorCode.INVALID_ROLE,
-                    message=f"Invalid role: {signup_data.role}. Valid roles are: {', '.join(UserRole.all_roles())}",
+                    message="Admin accounts cannot be created through registration. Please contact a system administrator.",
+                    status_code=status.HTTP_403_FORBIDDEN
+                )
+
+            # Only allow standard user roles through public registration
+            allowed_public_roles = [
+                UserRole.STUDENT,
+                UserRole.COUNSELOR,
+                UserRole.PARENT,
+                UserRole.INSTITUTION,
+                UserRole.RECOMMENDER,
+            ]
+
+            # Validate role is in allowed public roles
+            if signup_data.role not in allowed_public_roles:
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_ROLE,
+                    message=f"Invalid role: {signup_data.role}. Valid roles are: student, counselor, parent, institution, recommender",
                     status_code=status.HTTP_400_BAD_REQUEST
                 )
 

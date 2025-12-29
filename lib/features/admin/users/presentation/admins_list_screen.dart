@@ -138,6 +138,13 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           ),
           Row(
             children: [
+              // Info button about admin creation
+              OutlinedButton.icon(
+                onPressed: () => _showAdminCreationInfo(),
+                icon: const Icon(Icons.info_outline, size: 18),
+                label: const Text('How to Add Admins'),
+              ),
+              const SizedBox(width: 12),
               // Export button (requires permission)
               PermissionGuard(
                 permission: AdminPermission.bulkUserOperations,
@@ -153,24 +160,6 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                   },
                   icon: const Icon(Icons.download, size: 18),
                   label: const Text('Export'),
-                ),
-              ),
-              const SizedBox(width: 12),
-
-              // Create admin button (Super Admin only)
-              PermissionGuard(
-                permission: AdminPermission.editUsers,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Navigate to create admin screen
-                    context.go('/admin/system/admins/create');
-                  },
-                  icon: const Icon(Icons.add, size: 18),
-                  label: const Text('Create Admin'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                  ),
                 ),
               ),
             ],
@@ -625,6 +614,124 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
         setState(() => _isBulkOperationInProgress = false);
       }
     }
+  }
+
+  void _showAdminCreationInfo() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.security, color: AppColors.primary),
+            const SizedBox(width: 8),
+            const Text('Admin Account Security'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'For security reasons, admin accounts cannot be created through the web interface.',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'How to Create Admin Accounts:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              _buildInfoStep(
+                '1',
+                'Super Admin',
+                'Created directly in the database by a system administrator using SQL.',
+              ),
+              _buildInfoStep(
+                '2',
+                'Other Admins',
+                'Super Admin can promote existing users to admin roles through the user management section.',
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.warning_amber, color: AppColors.warning, size: 20),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Text(
+                        'Contact your database administrator to create the initial Super Admin account.',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoStep(String number, String title, String description) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                number,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _handleBulkDeactivate() async {
