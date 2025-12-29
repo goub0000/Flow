@@ -103,6 +103,43 @@ class AdminTopBar extends ConsumerWidget {
           AdminRoleBadge(adminUser: adminUser),
           const SizedBox(width: 16),
 
+          // Quick Logout Button
+          IconButton(
+            icon: Icon(Icons.logout, color: AppColors.error),
+            onPressed: () async {
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Sign Out'),
+                  content: const Text('Are you sure you want to sign out?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                      child: const Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.error,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Sign Out'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldLogout == true && context.mounted) {
+                await ref.read(adminAuthProvider.notifier).signOut();
+                if (context.mounted) {
+                  context.go('/admin/login');
+                }
+              }
+            },
+            tooltip: 'Sign Out',
+          ),
+          const SizedBox(width: 8),
+
           // User profile menu
           PopupMenuButton<String>(
             offset: const Offset(0, 50),
