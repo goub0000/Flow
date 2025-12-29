@@ -74,34 +74,45 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // Query profiles table from Supabase
-      final profilesData = await _supabase.from('profiles').select('*') as List<dynamic>;
+      // Query users table from Supabase
+      final usersData = await _supabase.from('users').select('*') as List<dynamic>;
 
-      final users = profilesData.map((profile) {
+      final users = usersData.map((userData) {
         try {
-          // Parse user role
-          final roleString = profile['role'] as String?;
+          // Parse user role - use active_role field
+          final roleString = userData['active_role'] as String?;
           final activeRole = _parseUserRole(roleString);
 
+          // Parse available_roles array
+          List<UserRole> availableRoles = [activeRole];
+          if (userData['available_roles'] != null) {
+            final rolesArray = userData['available_roles'] as List<dynamic>?;
+            if (rolesArray != null && rolesArray.isNotEmpty) {
+              availableRoles = rolesArray
+                  .map((r) => _parseUserRole(r.toString()))
+                  .toList();
+            }
+          }
+
           return UserModel(
-            id: profile['id'] as String,
-            email: profile['email'] as String? ?? '',
-            displayName: profile['full_name'] as String? ?? profile['display_name'] as String? ?? 'Unknown User',
-            photoUrl: profile['avatar_url'] as String?,
-            phoneNumber: profile['phone'] as String?,
+            id: userData['id'] as String,
+            email: userData['email'] as String? ?? '',
+            displayName: userData['display_name'] as String? ?? 'Unknown User',
+            photoUrl: userData['photo_url'] as String?,
+            phoneNumber: userData['phone_number'] as String?,
             activeRole: activeRole,
-            availableRoles: [activeRole],
-            createdAt: profile['created_at'] != null
-                ? DateTime.parse(profile['created_at'] as String)
+            availableRoles: availableRoles,
+            createdAt: userData['created_at'] != null
+                ? DateTime.parse(userData['created_at'] as String)
                 : DateTime.now(),
-            lastLoginAt: profile['last_login_at'] != null
-                ? DateTime.parse(profile['last_login_at'] as String)
+            lastLoginAt: userData['last_login_at'] != null
+                ? DateTime.parse(userData['last_login_at'] as String)
                 : null,
-            isEmailVerified: profile['email_verified'] as bool? ?? false,
-            isPhoneVerified: profile['phone_verified'] as bool? ?? false,
+            isEmailVerified: userData['is_email_verified'] as bool? ?? false,
+            isPhoneVerified: userData['is_phone_verified'] as bool? ?? false,
             metadata: {
-              'isActive': profile['is_active'] ?? true,
-              'onboarding_completed': profile['onboarding_completed'] ?? false,
+              'isActive': userData['is_active'] ?? true,
+              'onboarding_completed': userData['onboarding_completed'] ?? false,
             },
           );
         } catch (e) {
@@ -140,7 +151,23 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
         return UserRole.institution;
       case 'admin':
       case 'superadmin':
+      case 'admin_super':
         return UserRole.superAdmin;
+      case 'regionaladmin':
+      case 'admin_regional':
+        return UserRole.regionalAdmin;
+      case 'contentadmin':
+      case 'admin_content':
+        return UserRole.contentAdmin;
+      case 'supportadmin':
+      case 'admin_support':
+        return UserRole.supportAdmin;
+      case 'financeadmin':
+      case 'admin_finance':
+        return UserRole.financeAdmin;
+      case 'analyticsadmin':
+      case 'admin_analytics':
+        return UserRole.analyticsAdmin;
       default:
         return UserRole.student;
     }
