@@ -24,6 +24,7 @@ class BookCounselingSessionScreen extends ConsumerStatefulWidget {
 class _BookCounselingSessionScreenState
     extends ConsumerState<BookCounselingSessionScreen> {
   DateTime _selectedDate = DateTime.now();
+  DateTime _currentMonth = DateTime.now();
   BookingSlot? _selectedSlot;
   SessionType _selectedType = SessionType.general;
   final _topicController = TextEditingController();
@@ -45,7 +46,7 @@ class _BookCounselingSessionScreenState
 
   Future<void> _loadAvailableSlots() async {
     final startDate = DateTime.now();
-    final endDate = startDate.add(const Duration(days: 14));
+    final endDate = startDate.add(const Duration(days: 60)); // Load 60 days of availability
 
     await ref.read(studentCounselingProvider.notifier).loadAvailableSlots(
           counselorId: widget.counselor.id,
@@ -201,70 +202,220 @@ class _BookCounselingSessionScreenState
   }
 
   Widget _buildDatePicker() {
-    final now = DateTime.now();
-    final dates = List.generate(14, (i) => now.add(Duration(days: i)));
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Month navigation header
+          _buildCalendarHeader(),
+          // Day of week headers
+          _buildWeekdayHeaders(),
+          // Calendar grid
+          _buildCalendarGrid(),
+        ],
+      ),
+    );
+  }
 
-    return SizedBox(
-      height: 80,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: dates.length,
-        itemBuilder: (context, index) {
-          final date = dates[index];
-          final isSelected = _selectedDate.day == date.day &&
-              _selectedDate.month == date.month &&
-              _selectedDate.year == date.year;
-
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedDate = date;
-                _selectedSlot = null; // Reset slot selection
-              });
-            },
-            child: Container(
-              width: 60,
-              margin: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? AppColors.primary
-                    : Colors.grey.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: isSelected
-                    ? null
-                    : Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+  Widget _buildCalendarHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.chevron_left),
+            onPressed: _canGoPreviousMonth()
+                ? () {
+                    setState(() {
+                      _currentMonth = DateTime(
+                        _currentMonth.year,
+                        _currentMonth.month - 1,
+                      );
+                    });
+                  }
+                : null,
+          ),
+          GestureDetector(
+            onTap: _showMonthPicker,
+            child: Text(
+              DateFormat('MMMM yyyy').format(_currentMonth),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat('EEE').format(date),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isSelected ? Colors.white70 : Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    date.day.toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.white : Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    DateFormat('MMM').format(date),
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: isSelected ? Colors.white70 : Colors.grey[600],
-                    ),
-                  ),
-                ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: _canGoNextMonth()
+                ? () {
+                    setState(() {
+                      _currentMonth = DateTime(
+                        _currentMonth.year,
+                        _currentMonth.month + 1,
+                      );
+                    });
+                  }
+                : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _canGoPreviousMonth() {
+    final now = DateTime.now();
+    return _currentMonth.year > now.year ||
+        (_currentMonth.year == now.year && _currentMonth.month > now.month);
+  }
+
+  bool _canGoNextMonth() {
+    final maxDate = DateTime.now().add(const Duration(days: 60));
+    return _currentMonth.year < maxDate.year ||
+        (_currentMonth.year == maxDate.year &&
+            _currentMonth.month < maxDate.month);
+  }
+
+  void _showMonthPicker() async {
+    final now = DateTime.now();
+    final maxDate = now.add(const Duration(days: 60));
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: now,
+      lastDate: maxDate,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+    );
+
+    if (picked != null) {
+      setState(() {
+        _selectedDate = picked;
+        _currentMonth = DateTime(picked.year, picked.month);
+        _selectedSlot = null;
+      });
+    }
+  }
+
+  Widget _buildWeekdayHeaders() {
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: weekdays.map((day) {
+          return Expanded(
+            child: Center(
+              child: Text(
+                day,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[600],
+                ),
               ),
             ),
           );
-        },
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildCalendarGrid() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final maxDate = now.add(const Duration(days: 60));
+
+    // Get first day of month and calculate offset
+    final firstDayOfMonth = DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final daysInMonth = DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
+    final startWeekday = firstDayOfMonth.weekday % 7; // Sunday = 0
+
+    // Calculate total cells needed (including padding)
+    final totalCells = startWeekday + daysInMonth;
+    final rows = (totalCells / 7).ceil();
+
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: List.generate(rows, (rowIndex) {
+          return Row(
+            children: List.generate(7, (colIndex) {
+              final cellIndex = rowIndex * 7 + colIndex;
+              final dayNumber = cellIndex - startWeekday + 1;
+
+              if (dayNumber < 1 || dayNumber > daysInMonth) {
+                // Empty cell
+                return const Expanded(child: SizedBox(height: 44));
+              }
+
+              final date = DateTime(_currentMonth.year, _currentMonth.month, dayNumber);
+              final isSelected = _selectedDate.day == date.day &&
+                  _selectedDate.month == date.month &&
+                  _selectedDate.year == date.year;
+              final isToday = date.day == today.day &&
+                  date.month == today.month &&
+                  date.year == today.year;
+              final isPast = date.isBefore(today);
+              final isFuture = date.isAfter(maxDate);
+              final isDisabled = isPast || isFuture;
+
+              return Expanded(
+                child: GestureDetector(
+                  onTap: isDisabled
+                      ? null
+                      : () {
+                          setState(() {
+                            _selectedDate = date;
+                            _selectedSlot = null;
+                          });
+                        },
+                  child: Container(
+                    height: 44,
+                    margin: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColors.primary
+                          : isToday
+                              ? AppColors.primary.withValues(alpha: 0.1)
+                              : null,
+                      borderRadius: BorderRadius.circular(8),
+                      border: isToday && !isSelected
+                          ? Border.all(color: AppColors.primary, width: 1.5)
+                          : null,
+                    ),
+                    child: Center(
+                      child: Text(
+                        dayNumber.toString(),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: isSelected || isToday
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: isDisabled
+                              ? Colors.grey[400]
+                              : isSelected
+                                  ? Colors.white
+                                  : Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+          );
+        }),
       ),
     );
   }
