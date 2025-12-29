@@ -285,10 +285,19 @@ class _AdminQuickActionsState extends ConsumerState<AdminQuickActions>
                   border: OutlineInputBorder(),
                 ),
                 items: const [
+                  // Standard user roles
                   DropdownMenuItem(value: 'student', child: Text('Student')),
                   DropdownMenuItem(value: 'parent', child: Text('Parent')),
                   DropdownMenuItem(value: 'counselor', child: Text('Counselor')),
                   DropdownMenuItem(value: 'institution', child: Text('Institution')),
+                  DropdownMenuItem(value: 'recommender', child: Text('Recommender')),
+                  // Admin roles
+                  DropdownMenuItem(value: 'superadmin', child: Text('Super Admin')),
+                  DropdownMenuItem(value: 'regionaladmin', child: Text('Regional Admin')),
+                  DropdownMenuItem(value: 'contentadmin', child: Text('Content Admin')),
+                  DropdownMenuItem(value: 'supportadmin', child: Text('Support Admin')),
+                  DropdownMenuItem(value: 'financeadmin', child: Text('Finance Admin')),
+                  DropdownMenuItem(value: 'analyticsadmin', child: Text('Analytics Admin')),
                 ],
                 onChanged: (value) {},
               ),
