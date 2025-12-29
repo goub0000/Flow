@@ -56,9 +56,20 @@ class UserRole:
     PARENT = "parent"
     INSTITUTION = "institution"
     RECOMMENDER = "recommender"
+    # Admin roles - support both naming conventions (snake_case and camelCase)
     ADMIN_SUPER = "admin_super"
     ADMIN_CONTENT = "admin_content"
     ADMIN_SUPPORT = "admin_support"
+    ADMIN_REGIONAL = "admin_regional"
+    ADMIN_FINANCE = "admin_finance"
+    ADMIN_ANALYTICS = "admin_analytics"
+    # Frontend naming convention (for compatibility)
+    SUPER_ADMIN = "superadmin"
+    REGIONAL_ADMIN = "regionaladmin"
+    CONTENT_ADMIN = "contentadmin"
+    SUPPORT_ADMIN = "supportadmin"
+    FINANCE_ADMIN = "financeadmin"
+    ANALYTICS_ADMIN = "analyticsadmin"
 
     @classmethod
     def all_roles(cls) -> List[str]:
@@ -68,14 +79,51 @@ class UserRole:
             cls.PARENT,
             cls.INSTITUTION,
             cls.RECOMMENDER,
+            # Snake_case admin roles
             cls.ADMIN_SUPER,
             cls.ADMIN_CONTENT,
             cls.ADMIN_SUPPORT,
+            cls.ADMIN_REGIONAL,
+            cls.ADMIN_FINANCE,
+            cls.ADMIN_ANALYTICS,
+            # Frontend naming convention (camelCase without separator)
+            cls.SUPER_ADMIN,
+            cls.REGIONAL_ADMIN,
+            cls.CONTENT_ADMIN,
+            cls.SUPPORT_ADMIN,
+            cls.FINANCE_ADMIN,
+            cls.ANALYTICS_ADMIN,
         ]
 
     @classmethod
     def admin_roles(cls) -> List[str]:
-        return [cls.ADMIN_SUPER, cls.ADMIN_CONTENT, cls.ADMIN_SUPPORT]
+        return [
+            cls.ADMIN_SUPER, cls.ADMIN_CONTENT, cls.ADMIN_SUPPORT,
+            cls.ADMIN_REGIONAL, cls.ADMIN_FINANCE, cls.ADMIN_ANALYTICS,
+            cls.SUPER_ADMIN, cls.REGIONAL_ADMIN, cls.CONTENT_ADMIN,
+            cls.SUPPORT_ADMIN, cls.FINANCE_ADMIN, cls.ANALYTICS_ADMIN,
+        ]
+
+    @classmethod
+    def normalize_role(cls, role: str) -> str:
+        """Normalize role name to a consistent format"""
+        role_lower = role.lower().strip()
+        # Map frontend naming to standard format
+        role_mapping = {
+            "superadmin": "superadmin",
+            "admin_super": "superadmin",
+            "regionaladmin": "regionaladmin",
+            "admin_regional": "regionaladmin",
+            "contentadmin": "contentadmin",
+            "admin_content": "contentadmin",
+            "supportadmin": "supportadmin",
+            "admin_support": "supportadmin",
+            "financeadmin": "financeadmin",
+            "admin_finance": "financeadmin",
+            "analyticsadmin": "analyticsadmin",
+            "admin_analytics": "analyticsadmin",
+        }
+        return role_mapping.get(role_lower, role_lower)
 
 
 # Token payload model
@@ -246,7 +294,7 @@ require_parent = RoleChecker([UserRole.PARENT])
 require_institution = RoleChecker([UserRole.INSTITUTION])
 require_recommender = RoleChecker([UserRole.RECOMMENDER])
 require_admin = RoleChecker(UserRole.admin_roles())
-require_super_admin = RoleChecker([UserRole.ADMIN_SUPER])
+require_super_admin = RoleChecker([UserRole.ADMIN_SUPER, UserRole.SUPER_ADMIN])
 
 
 def check_user_owns_resource(user_id: str, resource_user_id: str):
