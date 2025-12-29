@@ -275,15 +275,17 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     // Get users from provider and convert to StudentRowData
     final users = ref.watch(adminStudentsProvider);
     var students = users.map((user) {
+      // Extract metadata fields if available
+      final metadata = user.metadata ?? {};
       return StudentRowData(
         id: user.id,
         name: user.displayName ?? 'Unknown User',
         email: user.email,
         studentId: 'STU${user.id.substring(0, 6).toUpperCase()}',
-        grade: 'Grade ${10 + (user.id.hashCode % 4)}', // Mock grades 10-13
-        school: _getMockSchool(user.id.hashCode % 5),
-        applications: 2 + (user.id.hashCode % 6), // 2-7 applications
-        status: user.metadata?['isActive'] == true ? 'active' : 'inactive',
+        grade: metadata['grade']?.toString() ?? 'Not specified',
+        school: metadata['school']?.toString() ?? 'Not specified',
+        applications: (metadata['applications_count'] as int?) ?? 0,
+        status: metadata['isActive'] == true ? 'active' : 'inactive',
         joinedDate: _formatDate(user.createdAt),
       );
     }).toList();
@@ -457,18 +459,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
     if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
     return '${(diff.inDays / 365).floor()} years ago';
-  }
-
-  /// Helper method to get mock school name
-  String _getMockSchool(int index) {
-    final schools = [
-      'Nairobi High School',
-      'Lagos International Academy',
-      'Cape Town Secondary School',
-      'Accra Grammar School',
-      'Dar es Salaam Academy',
-    ];
-    return schools[index % schools.length];
   }
 
   /// Handle bulk activate operation

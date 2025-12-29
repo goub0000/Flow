@@ -239,14 +239,16 @@ class _ParentsListScreenState extends ConsumerState<ParentsListScreen> {
     // Get users from provider and convert to ParentRowData
     final users = ref.watch(adminParentsProvider);
     var parents = users.map((user) {
+      // Extract metadata fields if available
+      final metadata = user.metadata ?? {};
       return ParentRowData(
         id: user.id,
         name: user.displayName ?? 'Unknown Parent',
         email: user.email,
         parentId: 'PAR${user.id.substring(0, 6).toUpperCase()}',
-        phone: user.phoneNumber ?? '+254700000000',
-        children: 1 + (user.id.hashCode % 3), // 1-3 children
-        status: user.metadata?['isActive'] == true ? 'active' : 'inactive',
+        phone: user.phoneNumber ?? 'Not specified',
+        children: (metadata['children_count'] as int?) ?? 0,
+        status: metadata['isActive'] == true ? 'active' : 'inactive',
         joinedDate: _formatDate(user.createdAt),
       );
     }).toList();

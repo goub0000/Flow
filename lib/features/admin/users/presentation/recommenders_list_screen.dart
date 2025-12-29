@@ -272,18 +272,18 @@ class _RecommendersListScreenState
     // Get users from provider and convert to RecommenderRowData
     final users = ref.watch(adminRecommendersProvider);
     var recommenders = users.map((user) {
-      final requestsCount = 10 + (user.id.hashCode % 40); // 10-49 requests
-      final completedCount = (requestsCount * 0.8).floor(); // 80% completion rate
+      // Extract metadata fields if available
+      final metadata = user.metadata ?? {};
       return RecommenderRowData(
         id: user.id,
         name: user.displayName ?? 'Unknown Recommender',
         email: user.email,
         recommenderId: 'REC${user.id.substring(0, 6).toUpperCase()}',
-        type: _getMockRecommenderType(user.id.hashCode % 3),
-        organization: _getMockOrganization(user.id.hashCode % 5),
-        requests: requestsCount,
-        completed: completedCount,
-        status: user.metadata?['isActive'] == true ? 'active' : 'inactive',
+        type: metadata['recommender_type']?.toString() ?? 'Not specified',
+        organization: metadata['organization']?.toString() ?? 'Not specified',
+        requests: (metadata['requests_count'] as int?) ?? 0,
+        completed: (metadata['completed_count'] as int?) ?? 0,
+        status: metadata['isActive'] == true ? 'active' : 'inactive',
         joinedDate: _formatDate(user.createdAt),
       );
     }).toList();
@@ -476,24 +476,6 @@ class _RecommendersListScreenState
     if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
     if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
     return '${(diff.inDays / 365).floor()} years ago';
-  }
-
-  /// Helper method to get mock recommender type
-  String _getMockRecommenderType(int index) {
-    final types = ['Teacher', 'Professor', 'Employer'];
-    return types[index % types.length];
-  }
-
-  /// Helper method to get mock organization
-  String _getMockOrganization(int index) {
-    final organizations = [
-      'Nairobi High School',
-      'University of Lagos',
-      'Cape Town Tech Company',
-      'Accra Business Institute',
-      'Cairo Medical Center',
-    ];
-    return organizations[index % organizations.length];
   }
 
   Future<void> _handleBulkActivate() async {

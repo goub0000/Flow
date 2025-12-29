@@ -283,15 +283,17 @@ class _InstitutionsListScreenState
     // Get users from provider and convert to InstitutionRowData
     final users = ref.watch(adminInstitutionsProvider);
     var institutions = users.map((user) {
+      // Extract metadata fields if available
+      final metadata = user.metadata ?? {};
       return InstitutionRowData(
         id: user.id,
         name: user.displayName ?? 'Unknown Institution',
         email: user.email,
         institutionId: 'INS${user.id.substring(0, 6).toUpperCase()}',
-        type: _getMockInstitutionType(user.id.hashCode % 4),
-        location: _getMockLocation(user.id.hashCode % 6),
-        programs: 5 + (user.id.hashCode % 20), // 5-24 programs
-        status: _getMockVerificationStatus(user.id.hashCode % 3),
+        type: metadata['institution_type']?.toString() ?? 'Not specified',
+        location: metadata['location']?.toString() ?? 'Not specified',
+        programs: (metadata['programs_count'] as int?) ?? 0,
+        status: metadata['isActive'] == true ? 'Active' : 'Pending',
         joinedDate: _formatDate(user.createdAt),
       );
     }).toList();
@@ -486,31 +488,6 @@ class _InstitutionsListScreenState
     if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
     if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
     return '${(diff.inDays / 365).floor()} years ago';
-  }
-
-  /// Helper method to get mock institution type
-  String _getMockInstitutionType(int index) {
-    final types = ['University', 'College', 'Vocational School', 'Language School'];
-    return types[index % types.length];
-  }
-
-  /// Helper method to get mock location
-  String _getMockLocation(int index) {
-    final locations = [
-      'Nairobi, Kenya',
-      'Lagos, Nigeria',
-      'Cape Town, South Africa',
-      'Accra, Ghana',
-      'Cairo, Egypt',
-      'Dar es Salaam, Tanzania',
-    ];
-    return locations[index % locations.length];
-  }
-
-  /// Helper method to get mock verification status
-  String _getMockVerificationStatus(int index) {
-    final statuses = ['verified', 'pending', 'active'];
-    return statuses[index % statuses.length];
   }
 
   /// Handle bulk approve operation

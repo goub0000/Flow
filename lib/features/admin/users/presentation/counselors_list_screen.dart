@@ -273,15 +273,17 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
     // Get users from provider and convert to CounselorRowData
     final users = ref.watch(adminCounselorsProvider);
     var counselors = users.map((user) {
+      // Extract metadata fields if available
+      final metadata = user.metadata ?? {};
       return CounselorRowData(
         id: user.id,
         name: user.displayName ?? 'Unknown Counselor',
         email: user.email,
         counselorId: 'COU${user.id.substring(0, 6).toUpperCase()}',
-        specialty: _getMockSpecialty(user.id.hashCode % 5),
-        students: 10 + (user.id.hashCode % 40), // 10-49 students
-        sessions: 50 + (user.id.hashCode % 200), // 50-249 sessions
-        status: user.metadata?['isActive'] == true ? 'active' : 'inactive',
+        specialty: metadata['specialty']?.toString() ?? 'Not specified',
+        students: (metadata['students_count'] as int?) ?? 0,
+        sessions: (metadata['sessions_count'] as int?) ?? 0,
+        status: metadata['isActive'] == true ? 'active' : 'inactive',
         joinedDate: _formatDate(user.createdAt),
       );
     }).toList();
@@ -467,18 +469,6 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
     if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
     if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
     return '${(diff.inDays / 365).floor()} years ago';
-  }
-
-  /// Helper method to get mock counselor specialty
-  String _getMockSpecialty(int index) {
-    final specialties = [
-      'Academic Counseling',
-      'Career Guidance',
-      'College Admissions',
-      'Mental Health',
-      'Study Skills',
-    ];
-    return specialties[index % specialties.length];
   }
 
   Future<void> _handleBulkActivate() async {
