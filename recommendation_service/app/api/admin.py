@@ -839,6 +839,112 @@ async def get_role_distribution_analytics(
         )
 
 
+class AdminUserResponse(BaseModel):
+    """Response model for admin user list"""
+    id: str
+    email: str
+    display_name: Optional[str] = None
+    active_role: Optional[str] = None
+    available_roles: Optional[List[str]] = None
+    photo_url: Optional[str] = None
+    phone_number: Optional[str] = None
+    created_at: Optional[str] = None
+    last_login_at: Optional[str] = None
+    is_email_verified: Optional[bool] = False
+    is_phone_verified: Optional[bool] = False
+    is_active: Optional[bool] = True
+    # Role-specific fields
+    school: Optional[str] = None
+    grade: Optional[str] = None
+    graduation_year: Optional[int] = None
+    institution_type: Optional[str] = None
+    location: Optional[str] = None
+    website: Optional[str] = None
+    specialty: Optional[str] = None
+    organization: Optional[str] = None
+    position: Optional[str] = None
+    children_count: Optional[int] = None
+    occupation: Optional[str] = None
+
+
+class AdminUsersListResponse(BaseModel):
+    """Response model for admin users list"""
+    success: bool = True
+    users: List[AdminUserResponse]
+    total: int
+
+
+@router.get("/admin/users", response_model=AdminUsersListResponse)
+async def get_all_users_for_admin(
+    role: Optional[str] = Query(None, description="Filter by role"),
+    current_user: CurrentUser = Depends(require_admin)
+) -> AdminUsersListResponse:
+    """
+    Get all users for admin panel
+
+    **Admin Only** - Returns all users with their profiles.
+
+    **Query Parameters:**
+    - role: Optional filter by active_role (e.g., 'student', 'parent', 'institution')
+
+    **Returns:**
+    - users: List of user objects with all profile data
+    - total: Total count of users
+    """
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('users').select('*')
+
+        # Apply role filter if provided
+        if role:
+            query = query.eq('active_role', role.lower())
+
+        response = query.execute()
+
+        users = []
+        for user_data in response.data or []:
+            users.append(AdminUserResponse(
+                id=user_data.get('id', ''),
+                email=user_data.get('email', ''),
+                display_name=user_data.get('display_name'),
+                active_role=user_data.get('active_role'),
+                available_roles=user_data.get('available_roles', []),
+                photo_url=user_data.get('photo_url'),
+                phone_number=user_data.get('phone_number'),
+                created_at=user_data.get('created_at'),
+                last_login_at=user_data.get('last_login_at'),
+                is_email_verified=user_data.get('is_email_verified', False),
+                is_phone_verified=user_data.get('is_phone_verified', False),
+                is_active=user_data.get('is_active', True),
+                school=user_data.get('school'),
+                grade=user_data.get('grade'),
+                graduation_year=user_data.get('graduation_year'),
+                institution_type=user_data.get('institution_type'),
+                location=user_data.get('location'),
+                website=user_data.get('website'),
+                specialty=user_data.get('specialty'),
+                organization=user_data.get('organization'),
+                position=user_data.get('position'),
+                children_count=user_data.get('children_count'),
+                occupation=user_data.get('occupation'),
+            ))
+
+        return AdminUsersListResponse(
+            success=True,
+            users=users,
+            total=len(users)
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching users for admin: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch users: {str(e)}"
+        )
+
+
 @router.get("/admin/analytics/metrics")
 @router.get("/admin/dashboard/analytics/metrics")
 async def get_enhanced_metrics(

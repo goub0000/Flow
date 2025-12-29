@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/api/api_client.dart';
@@ -62,99 +61,98 @@ class AdminUsersState {
 
 /// StateNotifier for managing users (admin)
 class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
-  final SupabaseClient _supabase = Supabase.instance.client;
   final ApiClient _apiClient;
 
   AdminUsersNotifier(this._apiClient) : super(const AdminUsersState()) {
     fetchAllUsers();
   }
 
-  /// Fetch all users from Supabase
+  /// Fetch all users from backend API (bypasses Supabase RLS)
   Future<void> fetchAllUsers() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // Query users table from Supabase
-      final usersData = await _supabase.from('users').select('*') as List<dynamic>;
-
-      final users = usersData.map((userData) {
-        try {
-          // Parse user role - use active_role field
-          final roleString = userData['active_role'] as String?;
-          final activeRole = _parseUserRole(roleString);
-
-          // Parse available_roles array
-          List<UserRole> availableRoles = [activeRole];
-          if (userData['available_roles'] != null) {
-            final rolesArray = userData['available_roles'] as List<dynamic>?;
-            if (rolesArray != null && rolesArray.isNotEmpty) {
-              availableRoles = rolesArray
-                  .map((r) => _parseUserRole(r.toString()))
-                  .toList();
-            }
-          }
-
-          return UserModel(
-            id: userData['id'] as String,
-            email: userData['email'] as String? ?? '',
-            displayName: userData['display_name'] as String? ?? 'Unknown User',
-            photoUrl: userData['photo_url'] as String?,
-            phoneNumber: userData['phone_number'] as String?,
-            activeRole: activeRole,
-            availableRoles: availableRoles,
-            createdAt: userData['created_at'] != null
-                ? DateTime.parse(userData['created_at'] as String)
-                : DateTime.now(),
-            lastLoginAt: userData['last_login_at'] != null
-                ? DateTime.parse(userData['last_login_at'] as String)
-                : null,
-            isEmailVerified: userData['is_email_verified'] as bool? ?? false,
-            isPhoneVerified: userData['is_phone_verified'] as bool? ?? false,
-            metadata: {
-              // General fields
-              'isActive': userData['is_active'] ?? true,
-              'onboarding_completed': userData['onboarding_completed'] ?? false,
-              'bio': userData['bio'],
-              'address': userData['address'],
-              'city': userData['city'],
-              'country': userData['country'],
-              // Student fields
-              'school': userData['school'],
-              'grade': userData['grade'],
-              'graduation_year': userData['graduation_year'],
-              // Institution fields
-              'institution_type': userData['institution_type'],
-              'location': userData['location'],
-              'website': userData['website'],
-              'programs_count': userData['programs_count'],
-              // Counselor fields
-              'specialty': userData['specialty'],
-              'students_count': userData['students_count'],
-              'sessions_count': userData['sessions_count'],
-              'years_experience': userData['years_experience'],
-              // Recommender fields
-              'recommender_type': userData['recommender_type'],
-              'organization': userData['organization'],
-              'position': userData['position'],
-              'requests_count': userData['requests_count'],
-              'completed_count': userData['completed_count'],
-              // Parent fields
-              'children_count': userData['children_count'],
-              'occupation': userData['occupation'],
-            },
-          );
-        } catch (e) {
-          print('[AdminUsers] Error parsing user: $e');
-          return null;
-        }
-      }).whereType<UserModel>().toList();
-
-      state = state.copyWith(
-        users: users,
-        isLoading: false,
+      // Use backend API instead of direct Supabase query
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/users',
+        fromJson: (data) => data as Map<String, dynamic>,
       );
+
+      if (response.success && response.data != null) {
+        final usersData = response.data!['users'] as List<dynamic>? ?? [];
+
+        final users = usersData.map((userData) {
+          try {
+            // Parse user role - use active_role field
+            final roleString = userData['active_role'] as String?;
+            final activeRole = _parseUserRole(roleString);
+
+            // Parse available_roles array
+            List<UserRole> availableRoles = [activeRole];
+            if (userData['available_roles'] != null) {
+              final rolesArray = userData['available_roles'] as List<dynamic>?;
+              if (rolesArray != null && rolesArray.isNotEmpty) {
+                availableRoles = rolesArray
+                    .map((r) => _parseUserRole(r.toString()))
+                    .toList();
+              }
+            }
+
+            return UserModel(
+              id: userData['id'] as String? ?? '',
+              email: userData['email'] as String? ?? '',
+              displayName: userData['display_name'] as String? ?? 'Unknown User',
+              photoUrl: userData['photo_url'] as String?,
+              phoneNumber: userData['phone_number'] as String?,
+              activeRole: activeRole,
+              availableRoles: availableRoles,
+              createdAt: userData['created_at'] != null
+                  ? DateTime.parse(userData['created_at'] as String)
+                  : DateTime.now(),
+              lastLoginAt: userData['last_login_at'] != null
+                  ? DateTime.parse(userData['last_login_at'] as String)
+                  : null,
+              isEmailVerified: userData['is_email_verified'] as bool? ?? false,
+              isPhoneVerified: userData['is_phone_verified'] as bool? ?? false,
+              metadata: {
+                // General fields
+                'isActive': userData['is_active'] ?? true,
+                // Student fields
+                'school': userData['school'],
+                'grade': userData['grade'],
+                'graduation_year': userData['graduation_year'],
+                // Institution fields
+                'institution_type': userData['institution_type'],
+                'location': userData['location'],
+                'website': userData['website'],
+                // Counselor fields
+                'specialty': userData['specialty'],
+                // Recommender fields
+                'organization': userData['organization'],
+                'position': userData['position'],
+                // Parent fields
+                'children_count': userData['children_count'],
+                'occupation': userData['occupation'],
+              },
+            );
+          } catch (e) {
+            print('[AdminUsers] Error parsing user: $e');
+            return null;
+          }
+        }).whereType<UserModel>().toList();
+
+        state = state.copyWith(
+          users: users,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch users',
+          isLoading: false,
+        );
+      }
     } catch (e) {
-      print('[AdminUsers] Error fetching users from Supabase: $e');
+      print('[AdminUsers] Error fetching users from backend: $e');
       state = state.copyWith(
         error: 'Failed to fetch users: ${e.toString()}',
         isLoading: false,
