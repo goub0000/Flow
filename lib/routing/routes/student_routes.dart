@@ -16,6 +16,9 @@ import '../../features/student/parent_linking/presentation/parent_linking_screen
 import '../../features/student/counseling/presentation/student_counseling_tab.dart';
 import '../../features/student/counseling/presentation/book_counseling_session_screen.dart';
 import '../../features/shared/counseling/models/counseling_models.dart';
+import '../../features/student/schedule/presentation/schedule_screen.dart';
+import '../../features/student/resources/presentation/resources_screen.dart';
+import '../../features/student/help/presentation/help_screen.dart';
 
 /// Student-specific routes
 List<RouteBase> studentRoutes = [
@@ -136,5 +139,21 @@ List<RouteBase> studentRoutes = [
       }
       return BookCounselingSessionScreen(counselor: counselor);
     },
+  ),
+  // Schedule, Resources, Help routes
+  GoRoute(
+    path: '/student/schedule',
+    name: 'student-schedule',
+    builder: (context, state) => const ScheduleScreen(),
+  ),
+  GoRoute(
+    path: '/student/resources',
+    name: 'student-resources',
+    builder: (context, state) => const ResourcesScreen(),
+  ),
+  GoRoute(
+    path: '/student/help',
+    name: 'student-help',
+    builder: (context, state) => const HelpScreen(),
   ),
 ];

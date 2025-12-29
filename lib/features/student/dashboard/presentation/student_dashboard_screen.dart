@@ -411,9 +411,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 color: Colors.orange,
                 onTap: () {
                   print('[DEBUG] Quick Action: Schedule clicked');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Schedule feature coming soon!')),
-                  );
+                  context.push('/student/schedule');
                 },
               ),
               QuickAction(
@@ -422,9 +420,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 color: Colors.purple,
                 onTap: () {
                   print('[DEBUG] Quick Action: Resources clicked');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Resources feature coming soon!')),
-                  );
+                  context.push('/student/resources');
                 },
               ),
               QuickAction(
@@ -433,9 +429,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 color: Colors.grey,
                 onTap: () {
                   print('[DEBUG] Quick Action: Help clicked');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Help feature coming soon!')),
-                  );
+                  context.push('/student/help');
                 },
               ),
             ],
