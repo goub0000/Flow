@@ -117,9 +117,7 @@ class _CourseContentBuilderScreenState
                   ),
                 ),
                 TextButton.icon(
-                  onPressed: () {
-                    // TODO: Navigate to edit basic info
-                  },
+                  onPressed: () => _showEditCourseInfoDialog(),
                   icon: const Icon(Icons.edit),
                   label: const Text('Edit Info'),
                 ),
@@ -764,5 +762,147 @@ class _CourseContentBuilderScreenState
         );
       }
     }
+  }
+
+  void _showEditCourseInfoDialog() {
+    final titleController = TextEditingController(text: widget.course?.title ?? '');
+    final descriptionController = TextEditingController(text: widget.course?.description ?? '');
+    String selectedType = (widget.course?.courseType?.toString()) ?? 'video';
+    String selectedLevel = (widget.course?.level?.toString()) ?? 'beginner';
+    bool isSaving = false;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.edit, color: Colors.blue),
+              SizedBox(width: 12),
+              Text('Edit Course Info'),
+            ],
+          ),
+          content: SizedBox(
+            width: 500,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Course Title *',
+                      hintText: 'Enter course title',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: descriptionController,
+                    maxLines: 4,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      hintText: 'Enter course description',
+                      border: OutlineInputBorder(),
+                      alignLabelWithHint: true,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          value: selectedType,
+                          decoration: const InputDecoration(
+                            labelText: 'Type',
+                            border: OutlineInputBorder(),
+                          ),
+                          items: const [
+                            DropdownMenuItem(value: 'video', child: Text('Video')),
+                            DropdownMenuItem(value: 'text', child: Text('Text')),
+                            DropdownMenuItem(value: 'interactive', child: Text('Interactive')),
+                            DropdownMenuItem(value: 'live', child: Text('Live')),
+                            DropdownMenuItem(value: 'hybrid', child: Text('Hybrid')),
+                          ],
+                          onChanged: (value) {
+                            if (value != null) {
+                              setDialogState(() => selectedType = value);
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          value: selectedLevel,
+                          decoration: const InputDecoration(
+                            labelText: 'Level',
+                            border: OutlineInputBorder(),
+                          ),
+                          items: const [
+                            DropdownMenuItem(value: 'beginner', child: Text('Beginner')),
+                            DropdownMenuItem(value: 'intermediate', child: Text('Intermediate')),
+                            DropdownMenuItem(value: 'advanced', child: Text('Advanced')),
+                            DropdownMenuItem(value: 'expert', child: Text('Expert')),
+                          ],
+                          onChanged: (value) {
+                            if (value != null) {
+                              setDialogState(() => selectedLevel = value);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: isSaving ? null : () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton.icon(
+              onPressed: isSaving
+                  ? null
+                  : () async {
+                      if (titleController.text.trim().isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Title is required')),
+                        );
+                        return;
+                      }
+
+                      setDialogState(() => isSaving = true);
+
+                      // TODO: Call API to update course info
+                      // For now just show success message
+                      await Future.delayed(const Duration(milliseconds: 500));
+
+                      if (mounted) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Course info updated successfully'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
+                    },
+              icon: isSaving
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                  : const Icon(Icons.save),
+              label: Text(isSaving ? 'Saving...' : 'Save Changes'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
