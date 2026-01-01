@@ -45,7 +45,10 @@ class _ContentManagementScreenState
   @override
   void initState() {
     super.initState();
-    _selectedType = widget.initialTypeFilter ?? 'all';
+    // Valid types from database: video, text, interactive, live, hybrid
+    const validTypes = ['all', 'video', 'text', 'interactive', 'live', 'hybrid'];
+    final initialType = widget.initialTypeFilter ?? 'all';
+    _selectedType = validTypes.contains(initialType) ? initialType : 'all';
   }
 
   @override
@@ -165,10 +168,16 @@ class _ContentManagementScreenState
 
   IconData _getHeaderIcon() {
     switch (widget.initialTypeFilter) {
-      case 'course':
-        return Icons.menu_book;
-      case 'resource':
-        return Icons.folder;
+      case 'video':
+        return Icons.play_circle;
+      case 'text':
+        return Icons.article;
+      case 'interactive':
+        return Icons.touch_app;
+      case 'live':
+        return Icons.live_tv;
+      case 'hybrid':
+        return Icons.layers;
       default:
         return Icons.library_books;
     }
@@ -176,10 +185,16 @@ class _ContentManagementScreenState
 
   String _getSubtitle() {
     switch (widget.initialTypeFilter) {
-      case 'course':
-        return 'Manage courses and learning modules';
-      case 'resource':
-        return 'Manage educational resources and materials';
+      case 'video':
+        return 'Manage video courses and tutorials';
+      case 'text':
+        return 'Manage text-based learning materials';
+      case 'interactive':
+        return 'Manage interactive learning content';
+      case 'live':
+        return 'Manage live sessions and webinars';
+      case 'hybrid':
+        return 'Manage hybrid learning experiences';
       default:
         return 'Manage educational content, courses, and curriculum';
     }
@@ -537,7 +552,7 @@ class _ContentManagementScreenState
           ),
           const SizedBox(width: 16),
 
-          // Type Filter
+          // Type Filter (matches database: video, text, interactive, live, hybrid)
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedType,
@@ -553,10 +568,11 @@ class _ContentManagementScreenState
               ),
               items: const [
                 DropdownMenuItem(value: 'all', child: Text('All Types')),
-                DropdownMenuItem(value: 'course', child: Text('Course')),
-                DropdownMenuItem(value: 'lesson', child: Text('Lesson')),
-                DropdownMenuItem(value: 'resource', child: Text('Resource')),
-                DropdownMenuItem(value: 'assessment', child: Text('Assessment')),
+                DropdownMenuItem(value: 'video', child: Text('Video')),
+                DropdownMenuItem(value: 'text', child: Text('Text')),
+                DropdownMenuItem(value: 'interactive', child: Text('Interactive')),
+                DropdownMenuItem(value: 'live', child: Text('Live')),
+                DropdownMenuItem(value: 'hybrid', child: Text('Hybrid')),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -1063,16 +1079,18 @@ class _ContentManagementScreenState
 
   IconData _getTypeIcon(String type) {
     switch (type.toLowerCase()) {
-      case 'course':
-        return Icons.school;
-      case 'lesson':
-        return Icons.class_;
-      case 'resource':
-        return Icons.description;
-      case 'assessment':
-        return Icons.quiz;
-      default:
+      case 'video':
+        return Icons.play_circle;
+      case 'text':
         return Icons.article;
+      case 'interactive':
+        return Icons.touch_app;
+      case 'live':
+        return Icons.live_tv;
+      case 'hybrid':
+        return Icons.layers;
+      default:
+        return Icons.school;
     }
   }
 
@@ -1081,25 +1099,29 @@ class _ContentManagementScreenState
     IconData icon;
 
     switch (type.toLowerCase()) {
-      case 'course':
+      case 'video':
         color = AppColors.primary;
-        icon = Icons.school;
+        icon = Icons.play_circle;
         break;
-      case 'lesson':
+      case 'text':
         color = AppColors.success;
-        icon = Icons.class_;
+        icon = Icons.article;
         break;
-      case 'resource':
+      case 'interactive':
         color = AppColors.warning;
-        icon = Icons.description;
+        icon = Icons.touch_app;
         break;
-      case 'assessment':
+      case 'live':
         color = AppColors.error;
-        icon = Icons.quiz;
+        icon = Icons.live_tv;
+        break;
+      case 'hybrid':
+        color = Colors.purple;
+        icon = Icons.layers;
         break;
       default:
         color = AppColors.textSecondary;
-        icon = Icons.article;
+        icon = Icons.school;
     }
 
     return Container(
