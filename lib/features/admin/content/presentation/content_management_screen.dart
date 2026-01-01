@@ -188,8 +188,10 @@ class _ContentManagementScreenState
   void _showCreateContentDialog() {
     final titleController = TextEditingController();
     final descriptionController = TextEditingController();
-    String selectedType = widget.initialTypeFilter ?? 'course';
+    // course_type must be: video, text, interactive, live, hybrid (database constraint)
+    String selectedType = 'video';
     String selectedCategory = 'technology';
+    String selectedLevel = 'beginner';
     bool isCreating = false;
 
     showDialog(
@@ -244,10 +246,11 @@ class _ContentManagementScreenState
                           ),
                         ),
                         items: const [
-                          DropdownMenuItem(value: 'course', child: Text('Course')),
-                          DropdownMenuItem(value: 'lesson', child: Text('Lesson')),
-                          DropdownMenuItem(value: 'resource', child: Text('Resource')),
-                          DropdownMenuItem(value: 'assessment', child: Text('Assessment')),
+                          DropdownMenuItem(value: 'video', child: Text('Video Course')),
+                          DropdownMenuItem(value: 'text', child: Text('Text Course')),
+                          DropdownMenuItem(value: 'interactive', child: Text('Interactive')),
+                          DropdownMenuItem(value: 'live', child: Text('Live Session')),
+                          DropdownMenuItem(value: 'hybrid', child: Text('Hybrid')),
                         ],
                         onChanged: (value) {
                           if (value != null) {
@@ -259,28 +262,49 @@ class _ContentManagementScreenState
                     const SizedBox(width: 16),
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: selectedCategory,
+                        value: selectedLevel,
                         decoration: InputDecoration(
-                          labelText: 'Category *',
+                          labelText: 'Level *',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         items: const [
-                          DropdownMenuItem(value: 'technology', child: Text('Technology')),
-                          DropdownMenuItem(value: 'business', child: Text('Business')),
-                          DropdownMenuItem(value: 'science', child: Text('Science')),
-                          DropdownMenuItem(value: 'arts', child: Text('Arts')),
-                          DropdownMenuItem(value: 'education', child: Text('Education')),
+                          DropdownMenuItem(value: 'beginner', child: Text('Beginner')),
+                          DropdownMenuItem(value: 'intermediate', child: Text('Intermediate')),
+                          DropdownMenuItem(value: 'advanced', child: Text('Advanced')),
+                          DropdownMenuItem(value: 'expert', child: Text('Expert')),
                         ],
                         onChanged: (value) {
                           if (value != null) {
-                            setDialogState(() => selectedCategory = value);
+                            setDialogState(() => selectedLevel = value);
                           }
                         },
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  value: selectedCategory,
+                  decoration: InputDecoration(
+                    labelText: 'Category',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'technology', child: Text('Technology')),
+                    DropdownMenuItem(value: 'business', child: Text('Business')),
+                    DropdownMenuItem(value: 'science', child: Text('Science')),
+                    DropdownMenuItem(value: 'arts', child: Text('Arts')),
+                    DropdownMenuItem(value: 'education', child: Text('Education')),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      setDialogState(() => selectedCategory = value);
+                    }
+                  },
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -320,6 +344,7 @@ class _ContentManagementScreenState
                       : descriptionController.text.trim(),
                   type: selectedType,
                   category: selectedCategory,
+                  level: selectedLevel,
                 );
 
                 if (mounted) {

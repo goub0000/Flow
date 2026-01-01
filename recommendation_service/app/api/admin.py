@@ -1392,8 +1392,10 @@ class CreateContentRequest(BaseModel):
     """Request model for creating content"""
     title: str
     description: Optional[str] = None
-    type: str = "course"  # 'course', 'lesson', 'resource', 'assessment'
+    # course_type must be: video, text, interactive, live, hybrid
+    type: str = "video"
     category: Optional[str] = None
+    # level must be: beginner, intermediate, advanced, expert
     level: Optional[str] = None
     duration_hours: Optional[float] = None
     institution_id: Optional[str] = None
@@ -1425,21 +1427,37 @@ async def create_content(
         db = get_supabase()
         import uuid
 
-        # Build content data - provide defaults for all NOT NULL columns
+        # Build content data with valid constraint values
+        # course_type CHECK: 'video', 'text', 'interactive', 'live', 'hybrid'
+        # level CHECK: 'beginner', 'intermediate', 'advanced', 'expert'
+        # status CHECK: 'draft', 'published', 'archived'
+        valid_course_types = ['video', 'text', 'interactive', 'live', 'hybrid']
+        valid_levels = ['beginner', 'intermediate', 'advanced', 'expert']
+
+        course_type = request.type if request.type in valid_course_types else 'video'
+        level = request.level if request.level in valid_levels else 'beginner'
+
         content_data = {
             'id': str(uuid.uuid4()),
             'title': request.title,
             'description': request.description or '',
             'status': 'draft',
-            'course_type': request.type or 'course',
-            'level': request.level or 'beginner',
-            'category': request.category or 'general',
-            'duration_hours': request.duration_hours if request.duration_hours is not None else 0,
+            'course_type': course_type,
+            'level': level,
+            'is_published': False,
+            'price': 0.0,
+            'currency': 'USD',
+            'enrolled_count': 0,
+            'review_count': 0,
             'created_at': datetime.utcnow().isoformat(),
             'updated_at': datetime.utcnow().isoformat(),
         }
 
         # Add optional fields only if they have values
+        if request.category:
+            content_data['category'] = request.category
+        if request.duration_hours is not None:
+            content_data['duration_hours'] = request.duration_hours
         if request.institution_id:
             content_data['institution_id'] = request.institution_id
 
