@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../authentication/providers/auth_provider.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 
 /// Admin Login Screen - Secure login with MFA for admin users
@@ -330,8 +331,13 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
 
   Widget _buildBackButton() {
     return TextButton(
-      onPressed: () {
-        context.go('/');
+      onPressed: () async {
+        // Clear main auth state to ensure proper redirect to home
+        // (admin signout may have cleared service session but not main auth provider)
+        await ref.read(authProvider.notifier).signOut();
+        if (mounted) {
+          context.go('/');
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
