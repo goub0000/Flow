@@ -34,8 +34,15 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       // Read fresh auth state inside redirect callback to avoid stale data
       final authState = ref.read(authProvider);
+      final isLoading = authState.isLoading;
       final isAuthenticated = authState.isAuthenticated;
       final location = state.matchedLocation;
+
+      // Don't redirect while auth state is still loading (session being restored)
+      // This prevents the flash of wrong content during page refresh
+      if (isLoading) {
+        return null;
+      }
 
       // First check auth-based redirects
       final authRedirect = AuthGuard.getRedirect(
