@@ -7,6 +7,7 @@ import '../../shared/widgets/admin_shell.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_content_provider.dart';
+import '../../shared/providers/admin_users_provider.dart';
 import '../../shared/utils/debouncer.dart';
 
 /// Content Management Screen - Manage educational content and curriculum
@@ -872,217 +873,351 @@ class _ContentManagementScreenState
     String selectedTargetType = 'all_students';
     bool isRequired = false;
     bool isAssigning = false;
+    Set<String> selectedUserIds = {};
+    String searchQuery = '';
+    final searchController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          title: Row(
-            children: [
-              Icon(Icons.person_add, color: AppColors.primary),
-              const SizedBox(width: 12),
-              const Expanded(
-                child: Text('Assign Content'),
-              ),
-            ],
-          ),
-          content: SizedBox(
-            width: 500,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+        builder: (context, setDialogState) {
+          // Get users based on selected type
+          final usersState = ref.watch(adminUsersProvider);
+          final allStudents = ref.watch(adminStudentsProvider);
+          final allInstitutions = ref.watch(adminInstitutionsProvider);
+
+          // Filter based on target type and search
+          List<dynamic> filteredUsers = [];
+          if (selectedTargetType == 'student') {
+            filteredUsers = allStudents.where((user) {
+              if (searchQuery.isEmpty) return true;
+              return (user.displayName?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
+                  user.email.toLowerCase().contains(searchQuery.toLowerCase());
+            }).toList();
+          } else if (selectedTargetType == 'institution') {
+            filteredUsers = allInstitutions.where((user) {
+              if (searchQuery.isEmpty) return true;
+              return (user.displayName?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
+                  user.email.toLowerCase().contains(searchQuery.toLowerCase());
+            }).toList();
+          }
+
+          return AlertDialog(
+            title: Row(
               children: [
-                // Content being assigned
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(_getTypeIcon(content.type), color: AppColors.primary),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              content.title,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              '${content.type} • ${content.subject}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                Icon(Icons.person_add, color: AppColors.primary),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Text('Assign Content'),
                 ),
-                const SizedBox(height: 20),
-
-                // Target type selection
-                Text(
-                  'Assign to:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
-                  value: selectedTargetType,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'all_students',
-                      child: Row(
-                        children: [
-                          Icon(Icons.groups, size: 20),
-                          SizedBox(width: 8),
-                          Text('All Students'),
-                        ],
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'institution',
-                      child: Row(
-                        children: [
-                          Icon(Icons.business, size: 20),
-                          SizedBox(width: 8),
-                          Text('Specific Institutions'),
-                        ],
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'student',
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, size: 20),
-                          SizedBox(width: 8),
-                          Text('Specific Students'),
-                        ],
-                      ),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      setDialogState(() => selectedTargetType = value);
-                    }
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Required toggle
-                SwitchListTile(
-                  title: const Text('Required'),
-                  subtitle: Text(
-                    isRequired
-                        ? 'This content is mandatory for assigned users'
-                        : 'This content is optional for assigned users',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  value: isRequired,
-                  onChanged: (value) {
-                    setDialogState(() => isRequired = value);
-                  },
-                  activeColor: AppColors.primary,
-                  contentPadding: EdgeInsets.zero,
-                ),
-
-                const SizedBox(height: 12),
-                if (selectedTargetType != 'all_students')
+              ],
+            ),
+            content: SizedBox(
+              width: 600,
+              height: selectedTargetType == 'all_students' ? null : 500,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Content being assigned
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.warning.withValues(alpha: 0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: AppColors.warning.withValues(alpha: 0.3),
-                      ),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.info_outline,
-                            size: 20, color: AppColors.warning),
-                        const SizedBox(width: 8),
+                        Icon(_getTypeIcon(content.type), color: AppColors.primary),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Text(
-                            'Individual selection coming soon. For now, use "All Students" to assign to everyone.',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.textSecondary,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                content.title,
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${content.type} • ${content.subject}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: isAssigning ? null : () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton.icon(
-              onPressed: isAssigning
-                  ? null
-                  : () async {
-                      setDialogState(() => isAssigning = true);
+                  const SizedBox(height: 20),
 
-                      final success = await ref
-                          .read(adminContentProvider.notifier)
-                          .assignContent(
-                            contentId: content.id,
-                            targetType: selectedTargetType,
-                            isRequired: isRequired,
-                          );
-
-                      if (mounted) {
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(success
-                                ? 'Content assigned successfully'
-                                : 'Failed to assign content'),
-                            backgroundColor:
-                                success ? AppColors.success : AppColors.error,
-                          ),
-                        );
+                  // Target type selection
+                  Text(
+                    'Assign to:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    value: selectedTargetType,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                    ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'all_students',
+                        child: Row(
+                          children: [
+                            Icon(Icons.groups, size: 20),
+                            SizedBox(width: 8),
+                            Text('All Students'),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'institution',
+                        child: Row(
+                          children: [
+                            Icon(Icons.business, size: 20),
+                            SizedBox(width: 8),
+                            Text('Specific Institutions'),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'student',
+                        child: Row(
+                          children: [
+                            Icon(Icons.person, size: 20),
+                            SizedBox(width: 8),
+                            Text('Specific Students'),
+                          ],
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        setDialogState(() {
+                          selectedTargetType = value;
+                          selectedUserIds.clear();
+                          searchQuery = '';
+                          searchController.clear();
+                        });
                       }
                     },
-              icon: isAssigning
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Required toggle
+                  SwitchListTile(
+                    title: const Text('Required'),
+                    subtitle: Text(
+                      isRequired
+                          ? 'This content is mandatory for assigned users'
+                          : 'This content is optional for assigned users',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
                       ),
-                    )
-                  : const Icon(Icons.send, size: 18),
-              label: Text(isAssigning ? 'Assigning...' : 'Assign'),
+                    ),
+                    value: isRequired,
+                    onChanged: (value) {
+                      setDialogState(() => isRequired = value);
+                    },
+                    activeColor: AppColors.primary,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+
+                  // User selection for specific targets
+                  if (selectedTargetType != 'all_students') ...[
+                    const SizedBox(height: 12),
+                    // Search field
+                    TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: selectedTargetType == 'student'
+                            ? 'Search students by name or email...'
+                            : 'Search institutions by name or email...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 12,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setDialogState(() => searchQuery = value);
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    // Selection info
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${selectedUserIds.length} selected',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        if (selectedUserIds.isNotEmpty)
+                          TextButton(
+                            onPressed: () {
+                              setDialogState(() => selectedUserIds.clear());
+                            },
+                            child: const Text('Clear all'),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // User list
+                    Expanded(
+                      child: usersState.isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : filteredUsers.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        selectedTargetType == 'student'
+                                            ? Icons.person_off
+                                            : Icons.business_center,
+                                        size: 48,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        searchQuery.isNotEmpty
+                                            ? 'No ${selectedTargetType == 'student' ? 'students' : 'institutions'} match your search'
+                                            : 'No ${selectedTargetType == 'student' ? 'students' : 'institutions'} available',
+                                        style: TextStyle(
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: filteredUsers.length,
+                                  itemBuilder: (context, index) {
+                                    final user = filteredUsers[index];
+                                    final isSelected = selectedUserIds.contains(user.id);
+                                    return CheckboxListTile(
+                                      value: isSelected,
+                                      onChanged: (value) {
+                                        setDialogState(() {
+                                          if (value == true) {
+                                            selectedUserIds.add(user.id);
+                                          } else {
+                                            selectedUserIds.remove(user.id);
+                                          }
+                                        });
+                                      },
+                                      title: Text(
+                                        user.displayName ?? 'Unknown',
+                                        style: const TextStyle(fontWeight: FontWeight.w500),
+                                      ),
+                                      subtitle: Text(
+                                        user.email,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      secondary: CircleAvatar(
+                                        backgroundColor: isSelected
+                                            ? AppColors.primary
+                                            : AppColors.textSecondary.withValues(alpha: 0.2),
+                                        child: Icon(
+                                          selectedTargetType == 'student'
+                                              ? Icons.person
+                                              : Icons.business,
+                                          color: isSelected ? Colors.white : AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      activeColor: AppColors.primary,
+                                      dense: true,
+                                    );
+                                  },
+                                ),
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ],
-        ),
+            actions: [
+              TextButton(
+                onPressed: isAssigning ? null : () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton.icon(
+                onPressed: isAssigning ||
+                        (selectedTargetType != 'all_students' && selectedUserIds.isEmpty)
+                    ? null
+                    : () async {
+                        setDialogState(() => isAssigning = true);
+
+                        final success = await ref
+                            .read(adminContentProvider.notifier)
+                            .assignContent(
+                              contentId: content.id,
+                              targetType: selectedTargetType,
+                              targetIds: selectedTargetType != 'all_students'
+                                  ? selectedUserIds.toList()
+                                  : null,
+                              isRequired: isRequired,
+                            );
+
+                        if (mounted) {
+                          Navigator.pop(context);
+                          final targetCount = selectedTargetType == 'all_students'
+                              ? 'all students'
+                              : '${selectedUserIds.length} ${selectedTargetType == 'student' ? 'student' : 'institution'}${selectedUserIds.length > 1 ? 's' : ''}';
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(success
+                                  ? 'Content assigned to $targetCount successfully'
+                                  : 'Failed to assign content'),
+                              backgroundColor:
+                                  success ? AppColors.success : AppColors.error,
+                            ),
+                          );
+                        }
+                      },
+                icon: isAssigning
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.send, size: 18),
+                label: Text(isAssigning
+                    ? 'Assigning...'
+                    : selectedTargetType == 'all_students'
+                        ? 'Assign to All'
+                        : 'Assign (${selectedUserIds.length})'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
