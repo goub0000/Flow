@@ -25,12 +25,15 @@ import 'routes/find_your_path_routes.dart';
 /// Main router provider that combines all route modules
 final routerProvider = Provider<GoRouter>((ref) {
   // final logger = Logger('AppRouter');
-  final authState = ref.watch(authProvider);
+  // Watch authProvider to trigger rebuilds, but read fresh state in redirect
+  ref.watch(authProvider);
 
   return GoRouter(
     initialLocation: '/',
     refreshListenable: _RouterNotifier(ref),
     redirect: (context, state) {
+      // Read fresh auth state inside redirect callback to avoid stale data
+      final authState = ref.read(authProvider);
       final isAuthenticated = authState.isAuthenticated;
       final location = state.matchedLocation;
 
