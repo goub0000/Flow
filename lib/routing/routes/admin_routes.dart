@@ -244,24 +244,25 @@ List<RouteBase> adminRoutes = [
       GoRoute(
         path: 'courses',
         name: 'admin-content-courses',
-        builder: (context, state) => const ContentManagementScreen(),
+        builder: (context, state) => const ContentManagementScreen(
+          initialTypeFilter: 'course',
+          pageTitle: 'Courses',
+        ),
       ),
       GoRoute(
         path: 'curriculum',
         name: 'admin-content-curriculum',
-        builder: (context, state) => const AdminPlaceholderScreen(
-          title: 'Curriculum Management',
-          description: 'Design and organize curriculum structure and learning paths.',
-          icon: Icons.school,
+        builder: (context, state) => const ContentManagementScreen(
+          initialTypeFilter: 'lesson',
+          pageTitle: 'Curriculum',
         ),
       ),
       GoRoute(
         path: 'resources',
         name: 'admin-content-resources',
-        builder: (context, state) => const AdminPlaceholderScreen(
-          title: 'Resources Management',
-          description: 'Manage educational resources, materials, and learning assets.',
-          icon: Icons.folder,
+        builder: (context, state) => const ContentManagementScreen(
+          initialTypeFilter: 'resource',
+          pageTitle: 'Resources',
         ),
       ),
     ],

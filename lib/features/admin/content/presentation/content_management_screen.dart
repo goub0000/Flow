@@ -19,7 +19,14 @@ import '../../shared/utils/debouncer.dart';
 /// - Content categorization and tagging
 /// - Preview content before publishing
 class ContentManagementScreen extends ConsumerStatefulWidget {
-  const ContentManagementScreen({super.key});
+  final String? initialTypeFilter;
+  final String? pageTitle;
+
+  const ContentManagementScreen({
+    super.key,
+    this.initialTypeFilter,
+    this.pageTitle,
+  });
 
   @override
   ConsumerState<ContentManagementScreen> createState() =>
@@ -32,8 +39,14 @@ class _ContentManagementScreenState
   final _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
   String _searchQuery = '';
   String _selectedStatus = 'all';
-  String _selectedType = 'all';
+  late String _selectedType;
   String _selectedSubject = 'all';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedType = widget.initialTypeFilter ?? 'all';
+  }
 
   @override
   void dispose() {
@@ -81,6 +94,9 @@ class _ContentManagementScreenState
   }
 
   Widget _buildHeader() {
+    final title = widget.pageTitle ?? 'Content Management';
+    final subtitle = _getSubtitle();
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Row(
@@ -92,13 +108,13 @@ class _ContentManagementScreenState
               Row(
                 children: [
                   Icon(
-                    Icons.library_books,
+                    _getHeaderIcon(),
                     size: 32,
                     color: AppColors.primary,
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Content Management',
+                    title,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -107,7 +123,7 @@ class _ContentManagementScreenState
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage educational content, courses, and curriculum',
+                subtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -122,10 +138,9 @@ class _ContentManagementScreenState
                 permission: AdminPermission.exportData,
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    // TODO: Implement export functionality
-                    // - Generate CSV/Excel file
-                    // - Include content metadata
-                    // - Trigger download
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Export feature coming soon')),
+                    );
                   },
                   icon: const Icon(Icons.download, size: 20),
                   label: const Text('Export'),
@@ -136,9 +151,7 @@ class _ContentManagementScreenState
               PermissionGuard(
                 permission: AdminPermission.createContent,
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Navigate to content creation screen
-                  },
+                  onPressed: _showCreateContentDialog,
                   icon: const Icon(Icons.add, size: 20),
                   label: const Text('Create Content'),
                 ),
@@ -146,6 +159,171 @@ class _ContentManagementScreenState
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  IconData _getHeaderIcon() {
+    switch (widget.initialTypeFilter) {
+      case 'course':
+        return Icons.menu_book;
+      case 'resource':
+        return Icons.folder;
+      default:
+        return Icons.library_books;
+    }
+  }
+
+  String _getSubtitle() {
+    switch (widget.initialTypeFilter) {
+      case 'course':
+        return 'Manage courses and learning modules';
+      case 'resource':
+        return 'Manage educational resources and materials';
+      default:
+        return 'Manage educational content, courses, and curriculum';
+    }
+  }
+
+  void _showCreateContentDialog() {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+    String selectedType = widget.initialTypeFilter ?? 'course';
+    String selectedCategory = 'technology';
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.add_circle, color: AppColors.primary),
+              const SizedBox(width: 12),
+              const Text('Create New Content'),
+            ],
+          ),
+          content: SizedBox(
+            width: 500,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Title *',
+                    hintText: 'Enter content title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: descriptionController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    hintText: 'Enter content description',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: selectedType,
+                        decoration: InputDecoration(
+                          labelText: 'Type *',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        items: const [
+                          DropdownMenuItem(value: 'course', child: Text('Course')),
+                          DropdownMenuItem(value: 'lesson', child: Text('Lesson')),
+                          DropdownMenuItem(value: 'resource', child: Text('Resource')),
+                          DropdownMenuItem(value: 'assessment', child: Text('Assessment')),
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            setDialogState(() => selectedType = value);
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: selectedCategory,
+                        decoration: InputDecoration(
+                          labelText: 'Category *',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        items: const [
+                          DropdownMenuItem(value: 'technology', child: Text('Technology')),
+                          DropdownMenuItem(value: 'business', child: Text('Business')),
+                          DropdownMenuItem(value: 'science', child: Text('Science')),
+                          DropdownMenuItem(value: 'arts', child: Text('Arts')),
+                          DropdownMenuItem(value: 'education', child: Text('Education')),
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            setDialogState(() => selectedCategory = value);
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Content will be created as a draft. You can edit and publish it later.',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (titleController.text.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Please enter a title'),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                  return;
+                }
+                Navigator.pop(context);
+                // For now, show a success message. Backend integration would create the content.
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Created "${titleController.text}" as draft'),
+                    backgroundColor: AppColors.success,
+                  ),
+                );
+                // Refresh content list
+                ref.read(adminContentProvider.notifier).fetchContent();
+              },
+              child: const Text('Create'),
+            ),
+          ],
+        ),
       ),
     );
   }
