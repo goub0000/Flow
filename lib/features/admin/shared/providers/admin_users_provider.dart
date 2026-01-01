@@ -388,49 +388,65 @@ final adminUsersProvider = StateNotifierProvider<AdminUsersNotifier, AdminUsersS
 
 /// Provider for filtered users list
 final filteredUsersProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getFilteredUsers();
 });
 
 /// Provider for user statistics
 final userStatisticsProvider = Provider<Map<String, int>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getUserStatistics();
 });
 
 /// Provider for students list (admin view)
 final adminStudentsProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getUsersByRole('student');
 });
 
 /// Provider for institutions list (admin view)
 final adminInstitutionsProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getUsersByRole('institution');
 });
 
 /// Provider for parents list (admin view)
 final adminParentsProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getUsersByRole('parent');
 });
 
 /// Provider for counselors list (admin view)
 final adminCounselorsProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getUsersByRole('counselor');
 });
 
 /// Provider for recommenders list (admin view)
 final adminRecommendersProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getUsersByRole('recommender');
 });
 
 /// Provider for admin users list (all admin roles)
 final adminAdminsProvider = Provider<List<UserModel>>((ref) {
-  final notifier = ref.watch(adminUsersProvider.notifier);
+  // Watch state to trigger rebuilds when users change
+  ref.watch(adminUsersProvider);
+  final notifier = ref.read(adminUsersProvider.notifier);
   return notifier.getAdminUsers();
 });
 
