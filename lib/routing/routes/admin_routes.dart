@@ -242,6 +242,11 @@ List<RouteBase> adminRoutes = [
     builder: (context, state) => const ContentManagementScreen(),
     routes: [
       GoRoute(
+        path: 'courses',
+        name: 'admin-content-courses',
+        builder: (context, state) => const ContentManagementScreen(),
+      ),
+      GoRoute(
         path: 'curriculum',
         name: 'admin-content-curriculum',
         builder: (context, state) => const AdminPlaceholderScreen(
