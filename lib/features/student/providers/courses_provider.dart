@@ -214,3 +214,70 @@ final coursesApiServiceProvider = Provider<CoursesApiService>((ref) {
   final accessToken = ref.watch(authProvider).accessToken;
   return CoursesApiService(accessToken: accessToken);
 });
+
+/// State class for assigned courses
+class AssignedCoursesState {
+  final List<Map<String, dynamic>> courses;
+  final bool isLoading;
+  final String? error;
+
+  const AssignedCoursesState({
+    this.courses = const [],
+    this.isLoading = false,
+    this.error,
+  });
+
+  AssignedCoursesState copyWith({
+    List<Map<String, dynamic>>? courses,
+    bool? isLoading,
+    String? error,
+  }) {
+    return AssignedCoursesState(
+      courses: courses ?? this.courses,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
+}
+
+/// StateNotifier for assigned courses
+class AssignedCoursesNotifier extends StateNotifier<AssignedCoursesState> {
+  final Ref _ref;
+
+  AssignedCoursesNotifier(this._ref) : super(const AssignedCoursesState()) {
+    fetchAssignedCourses();
+  }
+
+  Future<void> fetchAssignedCourses() async {
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final accessToken = _ref.read(authProvider).accessToken;
+      final apiService = CoursesApiService(accessToken: accessToken);
+
+      final result = await apiService.getAssignedCourses();
+
+      state = state.copyWith(
+        courses: result,
+        isLoading: false,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to fetch assigned courses: ${e.toString()}',
+        isLoading: false,
+      );
+    }
+  }
+
+  Future<void> refresh() async {
+    await fetchAssignedCourses();
+  }
+}
+
+/// Provider for assigned courses
+final assignedCoursesProvider =
+    StateNotifierProvider<AssignedCoursesNotifier, AssignedCoursesState>((ref) {
+  return AssignedCoursesNotifier(ref);
+});

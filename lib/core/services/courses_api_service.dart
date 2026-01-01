@@ -281,6 +281,29 @@ class CoursesApiService {
     }
   }
 
+  /// Get courses assigned to the current student
+  Future<List<Map<String, dynamic>>> getAssignedCourses() async {
+    try {
+      final response = await _client.get(
+        Uri.parse('$baseUrl/courses/my-assignments'),
+        headers: _buildHeaders(),
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        final courses = json['courses'] as List<dynamic>? ?? [];
+        return courses.map((c) => c as Map<String, dynamic>).toList();
+      } else if (response.statusCode == 401) {
+        throw Exception('Unauthorized: Please log in again');
+      } else {
+        throw Exception(
+            'Failed to load assigned courses: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching assigned courses: $e');
+    }
+  }
+
   void dispose() {
     _client.close();
   }

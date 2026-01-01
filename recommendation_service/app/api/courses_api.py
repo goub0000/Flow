@@ -57,6 +57,86 @@ async def get_my_course_statistics(
         )
 
 
+@router.get("/courses/my-assignments")
+async def get_my_assigned_courses(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get courses assigned to current student
+
+    **Requires:** Student authentication
+
+    **Returns:**
+    - List of assigned courses with assignment details
+    """
+    from app.database.config import get_supabase
+
+    try:
+        db = get_supabase()
+
+        # Get assignments for this user (directly assigned or assigned to all students)
+        assignments_response = db.table('content_assignments').select(
+            '*'
+        ).or_(
+            f'target_id.eq.{current_user.id},target_type.eq.all_students'
+        ).execute()
+
+        assignments = assignments_response.data or []
+
+        if not assignments:
+            return {
+                'success': True,
+                'courses': [],
+                'total': 0
+            }
+
+        # Get unique course IDs
+        course_ids = list(set(a['content_id'] for a in assignments))
+
+        # Fetch course details
+        courses_response = db.table('courses').select('*').in_('id', course_ids).execute()
+        courses = courses_response.data or []
+
+        # Combine course data with assignment data
+        course_map = {c['id']: c for c in courses}
+        result = []
+
+        for assignment in assignments:
+            course = course_map.get(assignment['content_id'])
+            if course:
+                result.append({
+                    'id': course['id'],
+                    'title': course['title'],
+                    'description': course.get('description', ''),
+                    'course_type': course.get('course_type', 'video'),
+                    'level': course.get('level', 'beginner'),
+                    'status': course.get('status', 'published'),
+                    'thumbnail_url': course.get('thumbnail_url'),
+                    'duration_hours': course.get('duration_hours', 0),
+                    'institution_id': course.get('institution_id'),
+                    'assignment': {
+                        'id': assignment['id'],
+                        'is_required': assignment.get('is_required', False),
+                        'due_date': assignment.get('due_date'),
+                        'assigned_at': assignment.get('assigned_at'),
+                        'status': assignment.get('status', 'assigned'),
+                        'progress': assignment.get('progress', 0)
+                    }
+                })
+
+        return {
+            'success': True,
+            'courses': result,
+            'total': len(result)
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to fetch assigned courses: {str(e)}"
+        )
+
+
 @router.get("/courses")
 async def list_courses(
     page: int = Query(1, ge=1),

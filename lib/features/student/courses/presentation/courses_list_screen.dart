@@ -14,13 +14,16 @@ class CoursesListScreen extends ConsumerStatefulWidget {
   ConsumerState<CoursesListScreen> createState() => _CoursesListScreenState();
 }
 
-class _CoursesListScreenState extends ConsumerState<CoursesListScreen> {
+class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
+    with SingleTickerProviderStateMixin {
   final _searchController = TextEditingController();
   final _scrollController = ScrollController();
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _scrollController.addListener(_onScroll);
   }
 
@@ -34,6 +37,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _searchController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -42,6 +46,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen> {
   @override
   Widget build(BuildContext context) {
     final coursesState = ref.watch(coursesProvider);
+    final assignedState = ref.watch(assignedCoursesProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -55,51 +60,262 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen> {
             tooltip: 'Filters',
           ),
         ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(coursesProvider.notifier).refresh(),
-        child: Column(
-          children: [
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search courses...',
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            _searchController.clear();
-                            ref.read(coursesProvider.notifier).clearSearch();
-                          },
-                        )
-                      : null,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: AppColors.surface,
-                ),
-                onSubmitted: (query) {
-                  ref.read(coursesProvider.notifier).search(query);
-                },
-              ),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              icon: const Icon(Icons.explore),
+              text: 'Browse All',
             ),
+            Tab(
+              icon: Badge(
+                isLabelVisible: assignedState.courses.isNotEmpty,
+                label: Text('${assignedState.courses.length}'),
+                child: const Icon(Icons.assignment_ind),
+              ),
+              text: 'Assigned to Me',
+            ),
+          ],
+          labelColor: AppColors.primary,
+          unselectedLabelColor: AppColors.textSecondary,
+          indicatorColor: AppColors.primary,
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          // Browse All Tab
+          RefreshIndicator(
+            onRefresh: () => ref.read(coursesProvider.notifier).refresh(),
+            child: Column(
+              children: [
+                // Search Bar
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search courses...',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _searchController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _searchController.clear();
+                                ref.read(coursesProvider.notifier).clearSearch();
+                              },
+                            )
+                          : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      filled: true,
+                      fillColor: AppColors.surface,
+                    ),
+                    onSubmitted: (query) {
+                      ref.read(coursesProvider.notifier).search(query);
+                    },
+                  ),
+                ),
 
-            // Active Filters Chips
-            if (coursesState.filterCategory != null ||
-                coursesState.filterLevel != null)
-              _buildActiveFilters(coursesState),
+                // Active Filters Chips
+                if (coursesState.filterCategory != null ||
+                    coursesState.filterLevel != null)
+                  _buildActiveFilters(coursesState),
 
-            // Courses List
-            Expanded(
-              child: _buildCoursesList(coursesState),
+                // Courses List
+                Expanded(
+                  child: _buildCoursesList(coursesState),
+                ),
+              ],
+            ),
+          ),
+
+          // Assigned to Me Tab
+          RefreshIndicator(
+            onRefresh: () => ref.read(assignedCoursesProvider.notifier).refresh(),
+            child: _buildAssignedCoursesList(assignedState),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAssignedCoursesList(AssignedCoursesState state) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64, color: AppColors.error),
+            const SizedBox(height: 16),
+            Text(
+              'Failed to load assigned courses',
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () => ref.read(assignedCoursesProvider.notifier).refresh(),
+              child: const Text('Retry'),
             ),
           ],
         ),
+      );
+    }
+
+    if (state.courses.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.assignment_outlined, size: 64, color: AppColors.textSecondary),
+            const SizedBox(height: 16),
+            Text(
+              'No courses assigned yet',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Courses assigned by your admin or institution will appear here.',
+              style: TextStyle(color: AppColors.textSecondary),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: state.courses.length,
+      itemBuilder: (context, index) {
+        final courseData = state.courses[index];
+        final assignment = courseData['assignment'] as Map<String, dynamic>?;
+
+        return Card(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: InkWell(
+            onTap: () {
+              context.push('/student/courses/${courseData['id']}');
+            },
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Required badge
+                  if (assignment?['is_required'] == true)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        color: AppColors.error.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.priority_high, size: 14, color: AppColors.error),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Required',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.error,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  // Course title
+                  Text(
+                    courseData['title'] ?? 'Untitled Course',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+
+                  // Course description
+                  if (courseData['description'] != null &&
+                      (courseData['description'] as String).isNotEmpty)
+                    Text(
+                      courseData['description'],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: AppColors.textSecondary),
+                    ),
+                  const SizedBox(height: 12),
+
+                  // Course info row
+                  Row(
+                    children: [
+                      _buildAssignedInfoChip(
+                        Icons.play_circle,
+                        courseData['course_type']?.toString().toUpperCase() ?? 'VIDEO',
+                      ),
+                      const SizedBox(width: 8),
+                      _buildAssignedInfoChip(
+                        Icons.signal_cellular_alt,
+                        courseData['level']?.toString().toUpperCase() ?? 'BEGINNER',
+                      ),
+                      const Spacer(),
+                      if (assignment?['progress'] != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            '${assignment!['progress']}% complete',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAssignedInfoChip(IconData icon, String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.textSecondary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: AppColors.textSecondary),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
       ),
     );
   }
