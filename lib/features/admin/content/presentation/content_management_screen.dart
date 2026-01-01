@@ -5,6 +5,8 @@ import '../../../../core/constants/admin_permissions.dart';
 import '../../shared/widgets/admin_shell.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
+import '../../shared/providers/admin_content_provider.dart';
+import '../../shared/utils/debouncer.dart';
 
 /// Content Management Screen - Manage educational content and curriculum
 ///
@@ -26,8 +28,9 @@ class ContentManagementScreen extends ConsumerStatefulWidget {
 
 class _ContentManagementScreenState
     extends ConsumerState<ContentManagementScreen> {
-  // TODO: Replace with actual state management
   final TextEditingController _searchController = TextEditingController();
+  final _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
+  String _searchQuery = '';
   String _selectedStatus = 'all';
   String _selectedType = 'all';
   String _selectedSubject = 'all';
@@ -35,17 +38,12 @@ class _ContentManagementScreenState
   @override
   void dispose() {
     _searchController.dispose();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch content from backend
-    // - API endpoint: GET /api/admin/content
-    // - Support pagination, filtering, search
-    // - Include: content metadata, author, status, translations
-    // - Filter based on admin permissions (content admins see all)
-
     return AdminShell(
       child: _buildContent(),
     );
@@ -153,6 +151,8 @@ class _ContentManagementScreenState
   }
 
   Widget _buildStatsCards() {
+    final stats = ref.watch(adminContentStatisticsProvider);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -160,7 +160,7 @@ class _ContentManagementScreenState
           Expanded(
             child: _buildStatCard(
               'Total Content',
-              '0', // TODO: Replace with actual data
+              stats.total.toString(),
               'All content items',
               Icons.library_books,
               AppColors.primary,
@@ -170,7 +170,7 @@ class _ContentManagementScreenState
           Expanded(
             child: _buildStatCard(
               'Published',
-              '0', // TODO: Replace with actual data
+              stats.published.toString(),
               'Live content',
               Icons.check_circle,
               AppColors.success,
@@ -180,7 +180,7 @@ class _ContentManagementScreenState
           Expanded(
             child: _buildStatCard(
               'Pending Approval',
-              '0', // TODO: Replace with actual data
+              stats.pending.toString(),
               'Awaiting review',
               Icons.pending,
               AppColors.warning,
@@ -190,7 +190,7 @@ class _ContentManagementScreenState
           Expanded(
             child: _buildStatCard(
               'Draft',
-              '0', // TODO: Replace with actual data
+              stats.draft.toString(),
               'In progress',
               Icons.edit_note,
               AppColors.textSecondary,
@@ -276,10 +276,9 @@ class _ContentManagementScreenState
                 ),
               ),
               onChanged: (value) {
-                // TODO: Implement search
-                // - Debounce input
-                // - Call API with search query
-                // - Update results
+                _searchDebouncer.call(() {
+                  setState(() => _searchQuery = value.toLowerCase());
+                });
               },
             ),
           ),
@@ -309,7 +308,6 @@ class _ContentManagementScreenState
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedStatus = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
@@ -340,19 +338,18 @@ class _ContentManagementScreenState
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedType = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
           ),
           const SizedBox(width: 16),
 
-          // Subject Filter
+          // Category Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedSubject,
               decoration: InputDecoration(
-                labelText: 'Subject',
+                labelText: 'Category',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -362,16 +359,16 @@ class _ContentManagementScreenState
                 ),
               ),
               items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Subjects')),
-                DropdownMenuItem(value: 'mathematics', child: Text('Mathematics')),
+                DropdownMenuItem(value: 'all', child: Text('All Categories')),
+                DropdownMenuItem(value: 'technology', child: Text('Technology')),
+                DropdownMenuItem(value: 'business', child: Text('Business')),
                 DropdownMenuItem(value: 'science', child: Text('Science')),
-                DropdownMenuItem(value: 'english', child: Text('English')),
-                DropdownMenuItem(value: 'history', child: Text('History')),
+                DropdownMenuItem(value: 'arts', child: Text('Arts')),
+                DropdownMenuItem(value: 'education', child: Text('Education')),
               ],
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedSubject = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
@@ -382,8 +379,50 @@ class _ContentManagementScreenState
   }
 
   Widget _buildDataTable() {
-    // TODO: Replace with actual data from backend
-    final List<ContentRowData> contentItems = [];
+    // Get content from provider
+    final contentState = ref.watch(adminContentProvider);
+    final isLoading = contentState.isLoading;
+
+    // Apply local filters
+    var contentItems = contentState.content.map((item) {
+      return ContentRowData(
+        id: item.id,
+        title: item.title,
+        subtitle: item.description ?? '',
+        type: item.type,
+        subject: item.category ?? 'Uncategorized',
+        author: item.authorName ?? item.institutionName ?? 'Unknown',
+        status: item.status,
+        version: 'v1.0',
+        translations: 1,
+        lastUpdated: _formatDate(item.updatedAt ?? item.createdAt),
+      );
+    }).toList();
+
+    // Apply search filter
+    if (_searchQuery.isNotEmpty) {
+      contentItems = contentItems.where((content) {
+        return content.title.toLowerCase().contains(_searchQuery) ||
+            content.author.toLowerCase().contains(_searchQuery) ||
+            content.subject.toLowerCase().contains(_searchQuery);
+      }).toList();
+    }
+
+    // Apply status filter
+    if (_selectedStatus != 'all') {
+      contentItems = contentItems.where((content) => content.status == _selectedStatus).toList();
+    }
+
+    // Apply type filter
+    if (_selectedType != 'all') {
+      contentItems = contentItems.where((content) => content.type == _selectedType).toList();
+    }
+
+    // Apply category filter
+    if (_selectedSubject != 'all') {
+      contentItems = contentItems.where((content) =>
+          content.subject.toLowerCase() == _selectedSubject.toLowerCase()).toList();
+    }
 
     return AdminDataTable<ContentRowData>(
       columns: [
@@ -400,14 +439,16 @@ class _ContentManagementScreenState
                   fontSize: 14,
                 ),
               ),
-              Text(
-                content.subtitle,
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 11,
+              if (content.subtitle.isNotEmpty)
+                Text(
+                  content.subtitle,
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 11,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
             ],
           ),
           sortable: true,
@@ -417,39 +458,23 @@ class _ContentManagementScreenState
           cellBuilder: (content) => _buildTypeChip(content.type),
         ),
         DataTableColumn(
-          label: 'Subject',
+          label: 'Category',
           cellBuilder: (content) => Text(
             content.subject,
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Author',
+          label: 'Author/Institution',
           cellBuilder: (content) => Text(
             content.author,
             style: const TextStyle(fontSize: 13),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         DataTableColumn(
           label: 'Status',
           cellBuilder: (content) => _buildStatusChip(content.status),
-        ),
-        DataTableColumn(
-          label: 'Version',
-          cellBuilder: (content) => Text(
-            content.version,
-            style: const TextStyle(
-              fontSize: 12,
-              fontFamily: 'monospace',
-            ),
-          ),
-        ),
-        DataTableColumn(
-          label: 'Translations',
-          cellBuilder: (content) => Text(
-            content.translations.toString(),
-            style: const TextStyle(fontSize: 13),
-          ),
         ),
         DataTableColumn(
           label: 'Last Updated',
@@ -464,10 +489,10 @@ class _ContentManagementScreenState
         ),
       ],
       data: contentItems,
-      isLoading: false, // TODO: Set from actual loading state
+      isLoading: isLoading,
       enableSelection: true,
       onSelectionChanged: (selectedItems) {
-        // TODO: Handle bulk actions on selected items
+        // Handle bulk actions on selected items
       },
       onRowTap: (content) {
         _showContentDetails(content);
@@ -477,30 +502,23 @@ class _ContentManagementScreenState
           icon: Icons.visibility,
           tooltip: 'Preview',
           onPressed: (content) {
-            // TODO: Preview content
-          },
-        ),
-        DataTableAction(
-          icon: Icons.edit,
-          tooltip: 'Edit',
-          onPressed: (content) {
-            // TODO: Navigate to edit screen
+            _showContentDetails(content);
           },
         ),
         DataTableAction(
           icon: Icons.check_circle,
-          tooltip: 'Approve',
+          tooltip: 'Approve/Publish',
           color: AppColors.success,
           onPressed: (content) {
-            // TODO: Show approval dialog (requires AdminPermission.approveContent)
             _showApprovalDialog(content);
           },
         ),
         DataTableAction(
-          icon: Icons.translate,
-          tooltip: 'Manage Translations',
+          icon: Icons.archive,
+          tooltip: 'Archive',
+          color: AppColors.warning,
           onPressed: (content) {
-            // TODO: Navigate to translation management
+            _showArchiveDialog(content);
           },
         ),
         DataTableAction(
@@ -508,11 +526,87 @@ class _ContentManagementScreenState
           tooltip: 'Delete',
           color: AppColors.error,
           onPressed: (content) {
-            // TODO: Show delete confirmation (requires AdminPermission.deleteContent)
             _showDeleteDialog(content);
           },
         ),
       ],
+    );
+  }
+
+  /// Helper method to format date relative to now
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final diff = now.difference(date);
+
+    if (diff.inDays == 0) return 'Today';
+    if (diff.inDays == 1) return 'Yesterday';
+    if (diff.inDays < 7) return '${diff.inDays} days ago';
+    if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
+    if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
+    return '${(diff.inDays / 365).floor()} years ago';
+  }
+
+  /// Show archive confirmation dialog
+  void _showArchiveDialog(ContentRowData content) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.archive,
+              color: AppColors.warning,
+            ),
+            const SizedBox(width: 12),
+            const Text('Archive Content'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Are you sure you want to archive "${content.title}"?',
+              style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Archived content will not be visible to users.',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              final success = await ref.read(adminContentProvider.notifier)
+                  .archiveContent(content.id);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Content archived successfully'
+                        : 'Failed to archive content'),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.warning,
+            ),
+            child: const Text('Archive'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -680,10 +774,6 @@ class _ContentManagementScreenState
   }
 
   void _showApprovalDialog(ContentRowData content) {
-    // TODO: Implement content approval dialog
-    // - Review content
-    // - Add approval notes
-    // - Approve or reject
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -708,7 +798,7 @@ class _ContentManagementScreenState
             const SizedBox(height: 16),
             _buildDetailRow('Type', content.type),
             _buildDetailRow('Author', content.author),
-            _buildDetailRow('Version', content.version),
+            _buildDetailRow('Status', content.status),
           ],
         ),
         actions: [
@@ -717,9 +807,20 @@ class _ContentManagementScreenState
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
-              // TODO: Reject content
+            onPressed: () async {
               Navigator.pop(context);
+              final success = await ref.read(adminContentProvider.notifier)
+                  .rejectContent(content.id);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Content rejected - set to draft'
+                        : 'Failed to reject content'),
+                    backgroundColor: success ? AppColors.warning : AppColors.error,
+                  ),
+                );
+              }
             },
             child: Text(
               'Reject',
@@ -727,17 +828,20 @@ class _ContentManagementScreenState
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Approve content
-              // - Update content status
-              // - Notify author
+            onPressed: () async {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Content will be approved with backend integration'),
-                  backgroundColor: AppColors.success,
-                ),
-              );
+              final success = await ref.read(adminContentProvider.notifier)
+                  .approveContent(content.id);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Content approved and published'
+                        : 'Failed to approve content'),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.success,
@@ -750,10 +854,6 @@ class _ContentManagementScreenState
   }
 
   void _showDeleteDialog(ContentRowData content) {
-    // TODO: Implement content deletion dialog
-    // - Confirm deletion
-    // - Check for dependencies
-    // - Soft delete vs hard delete
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -777,11 +877,10 @@ class _ContentManagementScreenState
             ),
             const SizedBox(height: 16),
             Text(
-              'This action cannot be undone.',
+              'This will archive the content. It can be restored later.',
               style: TextStyle(
-                color: AppColors.error,
+                color: AppColors.textSecondary,
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -792,15 +891,20 @@ class _ContentManagementScreenState
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Delete content
+            onPressed: () async {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Content will be deleted with backend integration'),
-                  backgroundColor: AppColors.error,
-                ),
-              );
+              final success = await ref.read(adminContentProvider.notifier)
+                  .deleteContent(content.id);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Content deleted successfully'
+                        : 'Failed to delete content'),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

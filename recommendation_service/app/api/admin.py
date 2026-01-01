@@ -1083,3 +1083,306 @@ async def get_enhanced_metrics(
             total_parents=0,
             total_counselors=0
         )
+
+
+# =============================================================================
+# ADMIN CONTENT MANAGEMENT ENDPOINTS
+# =============================================================================
+
+class AdminContentItem(BaseModel):
+    """Response model for admin content item"""
+    id: str
+    title: str
+    description: Optional[str] = None
+    type: str  # 'course', 'module', 'lesson'
+    status: str  # 'draft', 'published', 'archived', 'pending'
+    institution_id: Optional[str] = None
+    institution_name: Optional[str] = None
+    author_id: Optional[str] = None
+    author_name: Optional[str] = None
+    category: Optional[str] = None
+    level: Optional[str] = None
+    duration_hours: Optional[float] = None
+    enrollment_count: int = 0
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    published_at: Optional[str] = None
+
+
+class AdminContentListResponse(BaseModel):
+    """Response model for admin content list"""
+    success: bool = True
+    content: List[AdminContentItem]
+    total: int
+    stats: Dict[str, int]
+
+
+class AdminContentStatsResponse(BaseModel):
+    """Response model for content statistics"""
+    success: bool = True
+    total_content: int = 0
+    published: int = 0
+    draft: int = 0
+    pending: int = 0
+    archived: int = 0
+    by_type: Dict[str, int] = {}
+    by_category: Dict[str, int] = {}
+
+
+@router.get("/admin/content", response_model=AdminContentListResponse)
+async def get_all_content_for_admin(
+    status: Optional[str] = Query(None, description="Filter by status"),
+    content_type: Optional[str] = Query(None, alias="type", description="Filter by type"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    search: Optional[str] = Query(None, description="Search in title"),
+    current_user: CurrentUser = Depends(require_admin)
+) -> AdminContentListResponse:
+    """
+    Get all content for admin panel
+
+    **Admin Only** - Returns all courses/content with their metadata.
+
+    **Query Parameters:**
+    - status: Filter by status (draft, published, archived, pending)
+    - type: Filter by content type (course, module, lesson)
+    - category: Filter by category
+    - search: Search in title
+
+    **Returns:**
+    - content: List of content items with all metadata
+    - total: Total count of content
+    - stats: Counts by status
+    """
+    try:
+        db = get_supabase()
+
+        # Build query for courses
+        query = db.table('courses').select('*')
+
+        # Apply filters
+        if status:
+            query = query.eq('status', status.lower())
+        if category:
+            query = query.eq('category', category)
+        if search:
+            query = query.ilike('title', f'%{search}%')
+
+        response = query.order('created_at', desc=True).execute()
+
+        content_items = []
+        stats = {'draft': 0, 'published': 0, 'archived': 0, 'pending': 0}
+
+        for course in response.data or []:
+            course_status = course.get('status', 'draft')
+            if course_status in stats:
+                stats[course_status] += 1
+
+            # Get institution name
+            institution_name = None
+            institution_id = course.get('institution_id')
+            if institution_id:
+                inst_response = db.table('users').select('display_name').eq('id', institution_id).single().execute()
+                if inst_response.data:
+                    institution_name = inst_response.data.get('display_name')
+
+            content_items.append(AdminContentItem(
+                id=course.get('id', ''),
+                title=course.get('title', ''),
+                description=course.get('description'),
+                type='course',
+                status=course_status,
+                institution_id=institution_id,
+                institution_name=institution_name,
+                author_id=institution_id,
+                author_name=institution_name,
+                category=course.get('category'),
+                level=course.get('level'),
+                duration_hours=course.get('duration_hours'),
+                enrollment_count=course.get('enrollment_count', 0),
+                created_at=course.get('created_at'),
+                updated_at=course.get('updated_at'),
+                published_at=course.get('published_at'),
+            ))
+
+        # Filter by type if specified (currently only courses)
+        if content_type and content_type.lower() != 'course':
+            content_items = []  # No other types yet
+
+        return AdminContentListResponse(
+            success=True,
+            content=content_items,
+            total=len(content_items),
+            stats=stats
+        )
+
+    except Exception as e:
+        logger.error(f"Error fetching content for admin: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch content: {str(e)}"
+        )
+
+
+@router.get("/admin/content/stats", response_model=AdminContentStatsResponse)
+async def get_content_statistics(
+    current_user: CurrentUser = Depends(require_admin)
+) -> AdminContentStatsResponse:
+    """
+    Get content statistics for admin dashboard
+
+    **Admin Only** - Returns aggregated content statistics.
+
+    **Returns:**
+    - Total content count
+    - Counts by status (draft, published, archived, pending)
+    - Counts by type
+    - Counts by category
+    """
+    try:
+        db = get_supabase()
+
+        # Get all courses
+        response = db.table('courses').select('status, category, course_type').execute()
+
+        stats = AdminContentStatsResponse()
+        by_type: Dict[str, int] = {}
+        by_category: Dict[str, int] = {}
+
+        for course in response.data or []:
+            stats.total_content += 1
+
+            # Count by status
+            course_status = course.get('status', 'draft')
+            if course_status == 'draft':
+                stats.draft += 1
+            elif course_status == 'published':
+                stats.published += 1
+            elif course_status == 'archived':
+                stats.archived += 1
+            elif course_status == 'pending':
+                stats.pending += 1
+
+            # Count by type
+            course_type = course.get('course_type', 'course')
+            by_type[course_type] = by_type.get(course_type, 0) + 1
+
+            # Count by category
+            category = course.get('category', 'uncategorized')
+            if category:
+                by_category[category] = by_category.get(category, 0) + 1
+
+        stats.by_type = by_type
+        stats.by_category = by_category
+
+        return stats
+
+    except Exception as e:
+        logger.error(f"Error fetching content statistics: {e}", exc_info=True)
+        # Return empty stats on error
+        return AdminContentStatsResponse()
+
+
+@router.put("/admin/content/{content_id}/status")
+async def update_content_status(
+    content_id: str,
+    status_update: Dict[str, str],
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Update content status (approve, reject, archive)
+
+    **Admin Only** - Update the status of a content item.
+
+    **Path Parameters:**
+    - content_id: Content (course) ID
+
+    **Request Body:**
+    - status: New status (draft, published, archived, pending)
+
+    **Returns:**
+    - Success message and updated content
+    """
+    try:
+        db = get_supabase()
+        new_status = status_update.get('status', '').lower()
+
+        if new_status not in ['draft', 'published', 'archived', 'pending']:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid status. Must be: draft, published, archived, or pending"
+            )
+
+        update_data = {'status': new_status}
+
+        # Set published_at if publishing
+        if new_status == 'published':
+            update_data['published_at'] = datetime.utcnow().isoformat()
+
+        response = db.table('courses').update(update_data).eq('id', content_id).execute()
+
+        if not response.data:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Content not found: {content_id}"
+            )
+
+        return {
+            'success': True,
+            'message': f'Content status updated to {new_status}',
+            'content': response.data[0] if response.data else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating content status: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update content status: {str(e)}"
+        )
+
+
+@router.delete("/admin/content/{content_id}")
+async def delete_content(
+    content_id: str,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Delete content (soft delete by archiving)
+
+    **Admin Only** - Archive a content item.
+
+    **Path Parameters:**
+    - content_id: Content (course) ID
+
+    **Returns:**
+    - Success message
+    """
+    try:
+        db = get_supabase()
+
+        # Soft delete by setting status to archived
+        response = db.table('courses').update({
+            'status': 'archived',
+            'updated_at': datetime.utcnow().isoformat()
+        }).eq('id', content_id).execute()
+
+        if not response.data:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Content not found: {content_id}"
+            )
+
+        return {
+            'success': True,
+            'message': 'Content archived successfully'
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting content: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete content: {str(e)}"
+        )

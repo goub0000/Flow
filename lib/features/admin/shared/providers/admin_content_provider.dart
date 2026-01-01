@@ -7,46 +7,92 @@ import '../../../../core/providers/service_providers.dart';
 class ContentItem {
   final String id;
   final String title;
+  final String? description;
   final String type; // 'course', 'lesson', 'module', 'assignment'
-  final String status; // 'draft', 'review', 'published', 'archived'
+  final String status; // 'draft', 'pending', 'published', 'archived'
   final String? authorId;
   final String? authorName;
+  final String? institutionId;
+  final String? institutionName;
+  final String? category;
+  final String? level;
+  final double? durationHours;
+  final int enrollmentCount;
   final DateTime createdAt;
+  final DateTime? updatedAt;
   final DateTime? publishedAt;
-  final int views;
-  final double rating;
 
   const ContentItem({
     required this.id,
     required this.title,
+    this.description,
     required this.type,
     required this.status,
     this.authorId,
     this.authorName,
+    this.institutionId,
+    this.institutionName,
+    this.category,
+    this.level,
+    this.durationHours,
+    this.enrollmentCount = 0,
     required this.createdAt,
+    this.updatedAt,
     this.publishedAt,
-    this.views = 0,
-    this.rating = 0.0,
   });
 
-
-  static ContentItem mockContent(int index) {
-    final types = ['course', 'lesson', 'module', 'assignment'];
-    final statuses = ['draft', 'review', 'published', 'archived'];
-
+  /// Parse ContentItem from API response
+  factory ContentItem.fromJson(Map<String, dynamic> json) {
     return ContentItem(
-      id: 'content_$index',
-      title: 'Content ${index + 1}',
-      type: types[index % types.length],
-      status: statuses[index % statuses.length],
-      authorId: 'author_$index',
-      authorName: 'Author ${index + 1}',
-      createdAt: DateTime.now().subtract(Duration(days: index)),
-      publishedAt: index % 2 == 0
-          ? DateTime.now().subtract(Duration(days: index ~/ 2))
+      id: json['id'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String?,
+      type: json['type'] as String? ?? 'course',
+      status: json['status'] as String? ?? 'draft',
+      authorId: json['author_id'] as String?,
+      authorName: json['author_name'] as String?,
+      institutionId: json['institution_id'] as String?,
+      institutionName: json['institution_name'] as String?,
+      category: json['category'] as String?,
+      level: json['level'] as String?,
+      durationHours: (json['duration_hours'] as num?)?.toDouble(),
+      enrollmentCount: json['enrollment_count'] as int? ?? 0,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
           : null,
-      views: 100 + (index * 50),
-      rating: 4.0 + (index % 10) * 0.1,
+      publishedAt: json['published_at'] != null
+          ? DateTime.parse(json['published_at'] as String)
+          : null,
+    );
+  }
+}
+
+/// Content statistics model
+class ContentStats {
+  final int total;
+  final int published;
+  final int draft;
+  final int pending;
+  final int archived;
+
+  const ContentStats({
+    this.total = 0,
+    this.published = 0,
+    this.draft = 0,
+    this.pending = 0,
+    this.archived = 0,
+  });
+
+  factory ContentStats.fromJson(Map<String, dynamic> json) {
+    return ContentStats(
+      total: json['total'] as int? ?? 0,
+      published: json['published'] as int? ?? 0,
+      draft: json['draft'] as int? ?? 0,
+      pending: json['pending'] as int? ?? 0,
+      archived: json['archived'] as int? ?? 0,
     );
   }
 }
@@ -54,22 +100,26 @@ class ContentItem {
 /// State class for content management
 class AdminContentState {
   final List<ContentItem> content;
+  final ContentStats stats;
   final bool isLoading;
   final String? error;
 
   const AdminContentState({
     this.content = const [],
+    this.stats = const ContentStats(),
     this.isLoading = false,
     this.error,
   });
 
   AdminContentState copyWith({
     List<ContentItem>? content,
+    ContentStats? stats,
     bool? isLoading,
     String? error,
   }) {
     return AdminContentState(
       content: content ?? this.content,
+      stats: stats ?? this.stats,
       isLoading: isLoading ?? this.isLoading,
       error: error,
     );
@@ -85,24 +135,50 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
   }
 
   /// Fetch all content from backend API
-  Future<void> fetchContent() async {
+  Future<void> fetchContent({
+    String? status,
+    String? type,
+    String? category,
+    String? search,
+  }) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
+      // Build query parameters
+      final queryParams = <String, String>{};
+      if (status != null && status != 'all') queryParams['status'] = status;
+      if (type != null && type != 'all') queryParams['type'] = type;
+      if (category != null && category != 'all') queryParams['category'] = category;
+      if (search != null && search.isNotEmpty) queryParams['search'] = search;
+
+      final queryString = queryParams.isNotEmpty
+          ? '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}'
+          : '';
+
       final response = await _apiClient.get(
-        '${ApiConfig.admin}/content',
-        fromJson: (data) {
-          if (data is List) {
-            // Backend may not have full content management yet
-            return <ContentItem>[];
-          }
-          return <ContentItem>[];
-        },
+        '${ApiConfig.admin}/content$queryString',
+        fromJson: (data) => data as Map<String, dynamic>,
       );
 
-      if (response.success) {
+      if (response.success && response.data != null) {
+        final contentData = response.data!['content'] as List<dynamic>? ?? [];
+        final statsData = response.data!['stats'] as Map<String, dynamic>? ?? {};
+
+        final contentList = contentData
+            .map((item) => ContentItem.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        final stats = ContentStats(
+          total: response.data!['total'] as int? ?? contentList.length,
+          published: statsData['published'] as int? ?? 0,
+          draft: statsData['draft'] as int? ?? 0,
+          pending: statsData['pending'] as int? ?? 0,
+          archived: statsData['archived'] as int? ?? 0,
+        );
+
         state = state.copyWith(
-          content: response.data ?? [],
+          content: contentList,
+          stats: stats,
           isLoading: false,
         );
       } else {
@@ -112,6 +188,7 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
         );
       }
     } catch (e) {
+      print('[AdminContent] Error fetching content: $e');
       state = state.copyWith(
         error: 'Failed to fetch content: ${e.toString()}',
         isLoading: false,
@@ -119,34 +196,51 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
     }
   }
 
-  /// Update content status
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Update content status via backend API
   Future<bool> updateContentStatus(String contentId, String newStatus) async {
     try {
-      // TODO: Update in Firebase
-      await Future.delayed(const Duration(milliseconds: 300));
+      final response = await _apiClient.put(
+        '${ApiConfig.admin}/content/$contentId/status',
+        data: {'status': newStatus},
+        fromJson: (data) => data,
+      );
 
-      final updatedContent = state.content.map((item) {
-        if (item.id == contentId) {
-          return ContentItem(
-            id: item.id,
-            title: item.title,
-            type: item.type,
-            status: newStatus,
-            authorId: item.authorId,
-            authorName: item.authorName,
-            createdAt: item.createdAt,
-            publishedAt: newStatus == 'published' ? DateTime.now() : item.publishedAt,
-            views: item.views,
-            rating: item.rating,
-          );
-        }
-        return item;
-      }).toList();
+      if (response.success) {
+        // Update locally
+        final updatedContent = state.content.map((item) {
+          if (item.id == contentId) {
+            return ContentItem(
+              id: item.id,
+              title: item.title,
+              description: item.description,
+              type: item.type,
+              status: newStatus,
+              authorId: item.authorId,
+              authorName: item.authorName,
+              institutionId: item.institutionId,
+              institutionName: item.institutionName,
+              category: item.category,
+              level: item.level,
+              durationHours: item.durationHours,
+              enrollmentCount: item.enrollmentCount,
+              createdAt: item.createdAt,
+              updatedAt: DateTime.now(),
+              publishedAt: newStatus == 'published' ? DateTime.now() : item.publishedAt,
+            );
+          }
+          return item;
+        }).toList();
 
-      state = state.copyWith(content: updatedContent);
-
-      return true;
+        // Update stats
+        final newStats = _recalculateStats(updatedContent);
+        state = state.copyWith(content: updatedContent, stats: newStats);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update content status',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update content status: ${e.toString()}',
@@ -155,15 +249,14 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
     }
   }
 
-  /// Delete content
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Delete content via backend API (soft delete)
   Future<bool> deleteContent(String contentId) async {
     try {
-      // TODO: Delete from Firebase
-      await Future.delayed(const Duration(milliseconds: 500));
+      await _apiClient.delete('${ApiConfig.admin}/content/$contentId');
 
       final updatedContent = state.content.where((item) => item.id != contentId).toList();
-      state = state.copyWith(content: updatedContent);
+      final newStats = _recalculateStats(updatedContent);
+      state = state.copyWith(content: updatedContent, stats: newStats);
 
       return true;
     } catch (e) {
@@ -175,21 +268,53 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
   }
 
   /// Approve content for publication
-  /// TODO: Connect to backend API
   Future<bool> approveContent(String contentId) async {
     return await updateContentStatus(contentId, 'published');
   }
 
-  /// Reject content
-  /// TODO: Connect to backend API
+  /// Reject content (set to draft)
   Future<bool> rejectContent(String contentId) async {
     return await updateContentStatus(contentId, 'draft');
   }
 
-  /// Filter content
+  /// Archive content
+  Future<bool> archiveContent(String contentId) async {
+    return await updateContentStatus(contentId, 'archived');
+  }
+
+  /// Recalculate stats from content list
+  ContentStats _recalculateStats(List<ContentItem> contentList) {
+    int published = 0, draft = 0, pending = 0, archived = 0;
+    for (final item in contentList) {
+      switch (item.status) {
+        case 'published':
+          published++;
+          break;
+        case 'draft':
+          draft++;
+          break;
+        case 'pending':
+          pending++;
+          break;
+        case 'archived':
+          archived++;
+          break;
+      }
+    }
+    return ContentStats(
+      total: contentList.length,
+      published: published,
+      draft: draft,
+      pending: pending,
+      archived: archived,
+    );
+  }
+
+  /// Filter content locally
   List<ContentItem> filterContent({
     String? type,
     String? status,
+    String? search,
   }) {
     var filtered = state.content;
 
@@ -201,40 +326,31 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
       filtered = filtered.where((item) => item.status == status).toList();
     }
 
+    if (search != null && search.isNotEmpty) {
+      final query = search.toLowerCase();
+      filtered = filtered.where((item) =>
+          item.title.toLowerCase().contains(query) ||
+          (item.description?.toLowerCase().contains(query) ?? false) ||
+          (item.authorName?.toLowerCase().contains(query) ?? false)
+      ).toList();
+    }
+
     return filtered;
   }
 
   /// Get content statistics
-  Map<String, dynamic> getContentStatistics() {
-    final Map<String, int> typeCounts = {};
-    final Map<String, int> statusCounts = {};
-    int totalViews = 0;
-    double totalRating = 0;
-
-    for (final item in state.content) {
-      typeCounts[item.type] = (typeCounts[item.type] ?? 0) + 1;
-      statusCounts[item.status] = (statusCounts[item.status] ?? 0) + 1;
-      totalViews += item.views;
-      totalRating += item.rating;
-    }
-
-    final avgRating = state.content.isEmpty
-        ? 0.0
-        : totalRating / state.content.length;
-
-    return {
-      'total': state.content.length,
-      'typeCounts': typeCounts,
-      'statusCounts': statusCounts,
-      'totalViews': totalViews,
-      'averageRating': avgRating,
-      'pendingReview': statusCounts['review'] ?? 0,
-    };
+  ContentStats getContentStatistics() {
+    return state.stats;
   }
 
   /// Get content pending review
   List<ContentItem> getContentPendingReview() {
-    return state.content.where((item) => item.status == 'review').toList();
+    return state.content.where((item) => item.status == 'pending').toList();
+  }
+
+  /// Get published content
+  List<ContentItem> getPublishedContent() {
+    return state.content.where((item) => item.status == 'published').toList();
   }
 }
 
@@ -251,15 +367,26 @@ final adminContentListProvider = Provider<List<ContentItem>>((ref) {
 });
 
 /// Provider for content statistics
-final adminContentStatisticsProvider = Provider<Map<String, dynamic>>((ref) {
-  final notifier = ref.watch(adminContentProvider.notifier);
-  return notifier.getContentStatistics();
+final adminContentStatisticsProvider = Provider<ContentStats>((ref) {
+  // Watch state to trigger rebuilds when content changes
+  final contentState = ref.watch(adminContentProvider);
+  return contentState.stats;
 });
 
 /// Provider for content pending review
 final adminContentPendingReviewProvider = Provider<List<ContentItem>>((ref) {
-  final notifier = ref.watch(adminContentProvider.notifier);
+  // Watch state to trigger rebuilds when content changes
+  ref.watch(adminContentProvider);
+  final notifier = ref.read(adminContentProvider.notifier);
   return notifier.getContentPendingReview();
+});
+
+/// Provider for published content
+final adminContentPublishedProvider = Provider<List<ContentItem>>((ref) {
+  // Watch state to trigger rebuilds when content changes
+  ref.watch(adminContentProvider);
+  final notifier = ref.read(adminContentProvider.notifier);
+  return notifier.getPublishedContent();
 });
 
 /// Provider for checking if content is loading
