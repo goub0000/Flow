@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../shared/widgets/admin_shell.dart';
@@ -745,9 +746,18 @@ class _ContentManagementScreenState
           },
         ),
         DataTableAction(
+          icon: Icons.edit,
+          tooltip: 'Edit Content',
+          color: AppColors.primary,
+          onPressed: (content) {
+            // Navigate to course content builder
+            context.go('/admin/content/${content.id}/edit');
+          },
+        ),
+        DataTableAction(
           icon: Icons.person_add,
           tooltip: 'Assign',
-          color: AppColors.primary,
+          color: Colors.purple,
           onPressed: (content) {
             _showAssignContentDialog(content);
           },
@@ -1192,19 +1202,13 @@ class _ContentManagementScreenState
   }
 
   void _showContentDetails(ContentRowData content) {
-    // TODO: Implement content details modal/screen
-    // - Full content metadata
-    // - Preview of content
-    // - Version history
-    // - Translation status
-    // - Usage statistics
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Row(
           children: [
             Icon(
-              Icons.article,
+              _getTypeIcon(content.type),
               color: AppColors.primary,
             ),
             const SizedBox(width: 12),
@@ -1223,19 +1227,31 @@ class _ContentManagementScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildDetailRow('Type', content.type),
-              _buildDetailRow('Subject', content.subject),
-              _buildDetailRow('Author', content.author),
+              _buildDetailRow('Category', content.subject),
+              _buildDetailRow('Author/Institution', content.author),
               _buildDetailRow('Status', content.status),
-              _buildDetailRow('Version', content.version),
-              _buildDetailRow('Translations', content.translations.toString()),
               _buildDetailRow('Last Updated', content.lastUpdated),
               const SizedBox(height: 16),
-              Text(
-                'Full content details and preview will be available with backend integration.',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Click "Edit Content" to add modules, lessons, and course materials.',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -1248,12 +1264,14 @@ class _ContentManagementScreenState
           ),
           PermissionGuard(
             permission: AdminPermission.editContent,
-            child: TextButton(
+            child: ElevatedButton.icon(
               onPressed: () {
                 Navigator.pop(context);
-                // TODO: Navigate to edit screen
+                // Navigate to course content builder
+                context.go('/admin/content/${content.id}/edit');
               },
-              child: const Text('Edit'),
+              icon: const Icon(Icons.edit, size: 18),
+              label: const Text('Edit Content'),
             ),
           ),
         ],

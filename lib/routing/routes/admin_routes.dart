@@ -32,6 +32,7 @@ import '../../features/admin/chatbot/presentation/admin_chatbot_dashboard.dart';
 import '../../features/admin/chatbot/presentation/conversation_history_screen.dart';
 import '../../features/admin/chatbot/presentation/conversation_detail_screen.dart' as chatbot;
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
+import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
 
 /// Admin-specific routes (all admin roles)
 List<RouteBase> adminRoutes = [
@@ -245,7 +246,7 @@ List<RouteBase> adminRoutes = [
         path: 'courses',
         name: 'admin-content-courses',
         builder: (context, state) => const ContentManagementScreen(
-          initialTypeFilter: 'course',
+          initialTypeFilter: 'video',
           pageTitle: 'Courses',
         ),
       ),
@@ -253,7 +254,7 @@ List<RouteBase> adminRoutes = [
         path: 'curriculum',
         name: 'admin-content-curriculum',
         builder: (context, state) => const ContentManagementScreen(
-          initialTypeFilter: 'lesson',
+          initialTypeFilter: 'text',
           pageTitle: 'Curriculum',
         ),
       ),
@@ -261,9 +262,18 @@ List<RouteBase> adminRoutes = [
         path: 'resources',
         name: 'admin-content-resources',
         builder: (context, state) => const ContentManagementScreen(
-          initialTypeFilter: 'resource',
+          initialTypeFilter: 'interactive',
           pageTitle: 'Resources',
         ),
+      ),
+      // Course content builder for editing
+      GoRoute(
+        path: ':id/edit',
+        name: 'admin-content-edit',
+        builder: (context, state) {
+          final courseId = state.pathParameters['id']!;
+          return CourseContentBuilderScreen(courseId: courseId);
+        },
       ),
     ],
   ),
