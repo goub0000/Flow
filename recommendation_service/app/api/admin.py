@@ -1425,10 +1425,11 @@ async def create_content(
         db = get_supabase()
         import uuid
 
-        # Build content data - only include non-null optional fields
+        # Build content data - provide defaults for NOT NULL columns
         content_data = {
             'id': str(uuid.uuid4()),
             'title': request.title,
+            'description': request.description or '',  # Default to empty string for NOT NULL
             'status': 'draft',
             'course_type': request.type,
             'created_at': datetime.utcnow().isoformat(),
@@ -1436,8 +1437,6 @@ async def create_content(
         }
 
         # Add optional fields only if they have values
-        if request.description:
-            content_data['description'] = request.description
         if request.category:
             content_data['category'] = request.category
         if request.level:
