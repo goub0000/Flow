@@ -246,7 +246,6 @@ List<RouteBase> adminRoutes = [
         path: 'courses',
         name: 'admin-content-courses',
         builder: (context, state) => const ContentManagementScreen(
-          initialTypeFilter: 'video',
           pageTitle: 'Courses',
         ),
       ),
@@ -254,7 +253,6 @@ List<RouteBase> adminRoutes = [
         path: 'curriculum',
         name: 'admin-content-curriculum',
         builder: (context, state) => const ContentManagementScreen(
-          initialTypeFilter: 'text',
           pageTitle: 'Curriculum',
         ),
       ),
@@ -262,7 +260,6 @@ List<RouteBase> adminRoutes = [
         path: 'resources',
         name: 'admin-content-resources',
         builder: (context, state) => const ContentManagementScreen(
-          initialTypeFilter: 'interactive',
           pageTitle: 'Resources',
         ),
       ),
