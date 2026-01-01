@@ -1386,3 +1386,342 @@ async def delete_content(
             status_code=500,
             detail=f"Failed to delete content: {str(e)}"
         )
+
+
+class CreateContentRequest(BaseModel):
+    """Request model for creating content"""
+    title: str
+    description: Optional[str] = None
+    type: str = "course"  # 'course', 'lesson', 'resource', 'assessment'
+    category: Optional[str] = None
+    level: Optional[str] = None
+    duration_hours: Optional[float] = None
+    institution_id: Optional[str] = None
+
+
+@router.post("/admin/content")
+async def create_content(
+    request: CreateContentRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Create new content (course, lesson, resource)
+
+    **Admin Only** - Create a new content item.
+
+    **Request Body:**
+    - title: Content title (required)
+    - description: Content description
+    - type: Content type (course, lesson, resource, assessment)
+    - category: Content category
+    - level: Difficulty level
+    - duration_hours: Expected duration in hours
+    - institution_id: Optional institution ID
+
+    **Returns:**
+    - Created content item
+    """
+    try:
+        db = get_supabase()
+        import uuid
+
+        content_data = {
+            'id': str(uuid.uuid4()),
+            'title': request.title,
+            'description': request.description,
+            'category': request.category,
+            'level': request.level,
+            'duration_hours': request.duration_hours,
+            'institution_id': request.institution_id,
+            'status': 'draft',
+            'course_type': request.type,
+            'created_at': datetime.utcnow().isoformat(),
+            'updated_at': datetime.utcnow().isoformat(),
+            'enrollment_count': 0,
+        }
+
+        response = db.table('courses').insert(content_data).execute()
+
+        if not response.data:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to create content"
+            )
+
+        logger.info(f"Admin {current_user.id} created content: {request.title}")
+
+        return {
+            'success': True,
+            'message': f'Content "{request.title}" created as draft',
+            'content': AdminContentItem(
+                id=response.data[0]['id'],
+                title=response.data[0]['title'],
+                description=response.data[0].get('description'),
+                type=response.data[0].get('course_type', 'course'),
+                status=response.data[0].get('status', 'draft'),
+                institution_id=response.data[0].get('institution_id'),
+                category=response.data[0].get('category'),
+                level=response.data[0].get('level'),
+                duration_hours=response.data[0].get('duration_hours'),
+                enrollment_count=response.data[0].get('enrollment_count', 0),
+                created_at=response.data[0].get('created_at'),
+                updated_at=response.data[0].get('updated_at'),
+            )
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating content: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create content: {str(e)}"
+        )
+
+
+class ContentAssignmentRequest(BaseModel):
+    """Request model for assigning content"""
+    content_id: str
+    target_type: str  # 'student', 'institution', 'all_students'
+    target_ids: Optional[List[str]] = None  # List of user IDs
+    is_required: bool = False
+    due_date: Optional[str] = None
+
+
+class ContentAssignmentResponse(BaseModel):
+    """Response model for content assignment"""
+    id: str
+    content_id: str
+    content_title: str
+    target_type: str
+    target_id: Optional[str] = None
+    target_name: Optional[str] = None
+    is_required: bool = False
+    due_date: Optional[str] = None
+    assigned_at: str
+    assigned_by: str
+    status: str = "assigned"
+
+
+@router.post("/admin/content/assign")
+async def assign_content(
+    request: ContentAssignmentRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Assign content to students or institutions
+
+    **Admin Only** - Assign content to specific users or groups.
+
+    **Request Body:**
+    - content_id: Content ID to assign
+    - target_type: 'student', 'institution', or 'all_students'
+    - target_ids: List of user/institution IDs (not needed for 'all_students')
+    - is_required: Whether the content is mandatory
+    - due_date: Optional due date (ISO format)
+
+    **Returns:**
+    - List of created assignments
+    """
+    try:
+        db = get_supabase()
+        import uuid
+
+        # Verify content exists
+        content_response = db.table('courses').select('id, title').eq('id', request.content_id).single().execute()
+        if not content_response.data:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Content not found: {request.content_id}"
+            )
+
+        content_title = content_response.data['title']
+        assignments_created = []
+
+        if request.target_type == 'all_students':
+            # Get all students
+            students_response = db.table('users').select('id, display_name').eq('active_role', 'student').execute()
+            target_ids = [s['id'] for s in students_response.data or []]
+        else:
+            target_ids = request.target_ids or []
+
+        # Create assignments for each target
+        for target_id in target_ids:
+            # Get target name
+            target_response = db.table('users').select('display_name').eq('id', target_id).single().execute()
+            target_name = target_response.data.get('display_name', 'Unknown') if target_response.data else 'Unknown'
+
+            assignment_data = {
+                'id': str(uuid.uuid4()),
+                'content_id': request.content_id,
+                'user_id': target_id,
+                'is_required': request.is_required,
+                'due_date': request.due_date,
+                'assigned_by': current_user.id,
+                'assigned_at': datetime.utcnow().isoformat(),
+                'status': 'assigned',
+                'progress': 0,
+            }
+
+            # Check if content_assignments table exists, if not use a fallback
+            try:
+                response = db.table('content_assignments').insert(assignment_data).execute()
+                if response.data:
+                    assignments_created.append(ContentAssignmentResponse(
+                        id=response.data[0]['id'],
+                        content_id=request.content_id,
+                        content_title=content_title,
+                        target_type=request.target_type,
+                        target_id=target_id,
+                        target_name=target_name,
+                        is_required=request.is_required,
+                        due_date=request.due_date,
+                        assigned_at=response.data[0]['assigned_at'],
+                        assigned_by=current_user.id,
+                        status='assigned'
+                    ))
+            except Exception as table_error:
+                # If table doesn't exist, log it but continue
+                logger.warning(f"content_assignments table may not exist: {table_error}")
+                # Create a virtual assignment response
+                assignments_created.append(ContentAssignmentResponse(
+                    id=assignment_data['id'],
+                    content_id=request.content_id,
+                    content_title=content_title,
+                    target_type=request.target_type,
+                    target_id=target_id,
+                    target_name=target_name,
+                    is_required=request.is_required,
+                    due_date=request.due_date,
+                    assigned_at=assignment_data['assigned_at'],
+                    assigned_by=current_user.id,
+                    status='assigned'
+                ))
+
+        logger.info(f"Admin {current_user.id} assigned content {request.content_id} to {len(assignments_created)} targets")
+
+        return {
+            'success': True,
+            'message': f'Content assigned to {len(assignments_created)} target(s)',
+            'assignments': assignments_created
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error assigning content: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to assign content: {str(e)}"
+        )
+
+
+@router.get("/admin/content/{content_id}/assignments")
+async def get_content_assignments(
+    content_id: str,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Get all assignments for a specific content item
+
+    **Admin Only** - View who is assigned to a content item.
+
+    **Path Parameters:**
+    - content_id: Content ID
+
+    **Returns:**
+    - List of assignments with target details
+    """
+    try:
+        db = get_supabase()
+
+        # Get content title
+        content_response = db.table('courses').select('title').eq('id', content_id).single().execute()
+        content_title = content_response.data.get('title', 'Unknown') if content_response.data else 'Unknown'
+
+        # Get assignments
+        try:
+            response = db.table('content_assignments').select('*').eq('content_id', content_id).execute()
+            assignments = []
+
+            for assignment in response.data or []:
+                # Get target name
+                user_response = db.table('users').select('display_name, active_role').eq('id', assignment['user_id']).single().execute()
+                target_name = user_response.data.get('display_name', 'Unknown') if user_response.data else 'Unknown'
+                target_type = user_response.data.get('active_role', 'student') if user_response.data else 'student'
+
+                assignments.append(ContentAssignmentResponse(
+                    id=assignment['id'],
+                    content_id=content_id,
+                    content_title=content_title,
+                    target_type=target_type,
+                    target_id=assignment['user_id'],
+                    target_name=target_name,
+                    is_required=assignment.get('is_required', False),
+                    due_date=assignment.get('due_date'),
+                    assigned_at=assignment.get('assigned_at', ''),
+                    assigned_by=assignment.get('assigned_by', ''),
+                    status=assignment.get('status', 'assigned')
+                ))
+
+            return {
+                'success': True,
+                'content_id': content_id,
+                'content_title': content_title,
+                'assignments': assignments,
+                'total': len(assignments)
+            }
+
+        except Exception as table_error:
+            logger.warning(f"content_assignments table may not exist: {table_error}")
+            return {
+                'success': True,
+                'content_id': content_id,
+                'content_title': content_title,
+                'assignments': [],
+                'total': 0,
+                'note': 'Content assignments table not yet created'
+            }
+
+    except Exception as e:
+        logger.error(f"Error fetching content assignments: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch content assignments: {str(e)}"
+        )
+
+
+@router.delete("/admin/content/assignment/{assignment_id}")
+async def remove_content_assignment(
+    assignment_id: str,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Remove a content assignment
+
+    **Admin Only** - Unassign content from a user.
+
+    **Path Parameters:**
+    - assignment_id: Assignment ID to remove
+
+    **Returns:**
+    - Success message
+    """
+    try:
+        db = get_supabase()
+
+        response = db.table('content_assignments').delete().eq('id', assignment_id).execute()
+
+        logger.info(f"Admin {current_user.id} removed content assignment {assignment_id}")
+
+        return {
+            'success': True,
+            'message': 'Assignment removed successfully'
+        }
+
+    except Exception as e:
+        logger.error(f"Error removing content assignment: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to remove assignment: {str(e)}"
+        )

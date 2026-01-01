@@ -190,6 +190,7 @@ class _ContentManagementScreenState
     final descriptionController = TextEditingController();
     String selectedType = widget.initialTypeFilter ?? 'course';
     String selectedCategory = 'technology';
+    bool isCreating = false;
 
     showDialog(
       context: context,
@@ -295,11 +296,11 @@ class _ContentManagementScreenState
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: isCreating ? null : () => Navigator.pop(context),
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: isCreating ? null : () async {
                 if (titleController.text.trim().isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -309,18 +310,37 @@ class _ContentManagementScreenState
                   );
                   return;
                 }
-                Navigator.pop(context);
-                // For now, show a success message. Backend integration would create the content.
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Created "${titleController.text}" as draft'),
-                    backgroundColor: AppColors.success,
-                  ),
+
+                setDialogState(() => isCreating = true);
+
+                final success = await ref.read(adminContentProvider.notifier).createContent(
+                  title: titleController.text.trim(),
+                  description: descriptionController.text.trim().isEmpty
+                      ? null
+                      : descriptionController.text.trim(),
+                  type: selectedType,
+                  category: selectedCategory,
                 );
-                // Refresh content list
-                ref.read(adminContentProvider.notifier).fetchContent();
+
+                if (mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(success
+                          ? 'Created "${titleController.text}" as draft'
+                          : 'Failed to create content'),
+                      backgroundColor: success ? AppColors.success : AppColors.error,
+                    ),
+                  );
+                }
               },
-              child: const Text('Create'),
+              child: isCreating
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                  : const Text('Create'),
             ),
           ],
         ),
@@ -684,6 +704,14 @@ class _ContentManagementScreenState
           },
         ),
         DataTableAction(
+          icon: Icons.person_add,
+          tooltip: 'Assign',
+          color: AppColors.primary,
+          onPressed: (content) {
+            _showAssignContentDialog(content);
+          },
+        ),
+        DataTableAction(
           icon: Icons.check_circle,
           tooltip: 'Approve/Publish',
           color: AppColors.success,
@@ -786,6 +814,241 @@ class _ContentManagementScreenState
         ],
       ),
     );
+  }
+
+  /// Show assign content dialog
+  void _showAssignContentDialog(ContentRowData content) {
+    String selectedTargetType = 'all_students';
+    bool isRequired = false;
+    bool isAssigning = false;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.person_add, color: AppColors.primary),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text('Assign Content'),
+              ),
+            ],
+          ),
+          content: SizedBox(
+            width: 500,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Content being assigned
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(_getTypeIcon(content.type), color: AppColors.primary),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              content.title,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${content.type} • ${content.subject}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Target type selection
+                Text(
+                  'Assign to:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: selectedTargetType,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'all_students',
+                      child: Row(
+                        children: [
+                          Icon(Icons.groups, size: 20),
+                          SizedBox(width: 8),
+                          Text('All Students'),
+                        ],
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 'institution',
+                      child: Row(
+                        children: [
+                          Icon(Icons.business, size: 20),
+                          SizedBox(width: 8),
+                          Text('Specific Institutions'),
+                        ],
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 'student',
+                      child: Row(
+                        children: [
+                          Icon(Icons.person, size: 20),
+                          SizedBox(width: 8),
+                          Text('Specific Students'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      setDialogState(() => selectedTargetType = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                // Required toggle
+                SwitchListTile(
+                  title: const Text('Required'),
+                  subtitle: Text(
+                    isRequired
+                        ? 'This content is mandatory for assigned users'
+                        : 'This content is optional for assigned users',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  value: isRequired,
+                  onChanged: (value) {
+                    setDialogState(() => isRequired = value);
+                  },
+                  activeColor: AppColors.primary,
+                  contentPadding: EdgeInsets.zero,
+                ),
+
+                const SizedBox(height: 12),
+                if (selectedTargetType != 'all_students')
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.warning.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: AppColors.warning.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.info_outline,
+                            size: 20, color: AppColors.warning),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Individual selection coming soon. For now, use "All Students" to assign to everyone.',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: isAssigning ? null : () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton.icon(
+              onPressed: isAssigning
+                  ? null
+                  : () async {
+                      setDialogState(() => isAssigning = true);
+
+                      final success = await ref
+                          .read(adminContentProvider.notifier)
+                          .assignContent(
+                            contentId: content.id,
+                            targetType: selectedTargetType,
+                            isRequired: isRequired,
+                          );
+
+                      if (mounted) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? 'Content assigned successfully'
+                                : 'Failed to assign content'),
+                            backgroundColor:
+                                success ? AppColors.success : AppColors.error,
+                          ),
+                        );
+                      }
+                    },
+              icon: isAssigning
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(Icons.send, size: 18),
+              label: Text(isAssigning ? 'Assigning...' : 'Assign'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _getTypeIcon(String type) {
+    switch (type.toLowerCase()) {
+      case 'course':
+        return Icons.school;
+      case 'lesson':
+        return Icons.class_;
+      case 'resource':
+        return Icons.description;
+      case 'assessment':
+        return Icons.quiz;
+      default:
+        return Icons.article;
+    }
   }
 
   Widget _buildTypeChip(String type) {

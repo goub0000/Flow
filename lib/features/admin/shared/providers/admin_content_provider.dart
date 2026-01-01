@@ -352,6 +352,118 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
   List<ContentItem> getPublishedContent() {
     return state.content.where((item) => item.status == 'published').toList();
   }
+
+  /// Create new content via backend API
+  Future<bool> createContent({
+    required String title,
+    String? description,
+    required String type,
+    String? category,
+    String? level,
+    double? durationHours,
+    String? institutionId,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/content',
+        data: {
+          'title': title,
+          'description': description,
+          'type': type,
+          'category': category,
+          'level': level,
+          'duration_hours': durationHours,
+          'institution_id': institutionId,
+        },
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success) {
+        // Refresh content list to show new item
+        await fetchContent();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to create content',
+        );
+        return false;
+      }
+    } catch (e) {
+      print('[AdminContent] Error creating content: $e');
+      state = state.copyWith(
+        error: 'Failed to create content: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  /// Assign content to users via backend API
+  Future<bool> assignContent({
+    required String contentId,
+    required String targetType, // 'student', 'institution', 'all_students'
+    List<String>? targetIds,
+    bool isRequired = false,
+    String? dueDate,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/content/assign',
+        data: {
+          'content_id': contentId,
+          'target_type': targetType,
+          'target_ids': targetIds,
+          'is_required': isRequired,
+          'due_date': dueDate,
+        },
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success) {
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to assign content',
+        );
+        return false;
+      }
+    } catch (e) {
+      print('[AdminContent] Error assigning content: $e');
+      state = state.copyWith(
+        error: 'Failed to assign content: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  /// Get content assignments
+  Future<List<Map<String, dynamic>>> getContentAssignments(String contentId) async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/content/$contentId/assignments',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        final assignments = response.data!['assignments'] as List<dynamic>? ?? [];
+        return assignments.cast<Map<String, dynamic>>();
+      }
+      return [];
+    } catch (e) {
+      print('[AdminContent] Error fetching assignments: $e');
+      return [];
+    }
+  }
+
+  /// Remove content assignment
+  Future<bool> removeContentAssignment(String assignmentId) async {
+    try {
+      await _apiClient.delete('${ApiConfig.admin}/content/assignment/$assignmentId');
+      return true;
+    } catch (e) {
+      print('[AdminContent] Error removing assignment: $e');
+      return false;
+    }
+  }
 }
 
 /// Provider for admin content state
