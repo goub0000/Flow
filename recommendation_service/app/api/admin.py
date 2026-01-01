@@ -1437,7 +1437,6 @@ async def create_content(
             'course_type': request.type,
             'created_at': datetime.utcnow().isoformat(),
             'updated_at': datetime.utcnow().isoformat(),
-            'enrollment_count': 0,
         }
 
         response = db.table('courses').insert(content_data).execute()
@@ -1453,20 +1452,19 @@ async def create_content(
         return {
             'success': True,
             'message': f'Content "{request.title}" created as draft',
-            'content': AdminContentItem(
-                id=response.data[0]['id'],
-                title=response.data[0]['title'],
-                description=response.data[0].get('description'),
-                type=response.data[0].get('course_type', 'course'),
-                status=response.data[0].get('status', 'draft'),
-                institution_id=response.data[0].get('institution_id'),
-                category=response.data[0].get('category'),
-                level=response.data[0].get('level'),
-                duration_hours=response.data[0].get('duration_hours'),
-                enrollment_count=response.data[0].get('enrollment_count', 0),
-                created_at=response.data[0].get('created_at'),
-                updated_at=response.data[0].get('updated_at'),
-            )
+            'content': {
+                'id': response.data[0]['id'],
+                'title': response.data[0]['title'],
+                'description': response.data[0].get('description'),
+                'type': response.data[0].get('course_type', 'course'),
+                'status': response.data[0].get('status', 'draft'),
+                'institution_id': response.data[0].get('institution_id'),
+                'category': response.data[0].get('category'),
+                'level': response.data[0].get('level'),
+                'duration_hours': response.data[0].get('duration_hours'),
+                'created_at': response.data[0].get('created_at'),
+                'updated_at': response.data[0].get('updated_at'),
+            }
         }
 
     except HTTPException:
