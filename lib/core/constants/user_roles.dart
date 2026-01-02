@@ -114,10 +114,40 @@ extension UserRoleExtension on UserRole {
 
   /// Parse UserRole from string
   static UserRole fromString(String value) {
-    return UserRole.values.firstWhere(
-      (role) => UserRoleHelper.getRoleName(role) == value.toLowerCase(),
-      orElse: () => UserRole.student,
+    final normalizedValue = value.toLowerCase().trim();
+
+    // Try exact match first
+    final exactMatch = UserRole.values.cast<UserRole?>().firstWhere(
+      (role) => role != null && UserRoleHelper.getRoleName(role) == normalizedValue,
+      orElse: () => null,
     );
+    if (exactMatch != null) return exactMatch;
+
+    // Try matching with common variations (underscore vs no underscore)
+    final withoutUnderscore = normalizedValue.replaceAll('_', '');
+    final matchWithoutUnderscore = UserRole.values.cast<UserRole?>().firstWhere(
+      (role) => role != null && UserRoleHelper.getRoleName(role).replaceAll('_', '') == withoutUnderscore,
+      orElse: () => null,
+    );
+    if (matchWithoutUnderscore != null) return matchWithoutUnderscore;
+
+    // Handle specific admin variants
+    if (normalizedValue.contains('admin') || normalizedValue.contains('super')) {
+      if (normalizedValue.contains('super') || normalizedValue.contains('platform')) {
+        return UserRole.superAdmin;
+      }
+      if (normalizedValue.contains('regional')) return UserRole.regionalAdmin;
+      if (normalizedValue.contains('content')) return UserRole.contentAdmin;
+      if (normalizedValue.contains('support')) return UserRole.supportAdmin;
+      if (normalizedValue.contains('finance')) return UserRole.financeAdmin;
+      if (normalizedValue.contains('analytics')) return UserRole.analyticsAdmin;
+      // Default admin to super admin
+      return UserRole.superAdmin;
+    }
+
+    // Default to student only if no match found
+    print('[DEBUG] UserRole.fromString: No match for "$value", defaulting to student');
+    return UserRole.student;
   }
 
   /// Check if this role is an admin role

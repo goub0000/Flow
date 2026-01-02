@@ -111,8 +111,18 @@ class UserModel {
     final id = json['id']?.toString() ?? '';
     final email = json['email']?.toString() ?? '';
 
-    // Handle active_role with fallback
-    final activeRoleStr = json['active_role']?.toString() ?? 'student';
+    // Handle active_role with fallback - check multiple possible keys
+    String activeRoleStr = json['active_role']?.toString() ??
+        json['activeRole']?.toString() ??
+        json['role']?.toString() ??
+        'student';
+
+    // Debug logging
+    if (kDebugMode) {
+      print('[DEBUG] UserModel.fromJson - raw active_role: ${json['active_role']}');
+      print('[DEBUG] UserModel.fromJson - raw role: ${json['role']}');
+      print('[DEBUG] UserModel.fromJson - resolved activeRoleStr: $activeRoleStr');
+    }
 
     // Handle available_roles with fallback
     List<String> availableRolesStrs;
