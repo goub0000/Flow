@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../authentication/providers/auth_provider.dart';
 import '../../application/providers/chatbot_provider.dart';
 import 'message_bubble.dart';
 import 'quick_replies.dart';
@@ -235,7 +236,10 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
 
   Widget _buildHeader() {
     final state = ref.watch(chatbotProvider);
+    final authState = ref.watch(authProvider);
     final isEscalated = state.isEscalated;
+    final isLoggedIn = authState.isAuthenticated;
+    final user = authState.user;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -302,6 +306,15 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               ],
             ),
           ),
+          // User account button
+          IconButton(
+            icon: Icon(
+              isLoggedIn ? Icons.account_circle : Icons.login,
+              color: Colors.white,
+            ),
+            onPressed: () => _showUserMenu(isLoggedIn, user?.displayName),
+            tooltip: isLoggedIn ? 'Account: ${user?.displayName ?? "User"}' : 'Sign in',
+          ),
           // Talk to Human button
           if (!isEscalated)
             IconButton(
@@ -314,6 +327,94 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
             onPressed: _close,
             tooltip: 'Close chat',
           ),
+        ],
+      ),
+    );
+  }
+
+  void _showUserMenu(bool isLoggedIn, String? userName) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Icon(
+              isLoggedIn ? Icons.account_circle : Icons.login,
+              color: AppColors.primary,
+            ),
+            const SizedBox(width: 12),
+            Text(isLoggedIn ? 'Your Account' : 'Sign In'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isLoggedIn) ...[
+              Text(
+                'Signed in as:',
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                userName ?? 'User',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Your conversations are being synced to your account.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ] else ...[
+              const Text(
+                'Sign in to sync your conversations across devices and get personalized assistance.',
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Your chat history will be saved to your account.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ],
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Close'),
+          ),
+          if (!isLoggedIn)
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _close();
+                context.go('/login');
+              },
+              icon: const Icon(Icons.login, size: 18),
+              label: const Text('Sign In'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          if (isLoggedIn)
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _close();
+                context.go('/profile');
+              },
+              icon: const Icon(Icons.person, size: 18),
+              label: const Text('View Profile'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+              ),
+            ),
         ],
       ),
     );

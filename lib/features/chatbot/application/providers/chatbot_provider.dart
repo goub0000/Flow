@@ -57,9 +57,92 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
   final ChatbotService _chatbotService;
   final ConversationStorageService _storageService;
   final Ref _ref;
+  String? _lastUserId;
 
   ChatbotNotifier(this._chatbotService, this._storageService, this._ref)
-      : super(ChatbotState(messages: []));
+      : super(ChatbotState(messages: [])) {
+    // Listen to auth state changes
+    _ref.listen<AuthState>(authProvider, (previous, next) {
+      _onAuthStateChanged(previous, next);
+    });
+  }
+
+  /// Handle auth state changes
+  void _onAuthStateChanged(AuthState? previous, AuthState next) {
+    final newUserId = next.user?.id;
+    final wasLoggedIn = previous?.isAuthenticated ?? false;
+    final isLoggedIn = next.isAuthenticated;
+
+    // User just logged in
+    if (!wasLoggedIn && isLoggedIn && newUserId != _lastUserId) {
+      _lastUserId = newUserId;
+      _onUserLoggedIn(next.user!.displayName);
+    }
+    // User logged out
+    else if (wasLoggedIn && !isLoggedIn) {
+      _lastUserId = null;
+      _onUserLoggedOut();
+    }
+  }
+
+  /// Called when user logs in
+  void _onUserLoggedIn(String? userName) {
+    // Add a personalized welcome message
+    final welcomeMessage = ChatMessage.bot(
+      content: userName != null
+          ? 'Welcome back, $userName! 🎉 I can now sync our conversation to your account. How can I help you today?'
+          : 'Welcome back! 🎉 Your conversations will now be synced to your account.',
+      quickActions: [
+        const QuickAction(
+          id: 'view_profile',
+          label: 'View Profile',
+          action: 'view_profile',
+        ),
+        const QuickAction(
+          id: 'what_is_flow',
+          label: 'What is Flow?',
+          action: 'what_is_flow',
+        ),
+        const QuickAction(
+          id: 'get_help',
+          label: 'Get Help',
+          action: 'get_help',
+        ),
+      ],
+    );
+
+    state = state.copyWith(
+      messages: [...state.messages, welcomeMessage],
+      currentQuickActions: welcomeMessage.quickActions,
+    );
+
+    // Save conversation to sync with backend
+    _saveCurrentConversation();
+  }
+
+  /// Called when user logs out
+  void _onUserLoggedOut() {
+    // Add a message about logging out
+    final logoutMessage = ChatMessage.system(
+      content: 'You have been signed out. Your conversation history on this device is still available.',
+    );
+
+    state = state.copyWith(
+      messages: [...state.messages, logoutMessage],
+      currentQuickActions: [
+        const QuickAction(
+          id: 'sign_in',
+          label: 'Sign In',
+          action: 'navigate_login',
+        ),
+        const QuickAction(
+          id: 'what_is_flow',
+          label: 'What is Flow?',
+          action: 'what_is_flow',
+        ),
+      ],
+    );
+  }
 
   /// Initialize chatbot - try to resume existing conversation or start new
   Future<void> initialize() async {
