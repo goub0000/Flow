@@ -63,6 +63,11 @@ class _AdminChatbotDashboardState
             tooltip: 'Refresh',
           ),
           IconButton(
+            icon: const Icon(Icons.question_answer),
+            onPressed: () => context.push('/admin/chatbot/faqs'),
+            tooltip: 'Manage FAQs',
+          ),
+          IconButton(
             icon: const Icon(Icons.history),
             onPressed: () => context.push('/admin/chatbot/conversations'),
             tooltip: 'View All Conversations',
@@ -80,6 +85,10 @@ class _AdminChatbotDashboardState
                   children: [
                     // Statistics Cards
                     _buildStatsGrid(),
+                    const SizedBox(height: 32),
+
+                    // Quick Actions
+                    _buildQuickActions(),
                     const SizedBox(height: 32),
 
                     // Top Topics
@@ -170,6 +179,109 @@ class _AdminChatbotDashboardState
             textAlign: TextAlign.center,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildQuickActions() {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildActionCard(
+            'Manage FAQs',
+            'Create, edit, and organize FAQ responses',
+            Icons.question_answer,
+            AppColors.primary,
+            () => context.push('/admin/chatbot/faqs'),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildActionCard(
+            'Conversation History',
+            'View and search all user conversations',
+            Icons.history,
+            AppColors.info,
+            () => context.push('/admin/chatbot/conversations'),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildActionCard(
+            'Support Queue',
+            'Handle escalated support requests',
+            Icons.support_agent,
+            AppColors.warning,
+            () => context.push('/admin/chatbot/queue'),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildActionCard(
+            'Live Monitoring',
+            'Watch active conversations in real-time',
+            Icons.visibility,
+            AppColors.success,
+            () => context.push('/admin/chatbot/live'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionCard(
+    String title,
+    String description,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: AppColors.textSecondary),
+          ],
+        ),
       ),
     );
   }

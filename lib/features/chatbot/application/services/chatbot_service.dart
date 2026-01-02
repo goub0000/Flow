@@ -1,14 +1,199 @@
+import 'dart:convert';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/chat_message.dart';
 import '../../data/knowledge_base/faqs.dart';
+import '../../../../core/services/auth_service.dart';
+import '../../../../core/providers/service_providers.dart';
+import '../../../../core/api/api_config.dart';
+
+/// Provider for the chatbot service
+final chatbotServiceProvider = Provider<ChatbotService>((ref) {
+  final authService = ref.watch(authServiceProvider);
+  return ChatbotService(authService: authService);
+});
 
 /// Service for handling chatbot logic and responses
 class ChatbotService {
+  final AuthService? authService;
   final FAQDatabase _faqDatabase = FAQDatabase();
   final Random _random = Random();
 
+  String? _currentConversationId;
+  bool _useApi = true;
+
+  ChatbotService({this.authService});
+
+  /// Get current conversation ID
+  String? get currentConversationId => _currentConversationId;
+
+  /// Set conversation ID (for resuming conversations)
+  set currentConversationId(String? id) => _currentConversationId = id;
+
   /// Process user message and generate bot response
-  Future<ChatMessage> processMessage(String userMessage) async {
+  Future<ChatMessage> processMessage(String userMessage, {Map<String, dynamic>? context}) async {
+    // Try API first if available and user is authenticated
+    if (_useApi && authService != null) {
+      final token = authService!.accessToken;
+      if (token != null) {
+        try {
+          final response = await _sendMessageToApi(userMessage, context);
+          if (response != null) {
+            return response;
+          }
+        } catch (e) {
+          // API failed, fall back to local processing
+          print('Chatbot API error: $e');
+        }
+      }
+    }
+
+    // Fallback to local processing
+    return _processMessageLocally(userMessage);
+  }
+
+  /// Send message to backend API
+  Future<ChatMessage?> _sendMessageToApi(String message, Map<String, dynamic>? context) async {
+    final token = authService?.accessToken;
+    if (token == null) return null;
+
+    final baseUrl = ApiConfig.baseUrl;
+    final uri = Uri.parse('$baseUrl/api/v1/chatbot/messages');
+
+    final body = {
+      'message': message,
+      'conversation_id': _currentConversationId,
+      'context': context ?? {},
+    };
+
+    final response = await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    ).timeout(const Duration(seconds: 30));
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      // Update conversation ID for future messages
+      _currentConversationId = data['conversation_id'];
+
+      return ChatMessage.fromApiResponse(data);
+    }
+
+    return null;
+  }
+
+  /// Submit feedback for a message
+  Future<bool> submitFeedback(String messageId, MessageFeedback feedback, {String? comment}) async {
+    if (authService == null) return false;
+
+    final token = authService!.accessToken;
+    if (token == null) return false;
+
+    try {
+      final baseUrl = ApiConfig.baseUrl;
+      final uri = Uri.parse('$baseUrl/api/v1/chatbot/messages/$messageId/feedback');
+
+      final body = {
+        'feedback': feedback == MessageFeedback.helpful ? 'helpful' : 'not_helpful',
+        if (comment != null) 'comment': comment,
+      };
+
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Failed to submit feedback: $e');
+      return false;
+    }
+  }
+
+  /// Escalate conversation to human support
+  Future<bool> escalateToHuman({String? reason}) async {
+    if (_currentConversationId == null || authService == null) {
+      return false;
+    }
+
+    final token = authService!.accessToken;
+    if (token == null) return false;
+
+    try {
+      final baseUrl = ApiConfig.baseUrl;
+      final uri = Uri.parse('$baseUrl/api/v1/chatbot/conversations/$_currentConversationId/escalate');
+
+      final body = {
+        'reason': reason ?? 'user_request',
+        'priority': 'normal',
+      };
+
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Failed to escalate: $e');
+      return false;
+    }
+  }
+
+  /// Load conversation history
+  Future<List<ChatMessage>> loadConversationHistory(String conversationId) async {
+    if (authService == null) return [];
+
+    final token = authService!.accessToken;
+    if (token == null) return [];
+
+    try {
+      final baseUrl = ApiConfig.baseUrl;
+      final uri = Uri.parse('$baseUrl/api/v1/chatbot/conversations/$conversationId/messages');
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final messages = (data['messages'] as List)
+            .map((m) => ChatMessage.fromJson(m))
+            .toList();
+        _currentConversationId = conversationId;
+        return messages;
+      }
+    } catch (e) {
+      print('Failed to load history: $e');
+    }
+
+    return [];
+  }
+
+  /// Start a new conversation
+  void startNewConversation() {
+    _currentConversationId = null;
+  }
+
+  /// Process message locally (fallback)
+  Future<ChatMessage> _processMessageLocally(String userMessage) async {
     // Simulate processing delay for more natural feel
     await Future.delayed(const Duration(milliseconds: 500));
 
@@ -162,6 +347,15 @@ class ChatbotService {
           ],
         );
 
+      case 'talk_to_human':
+      case 'escalate':
+        escalateToHuman(reason: 'user_request');
+        return ChatMessage.bot(
+          content: 'I\'m connecting you with a human agent. '
+              'Please wait a moment while we find someone to assist you.',
+          quickActions: [],
+        );
+
       default:
         return _getFallbackResponse();
     }
@@ -275,7 +469,7 @@ class ChatbotService {
           'or choose from these options?',
       quickActions: [
         const QuickAction(id: '1', label: 'Main Menu', action: 'menu'),
-        const QuickAction(id: '2', label: 'Talk to Support', action: 'support'),
+        const QuickAction(id: '2', label: 'Talk to Human', action: 'talk_to_human'),
         const QuickAction(id: '3', label: 'Browse FAQs', action: 'help'),
       ],
     );

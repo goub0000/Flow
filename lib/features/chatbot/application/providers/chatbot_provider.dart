@@ -5,6 +5,7 @@ import '../services/chatbot_service.dart';
 import '../services/conversation_storage_service.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../../../core/constants/user_roles.dart';
+import '../../../../core/providers/service_providers.dart';
 
 /// Chatbot state
 class ChatbotState {
@@ -13,6 +14,9 @@ class ChatbotState {
   final List<QuickAction>? currentQuickActions;
   final String? error;
   final String? conversationId;
+  final bool isEscalated;
+  final bool isLoadingHistory;
+  final String? currentPage;
 
   ChatbotState({
     required this.messages,
@@ -20,6 +24,9 @@ class ChatbotState {
     this.currentQuickActions,
     this.error,
     this.conversationId,
+    this.isEscalated = false,
+    this.isLoadingHistory = false,
+    this.currentPage,
   });
 
   ChatbotState copyWith({
@@ -28,6 +35,9 @@ class ChatbotState {
     List<QuickAction>? currentQuickActions,
     String? error,
     String? conversationId,
+    bool? isEscalated,
+    bool? isLoadingHistory,
+    String? currentPage,
   }) {
     return ChatbotState(
       messages: messages ?? this.messages,
@@ -35,11 +45,14 @@ class ChatbotState {
       currentQuickActions: currentQuickActions ?? this.currentQuickActions,
       error: error,
       conversationId: conversationId ?? this.conversationId,
+      isEscalated: isEscalated ?? this.isEscalated,
+      isLoadingHistory: isLoadingHistory ?? this.isLoadingHistory,
+      currentPage: currentPage ?? this.currentPage,
     );
   }
 }
 
-/// Chatbot notifier
+/// Chatbot notifier with backend sync
 class ChatbotNotifier extends StateNotifier<ChatbotState> {
   final ChatbotService _chatbotService;
   final ConversationStorageService _storageService;
@@ -48,24 +61,70 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
   ChatbotNotifier(this._chatbotService, this._storageService, this._ref)
       : super(ChatbotState(messages: []));
 
+  /// Initialize chatbot - try to resume existing conversation or start new
+  Future<void> initialize() async {
+    // Try to load last active conversation from backend
+    final conversationId = _chatbotService.currentConversationId;
+
+    if (conversationId != null) {
+      await loadConversationHistory(conversationId);
+    } else {
+      sendInitialGreeting();
+    }
+  }
+
+  /// Load conversation history from backend
+  Future<void> loadConversationHistory(String conversationId) async {
+    state = state.copyWith(isLoadingHistory: true);
+
+    try {
+      final messages = await _chatbotService.loadConversationHistory(conversationId);
+
+      if (messages.isNotEmpty) {
+        state = state.copyWith(
+          messages: messages,
+          conversationId: conversationId,
+          isLoadingHistory: false,
+          currentQuickActions: messages.last.quickActions,
+        );
+      } else {
+        // No history found, start fresh
+        state = state.copyWith(isLoadingHistory: false);
+        sendInitialGreeting();
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoadingHistory: false,
+        error: 'Failed to load conversation history',
+      );
+      sendInitialGreeting();
+    }
+  }
+
   /// Send initial greeting
   void sendInitialGreeting() async {
     final greeting = _chatbotService.getInitialGreeting();
 
-    // Create new conversation ID
-    final conversationId = DateTime.now().millisecondsSinceEpoch.toString();
+    // Start new conversation
+    _chatbotService.startNewConversation();
 
     state = state.copyWith(
       messages: [greeting],
       currentQuickActions: greeting.quickActions,
-      conversationId: conversationId,
+      conversationId: null, // Will be set on first API call
+      isEscalated: false,
     );
 
-    // Save conversation
+    // Save locally
     await _saveCurrentConversation();
   }
 
-  /// Send user message
+  /// Set current page context for personalization
+  void setCurrentPage(String page) {
+    state = state.copyWith(currentPage: page);
+  }
+
+  /// Send user message with backend sync
   Future<void> sendMessage(String text) async {
     if (text.trim().isEmpty) return;
 
@@ -75,20 +134,40 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
       messages: [...state.messages, userMessage],
       currentQuickActions: null,
       isTyping: true,
+      error: null,
     );
 
     try {
-      // Get bot response
-      final botResponse = await _chatbotService.processMessage(text);
+      // Build context for personalization
+      final context = _buildUserContext();
+
+      // Get bot response from API (with local fallback)
+      final botResponse = await _chatbotService.processMessage(
+        text,
+        context: context,
+      );
+
+      // Update conversation ID if new
+      if (_chatbotService.currentConversationId != null) {
+        state = state.copyWith(
+          conversationId: _chatbotService.currentConversationId,
+        );
+      }
+
+      // Check if escalated
+      final isEscalated = botResponse.shouldEscalate ||
+          botResponse.sender == SenderType.agent ||
+          botResponse.sender == SenderType.system;
 
       // Add bot response
       state = state.copyWith(
         messages: [...state.messages, botResponse],
         isTyping: false,
         currentQuickActions: botResponse.quickActions,
+        isEscalated: isEscalated || state.isEscalated,
       );
 
-      // Save conversation
+      // Save locally
       await _saveCurrentConversation();
     } catch (e) {
       state = state.copyWith(
@@ -99,10 +178,15 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
   }
 
   /// Handle quick action
-  void handleQuickAction(String action) async {
+  Future<void> handleQuickAction(String action) async {
     // Special handling for navigation actions
     if (action == 'navigate_register') {
-      // This will be handled by the UI layer
+      return;
+    }
+
+    // Special handling for escalation
+    if (action == 'talk_to_human' || action == 'escalate') {
+      await escalateToHuman();
       return;
     }
 
@@ -122,12 +206,67 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
       currentQuickActions: botResponse.quickActions,
     );
 
-    // Save conversation
+    // Save locally
     await _saveCurrentConversation();
   }
 
-  /// Clear conversation
+  /// Submit feedback for a message
+  Future<bool> submitFeedback(String messageId, MessageFeedback feedback, {String? comment}) async {
+    try {
+      final success = await _chatbotService.submitFeedback(messageId, feedback, comment: comment);
+
+      if (success) {
+        // Update local message state
+        final updatedMessages = state.messages.map((msg) {
+          if (msg.id == messageId) {
+            return msg.copyWith(feedback: feedback, feedbackComment: comment);
+          }
+          return msg;
+        }).toList();
+
+        state = state.copyWith(messages: updatedMessages);
+      }
+
+      return success;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Escalate conversation to human support
+  Future<bool> escalateToHuman({String? reason}) async {
+    if (state.isEscalated) return true;
+
+    try {
+      final success = await _chatbotService.escalateToHuman(reason: reason);
+
+      if (success) {
+        // Add system message
+        final systemMessage = ChatMessage.system(
+          content: 'Your conversation has been escalated to human support. An agent will assist you shortly.',
+        );
+
+        state = state.copyWith(
+          messages: [...state.messages, systemMessage],
+          isEscalated: true,
+          currentQuickActions: null,
+        );
+
+        await _saveCurrentConversation();
+      }
+
+      return success;
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to escalate. Please try again.',
+      );
+      return false;
+    }
+  }
+
+  /// Clear conversation and start fresh
   void clearConversation() {
+    _chatbotService.startNewConversation();
     state = ChatbotState(messages: []);
     sendInitialGreeting();
   }
@@ -137,45 +276,63 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
     state = state.copyWith(error: null);
   }
 
-  /// Save current conversation to storage
+  /// Build user context for personalization
+  Map<String, dynamic> _buildUserContext() {
+    final authState = _ref.read(authProvider);
+    final user = authState.user;
+
+    return {
+      'current_page': state.currentPage,
+      'user_role': user != null ? UserRoleHelper.getRoleName(user.activeRole) : null,
+      'user_name': user?.displayName,
+      'is_authenticated': user != null,
+    };
+  }
+
+  /// Save current conversation to local storage
   Future<void> _saveCurrentConversation() async {
-    if (state.messages.isEmpty || state.conversationId == null) return;
+    if (state.messages.isEmpty) return;
 
     try {
-      // Get user info from auth provider
       final authState = _ref.read(authProvider);
       final userId = authState.user?.id ?? 'anonymous';
       final userName = authState.user?.displayName ?? 'Guest User';
       final userEmail = authState.user?.email;
-      final userRole = authState.user != null ? UserRoleHelper.getRoleName(authState.user!.activeRole) : null;
+      final userRole = authState.user != null
+          ? UserRoleHelper.getRoleName(authState.user!.activeRole)
+          : null;
 
-      // Create conversation object
+      final conversationId = state.conversationId ??
+          DateTime.now().millisecondsSinceEpoch.toString();
+
       final conversation = Conversation(
-        id: state.conversationId!,
+        id: conversationId,
         userId: userId,
         userName: userName,
         startTime: state.messages.first.timestamp,
         lastMessageTime: state.messages.last.timestamp,
         messages: state.messages,
-        status: ConversationStatus.active,
+        status: state.isEscalated
+            ? ConversationStatus.flagged
+            : ConversationStatus.active,
         messageCount: state.messages.length,
         userEmail: userEmail,
         userRole: userRole,
       );
 
-      // Save to storage
       await _storageService.saveConversation(conversation);
-      await _storageService.saveActiveConversation(state.conversationId!);
+      await _storageService.saveActiveConversation(conversationId);
     } catch (e) {
-      print('Error saving conversation: $e');
       // Don't show error to user, just log it
+      print('Error saving conversation: $e');
     }
   }
 }
 
-/// Chatbot service provider
+/// Chatbot service provider with API integration
 final chatbotServiceProvider = Provider<ChatbotService>((ref) {
-  return ChatbotService();
+  final authService = ref.watch(authServiceProvider);
+  return ChatbotService(authService: authService);
 });
 
 /// Conversation storage service provider

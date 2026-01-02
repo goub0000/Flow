@@ -31,6 +31,9 @@ import '../../features/admin/cookies/presentation/user_data_viewer_screen.dart';
 import '../../features/admin/chatbot/presentation/admin_chatbot_dashboard.dart';
 import '../../features/admin/chatbot/presentation/conversation_history_screen.dart';
 import '../../features/admin/chatbot/presentation/conversation_detail_screen.dart' as chatbot;
+import '../../features/admin/chatbot/presentation/faq_management_screen.dart';
+import '../../features/admin/chatbot/presentation/support_queue_screen.dart';
+import '../../features/admin/chatbot/presentation/live_conversations_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
 import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
 
@@ -234,6 +237,21 @@ List<RouteBase> adminRoutes = [
       final conversationId = state.pathParameters['id']!;
       return chatbot.ConversationDetailScreen(conversationId: conversationId);
     },
+  ),
+  GoRoute(
+    path: '/admin/chatbot/faqs',
+    name: 'admin-chatbot-faqs',
+    builder: (context, state) => const FAQManagementScreen(),
+  ),
+  GoRoute(
+    path: '/admin/chatbot/queue',
+    name: 'admin-chatbot-queue',
+    builder: (context, state) => const SupportQueueScreen(),
+  ),
+  GoRoute(
+    path: '/admin/chatbot/live',
+    name: 'admin-chatbot-live',
+    builder: (context, state) => const LiveConversationsScreen(),
   ),
 
   // Content Management

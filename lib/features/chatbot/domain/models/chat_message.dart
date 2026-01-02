@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Feedback type for messages
+enum MessageFeedback { helpful, notHelpful, none }
+
 /// Represents a message in the chatbot conversation
 class ChatMessage {
   final String id;
@@ -8,6 +11,14 @@ class ChatMessage {
   final SenderType sender;
   final DateTime timestamp;
   final List<QuickAction>? quickActions;
+  final String? conversationId;
+  final double? confidence;
+  final String? aiProvider;
+  final int? tokensUsed;
+  final bool shouldEscalate;
+  final String? escalationReason;
+  final MessageFeedback feedback;
+  final String? feedbackComment;
 
   ChatMessage({
     required this.id,
@@ -16,6 +27,14 @@ class ChatMessage {
     required this.sender,
     required this.timestamp,
     this.quickActions,
+    this.conversationId,
+    this.confidence,
+    this.aiProvider,
+    this.tokensUsed,
+    this.shouldEscalate = false,
+    this.escalationReason,
+    this.feedback = MessageFeedback.none,
+    this.feedbackComment,
   });
 
   /// Factory constructor for bot messages
@@ -62,6 +81,14 @@ class ChatMessage {
     SenderType? sender,
     DateTime? timestamp,
     List<QuickAction>? quickActions,
+    String? conversationId,
+    double? confidence,
+    String? aiProvider,
+    int? tokensUsed,
+    bool? shouldEscalate,
+    String? escalationReason,
+    MessageFeedback? feedback,
+    String? feedbackComment,
   }) {
     return ChatMessage(
       id: id ?? this.id,
@@ -70,28 +97,87 @@ class ChatMessage {
       sender: sender ?? this.sender,
       timestamp: timestamp ?? this.timestamp,
       quickActions: quickActions ?? this.quickActions,
+      conversationId: conversationId ?? this.conversationId,
+      confidence: confidence ?? this.confidence,
+      aiProvider: aiProvider ?? this.aiProvider,
+      tokensUsed: tokensUsed ?? this.tokensUsed,
+      shouldEscalate: shouldEscalate ?? this.shouldEscalate,
+      escalationReason: escalationReason ?? this.escalationReason,
+      feedback: feedback ?? this.feedback,
+      feedbackComment: feedbackComment ?? this.feedbackComment,
     );
   }
 
   /// Create from JSON
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
-      id: json['id'] as String,
+      id: json['id'] as String? ?? json['message_id'] as String? ?? '',
       content: json['content'] as String,
       type: MessageType.values.firstWhere(
-        (t) => t.name == json['type'],
+        (t) => t.name == json['type'] || t.name == json['message_type'],
         orElse: () => MessageType.text,
       ),
       sender: SenderType.values.firstWhere(
         (s) => s.name == json['sender'],
         orElse: () => SenderType.user,
       ),
-      timestamp: DateTime.parse(json['timestamp'] as String),
+      timestamp: json['timestamp'] != null
+          ? DateTime.parse(json['timestamp'] as String)
+          : json['created_at'] != null
+              ? DateTime.parse(json['created_at'] as String)
+              : DateTime.now(),
       quickActions: json['quickActions'] != null
           ? (json['quickActions'] as List)
               .map((q) => QuickAction.fromJson(q as Map<String, dynamic>))
               .toList()
+          : json['quick_actions'] != null
+              ? (json['quick_actions'] as List)
+                  .map((q) => QuickAction.fromJson(q as Map<String, dynamic>))
+                  .toList()
+              : null,
+      conversationId: json['conversation_id'] as String?,
+      confidence: json['confidence'] != null
+          ? (json['confidence'] as num).toDouble()
           : null,
+      aiProvider: json['ai_provider'] as String?,
+      tokensUsed: json['tokens_used'] as int?,
+      shouldEscalate: json['should_escalate'] as bool? ?? false,
+      escalationReason: json['escalation_reason'] as String?,
+      feedback: json['feedback'] != null
+          ? MessageFeedback.values.firstWhere(
+              (f) => f.name == json['feedback'] ||
+                  (json['feedback'] == 'helpful' && f == MessageFeedback.helpful) ||
+                  (json['feedback'] == 'not_helpful' && f == MessageFeedback.notHelpful),
+              orElse: () => MessageFeedback.none,
+            )
+          : MessageFeedback.none,
+      feedbackComment: json['feedback_comment'] as String?,
+    );
+  }
+
+  /// Create from API response
+  factory ChatMessage.fromApiResponse(Map<String, dynamic> json) {
+    return ChatMessage(
+      id: json['message_id'] as String? ?? '',
+      content: json['content'] as String,
+      type: MessageType.text,
+      sender: SenderType.bot,
+      timestamp: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
+      quickActions: json['quick_actions'] != null
+          ? (json['quick_actions'] as List)
+              .map((q) => QuickAction.fromJson(q as Map<String, dynamic>))
+              .toList()
+          : null,
+      conversationId: json['conversation_id'] as String?,
+      confidence: json['confidence'] != null
+          ? (json['confidence'] as num).toDouble()
+          : null,
+      aiProvider: json['ai_provider'] as String?,
+      tokensUsed: json['tokens_used'] as int?,
+      shouldEscalate: json['should_escalate'] as bool? ?? false,
+      escalationReason: json['escalation_reason'] as String?,
     );
   }
 
@@ -104,6 +190,14 @@ class ChatMessage {
       'sender': sender.name,
       'timestamp': timestamp.toIso8601String(),
       'quickActions': quickActions?.map((q) => q.toJson()).toList(),
+      'conversation_id': conversationId,
+      'confidence': confidence,
+      'ai_provider': aiProvider,
+      'tokens_used': tokensUsed,
+      'should_escalate': shouldEscalate,
+      'escalation_reason': escalationReason,
+      'feedback': feedback.name,
+      'feedback_comment': feedbackComment,
     };
   }
 }
@@ -121,6 +215,7 @@ enum SenderType {
   user,
   bot,
   system,
+  agent,
 }
 
 /// Quick action button for user to click

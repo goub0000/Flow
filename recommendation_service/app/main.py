@@ -303,7 +303,8 @@ from app.api import (
     applications, enrollments_api, messaging_api, notifications_api,
     counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
     institutions_api, batch_enrichment_api, meetings, student_activities_api, grades,
-    recommendation_letters, consent_api, institution_debug_api, course_content
+    recommendation_letters, consent_api, institution_debug_api, course_content,
+    chatbot_api
 )
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
@@ -315,6 +316,7 @@ app.include_router(course_content.router, prefix="/api/v1/course-content", tags=
 app.include_router(applications.router, prefix="/api/v1", tags=["Applications"])
 app.include_router(enrollments_api.router, prefix="/api/v1", tags=["Enrollments"])
 app.include_router(messaging_api.router, prefix="/api/v1/messages", tags=["Messaging"])
+app.include_router(chatbot_api.router, prefix="/api/v1/chatbot", tags=["Chatbot"])
 app.include_router(notifications_api.router, prefix="/api/v1", tags=["Notifications"])
 app.include_router(counseling_api.router, prefix="/api/v1", tags=["Counseling"])
 app.include_router(parent_monitoring_api.router, prefix="/api/v1", tags=["Parent Monitoring"])

@@ -89,6 +89,62 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
     _scrollToBottom();
   }
 
+  void _showEscalationDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Icon(Icons.support_agent, color: AppColors.primary),
+            const SizedBox(width: 12),
+            const Text('Talk to a Human'),
+          ],
+        ),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Would you like to connect with a support agent?',
+              style: TextStyle(fontSize: 14),
+            ),
+            SizedBox(height: 12),
+            Text(
+              'A member of our team will join this conversation to assist you.',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              _escalateToHuman();
+            },
+            icon: const Icon(Icons.person, size: 18),
+            label: const Text('Connect'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _escalateToHuman() {
+    ref.read(chatbotProvider.notifier).escalateToHuman(
+      reason: 'User requested human support',
+    );
+    _scrollToBottom();
+  }
+
   void _close() {
     _animationController.reverse().then((_) {
       ref.read(chatbotVisibleProvider.notifier).state = false;
@@ -178,10 +234,13 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
   }
 
   Widget _buildHeader() {
+    final state = ref.watch(chatbotProvider);
+    final isEscalated = state.isEscalated;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: isEscalated ? AppColors.warning : AppColors.primary,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -193,34 +252,63 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
             backgroundColor: Colors.white,
             radius: 20,
             child: Icon(
-              Icons.support_agent,
-              color: AppColors.primary,
+              isEscalated ? Icons.person : Icons.support_agent,
+              color: isEscalated ? AppColors.warning : AppColors.primary,
               size: 24,
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Flow Assistant',
-                  style: TextStyle(
+                  isEscalated ? 'Human Support' : 'Flow Assistant',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'Online',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
-                  ),
+                Row(
+                  children: [
+                    if (isEscalated) ...[
+                      Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.only(right: 6),
+                        decoration: const BoxDecoration(
+                          color: Colors.orangeAccent,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const Text(
+                        'Waiting for agent...',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ] else
+                      const Text(
+                        'Online',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ),
           ),
+          // Talk to Human button
+          if (!isEscalated)
+            IconButton(
+              icon: const Icon(Icons.person_add, color: Colors.white),
+              onPressed: _showEscalationDialog,
+              tooltip: 'Talk to a human',
+            ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: _close,
