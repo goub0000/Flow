@@ -48,6 +48,9 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     state = state.copyWith(isLoading: true);
 
     try {
+      // Wait for the session to be loaded from storage first
+      await _authService.waitForSessionLoad();
+
       final response = await _authService.getCurrentUser();
       if (response.success && response.data != null) {
         final userData = response.data!;
