@@ -2,8 +2,6 @@
 Feedback Analytics Service - Track and analyze chatbot feedback
 """
 
-from sqlalchemy.orm import Session
-from sqlalchemy import func, desc, and_, text
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
 from uuid import UUID
@@ -23,8 +21,8 @@ class FeedbackAnalyticsService:
     - Export feedback reports
     """
 
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self, supabase):
+        self.supabase = supabase
 
     async def get_feedback_stats(
         self,
@@ -47,41 +45,35 @@ class FeedbackAnalyticsService:
             end_date = datetime.utcnow()
 
         try:
-            # Query feedback counts
-            result = self.db.execute(text("""
-                SELECT
-                    COUNT(*) as total_messages,
-                    COUNT(CASE WHEN feedback IS NOT NULL THEN 1 END) as rated_messages,
-                    COUNT(CASE WHEN feedback = 'helpful' THEN 1 END) as helpful_count,
-                    COUNT(CASE WHEN feedback = 'not_helpful' THEN 1 END) as not_helpful_count
-                FROM chatbot_messages
-                WHERE sender = 'bot'
-                AND created_at BETWEEN :start_date AND :end_date
-            """), {"start_date": start_date, "end_date": end_date})
+            # Query all bot messages in date range
+            result = self.supabase.table('chatbot_messages').select(
+                'id, feedback'
+            ).eq('sender', 'bot').gte(
+                'created_at', start_date.isoformat()
+            ).lte(
+                'created_at', end_date.isoformat()
+            ).execute()
 
-            row = result.fetchone()
+            messages = result.data if result.data else []
 
-            if row:
-                total = row.total_messages or 0
-                rated = row.rated_messages or 0
-                helpful = row.helpful_count or 0
-                not_helpful = row.not_helpful_count or 0
+            total = len(messages)
+            rated = sum(1 for m in messages if m.get('feedback'))
+            helpful = sum(1 for m in messages if m.get('feedback') == 'helpful')
+            not_helpful = sum(1 for m in messages if m.get('feedback') == 'not_helpful')
 
-                return {
-                    "period": {
-                        "start": start_date.isoformat(),
-                        "end": end_date.isoformat()
-                    },
-                    "total_bot_messages": total,
-                    "rated_messages": rated,
-                    "rating_rate": round((rated / total * 100), 2) if total > 0 else 0,
-                    "helpful_count": helpful,
-                    "not_helpful_count": not_helpful,
-                    "helpful_rate": round((helpful / rated * 100), 2) if rated > 0 else 0,
-                    "satisfaction_score": round((helpful / (helpful + not_helpful) * 100), 2) if (helpful + not_helpful) > 0 else 0
-                }
-
-            return self._empty_stats(start_date, end_date)
+            return {
+                "period": {
+                    "start": start_date.isoformat(),
+                    "end": end_date.isoformat()
+                },
+                "total_bot_messages": total,
+                "rated_messages": rated,
+                "rating_rate": round((rated / total * 100), 2) if total > 0 else 0,
+                "helpful_count": helpful,
+                "not_helpful_count": not_helpful,
+                "helpful_rate": round((helpful / rated * 100), 2) if rated > 0 else 0,
+                "satisfaction_score": round((helpful / (helpful + not_helpful) * 100), 2) if (helpful + not_helpful) > 0 else 0
+            }
 
         except Exception as e:
             logger.error(f"Error getting feedback stats: {e}")
@@ -119,28 +111,35 @@ class FeedbackAnalyticsService:
         start_date = datetime.utcnow() - timedelta(days=days)
 
         try:
-            result = self.db.execute(text("""
-                SELECT
-                    DATE(created_at) as date,
-                    COUNT(*) as total,
-                    COUNT(CASE WHEN feedback = 'helpful' THEN 1 END) as helpful,
-                    COUNT(CASE WHEN feedback = 'not_helpful' THEN 1 END) as not_helpful
-                FROM chatbot_messages
-                WHERE sender = 'bot'
-                AND created_at >= :start_date
-                GROUP BY DATE(created_at)
-                ORDER BY date DESC
-            """), {"start_date": start_date})
+            result = self.supabase.table('chatbot_messages').select(
+                'id, feedback, created_at'
+            ).eq('sender', 'bot').gte(
+                'created_at', start_date.isoformat()
+            ).execute()
+
+            messages = result.data if result.data else []
+
+            # Group by date
+            daily_data = {}
+            for msg in messages:
+                date_str = msg['created_at'][:10]  # Extract YYYY-MM-DD
+                if date_str not in daily_data:
+                    daily_data[date_str] = {'total': 0, 'helpful': 0, 'not_helpful': 0}
+                daily_data[date_str]['total'] += 1
+                if msg.get('feedback') == 'helpful':
+                    daily_data[date_str]['helpful'] += 1
+                elif msg.get('feedback') == 'not_helpful':
+                    daily_data[date_str]['not_helpful'] += 1
 
             trends = []
-            for row in result:
-                total_rated = (row.helpful or 0) + (row.not_helpful or 0)
+            for date_str, data in sorted(daily_data.items(), reverse=True):
+                total_rated = data['helpful'] + data['not_helpful']
                 trends.append({
-                    "date": row.date.isoformat() if row.date else None,
-                    "total_messages": row.total or 0,
-                    "helpful": row.helpful or 0,
-                    "not_helpful": row.not_helpful or 0,
-                    "satisfaction_rate": round((row.helpful / total_rated * 100), 2) if total_rated > 0 else 0
+                    "date": date_str,
+                    "total_messages": data['total'],
+                    "helpful": data['helpful'],
+                    "not_helpful": data['not_helpful'],
+                    "satisfaction_rate": round((data['helpful'] / total_rated * 100), 2) if total_rated > 0 else 0
                 })
 
             return trends
@@ -151,46 +150,35 @@ class FeedbackAnalyticsService:
 
     async def get_poorly_performing_responses(
         self,
-        limit: int = 20,
-        min_negative_count: int = 2
+        limit: int = 20
     ) -> List[Dict[str, Any]]:
         """
         Identify responses that received negative feedback.
 
         Args:
             limit: Maximum number of results
-            min_negative_count: Minimum negative feedback count to include
 
         Returns:
             List of poorly performing message patterns
         """
         try:
-            # Get messages with negative feedback
-            result = self.db.execute(text("""
-                SELECT
-                    m.id,
-                    m.content,
-                    m.ai_provider,
-                    m.created_at,
-                    m.feedback_comment,
-                    c.summary as conversation_summary
-                FROM chatbot_messages m
-                LEFT JOIN chatbot_conversations c ON m.conversation_id = c.id
-                WHERE m.sender = 'bot'
-                AND m.feedback = 'not_helpful'
-                ORDER BY m.created_at DESC
-                LIMIT :limit
-            """), {"limit": limit})
+            result = self.supabase.table('chatbot_messages').select(
+                'id, content, ai_provider, created_at, feedback_comment, conversation_id'
+            ).eq('sender', 'bot').eq(
+                'feedback', 'not_helpful'
+            ).order('created_at', desc=True).limit(limit).execute()
+
+            messages = result.data if result.data else []
 
             poor_responses = []
-            for row in result:
+            for msg in messages:
                 poor_responses.append({
-                    "message_id": str(row.id),
-                    "content": row.content[:200] + "..." if len(row.content) > 200 else row.content,
-                    "ai_provider": row.ai_provider,
-                    "created_at": row.created_at.isoformat() if row.created_at else None,
-                    "feedback_comment": row.feedback_comment,
-                    "conversation_context": row.conversation_summary
+                    "message_id": str(msg['id']),
+                    "content": msg['content'][:200] + "..." if len(msg.get('content', '')) > 200 else msg.get('content', ''),
+                    "ai_provider": msg.get('ai_provider'),
+                    "created_at": msg.get('created_at'),
+                    "feedback_comment": msg.get('feedback_comment'),
+                    "conversation_id": str(msg.get('conversation_id')) if msg.get('conversation_id') else None
                 })
 
             return poor_responses
@@ -207,25 +195,32 @@ class FeedbackAnalyticsService:
             Dict with stats per provider
         """
         try:
-            result = self.db.execute(text("""
-                SELECT
-                    COALESCE(ai_provider, 'unknown') as provider,
-                    COUNT(*) as total,
-                    COUNT(CASE WHEN feedback = 'helpful' THEN 1 END) as helpful,
-                    COUNT(CASE WHEN feedback = 'not_helpful' THEN 1 END) as not_helpful
-                FROM chatbot_messages
-                WHERE sender = 'bot'
-                GROUP BY ai_provider
-            """))
+            result = self.supabase.table('chatbot_messages').select(
+                'ai_provider, feedback'
+            ).eq('sender', 'bot').execute()
+
+            messages = result.data if result.data else []
+
+            # Group by provider
+            providers_data = {}
+            for msg in messages:
+                provider = msg.get('ai_provider') or 'unknown'
+                if provider not in providers_data:
+                    providers_data[provider] = {'total': 0, 'helpful': 0, 'not_helpful': 0}
+                providers_data[provider]['total'] += 1
+                if msg.get('feedback') == 'helpful':
+                    providers_data[provider]['helpful'] += 1
+                elif msg.get('feedback') == 'not_helpful':
+                    providers_data[provider]['not_helpful'] += 1
 
             providers = {}
-            for row in result:
-                total_rated = (row.helpful or 0) + (row.not_helpful or 0)
-                providers[row.provider] = {
-                    "total_messages": row.total or 0,
-                    "helpful": row.helpful or 0,
-                    "not_helpful": row.not_helpful or 0,
-                    "satisfaction_rate": round((row.helpful / total_rated * 100), 2) if total_rated > 0 else 0
+            for provider, data in providers_data.items():
+                total_rated = data['helpful'] + data['not_helpful']
+                providers[provider] = {
+                    "total_messages": data['total'],
+                    "helpful": data['helpful'],
+                    "not_helpful": data['not_helpful'],
+                    "satisfaction_rate": round((data['helpful'] / total_rated * 100), 2) if total_rated > 0 else 0
                 }
 
             return providers
@@ -245,30 +240,55 @@ class FeedbackAnalyticsService:
             List of topics with feedback stats
         """
         try:
-            result = self.db.execute(text("""
-                SELECT
-                    c.topics,
-                    COUNT(*) as message_count,
-                    COUNT(CASE WHEN m.feedback = 'helpful' THEN 1 END) as helpful,
-                    COUNT(CASE WHEN m.feedback = 'not_helpful' THEN 1 END) as not_helpful
-                FROM chatbot_messages m
-                JOIN chatbot_conversations c ON m.conversation_id = c.id
-                WHERE m.sender = 'bot'
-                AND c.topics IS NOT NULL
-                GROUP BY c.topics
-                ORDER BY message_count DESC
-                LIMIT :limit
-            """), {"limit": limit})
+            # Get conversations with topics
+            conv_result = self.supabase.table('chatbot_conversations').select(
+                'id, topics'
+            ).not_.is_('topics', 'null').execute()
+
+            conversations = conv_result.data if conv_result.data else []
+            conv_topics = {c['id']: c['topics'] for c in conversations}
+
+            if not conv_topics:
+                return []
+
+            # Get messages for these conversations
+            msg_result = self.supabase.table('chatbot_messages').select(
+                'conversation_id, feedback'
+            ).eq('sender', 'bot').in_(
+                'conversation_id', list(conv_topics.keys())
+            ).execute()
+
+            messages = msg_result.data if msg_result.data else []
+
+            # Group by topic
+            topic_data = {}
+            for msg in messages:
+                conv_id = msg.get('conversation_id')
+                topics = conv_topics.get(conv_id)
+                if not topics:
+                    continue
+
+                topic_key = str(topics) if isinstance(topics, list) else topics
+                if topic_key not in topic_data:
+                    topic_data[topic_key] = {'count': 0, 'helpful': 0, 'not_helpful': 0}
+                topic_data[topic_key]['count'] += 1
+                if msg.get('feedback') == 'helpful':
+                    topic_data[topic_key]['helpful'] += 1
+                elif msg.get('feedback') == 'not_helpful':
+                    topic_data[topic_key]['not_helpful'] += 1
+
+            # Sort by count and limit
+            sorted_topics = sorted(topic_data.items(), key=lambda x: x[1]['count'], reverse=True)[:limit]
 
             topics = []
-            for row in result:
-                total_rated = (row.helpful or 0) + (row.not_helpful or 0)
+            for topic_key, data in sorted_topics:
+                total_rated = data['helpful'] + data['not_helpful']
                 topics.append({
-                    "topics": row.topics,
-                    "message_count": row.message_count or 0,
-                    "helpful": row.helpful or 0,
-                    "not_helpful": row.not_helpful or 0,
-                    "satisfaction_rate": round((row.helpful / total_rated * 100), 2) if total_rated > 0 else 0
+                    "topics": topic_key,
+                    "message_count": data['count'],
+                    "helpful": data['helpful'],
+                    "not_helpful": data['not_helpful'],
+                    "satisfaction_rate": round((data['helpful'] / total_rated * 100), 2) if total_rated > 0 else 0
                 })
 
             return topics
@@ -352,8 +372,7 @@ class FeedbackAnalyticsService:
     async def export_feedback_report(
         self,
         start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        format: str = "json"
+        end_date: Optional[datetime] = None
     ) -> Dict[str, Any]:
         """
         Export comprehensive feedback report.
@@ -361,7 +380,6 @@ class FeedbackAnalyticsService:
         Args:
             start_date: Start of date range
             end_date: End of date range
-            format: Export format (json, csv)
 
         Returns:
             Complete feedback report
@@ -390,6 +408,6 @@ class FeedbackAnalyticsService:
         return report
 
 
-def get_feedback_analytics_service(db: Session) -> FeedbackAnalyticsService:
+def get_feedback_analytics_service(supabase) -> FeedbackAnalyticsService:
     """Factory function to create FeedbackAnalyticsService instance"""
-    return FeedbackAnalyticsService(db)
+    return FeedbackAnalyticsService(supabase)
