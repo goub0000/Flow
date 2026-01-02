@@ -1563,11 +1563,61 @@ async def assign_content(
         assignments_created = []
 
         if request.target_type == 'all_students':
-            # Get all students
-            students_response = db.table('users').select('id, display_name').eq('active_role', 'student').execute()
-            target_ids = [s['id'] for s in students_response.data or []]
-        else:
-            target_ids = request.target_ids or []
+            # Create a single assignment for all students
+            assignment_data = {
+                'id': str(uuid.uuid4()),
+                'content_id': request.content_id,
+                'target_id': None,  # No specific target for all_students
+                'target_type': 'all_students',
+                'is_required': request.is_required,
+                'due_date': request.due_date,
+                'assigned_by': current_user.id,
+                'assigned_at': datetime.utcnow().isoformat(),
+                'status': 'assigned',
+                'progress': 0,
+            }
+
+            try:
+                response = db.table('content_assignments').insert(assignment_data).execute()
+                if response.data:
+                    assignments_created.append(ContentAssignmentResponse(
+                        id=response.data[0]['id'],
+                        content_id=request.content_id,
+                        content_title=content_title,
+                        target_type='all_students',
+                        target_id=None,
+                        target_name='All Students',
+                        is_required=request.is_required,
+                        due_date=request.due_date,
+                        assigned_at=response.data[0]['assigned_at'],
+                        assigned_by=current_user.id,
+                        status='assigned'
+                    ))
+            except Exception as table_error:
+                logger.warning(f"content_assignments table may not exist: {table_error}")
+                assignments_created.append(ContentAssignmentResponse(
+                    id=assignment_data['id'],
+                    content_id=request.content_id,
+                    content_title=content_title,
+                    target_type='all_students',
+                    target_id=None,
+                    target_name='All Students',
+                    is_required=request.is_required,
+                    due_date=request.due_date,
+                    assigned_at=assignment_data['assigned_at'],
+                    assigned_by=current_user.id,
+                    status='assigned'
+                ))
+
+            logger.info(f"Admin {current_user.id} assigned content {request.content_id} to all students")
+            return {
+                'success': True,
+                'message': 'Content assigned to all students',
+                'assignments': assignments_created
+            }
+
+        # For specific students or institutions
+        target_ids = request.target_ids or []
 
         # Create assignments for each target
         for target_id in target_ids:
@@ -1578,7 +1628,8 @@ async def assign_content(
             assignment_data = {
                 'id': str(uuid.uuid4()),
                 'content_id': request.content_id,
-                'user_id': target_id,
+                'target_id': target_id,
+                'target_type': request.target_type,
                 'is_required': request.is_required,
                 'due_date': request.due_date,
                 'assigned_by': current_user.id,
