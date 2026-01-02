@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'dart:ui' as ui;
 import '../../../core/theme/app_colors.dart';
 import 'dart:math' as math;
-import '../../chatbot/presentation/widgets/chatbot_fab.dart';
 
 /// Modern Home Screen - Minimalistic Material Design 3
 class ModernHomeScreen extends ConsumerStatefulWidget {
@@ -186,8 +185,6 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
             ),
           ),
 
-          // Chatbot FAB
-          const ChatbotFAB(),
         ],
       ),
     );

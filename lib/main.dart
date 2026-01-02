@@ -14,6 +14,7 @@ import 'core/api/api_config.dart';
 import 'routing/app_router.dart';
 import 'features/shared/widgets/offline_status_indicator.dart';
 import 'features/authentication/providers/auth_provider.dart';
+import 'features/chatbot/presentation/widgets/chatbot_fab.dart';
 
 void main() async {
   // Ensure Flutter bindings are initialized
@@ -252,6 +253,8 @@ class FlowApp extends ConsumerWidget {
               right: 0,
               child: const OfflineStatusIndicator(),
             ),
+            // Global chatbot FAB - available on all pages
+            const ChatbotFAB(),
           ],
         );
       },
