@@ -320,6 +320,34 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
   Future<bool> escalateToHuman({String? reason}) async {
     if (state.isEscalated) return true;
 
+    // Check if user is authenticated
+    final authState = _ref.read(authProvider);
+    if (!authState.isAuthenticated) {
+      // User needs to sign in first
+      final signInMessage = ChatMessage.bot(
+        content: 'To connect with a human support agent, please sign in to your account first. This helps us provide you with better, personalized assistance.',
+        quickActions: [
+          const QuickAction(
+            id: 'sign_in',
+            label: 'Sign In',
+            action: 'navigate_login',
+          ),
+          const QuickAction(
+            id: 'continue_chat',
+            label: 'Continue with Bot',
+            action: 'what_is_flow',
+          ),
+        ],
+      );
+
+      state = state.copyWith(
+        messages: [...state.messages, signInMessage],
+        currentQuickActions: signInMessage.quickActions,
+      );
+
+      return false;
+    }
+
     try {
       final success = await _chatbotService.escalateToHuman(reason: reason);
 
@@ -336,6 +364,28 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
         );
 
         await _saveCurrentConversation();
+      } else {
+        // Escalation failed - maybe no conversation ID yet
+        final failMessage = ChatMessage.bot(
+          content: 'I couldn\'t connect you to human support right now. Please send a message first to start a conversation, then try again.',
+          quickActions: [
+            const QuickAction(
+              id: 'get_help',
+              label: 'Get Help',
+              action: 'get_help',
+            ),
+            const QuickAction(
+              id: 'what_is_flow',
+              label: 'What is Flow?',
+              action: 'what_is_flow',
+            ),
+          ],
+        );
+
+        state = state.copyWith(
+          messages: [...state.messages, failMessage],
+          currentQuickActions: failMessage.quickActions,
+        );
       }
 
       return success;

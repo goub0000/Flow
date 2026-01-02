@@ -82,7 +82,18 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
   void _handleQuickAction(String action) {
     // Handle navigation actions
     if (action == 'navigate_register') {
+      _close();
       context.go('/register');
+      return;
+    }
+    if (action == 'navigate_login') {
+      _close();
+      context.go('/login');
+      return;
+    }
+    if (action == 'view_profile') {
+      _close();
+      context.go('/profile');
       return;
     }
 
