@@ -87,6 +87,8 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
       return;
     }
     if (action == 'navigate_login') {
+      // Set flag to reopen chat after login
+      ref.read(chatbotPendingReopenProvider.notifier).state = true;
       _close();
       context.go('/login');
       return;
@@ -402,6 +404,8 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(ctx).pop();
+                // Set flag to reopen chat after login
+                ref.read(chatbotPendingReopenProvider.notifier).state = true;
                 _close();
                 context.go('/login');
               },

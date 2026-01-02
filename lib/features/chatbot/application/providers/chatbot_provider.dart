@@ -116,6 +116,13 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
       currentQuickActions: welcomeMessage.quickActions,
     );
 
+    // Check if chat should be reopened after login
+    final shouldReopen = _ref.read(chatbotPendingReopenProvider);
+    if (shouldReopen) {
+      _ref.read(chatbotPendingReopenProvider.notifier).state = false;
+      _ref.read(chatbotVisibleProvider.notifier).state = true;
+    }
+
     // Save conversation to sync with backend
     _saveCurrentConversation();
   }
@@ -486,3 +493,6 @@ final chatbotProvider =
 
 /// Chatbot visibility provider
 final chatbotVisibleProvider = StateProvider<bool>((ref) => false);
+
+/// Track if user was in chat before login (to reopen after)
+final chatbotPendingReopenProvider = StateProvider<bool>((ref) => false);
