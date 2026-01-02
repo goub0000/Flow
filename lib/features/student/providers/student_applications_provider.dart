@@ -3,6 +3,7 @@ import '../../../core/models/application_model.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart';
+import '../../../core/constants/user_roles.dart';
 
 /// State class for managing applications
 class ApplicationsState {
@@ -51,6 +52,15 @@ class ApplicationsNotifier extends StateNotifier<ApplicationsState> {
       if (user == null) {
         state = state.copyWith(
           error: 'User not authenticated',
+          isLoading: false,
+        );
+        return;
+      }
+
+      // Only fetch applications for student users
+      if (user.activeRole != UserRole.student) {
+        state = state.copyWith(
+          applications: [],
           isLoading: false,
         );
         return;

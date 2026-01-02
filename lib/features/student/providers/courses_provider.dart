@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/course_model.dart';
 import '../../../core/services/courses_api_service.dart';
+import '../../../core/constants/user_roles.dart';
 import '../../../features/authentication/providers/auth_provider.dart';
 
 /// State class for managing courses (student view)
@@ -254,7 +255,18 @@ class AssignedCoursesNotifier extends StateNotifier<AssignedCoursesState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final accessToken = _ref.read(authProvider).accessToken;
+      // Only fetch assigned courses for student users
+      final authState = _ref.read(authProvider);
+      final user = authState.user;
+      if (user == null || user.activeRole != UserRole.student) {
+        state = state.copyWith(
+          courses: [],
+          isLoading: false,
+        );
+        return;
+      }
+
+      final accessToken = authState.accessToken;
       final apiService = CoursesApiService(accessToken: accessToken);
 
       final result = await apiService.getAssignedCourses();
