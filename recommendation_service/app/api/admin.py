@@ -1720,17 +1720,21 @@ async def get_content_assignments(
             assignments = []
 
             for assignment in response.data or []:
-                # Get target name
-                user_response = db.table('users').select('display_name, active_role').eq('id', assignment['user_id']).single().execute()
-                target_name = user_response.data.get('display_name', 'Unknown') if user_response.data else 'Unknown'
-                target_type = user_response.data.get('active_role', 'student') if user_response.data else 'student'
+                # Get target name - use target_id from assignment
+                target_id = assignment.get('target_id')
+                target_type = assignment.get('target_type', 'student')
+                target_name = 'All Students'
+
+                if target_id and target_type != 'all_students':
+                    user_response = db.table('users').select('display_name').eq('id', target_id).single().execute()
+                    target_name = user_response.data.get('display_name', 'Unknown') if user_response.data else 'Unknown'
 
                 assignments.append(ContentAssignmentResponse(
                     id=assignment['id'],
                     content_id=content_id,
                     content_title=content_title,
                     target_type=target_type,
-                    target_id=assignment['user_id'],
+                    target_id=target_id,
                     target_name=target_name,
                     is_required=assignment.get('is_required', False),
                     due_date=assignment.get('due_date'),
