@@ -1314,9 +1314,13 @@ async def update_content_status(
 
         update_data = {'status': new_status}
 
-        # Set published_at if publishing
+        # Sync is_published with status to satisfy database constraint
+        # published_status_match: (is_published = TRUE AND status = 'published') OR (is_published = FALSE AND status != 'published')
         if new_status == 'published':
+            update_data['is_published'] = True
             update_data['published_at'] = datetime.utcnow().isoformat()
+        else:
+            update_data['is_published'] = False
 
         response = db.table('courses').update(update_data).eq('id', content_id).execute()
 
