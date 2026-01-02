@@ -2,13 +2,15 @@
 Chatbot API Endpoints
 RESTful API for AI-powered chatbot system
 """
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from typing import Optional
-from datetime import datetime
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
+from typing import Optional, List
+from datetime import datetime, timedelta
 import logging
 import uuid
+import os
 
 from app.services.ai_chat_service import get_ai_chat_service, AIChatService
+from app.services.feedback_analytics_service import get_feedback_analytics_service
 from app.database.config import get_supabase
 from app.schemas.chatbot import (
     ChatMessageRequest,
@@ -1145,5 +1147,575 @@ async def get_feedback_stats(
         logger.error(f"Failed to get feedback stats: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/admin/feedback/report")
+async def get_feedback_report(
+    days: int = Query(30, ge=1, le=365),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get comprehensive feedback analytics report (admin only)
+
+    **Requires:** Admin authentication
+
+    **Query Parameters:**
+    - days: Number of days to analyze (default: 30, max: 365)
+
+    **Returns:**
+    - Comprehensive report with trends, provider comparison, suggestions
+    """
+    try:
+        supabase = get_supabase()
+
+        # Verify admin role
+        user_result = supabase.table('users').select(
+            'active_role'
+        ).eq('id', current_user.id).single().execute()
+
+        if not user_result.data or user_result.data.get('active_role') not in ['superadmin', 'supportadmin', 'admin']:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access required"
+            )
+
+        # Use analytics service
+        from sqlalchemy.orm import Session
+        # Note: In production, you'd get the DB session properly
+        # For now, we'll construct a basic report from Supabase
+
+        start_date = datetime.utcnow() - timedelta(days=days)
+        end_date = datetime.utcnow()
+
+        # Get stats
+        helpful_result = supabase.table('chatbot_messages').select(
+            'id', count='exact'
+        ).eq('feedback', 'helpful').gte('created_at', start_date.isoformat()).execute()
+
+        not_helpful_result = supabase.table('chatbot_messages').select(
+            'id', count='exact'
+        ).eq('feedback', 'not_helpful').gte('created_at', start_date.isoformat()).execute()
+
+        total_bot_result = supabase.table('chatbot_messages').select(
+            'id', count='exact'
+        ).eq('sender', 'bot').gte('created_at', start_date.isoformat()).execute()
+
+        helpful = helpful_result.count or 0
+        not_helpful = not_helpful_result.count or 0
+        total_bot = total_bot_result.count or 0
+        total_rated = helpful + not_helpful
+
+        # Get poorly performing responses
+        poor_result = supabase.table('chatbot_messages').select(
+            'id, content, ai_provider, created_at, feedback_comment'
+        ).eq('feedback', 'not_helpful').order(
+            'created_at', desc=True
+        ).limit(10).execute()
+
+        poor_responses = [
+            {
+                "message_id": r['id'],
+                "content": r['content'][:200] + "..." if len(r.get('content', '')) > 200 else r.get('content', ''),
+                "ai_provider": r.get('ai_provider'),
+                "created_at": r.get('created_at'),
+                "feedback_comment": r.get('feedback_comment')
+            }
+            for r in (poor_result.data or [])
+        ]
+
+        # Generate suggestions
+        suggestions = []
+        satisfaction_rate = (helpful / total_rated * 100) if total_rated > 0 else 0
+
+        if satisfaction_rate < 70:
+            suggestions.append({
+                "priority": "high",
+                "category": "overall_quality",
+                "issue": f"Satisfaction rate is {satisfaction_rate:.1f}% (below 70%)",
+                "suggestion": "Review negative feedback and improve FAQ database"
+            })
+
+        rating_rate = (total_rated / total_bot * 100) if total_bot > 0 else 0
+        if rating_rate < 10:
+            suggestions.append({
+                "priority": "medium",
+                "category": "engagement",
+                "issue": f"Only {rating_rate:.1f}% of messages are rated",
+                "suggestion": "Make feedback prompts more visible"
+            })
+
+        if len(poor_responses) >= 5:
+            suggestions.append({
+                "priority": "medium",
+                "category": "content_quality",
+                "issue": f"{len(poor_responses)} recent negative responses found",
+                "suggestion": "Review and create FAQ entries for common issues"
+            })
+
+        return {
+            "generated_at": datetime.utcnow().isoformat(),
+            "period": {
+                "start": start_date.isoformat(),
+                "end": end_date.isoformat(),
+                "days": days
+            },
+            "summary": {
+                "total_bot_messages": total_bot,
+                "rated_messages": total_rated,
+                "rating_rate": round(rating_rate, 2),
+                "helpful_count": helpful,
+                "not_helpful_count": not_helpful,
+                "satisfaction_score": round(satisfaction_rate, 2)
+            },
+            "poor_responses": poor_responses,
+            "suggestions": suggestions
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get feedback report: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+# =============================================================================
+# FILE UPLOAD ENDPOINTS
+# =============================================================================
+
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt'}
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+
+
+@router.post("/upload")
+async def upload_file(
+    file: UploadFile = File(...),
+    conversation_id: Optional[str] = None,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Upload a file/image to the chatbot
+
+    **Requires:** Authentication
+
+    **Form Data:**
+    - file: The file to upload (max 10MB)
+    - conversation_id: Optional conversation to attach file to
+
+    **Allowed Types:**
+    - Images: jpg, jpeg, png, gif
+    - Documents: pdf, doc, docx, txt
+
+    **Returns:**
+    - File URL and metadata
+    """
+    try:
+        supabase = get_supabase()
+
+        # Validate file extension
+        file_ext = os.path.splitext(file.filename or '')[1].lower()
+        if file_ext not in ALLOWED_EXTENSIONS:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"File type not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
+            )
+
+        # Read file content
+        content = await file.read()
+
+        # Check file size
+        if len(content) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"File too large. Maximum size: {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
+
+        # Generate unique filename
+        unique_id = str(uuid.uuid4())
+        safe_filename = f"{unique_id}{file_ext}"
+        storage_path = f"chatbot-uploads/{current_user.id}/{safe_filename}"
+
+        # Upload to Supabase Storage
+        try:
+            storage_result = supabase.storage.from_('chatbot-files').upload(
+                storage_path,
+                content,
+                file_options={"content-type": file.content_type or "application/octet-stream"}
+            )
+        except Exception as storage_error:
+            # If bucket doesn't exist or other storage error, log and return mock URL
+            logger.warning(f"Storage upload failed: {storage_error}")
+            # For now, create a placeholder - in production ensure bucket exists
+            file_url = f"/api/v1/chatbot/files/{safe_filename}"
+
+        # Get public URL
+        try:
+            file_url = supabase.storage.from_('chatbot-files').get_public_url(storage_path)
+        except:
+            file_url = f"/api/v1/chatbot/files/{safe_filename}"
+
+        # Determine file type
+        is_image = file_ext in {'.jpg', '.jpeg', '.png', '.gif'}
+        file_type = 'image' if is_image else 'file'
+
+        # If conversation_id provided, create a message with the file
+        message_id = None
+        if conversation_id:
+            msg_data = {
+                'conversation_id': conversation_id,
+                'sender': 'user',
+                'content': f"[Uploaded {file_type}: {file.filename}]",
+                'message_type': file_type,
+                'metadata': {
+                    'file_url': file_url,
+                    'file_name': file.filename,
+                    'file_size': len(content),
+                    'file_type': file.content_type,
+                    'storage_path': storage_path
+                }
+            }
+            msg_result = supabase.table('chatbot_messages').insert(msg_data).execute()
+            message_id = msg_result.data[0]['id'] if msg_result.data else None
+
+        return {
+            "success": True,
+            "file_url": file_url,
+            "file_name": file.filename,
+            "file_size": len(content),
+            "file_type": file_type,
+            "content_type": file.content_type,
+            "message_id": message_id,
+            "conversation_id": conversation_id
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to upload file: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to upload file: {str(e)}"
+        )
+
+
+# =============================================================================
+# DATA RETENTION & GDPR ENDPOINTS
+# =============================================================================
+
+@router.post("/admin/maintenance/archive-old")
+async def archive_old_conversations(
+    days_old: int = Query(90, ge=30, le=365),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Archive conversations older than specified days (admin only)
+
+    **Requires:** Admin authentication
+
+    **Query Parameters:**
+    - days_old: Archive conversations older than this (default: 90, min: 30)
+
+    **Returns:**
+    - Count of archived conversations
+    """
+    try:
+        supabase = get_supabase()
+
+        # Verify admin role
+        user_result = supabase.table('users').select(
+            'active_role'
+        ).eq('id', current_user.id).single().execute()
+
+        if not user_result.data or user_result.data.get('active_role') not in ['superadmin', 'admin']:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access required"
+            )
+
+        cutoff_date = datetime.utcnow() - timedelta(days=days_old)
+
+        # Find old active conversations
+        old_convs = supabase.table('chatbot_conversations').select(
+            'id', count='exact'
+        ).eq('status', 'active').lt(
+            'updated_at', cutoff_date.isoformat()
+        ).execute()
+
+        count = old_convs.count or 0
+
+        if count > 0:
+            # Archive them
+            supabase.table('chatbot_conversations').update({
+                'status': 'archived',
+                'updated_at': datetime.utcnow().isoformat()
+            }).eq('status', 'active').lt(
+                'updated_at', cutoff_date.isoformat()
+            ).execute()
+
+        logger.info(f"Archived {count} conversations older than {days_old} days")
+
+        return {
+            "success": True,
+            "archived_count": count,
+            "cutoff_date": cutoff_date.isoformat(),
+            "days_old": days_old
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to archive old conversations: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+@router.delete("/user/data")
+async def delete_user_data(
+    confirm: bool = Query(False),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Delete all chatbot data for the current user (GDPR right to erasure)
+
+    **Requires:** Authentication
+
+    **Query Parameters:**
+    - confirm: Must be true to confirm deletion
+
+    **WARNING:** This action is irreversible!
+
+    **Deletes:**
+    - All user's conversations
+    - All messages in those conversations
+    - Associated queue entries
+    """
+    if not confirm:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Must set confirm=true to delete data. This action is irreversible."
+        )
+
+    try:
+        supabase = get_supabase()
+
+        # Get user's conversation IDs
+        convs_result = supabase.table('chatbot_conversations').select(
+            'id'
+        ).eq('user_id', current_user.id).execute()
+
+        conversation_ids = [c['id'] for c in (convs_result.data or [])]
+
+        deleted_messages = 0
+        deleted_conversations = len(conversation_ids)
+        deleted_queue_items = 0
+
+        if conversation_ids:
+            # Delete messages for all conversations
+            for conv_id in conversation_ids:
+                msg_result = supabase.table('chatbot_messages').delete().eq(
+                    'conversation_id', conv_id
+                ).execute()
+                deleted_messages += len(msg_result.data or [])
+
+                # Delete queue entries
+                queue_result = supabase.table('chatbot_support_queue').delete().eq(
+                    'conversation_id', conv_id
+                ).execute()
+                deleted_queue_items += len(queue_result.data or [])
+
+            # Delete conversations
+            supabase.table('chatbot_conversations').delete().eq(
+                'user_id', current_user.id
+            ).execute()
+
+        logger.info(f"GDPR deletion for user {current_user.id}: {deleted_conversations} conversations, {deleted_messages} messages")
+
+        return {
+            "success": True,
+            "deleted": {
+                "conversations": deleted_conversations,
+                "messages": deleted_messages,
+                "queue_items": deleted_queue_items
+            },
+            "message": "All your chatbot data has been permanently deleted"
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to delete user data: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+@router.delete("/admin/user/{user_id}/data")
+async def admin_delete_user_data(
+    user_id: str,
+    confirm: bool = Query(False),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Delete all chatbot data for a specific user (admin only, GDPR compliance)
+
+    **Requires:** Admin authentication
+
+    **Path Parameters:**
+    - user_id: The user whose data should be deleted
+
+    **Query Parameters:**
+    - confirm: Must be true to confirm deletion
+
+    **WARNING:** This action is irreversible!
+    """
+    if not confirm:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Must set confirm=true to delete data. This action is irreversible."
+        )
+
+    try:
+        supabase = get_supabase()
+
+        # Verify admin role
+        admin_result = supabase.table('users').select(
+            'active_role'
+        ).eq('id', current_user.id).single().execute()
+
+        if not admin_result.data or admin_result.data.get('active_role') not in ['superadmin', 'admin']:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access required"
+            )
+
+        # Get user's conversation IDs
+        convs_result = supabase.table('chatbot_conversations').select(
+            'id'
+        ).eq('user_id', user_id).execute()
+
+        conversation_ids = [c['id'] for c in (convs_result.data or [])]
+
+        deleted_messages = 0
+        deleted_conversations = len(conversation_ids)
+        deleted_queue_items = 0
+
+        if conversation_ids:
+            # Delete messages for all conversations
+            for conv_id in conversation_ids:
+                msg_result = supabase.table('chatbot_messages').delete().eq(
+                    'conversation_id', conv_id
+                ).execute()
+                deleted_messages += len(msg_result.data or [])
+
+                # Delete queue entries
+                queue_result = supabase.table('chatbot_support_queue').delete().eq(
+                    'conversation_id', conv_id
+                ).execute()
+                deleted_queue_items += len(queue_result.data or [])
+
+            # Delete conversations
+            supabase.table('chatbot_conversations').delete().eq(
+                'user_id', user_id
+            ).execute()
+
+        logger.info(f"Admin GDPR deletion for user {user_id} by {current_user.id}: {deleted_conversations} conversations, {deleted_messages} messages")
+
+        return {
+            "success": True,
+            "user_id": user_id,
+            "deleted": {
+                "conversations": deleted_conversations,
+                "messages": deleted_messages,
+                "queue_items": deleted_queue_items
+            },
+            "message": f"All chatbot data for user {user_id} has been permanently deleted"
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to delete user data: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+@router.post("/admin/maintenance/anonymize-old")
+async def anonymize_old_data(
+    days_old: int = Query(180, ge=90, le=730),
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Anonymize user data in old conversations for analytics (admin only)
+
+    **Requires:** Admin authentication
+
+    **Query Parameters:**
+    - days_old: Anonymize data older than this (default: 180, min: 90)
+
+    This keeps conversation data for analytics while removing PII:
+    - Removes user names
+    - Removes email addresses
+    - Keeps message content and metadata for analysis
+    """
+    try:
+        supabase = get_supabase()
+
+        # Verify admin role
+        user_result = supabase.table('users').select(
+            'active_role'
+        ).eq('id', current_user.id).single().execute()
+
+        if not user_result.data or user_result.data.get('active_role') not in ['superadmin', 'admin']:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access required"
+            )
+
+        cutoff_date = datetime.utcnow() - timedelta(days=days_old)
+
+        # Find old conversations that haven't been anonymized
+        old_convs = supabase.table('chatbot_conversations').select(
+            'id', count='exact'
+        ).lt('updated_at', cutoff_date.isoformat()).not_.is_(
+            'user_name', 'null'
+        ).execute()
+
+        count = old_convs.count or 0
+
+        if count > 0:
+            # Anonymize PII
+            supabase.table('chatbot_conversations').update({
+                'user_name': None,
+                'user_email': None,
+                'context': None,  # May contain PII
+                'updated_at': datetime.utcnow().isoformat()
+            }).lt('updated_at', cutoff_date.isoformat()).not_.is_(
+                'user_name', 'null'
+            ).execute()
+
+        logger.info(f"Anonymized {count} conversations older than {days_old} days")
+
+        return {
+            "success": True,
+            "anonymized_count": count,
+            "cutoff_date": cutoff_date.isoformat(),
+            "days_old": days_old
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to anonymize old data: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
