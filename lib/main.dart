@@ -244,17 +244,21 @@ class FlowApp extends ConsumerWidget {
         }
 
         return Stack(
+          fit: StackFit.expand,
           children: [
             if (child != null) child,
             // Offline status indicator at the top
-            Positioned(
+            const Positioned(
               top: 0,
               left: 0,
               right: 0,
-              child: const OfflineStatusIndicator(),
+              child: OfflineStatusIndicator(),
             ),
             // Global chatbot FAB - available on all pages
-            const ChatbotFAB(),
+            // Positioned to fill the screen so chat window can position itself
+            const Positioned.fill(
+              child: ChatbotFAB(),
+            ),
           ],
         );
       },

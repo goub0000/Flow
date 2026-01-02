@@ -478,7 +478,8 @@ final chatbotServiceProvider = Provider<ChatbotService>((ref) {
 /// Conversation storage service provider
 final conversationStorageServiceProvider =
     Provider<ConversationStorageService>((ref) {
-  return ConversationStorageService();
+  final authService = ref.watch(authServiceProvider);
+  return ConversationStorageService(authService: authService);
 });
 
 /// Chatbot state provider

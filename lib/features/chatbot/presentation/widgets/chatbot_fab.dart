@@ -48,6 +48,7 @@ class _ChatbotFABState extends ConsumerState<ChatbotFAB>
     final isVisible = ref.watch(chatbotVisibleProvider);
 
     return Stack(
+      fit: StackFit.expand,
       children: [
         // Chat Window
         if (isVisible) const ChatWindow(),
