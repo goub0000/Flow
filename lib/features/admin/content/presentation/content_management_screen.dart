@@ -764,8 +764,8 @@ class _ContentManagementScreenState
           },
         ),
         DataTableAction(
-          icon: Icons.check_circle,
-          tooltip: 'Approve/Publish',
+          icon: Icons.publish,
+          tooltip: 'Publish/Unpublish',
           color: AppColors.success,
           onPressed: (content) {
             _showApprovalDialog(content);
@@ -1415,81 +1415,159 @@ class _ContentManagementScreenState
   }
 
   void _showApprovalDialog(ContentRowData content) {
+    final isPublished = content.status.toLowerCase() == 'published';
+    bool isUpdating = false;
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(
-              Icons.check_circle,
-              color: AppColors.success,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Icon(
+                isPublished ? Icons.unpublished : Icons.check_circle,
+                color: isPublished ? AppColors.warning : AppColors.success,
+              ),
+              const SizedBox(width: 12),
+              Text(isPublished ? 'Manage Published Content' : 'Publish Content'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isPublished
+                    ? 'This content is currently published and visible to users.'
+                    : 'Publish "${content.title}" to make it visible to users?',
+                style: const TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 16),
+              _buildDetailRow('Title', content.title),
+              _buildDetailRow('Type', content.type),
+              _buildDetailRow('Author', content.author),
+              _buildDetailRow('Current Status', content.status),
+              if (isPublished) ...[
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.warning.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.warning_amber, color: AppColors.warning, size: 20),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Unpublishing will hide this content from all users.',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: isUpdating ? null : () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
-            const SizedBox(width: 12),
-            const Text('Approve Content'),
+            if (isPublished) ...[
+              // Unpublish button for published content
+              ElevatedButton.icon(
+                onPressed: isUpdating ? null : () async {
+                  setDialogState(() => isUpdating = true);
+                  final success = await ref.read(adminContentProvider.notifier)
+                      .rejectContent(content.id); // Sets to draft
+                  if (mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(success
+                            ? 'Content unpublished - set to draft'
+                            : 'Failed to unpublish content'),
+                        backgroundColor: success ? AppColors.warning : AppColors.error,
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.warning,
+                ),
+                icon: isUpdating
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      )
+                    : const Icon(Icons.unpublished, size: 18),
+                label: Text(isUpdating ? 'Unpublishing...' : 'Unpublish'),
+              ),
+            ] else ...[
+              // Set to Draft button
+              TextButton(
+                onPressed: isUpdating ? null : () async {
+                  setDialogState(() => isUpdating = true);
+                  final success = await ref.read(adminContentProvider.notifier)
+                      .rejectContent(content.id);
+                  if (mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(success
+                            ? 'Content set to draft'
+                            : 'Failed to update content'),
+                        backgroundColor: success ? AppColors.warning : AppColors.error,
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  'Set to Draft',
+                  style: TextStyle(color: AppColors.textSecondary),
+                ),
+              ),
+              // Publish button
+              ElevatedButton.icon(
+                onPressed: isUpdating ? null : () async {
+                  setDialogState(() => isUpdating = true);
+                  final success = await ref.read(adminContentProvider.notifier)
+                      .approveContent(content.id);
+                  if (mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(success
+                            ? 'Content published successfully!'
+                            : 'Failed to publish content'),
+                        backgroundColor: success ? AppColors.success : AppColors.error,
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.success,
+                ),
+                icon: isUpdating
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      )
+                    : const Icon(Icons.publish, size: 18),
+                label: Text(isUpdating ? 'Publishing...' : 'Publish'),
+              ),
+            ],
           ],
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Approve "${content.title}" for publication?',
-              style: const TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 16),
-            _buildDetailRow('Type', content.type),
-            _buildDetailRow('Author', content.author),
-            _buildDetailRow('Status', content.status),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              final success = await ref.read(adminContentProvider.notifier)
-                  .rejectContent(content.id);
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success
-                        ? 'Content rejected - set to draft'
-                        : 'Failed to reject content'),
-                    backgroundColor: success ? AppColors.warning : AppColors.error,
-                  ),
-                );
-              }
-            },
-            child: Text(
-              'Reject',
-              style: TextStyle(color: AppColors.error),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              final success = await ref.read(adminContentProvider.notifier)
-                  .approveContent(content.id);
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success
-                        ? 'Content approved and published'
-                        : 'Failed to approve content'),
-                    backgroundColor: success ? AppColors.success : AppColors.error,
-                  ),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.success,
-            ),
-            child: const Text('Approve'),
-          ),
-        ],
       ),
     );
   }
