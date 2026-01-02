@@ -51,6 +51,13 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
       // Wait for the session to be loaded from storage first
       await _authService.waitForSessionLoad();
 
+      // Only call getCurrentUser if we have a stored session
+      if (!_authService.isAuthenticated) {
+        // No stored session - user not logged in
+        state = const AdminAuthState(isLoading: false);
+        return;
+      }
+
       final response = await _authService.getCurrentUser();
       if (response.success && response.data != null) {
         final userData = response.data!;
