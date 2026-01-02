@@ -8,7 +8,7 @@ import '../../providers/enrollments_provider.dart';
 import '../../providers/courses_provider.dart';
 
 /// My Courses Screen
-/// Displays student's enrolled courses with progress tracking
+/// Displays student's enrolled and assigned courses with progress tracking
 class MyCoursesScreen extends ConsumerStatefulWidget {
   const MyCoursesScreen({super.key});
 
@@ -16,13 +16,20 @@ class MyCoursesScreen extends ConsumerStatefulWidget {
   ConsumerState<MyCoursesScreen> createState() => _MyCoursesScreenState();
 }
 
-class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen> {
+class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
+    with SingleTickerProviderStateMixin {
   final _scrollController = ScrollController();
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _scrollController.addListener(_onScroll);
+    // Fetch assigned courses on init
+    Future.microtask(() {
+      ref.read(assignedCoursesProvider.notifier).refresh();
+    });
   }
 
   void _onScroll() {
@@ -35,6 +42,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -42,12 +50,29 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen> {
   @override
   Widget build(BuildContext context) {
     final enrollmentsState = ref.watch(enrollmentsProvider);
+    final assignedState = ref.watch(assignedCoursesProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('My Courses'),
         backgroundColor: AppColors.surface,
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: AppColors.primary,
+          unselectedLabelColor: Colors.grey,
+          indicatorColor: AppColors.primary,
+          tabs: [
+            Tab(
+              icon: const Icon(Icons.assignment),
+              text: 'Assigned (${assignedState.courses.length})',
+            ),
+            Tab(
+              icon: const Icon(Icons.school),
+              text: 'Enrolled (${enrollmentsState.enrollments.length})',
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -56,22 +81,351 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(enrollmentsProvider.notifier).refresh(),
-        child: Column(
-          children: [
-            // Active Status Filter Chip
-            if (enrollmentsState.filterStatus != null)
-              _buildActiveFilter(enrollmentsState),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          // Assigned Courses Tab
+          RefreshIndicator(
+            onRefresh: () => ref.read(assignedCoursesProvider.notifier).refresh(),
+            child: _buildAssignedCoursesList(assignedState),
+          ),
+          // Enrolled Courses Tab
+          RefreshIndicator(
+            onRefresh: () => ref.read(enrollmentsProvider.notifier).refresh(),
+            child: Column(
+              children: [
+                // Active Status Filter Chip
+                if (enrollmentsState.filterStatus != null)
+                  _buildActiveFilter(enrollmentsState),
+                // Enrollments List
+                Expanded(
+                  child: _buildEnrollmentsList(enrollmentsState),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-            // Enrollments List
-            Expanded(
-              child: _buildEnrollmentsList(enrollmentsState),
+  Widget _buildAssignedCoursesList(AssignedCoursesState state) {
+    if (state.isLoading && state.courses.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.error != null && state.courses.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
+            const SizedBox(height: 16),
+            Text(
+              state.error!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.red),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => ref.read(assignedCoursesProvider.notifier).refresh(),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (state.courses.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.assignment_outlined, size: 64, color: Colors.grey[400]),
+            const SizedBox(height: 16),
+            const Text(
+              'No assigned courses',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Courses assigned to you by your institution will appear here',
+              style: TextStyle(color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: state.courses.length,
+      itemBuilder: (context, index) {
+        final course = state.courses[index];
+        return _buildAssignedCourseCard(course);
+      },
+    );
+  }
+
+  Widget _buildAssignedCourseCard(Map<String, dynamic> course) {
+    final assignment = course['assignment'] as Map<String, dynamic>?;
+    final isRequired = assignment?['is_required'] == true;
+    final dueDate = assignment?['due_date'];
+    final progress = (assignment?['progress'] as int?) ?? 0;
+    final status = assignment?['status'] as String? ?? 'assigned';
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: () {
+          final courseId = course['id'] as String?;
+          if (courseId != null) {
+            context.push('/student/courses/$courseId');
+          }
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Thumbnail
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Container(
+                height: 120,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary.withOpacity(0.7),
+                      AppColors.primary,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    if (course['thumbnail_url'] != null)
+                      Image.network(
+                        course['thumbnail_url'] as String,
+                        height: 120,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => const SizedBox(),
+                      ),
+                    // Required badge
+                    if (isRequired)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: const Text(
+                            'REQUIRED',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    // Course type badge
+                    Positioned(
+                      top: 8,
+                      left: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          (course['course_type'] as String? ?? 'video').toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  Text(
+                    course['title'] as String? ?? 'Course',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Description
+                  if (course['description'] != null)
+                    Text(
+                      course['description'] as String,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  const SizedBox(height: 12),
+
+                  // Progress Bar
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Progress',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                      Text(
+                        '$progress%',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(
+                      value: progress / 100,
+                      backgroundColor: Colors.grey[200],
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        progress < 30 ? Colors.red : (progress < 70 ? Colors.orange : Colors.green),
+                      ),
+                      minHeight: 8,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Due date and status
+                  Row(
+                    children: [
+                      _buildAssignmentStatusBadge(status),
+                      const Spacer(),
+                      if (dueDate != null) ...[
+                        Icon(Icons.calendar_today, size: 14, color: Colors.grey[600]),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Due: ${_formatDueDate(dueDate)}',
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildAssignmentStatusBadge(String status) {
+    Color backgroundColor;
+    Color textColor;
+    IconData icon;
+    String label;
+
+    switch (status) {
+      case 'completed':
+        backgroundColor = Colors.green[50]!;
+        textColor = Colors.green[700]!;
+        icon = Icons.check_circle_outline;
+        label = 'Completed';
+        break;
+      case 'in_progress':
+        backgroundColor = Colors.blue[50]!;
+        textColor = Colors.blue[700]!;
+        icon = Icons.play_circle_outline;
+        label = 'In Progress';
+        break;
+      case 'overdue':
+        backgroundColor = Colors.red[50]!;
+        textColor = Colors.red[700]!;
+        icon = Icons.warning_outlined;
+        label = 'Overdue';
+        break;
+      case 'assigned':
+      default:
+        backgroundColor = Colors.orange[50]!;
+        textColor = Colors.orange[700]!;
+        icon = Icons.assignment_outlined;
+        label = 'Assigned';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: textColor),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDueDate(String dueDateStr) {
+    try {
+      final dueDate = DateTime.parse(dueDateStr);
+      final now = DateTime.now();
+      final difference = dueDate.difference(now);
+
+      if (difference.isNegative) {
+        return 'Overdue';
+      } else if (difference.inDays == 0) {
+        return 'Today';
+      } else if (difference.inDays == 1) {
+        return 'Tomorrow';
+      } else if (difference.inDays < 7) {
+        return '${difference.inDays} days';
+      } else {
+        return '${dueDate.day}/${dueDate.month}/${dueDate.year}';
+      }
+    } catch (e) {
+      return dueDateStr;
+    }
   }
 
   Widget _buildActiveFilter(EnrollmentsState state) {
