@@ -417,6 +417,79 @@ async def get_conversation_messages(
         )
 
 
+@router.post("/conversations/sync")
+async def sync_conversation(
+    request: dict,
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Sync conversation from client to backend
+
+    **Requires:** Authentication
+
+    **Request Body:**
+    - id: Conversation ID
+    - user_id: User ID
+    - user_name: User display name
+    - user_email: User email (optional)
+    - status: Conversation status
+    - message_count: Total message count
+    - user_message_count: User message count
+    - bot_message_count: Bot message count
+    - created_at: Creation timestamp
+    - updated_at: Last update timestamp
+    """
+    try:
+        supabase = get_supabase()
+
+        conv_id = request.get('id')
+        if not conv_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Conversation ID required"
+            )
+
+        # Check if conversation exists
+        existing = supabase.table('chatbot_conversations').select(
+            'id'
+        ).eq('id', conv_id).execute()
+
+        conv_data = {
+            'user_id': request.get('user_id') or current_user.id,
+            'user_name': request.get('user_name'),
+            'user_email': request.get('user_email'),
+            'status': request.get('status', 'active'),
+            'message_count': request.get('message_count', 0),
+            'user_message_count': request.get('user_message_count', 0),
+            'bot_message_count': request.get('bot_message_count', 0),
+            'updated_at': request.get('updated_at') or datetime.utcnow().isoformat(),
+        }
+
+        if existing.data:
+            # Update existing
+            supabase.table('chatbot_conversations').update(
+                conv_data
+            ).eq('id', conv_id).execute()
+        else:
+            # Create new
+            conv_data['id'] = conv_id
+            conv_data['created_at'] = request.get('created_at') or datetime.utcnow().isoformat()
+            supabase.table('chatbot_conversations').insert(conv_data).execute()
+
+        logger.info(f"Synced conversation {conv_id} for user {current_user.id}")
+
+        return {"success": True, "conversation_id": conv_id}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to sync conversation: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
 @router.delete("/conversations/{conversation_id}")
 async def delete_conversation(
     conversation_id: str,
@@ -658,6 +731,88 @@ def _create_escalation(supabase, conversation_id: str, reason: str, priority: Es
 # =============================================================================
 # ADMIN ENDPOINTS
 # =============================================================================
+
+@router.get("/admin/stats")
+async def get_admin_stats(
+    current_user: CurrentUser = Depends(get_current_user)
+):
+    """
+    Get chatbot statistics for admin dashboard
+
+    **Requires:** Admin authentication
+
+    **Returns:**
+    - Total conversations, active conversations, message counts, topic breakdown
+    """
+    try:
+        supabase = get_supabase()
+
+        # Verify admin role
+        user_result = supabase.table('users').select(
+            'active_role'
+        ).eq('id', current_user.id).single().execute()
+
+        if not user_result.data or user_result.data.get('active_role') not in ['superadmin', 'supportadmin', 'admin']:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Admin access required"
+            )
+
+        # Get total conversations
+        total_result = supabase.table('chatbot_conversations').select(
+            'id', count='exact'
+        ).execute()
+        total_conversations = total_result.count or 0
+
+        # Get active conversations
+        active_result = supabase.table('chatbot_conversations').select(
+            'id', count='exact'
+        ).eq('status', 'active').execute()
+        active_conversations = active_result.count or 0
+
+        # Get flagged conversations
+        flagged_result = supabase.table('chatbot_conversations').select(
+            'id', count='exact'
+        ).eq('status', 'flagged').execute()
+        flagged_conversations = flagged_result.count or 0
+
+        # Get message counts
+        user_msg_result = supabase.table('chatbot_messages').select(
+            'id', count='exact'
+        ).eq('sender', 'user').execute()
+        user_messages = user_msg_result.count or 0
+
+        bot_msg_result = supabase.table('chatbot_messages').select(
+            'id', count='exact'
+        ).eq('sender', 'bot').execute()
+        bot_messages = bot_msg_result.count or 0
+
+        total_messages = user_messages + bot_messages
+
+        # Topic counts (simplified)
+        topic_counts = {
+            "General": total_conversations,  # Placeholder - would need topic analysis
+        }
+
+        return {
+            "total_conversations": total_conversations,
+            "active_conversations": active_conversations,
+            "flagged_conversations": flagged_conversations,
+            "total_messages": total_messages,
+            "user_messages": user_messages,
+            "bot_messages": bot_messages,
+            "topic_counts": topic_counts
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get admin stats: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
 
 @router.get("/admin/queue")
 async def get_support_queue(
