@@ -1,20 +1,42 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/models/conversation.dart';
 import '../../domain/models/chat_message.dart';
+import '../../../../core/api/api_config.dart';
+import '../../../../core/services/auth_service.dart';
 
 /// Service for storing and retrieving chat conversations
+/// Uses backend API for persistence instead of direct Supabase access
 class ConversationStorageService {
   static const String _conversationsKey = 'chatbot_conversations';
   static const String _activeConversationKey = 'chatbot_active_conversation';
-  final SupabaseClient _supabase = Supabase.instance.client;
 
-  /// Save a conversation (both locally and to Supabase)
+  final AuthService? authService;
+
+  ConversationStorageService({this.authService});
+
+  String get _baseUrl => ApiConfig.baseUrl;
+
+  Map<String, String> _getHeaders() {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final token = authService?.accessToken;
+    if (token != null) {
+      headers['Authorization'] = 'Bearer $token';
+    }
+
+    return headers;
+  }
+
+  /// Save a conversation (both locally and to backend)
   Future<void> saveConversation(Conversation conversation) async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Get existing conversations
+    // Get existing conversations from local storage
     final conversations = await getAllConversations();
 
     // Update or add conversation
@@ -29,12 +51,12 @@ class ConversationStorageService {
     final jsonList = conversations.map((c) => c.toJson()).toList();
     await prefs.setString(_conversationsKey, json.encode(jsonList));
 
-    // Save to Supabase for admin tracking and cross-device sync
+    // Save to backend for admin tracking and cross-device sync
     try {
       final userMessageCount = conversation.messages.where((m) => m.sender == SenderType.user).length;
       final botMessageCount = conversation.messages.where((m) => m.sender == SenderType.bot).length;
 
-      await _supabase.from('chatbot_conversations').upsert({
+      final body = {
         'id': conversation.id,
         'user_id': conversation.userId,
         'user_name': conversation.userName,
@@ -45,27 +67,22 @@ class ConversationStorageService {
         'bot_message_count': botMessageCount,
         'created_at': conversation.startTime.toIso8601String(),
         'updated_at': conversation.lastMessageTime.toIso8601String(),
-        'messages': conversation.messages.map((m) => {
-          'id': m.id,
-          'content': m.content,
-          'sender': m.sender.toString().split('.').last,
-          'timestamp': m.timestamp.toIso8601String(),
-          'quick_actions': m.quickActions?.map((a) => {
-            'id': a.id,
-            'label': a.label,
-            'action': a.action,
-          }).toList(),
-        }).toList(),
-      }, onConflict: 'id');
+      };
 
-      print('[ConversationStorage] Successfully saved conversation to Supabase: ${conversation.id}');
+      await http.post(
+        Uri.parse('$_baseUrl/api/v1/chatbot/conversations/sync'),
+        headers: _getHeaders(),
+        body: jsonEncode(body),
+      ).timeout(const Duration(seconds: 10));
+
+      print('[ConversationStorage] Successfully synced conversation to backend: ${conversation.id}');
     } catch (e) {
-      print('[ConversationStorage] Failed to save conversation to Supabase: $e');
-      // Don't fail the entire operation if Supabase save fails
+      print('[ConversationStorage] Failed to sync conversation to backend: $e');
+      // Don't fail the entire operation if backend sync fails
     }
   }
 
-  /// Get all conversations
+  /// Get all conversations from local storage
   Future<List<Conversation>> getAllConversations() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_conversationsKey);
@@ -108,6 +125,16 @@ class ConversationStorageService {
 
     final jsonList = conversations.map((c) => c.toJson()).toList();
     await prefs.setString(_conversationsKey, json.encode(jsonList));
+
+    // Also delete from backend
+    try {
+      await http.delete(
+        Uri.parse('$_baseUrl/api/v1/chatbot/conversations/$id'),
+        headers: _getHeaders(),
+      ).timeout(const Duration(seconds: 10));
+    } catch (e) {
+      print('[ConversationStorage] Failed to delete conversation from backend: $e');
+    }
   }
 
   /// Update conversation status
@@ -139,7 +166,7 @@ class ConversationStorageService {
     await prefs.remove(_activeConversationKey);
   }
 
-  /// Get conversation statistics
+  /// Get conversation statistics from local storage
   Future<ConversationStats> getStats() async {
     final conversations = await getAllConversations();
 
@@ -219,117 +246,93 @@ class ConversationStorageService {
     await prefs.remove(_activeConversationKey);
   }
 
-  /// Get all conversations from Supabase (for admin dashboard)
-  Future<List<Conversation>> getAllConversationsFromSupabase() async {
+  /// Get all conversations from backend (for admin dashboard)
+  Future<List<Conversation>> getAllConversationsFromBackend() async {
     try {
-      final conversations = await _supabase.from('chatbot_conversations').select('*') as List<dynamic>;
+      final response = await http.get(
+        Uri.parse('$_baseUrl/api/v1/chatbot/conversations'),
+        headers: _getHeaders(),
+      ).timeout(const Duration(seconds: 30));
 
-      return conversations.map((json) {
-        try {
-          // Parse messages from JSON
-          final messagesJson = json['messages'] as List<dynamic>?;
-          final messages = <ChatMessage>[];
-          if (messagesJson != null) {
-            for (final m in messagesJson) {
-              messages.add(ChatMessage(
-                id: m['id'] as String,
-                content: m['content'] as String,
-                type: MessageType.text,
-                sender: m['sender'] == 'user' ? SenderType.user : SenderType.bot,
-                timestamp: DateTime.parse(m['timestamp'] as String),
-                quickActions: null, // Quick actions not stored in Supabase
-              ));
-            }
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final conversationsJson = data['conversations'] as List<dynamic>? ?? [];
+
+        return conversationsJson.map((json) {
+          try {
+            return _parseConversationFromBackend(json);
+          } catch (e) {
+            print('[ConversationStorage] Error parsing conversation: $e');
+            return null;
           }
+        }).whereType<Conversation>().toList();
+      }
 
-          return Conversation(
-            id: json['id'] as String,
-            userId: json['user_id'] as String,
-            userName: json['user_name'] as String,
-            startTime: DateTime.parse(json['created_at'] as String),
-            lastMessageTime: DateTime.parse(json['updated_at'] as String),
-            messages: messages,
-            status: _parseConversationStatus(json['status'] as String?),
-            messageCount: json['message_count'] as int? ?? messages.length,
-            userEmail: json['user_email'] as String?,
-          );
-        } catch (e) {
-          print('[ConversationStorage] Error parsing conversation: $e');
-          return null;
-        }
-      }).whereType<Conversation>().toList();
+      print('[ConversationStorage] Failed to fetch conversations: ${response.statusCode}');
+      return [];
     } catch (e) {
-      print('[ConversationStorage] Error fetching conversations from Supabase: $e');
+      print('[ConversationStorage] Error fetching conversations from backend: $e');
       return [];
     }
   }
 
-  /// Get conversation statistics from Supabase (for admin dashboard)
-  Future<ConversationStats> getStatsFromSupabase() async {
+  /// Parse conversation from backend response
+  Conversation _parseConversationFromBackend(Map<String, dynamic> json) {
+    final messagesJson = json['messages'] as List<dynamic>?;
+    final messages = <ChatMessage>[];
+
+    if (messagesJson != null) {
+      for (final m in messagesJson) {
+        messages.add(ChatMessage(
+          id: m['id'] as String,
+          content: m['content'] as String,
+          type: MessageType.text,
+          sender: m['sender'] == 'user' ? SenderType.user : SenderType.bot,
+          timestamp: DateTime.parse(m['created_at'] as String),
+          quickActions: null,
+        ));
+      }
+    }
+
+    return Conversation(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      userName: json['user_name'] as String? ?? 'Unknown',
+      startTime: DateTime.parse(json['created_at'] as String),
+      lastMessageTime: DateTime.parse(json['updated_at'] as String),
+      messages: messages,
+      status: _parseConversationStatus(json['status'] as String?),
+      messageCount: json['message_count'] as int? ?? messages.length,
+      userEmail: json['user_email'] as String?,
+    );
+  }
+
+  /// Get conversation statistics from backend (for admin dashboard)
+  Future<ConversationStats> getStatsFromBackend() async {
     try {
-      final conversations = await getAllConversationsFromSupabase();
+      final response = await http.get(
+        Uri.parse('$_baseUrl/api/v1/chatbot/admin/stats'),
+        headers: _getHeaders(),
+      ).timeout(const Duration(seconds: 30));
 
-      int totalMessages = 0;
-      int totalUserMessages = 0;
-      int totalBotMessages = 0;
-      final Map<String, int> topicCounts = {};
-
-      for (final conv in conversations) {
-        totalMessages += conv.messageCount;
-        final userMsgCount = conv.messages.where((m) => m.sender == SenderType.user).length;
-        final botMsgCount = conv.messages.where((m) => m.sender == SenderType.bot).length;
-        totalUserMessages += userMsgCount;
-        totalBotMessages += botMsgCount;
-
-        // Count topics (simplified - based on first user message)
-        if (conv.messages.isNotEmpty) {
-          final firstUserMsg = conv.messages
-              .firstWhere(
-                (m) => m.sender == SenderType.user,
-                orElse: () => conv.messages.first,
-              )
-              .content
-              .toLowerCase();
-
-          // Extract topic keywords
-          if (firstUserMsg.contains('price') || firstUserMsg.contains('cost')) {
-            topicCounts['Pricing'] = (topicCounts['Pricing'] ?? 0) + 1;
-          } else if (firstUserMsg.contains('feature')) {
-            topicCounts['Features'] = (topicCounts['Features'] ?? 0) + 1;
-          } else if (firstUserMsg.contains('register') || firstUserMsg.contains('sign up')) {
-            topicCounts['Registration'] = (topicCounts['Registration'] ?? 0) + 1;
-          } else if (firstUserMsg.contains('help') || firstUserMsg.contains('support')) {
-            topicCounts['Support'] = (topicCounts['Support'] ?? 0) + 1;
-          } else {
-            topicCounts['General'] = (topicCounts['General'] ?? 0) + 1;
-          }
-        }
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return ConversationStats(
+          totalConversations: data['total_conversations'] as int? ?? 0,
+          activeConversations: data['active_conversations'] as int? ?? 0,
+          totalMessages: data['total_messages'] as int? ?? 0,
+          totalUserMessages: data['user_messages'] as int? ?? 0,
+          totalBotMessages: data['bot_messages'] as int? ?? 0,
+          topicCounts: Map<String, int>.from(data['topic_counts'] ?? {}),
+          flaggedConversations: data['flagged_conversations'] as int? ?? 0,
+        );
       }
 
-      return ConversationStats(
-        totalConversations: conversations.length,
-        activeConversations: conversations
-            .where((c) => c.status == ConversationStatus.active)
-            .length,
-        totalMessages: totalMessages,
-        totalUserMessages: totalUserMessages,
-        totalBotMessages: totalBotMessages,
-        topicCounts: topicCounts,
-        flaggedConversations: conversations
-            .where((c) => c.status == ConversationStatus.flagged)
-            .length,
-      );
+      // Fallback to local stats
+      return getStats();
     } catch (e) {
-      print('[ConversationStorage] Error fetching stats from Supabase: $e');
-      return ConversationStats(
-        totalConversations: 0,
-        activeConversations: 0,
-        totalMessages: 0,
-        totalUserMessages: 0,
-        totalBotMessages: 0,
-        topicCounts: {},
-        flaggedConversations: 0,
-      );
+      print('[ConversationStorage] Error fetching stats from backend: $e');
+      return getStats();
     }
   }
 
