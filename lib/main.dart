@@ -13,6 +13,7 @@ import 'core/error/error_handling.dart';
 import 'core/api/api_config.dart';
 import 'routing/app_router.dart';
 import 'features/shared/widgets/offline_status_indicator.dart';
+import 'features/authentication/providers/auth_provider.dart';
 
 void main() async {
   // Ensure Flutter bindings are initialized
@@ -185,6 +186,7 @@ class FlowApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final appearance = ref.watch(appearanceProvider);
+    final authState = ref.watch(authProvider);
 
     return MaterialApp.router(
       title: 'Flow - African EdTech Platform',
@@ -204,6 +206,42 @@ class FlowApp extends ConsumerWidget {
       themeMode: appearance.themeMode,
       routerConfig: router,
       builder: (context, child) {
+        // Show loading screen while auth state is being determined
+        // This prevents flash of wrong content during page refresh
+        if (authState.isLoading) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 80,
+                    height: 80,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.school,
+                      size: 80,
+                      color: Color(0xFF6366F1),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF6366F1)),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading...',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
         return Stack(
           children: [
             if (child != null) child,
