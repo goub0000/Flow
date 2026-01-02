@@ -350,13 +350,15 @@ class _MessageBubbleState extends State<MessageBubble> {
   }
 
   Widget _buildAiProviderBadge(String provider) {
-    final displayName = provider == 'claude'
-        ? 'Claude'
-        : provider == 'openai'
-            ? 'GPT'
-            : provider == 'faq'
-                ? 'FAQ'
-                : provider;
+    final displayName = provider == 'gemini'
+        ? 'Gemini'
+        : provider == 'claude'
+            ? 'Claude'
+            : provider == 'openai'
+                ? 'GPT'
+                : provider == 'faq'
+                    ? 'FAQ'
+                    : provider;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),

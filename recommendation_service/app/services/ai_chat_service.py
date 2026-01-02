@@ -1,9 +1,9 @@
 """
 AI Chat Service
 ================
-Provides AI-powered chat responses with dual provider support:
-- Primary: Claude (Anthropic)
-- Fallback: OpenAI GPT
+Provides AI-powered chat responses with provider support:
+- Primary: Google Gemini (Free tier available)
+- Fallback: OpenAI GPT (if configured)
 - Final fallback: FAQ matching
 
 Features:
@@ -28,11 +28,11 @@ logger = logging.getLogger(__name__)
 
 # Try importing AI libraries
 try:
-    import anthropic
-    ANTHROPIC_AVAILABLE = True
+    import google.generativeai as genai
+    GEMINI_AVAILABLE = True
 except ImportError:
-    ANTHROPIC_AVAILABLE = False
-    logger.warning("Anthropic library not installed. Claude will not be available.")
+    GEMINI_AVAILABLE = False
+    logger.warning("Google Generative AI library not installed. Gemini will not be available.")
 
 try:
     import openai
@@ -50,7 +50,7 @@ except ImportError:
 
 
 class AIProvider(str, Enum):
-    CLAUDE = "claude"
+    GEMINI = "gemini"
     OPENAI = "openai"
     FAQ = "faq"
     NONE = "none"
@@ -71,7 +71,7 @@ class ChatResponse:
 
 
 class AIChatService:
-    """AI-powered chat service with dual provider support"""
+    """AI-powered chat service with Gemini as primary provider"""
 
     # System prompt for Flow EdTech context
     SYSTEM_PROMPT = """You are Flow Assistant, a helpful AI assistant for the Flow EdTech platform.
@@ -114,8 +114,8 @@ Current user context will be provided with each message."""
     def __init__(self):
         """Initialize AI chat service with configured providers"""
         # Load configuration from environment
-        self.claude_api_key = os.getenv("ANTHROPIC_API_KEY")
-        self.claude_model = os.getenv("CLAUDE_MODEL", "claude-3-haiku-20240307")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.openai_model = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
@@ -126,20 +126,31 @@ Current user context will be provided with each message."""
         self.context_window = int(os.getenv("AI_CONTEXT_WINDOW", "10"))
 
         # Initialize clients
-        self.claude_client = None
+        self.gemini_model_instance = None
         self.openai_client = None
 
-        if ANTHROPIC_AVAILABLE and self.claude_api_key:
-            self.claude_client = anthropic.Anthropic(api_key=self.claude_api_key)
-            logger.info("Claude client initialized")
+        if GEMINI_AVAILABLE and self.gemini_api_key:
+            try:
+                genai.configure(api_key=self.gemini_api_key)
+                self.gemini_model_instance = genai.GenerativeModel(
+                    model_name=self.gemini_model,
+                    system_instruction=self.SYSTEM_PROMPT,
+                    generation_config=genai.GenerationConfig(
+                        max_output_tokens=self.max_tokens,
+                        temperature=self.temperature,
+                    )
+                )
+                logger.info(f"Gemini client initialized with model: {self.gemini_model}")
+            except Exception as e:
+                logger.error(f"Failed to initialize Gemini: {e}")
 
         if OPENAI_AVAILABLE and self.openai_api_key:
             self.openai_client = openai.OpenAI(api_key=self.openai_api_key)
-            logger.info("OpenAI client initialized")
+            logger.info("OpenAI client initialized as fallback")
 
         # Rate limiting (in-memory, consider Redis for production)
         self.rate_limits: Dict[str, List[datetime]] = {}
-        self.rate_limit_max = int(os.getenv("CHAT_RATE_LIMIT", "30"))
+        self.rate_limit_max = int(os.getenv("CHAT_RATE_LIMIT", "15"))  # Gemini free tier: 15/min
         self.rate_limit_window = 60  # seconds
 
         # Token encoder for counting
@@ -224,86 +235,96 @@ Current user context will be provided with each message."""
         # Add recent conversation history (last N messages)
         recent_history = conversation_history[-self.context_window:] if conversation_history else []
         for msg in recent_history:
-            role = "user" if msg.get("sender") == "user" else "assistant"
+            role = "user" if msg.get("sender") == "user" else "model"
             messages.append({
                 "role": role,
-                "content": msg.get("content", "")
+                "parts": [msg.get("content", "")]
             })
 
         # Add current message
         messages.append({
             "role": "user",
-            "content": message + context_str
+            "parts": [message + context_str]
         })
 
         return messages
 
-    async def get_claude_response(
+    async def get_gemini_response(
         self,
-        messages: List[Dict[str, str]]
+        messages: List[Dict[str, Any]]
     ) -> Optional[ChatResponse]:
-        """Get response from Claude API"""
-        if not self.claude_client:
+        """Get response from Google Gemini API"""
+        if not self.gemini_model_instance:
             return None
 
         try:
-            # Convert messages to Claude format
-            claude_messages = []
-            for msg in messages:
-                claude_messages.append({
-                    "role": msg["role"],
-                    "content": msg["content"]
-                })
+            # Build chat history for Gemini
+            history = []
+            current_message = None
 
-            response = self.claude_client.messages.create(
-                model=self.claude_model,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-                system=self.SYSTEM_PROMPT,
-                messages=claude_messages
+            for msg in messages:
+                if msg == messages[-1]:
+                    # Last message is the current user message
+                    current_message = msg["parts"][0] if msg["parts"] else ""
+                else:
+                    history.append({
+                        "role": msg["role"],
+                        "parts": msg["parts"]
+                    })
+
+            # Start chat with history
+            chat = self.gemini_model_instance.start_chat(history=history)
+
+            # Send current message
+            response = await asyncio.to_thread(
+                chat.send_message,
+                current_message
             )
 
-            content = response.content[0].text
-            tokens_used = response.usage.input_tokens + response.usage.output_tokens
+            content = response.text
+
+            # Estimate tokens (Gemini doesn't always return token counts in free tier)
+            tokens_used = self.count_tokens(current_message) + self.count_tokens(content)
 
             # Estimate confidence based on response characteristics
             confidence = self._estimate_confidence(content)
 
             return ChatResponse(
                 content=content,
-                provider=AIProvider.CLAUDE,
+                provider=AIProvider.GEMINI,
                 confidence=confidence,
                 tokens_used=tokens_used,
                 quick_actions=self._extract_quick_actions(content),
-                metadata={"model": self.claude_model}
+                metadata={"model": self.gemini_model}
             )
 
-        except anthropic.RateLimitError:
-            logger.warning("Claude rate limit exceeded")
-            return None
-        except anthropic.APIError as e:
-            logger.error(f"Claude API error: {e}")
-            return None
         except Exception as e:
-            logger.error(f"Claude unexpected error: {e}", exc_info=True)
+            logger.error(f"Gemini error: {e}", exc_info=True)
             return None
 
     async def get_openai_response(
         self,
         messages: List[Dict[str, str]]
     ) -> Optional[ChatResponse]:
-        """Get response from OpenAI API"""
+        """Get response from OpenAI API (fallback)"""
         if not self.openai_client:
             return None
 
         try:
-            # Add system message
+            # Convert to OpenAI format
             openai_messages = [
                 {"role": "system", "content": self.SYSTEM_PROMPT}
             ]
-            openai_messages.extend(messages)
+            for msg in messages:
+                role = "user" if msg["role"] == "user" else "assistant"
+                content = msg["parts"][0] if isinstance(msg.get("parts"), list) else msg.get("content", "")
+                openai_messages.append({
+                    "role": role,
+                    "content": content
+                })
 
-            response = self.openai_client.chat.completions.create(
+            response = await asyncio.to_thread(
+                self.openai_client.chat.completions.create,
                 model=self.openai_model,
                 messages=openai_messages,
                 max_tokens=self.max_tokens,
@@ -387,8 +408,8 @@ Current user context will be provided with each message."""
     ) -> ChatResponse:
         """
         Get AI response with fallback chain:
-        1. Claude (primary)
-        2. OpenAI (fallback)
+        1. Gemini (primary - free tier)
+        2. OpenAI (fallback - if configured)
         3. FAQ matching (final fallback)
         """
         # Check rate limit
@@ -410,23 +431,27 @@ Current user context will be provided with each message."""
 
         response = None
 
-        # Try Claude first
-        if self.claude_client:
+        # Try Gemini first (free tier)
+        if self.gemini_model_instance:
             try:
                 response = await asyncio.wait_for(
-                    self.get_claude_response(messages),
+                    self.get_gemini_response(messages),
                     timeout=self.timeout
                 )
+                if response:
+                    logger.info("Response generated by Gemini")
             except asyncio.TimeoutError:
-                logger.warning("Claude request timed out, trying OpenAI")
+                logger.warning("Gemini request timed out, trying fallback")
 
-        # Fallback to OpenAI
+        # Fallback to OpenAI if configured
         if not response and self.openai_client:
             try:
                 response = await asyncio.wait_for(
                     self.get_openai_response(messages),
                     timeout=self.timeout
                 )
+                if response:
+                    logger.info("Response generated by OpenAI (fallback)")
             except asyncio.TimeoutError:
                 logger.warning("OpenAI request timed out")
 
@@ -482,13 +507,12 @@ Would you like me to connect you with a human agent?"""
         prompt = f"Summarize this conversation in 1-2 sentences:\n\n{content}"
 
         try:
-            if self.claude_client:
-                response = self.claude_client.messages.create(
-                    model=self.claude_model,
-                    max_tokens=100,
-                    messages=[{"role": "user", "content": prompt}]
+            if self.gemini_model_instance:
+                response = await asyncio.to_thread(
+                    self.gemini_model_instance.generate_content,
+                    prompt
                 )
-                return response.content[0].text
+                return response.text
         except Exception as e:
             logger.error(f"Failed to generate summary: {e}")
 
