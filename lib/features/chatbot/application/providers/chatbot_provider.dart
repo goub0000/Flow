@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import '../../domain/models/chat_message.dart';
 import '../../domain/models/conversation.dart';
 import '../services/chatbot_service.dart';
@@ -6,6 +7,8 @@ import '../services/conversation_storage_service.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/providers/service_providers.dart';
+
+const _uuid = Uuid();
 
 /// Chatbot state
 class ChatbotState {
@@ -442,8 +445,7 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
           ? UserRoleHelper.getRoleName(authState.user!.activeRole)
           : null;
 
-      final conversationId = state.conversationId ??
-          DateTime.now().millisecondsSinceEpoch.toString();
+      final conversationId = state.conversationId ?? _uuid.v4();
 
       final conversation = Conversation(
         id: conversationId,
