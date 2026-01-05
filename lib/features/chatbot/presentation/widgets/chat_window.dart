@@ -106,6 +106,8 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
   void _showEscalationDialog() {
     showDialog(
       context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Row(
@@ -345,6 +347,8 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
   void _showUserMenu(bool isLoggedIn, String? userName) {
     showDialog(
       context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Row(
