@@ -326,19 +326,16 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               color: Colors.white,
             ),
             onPressed: () => _showUserMenu(isLoggedIn, user?.displayName),
-            tooltip: isLoggedIn ? 'Account: ${user?.displayName ?? "User"}' : 'Sign in',
           ),
           // Talk to Human button
           if (!isEscalated)
             IconButton(
               icon: const Icon(Icons.person_add, color: Colors.white),
               onPressed: _showEscalationDialog,
-              tooltip: 'Talk to a human',
             ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: _close,
-            tooltip: 'Close chat',
           ),
         ],
       ),
