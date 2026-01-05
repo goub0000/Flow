@@ -78,22 +78,18 @@ async def send_message(
         if not conversation_id:
             # Get user details
             user_data = supabase.table('users').select(
-                'display_name, email, active_role'
+                'display_name, active_role'
             ).eq('id', current_user.id).single().execute()
 
             user_info = user_data.data if user_data.data else {}
 
+            # Note: user_email column may not exist in older schemas
             conv_data = {
                 'user_id': current_user.id,
                 'user_name': user_info.get('display_name'),
-                'user_email': user_info.get('email'),
-                'user_role': user_info.get('active_role'),
                 'status': 'active',
                 'context': request.context or {},
                 'message_count': 0,
-                'user_message_count': 0,
-                'bot_message_count': 0,
-                'agent_message_count': 0,
             }
 
             conv_result = supabase.table('chatbot_conversations').insert(conv_data).execute()
@@ -428,7 +424,7 @@ async def sync_conversation(
     **Requires:** Authentication
 
     **Request Body:**
-    - id: Conversation ID
+    - id: Conversation ID (will be converted to UUID if not valid)
     - user_id: User ID
     - user_name: User display name
     - user_email: User email (optional)
@@ -449,19 +445,27 @@ async def sync_conversation(
                 detail="Conversation ID required"
             )
 
+        # Validate/convert conversation ID to UUID format
+        try:
+            # Try to parse as UUID to validate
+            uuid.UUID(conv_id)
+        except (ValueError, AttributeError):
+            # Not a valid UUID - generate a new one
+            # This handles timestamp-based IDs from client
+            logger.info(f"Converting non-UUID conversation ID: {conv_id}")
+            conv_id = str(uuid.uuid4())
+
         # Check if conversation exists
         existing = supabase.table('chatbot_conversations').select(
             'id'
         ).eq('id', conv_id).execute()
 
+        # Build conv_data without user_email (column may not exist)
         conv_data = {
-            'user_id': request.get('user_id') or current_user.id,
+            'user_id': current_user.id,  # Always use authenticated user
             'user_name': request.get('user_name'),
-            'user_email': request.get('user_email'),
             'status': request.get('status', 'active'),
             'message_count': request.get('message_count', 0),
-            'user_message_count': request.get('user_message_count', 0),
-            'bot_message_count': request.get('bot_message_count', 0),
             'updated_at': request.get('updated_at') or datetime.utcnow().isoformat(),
         }
 
