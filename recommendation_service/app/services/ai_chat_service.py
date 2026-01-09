@@ -115,8 +115,8 @@ Current user context will be provided with each message."""
         """Initialize AI chat service with configured providers"""
         # Load configuration from environment
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-        # Use gemini-2.0-flash as default (widely available), fallback to gemini-pro
-        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        # Use gemini-2.5-flash as default (best availability and performance)
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.openai_model = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
@@ -134,9 +134,9 @@ Current user context will be provided with each message."""
             # Try multiple model names in order of preference
             model_options = [
                 self.gemini_model,
+                "gemini-2.5-flash",
+                "gemini-2.0-flash-exp",
                 "gemini-2.0-flash",
-                "gemini-1.5-flash-latest",
-                "gemini-pro",
             ]
             genai.configure(api_key=self.gemini_api_key)
 
