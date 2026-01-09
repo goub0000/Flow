@@ -20,16 +20,53 @@ class AnalyticsReport {
   });
 }
 
+/// Activity item model
+class ActivityItem {
+  final String id;
+  final DateTime timestamp;
+  final String? userName;
+  final String? userRole;
+  final String actionType;
+  final String description;
+  final Map<String, dynamic>? metadata;
+
+  const ActivityItem({
+    required this.id,
+    required this.timestamp,
+    this.userName,
+    this.userRole,
+    required this.actionType,
+    required this.description,
+    this.metadata,
+  });
+
+  factory ActivityItem.fromJson(Map<String, dynamic> json) {
+    return ActivityItem(
+      id: json['id'] ?? '',
+      timestamp: json['timestamp'] != null
+          ? DateTime.parse(json['timestamp'])
+          : DateTime.now(),
+      userName: json['user_name'],
+      userRole: json['user_role'],
+      actionType: json['action_type'] ?? 'unknown',
+      description: json['description'] ?? '',
+      metadata: json['metadata'],
+    );
+  }
+}
+
 /// State class for admin analytics
 class AdminAnalyticsState {
   final Map<String, dynamic> metrics;
   final List<AnalyticsReport> reports;
+  final List<ActivityItem> recentActivity;
   final bool isLoading;
   final String? error;
 
   const AdminAnalyticsState({
     this.metrics = const {},
     this.reports = const [],
+    this.recentActivity = const [],
     this.isLoading = false,
     this.error,
   });
@@ -37,12 +74,14 @@ class AdminAnalyticsState {
   AdminAnalyticsState copyWith({
     Map<String, dynamic>? metrics,
     List<AnalyticsReport>? reports,
+    List<ActivityItem>? recentActivity,
     bool? isLoading,
     String? error,
   }) {
     return AdminAnalyticsState(
       metrics: metrics ?? this.metrics,
       reports: reports ?? this.reports,
+      recentActivity: recentActivity ?? this.recentActivity,
       isLoading: isLoading ?? this.isLoading,
       error: error,
     );
@@ -210,9 +249,36 @@ class AdminAnalyticsNotifier extends StateNotifier<AdminAnalyticsState> {
     });
   }
 
+  /// Fetch recent activity from backend
+  Future<List<ActivityItem>> fetchRecentActivity({int limit = 10}) async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/dashboard/recent-activity?limit=$limit',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        final activities = (response.data!['activities'] as List<dynamic>?)
+            ?.map((item) => ActivityItem.fromJson(item as Map<String, dynamic>))
+            .toList() ?? [];
+
+        state = state.copyWith(recentActivity: activities);
+        return activities;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      // Return empty list on error, don't update error state for this
+      return [];
+    }
+  }
+
   /// Refresh analytics
   Future<void> refresh() async {
-    await fetchAnalytics();
+    await Future.wait([
+      fetchAnalytics(),
+      fetchRecentActivity(),
+    ]);
   }
 }
 
@@ -244,4 +310,10 @@ final adminAnalyticsLoadingProvider = Provider<bool>((ref) {
 final adminAnalyticsErrorProvider = Provider<String?>((ref) {
   final analyticsState = ref.watch(adminAnalyticsProvider);
   return analyticsState.error;
+});
+
+/// Provider for recent activity
+final adminRecentActivityProvider = Provider<List<ActivityItem>>((ref) {
+  final analyticsState = ref.watch(adminAnalyticsProvider);
+  return analyticsState.recentActivity;
 });

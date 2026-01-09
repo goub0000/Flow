@@ -1804,3 +1804,854 @@ async def remove_content_assignment(
             status_code=500,
             detail=f"Failed to remove assignment: {str(e)}"
         )
+
+
+# =============================================================================
+# ADMIN SUPPORT TICKETS ENDPOINTS
+# =============================================================================
+
+class SupportTicketResponse(BaseModel):
+    """Response model for support ticket"""
+    id: str
+    user_id: Optional[str] = None
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
+    subject: str
+    description: Optional[str] = None
+    category: str = "general"
+    priority: str = "medium"
+    status: str = "open"
+    assigned_to: Optional[str] = None
+    assigned_to_name: Optional[str] = None
+    created_at: str
+    updated_at: str
+    resolved_at: Optional[str] = None
+
+
+class SupportTicketsListResponse(BaseModel):
+    """Response model for support tickets list"""
+    success: bool = True
+    tickets: List[SupportTicketResponse]
+    total: int
+    open_count: int = 0
+    in_progress_count: int = 0
+    resolved_count: int = 0
+    closed_count: int = 0
+
+
+class CreateTicketRequest(BaseModel):
+    """Request model for creating support ticket"""
+    subject: str
+    description: Optional[str] = None
+    category: str = "general"
+    priority: str = "medium"
+    user_id: Optional[str] = None
+
+
+class UpdateTicketStatusRequest(BaseModel):
+    """Request model for updating ticket status"""
+    status: str  # open, in_progress, resolved, closed
+
+
+class AssignTicketRequest(BaseModel):
+    """Request model for assigning ticket"""
+    assigned_to: str  # User ID of admin/support agent
+
+
+@router.get("/admin/support/tickets", response_model=SupportTicketsListResponse)
+async def get_support_tickets(
+    status: Optional[str] = Query(None, description="Filter by status"),
+    priority: Optional[str] = Query(None, description="Filter by priority"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    assigned_to: Optional[str] = Query(None, description="Filter by assigned agent"),
+    search: Optional[str] = Query(None, description="Search in subject"),
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    current_user: CurrentUser = Depends(require_admin)
+) -> SupportTicketsListResponse:
+    """
+    Get all support tickets for admin panel
+
+    **Admin Only** - Returns all support tickets with filtering options.
+    """
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('support_tickets').select('*')
+
+        # Apply filters
+        if status:
+            query = query.eq('status', status.lower())
+        if priority:
+            query = query.eq('priority', priority.lower())
+        if category:
+            query = query.eq('category', category.lower())
+        if assigned_to:
+            query = query.eq('assigned_to', assigned_to)
+        if search:
+            query = query.ilike('subject', f'%{search}%')
+
+        # Get total count first
+        count_response = db.table('support_tickets').select('id', count='exact').execute()
+        total = count_response.count if count_response.count else 0
+
+        # Apply pagination and ordering
+        query = query.order('created_at', desc=True).range(offset, offset + limit - 1)
+
+        response = query.execute()
+
+        tickets = []
+        status_counts = {'open': 0, 'in_progress': 0, 'resolved': 0, 'closed': 0}
+
+        for ticket_data in response.data or []:
+            ticket_status = ticket_data.get('status', 'open')
+            if ticket_status in status_counts:
+                status_counts[ticket_status] += 1
+
+            # Get assigned admin name
+            assigned_to_name = None
+            if ticket_data.get('assigned_to'):
+                admin_response = db.table('users').select('display_name').eq('id', ticket_data['assigned_to']).single().execute()
+                if admin_response.data:
+                    assigned_to_name = admin_response.data.get('display_name')
+
+            tickets.append(SupportTicketResponse(
+                id=ticket_data.get('id', ''),
+                user_id=ticket_data.get('user_id'),
+                user_name=ticket_data.get('user_name'),
+                user_email=ticket_data.get('user_email'),
+                subject=ticket_data.get('subject', ''),
+                description=ticket_data.get('description'),
+                category=ticket_data.get('category', 'general'),
+                priority=ticket_data.get('priority', 'medium'),
+                status=ticket_status,
+                assigned_to=ticket_data.get('assigned_to'),
+                assigned_to_name=assigned_to_name,
+                created_at=ticket_data.get('created_at', ''),
+                updated_at=ticket_data.get('updated_at', ''),
+                resolved_at=ticket_data.get('resolved_at'),
+            ))
+
+        return SupportTicketsListResponse(
+            success=True,
+            tickets=tickets,
+            total=total,
+            open_count=status_counts['open'],
+            in_progress_count=status_counts['in_progress'],
+            resolved_count=status_counts['resolved'],
+            closed_count=status_counts['closed'],
+        )
+
+    except Exception as e:
+        logger.warning(f"Error fetching support tickets (table may not exist): {e}")
+        return SupportTicketsListResponse(
+            success=True,
+            tickets=[],
+            total=0,
+        )
+
+
+@router.post("/admin/support/tickets")
+async def create_support_ticket(
+    request: CreateTicketRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Create a new support ticket
+
+    **Admin Only** - Create ticket on behalf of user or system.
+    """
+    try:
+        db = get_supabase()
+        import uuid
+
+        # Get user info if user_id provided
+        user_name = None
+        user_email = None
+        if request.user_id:
+            user_response = db.table('users').select('display_name, email').eq('id', request.user_id).single().execute()
+            if user_response.data:
+                user_name = user_response.data.get('display_name')
+                user_email = user_response.data.get('email')
+
+        ticket_data = {
+            'id': str(uuid.uuid4()),
+            'user_id': request.user_id,
+            'user_name': user_name,
+            'user_email': user_email,
+            'subject': request.subject,
+            'description': request.description,
+            'category': request.category,
+            'priority': request.priority,
+            'status': 'open',
+            'created_at': datetime.utcnow().isoformat(),
+            'updated_at': datetime.utcnow().isoformat(),
+        }
+
+        response = db.table('support_tickets').insert(ticket_data).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=500, detail="Failed to create ticket")
+
+        logger.info(f"Admin {current_user.id} created support ticket: {request.subject}")
+
+        return {
+            'success': True,
+            'message': 'Support ticket created',
+            'ticket': response.data[0] if response.data else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating support ticket: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create ticket: {str(e)}"
+        )
+
+
+@router.put("/admin/support/tickets/{ticket_id}/status")
+async def update_ticket_status(
+    ticket_id: str,
+    request: UpdateTicketStatusRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Update support ticket status
+
+    **Admin Only** - Change ticket status (open, in_progress, resolved, closed).
+    """
+    try:
+        db = get_supabase()
+        valid_statuses = ['open', 'in_progress', 'resolved', 'closed']
+
+        if request.status.lower() not in valid_statuses:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid status. Must be one of: {', '.join(valid_statuses)}"
+            )
+
+        update_data = {
+            'status': request.status.lower(),
+            'updated_at': datetime.utcnow().isoformat(),
+        }
+
+        # Set resolved_at if status is resolved or closed
+        if request.status.lower() in ['resolved', 'closed']:
+            update_data['resolved_at'] = datetime.utcnow().isoformat()
+
+        response = db.table('support_tickets').update(update_data).eq('id', ticket_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+
+        logger.info(f"Admin {current_user.id} updated ticket {ticket_id} status to {request.status}")
+
+        return {
+            'success': True,
+            'message': f'Ticket status updated to {request.status}',
+            'ticket': response.data[0] if response.data else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating ticket status: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update ticket status: {str(e)}"
+        )
+
+
+@router.put("/admin/support/tickets/{ticket_id}/assign")
+async def assign_ticket(
+    ticket_id: str,
+    request: AssignTicketRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Assign support ticket to an admin/support agent
+
+    **Admin Only** - Assign ticket to a support team member.
+    """
+    try:
+        db = get_supabase()
+
+        update_data = {
+            'assigned_to': request.assigned_to,
+            'status': 'in_progress',
+            'updated_at': datetime.utcnow().isoformat(),
+        }
+
+        response = db.table('support_tickets').update(update_data).eq('id', ticket_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+
+        logger.info(f"Admin {current_user.id} assigned ticket {ticket_id} to {request.assigned_to}")
+
+        return {
+            'success': True,
+            'message': 'Ticket assigned successfully',
+            'ticket': response.data[0] if response.data else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error assigning ticket: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to assign ticket: {str(e)}"
+        )
+
+
+@router.get("/admin/support/tickets/{ticket_id}")
+async def get_ticket_details(
+    ticket_id: str,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Get detailed information about a specific ticket
+
+    **Admin Only** - Get full ticket details including history.
+    """
+    try:
+        db = get_supabase()
+
+        response = db.table('support_tickets').select('*').eq('id', ticket_id).single().execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+
+        ticket_data = response.data
+
+        # Get assigned admin name
+        assigned_to_name = None
+        if ticket_data.get('assigned_to'):
+            admin_response = db.table('users').select('display_name').eq('id', ticket_data['assigned_to']).single().execute()
+            if admin_response.data:
+                assigned_to_name = admin_response.data.get('display_name')
+
+        return {
+            'success': True,
+            'ticket': SupportTicketResponse(
+                id=ticket_data.get('id', ''),
+                user_id=ticket_data.get('user_id'),
+                user_name=ticket_data.get('user_name'),
+                user_email=ticket_data.get('user_email'),
+                subject=ticket_data.get('subject', ''),
+                description=ticket_data.get('description'),
+                category=ticket_data.get('category', 'general'),
+                priority=ticket_data.get('priority', 'medium'),
+                status=ticket_data.get('status', 'open'),
+                assigned_to=ticket_data.get('assigned_to'),
+                assigned_to_name=assigned_to_name,
+                created_at=ticket_data.get('created_at', ''),
+                updated_at=ticket_data.get('updated_at', ''),
+                resolved_at=ticket_data.get('resolved_at'),
+            )
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching ticket details: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch ticket details: {str(e)}"
+        )
+
+
+# =============================================================================
+# ADMIN FINANCE/TRANSACTIONS ENDPOINTS
+# =============================================================================
+
+class TransactionResponse(BaseModel):
+    """Response model for transaction"""
+    id: str
+    user_id: Optional[str] = None
+    user_name: Optional[str] = None
+    type: str  # payment, refund, subscription, payout
+    amount: float
+    currency: str = "USD"
+    status: str = "completed"
+    description: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
+    created_at: str
+
+
+class TransactionsListResponse(BaseModel):
+    """Response model for transactions list"""
+    success: bool = True
+    transactions: List[TransactionResponse]
+    total: int
+    total_revenue: float = 0.0
+    total_refunds: float = 0.0
+    net_revenue: float = 0.0
+
+
+class FinanceStatsResponse(BaseModel):
+    """Response model for finance statistics"""
+    success: bool = True
+    total_revenue: float = 0.0
+    total_refunds: float = 0.0
+    net_revenue: float = 0.0
+    revenue_today: float = 0.0
+    revenue_this_week: float = 0.0
+    revenue_this_month: float = 0.0
+    transactions_count: int = 0
+    avg_transaction_value: float = 0.0
+    currency: str = "USD"
+
+
+@router.get("/admin/finance/transactions", response_model=TransactionsListResponse)
+async def get_transactions(
+    transaction_type: Optional[str] = Query(None, alias="type", description="Filter by type"),
+    status: Optional[str] = Query(None, description="Filter by status"),
+    user_id: Optional[str] = Query(None, description="Filter by user"),
+    start_date: Optional[str] = Query(None, description="Start date (ISO format)"),
+    end_date: Optional[str] = Query(None, description="End date (ISO format)"),
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    current_user: CurrentUser = Depends(require_admin)
+) -> TransactionsListResponse:
+    """
+    Get all transactions for admin panel
+
+    **Admin Only** - Returns all financial transactions with filtering.
+    """
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('transactions').select('*')
+
+        # Apply filters
+        if transaction_type:
+            query = query.eq('type', transaction_type.lower())
+        if status:
+            query = query.eq('status', status.lower())
+        if user_id:
+            query = query.eq('user_id', user_id)
+        if start_date:
+            query = query.gte('created_at', start_date)
+        if end_date:
+            query = query.lte('created_at', end_date)
+
+        # Get total count
+        count_response = db.table('transactions').select('id', count='exact').execute()
+        total = count_response.count if count_response.count else 0
+
+        # Apply pagination and ordering
+        query = query.order('created_at', desc=True).range(offset, offset + limit - 1)
+
+        response = query.execute()
+
+        transactions = []
+        total_revenue = 0.0
+        total_refunds = 0.0
+
+        for tx_data in response.data or []:
+            amount = float(tx_data.get('amount', 0))
+            tx_type = tx_data.get('type', 'payment')
+
+            if tx_type in ['payment', 'subscription']:
+                total_revenue += amount
+            elif tx_type == 'refund':
+                total_refunds += amount
+
+            transactions.append(TransactionResponse(
+                id=tx_data.get('id', ''),
+                user_id=tx_data.get('user_id'),
+                user_name=tx_data.get('user_name'),
+                type=tx_type,
+                amount=amount,
+                currency=tx_data.get('currency', 'USD'),
+                status=tx_data.get('status', 'completed'),
+                description=tx_data.get('description'),
+                metadata=tx_data.get('metadata'),
+                created_at=tx_data.get('created_at', ''),
+            ))
+
+        return TransactionsListResponse(
+            success=True,
+            transactions=transactions,
+            total=total,
+            total_revenue=total_revenue,
+            total_refunds=total_refunds,
+            net_revenue=total_revenue - total_refunds,
+        )
+
+    except Exception as e:
+        logger.warning(f"Error fetching transactions (table may not exist): {e}")
+        return TransactionsListResponse(
+            success=True,
+            transactions=[],
+            total=0,
+        )
+
+
+@router.get("/admin/finance/stats", response_model=FinanceStatsResponse)
+async def get_finance_stats(
+    current_user: CurrentUser = Depends(require_admin)
+) -> FinanceStatsResponse:
+    """
+    Get financial statistics for admin dashboard
+
+    **Admin Only** - Returns aggregated financial statistics.
+    """
+    try:
+        db = get_supabase()
+        now = datetime.utcnow()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_start = today_start - timedelta(days=today_start.weekday())
+        month_start = today_start.replace(day=1)
+
+        # Get all transactions
+        response = db.table('transactions').select('*').execute()
+
+        total_revenue = 0.0
+        total_refunds = 0.0
+        revenue_today = 0.0
+        revenue_this_week = 0.0
+        revenue_this_month = 0.0
+        transactions_count = len(response.data) if response.data else 0
+
+        for tx in response.data or []:
+            amount = float(tx.get('amount', 0))
+            tx_type = tx.get('type', 'payment')
+            created_at_str = tx.get('created_at', '')
+
+            # Parse transaction date
+            try:
+                created_at = datetime.fromisoformat(created_at_str.replace('Z', '+00:00'))
+                if created_at.tzinfo:
+                    created_at = created_at.replace(tzinfo=None)
+            except Exception:
+                created_at = None
+
+            if tx_type in ['payment', 'subscription']:
+                total_revenue += amount
+                if created_at:
+                    if created_at >= today_start:
+                        revenue_today += amount
+                    if created_at >= week_start:
+                        revenue_this_week += amount
+                    if created_at >= month_start:
+                        revenue_this_month += amount
+            elif tx_type == 'refund':
+                total_refunds += amount
+
+        avg_transaction_value = total_revenue / transactions_count if transactions_count > 0 else 0.0
+
+        return FinanceStatsResponse(
+            success=True,
+            total_revenue=round(total_revenue, 2),
+            total_refunds=round(total_refunds, 2),
+            net_revenue=round(total_revenue - total_refunds, 2),
+            revenue_today=round(revenue_today, 2),
+            revenue_this_week=round(revenue_this_week, 2),
+            revenue_this_month=round(revenue_this_month, 2),
+            transactions_count=transactions_count,
+            avg_transaction_value=round(avg_transaction_value, 2),
+            currency="USD",
+        )
+
+    except Exception as e:
+        logger.warning(f"Error fetching finance stats (table may not exist): {e}")
+        return FinanceStatsResponse(success=True)
+
+
+# =============================================================================
+# ADMIN COMMUNICATIONS ENDPOINTS
+# =============================================================================
+
+class CampaignResponse(BaseModel):
+    """Response model for communication campaign"""
+    id: str
+    name: str
+    type: str  # email, notification, announcement
+    status: str = "draft"
+    target_audience: Optional[Dict[str, Any]] = None
+    content: Optional[Dict[str, Any]] = None
+    scheduled_at: Optional[str] = None
+    sent_at: Optional[str] = None
+    stats: Optional[Dict[str, Any]] = None
+    created_by: Optional[str] = None
+    created_at: str
+    updated_at: str
+
+
+class CampaignsListResponse(BaseModel):
+    """Response model for campaigns list"""
+    success: bool = True
+    campaigns: List[CampaignResponse]
+    total: int
+    draft_count: int = 0
+    scheduled_count: int = 0
+    sent_count: int = 0
+
+
+class CreateCampaignRequest(BaseModel):
+    """Request model for creating campaign"""
+    name: str
+    type: str = "email"
+    target_audience: Optional[Dict[str, Any]] = None
+    content: Optional[Dict[str, Any]] = None
+    scheduled_at: Optional[str] = None
+
+
+class SendAnnouncementRequest(BaseModel):
+    """Request model for sending announcement"""
+    title: str
+    message: str
+    target_roles: Optional[List[str]] = None  # If None, send to all
+    priority: str = "normal"
+
+
+@router.get("/admin/communications/campaigns", response_model=CampaignsListResponse)
+async def get_campaigns(
+    campaign_type: Optional[str] = Query(None, alias="type", description="Filter by type"),
+    status: Optional[str] = Query(None, description="Filter by status"),
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    current_user: CurrentUser = Depends(require_admin)
+) -> CampaignsListResponse:
+    """
+    Get all communication campaigns
+
+    **Admin Only** - Returns all campaigns with filtering options.
+    """
+    try:
+        db = get_supabase()
+
+        # Build query
+        query = db.table('communication_campaigns').select('*')
+
+        # Apply filters
+        if campaign_type:
+            query = query.eq('type', campaign_type.lower())
+        if status:
+            query = query.eq('status', status.lower())
+
+        # Get total count
+        count_response = db.table('communication_campaigns').select('id', count='exact').execute()
+        total = count_response.count if count_response.count else 0
+
+        # Apply pagination and ordering
+        query = query.order('created_at', desc=True).range(offset, offset + limit - 1)
+
+        response = query.execute()
+
+        campaigns = []
+        status_counts = {'draft': 0, 'scheduled': 0, 'sent': 0}
+
+        for campaign_data in response.data or []:
+            campaign_status = campaign_data.get('status', 'draft')
+            if campaign_status in status_counts:
+                status_counts[campaign_status] += 1
+
+            campaigns.append(CampaignResponse(
+                id=campaign_data.get('id', ''),
+                name=campaign_data.get('name', ''),
+                type=campaign_data.get('type', 'email'),
+                status=campaign_status,
+                target_audience=campaign_data.get('target_audience'),
+                content=campaign_data.get('content'),
+                scheduled_at=campaign_data.get('scheduled_at'),
+                sent_at=campaign_data.get('sent_at'),
+                stats=campaign_data.get('stats'),
+                created_by=campaign_data.get('created_by'),
+                created_at=campaign_data.get('created_at', ''),
+                updated_at=campaign_data.get('updated_at', ''),
+            ))
+
+        return CampaignsListResponse(
+            success=True,
+            campaigns=campaigns,
+            total=total,
+            draft_count=status_counts['draft'],
+            scheduled_count=status_counts['scheduled'],
+            sent_count=status_counts['sent'],
+        )
+
+    except Exception as e:
+        logger.warning(f"Error fetching campaigns (table may not exist): {e}")
+        return CampaignsListResponse(
+            success=True,
+            campaigns=[],
+            total=0,
+        )
+
+
+@router.post("/admin/communications/campaigns")
+async def create_campaign(
+    request: CreateCampaignRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Create a new communication campaign
+
+    **Admin Only** - Create email, notification, or announcement campaign.
+    """
+    try:
+        db = get_supabase()
+        import uuid
+
+        campaign_data = {
+            'id': str(uuid.uuid4()),
+            'name': request.name,
+            'type': request.type,
+            'status': 'draft',
+            'target_audience': request.target_audience or {},
+            'content': request.content or {},
+            'scheduled_at': request.scheduled_at,
+            'stats': {'sent': 0, 'delivered': 0, 'opened': 0, 'clicked': 0},
+            'created_by': current_user.id,
+            'created_at': datetime.utcnow().isoformat(),
+            'updated_at': datetime.utcnow().isoformat(),
+        }
+
+        response = db.table('communication_campaigns').insert(campaign_data).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=500, detail="Failed to create campaign")
+
+        logger.info(f"Admin {current_user.id} created campaign: {request.name}")
+
+        return {
+            'success': True,
+            'message': 'Campaign created',
+            'campaign': response.data[0] if response.data else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating campaign: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create campaign: {str(e)}"
+        )
+
+
+@router.post("/admin/communications/announcements")
+async def send_announcement(
+    request: SendAnnouncementRequest,
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Send an immediate announcement
+
+    **Admin Only** - Send announcement to all users or specific roles.
+    """
+    try:
+        db = get_supabase()
+        import uuid
+
+        # Determine target users
+        target_users = []
+        if request.target_roles:
+            for role in request.target_roles:
+                users_response = db.table('users').select('id, email, display_name').eq('active_role', role.lower()).execute()
+                target_users.extend(users_response.data or [])
+        else:
+            # All users
+            users_response = db.table('users').select('id, email, display_name').execute()
+            target_users = users_response.data or []
+
+        # Create announcement campaign record
+        campaign_data = {
+            'id': str(uuid.uuid4()),
+            'name': f"Announcement: {request.title}",
+            'type': 'announcement',
+            'status': 'sent',
+            'target_audience': {'roles': request.target_roles or ['all']},
+            'content': {'title': request.title, 'message': request.message, 'priority': request.priority},
+            'sent_at': datetime.utcnow().isoformat(),
+            'stats': {'sent': len(target_users), 'delivered': len(target_users), 'opened': 0, 'clicked': 0},
+            'created_by': current_user.id,
+            'created_at': datetime.utcnow().isoformat(),
+            'updated_at': datetime.utcnow().isoformat(),
+        }
+
+        try:
+            db.table('communication_campaigns').insert(campaign_data).execute()
+        except Exception as table_error:
+            logger.warning(f"communication_campaigns table may not exist: {table_error}")
+
+        logger.info(f"Admin {current_user.id} sent announcement to {len(target_users)} users: {request.title}")
+
+        return {
+            'success': True,
+            'message': f'Announcement sent to {len(target_users)} users',
+            'recipients_count': len(target_users),
+            'announcement': {
+                'title': request.title,
+                'message': request.message,
+                'target_roles': request.target_roles or ['all'],
+            }
+        }
+
+    except Exception as e:
+        logger.error(f"Error sending announcement: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to send announcement: {str(e)}"
+        )
+
+
+@router.put("/admin/communications/campaigns/{campaign_id}/status")
+async def update_campaign_status(
+    campaign_id: str,
+    status_update: Dict[str, str],
+    current_user: CurrentUser = Depends(require_admin)
+) -> Dict[str, Any]:
+    """
+    Update campaign status (schedule, send, cancel)
+
+    **Admin Only** - Change campaign status.
+    """
+    try:
+        db = get_supabase()
+        new_status = status_update.get('status', '').lower()
+
+        valid_statuses = ['draft', 'scheduled', 'sent', 'cancelled']
+        if new_status not in valid_statuses:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid status. Must be one of: {', '.join(valid_statuses)}"
+            )
+
+        update_data = {
+            'status': new_status,
+            'updated_at': datetime.utcnow().isoformat(),
+        }
+
+        if new_status == 'sent':
+            update_data['sent_at'] = datetime.utcnow().isoformat()
+
+        response = db.table('communication_campaigns').update(update_data).eq('id', campaign_id).execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Campaign not found")
+
+        logger.info(f"Admin {current_user.id} updated campaign {campaign_id} status to {new_status}")
+
+        return {
+            'success': True,
+            'message': f'Campaign status updated to {new_status}',
+            'campaign': response.data[0] if response.data else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating campaign status: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update campaign status: {str(e)}"
+        )

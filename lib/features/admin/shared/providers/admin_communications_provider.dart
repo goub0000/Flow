@@ -97,19 +97,40 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
     try {
       final response = await _apiClient.get(
         '${ApiConfig.admin}/communications/campaigns',
-        fromJson: (data) {
-          if (data is List) {
-            // Backend might not have Campaign model, so we'll return empty for now
-            // This endpoint may need to be implemented in the backend
-            return <Campaign>[];
-          }
-          return <Campaign>[];
-        },
+        fromJson: (data) => data as Map<String, dynamic>,
       );
 
-      if (response.success) {
+      if (response.success && response.data != null) {
+        final campaignsData = response.data!['campaigns'] as List<dynamic>? ?? [];
+        final campaigns = campaignsData.map((campaignData) {
+          final contentData = campaignData['content'] as Map<String, dynamic>? ?? {};
+          final targetAudience = campaignData['target_audience'] as Map<String, dynamic>? ?? {};
+          final statsData = campaignData['stats'] as Map<String, dynamic>? ?? {};
+
+          return Campaign(
+            id: campaignData['id'] ?? '',
+            title: campaignData['name'] ?? contentData['title'] ?? '',
+            type: campaignData['type'] ?? 'email',
+            status: campaignData['status'] ?? 'draft',
+            message: contentData['message'] ?? contentData['body'],
+            targetRoles: (targetAudience['roles'] as List<dynamic>?)?.cast<String>() ?? [],
+            scheduledAt: campaignData['scheduled_at'] != null
+                ? DateTime.parse(campaignData['scheduled_at'])
+                : null,
+            sentAt: campaignData['sent_at'] != null
+                ? DateTime.parse(campaignData['sent_at'])
+                : null,
+            recipientCount: statsData['sent'] as int? ?? 0,
+            deliveredCount: statsData['delivered'] as int? ?? 0,
+            openedCount: statsData['opened'] as int? ?? 0,
+            createdAt: campaignData['created_at'] != null
+                ? DateTime.parse(campaignData['created_at'])
+                : DateTime.now(),
+          );
+        }).toList();
+
         state = state.copyWith(
-          campaigns: response.data ?? [],
+          campaigns: campaigns,
           isLoading: false,
         );
       } else {
@@ -126,17 +147,34 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
     }
   }
 
-  /// Create campaign
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Create campaign via backend API
   Future<bool> createCampaign(Campaign campaign) async {
     try {
-      // TODO: Save to Firebase
-      await Future.delayed(const Duration(milliseconds: 500));
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/communications/campaigns',
+        data: {
+          'name': campaign.title,
+          'type': campaign.type,
+          'target_audience': {'roles': campaign.targetRoles},
+          'content': {
+            'title': campaign.title,
+            'message': campaign.message,
+          },
+          'scheduled_at': campaign.scheduledAt?.toIso8601String(),
+        },
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
 
-      final updatedCampaigns = [campaign, ...state.campaigns];
-      state = state.copyWith(campaigns: updatedCampaigns);
-
-      return true;
+      if (response.success) {
+        // Refresh campaigns to get the new one from backend
+        await fetchCampaigns();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to create campaign',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to create campaign: ${e.toString()}',

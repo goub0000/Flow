@@ -1,10 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
-
-const _uuid = Uuid();
 
 /// Support ticket model
 class SupportTicket {
@@ -101,18 +98,35 @@ class AdminSupportNotifier extends StateNotifier<AdminSupportState> {
     try {
       final response = await _apiClient.get(
         '${ApiConfig.admin}/support/tickets',
-        fromJson: (data) {
-          if (data is List) {
-            // Backend may not have full ticket implementation yet
-            return <SupportTicket>[];
-          }
-          return <SupportTicket>[];
-        },
+        fromJson: (data) => data as Map<String, dynamic>,
       );
 
-      if (response.success) {
+      if (response.success && response.data != null) {
+        final ticketsData = response.data!['tickets'] as List<dynamic>? ?? [];
+        final tickets = ticketsData.map((ticketData) {
+          return SupportTicket(
+            id: ticketData['id'] ?? '',
+            userId: ticketData['user_id'] ?? '',
+            userName: ticketData['user_name'] ?? 'Unknown User',
+            userRole: 'user',
+            subject: ticketData['subject'] ?? '',
+            description: ticketData['description'] ?? '',
+            category: ticketData['category'] ?? 'general',
+            priority: ticketData['priority'] ?? 'medium',
+            status: ticketData['status'] ?? 'open',
+            assignedTo: ticketData['assigned_to_name'] ?? ticketData['assigned_to'],
+            messages: [],
+            createdAt: ticketData['created_at'] != null
+                ? DateTime.parse(ticketData['created_at'])
+                : DateTime.now(),
+            resolvedAt: ticketData['resolved_at'] != null
+                ? DateTime.parse(ticketData['resolved_at'])
+                : null,
+          );
+        }).toList();
+
         state = state.copyWith(
-          tickets: response.data ?? [],
+          tickets: tickets,
           isLoading: false,
         );
       } else {
@@ -129,39 +143,48 @@ class AdminSupportNotifier extends StateNotifier<AdminSupportState> {
     }
   }
 
-  /// Update ticket status
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// Update ticket status via backend API
   Future<bool> updateTicketStatus(String ticketId, String newStatus) async {
     try {
-      // TODO: Update in Firebase
-      await Future.delayed(const Duration(milliseconds: 300));
+      final response = await _apiClient.put(
+        '${ApiConfig.admin}/support/tickets/$ticketId/status',
+        data: {'status': newStatus},
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
 
-      final updatedTickets = state.tickets.map((ticket) {
-        if (ticket.id == ticketId) {
-          return SupportTicket(
-            id: ticket.id,
-            userId: ticket.userId,
-            userName: ticket.userName,
-            userRole: ticket.userRole,
-            subject: ticket.subject,
-            description: ticket.description,
-            category: ticket.category,
-            priority: ticket.priority,
-            status: newStatus,
-            assignedTo: ticket.assignedTo,
-            messages: ticket.messages,
-            createdAt: ticket.createdAt,
-            resolvedAt: newStatus == 'resolved' || newStatus == 'closed'
-                ? DateTime.now()
-                : ticket.resolvedAt,
-          );
-        }
-        return ticket;
-      }).toList();
+      if (response.success) {
+        // Update local state
+        final updatedTickets = state.tickets.map((ticket) {
+          if (ticket.id == ticketId) {
+            return SupportTicket(
+              id: ticket.id,
+              userId: ticket.userId,
+              userName: ticket.userName,
+              userRole: ticket.userRole,
+              subject: ticket.subject,
+              description: ticket.description,
+              category: ticket.category,
+              priority: ticket.priority,
+              status: newStatus,
+              assignedTo: ticket.assignedTo,
+              messages: ticket.messages,
+              createdAt: ticket.createdAt,
+              resolvedAt: newStatus == 'resolved' || newStatus == 'closed'
+                  ? DateTime.now()
+                  : ticket.resolvedAt,
+            );
+          }
+          return ticket;
+        }).toList();
 
-      state = state.copyWith(tickets: updatedTickets);
-
-      return true;
+        state = state.copyWith(tickets: updatedTickets);
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to update ticket status',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update ticket status: ${e.toString()}',
@@ -170,37 +193,25 @@ class AdminSupportNotifier extends StateNotifier<AdminSupportState> {
     }
   }
 
-  /// Assign ticket to admin
-  /// TODO: Connect to backend API (Firebase Firestore)
-  Future<bool> assignTicket(String ticketId, String adminName) async {
+  /// Assign ticket to admin via backend API
+  Future<bool> assignTicket(String ticketId, String adminId) async {
     try {
-      // TODO: Update in Firebase
-      await Future.delayed(const Duration(milliseconds: 300));
+      final response = await _apiClient.put(
+        '${ApiConfig.admin}/support/tickets/$ticketId/assign',
+        data: {'assigned_to': adminId},
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
 
-      final updatedTickets = state.tickets.map((ticket) {
-        if (ticket.id == ticketId) {
-          return SupportTicket(
-            id: ticket.id,
-            userId: ticket.userId,
-            userName: ticket.userName,
-            userRole: ticket.userRole,
-            subject: ticket.subject,
-            description: ticket.description,
-            category: ticket.category,
-            priority: ticket.priority,
-            status: 'in_progress',
-            assignedTo: adminName,
-            messages: ticket.messages,
-            createdAt: ticket.createdAt,
-            resolvedAt: ticket.resolvedAt,
-          );
-        }
-        return ticket;
-      }).toList();
-
-      state = state.copyWith(tickets: updatedTickets);
-
-      return true;
+      if (response.success) {
+        // Refresh tickets to get updated assignment info
+        await fetchTickets();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to assign ticket',
+        );
+        return false;
+      }
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to assign ticket: ${e.toString()}',

@@ -415,14 +415,85 @@ class _KPICard extends StatelessWidget {
   }
 }
 
-class _ActivityCard extends StatelessWidget {
+class _ActivityCard extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<_ActivityCard> createState() => _ActivityCardState();
+}
+
+class _ActivityCardState extends ConsumerState<_ActivityCard> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadActivity();
+  }
+
+  Future<void> _loadActivity() async {
+    setState(() => _isLoading = true);
+    await ref.read(adminAnalyticsProvider.notifier).fetchRecentActivity(limit: 10);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  IconData _getActionIcon(String actionType) {
+    switch (actionType.toLowerCase()) {
+      case 'user_registered':
+      case 'user_created':
+        return Icons.person_add;
+      case 'user_login':
+        return Icons.login;
+      case 'user_logout':
+        return Icons.logout;
+      case 'application_submitted':
+        return Icons.send;
+      case 'application_updated':
+        return Icons.edit_document;
+      case 'course_created':
+      case 'program_created':
+        return Icons.add_circle;
+      case 'course_updated':
+      case 'program_updated':
+        return Icons.edit;
+      case 'message_sent':
+        return Icons.message;
+      default:
+        return Icons.info_outline;
+    }
+  }
+
+  Color _getActionColor(String actionType) {
+    switch (actionType.toLowerCase()) {
+      case 'user_registered':
+      case 'user_created':
+        return AppColors.success;
+      case 'user_login':
+        return AppColors.info;
+      case 'application_submitted':
+        return AppColors.primary;
+      case 'course_created':
+      case 'program_created':
+        return AppColors.accent;
+      default:
+        return AppColors.textSecondary;
+    }
+  }
+
+  String _formatTime(DateTime timestamp) {
+    final now = DateTime.now();
+    final diff = now.difference(timestamp);
+
+    if (diff.inMinutes < 1) return 'Just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch recent activity from backend
-    // - API endpoint: GET /api/admin/dashboard/recent-activity
-    // - Load last 10 activities from audit log
-    // - Include: user registrations, logins, content updates, transactions
-    // - Group by timestamp and filter by admin's regional scope
+    final activities = ref.watch(adminRecentActivityProvider);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -434,35 +505,133 @@ class _ActivityCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Recent Activity',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Recent Activity',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (_isLoading)
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.refresh, size: 20),
+                  onPressed: _loadActivity,
+                  tooltip: 'Refresh',
+                ),
+            ],
           ),
           const SizedBox(height: 16),
-          // Empty state - waiting for backend data
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.history,
-                    size: 48,
-                    color: AppColors.textSecondary.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'No recent activity',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
+          if (_isLoading && activities.isEmpty)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: CircularProgressIndicator(),
               ),
+            )
+          else if (activities.isEmpty)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.history,
+                      size: 48,
+                      color: AppColors.textSecondary.withValues(alpha: 0.5),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'No recent activity',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            ...activities.take(8).map((activity) => _ActivityItem(
+              icon: _getActionIcon(activity.actionType),
+              color: _getActionColor(activity.actionType),
+              title: activity.description,
+              subtitle: activity.userName ?? 'System',
+              time: _formatTime(activity.timestamp),
+            )),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActivityItem extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String subtitle;
+  final String time;
+
+  const _ActivityItem({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.subtitle,
+    required this.time,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, size: 16, color: color),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontSize: 13),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            time,
+            style: TextStyle(
+              fontSize: 11,
+              color: AppColors.textSecondary,
             ),
           ),
         ],

@@ -113,18 +113,36 @@ class AdminFinanceNotifier extends StateNotifier<AdminFinanceState> {
     try {
       final response = await _apiClient.get(
         '${ApiConfig.admin}/finance/transactions',
-        fromJson: (data) {
-          if (data is List) {
-            // Backend may not have full transaction data yet
-            return <Transaction>[];
-          }
-          return <Transaction>[];
-        },
+        fromJson: (data) => data as Map<String, dynamic>,
       );
 
-      if (response.success) {
-        final transactions = response.data ?? [];
-        final stats = _calculateStatistics(transactions);
+      if (response.success && response.data != null) {
+        final transactionsData = response.data!['transactions'] as List<dynamic>? ?? [];
+        final transactions = transactionsData.map((txnData) {
+          return Transaction(
+            id: txnData['id'] ?? '',
+            userId: txnData['user_id'] ?? '',
+            userName: txnData['user_name'] ?? 'Unknown User',
+            type: txnData['type'] ?? 'payment',
+            amount: (txnData['amount'] as num?)?.toDouble() ?? 0.0,
+            currency: txnData['currency'] ?? 'USD',
+            status: txnData['status'] ?? 'completed',
+            itemType: null,
+            itemName: txnData['description'],
+            createdAt: txnData['created_at'] != null
+                ? DateTime.parse(txnData['created_at'])
+                : DateTime.now(),
+            metadata: txnData['metadata'] as Map<String, dynamic>?,
+          );
+        }).toList();
+
+        // Use backend statistics if available
+        final stats = {
+          'totalRevenue': response.data!['total_revenue'] ?? _calculateStatistics(transactions)['totalRevenue'],
+          'totalRefunds': response.data!['total_refunds'] ?? _calculateStatistics(transactions)['totalRefunds'],
+          'netRevenue': response.data!['net_revenue'] ?? _calculateStatistics(transactions)['netRevenue'],
+          ..._calculateStatistics(transactions),
+        };
 
         state = state.copyWith(
           transactions: transactions,
@@ -142,6 +160,35 @@ class AdminFinanceNotifier extends StateNotifier<AdminFinanceState> {
         error: 'Failed to fetch transactions: ${e.toString()}',
         isLoading: false,
       );
+    }
+  }
+
+  /// Fetch finance statistics from backend
+  Future<void> fetchStatistics() async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/finance/stats',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        final statsData = response.data!;
+        state = state.copyWith(
+          statistics: {
+            'totalRevenue': statsData['total_revenue'] ?? 0.0,
+            'totalRefunds': statsData['total_refunds'] ?? 0.0,
+            'netRevenue': statsData['net_revenue'] ?? 0.0,
+            'revenueToday': statsData['revenue_today'] ?? 0.0,
+            'revenueThisWeek': statsData['revenue_this_week'] ?? 0.0,
+            'revenueThisMonth': statsData['revenue_this_month'] ?? 0.0,
+            'totalTransactions': statsData['transactions_count'] ?? 0,
+            'avgTransactionValue': statsData['avg_transaction_value'] ?? 0.0,
+          },
+        );
+      }
+    } catch (e) {
+      // Statistics fetch failed, but transactions may still work
+      print('Failed to fetch finance stats: $e');
     }
   }
 
