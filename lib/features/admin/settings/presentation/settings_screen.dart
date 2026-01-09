@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/providers/admin_auth_provider.dart';
 
 /// Settings Screen - Admin configuration and preferences
@@ -32,10 +32,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final adminUser = ref.watch(currentAdminUserProvider);
 
-    return AdminShell(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
+    // Content is wrapped by AdminShell via ShellRoute
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
@@ -76,7 +76,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ],
         ),
-      ),
     );
   }
 

@@ -7,7 +7,7 @@ import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/utils/validators.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 
 /// Admin Form Screen - Create admin accounts
@@ -316,10 +316,10 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           _buildBreadcrumb(),
           Expanded(
             child: SingleChildScrollView(
@@ -488,7 +488,6 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/utils/debouncer.dart';
 import '../../shared/widgets/export_dialog.dart';
@@ -33,10 +33,10 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           // Header
           Padding(
             padding: const EdgeInsets.all(24),
@@ -105,7 +105,6 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
           ),
           const SizedBox(height: 24),
         ],
-      ),
     );
   }
 

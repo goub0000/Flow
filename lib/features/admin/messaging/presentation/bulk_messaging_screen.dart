@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../models/bulk_message_model.dart';
 
 /// Bulk Messaging Screen - Send messages to multiple users
@@ -32,10 +32,10 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    // Content is wrapped by AdminShell via ShellRoute
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           // Main Content - Message Composer
           Expanded(
             flex: 2,
@@ -72,7 +72,6 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 

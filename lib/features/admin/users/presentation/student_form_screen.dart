@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 
 /// Student Form Screen - Create or edit student accounts
@@ -118,10 +118,10 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
   Widget build(BuildContext context) {
     final isEditMode = widget.studentId != null;
 
-    return AdminShell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           // Breadcrumb Navigation
           _buildBreadcrumb(isEditMode),
           const SizedBox(height: 24),
@@ -357,7 +357,6 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 

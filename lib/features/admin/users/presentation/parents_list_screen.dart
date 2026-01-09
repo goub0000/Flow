@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/widgets/export_dialog.dart';
@@ -54,9 +54,8 @@ class _ParentsListScreenState extends ConsumerState<ParentsListScreen> {
     // - Filter by regional scope for Regional Admins
     // - Include: profile data, linked children count
 
-    return AdminShell(
-      child: _buildContent(),
-    );
+    // Content is wrapped by AdminShell via ShellRoute
+    return _buildContent();
   }
 
   Widget _buildContent() {

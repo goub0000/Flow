@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
-import 'admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Placeholder screen for admin features not yet implemented
 class AdminPlaceholderScreen extends StatelessWidget {
@@ -17,9 +17,9 @@ class AdminPlaceholderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Center(
-        child: Container(
+    // Content is wrapped by AdminShell via ShellRoute
+    return Center(
+      child: Container(
           padding: const EdgeInsets.all(48),
           constraints: const BoxConstraints(maxWidth: 600),
           child: Column(
@@ -55,7 +55,6 @@ class AdminPlaceholderScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }

@@ -6,7 +6,7 @@ import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/models/admin_user_model.dart';
 import '../../../../core/models/user_model.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/widgets/export_dialog.dart';
@@ -59,9 +59,8 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
     // - Include: profile data, role, permissions, last login, created date
     // IMPORTANT: Backend should also filter based on hierarchy - lower admins should not see higher admins
 
-    return AdminShell(
-      child: _buildContent(),
-    );
+    // Content is wrapped by AdminShell via ShellRoute
+    return _buildContent();
   }
 
   Widget _buildContent() {

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../shared/widgets/logo_avatar.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_users_provider.dart';
 
@@ -54,12 +54,12 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
       orElse: () => parents.first,
     );
 
-    return AdminShell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Breadcrumb Navigation
-          _buildBreadcrumb(),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Breadcrumb Navigation
+        _buildBreadcrumb(),
           const SizedBox(height: 24),
 
           // Main Content
@@ -94,7 +94,6 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
             ),
           ),
         ],
-      ),
     );
   }
 

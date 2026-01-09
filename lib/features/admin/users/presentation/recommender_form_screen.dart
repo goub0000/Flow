@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 
 /// Recommender Form Screen - Create or edit recommender accounts
@@ -101,10 +101,10 @@ class _RecommenderFormScreenState extends ConsumerState<RecommenderFormScreen> {
   Widget build(BuildContext context) {
     final isEditMode = widget.recommenderId != null;
 
-    return AdminShell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           _buildBreadcrumb(),
           const SizedBox(height: 24),
           Expanded(
@@ -302,7 +302,6 @@ class _RecommenderFormScreenState extends ConsumerState<RecommenderFormScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 

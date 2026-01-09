@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../shared/widgets/logo_avatar.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/providers/admin_users_provider.dart';
 
 /// Student Detail Screen - Comprehensive view of student profile
@@ -52,12 +52,12 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
       orElse: () => users.first, // Fallback to first user if not found
     );
 
-    return AdminShell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Breadcrumb
-          _buildBreadcrumb(),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Breadcrumb
+        _buildBreadcrumb(),
           const SizedBox(height: 24),
 
           // Main content
@@ -80,7 +80,6 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
             ),
           ),
         ],
-      ),
     );
   }
 
