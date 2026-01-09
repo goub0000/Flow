@@ -84,21 +84,21 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
   }
 
   void _handleQuickAction(String action) {
-    // Handle navigation actions
+    // Handle navigation actions - hide chat immediately and navigate
     if (action == 'navigate_register') {
-      _close();
+      ref.read(chatbotVisibleProvider.notifier).state = false;
       context.go('/register');
       return;
     }
     if (action == 'navigate_login') {
       // Set flag to reopen chat after login
       ref.read(chatbotPendingReopenProvider.notifier).state = true;
-      _close();
+      ref.read(chatbotVisibleProvider.notifier).state = false;
       context.go('/login');
       return;
     }
     if (action == 'view_profile') {
-      _close();
+      ref.read(chatbotVisibleProvider.notifier).state = false;
       context.go('/profile');
       return;
     }
@@ -314,9 +314,11 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               if (!isLoggedIn)
                 ElevatedButton.icon(
                   onPressed: () {
+                    // Close dialog and navigate immediately
                     setState(() => _showUserMenuInline = false);
                     ref.read(chatbotPendingReopenProvider.notifier).state = true;
-                    _close();
+                    // Hide chat immediately (no animation) and navigate
+                    ref.read(chatbotVisibleProvider.notifier).state = false;
                     context.go('/login');
                   },
                   icon: const Icon(Icons.login, size: 18),
@@ -329,8 +331,10 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               if (isLoggedIn)
                 ElevatedButton.icon(
                   onPressed: () {
+                    // Close dialog and navigate immediately
                     setState(() => _showUserMenuInline = false);
-                    _close();
+                    // Hide chat immediately (no animation) and navigate
+                    ref.read(chatbotVisibleProvider.notifier).state = false;
                     context.go('/profile');
                   },
                   icon: const Icon(Icons.person, size: 18),
