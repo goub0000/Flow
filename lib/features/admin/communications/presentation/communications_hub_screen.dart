@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../shared/widgets/admin_shell.dart';
-import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
+import '../../shared/providers/admin_communications_provider.dart';
 
 /// Communications Hub Screen - Manage platform communications
-///
-/// Features:
-/// - Send announcements to users
-/// - Create and send email campaigns
-/// - Send SMS messages
-/// - Manage push notifications
-/// - Message templates
-/// - Campaign analytics
-/// - Scheduled messages
-/// - Audience segmentation
 class CommunicationsHubScreen extends ConsumerStatefulWidget {
   const CommunicationsHubScreen({super.key});
 
@@ -29,6 +20,7 @@ class _CommunicationsHubScreenState
     extends ConsumerState<CommunicationsHubScreen> {
   String _selectedTab = 'campaigns';
   final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   void dispose() {
@@ -38,11 +30,6 @@ class _CommunicationsHubScreenState
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch communications data from backend
-    // - API endpoint: GET /api/admin/communications
-    // - Support filtering by status, type, date
-    // - Include campaign metrics and analytics
-
     return AdminShell(
       child: _buildContent(),
     );
@@ -105,25 +92,20 @@ class _CommunicationsHubScreenState
           ),
           Row(
             children: [
-              // Templates button
-              PermissionGuard(
-                permission: AdminPermission.manageTemplates,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Navigate to templates screen
-                  },
-                  icon: const Icon(Icons.text_snippet, size: 20),
-                  label: const Text('Templates'),
-                ),
+              // Refresh button
+              IconButton(
+                onPressed: () {
+                  ref.read(adminCommunicationsProvider.notifier).fetchCampaigns();
+                },
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Refresh',
               ),
               const SizedBox(width: 12),
               // Create campaign button
               PermissionGuard(
                 permission: AdminPermission.sendAnnouncements,
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    _showCreateCampaignDialog();
-                  },
+                  onPressed: () => _showCreateCampaignDialog(),
                   icon: const Icon(Icons.add, size: 20),
                   label: const Text('New Campaign'),
                 ),
@@ -141,12 +123,10 @@ class _CommunicationsHubScreenState
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          _buildTab('campaigns', 'Campaigns', Icons.campaign),
+          _buildTab('campaigns', 'All Campaigns', Icons.campaign),
           _buildTab('announcements', 'Announcements', Icons.announcement),
           _buildTab('emails', 'Emails', Icons.email),
-          _buildTab('sms', 'SMS', Icons.sms),
           _buildTab('push', 'Push Notifications', Icons.notifications),
-          _buildTab('scheduled', 'Scheduled', Icons.schedule),
         ],
       ),
     );
@@ -194,77 +174,41 @@ class _CommunicationsHubScreenState
   }
 
   Widget _buildTabContent() {
-    switch (_selectedTab) {
-      case 'campaigns':
-        return _buildCampaignsTab();
-      case 'announcements':
-        return _buildAnnouncementsTab();
-      case 'emails':
-        return _buildEmailsTab();
-      case 'sms':
-        return _buildSMSTab();
-      case 'push':
-        return _buildPushNotificationsTab();
-      case 'scheduled':
-        return _buildScheduledTab();
-      default:
-        return _buildCampaignsTab();
-    }
-  }
+    final commsState = ref.watch(adminCommunicationsProvider);
+    final campaigns = commsState.campaigns;
+    final isLoading = commsState.isLoading;
+    final error = commsState.error;
 
-  Widget _buildCampaignsTab() {
+    // Filter campaigns based on selected tab
+    List<Campaign> filteredCampaigns;
+    switch (_selectedTab) {
+      case 'announcements':
+        filteredCampaigns = campaigns.where((c) => c.type == 'in_app' || c.type == 'announcement').toList();
+        break;
+      case 'emails':
+        filteredCampaigns = campaigns.where((c) => c.type == 'email').toList();
+        break;
+      case 'push':
+        filteredCampaigns = campaigns.where((c) => c.type == 'push').toList();
+        break;
+      default:
+        filteredCampaigns = campaigns;
+    }
+
+    // Apply search filter
+    if (_searchQuery.isNotEmpty) {
+      filteredCampaigns = filteredCampaigns
+          .where((c) => c.title.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+
     return Column(
       children: [
         // Stats Cards
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildStatCard(
-                  'Total Campaigns',
-                  '0',
-                  'All campaigns',
-                  Icons.campaign,
-                  AppColors.primary,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildStatCard(
-                  'Active',
-                  '0',
-                  'Running now',
-                  Icons.play_circle,
-                  AppColors.success,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildStatCard(
-                  'Scheduled',
-                  '0',
-                  'Pending delivery',
-                  Icons.schedule,
-                  AppColors.warning,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildStatCard(
-                  'Completed',
-                  '0',
-                  'Successfully sent',
-                  Icons.check_circle,
-                  AppColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
+        _buildStatsRow(campaigns),
         const SizedBox(height: 24),
 
-        // Search and Filters
+        // Search
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextField(
@@ -280,349 +224,71 @@ class _CommunicationsHubScreenState
                 vertical: 12,
               ),
             ),
+            onChanged: (value) {
+              setState(() => _searchQuery = value);
+            },
           ),
         ),
         const SizedBox(height: 16),
 
-        // Campaigns Data Table
+        // Campaign List
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: _buildCampaignsTable(),
-            ),
-          ),
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : error != null
+                  ? _buildErrorState(error)
+                  : filteredCampaigns.isEmpty
+                      ? _buildEmptyState()
+                      : _buildCampaignsList(filteredCampaigns),
         ),
       ],
     );
   }
 
-  Widget _buildCampaignsTable() {
-    // TODO: Replace with actual data from backend
-    final List<CampaignRowData> campaigns = [];
+  Widget _buildStatsRow(List<Campaign> campaigns) {
+    final stats = ref.read(adminCommunicationsProvider.notifier).getCampaignStatistics();
 
-    return AdminDataTable<CampaignRowData>(
-      columns: [
-        DataTableColumn(
-          label: 'Campaign Name',
-          cellBuilder: (campaign) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                campaign.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                campaign.description,
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 11,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-          sortable: true,
-        ),
-        DataTableColumn(
-          label: 'Type',
-          cellBuilder: (campaign) => _buildTypeChip(campaign.type),
-        ),
-        DataTableColumn(
-          label: 'Audience',
-          cellBuilder: (campaign) => Text(
-            campaign.audience,
-            style: const TextStyle(fontSize: 13),
-          ),
-        ),
-        DataTableColumn(
-          label: 'Recipients',
-          cellBuilder: (campaign) => Text(
-            campaign.recipients.toString(),
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        DataTableColumn(
-          label: 'Sent/Delivered',
-          cellBuilder: (campaign) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '${campaign.sent} / ${campaign.delivered}',
-                style: const TextStyle(fontSize: 13),
-              ),
-              Text(
-                '${campaign.deliveryRate}% delivery',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 11,
-                ),
-              ),
-            ],
-          ),
-        ),
-        DataTableColumn(
-          label: 'Status',
-          cellBuilder: (campaign) => _buildStatusChip(campaign.status),
-        ),
-        DataTableColumn(
-          label: 'Scheduled',
-          cellBuilder: (campaign) => Text(
-            campaign.scheduledDate,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          sortable: true,
-        ),
-      ],
-      data: campaigns,
-      isLoading: false,
-      enableSelection: true,
-      onSelectionChanged: (selectedItems) {
-        // TODO: Handle bulk actions
-      },
-      onRowTap: (campaign) {
-        _showCampaignDetails(campaign);
-      },
-      rowActions: [
-        DataTableAction(
-          icon: Icons.visibility,
-          tooltip: 'View Details',
-          onPressed: (campaign) {
-            _showCampaignDetails(campaign);
-          },
-        ),
-        DataTableAction(
-          icon: Icons.edit,
-          tooltip: 'Edit Campaign',
-          onPressed: (campaign) {
-            // TODO: Edit campaign
-          },
-        ),
-        DataTableAction(
-          icon: Icons.delete,
-          tooltip: 'Delete',
-          color: AppColors.error,
-          onPressed: (campaign) {
-            // TODO: Delete campaign
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAnnouncementsTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
         children: [
-          Icon(
-            Icons.announcement,
-            size: 64,
-            color: AppColors.textSecondary.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Announcements',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+          Expanded(
+            child: _buildStatCard(
+              'Total Campaigns',
+              '${stats['total'] ?? 0}',
+              'All campaigns',
+              Icons.campaign,
+              AppColors.primary,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Send platform-wide announcements to users',
-            style: TextStyle(
-              color: AppColors.textSecondary.withValues(alpha: 0.6),
-              fontSize: 14,
+          const SizedBox(width: 16),
+          Expanded(
+            child: _buildStatCard(
+              'Draft',
+              '${stats['draft'] ?? 0}',
+              'Not sent yet',
+              Icons.edit_note,
+              AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 24),
-          PermissionGuard(
-            permission: AdminPermission.sendAnnouncements,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Create announcement
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Create Announcement'),
+          const SizedBox(width: 16),
+          Expanded(
+            child: _buildStatCard(
+              'Scheduled',
+              '${stats['scheduled'] ?? 0}',
+              'Pending delivery',
+              Icons.schedule,
+              AppColors.warning,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmailsTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.email,
-            size: 64,
-            color: AppColors.textSecondary.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Email Campaigns',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Create and manage email campaigns',
-            style: TextStyle(
-              color: AppColors.textSecondary.withValues(alpha: 0.6),
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 24),
-          PermissionGuard(
-            permission: AdminPermission.sendEmailCampaigns,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Create email campaign
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('New Email Campaign'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSMSTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.sms,
-            size: 64,
-            color: AppColors.textSecondary.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'SMS Messages',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Send SMS notifications to users',
-            style: TextStyle(
-              color: AppColors.textSecondary.withValues(alpha: 0.6),
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 24),
-          PermissionGuard(
-            permission: AdminPermission.sendSMS,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Create SMS campaign
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Send SMS'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPushNotificationsTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.notifications,
-            size: 64,
-            color: AppColors.textSecondary.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Push Notifications',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Send push notifications to mobile apps',
-            style: TextStyle(
-              color: AppColors.textSecondary.withValues(alpha: 0.6),
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 24),
-          PermissionGuard(
-            permission: AdminPermission.managePushNotifications,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Create push notification
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Send Push Notification'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildScheduledTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.schedule,
-            size: 64,
-            color: AppColors.textSecondary.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Scheduled Messages',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'View and manage scheduled communications',
-            style: TextStyle(
-              color: AppColors.textSecondary.withValues(alpha: 0.6),
-              fontSize: 14,
+          const SizedBox(width: 16),
+          Expanded(
+            child: _buildStatCard(
+              'Sent',
+              '${stats['sent'] ?? 0}',
+              'Successfully sent',
+              Icons.check_circle,
+              AppColors.success,
             ),
           ),
         ],
@@ -682,195 +348,509 @@ class _CommunicationsHubScreenState
     );
   }
 
-  Widget _buildTypeChip(String type) {
-    Color color;
-    IconData icon;
-
-    switch (type.toLowerCase()) {
-      case 'email':
-        color = AppColors.primary;
-        icon = Icons.email;
-        break;
-      case 'sms':
-        color = AppColors.success;
-        icon = Icons.sms;
-        break;
-      case 'push':
-        color = AppColors.warning;
-        icon = Icons.notifications;
-        break;
-      case 'announcement':
-        color = AppColors.error;
-        icon = Icons.announcement;
-        break;
-      default:
-        color = AppColors.textSecondary;
-        icon = Icons.campaign;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(4),
+  Widget _buildCampaignsList(List<Campaign> campaigns) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: ListView.builder(
+        itemCount: campaigns.length,
+        itemBuilder: (context, index) {
+          final campaign = campaigns[index];
+          return _buildCampaignCard(campaign);
+        },
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
-          Text(
-            type,
-            style: TextStyle(
-              color: color,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+    );
+  }
+
+  Widget _buildCampaignCard(Campaign campaign) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: AppColors.border),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            // Type Icon
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: _getTypeColor(campaign.type).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                _getTypeIcon(campaign.type),
+                color: _getTypeColor(campaign.type),
+                size: 24,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            // Campaign Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    campaign.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      _buildStatusChip(campaign.status),
+                      const SizedBox(width: 8),
+                      Text(
+                        _formatDate(campaign.createdAt),
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (campaign.message != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      campaign.message!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Stats
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '${campaign.recipientCount ?? 0} recipients',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${campaign.deliveredCount ?? 0} delivered',
+                  style: TextStyle(
+                    color: AppColors.success,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            // Actions
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (action) => _handleCampaignAction(action, campaign),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'view',
+                  child: Row(
+                    children: [
+                      Icon(Icons.visibility, size: 18),
+                      SizedBox(width: 8),
+                      Text('View Details'),
+                    ],
+                  ),
+                ),
+                if (campaign.status == 'draft') ...[
+                  const PopupMenuItem(
+                    value: 'send',
+                    child: Row(
+                      children: [
+                        Icon(Icons.send, size: 18),
+                        SizedBox(width: 8),
+                        Text('Send Now'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'schedule',
+                    child: Row(
+                      children: [
+                        Icon(Icons.schedule, size: 18),
+                        SizedBox(width: 8),
+                        Text('Schedule'),
+                      ],
+                    ),
+                  ),
+                ],
+                const PopupMenuItem(
+                  value: 'duplicate',
+                  child: Row(
+                    children: [
+                      Icon(Icons.copy, size: 18),
+                      SizedBox(width: 8),
+                      Text('Duplicate'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete, size: 18, color: AppColors.error),
+                      const SizedBox(width: 8),
+                      Text('Delete', style: TextStyle(color: AppColors.error)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildStatusChip(String status) {
     Color color;
-    String label;
-
     switch (status.toLowerCase()) {
-      case 'active':
       case 'sent':
         color = AppColors.success;
-        label = status;
         break;
       case 'scheduled':
         color = AppColors.warning;
-        label = status;
         break;
       case 'draft':
         color = AppColors.textSecondary;
-        label = status;
         break;
       case 'failed':
         color = AppColors.error;
-        label = status;
         break;
       default:
         color = AppColors.textSecondary;
-        label = status;
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        label,
+        status.toUpperCase(),
         style: TextStyle(
           color: color,
-          fontSize: 12,
+          fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
 
-  void _showCreateCampaignDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(Icons.campaign, color: AppColors.primary),
-            const SizedBox(width: 12),
-            const Text('Create New Campaign'),
-          ],
-        ),
-        content: SizedBox(
-          width: 500,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Select campaign type:'),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(Icons.email),
-                title: const Text('Email Campaign'),
-                subtitle: const Text('Send emails to users'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Navigate to email campaign creation
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.sms),
-                title: const Text('SMS Campaign'),
-                subtitle: const Text('Send SMS messages'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Navigate to SMS campaign creation
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.notifications),
-                title: const Text('Push Notification'),
-                subtitle: const Text('Send mobile push notifications'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Navigate to push notification creation
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.announcement),
-                title: const Text('Platform Announcement'),
-                subtitle: const Text('In-app announcement'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Navigate to announcement creation
-                },
-              ),
-            ],
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.campaign_outlined,
+            size: 64,
+            color: AppColors.textSecondary.withValues(alpha: 0.3),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+          const SizedBox(height: 16),
+          Text(
+            'No campaigns yet',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Create your first campaign to engage with users',
+            style: TextStyle(
+              color: AppColors.textSecondary.withValues(alpha: 0.6),
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: () => _showCreateCampaignDialog(),
+            icon: const Icon(Icons.add),
+            label: const Text('Create Campaign'),
           ),
         ],
       ),
     );
   }
 
-  void _showCampaignDetails(CampaignRowData campaign) {
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, size: 64, color: AppColors.error),
+          const SizedBox(height: 16),
+          Text(
+            'Failed to load campaigns',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.error,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            error,
+            style: TextStyle(color: AppColors.textSecondary),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: () {
+              ref.read(adminCommunicationsProvider.notifier).fetchCampaigns();
+            },
+            icon: const Icon(Icons.refresh),
+            label: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getTypeIcon(String type) {
+    switch (type.toLowerCase()) {
+      case 'email':
+        return Icons.email;
+      case 'sms':
+        return Icons.sms;
+      case 'push':
+        return Icons.notifications;
+      case 'in_app':
+      case 'announcement':
+        return Icons.announcement;
+      default:
+        return Icons.campaign;
+    }
+  }
+
+  Color _getTypeColor(String type) {
+    switch (type.toLowerCase()) {
+      case 'email':
+        return AppColors.primary;
+      case 'sms':
+        return AppColors.success;
+      case 'push':
+        return AppColors.warning;
+      case 'in_app':
+      case 'announcement':
+        return AppColors.error;
+      default:
+        return AppColors.textSecondary;
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('MMM d, yyyy').format(date);
+  }
+
+  void _handleCampaignAction(String action, Campaign campaign) async {
+    switch (action) {
+      case 'view':
+        _showCampaignDetails(campaign);
+        break;
+      case 'send':
+        final confirmed = await _showConfirmDialog(
+          'Send Campaign',
+          'Are you sure you want to send "${campaign.title}" now?',
+        );
+        if (confirmed && mounted) {
+          // Update status to sent via API
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Sending campaign...')),
+          );
+          ref.read(adminCommunicationsProvider.notifier).fetchCampaigns();
+        }
+        break;
+      case 'schedule':
+        _showScheduleDialog(campaign);
+        break;
+      case 'duplicate':
+        _showCreateCampaignDialog(duplicateFrom: campaign);
+        break;
+      case 'delete':
+        final confirmed = await _showConfirmDialog(
+          'Delete Campaign',
+          'Are you sure you want to delete "${campaign.title}"? This action cannot be undone.',
+        );
+        if (confirmed && mounted) {
+          final success = await ref
+              .read(adminCommunicationsProvider.notifier)
+              .deleteCampaign(campaign.id);
+          if (success && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Campaign deleted')),
+            );
+          }
+        }
+        break;
+    }
+  }
+
+  Future<bool> _showConfirmDialog(String title, String message) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Confirm'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  void _showScheduleDialog(Campaign campaign) {
+    DateTime selectedDate = DateTime.now().add(const Duration(days: 1));
+    TimeOfDay selectedTime = const TimeOfDay(hour: 9, minute: 0);
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Schedule Campaign'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.calendar_today),
+                title: Text(DateFormat('EEEE, MMMM d, yyyy').format(selectedDate)),
+                trailing: const Icon(Icons.edit),
+                onTap: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (date != null) {
+                    setDialogState(() => selectedDate = date);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.access_time),
+                title: Text(selectedTime.format(context)),
+                trailing: const Icon(Icons.edit),
+                onTap: () async {
+                  final time = await showTimePicker(
+                    context: context,
+                    initialTime: selectedTime,
+                  );
+                  if (time != null) {
+                    setDialogState(() => selectedTime = time);
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final scheduledDateTime = DateTime(
+                  selectedDate.year,
+                  selectedDate.month,
+                  selectedDate.day,
+                  selectedTime.hour,
+                  selectedTime.minute,
+                );
+                Navigator.pop(context);
+                final success = await ref
+                    .read(adminCommunicationsProvider.notifier)
+                    .scheduleCampaign(campaign.id, scheduledDateTime);
+                if (success && mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Campaign scheduled for ${DateFormat('MMM d, yyyy HH:mm').format(scheduledDateTime)}',
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Schedule'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCampaignDetails(Campaign campaign) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.campaign, color: AppColors.primary),
+            Icon(_getTypeIcon(campaign.type), color: _getTypeColor(campaign.type)),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                campaign.name,
+                campaign.title,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
         content: SizedBox(
-          width: 600,
+          width: 500,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Campaign details and analytics will be available with backend integration.',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
+              _buildDetailRow('Type', campaign.type.toUpperCase()),
+              _buildDetailRow('Status', campaign.status.toUpperCase()),
+              _buildDetailRow('Created', _formatDate(campaign.createdAt)),
+              if (campaign.scheduledAt != null)
+                _buildDetailRow('Scheduled', DateFormat('MMM d, yyyy HH:mm').format(campaign.scheduledAt!)),
+              if (campaign.sentAt != null)
+                _buildDetailRow('Sent', DateFormat('MMM d, yyyy HH:mm').format(campaign.sentAt!)),
+              const Divider(height: 24),
+              const Text('Message:', style: TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                child: Text(campaign.message ?? 'No message content'),
+              ),
+              const Divider(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildStatItem('Recipients', '${campaign.recipientCount ?? 0}'),
+                  _buildStatItem('Delivered', '${campaign.deliveredCount ?? 0}'),
+                  _buildStatItem('Opened', '${campaign.openedCount ?? 0}'),
+                ],
               ),
             ],
           ),
@@ -884,34 +864,267 @@ class _CommunicationsHubScreenState
       ),
     );
   }
-}
 
-/// Temporary data model for table rows
-/// TODO: Replace with actual Campaign model from backend
-class CampaignRowData {
-  final String id;
-  final String name;
-  final String description;
-  final String type;
-  final String audience;
-  final int recipients;
-  final int sent;
-  final int delivered;
-  final int deliveryRate;
-  final String status;
-  final String scheduledDate;
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
 
-  CampaignRowData({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.type,
-    required this.audience,
-    required this.recipients,
-    required this.sent,
-    required this.delivered,
-    required this.deliveryRate,
-    required this.status,
-    required this.scheduledDate,
-  });
+  Widget _buildStatItem(String label, String value) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showCreateCampaignDialog({Campaign? duplicateFrom}) {
+    final titleController = TextEditingController(text: duplicateFrom?.title ?? '');
+    final messageController = TextEditingController(text: duplicateFrom?.message ?? '');
+    String selectedType = duplicateFrom?.type ?? 'email';
+    List<String> selectedRoles = List.from(duplicateFrom?.targetRoles ?? ['student']);
+    bool sendNow = false;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.campaign, color: AppColors.primary),
+              const SizedBox(width: 12),
+              Text(duplicateFrom != null ? 'Duplicate Campaign' : 'Create New Campaign'),
+            ],
+          ),
+          content: SizedBox(
+            width: 500,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Campaign Title
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Campaign Title',
+                      hintText: 'Enter campaign title',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Campaign Type
+                  const Text('Campaign Type', style: TextStyle(fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      _buildTypeOption('email', 'Email', Icons.email, selectedType, (type) {
+                        setDialogState(() => selectedType = type);
+                      }),
+                      _buildTypeOption('push', 'Push', Icons.notifications, selectedType, (type) {
+                        setDialogState(() => selectedType = type);
+                      }),
+                      _buildTypeOption('in_app', 'In-App', Icons.announcement, selectedType, (type) {
+                        setDialogState(() => selectedType = type);
+                      }),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Target Audience
+                  const Text('Target Audience', style: TextStyle(fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    children: ['student', 'parent', 'counselor', 'recommender'].map((role) {
+                      final isSelected = selectedRoles.contains(role);
+                      return FilterChip(
+                        label: Text(role[0].toUpperCase() + role.substring(1)),
+                        selected: isSelected,
+                        onSelected: (selected) {
+                          setDialogState(() {
+                            if (selected) {
+                              selectedRoles.add(role);
+                            } else {
+                              selectedRoles.remove(role);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Message Content
+                  TextField(
+                    controller: messageController,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      labelText: 'Message Content',
+                      hintText: 'Enter your message...',
+                      border: OutlineInputBorder(),
+                      alignLabelWithHint: true,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Send Now Option
+                  CheckboxListTile(
+                    title: const Text('Send immediately after creation'),
+                    value: sendNow,
+                    onChanged: (value) {
+                      setDialogState(() => sendNow = value ?? false);
+                    },
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (titleController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a campaign title')),
+                  );
+                  return;
+                }
+                if (messageController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a message')),
+                  );
+                  return;
+                }
+                if (selectedRoles.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please select at least one target role')),
+                  );
+                  return;
+                }
+
+                Navigator.pop(context);
+
+                bool success;
+                if (sendNow) {
+                  success = await ref
+                      .read(adminCommunicationsProvider.notifier)
+                      .sendAnnouncement(
+                        title: titleController.text,
+                        message: messageController.text,
+                        targetRoles: selectedRoles,
+                        type: selectedType,
+                      );
+                } else {
+                  final campaign = Campaign(
+                    id: '',
+                    title: titleController.text,
+                    type: selectedType,
+                    status: 'draft',
+                    message: messageController.text,
+                    targetRoles: selectedRoles,
+                    createdAt: DateTime.now(),
+                  );
+                  success = await ref
+                      .read(adminCommunicationsProvider.notifier)
+                      .createCampaign(campaign);
+                }
+
+                if (success && mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        sendNow ? 'Campaign sent successfully!' : 'Campaign created as draft',
+                      ),
+                      backgroundColor: AppColors.success,
+                    ),
+                  );
+                }
+              },
+              child: Text(sendNow ? 'Create & Send' : 'Create Draft'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTypeOption(
+    String type,
+    String label,
+    IconData icon,
+    String selectedType,
+    Function(String) onSelect,
+  ) {
+    final isSelected = type == selectedType;
+    return InkWell(
+      onTap: () => onSelect(type),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary : AppColors.surface,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.border,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 18,
+              color: isSelected ? Colors.white : AppColors.textSecondary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.white : AppColors.textPrimary,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
