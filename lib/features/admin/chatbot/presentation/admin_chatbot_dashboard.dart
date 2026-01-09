@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
 
@@ -14,9 +15,8 @@ class AdminChatbotDashboard extends ConsumerStatefulWidget {
       _AdminChatbotDashboardState();
 }
 
-class _AdminChatbotDashboardState
-    extends ConsumerState<AdminChatbotDashboard> {
-  final _storageService = ConversationStorageService();
+class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
+  ConversationStorageService? _storageService;
   ConversationStats? _stats;
   List<Conversation> _recentConversations = [];
   bool _isLoading = true;
@@ -24,120 +24,215 @@ class _AdminChatbotDashboardState
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeService();
+    });
+  }
+
+  void _initializeService() {
+    final authService = ref.read(authServiceProvider);
+    _storageService = ConversationStorageService(authService: authService);
     _loadData();
   }
 
   Future<void> _loadData() async {
-    setState(() => _isLoading = true);
+    if (_storageService == null) return;
+
+    setState(() {
+      _isLoading = true;
+    });
 
     try {
-      // Use backend API methods to get global data for admin dashboard
-      final stats = await _storageService.getStatsFromBackend();
-      final conversations = await _storageService.getAllConversationsFromBackend();
+      final stats = await _storageService!.getStatsFromBackend();
+      final conversations = await _storageService!.getAllConversationsFromBackend();
 
-      // Sort by most recent
       conversations.sort((a, b) =>
           b.lastMessageTime.compareTo(a.lastMessageTime));
 
-      setState(() {
-        _stats = stats;
-        _recentConversations = conversations.take(10).toList();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _stats = stats;
+          _recentConversations = conversations.take(10).toList();
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Chatbot Analytics'),
-        backgroundColor: AppColors.surface,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadData,
-            tooltip: 'Refresh',
-          ),
-          IconButton(
-            icon: const Icon(Icons.question_answer),
-            onPressed: () => context.push('/admin/chatbot/faqs'),
-            tooltip: 'Manage FAQs',
-          ),
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: () => context.push('/admin/chatbot/conversations'),
-            tooltip: 'View All Conversations',
+      backgroundColor: const Color(0xFFF8FAFC),
+      body: Column(
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: _loadData,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildStatsGrid(),
+                          const SizedBox(height: 24),
+                          _buildQuickActions(),
+                          const SizedBox(height: 24),
+                          _buildRecentConversations(),
+                        ],
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _loadData,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Statistics Cards
-                    _buildStatsGrid(),
-                    const SizedBox(height: 32),
+    );
+  }
 
-                    // Quick Actions
-                    _buildQuickActions(),
-                    const SizedBox(height: 32),
-
-                    // Top Topics
-                    _buildTopTopics(),
-                    const SizedBox(height: 32),
-
-                    // Recent Conversations
-                    _buildRecentConversations(),
-                  ],
-                ),
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
               ),
+              borderRadius: BorderRadius.circular(12),
             ),
+            child: const Icon(Icons.smart_toy, color: Colors.white, size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Chatbot Management',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                Text(
+                  'Monitor conversations, manage FAQs, and view analytics',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _buildHeaderAction(
+            Icons.refresh,
+            'Refresh',
+            _loadData,
+          ),
+          const SizedBox(width: 8),
+          _buildHeaderAction(
+            Icons.settings,
+            'Settings',
+            () => context.push('/admin/chatbot/settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderAction(IconData icon, String tooltip, VoidCallback onTap) {
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, size: 20, color: const Color(0xFF64748B)),
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildStatsGrid() {
-    if (_stats == null) return const SizedBox();
+    final stats = _stats ?? ConversationStats(
+      totalConversations: 0,
+      activeConversations: 0,
+      totalMessages: 0,
+      totalUserMessages: 0,
+      totalBotMessages: 0,
+      topicCounts: {},
+      flaggedConversations: 0,
+    );
 
-    return GridView.count(
-      crossAxisCount: 4,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      childAspectRatio: 1.5,
+    return Row(
       children: [
-        _buildStatCard(
-          'Total Conversations',
-          _stats!.totalConversations.toString(),
-          Icons.chat_bubble_outline,
-          AppColors.primary,
+        Expanded(
+          child: _buildStatCard(
+            'Total Conversations',
+            stats.totalConversations.toString(),
+            Icons.forum_outlined,
+            const Color(0xFF6366F1),
+            const Color(0xFFEEF2FF),
+          ),
         ),
-        _buildStatCard(
-          'Active Conversations',
-          _stats!.activeConversations.toString(),
-          Icons.chat,
-          AppColors.success,
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildStatCard(
+            'Active Now',
+            stats.activeConversations.toString(),
+            Icons.chat_bubble_outline,
+            const Color(0xFF10B981),
+            const Color(0xFFECFDF5),
+          ),
         ),
-        _buildStatCard(
-          'Total Messages',
-          _stats!.totalMessages.toString(),
-          Icons.message,
-          AppColors.info,
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildStatCard(
+            'Total Messages',
+            stats.totalMessages.toString(),
+            Icons.message_outlined,
+            const Color(0xFF3B82F6),
+            const Color(0xFFEFF6FF),
+          ),
         ),
-        _buildStatCard(
-          'Avg Messages/Chat',
-          _stats!.averageMessagesPerConversation.toStringAsFixed(1),
-          Icons.trending_up,
-          AppColors.warning,
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildStatCard(
+            'Avg Messages/Chat',
+            stats.averageMessagesPerConversation.toStringAsFixed(1),
+            Icons.analytics_outlined,
+            const Color(0xFFF59E0B),
+            const Color(0xFFFFFBEB),
+          ),
         ),
       ],
     );
@@ -148,23 +243,43 @@ class _AdminChatbotDashboardState
     String value,
     IconData icon,
     Color color,
+    Color bgColor,
   ) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 32, color: color),
-          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, size: 22, color: color),
+              ),
+              Icon(Icons.trending_up, size: 16, color: Colors.green[400]),
+            ],
+          ),
+          const SizedBox(height: 16),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
               color: color,
             ),
@@ -173,10 +288,10 @@ class _AdminChatbotDashboardState
           Text(
             title,
             style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
+              fontSize: 13,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -184,46 +299,62 @@ class _AdminChatbotDashboardState
   }
 
   Widget _buildQuickActions() {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: _buildActionCard(
-            'Manage FAQs',
-            'Create, edit, and organize FAQ responses',
-            Icons.question_answer,
-            AppColors.primary,
-            () => context.push('/admin/chatbot/faqs'),
+        const Padding(
+          padding: EdgeInsets.only(left: 4, bottom: 12),
+          child: Text(
+            'Quick Actions',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1E293B),
+            ),
           ),
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildActionCard(
-            'Conversation History',
-            'View and search all user conversations',
-            Icons.history,
-            AppColors.info,
-            () => context.push('/admin/chatbot/conversations'),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildActionCard(
-            'Support Queue',
-            'Handle escalated support requests',
-            Icons.support_agent,
-            AppColors.warning,
-            () => context.push('/admin/chatbot/queue'),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildActionCard(
-            'Live Monitoring',
-            'Watch active conversations in real-time',
-            Icons.visibility,
-            AppColors.success,
-            () => context.push('/admin/chatbot/live'),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: _buildActionCard(
+                'Manage FAQs',
+                'Create, edit, and organize FAQ responses',
+                Icons.quiz_outlined,
+                const Color(0xFF6366F1),
+                () => context.push('/admin/chatbot/faqs'),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildActionCard(
+                'Conversation History',
+                'View and search all user conversations',
+                Icons.history,
+                const Color(0xFF3B82F6),
+                () => context.push('/admin/chatbot/conversations'),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildActionCard(
+                'Support Queue',
+                'Handle escalated support requests',
+                Icons.support_agent_outlined,
+                const Color(0xFFF59E0B),
+                () => context.push('/admin/chatbot/queue'),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildActionCard(
+                'Live Monitoring',
+                'Watch active conversations in real-time',
+                Icons.monitor_heart_outlined,
+                const Color(0xFF10B981),
+                () => context.push('/admin/chatbot/live'),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -236,210 +367,144 @@ class _AdminChatbotDashboardState
     Color color,
     VoidCallback onTap,
   ) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.border),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right, color: AppColors.textSecondary),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTopTopics() {
-    if (_stats == null || _stats!.topTopics.isEmpty) {
-      return const SizedBox();
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.topic, size: 20, color: AppColors.primary),
-              const SizedBox(width: 8),
-              const Text(
-                'Top Topics',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          ..._stats!.topTopics.map((entry) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Row(
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: color, size: 24),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: Text(entry.key),
-                    ),
-                    Expanded(
-                      flex: 7,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              value: entry.value /
-                                  _stats!.totalConversations,
-                              backgroundColor: AppColors.border,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            entry.value.toString(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Color(0xFF1E293B),
                       ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
-              )),
-        ],
+              ),
+              const SizedBox(width: 8),
+              Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey[400]),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildRecentConversations() {
     return Container(
-      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.history, size: 20, color: AppColors.primary),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Recent Conversations',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.history,
+                        size: 18,
+                        color: Color(0xFF64748B),
+                      ),
                     ),
+                    const SizedBox(width: 12),
+                    const Text(
+                      'Recent Conversations',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF1E293B),
+                      ),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () => context.push('/admin/chatbot/conversations'),
+                  child: Row(
+                    children: [
+                      Text(
+                        'View All',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(Icons.arrow_forward, size: 16, color: AppColors.primary),
+                    ],
                   ),
-                ],
-              ),
-              TextButton.icon(
-                onPressed: () =>
-                    context.push('/admin/chatbot/conversations'),
-                icon: const Icon(Icons.arrow_forward, size: 16),
-                label: const Text('View All'),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
+          const Divider(height: 1),
           _recentConversations.isEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Text(
-                      'No conversations yet',
-                      style: TextStyle(color: AppColors.textSecondary),
-                    ),
-                  ),
-                )
+              ? _buildEmptyState()
               : ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _recentConversations.length,
-                  separatorBuilder: (_, __) => Divider(
-                    height: 1,
-                    color: AppColors.border,
-                  ),
+                  separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
                     final conversation = _recentConversations[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                        child: Icon(
-                          Icons.person,
-                          color: AppColors.primary,
-                          size: 20,
-                        ),
-                      ),
-                      title: Text(conversation.userName),
-                      subtitle: Text(
-                        '${conversation.messageCount} messages • ${_formatDuration(conversation.duration)}',
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          _buildStatusChip(conversation.status),
-                          const SizedBox(height: 4),
-                          Text(
-                            _formatTime(conversation.lastMessageTime),
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () => context.push(
-                          '/admin/chatbot/conversation/${conversation.id}'),
-                    );
+                    return _buildConversationTile(conversation);
                   },
                 ),
         ],
@@ -447,46 +512,152 @@ class _AdminChatbotDashboardState
     );
   }
 
-  Widget _buildStatusChip(ConversationStatus status) {
-    Color color;
-    String label;
-
-    switch (status) {
-      case ConversationStatus.active:
-        color = AppColors.success;
-        label = 'Active';
-        break;
-      case ConversationStatus.archived:
-        color = AppColors.textSecondary;
-        label = 'Archived';
-        break;
-      case ConversationStatus.flagged:
-        color = AppColors.error;
-        label = 'Flagged';
-        break;
-    }
-
+  Widget _buildEmptyState() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(4),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Icon(
+              Icons.chat_bubble_outline,
+              size: 32,
+              color: Colors.grey[400],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'No conversations yet',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF64748B),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Conversations will appear here once users start chatting',
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.grey[500],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 10,
-          color: color,
-          fontWeight: FontWeight.w500,
+    );
+  }
+
+  Widget _buildConversationTile(Conversation conversation) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => context.push('/admin/chatbot/conversation/${conversation.id}'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: AppColors.primary.withOpacity(0.1),
+                child: Text(
+                  conversation.userName.isNotEmpty
+                      ? conversation.userName[0].toUpperCase()
+                      : '?',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      conversation.userName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Color(0xFF1E293B),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${conversation.messageCount} messages',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _buildStatusChip(conversation.status),
+                  const SizedBox(height: 6),
+                  Text(
+                    _formatTime(conversation.lastMessageTime),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  String _formatDuration(Duration duration) {
-    if (duration.inMinutes < 1) return '${duration.inSeconds}s';
-    if (duration.inHours < 1) return '${duration.inMinutes}m';
-    return '${duration.inHours}h ${duration.inMinutes % 60}m';
+  Widget _buildStatusChip(ConversationStatus status) {
+    Color color;
+    Color bgColor;
+    String label;
+
+    switch (status) {
+      case ConversationStatus.active:
+        color = const Color(0xFF10B981);
+        bgColor = const Color(0xFFECFDF5);
+        label = 'Active';
+        break;
+      case ConversationStatus.archived:
+        color = const Color(0xFF64748B);
+        bgColor = const Color(0xFFF1F5F9);
+        label = 'Archived';
+        break;
+      case ConversationStatus.flagged:
+        color = const Color(0xFFEF4444);
+        bgColor = const Color(0xFFFEF2F2);
+        label = 'Flagged';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 11,
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
   }
 
   String _formatTime(DateTime time) {
