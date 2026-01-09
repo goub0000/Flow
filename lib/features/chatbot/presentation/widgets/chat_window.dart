@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../routing/app_router.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../application/providers/chatbot_provider.dart';
 import 'message_bubble.dart';
@@ -85,21 +85,24 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
 
   void _handleQuickAction(String action) {
     // Handle navigation actions - hide chat immediately and navigate
+    // Use routerProvider directly since context.go() doesn't work in MaterialApp builder
+    final router = ref.read(routerProvider);
+
     if (action == 'navigate_register') {
       ref.read(chatbotVisibleProvider.notifier).state = false;
-      context.go('/register');
+      router.go('/register');
       return;
     }
     if (action == 'navigate_login') {
       // Set flag to reopen chat after login
       ref.read(chatbotPendingReopenProvider.notifier).state = true;
       ref.read(chatbotVisibleProvider.notifier).state = false;
-      context.go('/login');
+      router.go('/login');
       return;
     }
     if (action == 'view_profile') {
       ref.read(chatbotVisibleProvider.notifier).state = false;
-      context.go('/profile');
+      router.go('/profile');
       return;
     }
 
@@ -319,7 +322,8 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                     ref.read(chatbotPendingReopenProvider.notifier).state = true;
                     // Hide chat immediately (no animation) and navigate
                     ref.read(chatbotVisibleProvider.notifier).state = false;
-                    context.go('/login');
+                    // Use routerProvider directly since context.go() doesn't work in MaterialApp builder
+                    ref.read(routerProvider).go('/login');
                   },
                   icon: const Icon(Icons.login, size: 18),
                   label: const Text('Sign In'),
@@ -335,7 +339,8 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                     setState(() => _showUserMenuInline = false);
                     // Hide chat immediately (no animation) and navigate
                     ref.read(chatbotVisibleProvider.notifier).state = false;
-                    context.go('/profile');
+                    // Use routerProvider directly since context.go() doesn't work in MaterialApp builder
+                    ref.read(routerProvider).go('/profile');
                   },
                   icon: const Icon(Icons.person, size: 18),
                   label: const Text('View Profile'),
