@@ -141,6 +141,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
     final user = authState.user;
 
     return Stack(
+      fit: StackFit.expand,
       children: [
         // Main chat window
         Positioned(
