@@ -115,7 +115,8 @@ Current user context will be provided with each message."""
         """Initialize AI chat service with configured providers"""
         # Load configuration from environment
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+        # Use gemini-2.0-flash as default (widely available), fallback to gemini-pro
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.openai_model = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
@@ -130,19 +131,34 @@ Current user context will be provided with each message."""
         self.openai_client = None
 
         if GEMINI_AVAILABLE and self.gemini_api_key:
-            try:
-                genai.configure(api_key=self.gemini_api_key)
-                self.gemini_model_instance = genai.GenerativeModel(
-                    model_name=self.gemini_model,
-                    system_instruction=self.SYSTEM_PROMPT,
-                    generation_config=genai.GenerationConfig(
-                        max_output_tokens=self.max_tokens,
-                        temperature=self.temperature,
+            # Try multiple model names in order of preference
+            model_options = [
+                self.gemini_model,
+                "gemini-2.0-flash",
+                "gemini-1.5-flash-latest",
+                "gemini-pro",
+            ]
+            genai.configure(api_key=self.gemini_api_key)
+
+            for model_name in model_options:
+                try:
+                    self.gemini_model_instance = genai.GenerativeModel(
+                        model_name=model_name,
+                        system_instruction=self.SYSTEM_PROMPT,
+                        generation_config=genai.GenerationConfig(
+                            max_output_tokens=self.max_tokens,
+                            temperature=self.temperature,
+                        )
                     )
-                )
-                logger.info(f"Gemini client initialized with model: {self.gemini_model}")
-            except Exception as e:
-                logger.error(f"Failed to initialize Gemini: {e}")
+                    self.gemini_model = model_name
+                    logger.info(f"Gemini client initialized with model: {model_name}")
+                    break
+                except Exception as e:
+                    logger.warning(f"Failed to initialize Gemini with model {model_name}: {e}")
+                    continue
+
+            if not self.gemini_model_instance:
+                logger.error("Failed to initialize any Gemini model")
 
         if OPENAI_AVAILABLE and self.openai_api_key:
             self.openai_client = openai.OpenAI(api_key=self.openai_api_key)
