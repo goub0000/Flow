@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
+import '../../shared/widgets/admin_shell.dart';
 
 /// Live Conversations Screen - Real-time monitoring of active chats
 class LiveConversationsScreen extends ConsumerStatefulWidget {
@@ -98,13 +99,76 @@ class _LiveConversationsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Live Conversations'),
-        backgroundColor: AppColors.surface,
-        actions: [
-          // Auto-refresh toggle
+    return AdminShell(
+      child: Container(
+        color: AppColors.background,
+        child: Column(
+          children: [
+            // Page Header with controls
+            _buildPageHeader(),
+
+            // Stats Banner
+            _buildStatsBanner(),
+
+            // Conversations List
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _error != null
+                      ? _buildErrorState()
+                      : _conversations.isEmpty
+                          ? _buildEmptyState()
+                          : RefreshIndicator(
+                              onRefresh: _loadConversations,
+                              child: ListView.builder(
+                                padding: const EdgeInsets.all(16),
+                                itemCount: _conversations.length,
+                                itemBuilder: (context, index) {
+                                  return _buildConversationCard(
+                                      _conversations[index]);
+                                },
+                              ),
+                            ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageHeader() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.success.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.monitor_heart, color: AppColors.success, size: 24),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Live Conversations',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                Text(
+                  'Real-time monitoring of active chats',
+                  style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                ),
+              ],
+            ),
+          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -122,33 +186,6 @@ class _LiveConversationsScreenState
             icon: const Icon(Icons.refresh),
             onPressed: _loadConversations,
             tooltip: 'Refresh Now',
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Stats Banner
-          _buildStatsBanner(),
-
-          // Conversations List
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _error != null
-                    ? _buildErrorState()
-                    : _conversations.isEmpty
-                        ? _buildEmptyState()
-                        : RefreshIndicator(
-                            onRefresh: _loadConversations,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(16),
-                              itemCount: _conversations.length,
-                              itemBuilder: (context, index) {
-                                return _buildConversationCard(
-                                    _conversations[index]);
-                              },
-                            ),
-                          ),
           ),
         ],
       ),

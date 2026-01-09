@@ -4,31 +4,23 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/providers/cookie_providers.dart';
+import '../../shared/widgets/admin_shell.dart';
 
 class ConsentAnalyticsScreen extends ConsumerWidget {
   const ConsentAnalyticsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cookie Consent Analytics'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              // Refresh analytics data
-              ref.invalidate(consentStatisticsProvider);
-            },
-            tooltip: 'Refresh',
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+    return AdminShell(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Page Header
+            _buildPageHeader(ref),
+            const SizedBox(height: 24),
+
             // Overview Cards
             _buildOverviewSection(context, ref),
             const SizedBox(height: 24),
@@ -46,6 +38,48 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPageHeader(WidgetRef ref) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: AppColors.info.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(Icons.cookie, color: AppColors.info, size: 24),
+        ),
+        const SizedBox(width: 16),
+        const Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Cookie Consent Analytics',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E293B),
+                ),
+              ),
+              Text(
+                'Track user consent preferences and compliance',
+                style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+              ),
+            ],
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: () {
+            ref.invalidate(consentStatisticsProvider);
+          },
+          tooltip: 'Refresh',
+        ),
+      ],
     );
   }
 

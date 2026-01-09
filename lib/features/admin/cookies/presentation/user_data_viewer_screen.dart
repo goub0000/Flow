@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/providers/cookie_providers.dart';
+import '../../shared/widgets/admin_shell.dart';
 
 class UserDataViewerScreen extends ConsumerStatefulWidget {
   const UserDataViewerScreen({super.key});
@@ -18,25 +19,61 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Cookie Data'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.download),
-            onPressed: () => _exportAllData(),
-            tooltip: 'Export All Data',
-          ),
-        ],
-      ),
-      body: Column(
+    return AdminShell(
+      child: Column(
         children: [
+          // Page Header
+          _buildPageHeader(),
+
           // Search and filter bar
           _buildSearchAndFilterBar(),
 
           // User list
           Expanded(
             child: _buildUserList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPageHeader() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.people, color: AppColors.primary, size: 24),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'User Cookie Data',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                Text(
+                  'View and manage user cookie consent data',
+                  style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: () => _exportAllData(),
+            tooltip: 'Export All Data',
           ),
         ],
       ),

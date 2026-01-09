@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
+import '../../shared/widgets/admin_shell.dart';
 
 /// Admin Support Queue Screen - Manage escalated conversations
 class SupportQueueScreen extends ConsumerStatefulWidget {
@@ -116,45 +117,82 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Support Queue'),
-        backgroundColor: AppColors.surface,
-        actions: [
+    return AdminShell(
+      child: Container(
+        color: AppColors.background,
+        child: Column(
+          children: [
+            // Page Header
+            _buildPageHeader(),
+
+            // Stats Cards
+            _buildStatsRow(),
+
+            // Filters
+            _buildFilters(),
+
+            // Queue List
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _error != null
+                      ? _buildErrorState()
+                      : _queueItems.isEmpty
+                          ? _buildEmptyState()
+                          : RefreshIndicator(
+                              onRefresh: _loadQueue,
+                              child: ListView.builder(
+                                padding: const EdgeInsets.all(16),
+                                itemCount: _queueItems.length,
+                                itemBuilder: (context, index) {
+                                  return _buildQueueItemCard(_queueItems[index]);
+                                },
+                              ),
+                            ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageHeader() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.warning.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.support_agent, color: AppColors.warning, size: 24),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Support Queue',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                Text(
+                  'Handle escalated support requests',
+                  style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                ),
+              ],
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadQueue,
             tooltip: 'Refresh',
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Stats Cards
-          _buildStatsRow(),
-
-          // Filters
-          _buildFilters(),
-
-          // Queue List
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _error != null
-                    ? _buildErrorState()
-                    : _queueItems.isEmpty
-                        ? _buildEmptyState()
-                        : RefreshIndicator(
-                            onRefresh: _loadQueue,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(16),
-                              itemCount: _queueItems.length,
-                              itemBuilder: (context, index) {
-                                return _buildQueueItemCard(_queueItems[index]);
-                              },
-                            ),
-                          ),
           ),
         ],
       ),

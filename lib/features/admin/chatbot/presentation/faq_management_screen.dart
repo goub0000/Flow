@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../services/faq_api_service.dart';
+import '../../shared/widgets/admin_shell.dart';
 
 /// Admin FAQ Management Screen
 class FAQManagementScreen extends ConsumerStatefulWidget {
@@ -154,185 +155,229 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('FAQ Management'),
-        backgroundColor: AppColors.surface,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => _loadFAQs(refresh: true),
-            tooltip: 'Refresh',
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showFAQDialog(),
-        backgroundColor: AppColors.primary,
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('Add FAQ', style: TextStyle(color: Colors.white)),
-      ),
-      body: Column(
+    return AdminShell(
+      child: Stack(
         children: [
-          // Search and Filter Bar
           Container(
-            padding: const EdgeInsets.all(16),
-            color: AppColors.surface,
+            color: AppColors.background,
             child: Column(
               children: [
-                // Search Field
-                TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search FAQs...',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _searchController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                              _loadFAQs(refresh: true);
-                            },
-                          )
-                        : null,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                  ),
-                  onSubmitted: (_) => _loadFAQs(refresh: true),
-                ),
-                const SizedBox(height: 12),
-                // Filters Row
-                Row(
-                  children: [
-                    // Category Filter
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: _selectedCategory,
+                // Page Header
+                _buildPageHeader(),
+                // Search and Filter Bar
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: AppColors.surface,
+                  child: Column(
+                    children: [
+                      // Search Field
+                      TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
-                          labelText: 'Category',
+                          hintText: 'Search FAQs...',
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: _searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Icons.clear),
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    _loadFAQs(refresh: true);
+                                  },
+                                )
+                              : null,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 12),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                         ),
-                        items: [
-                          const DropdownMenuItem(
-                            value: null,
-                            child: Text('All Categories'),
+                        onSubmitted: (_) => _loadFAQs(refresh: true),
+                      ),
+                      const SizedBox(height: 12),
+                      // Filters Row
+                      Row(
+                        children: [
+                          // Category Filter
+                          Expanded(
+                            child: DropdownButtonFormField<String>(
+                              value: _selectedCategory,
+                              decoration: InputDecoration(
+                                labelText: 'Category',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                              ),
+                              items: [
+                                const DropdownMenuItem(
+                                  value: null,
+                                  child: Text('All Categories'),
+                                ),
+                                ..._categories.map((cat) => DropdownMenuItem(
+                                      value: cat,
+                                      child: Text(_capitalize(cat)),
+                                    )),
+                              ],
+                              onChanged: (value) {
+                                setState(() => _selectedCategory = value);
+                                _loadFAQs(refresh: true);
+                              },
+                            ),
                           ),
-                          ..._categories.map((cat) => DropdownMenuItem(
-                                value: cat,
-                                child: Text(_capitalize(cat)),
-                              )),
+                          const SizedBox(width: 16),
+                          // Show Inactive Toggle
+                          FilterChip(
+                            label: const Text('Show Inactive'),
+                            selected: _showInactiveOnly,
+                            onSelected: (value) {
+                              setState(() => _showInactiveOnly = value);
+                              _loadFAQs(refresh: true);
+                            },
+                          ),
+                          const SizedBox(width: 16),
+                          // Stats
+                          Text(
+                            '$_totalFaqs FAQs',
+                            style: TextStyle(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ],
-                        onChanged: (value) {
-                          setState(() => _selectedCategory = value);
-                          _loadFAQs(refresh: true);
-                        },
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    // Show Inactive Toggle
-                    FilterChip(
-                      label: const Text('Show Inactive'),
-                      selected: _showInactiveOnly,
-                      onSelected: (value) {
-                        setState(() => _showInactiveOnly = value);
-                        _loadFAQs(refresh: true);
-                      },
-                    ),
-                    const SizedBox(width: 16),
-                    // Stats
-                    Text(
-                      '$_totalFaqs FAQs',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                // FAQ List
+                Expanded(
+                  child: _isLoading && _faqs.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : _error != null
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.error_outline,
+                                      size: 48, color: AppColors.error),
+                                  const SizedBox(height: 16),
+                                  Text(_error!,
+                                      style: TextStyle(color: AppColors.error)),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton(
+                                    onPressed: () => _loadFAQs(refresh: true),
+                                    child: const Text('Retry'),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : _faqs.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.question_answer_outlined,
+                                          size: 64, color: AppColors.textSecondary),
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        'No FAQs found',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      TextButton.icon(
+                                        onPressed: () => _showFAQDialog(),
+                                        icon: const Icon(Icons.add),
+                                        label: const Text('Create your first FAQ'),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : RefreshIndicator(
+                                  onRefresh: () => _loadFAQs(refresh: true),
+                                  child: ListView.builder(
+                                    padding: const EdgeInsets.all(16),
+                                    itemCount: _faqs.length + (_hasMore ? 1 : 0),
+                                    itemBuilder: (context, index) {
+                                      if (index == _faqs.length) {
+                                        // Load more button
+                                        return Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16),
+                                            child: _isLoading
+                                                ? const CircularProgressIndicator()
+                                                : TextButton(
+                                                    onPressed: () {
+                                                      _currentPage++;
+                                                      _loadFAQs();
+                                                    },
+                                                    child: const Text('Load More'),
+                                                  ),
+                                          ),
+                                        );
+                                      }
+                                      return _buildFAQCard(_faqs[index]);
+                                    },
+                                  ),
+                                ),
                 ),
               ],
             ),
           ),
+          // Floating Action Button
+          Positioned(
+            bottom: 24,
+            right: 24,
+            child: FloatingActionButton.extended(
+              onPressed: () => _showFAQDialog(),
+              backgroundColor: AppColors.primary,
+              icon: const Icon(Icons.add, color: Colors.white),
+              label: const Text('Add FAQ', style: TextStyle(color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-          // FAQ List
-          Expanded(
-            child: _isLoading && _faqs.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : _error != null
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error_outline,
-                                size: 48, color: AppColors.error),
-                            const SizedBox(height: 16),
-                            Text(_error!,
-                                style: TextStyle(color: AppColors.error)),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () => _loadFAQs(refresh: true),
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      )
-                    : _faqs.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.question_answer_outlined,
-                                    size: 64, color: AppColors.textSecondary),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'No FAQs found',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                TextButton.icon(
-                                  onPressed: () => _showFAQDialog(),
-                                  icon: const Icon(Icons.add),
-                                  label: const Text('Create your first FAQ'),
-                                ),
-                              ],
-                            ),
-                          )
-                        : RefreshIndicator(
-                            onRefresh: () => _loadFAQs(refresh: true),
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(16),
-                              itemCount: _faqs.length + (_hasMore ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index == _faqs.length) {
-                                  // Load more button
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: _isLoading
-                                          ? const CircularProgressIndicator()
-                                          : TextButton(
-                                              onPressed: () {
-                                                _currentPage++;
-                                                _loadFAQs();
-                                              },
-                                              child: const Text('Load More'),
-                                            ),
-                                    ),
-                                  );
-                                }
-                                return _buildFAQCard(_faqs[index]);
-                              },
-                            ),
-                          ),
+  Widget _buildPageHeader() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.quiz_outlined, color: AppColors.primary, size: 24),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'FAQ Management',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                Text(
+                  'Create, edit, and manage FAQ responses',
+                  style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _loadFAQs(refresh: true),
+            tooltip: 'Refresh',
           ),
         ],
       ),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
+import '../../shared/widgets/admin_shell.dart';
 
 /// Conversation History Screen - List all conversations with search/filter
 class ConversationHistoryScreen extends ConsumerStatefulWidget {
@@ -16,7 +18,7 @@ class ConversationHistoryScreen extends ConsumerStatefulWidget {
 
 class _ConversationHistoryScreenState
     extends ConsumerState<ConversationHistoryScreen> {
-  final _storageService = ConversationStorageService();
+  ConversationStorageService? _storageService;
   final _searchController = TextEditingController();
   List<Conversation> _allConversations = [];
   List<Conversation> _filteredConversations = [];
@@ -26,6 +28,14 @@ class _ConversationHistoryScreenState
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeService();
+    });
+  }
+
+  void _initializeService() {
+    final authService = ref.read(authServiceProvider);
+    _storageService = ConversationStorageService(authService: authService);
     _loadConversations();
   }
 
@@ -36,21 +46,27 @@ class _ConversationHistoryScreenState
   }
 
   Future<void> _loadConversations() async {
+    if (_storageService == null) return;
+
     setState(() => _isLoading = true);
 
     try {
       // Use backend API method to get all conversations globally for admin
-      final conversations = await _storageService.getAllConversationsFromBackend();
+      final conversations = await _storageService!.getAllConversationsFromBackend();
       conversations.sort((a, b) =>
           b.lastMessageTime.compareTo(a.lastMessageTime));
 
-      setState(() {
-        _allConversations = conversations;
-        _applyFilters();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _allConversations = conversations;
+          _applyFilters();
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -78,55 +94,94 @@ class _ConversationHistoryScreenState
   }
 
   Future<void> _updateStatus(String id, ConversationStatus status) async {
-    await _storageService.updateConversationStatus(id, status);
+    if (_storageService == null) return;
+    await _storageService!.updateConversationStatus(id, status);
     await _loadConversations();
   }
 
   Future<void> _deleteConversation(String id) async {
-    await _storageService.deleteConversation(id);
+    if (_storageService == null) return;
+    await _storageService!.deleteConversation(id);
     await _loadConversations();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Conversation History'),
-        backgroundColor: AppColors.surface,
-        actions: [
+    return AdminShell(
+      child: Container(
+        color: AppColors.background,
+        child: Column(
+          children: [
+            // Page Header
+            _buildPageHeader(),
+
+            // Search and Filter Bar
+            _buildSearchAndFilter(),
+
+            // Conversations List
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _filteredConversations.isEmpty
+                      ? _buildEmptyState()
+                      : RefreshIndicator(
+                          onRefresh: _loadConversations,
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: _filteredConversations.length,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              final conversation =
+                                  _filteredConversations[index];
+                              return _buildConversationCard(conversation);
+                            },
+                          ),
+                        ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPageHeader() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.history, color: AppColors.primary, size: 24),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Conversation History',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                Text(
+                  'View and manage all chatbot conversations',
+                  style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                ),
+              ],
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadConversations,
             tooltip: 'Refresh',
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Search and Filter Bar
-          _buildSearchAndFilter(),
-
-          // Conversations List
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _filteredConversations.isEmpty
-                    ? _buildEmptyState()
-                    : RefreshIndicator(
-                        onRefresh: _loadConversations,
-                        child: ListView.separated(
-                          padding: const EdgeInsets.all(16),
-                          itemCount: _filteredConversations.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 12),
-                          itemBuilder: (context, index) {
-                            final conversation =
-                                _filteredConversations[index];
-                            return _buildConversationCard(conversation);
-                          },
-                        ),
-                      ),
           ),
         ],
       ),
