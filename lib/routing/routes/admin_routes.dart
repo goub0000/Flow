@@ -35,507 +35,642 @@ import '../../features/admin/chatbot/presentation/faq_management_screen.dart';
 import '../../features/admin/chatbot/presentation/support_queue_screen.dart';
 import '../../features/admin/chatbot/presentation/live_conversations_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
+import '../../features/admin/shared/widgets/admin_shell.dart';
 import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
+
+/// Custom page with no transition for seamless admin navigation
+class NoTransitionPage<T> extends CustomTransitionPage<T> {
+  NoTransitionPage({required super.child, super.key})
+      : super(
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+        );
+}
 
 /// Admin-specific routes (all admin roles)
 List<RouteBase> adminRoutes = [
-  // Admin login
+  // Admin login (outside shell - no sidebar/topbar)
   GoRoute(
     path: '/admin/login',
     name: 'admin-login',
     builder: (context, state) => const AdminLoginScreen(),
   ),
 
-  // Admin dashboard
-  GoRoute(
-    path: '/admin/dashboard',
-    name: 'admin-dashboard',
-    builder: (context, state) => const AdminDashboardScreen(),
-  ),
-
-  // User Management
-  GoRoute(
-    path: '/admin/users/students',
-    name: 'admin-students',
-    builder: (context, state) => const admin_students.StudentsListScreen(),
+  // All admin routes wrapped in ShellRoute for persistent sidebar
+  ShellRoute(
+    builder: (context, state, child) => AdminShell(child: child),
     routes: [
+      // Admin dashboard
       GoRoute(
-        path: 'create',
-        name: 'admin-student-create',
-        builder: (context, state) => const StudentFormScreen(),
+        path: '/admin/dashboard',
+        name: 'admin-dashboard',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminDashboardScreen(),
+        ),
       ),
+
+      // User Management
       GoRoute(
-        path: ':id',
-        name: 'admin-student-detail',
-        builder: (context, state) {
-          final studentId = state.pathParameters['id']!;
-          return admin_student.StudentDetailScreen(studentId: studentId);
-        },
+        path: '/admin/users/students',
+        name: 'admin-students',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const admin_students.StudentsListScreen(),
+        ),
         routes: [
           GoRoute(
-            path: 'edit',
-            name: 'admin-student-edit',
-            builder: (context, state) {
+            path: 'create',
+            name: 'admin-student-create',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const StudentFormScreen(),
+            ),
+          ),
+          GoRoute(
+            path: ':id',
+            name: 'admin-student-detail',
+            pageBuilder: (context, state) {
               final studentId = state.pathParameters['id']!;
-              return StudentFormScreen(studentId: studentId);
+              return NoTransitionPage(
+                child: admin_student.StudentDetailScreen(studentId: studentId),
+              );
             },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'admin-student-edit',
+                pageBuilder: (context, state) {
+                  final studentId = state.pathParameters['id']!;
+                  return NoTransitionPage(
+                    child: StudentFormScreen(studentId: studentId),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
-    ],
-  ),
-  GoRoute(
-    path: '/admin/users/institutions',
-    name: 'admin-institutions',
-    builder: (context, state) => const InstitutionsListScreen(),
-    routes: [
       GoRoute(
-        path: 'create',
-        name: 'admin-institution-create',
-        builder: (context, state) => const InstitutionFormScreen(),
-      ),
-      GoRoute(
-        path: ':id',
-        name: 'admin-institution-detail',
-        builder: (context, state) {
-          final institutionId = state.pathParameters['id']!;
-          return InstitutionDetailScreen(institutionId: institutionId);
-        },
+        path: '/admin/users/institutions',
+        name: 'admin-institutions',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const InstitutionsListScreen(),
+        ),
         routes: [
           GoRoute(
-            path: 'edit',
-            name: 'admin-institution-edit',
-            builder: (context, state) {
+            path: 'create',
+            name: 'admin-institution-create',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const InstitutionFormScreen(),
+            ),
+          ),
+          GoRoute(
+            path: ':id',
+            name: 'admin-institution-detail',
+            pageBuilder: (context, state) {
               final institutionId = state.pathParameters['id']!;
-              return InstitutionFormScreen(institutionId: institutionId);
+              return NoTransitionPage(
+                child: InstitutionDetailScreen(institutionId: institutionId),
+              );
             },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'admin-institution-edit',
+                pageBuilder: (context, state) {
+                  final institutionId = state.pathParameters['id']!;
+                  return NoTransitionPage(
+                    child: InstitutionFormScreen(institutionId: institutionId),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
-    ],
-  ),
-  GoRoute(
-    path: '/admin/users/parents',
-    name: 'admin-parents',
-    builder: (context, state) => const ParentsListScreen(),
-    routes: [
       GoRoute(
-        path: 'create',
-        name: 'admin-parent-create',
-        builder: (context, state) => const ParentFormScreen(),
-      ),
-      GoRoute(
-        path: ':id',
-        name: 'admin-parent-detail',
-        builder: (context, state) {
-          final parentId = state.pathParameters['id']!;
-          return ParentDetailScreen(parentId: parentId);
-        },
+        path: '/admin/users/parents',
+        name: 'admin-parents',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ParentsListScreen(),
+        ),
         routes: [
           GoRoute(
-            path: 'edit',
-            name: 'admin-parent-edit',
-            builder: (context, state) {
+            path: 'create',
+            name: 'admin-parent-create',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const ParentFormScreen(),
+            ),
+          ),
+          GoRoute(
+            path: ':id',
+            name: 'admin-parent-detail',
+            pageBuilder: (context, state) {
               final parentId = state.pathParameters['id']!;
-              return ParentFormScreen(parentId: parentId);
+              return NoTransitionPage(
+                child: ParentDetailScreen(parentId: parentId),
+              );
             },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'admin-parent-edit',
+                pageBuilder: (context, state) {
+                  final parentId = state.pathParameters['id']!;
+                  return NoTransitionPage(
+                    child: ParentFormScreen(parentId: parentId),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
-    ],
-  ),
-  GoRoute(
-    path: '/admin/users/counselors',
-    name: 'admin-counselors',
-    builder: (context, state) => const CounselorsListScreen(),
-    routes: [
       GoRoute(
-        path: 'create',
-        name: 'admin-counselor-create',
-        builder: (context, state) => const CounselorFormScreen(),
-      ),
-      GoRoute(
-        path: ':id',
-        name: 'admin-counselor-detail',
-        builder: (context, state) {
-          final counselorId = state.pathParameters['id']!;
-          return CounselorDetailScreen(counselorId: counselorId);
-        },
+        path: '/admin/users/counselors',
+        name: 'admin-counselors',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const CounselorsListScreen(),
+        ),
         routes: [
           GoRoute(
-            path: 'edit',
-            name: 'admin-counselor-edit',
-            builder: (context, state) {
+            path: 'create',
+            name: 'admin-counselor-create',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const CounselorFormScreen(),
+            ),
+          ),
+          GoRoute(
+            path: ':id',
+            name: 'admin-counselor-detail',
+            pageBuilder: (context, state) {
               final counselorId = state.pathParameters['id']!;
-              return CounselorFormScreen(counselorId: counselorId);
+              return NoTransitionPage(
+                child: CounselorDetailScreen(counselorId: counselorId),
+              );
             },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'admin-counselor-edit',
+                pageBuilder: (context, state) {
+                  final counselorId = state.pathParameters['id']!;
+                  return NoTransitionPage(
+                    child: CounselorFormScreen(counselorId: counselorId),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
-    ],
-  ),
-  GoRoute(
-    path: '/admin/users/recommenders',
-    name: 'admin-recommenders',
-    builder: (context, state) => const RecommendersListScreen(),
-    routes: [
       GoRoute(
-        path: 'create',
-        name: 'admin-recommender-create',
-        builder: (context, state) => const RecommenderFormScreen(),
-      ),
-      GoRoute(
-        path: ':id',
-        name: 'admin-recommender-detail',
-        builder: (context, state) {
-          final recommenderId = state.pathParameters['id']!;
-          return RecommenderDetailScreen(recommenderId: recommenderId);
-        },
+        path: '/admin/users/recommenders',
+        name: 'admin-recommenders',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const RecommendersListScreen(),
+        ),
         routes: [
           GoRoute(
-            path: 'edit',
-            name: 'admin-recommender-edit',
-            builder: (context, state) {
+            path: 'create',
+            name: 'admin-recommender-create',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const RecommenderFormScreen(),
+            ),
+          ),
+          GoRoute(
+            path: ':id',
+            name: 'admin-recommender-detail',
+            pageBuilder: (context, state) {
               final recommenderId = state.pathParameters['id']!;
-              return RecommenderFormScreen(recommenderId: recommenderId);
+              return NoTransitionPage(
+                child: RecommenderDetailScreen(recommenderId: recommenderId),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'admin-recommender-edit',
+                pageBuilder: (context, state) {
+                  final recommenderId = state.pathParameters['id']!;
+                  return NoTransitionPage(
+                    child: RecommenderFormScreen(recommenderId: recommenderId),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      // Admin User Management (view only - creation is done via database)
+      GoRoute(
+        path: '/admin/system/admins',
+        name: 'admin-admins',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminsListScreen(),
+        ),
+      ),
+
+      // Financial Management
+      GoRoute(
+        path: '/admin/finance/transactions',
+        name: 'admin-transactions',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const TransactionsScreen(),
+        ),
+      ),
+
+      // Chatbot Management
+      GoRoute(
+        path: '/admin/chatbot',
+        name: 'admin-chatbot',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminChatbotDashboard(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/chatbot/conversations',
+        name: 'admin-chatbot-conversations',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ConversationHistoryScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/chatbot/conversation/:id',
+        name: 'admin-chatbot-conversation-detail',
+        pageBuilder: (context, state) {
+          final conversationId = state.pathParameters['id']!;
+          return NoTransitionPage(
+            child: chatbot.ConversationDetailScreen(conversationId: conversationId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/admin/chatbot/faqs',
+        name: 'admin-chatbot-faqs',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const FAQManagementScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/chatbot/queue',
+        name: 'admin-chatbot-queue',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const SupportQueueScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/chatbot/live',
+        name: 'admin-chatbot-live',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const LiveConversationsScreen(),
+        ),
+      ),
+
+      // Content Management
+      GoRoute(
+        path: '/admin/content',
+        name: 'admin-content',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ContentManagementScreen(),
+        ),
+        routes: [
+          GoRoute(
+            path: 'courses',
+            name: 'admin-content-courses',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const ContentManagementScreen(pageTitle: 'Courses'),
+            ),
+          ),
+          GoRoute(
+            path: 'curriculum',
+            name: 'admin-content-curriculum',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const ContentManagementScreen(pageTitle: 'Curriculum'),
+            ),
+          ),
+          GoRoute(
+            path: 'resources',
+            name: 'admin-content-resources',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const ContentManagementScreen(pageTitle: 'Resources'),
+            ),
+          ),
+          // Course content builder for editing
+          GoRoute(
+            path: ':id/edit',
+            name: 'admin-content-edit',
+            pageBuilder: (context, state) {
+              final courseId = state.pathParameters['id']!;
+              return NoTransitionPage(
+                child: CourseContentBuilderScreen(courseId: courseId),
+              );
             },
           ),
         ],
       ),
+
+      // System Administration
+      GoRoute(
+        path: '/admin/system',
+        name: 'admin-system',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'System Administration',
+            description: 'Manage system settings, admins, and audit logs. Use the sidebar to access specific system features.',
+            icon: Icons.settings,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/system/audit-logs',
+        name: 'admin-audit-logs',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AuditLogScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/system/settings',
+        name: 'admin-system-settings',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const SystemSettingsScreen(),
+        ),
+      ),
+
+      // Cookie Management
+      GoRoute(
+        path: '/admin/cookies/analytics',
+        name: 'admin-consent-analytics',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ConsentAnalyticsScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/cookies/users',
+        name: 'admin-user-data',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const UserDataViewerScreen(),
+        ),
+      ),
+
+      // Analytics & Reports
+      GoRoute(
+        path: '/admin/analytics',
+        name: 'admin-analytics',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AnalyticsDashboardScreen(),
+        ),
+      ),
+
+      // Communications
+      GoRoute(
+        path: '/admin/communications',
+        name: 'admin-communications',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const CommunicationsHubScreen(),
+        ),
+      ),
+
+      // Support & Helpdesk
+      GoRoute(
+        path: '/admin/support/tickets',
+        name: 'admin-support-tickets',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const SupportTicketsScreen(),
+        ),
+      ),
+
+      // General User Management (for Regional Admin)
+      GoRoute(
+        path: '/admin/users',
+        name: 'admin-users',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'User Management',
+            description: 'Manage all users in the system. Use the sidebar menu to access specific user types.',
+            icon: Icons.people,
+          ),
+        ),
+      ),
+
+      // Content Admin Routes
+      GoRoute(
+        path: '/admin/curriculum',
+        name: 'admin-curriculum-management',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Curriculum Management',
+            description: 'Design and manage curriculum structure.',
+            icon: Icons.school,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/assessments',
+        name: 'admin-assessments',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Assessments Management',
+            description: 'Create and manage quizzes, tests, and assessments.',
+            icon: Icons.quiz,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/resources',
+        name: 'admin-resources-management',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Resources Management',
+            description: 'Manage educational resources and learning materials.',
+            icon: Icons.folder,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/translations',
+        name: 'admin-translations',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Translations Management',
+            description: 'Manage multilingual content and translations.',
+            icon: Icons.translate,
+          ),
+        ),
+      ),
+
+      // Support Admin Routes
+      GoRoute(
+        path: '/admin/tickets',
+        name: 'admin-tickets',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Support Tickets',
+            description: 'View and manage customer support tickets.',
+            icon: Icons.confirmation_number,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/chat',
+        name: 'admin-live-chat',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Live Chat Support',
+            description: 'Provide real-time chat support to users.',
+            icon: Icons.chat,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/knowledge-base',
+        name: 'admin-knowledge-base',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Knowledge Base',
+            description: 'Manage help articles and documentation.',
+            icon: Icons.help,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/user-lookup',
+        name: 'admin-user-lookup',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'User Lookup',
+            description: 'Search and view detailed user information.',
+            icon: Icons.search,
+          ),
+        ),
+      ),
+
+      // Finance Admin Routes
+      GoRoute(
+        path: '/admin/transactions',
+        name: 'admin-all-transactions',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Transactions',
+            description: 'View and manage all financial transactions.',
+            icon: Icons.receipt_long,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/refunds',
+        name: 'admin-refunds',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Refunds Management',
+            description: 'Process and track refund requests.',
+            icon: Icons.replay,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/settlements',
+        name: 'admin-settlements',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Settlements',
+            description: 'Manage payment settlements and disbursements.',
+            icon: Icons.account_balance,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/fraud',
+        name: 'admin-fraud-detection',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Fraud Detection',
+            description: 'Monitor and prevent fraudulent activities.',
+            icon: Icons.warning,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/reports',
+        name: 'admin-financial-reports',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Financial Reports',
+            description: 'Generate and view financial reports and analytics.',
+            icon: Icons.assessment,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/fee-config',
+        name: 'admin-fee-config',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Fee Configuration',
+            description: 'Configure platform fees and pricing.',
+            icon: Icons.settings,
+          ),
+        ),
+      ),
+
+      // Analytics Admin Routes
+      GoRoute(
+        path: '/admin/data-explorer',
+        name: 'admin-data-explorer',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Data Explorer',
+            description: 'Explore and analyze platform data.',
+            icon: Icons.grid_on,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/sql',
+        name: 'admin-sql-queries',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'SQL Query Tool',
+            description: 'Run custom SQL queries for advanced analytics.',
+            icon: Icons.query_stats,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/dashboards',
+        name: 'admin-custom-dashboards',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Custom Dashboards',
+            description: 'Create and manage custom analytics dashboards.',
+            icon: Icons.dashboard_customize,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/exports',
+        name: 'admin-data-exports',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Data Exports',
+            description: 'Export data in various formats for analysis.',
+            icon: Icons.download,
+          ),
+        ),
+      ),
+
+      // Regional Admin Institutions Route
+      GoRoute(
+        path: '/admin/institutions',
+        name: 'admin-all-institutions',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const AdminPlaceholderScreen(
+            title: 'Institutions Management',
+            description: 'Manage all educational institutions in your region.',
+            icon: Icons.business,
+          ),
+        ),
+      ),
     ],
-  ),
-
-  // Admin User Management (view only - creation is done via database)
-  GoRoute(
-    path: '/admin/system/admins',
-    name: 'admin-admins',
-    builder: (context, state) => const AdminsListScreen(),
-  ),
-
-  // Financial Management
-  GoRoute(
-    path: '/admin/finance/transactions',
-    name: 'admin-transactions',
-    builder: (context, state) => const TransactionsScreen(),
-  ),
-
-  // Chatbot Management
-  GoRoute(
-    path: '/admin/chatbot',
-    name: 'admin-chatbot',
-    builder: (context, state) => const AdminChatbotDashboard(),
-  ),
-  GoRoute(
-    path: '/admin/chatbot/conversations',
-    name: 'admin-chatbot-conversations',
-    builder: (context, state) => const ConversationHistoryScreen(),
-  ),
-  GoRoute(
-    path: '/admin/chatbot/conversation/:id',
-    name: 'admin-chatbot-conversation-detail',
-    builder: (context, state) {
-      final conversationId = state.pathParameters['id']!;
-      return chatbot.ConversationDetailScreen(conversationId: conversationId);
-    },
-  ),
-  GoRoute(
-    path: '/admin/chatbot/faqs',
-    name: 'admin-chatbot-faqs',
-    builder: (context, state) => const FAQManagementScreen(),
-  ),
-  GoRoute(
-    path: '/admin/chatbot/queue',
-    name: 'admin-chatbot-queue',
-    builder: (context, state) => const SupportQueueScreen(),
-  ),
-  GoRoute(
-    path: '/admin/chatbot/live',
-    name: 'admin-chatbot-live',
-    builder: (context, state) => const LiveConversationsScreen(),
-  ),
-
-  // Content Management
-  GoRoute(
-    path: '/admin/content',
-    name: 'admin-content',
-    builder: (context, state) => const ContentManagementScreen(),
-    routes: [
-      GoRoute(
-        path: 'courses',
-        name: 'admin-content-courses',
-        builder: (context, state) => const ContentManagementScreen(
-          pageTitle: 'Courses',
-        ),
-      ),
-      GoRoute(
-        path: 'curriculum',
-        name: 'admin-content-curriculum',
-        builder: (context, state) => const ContentManagementScreen(
-          pageTitle: 'Curriculum',
-        ),
-      ),
-      GoRoute(
-        path: 'resources',
-        name: 'admin-content-resources',
-        builder: (context, state) => const ContentManagementScreen(
-          pageTitle: 'Resources',
-        ),
-      ),
-      // Course content builder for editing
-      GoRoute(
-        path: ':id/edit',
-        name: 'admin-content-edit',
-        builder: (context, state) {
-          final courseId = state.pathParameters['id']!;
-          return CourseContentBuilderScreen(courseId: courseId);
-        },
-      ),
-    ],
-  ),
-
-  // System Administration
-  GoRoute(
-    path: '/admin/system',
-    name: 'admin-system',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'System Administration',
-      description: 'Manage system settings, admins, and audit logs. Use the sidebar to access specific system features.',
-      icon: Icons.settings,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/system/audit-logs',
-    name: 'admin-audit-logs',
-    builder: (context, state) => const AuditLogScreen(),
-  ),
-  GoRoute(
-    path: '/admin/system/settings',
-    name: 'admin-system-settings',
-    builder: (context, state) => const SystemSettingsScreen(),
-  ),
-
-  // Cookie Management
-  GoRoute(
-    path: '/admin/cookies/analytics',
-    name: 'admin-consent-analytics',
-    builder: (context, state) => const ConsentAnalyticsScreen(),
-  ),
-  GoRoute(
-    path: '/admin/cookies/users',
-    name: 'admin-user-data',
-    builder: (context, state) => const UserDataViewerScreen(),
-  ),
-
-  // Analytics & Reports
-  GoRoute(
-    path: '/admin/analytics',
-    name: 'admin-analytics',
-    builder: (context, state) => const AnalyticsDashboardScreen(),
-  ),
-
-  // Communications
-  GoRoute(
-    path: '/admin/communications',
-    name: 'admin-communications',
-    builder: (context, state) => const CommunicationsHubScreen(),
-  ),
-
-  // Support & Helpdesk
-  GoRoute(
-    path: '/admin/support/tickets',
-    name: 'admin-support-tickets',
-    builder: (context, state) => const SupportTicketsScreen(),
-  ),
-
-  // General User Management (for Regional Admin)
-  GoRoute(
-    path: '/admin/users',
-    name: 'admin-users',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'User Management',
-      description: 'Manage all users in the system. Use the sidebar menu to access specific user types.',
-      icon: Icons.people,
-    ),
-  ),
-
-  // Content Admin Routes
-  GoRoute(
-    path: '/admin/curriculum',
-    name: 'admin-curriculum-management',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Curriculum Management',
-      description: 'Design and manage curriculum structure.',
-      icon: Icons.school,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/assessments',
-    name: 'admin-assessments',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Assessments Management',
-      description: 'Create and manage quizzes, tests, and assessments.',
-      icon: Icons.quiz,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/resources',
-    name: 'admin-resources-management',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Resources Management',
-      description: 'Manage educational resources and learning materials.',
-      icon: Icons.folder,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/translations',
-    name: 'admin-translations',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Translations Management',
-      description: 'Manage multilingual content and translations.',
-      icon: Icons.translate,
-    ),
-  ),
-
-  // Support Admin Routes
-  GoRoute(
-    path: '/admin/tickets',
-    name: 'admin-tickets',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Support Tickets',
-      description: 'View and manage customer support tickets.',
-      icon: Icons.confirmation_number,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/chat',
-    name: 'admin-live-chat',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Live Chat Support',
-      description: 'Provide real-time chat support to users.',
-      icon: Icons.chat,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/knowledge-base',
-    name: 'admin-knowledge-base',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Knowledge Base',
-      description: 'Manage help articles and documentation.',
-      icon: Icons.help,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/user-lookup',
-    name: 'admin-user-lookup',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'User Lookup',
-      description: 'Search and view detailed user information.',
-      icon: Icons.search,
-    ),
-  ),
-
-  // Finance Admin Routes
-  GoRoute(
-    path: '/admin/transactions',
-    name: 'admin-all-transactions',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Transactions',
-      description: 'View and manage all financial transactions.',
-      icon: Icons.receipt_long,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/refunds',
-    name: 'admin-refunds',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Refunds Management',
-      description: 'Process and track refund requests.',
-      icon: Icons.replay,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/settlements',
-    name: 'admin-settlements',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Settlements',
-      description: 'Manage payment settlements and disbursements.',
-      icon: Icons.account_balance,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/fraud',
-    name: 'admin-fraud-detection',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Fraud Detection',
-      description: 'Monitor and prevent fraudulent activities.',
-      icon: Icons.warning,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/reports',
-    name: 'admin-financial-reports',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Financial Reports',
-      description: 'Generate and view financial reports and analytics.',
-      icon: Icons.assessment,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/fee-config',
-    name: 'admin-fee-config',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Fee Configuration',
-      description: 'Configure platform fees and pricing.',
-      icon: Icons.settings,
-    ),
-  ),
-
-  // Analytics Admin Routes
-  GoRoute(
-    path: '/admin/data-explorer',
-    name: 'admin-data-explorer',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Data Explorer',
-      description: 'Explore and analyze platform data.',
-      icon: Icons.grid_on,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/sql',
-    name: 'admin-sql-queries',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'SQL Query Tool',
-      description: 'Run custom SQL queries for advanced analytics.',
-      icon: Icons.query_stats,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/dashboards',
-    name: 'admin-custom-dashboards',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Custom Dashboards',
-      description: 'Create and manage custom analytics dashboards.',
-      icon: Icons.dashboard_customize,
-    ),
-  ),
-  GoRoute(
-    path: '/admin/exports',
-    name: 'admin-data-exports',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Data Exports',
-      description: 'Export data in various formats for analysis.',
-      icon: Icons.download,
-    ),
-  ),
-
-  // Regional Admin Institutions Route
-  GoRoute(
-    path: '/admin/institutions',
-    name: 'admin-all-institutions',
-    builder: (context, state) => const AdminPlaceholderScreen(
-      title: 'Institutions Management',
-      description: 'Manage all educational institutions in your region.',
-      icon: Icons.business,
-    ),
   ),
 ];

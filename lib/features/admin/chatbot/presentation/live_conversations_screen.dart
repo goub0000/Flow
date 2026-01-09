@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Live Conversations Screen - Real-time monitoring of active chats
 class LiveConversationsScreen extends ConsumerStatefulWidget {
@@ -99,39 +99,38 @@ class _LiveConversationsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Container(
-        color: AppColors.background,
-        child: Column(
-          children: [
-            // Page Header with controls
-            _buildPageHeader(),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Container(
+      color: AppColors.background,
+      child: Column(
+        children: [
+          // Page Header with controls
+          _buildPageHeader(),
 
-            // Stats Banner
-            _buildStatsBanner(),
+          // Stats Banner
+          _buildStatsBanner(),
 
-            // Conversations List
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _error != null
-                      ? _buildErrorState()
-                      : _conversations.isEmpty
-                          ? _buildEmptyState()
-                          : RefreshIndicator(
-                              onRefresh: _loadConversations,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.all(16),
-                                itemCount: _conversations.length,
-                                itemBuilder: (context, index) {
-                                  return _buildConversationCard(
-                                      _conversations[index]);
-                                },
-                              ),
+          // Conversations List
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? _buildErrorState()
+                    : _conversations.isEmpty
+                        ? _buildEmptyState()
+                        : RefreshIndicator(
+                            onRefresh: _loadConversations,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(16),
+                              itemCount: _conversations.length,
+                              itemBuilder: (context, index) {
+                                return _buildConversationCard(
+                                    _conversations[index]);
+                              },
                             ),
-            ),
-          ],
-        ),
+                          ),
+          ),
+        ],
       ),
     );
   }

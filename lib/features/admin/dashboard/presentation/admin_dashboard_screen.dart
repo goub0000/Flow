@@ -8,7 +8,7 @@ import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
 import '../../shared/providers/admin_support_provider.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Admin Dashboard Screen - Main dashboard with KPIs and stats
 /// Phase 2: Using AdminShell with sidebar and top bar
@@ -20,9 +20,8 @@ class AdminDashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [
-        AdminShell(
-          child: _DashboardContent(),
-        ),
+        // Content is wrapped by AdminShell via ShellRoute
+        _DashboardContent(),
         // Cookie consent banner
         const Positioned(
           bottom: 0,

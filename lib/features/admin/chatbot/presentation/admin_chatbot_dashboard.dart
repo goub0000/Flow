@@ -5,7 +5,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Admin Chatbot Dashboard - Overview and Analytics
 class AdminChatbotDashboard extends ConsumerStatefulWidget {
@@ -68,30 +68,29 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Container(
-        color: const Color(0xFFF8FAFC),
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: _loadData,
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildPageHeader(),
-                      const SizedBox(height: 24),
-                      _buildStatsGrid(),
-                      const SizedBox(height: 24),
-                      _buildQuickActions(),
-                      const SizedBox(height: 24),
-                      _buildRecentConversations(),
-                    ],
-                  ),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Container(
+      color: const Color(0xFFF8FAFC),
+      child: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: _loadData,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildPageHeader(),
+                    const SizedBox(height: 24),
+                    _buildStatsGrid(),
+                    const SizedBox(height: 24),
+                    _buildQuickActions(),
+                    const SizedBox(height: 24),
+                    _buildRecentConversations(),
+                  ],
                 ),
               ),
-      ),
+            ),
     );
   }
 

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/providers/cookie_providers.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 class UserDataViewerScreen extends ConsumerStatefulWidget {
   const UserDataViewerScreen({super.key});
@@ -19,21 +19,20 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Column(
-        children: [
-          // Page Header
-          _buildPageHeader(),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Column(
+      children: [
+        // Page Header
+        _buildPageHeader(),
 
-          // Search and filter bar
-          _buildSearchAndFilterBar(),
+        // Search and filter bar
+        _buildSearchAndFilterBar(),
 
-          // User list
-          Expanded(
-            child: _buildUserList(),
-          ),
-        ],
-      ),
+        // User list
+        Expanded(
+          child: _buildUserList(),
+        ),
+      ],
     );
   }
 

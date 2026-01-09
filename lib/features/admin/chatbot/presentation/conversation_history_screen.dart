@@ -5,7 +5,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Conversation History Screen - List all conversations with search/filter
 class ConversationHistoryScreen extends ConsumerStatefulWidget {
@@ -107,40 +107,39 @@ class _ConversationHistoryScreenState
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Container(
-        color: AppColors.background,
-        child: Column(
-          children: [
-            // Page Header
-            _buildPageHeader(),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Container(
+      color: AppColors.background,
+      child: Column(
+        children: [
+          // Page Header
+          _buildPageHeader(),
 
-            // Search and Filter Bar
-            _buildSearchAndFilter(),
+          // Search and Filter Bar
+          _buildSearchAndFilter(),
 
-            // Conversations List
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _filteredConversations.isEmpty
-                      ? _buildEmptyState()
-                      : RefreshIndicator(
-                          onRefresh: _loadConversations,
-                          child: ListView.separated(
-                            padding: const EdgeInsets.all(16),
-                            itemCount: _filteredConversations.length,
-                            separatorBuilder: (_, __) =>
-                                const SizedBox(height: 12),
-                            itemBuilder: (context, index) {
-                              final conversation =
-                                  _filteredConversations[index];
-                              return _buildConversationCard(conversation);
-                            },
-                          ),
+          // Conversations List
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _filteredConversations.isEmpty
+                    ? _buildEmptyState()
+                    : RefreshIndicator(
+                        onRefresh: _loadConversations,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _filteredConversations.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final conversation =
+                                _filteredConversations[index];
+                            return _buildConversationCard(conversation);
+                          },
                         ),
-            ),
-          ],
-        ),
+                      ),
+          ),
+        ],
       ),
     );
   }

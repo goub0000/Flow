@@ -4,39 +4,38 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/providers/cookie_providers.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 class ConsentAnalyticsScreen extends ConsumerWidget {
   const ConsentAnalyticsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AdminShell(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Page Header
-            _buildPageHeader(ref),
-            const SizedBox(height: 24),
+    // Content is wrapped by AdminShell via ShellRoute
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Page Header
+          _buildPageHeader(ref),
+          const SizedBox(height: 24),
 
-            // Overview Cards
-            _buildOverviewSection(context, ref),
-            const SizedBox(height: 24),
+          // Overview Cards
+          _buildOverviewSection(context, ref),
+          const SizedBox(height: 24),
 
-            // Consent Status Distribution
-            _buildConsentDistributionSection(context, ref),
-            const SizedBox(height: 24),
+          // Consent Status Distribution
+          _buildConsentDistributionSection(context, ref),
+          const SizedBox(height: 24),
 
-            // Category Analytics
-            _buildCategoryAnalyticsSection(context, ref),
-            const SizedBox(height: 24),
+          // Category Analytics
+          _buildCategoryAnalyticsSection(context, ref),
+          const SizedBox(height: 24),
 
-            // Recent Activity
-            _buildRecentActivitySection(context, ref),
-          ],
-        ),
+          // Recent Activity
+          _buildRecentActivitySection(context, ref),
+        ],
       ),
     );
   }

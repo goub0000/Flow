@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
-import '../../shared/widgets/admin_shell.dart';
+// AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Admin Support Queue Screen - Manage escalated conversations
 class SupportQueueScreen extends ConsumerStatefulWidget {
@@ -117,41 +117,40 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminShell(
-      child: Container(
-        color: AppColors.background,
-        child: Column(
-          children: [
-            // Page Header
-            _buildPageHeader(),
+    // Content is wrapped by AdminShell via ShellRoute
+    return Container(
+      color: AppColors.background,
+      child: Column(
+        children: [
+          // Page Header
+          _buildPageHeader(),
 
-            // Stats Cards
-            _buildStatsRow(),
+          // Stats Cards
+          _buildStatsRow(),
 
-            // Filters
-            _buildFilters(),
+          // Filters
+          _buildFilters(),
 
-            // Queue List
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _error != null
-                      ? _buildErrorState()
-                      : _queueItems.isEmpty
-                          ? _buildEmptyState()
-                          : RefreshIndicator(
-                              onRefresh: _loadQueue,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.all(16),
-                                itemCount: _queueItems.length,
-                                itemBuilder: (context, index) {
-                                  return _buildQueueItemCard(_queueItems[index]);
-                                },
-                              ),
+          // Queue List
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                    ? _buildErrorState()
+                    : _queueItems.isEmpty
+                        ? _buildEmptyState()
+                        : RefreshIndicator(
+                            onRefresh: _loadQueue,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(16),
+                              itemCount: _queueItems.length,
+                              itemBuilder: (context, index) {
+                                return _buildQueueItemCard(_queueItems[index]);
+                              },
                             ),
-            ),
-          ],
-        ),
+                          ),
+          ),
+        ],
       ),
     );
   }
