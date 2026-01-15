@@ -335,28 +335,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Platform Stats
+                  // Platform Stats - Animated
                   Wrap(
                     spacing: 12,
                     runSpacing: 8,
                     alignment: WrapAlignment.center,
                     children: [
-                      _StatItem(
-                        icon: Icons.school,
-                        value: '5+',
-                        label: 'User Roles',
+                      _AnimatedStatItem(
+                        icon: Icons.verified_user,
+                        targetValue: 50,
+                        suffix: 'K+',
+                        label: 'Active Users',
                         color: AppColors.primary,
                       ),
-                      _StatItem(
-                        icon: Icons.language,
-                        value: '20+',
-                        label: 'African Countries',
+                      _AnimatedStatItem(
+                        icon: Icons.business,
+                        targetValue: 200,
+                        suffix: '+',
+                        label: 'Institutions',
                         color: AppColors.secondary,
                       ),
-                      _StatItem(
-                        icon: Icons.offline_bolt,
-                        value: '100%',
-                        label: 'Offline Access',
+                      _AnimatedStatItem(
+                        icon: Icons.public,
+                        targetValue: 20,
+                        suffix: '+',
+                        label: 'Countries',
                         color: AppColors.accent,
                       ),
                     ],
@@ -770,41 +773,92 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-class _StatItem extends StatelessWidget{
+class _AnimatedStatItem extends StatefulWidget {
   final IconData icon;
-  final String value;
+  final int targetValue;
+  final String suffix;
   final String label;
   final Color color;
 
-  const _StatItem({
+  const _AnimatedStatItem({
     required this.icon,
-    required this.value,
+    required this.targetValue,
+    required this.suffix,
     required this.label,
     required this.color,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  State<_AnimatedStatItem> createState() => _AnimatedStatItemState();
+}
 
+class _AnimatedStatItemState extends State<_AnimatedStatItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  bool _hasAnimated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: widget.targetValue.toDouble(),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    ));
+
+    // Start animation after a short delay
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted && !_hasAnimated) {
+        _hasAnimated = true;
+        _controller.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: widget.color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+        border: Border.all(color: widget.color.withValues(alpha: 0.3), width: 1),
       ),
-      child: Row(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 20, color: color),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 16)),
-              Text(label, style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
-            ],
+          Icon(widget.icon, size: 28, color: widget.color),
+          const SizedBox(height: 8),
+          AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return Text(
+                '${_animation.value.toInt()}${widget.suffix}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: widget.color,
+                  fontSize: 22,
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 2),
+          Text(
+            widget.label,
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
           ),
         ],
       ),
