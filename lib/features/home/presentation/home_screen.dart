@@ -250,33 +250,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               decoration: BoxDecoration(
                 color: AppColors.surface,
               ),
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               child: Column(
                 children: [
                   // Badge/Tag above title
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [AppColors.accent, AppColors.accentLight],
                       ),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.accent.withValues(alpha: 0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.rocket_launch, color: AppColors.textPrimary, size: 18),
-                        const SizedBox(width: 8),
+                        Icon(Icons.rocket_launch, color: AppColors.textPrimary, size: 14),
+                        const SizedBox(width: 6),
                         Text(
                           'Africa\'s Premier EdTech Platform',
-                          style: theme.textTheme.labelLarge?.copyWith(
+                          style: theme.textTheme.labelSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
                           ),
@@ -284,7 +277,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   Text(
                     'Welcome to Flow',
                     style: theme.textTheme.displayLarge?.copyWith(
@@ -294,80 +287,58 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 900),
+                    constraints: const BoxConstraints(maxWidth: 800),
                     child: Text(
-                      'A comprehensive EdTech platform designed to connect students, institutions, parents, counselors, and recommenders across Africa. Built for offline-first experiences with mobile money integration.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
+                      'Connect students, institutions, parents, counselors across Africa. Offline-first with mobile money.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
-                        height: 1.6,
-                        fontSize: 17,
+                        height: 1.4,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
                   // Primary CTA Buttons
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
+                    spacing: 12,
+                    runSpacing: 8,
                     alignment: WrapAlignment.center,
                     children: [
                       ElevatedButton.icon(
                         onPressed: () => context.go('/register'),
-                        icon: const Icon(Icons.person_add, size: 22),
-                        label: const Text('Get Started Free'),
+                        icon: const Icon(Icons.person_add, size: 18),
+                        label: const Text('Get Started'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 28,
-                            vertical: 16,
-                          ),
-                          elevation: 4,
-                          shadowColor: AppColors.primary.withValues(alpha: 0.4),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
                       ),
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
-                        icon: const Icon(Icons.login, size: 20),
+                        icon: const Icon(Icons.login, size: 16),
                         label: const Text('Sign In'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
-                          side: BorderSide(
-                            color: AppColors.secondary,
-                            width: 2,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 28,
-                            vertical: 16,
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          side: BorderSide(color: AppColors.secondary, width: 1.5),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
 
-                  // Platform Stats - Enhanced
+                  // Platform Stats
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
+                    spacing: 12,
+                    runSpacing: 8,
                     alignment: WrapAlignment.center,
                     children: [
                       _StatItem(
@@ -394,10 +365,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
 
-            // Find Your Path Feature Highlight - NEW
+            // Find Your Path Feature Highlight
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -408,84 +379,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     AppColors.primary,
                   ],
                 ),
-                borderRadius: BorderRadius.circular(28),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.accent.withValues(alpha: 0.4),
-                    blurRadius: 30,
-                    offset: const Offset(0, 12),
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 child: Column(
                   children: [
-                    // Badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.explore, color: Colors.white, size: 18),
-                          const SizedBox(width: 8),
-                          Text(
-                            'NEW FEATURE',
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 1.2,
-                            ),
+                    // Badge + Icon row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.school, size: 28, color: Colors.white),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ],
-                      ),
+                          child: Text('NEW', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-
-                    Icon(
-                      Icons.school,
-                      size: 40,
-                      color: Colors.white.withValues(alpha: 0.95),
-                    ),
-                    const SizedBox(height: 10),
-
+                    const SizedBox(height: 6),
                     Text(
                       'Find Your Path',
-                      style: theme.textTheme.headlineLarge?.copyWith(
+                      style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        height: 1.2,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 8),
-
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 700),
-                      child: Text(
-                        'Answer a few questions about your academic profile and goals, and we\'ll recommend the perfect universities for you.',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.95),
-                          height: 1.5,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
+                    const SizedBox(height: 4),
+                    Text(
+                      'Answer a few questions and get personalized university recommendations.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.9),
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
 
                     // Benefits
                     Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
+                      spacing: 8,
+                      runSpacing: 6,
                       alignment: WrapAlignment.center,
                       children: [
                         _FindYourPathBenefit(
@@ -502,39 +440,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
 
                     // CTA Button
                     ElevatedButton.icon(
                       onPressed: () => context.go('/find-your-path'),
-                      icon: const Icon(Icons.arrow_forward, size: 20),
-                      label: const Text('Start Your Journey'),
+                      icon: const Icon(Icons.arrow_forward, size: 16),
+                      label: const Text('Start Now'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 28,
-                          vertical: 14,
-                        ),
-                        elevation: 6,
-                        shadowColor: Colors.black.withValues(alpha: 0.3),
-                        textStyle: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    Text(
-                      'Create a free account to see your results',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.85),
-                        fontStyle: FontStyle.italic,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     ),
                   ],
@@ -545,7 +463,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Key Features Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -558,55 +476,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primary.withValues(alpha: 0.1),
-                          AppColors.primary.withValues(alpha: 0.15),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.primary.withValues(alpha: 0.3),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Text(
-                      'WHY CHOOSE FLOW',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
                   Text(
                     'Platform Features',
-                    style: theme.textTheme.headlineLarge?.copyWith(
+                    style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 700),
-                    child: Text(
-                      'Everything you need for a complete educational experience',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 15,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
+                    spacing: 12,
+                    runSpacing: 12,
                     alignment: WrapAlignment.center,
                     children: [
                       _PlatformFeature(
@@ -648,7 +528,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // How It Works Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -661,38 +541,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.secondary.withValues(alpha: 0.3),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Text(
-                      'SIMPLE PROCESS',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
                   Text(
                     'How It Works',
-                    style: theme.textTheme.headlineLarge?.copyWith(
+                    style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
+                    spacing: 12,
+                    runSpacing: 12,
                     alignment: WrapAlignment.center,
                     children: [
                       _HowItWorksStep(
@@ -728,7 +587,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Testimonials Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -742,50 +601,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.accent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.accent.withValues(alpha: 0.4),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Text(
-                      'TESTIMONIALS',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        color: AppColors.accentDark,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
                   Text(
                     'Trusted Across Africa',
-                    style: theme.textTheme.headlineLarge?.copyWith(
+                    style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 600),
-                    child: Text(
-                      'Hear from our community of students, institutions, and educators',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 15,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
+                    spacing: 12,
+                    runSpacing: 12,
                     alignment: WrapAlignment.center,
                     children: [
                       _TestimonialCard(
@@ -818,7 +644,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Final CTA Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -832,109 +658,47 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [AppColors.accent, AppColors.accentLight],
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.accent.withValues(alpha: 0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.trending_up, color: AppColors.textPrimary, size: 16),
-                        const SizedBox(width: 6),
-                        Text(
-                          'JOIN THE MOVEMENT',
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Text(
                     'Ready to Get Started?',
-                    style: theme.textTheme.headlineLarge?.copyWith(
+                    style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      height: 1.2,
                     ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Join thousands transforming education with Flow.',
+                    style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 6),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 700),
-                    child: Text(
-                      'Join thousands of students, institutions, and educators across Africa who are transforming education with Flow.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.5,
-                        fontSize: 15,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 12,
+                    spacing: 12,
+                    runSpacing: 8,
                     alignment: WrapAlignment.center,
                     children: [
                       ElevatedButton.icon(
                         onPressed: () => context.go('/register'),
-                        icon: const Icon(Icons.person_add, size: 20),
-                        label: const Text('Sign Up Free'),
+                        icon: const Icon(Icons.person_add, size: 16),
+                        label: const Text('Sign Up'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 14,
-                          ),
-                          elevation: 4,
-                          shadowColor: AppColors.primary.withValues(alpha: 0.5),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
                       ),
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
-                        icon: const Icon(Icons.login, size: 20),
+                        icon: const Icon(Icons.login, size: 16),
                         label: const Text('Login'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
-                          side: BorderSide(
-                            color: AppColors.secondary,
-                            width: 2,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 14,
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          side: BorderSide(color: AppColors.secondary, width: 1.5),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
                       ),
                     ],
@@ -946,7 +710,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Footer
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.primaryDark, AppColors.primary],
@@ -956,154 +720,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               child: Column(
                 children: [
-                  // Top Section - Compact Layout
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.school, color: AppColors.accent, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Flow EdTech',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          color: AppColors.textOnPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Icon(Icons.school, color: AppColors.accent, size: 20),
+                      const SizedBox(width: 6),
+                      Text('Flow EdTech', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.textOnPrimary, fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Transforming Education Across Africa',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textOnPrimary.withValues(alpha: 0.85),
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
+                  const SizedBox(height: 8),
                   // Quick Links
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 8,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      _FooterLinkWithIcon(
-                        icon: Icons.info_outline,
-                        label: 'About',
-                        onTap: () {},
-                      ),
-                      _FooterLinkWithIcon(
-                        icon: Icons.email_outlined,
-                        label: 'Contact',
-                        onTap: () {},
-                      ),
-                      _FooterLinkWithIcon(
-                        icon: Icons.privacy_tip_outlined,
-                        label: 'Privacy',
-                        onTap: () {},
-                      ),
-                      _FooterLinkWithIcon(
-                        icon: Icons.description_outlined,
-                        label: 'Terms',
-                        onTap: () {},
-                      ),
-                      _FooterLinkWithIcon(
-                        icon: Icons.help_outline,
-                        label: 'Help',
-                        onTap: () {},
-                      ),
-                      _FooterLinkWithIcon(
-                        icon: Icons.work_outline,
-                        label: 'Careers',
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Social Media Icons
-                  Wrap(
                     spacing: 12,
+                    runSpacing: 4,
                     alignment: WrapAlignment.center,
                     children: [
-                      _SocialIcon(icon: Icons.facebook, onTap: () {}),
-                      _SocialIcon(icon: Icons.smart_display, onTap: () {}), // YouTube
-                      _SocialIcon(icon: Icons.telegram, onTap: () {}),
-                      _SocialIcon(icon: Icons.link, onTap: () {}), // LinkedIn
-                      _SocialIcon(icon: Icons.chat_bubble_outline, onTap: () {}), // WhatsApp
+                      _FooterLink(label: 'About', onTap: () {}),
+                      _FooterLink(label: 'Contact', onTap: () {}),
+                      _FooterLink(label: 'Privacy', onTap: () {}),
+                      _FooterLink(label: 'Terms', onTap: () {}),
                     ],
                   ),
-                  const SizedBox(height: 10),
-
-                  Divider(color: AppColors.border, thickness: 1),
-                  const SizedBox(height: 10),
-
-                  // Bottom Row - Copyright and Back to Top
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Features on Left
-                      Expanded(
-                        child: Wrap(
-                          spacing: 16,
-                          runSpacing: 8,
+                      Text('© 2025 Flow EdTech', style: TextStyle(color: AppColors.textSecondary, fontSize: 10)),
+                      InkWell(
+                        onTap: _scrollToTop,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            _FooterFeature(icon: Icons.offline_bolt, text: 'Offline'),
-                            _FooterFeature(icon: Icons.payment, text: 'Mobile Money'),
-                            _FooterFeature(icon: Icons.language, text: 'Multi-Language'),
+                            Icon(Icons.arrow_upward, size: 12, color: AppColors.accent),
+                            const SizedBox(width: 4),
+                            Text('Top', style: TextStyle(color: AppColors.accent, fontSize: 10)),
                           ],
-                        ),
-                      ),
-                      // Copyright Center
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          '© 2025 Flow EdTech. All rights reserved.',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            fontSize: 11,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      // Back to Top Button
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: _scrollToTop,
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: AppColors.primary.withValues(alpha: 0.3),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.arrow_upward,
-                                    size: 14,
-                                    color: AppColors.primary,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'Top',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                     ],
@@ -1137,63 +788,23 @@ class _StatItem extends StatelessWidget{
     final theme = Theme.of(context);
 
     return Container(
-      constraints: const BoxConstraints(minWidth: 140),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            color.withValues(alpha: 0.08),
-            color.withValues(alpha: 0.15),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.4), width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.15),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
       ),
-      child: Column(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [color, color.withValues(alpha: 0.8)],
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: color.withValues(alpha: 0.3),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Icon(icon, size: 24, color: AppColors.textOnPrimary),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: theme.textTheme.displaySmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-              fontSize: 24,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
+          Icon(icon, size: 20, color: color),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 16)),
+              Text(label, style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+            ],
           ),
         ],
       ),
@@ -1436,69 +1047,21 @@ class _PlatformFeature extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 280,
-      padding: const EdgeInsets.all(16),
+      width: 160,
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.15),
-          width: 2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.primary.withValues(alpha: 0.15),
-                  AppColors.primary.withValues(alpha: 0.08),
-                ],
-              ),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.2),
-                width: 2,
-              ),
-            ),
-            child: Icon(
-              icon,
-              size: 28,
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-              fontSize: 15,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          Icon(icon, size: 24, color: AppColors.primary),
           const SizedBox(height: 6),
-          Text(
-            description,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.6,
-              fontSize: 15,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary, fontSize: 12), textAlign: TextAlign.center),
+          const SizedBox(height: 2),
+          Text(description, style: TextStyle(color: AppColors.textSecondary, fontSize: 10), textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
         ],
       ),
     );
@@ -1523,102 +1086,33 @@ class _HowItWorksStep extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 250,
-      padding: const EdgeInsets.all(16),
+      width: 150,
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: 1),
       ),
       child: Column(
         children: [
-          Stack(
-            alignment: Alignment.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [AppColors.primary, AppColors.primaryDark],
-                  ),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.4),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  icon,
-                  size: 26,
-                  color: AppColors.textOnPrimary,
-                ),
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(color: AppColors.accent, shape: BoxShape.circle),
+                alignment: Alignment.center,
+                child: Text(step, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [AppColors.accent, AppColors.accentLight],
-                    ),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.surface, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.accent.withValues(alpha: 0.4),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    step,
-                    style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(width: 6),
+              Icon(icon, size: 20, color: AppColors.primary),
             ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
-              fontSize: 15,
-            ),
-            textAlign: TextAlign.center,
-          ),
           const SizedBox(height: 6),
-          Text(
-            description,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.6,
-              fontSize: 15,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary, fontSize: 12), textAlign: TextAlign.center),
+          const SizedBox(height: 2),
+          Text(description, style: TextStyle(color: AppColors.textSecondary, fontSize: 10), textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
         ],
       ),
     );
@@ -1643,113 +1137,38 @@ class _TestimonialCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 300,
-      padding: const EdgeInsets.all(16),
+      width: 200,
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: avatarColor.withValues(alpha: 0.2),
-          width: 2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: avatarColor.withValues(alpha: 0.15),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: avatarColor.withValues(alpha: 0.2), width: 1),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: avatarColor.withValues(alpha: 0.3),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: avatarColor.withValues(alpha: 0.3),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: CircleAvatar(
-                  radius: 26,
-                  backgroundColor: avatarColor,
-                  child: Text(
-                    name.split(' ').map((n) => n[0]).take(2).join(),
-                    style: const TextStyle(
-                      color: AppColors.textOnPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
+              CircleAvatar(
+                radius: 16,
+                backgroundColor: avatarColor,
+                child: Text(name.split(' ').map((n) => n[0]).take(2).join(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 11)),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      name,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      role,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: avatarColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                    Text(role, style: TextStyle(color: avatarColor, fontSize: 9)),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              5,
-              (index) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1),
-                child: Icon(
-                  Icons.star,
-                  size: 16,
-                  color: AppColors.accent,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: avatarColor.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              '"$quote"',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: AppColors.textPrimary,
-                fontStyle: FontStyle.italic,
-                height: 1.7,
-                fontSize: 15,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          const SizedBox(height: 6),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(5, (i) => Icon(Icons.star, size: 12, color: AppColors.accent))),
+          const SizedBox(height: 6),
+          Text('"$quote"', style: TextStyle(color: AppColors.textSecondary, fontStyle: FontStyle.italic, fontSize: 10), textAlign: TextAlign.center, maxLines: 3, overflow: TextOverflow.ellipsis),
         ],
       ),
     );
@@ -1785,79 +1204,38 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Column(
         children: [
-          Text(
-            'Who Can Use Flow?',
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(height: 6),
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 700),
-            child: Text(
-              'Discover how Flow empowers each member of the educational ecosystem',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 16),
+          Text('Who Can Use Flow?', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
+          const SizedBox(height: 10),
 
           // Tab Navigation
           Container(
-            constraints: const BoxConstraints(maxWidth: 900),
-            decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
-              borderRadius: BorderRadius.circular(16),
-            ),
+            decoration: BoxDecoration(color: AppColors.surfaceVariant, borderRadius: BorderRadius.circular(8)),
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
               labelColor: AppColors.textOnPrimary,
               unselectedLabelColor: AppColors.textSecondary,
-              indicator: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.primary, AppColors.primaryDark],
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
+              indicator: BoxDecoration(gradient: LinearGradient(colors: [AppColors.primary, AppColors.primaryDark]), borderRadius: BorderRadius.circular(6)),
               dividerColor: Colors.transparent,
-              padding: const EdgeInsets.all(8),
-              labelPadding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.all(4),
+              labelPadding: const EdgeInsets.symmetric(horizontal: 12),
               tabs: const [
-                Tab(
-                  icon: Icon(Icons.school),
-                  text: 'Students',
-                ),
-                Tab(
-                  icon: Icon(Icons.business),
-                  text: 'Institutions',
-                ),
-                Tab(
-                  icon: Icon(Icons.family_restroom),
-                  text: 'Parents',
-                ),
-                Tab(
-                  icon: Icon(Icons.psychology),
-                  text: 'Counselors',
-                ),
-                Tab(
-                  icon: Icon(Icons.rate_review),
-                  text: 'Recommenders',
-                ),
+                Tab(icon: Icon(Icons.school, size: 16), text: 'Students'),
+                Tab(icon: Icon(Icons.business, size: 16), text: 'Institutions'),
+                Tab(icon: Icon(Icons.family_restroom, size: 16), text: 'Parents'),
+                Tab(icon: Icon(Icons.psychology, size: 16), text: 'Counselors'),
+                Tab(icon: Icon(Icons.rate_review, size: 16), text: 'Recommenders'),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           // Tab Content
           SizedBox(
-            height: 480,
+            height: 350,
             child: TabBarView(
               controller: _tabController,
               children: const [
@@ -2087,138 +1465,71 @@ class _AccountTypeDetails extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 900),
-        child: Column(
-          children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [color.withValues(alpha: 0.1), color.withValues(alpha: 0.05)],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: color.withValues(alpha: 0.3), width: 2),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [color, color.withValues(alpha: 0.8)],
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(icon, size: 36, color: AppColors.textOnPrimary),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    title,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: color,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(10),
             ),
-            const SizedBox(height: 20),
-
-            // Features Grid
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              alignment: WrapAlignment.center,
-              children: features.map((feature) {
-                return Container(
-                  width: 250,
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: color.withValues(alpha: 0.2)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.withValues(alpha: 0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
+            child: Row(
+              children: [
+                Icon(icon, size: 28, color: color),
+                const SizedBox(width: 10),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: color.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Icon(feature.icon, color: color, size: 20),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              feature.title,
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        feature.description,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.4,
-                        ),
-                      ),
+                      Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 16)),
+                      Text(subtitle, style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontStyle: FontStyle.italic)),
                     ],
                   ),
-                );
-              }).toList(),
+                ),
+              ],
             ),
+          ),
+          const SizedBox(height: 10),
 
-            const SizedBox(height: 20),
+          // Features Grid
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
+            children: features.take(4).map((feature) {
+              return Container(
+                width: 150,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: color.withValues(alpha: 0.2)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(feature.icon, color: color, size: 16),
+                    const SizedBox(width: 6),
+                    Expanded(child: Text(feature.title, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 12),
 
-            // CTA Button
-            ElevatedButton.icon(
-              onPressed: () => context.go('/register'),
-              icon: const Icon(Icons.arrow_forward, size: 18),
-              label: Text('Get Started as ${title.replaceAll("For ", "")}'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: color,
-                foregroundColor: AppColors.textOnPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
+          // CTA Button
+          ElevatedButton(
+            onPressed: () => context.go('/register'),
+            child: Text('Get Started as ${title.replaceAll("For ", "")}'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: color,
+              foregroundColor: AppColors.textOnPrimary,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2371,28 +1682,17 @@ class _FindYourPathBenefit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 16),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
-          ),
+          Icon(icon, color: Colors.white, size: 12),
+          const SizedBox(width: 4),
+          Text(text, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 10)),
         ],
       ),
     );
