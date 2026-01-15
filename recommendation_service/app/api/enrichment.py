@@ -557,6 +557,57 @@ async def clear_old_jobs():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post("/enrichment/cleanup-stuck")
+async def cleanup_stuck_jobs():
+    """
+    Mark stuck 'running' jobs as failed (jobs running for more than 6 hours)
+
+    Jobs can get stuck in 'running' state due to:
+    - Server restarts during processing
+    - Network timeouts
+    - Unhandled exceptions
+
+    This endpoint marks them as 'failed' so they stop showing in active jobs.
+    """
+    from datetime import timedelta
+
+    try:
+        db = get_supabase()
+        cutoff = (datetime.now() - timedelta(hours=6)).isoformat()
+
+        # Find stuck jobs (running for more than 6 hours)
+        stuck_response = db.table('enrichment_jobs')\
+            .select('job_id, started_at, processed_universities')\
+            .eq('status', 'running')\
+            .lt('started_at', cutoff)\
+            .execute()
+
+        stuck_jobs = stuck_response.data if stuck_response.data else []
+
+        # Mark each stuck job as failed
+        for job in stuck_jobs:
+            db.table('enrichment_jobs')\
+                .update({
+                    'status': 'failed',
+                    'completed_at': datetime.now().isoformat(),
+                    'error_message': f'Job timed out after 6+ hours (processed {job.get("processed_universities", 0)} universities)'
+                })\
+                .eq('job_id', job['job_id'])\
+                .execute()
+
+        return {
+            'success': True,
+            'stuck_jobs_found': len(stuck_jobs),
+            'jobs_marked_failed': len(stuck_jobs),
+            'job_ids': [j['job_id'] for j in stuck_jobs],
+            'message': f'Cleaned up {len(stuck_jobs)} stuck jobs',
+            'timestamp': datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Failed to cleanup stuck jobs: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ============================================================================
 # CACHE MANAGEMENT ENDPOINTS
 # ============================================================================

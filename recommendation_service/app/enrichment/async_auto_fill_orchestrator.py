@@ -357,11 +357,21 @@ class AsyncAutoFillOrchestrator:
             return False
 
         try:
-            # Add updated_at timestamp
-            enriched_data['updated_at'] = datetime.utcnow().isoformat()
+            # Fields with NOT NULL constraints that should never be updated
+            PROTECTED_FIELDS = {'id', 'name', 'country'}
 
-            # Update in Supabase
-            self.db.table('universities').update(enriched_data).eq('id', university_id).execute()
+            # Filter out None values, empty strings, and protected fields
+            cleaned_data = {k: v for k, v in enriched_data.items()
+                          if v is not None and v != '' and k not in PROTECTED_FIELDS}
+
+            if not cleaned_data:
+                return False
+
+            # Add updated_at timestamp
+            cleaned_data['updated_at'] = datetime.utcnow().isoformat()
+
+            # Update in Supabase using update + eq filter (safer than upsert)
+            self.db.table('universities').update(cleaned_data).eq('id', university_id).execute()
 
             logger.debug(f"Updated university {university_id} in database")
             return True

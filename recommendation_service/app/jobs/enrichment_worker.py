@@ -12,7 +12,7 @@ from app.enrichment.async_auto_fill_orchestrator import AsyncAutoFillOrchestrato
 from app.enrichment.async_web_search_enricher import AsyncWebSearchEnricher
 from app.enrichment.async_college_scorecard_enricher import AsyncCollegeScorecardEnricher
 from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
-from app.enrichment.field_scrapers import FIELD_SCRAPERS
+from app.enrichment.async_field_scrapers import AsyncFieldScrapers
 from .job_queue import job_queue, JobStatus, EnrichmentJob
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,7 @@ class EnrichmentWorker:
             web_enricher = AsyncWebSearchEnricher()
             scorecard_enricher = AsyncCollegeScorecardEnricher()
             cache = AsyncEnrichmentCache(self.db)
+            field_scrapers = AsyncFieldScrapers()
 
             # Determine universities to enrich
             if job.university_ids:
@@ -145,7 +146,7 @@ class EnrichmentWorker:
                             university=university,
                             session=None,  # Session created internally
                             web_enricher=web_enricher,
-                            field_scrapers=FIELD_SCRAPERS,
+                            field_scrapers=field_scrapers,
                             scorecard_enricher=scorecard_enricher,
                             cache=cache
                         )
@@ -154,19 +155,20 @@ class EnrichmentWorker:
                         if enriched:
                             try:
                                 # Fields with NOT NULL constraints that should never be updated
-                                PROTECTED_FIELDS = {'id', 'name'}
+                                PROTECTED_FIELDS = {'id', 'name', 'country'}
 
                                 # Filter out None values, empty strings, and protected fields
                                 cleaned_data = {k: v for k, v in enriched.items()
                                               if v is not None and v != '' and k not in PROTECTED_FIELDS}
 
                                 if cleaned_data:
-                                    # Add university ID to the data for upsert
-                                    cleaned_data['id'] = university['id']
+                                    # Add updated_at timestamp
+                                    cleaned_data['updated_at'] = datetime.utcnow().isoformat()
 
-                                    # Use upsert instead of update - more reliable with Supabase
+                                    # Use update with eq filter - safer than upsert for existing rows
                                     self.db.table('universities')\
-                                        .upsert(cleaned_data, on_conflict='id')\
+                                        .update(cleaned_data)\
+                                        .eq('id', university['id'])\
                                         .execute()
 
                                 progress_callback(university['name'], fields_filled)

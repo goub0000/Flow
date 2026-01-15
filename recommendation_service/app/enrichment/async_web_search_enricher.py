@@ -120,11 +120,15 @@ class AsyncWebSearchEnricher:
                     return data
 
                 search_results = await response.json()
-                if not search_results.get('query', {}).get('search'):
+                if not search_results:
+                    return data
+
+                query = search_results.get('query')
+                if not query or not query.get('search'):
                     return data
 
                 # Get first result
-                page_title = search_results['query']['search'][0]['title']
+                page_title = query['search'][0]['title']
 
                 # Get page content
                 content_params = {
@@ -142,7 +146,15 @@ class AsyncWebSearchEnricher:
                     if content_response.status != 200:
                         return data
 
-                    pages = (await content_response.json()).get('query', {}).get('pages', {})
+                    content_json = await content_response.json()
+                    if not content_json:
+                        return data
+
+                    query_data = content_json.get('query')
+                    if not query_data:
+                        return data
+
+                    pages = query_data.get('pages', {})
                     if not pages:
                         return data
 
@@ -203,15 +215,19 @@ class AsyncWebSearchEnricher:
 
                 result = await response.json()
 
+                # Ensure result is not None
+                if not result:
+                    return data
+
                 # Extract abstract/description
-                if result.get('Abstract'):
-                    data['description'] = result['Abstract']
+                abstract = result.get('Abstract')
+                if abstract:
+                    data['description'] = abstract
 
                 # Extract official website
-                if result.get('AbstractURL'):
-                    url = result['AbstractURL']
-                    if 'wikipedia' not in url.lower():
-                        data['website'] = url
+                abstract_url = result.get('AbstractURL')
+                if abstract_url and 'wikipedia' not in abstract_url.lower():
+                    data['website'] = abstract_url
 
             logger.info(f"Found {len(data)} fields from DuckDuckGo for {university_name}")
 
