@@ -250,12 +250,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               decoration: BoxDecoration(
                 color: AppColors.surface,
               ),
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
               child: Column(
                 children: [
                   // Badge/Tag above title
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [AppColors.accent, AppColors.accentLight],
@@ -284,7 +284,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   Text(
                     'Welcome to Flow',
                     style: theme.textTheme.displayLarge?.copyWith(
@@ -294,7 +294,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 900),
                     child: Text(
@@ -307,7 +307,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 16),
 
                   // Primary CTA Buttons
                   Wrap(
@@ -362,12 +362,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 36),
+                  const SizedBox(height: 20),
 
                   // Platform Stats - Enhanced
                   Wrap(
-                    spacing: 24,
-                    runSpacing: 24,
+                    spacing: 16,
+                    runSpacing: 16,
                     alignment: WrapAlignment.center,
                     children: [
                       _StatItem(
@@ -397,7 +397,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Find Your Path Feature Highlight - NEW
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -418,12 +418,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 32),
+                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                 child: Column(
                   children: [
                     // Badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
@@ -448,14 +448,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
 
                     Icon(
                       Icons.school,
-                      size: 48,
+                      size: 40,
                       color: Colors.white.withValues(alpha: 0.95),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
 
                     Text(
                       'Find Your Path',
@@ -466,7 +466,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
 
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 700),
@@ -480,12 +480,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 12),
 
                     // Benefits
                     Wrap(
-                      spacing: 16,
-                      runSpacing: 12,
+                      spacing: 12,
+                      runSpacing: 8,
                       alignment: WrapAlignment.center,
                       children: [
                         _FindYourPathBenefit(
@@ -502,19 +502,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
                     // CTA Button
                     ElevatedButton.icon(
                       onPressed: () => context.go('/find-your-path'),
-                      icon: const Icon(Icons.arrow_forward, size: 22),
+                      icon: const Icon(Icons.arrow_forward, size: 20),
                       label: const Text('Start Your Journey'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primary,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 36,
-                          vertical: 18,
+                          horizontal: 28,
+                          vertical: 14,
                         ),
                         elevation: 6,
                         shadowColor: Colors.black.withValues(alpha: 0.3),
@@ -528,7 +528,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
 
                     Text(
                       'Create a free account to see your results',
@@ -545,7 +545,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Key Features Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -559,7 +559,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -582,7 +582,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     'Platform Features',
                     style: theme.textTheme.headlineLarge?.copyWith(
@@ -591,22 +591,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 700),
                     child: Text(
                       'Everything you need for a complete educational experience',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
-                        fontSize: 16,
+                        fontSize: 15,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                   Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
+                    spacing: 16,
+                    runSpacing: 16,
                     alignment: WrapAlignment.center,
                     children: [
                       _PlatformFeature(
@@ -648,7 +648,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // How It Works Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -662,7 +662,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.secondary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
@@ -680,7 +680,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     'How It Works',
                     style: theme.textTheme.headlineLarge?.copyWith(
@@ -689,10 +689,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                   Wrap(
-                    spacing: 24,
-                    runSpacing: 24,
+                    spacing: 16,
+                    runSpacing: 16,
                     alignment: WrapAlignment.center,
                     children: [
                       _HowItWorksStep(
@@ -728,7 +728,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Testimonials Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -743,7 +743,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(16),
@@ -761,7 +761,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     'Trusted Across Africa',
                     style: theme.textTheme.headlineLarge?.copyWith(
@@ -770,22 +770,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 600),
                     child: Text(
                       'Hear from our community of students, institutions, and educators',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
-                        fontSize: 16,
+                        fontSize: 15,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                   Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
+                    spacing: 16,
+                    runSpacing: 16,
                     alignment: WrapAlignment.center,
                     children: [
                       _TestimonialCard(
@@ -818,7 +818,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Final CTA Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -833,7 +833,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [AppColors.accent, AppColors.accentLight],
@@ -850,8 +850,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.trending_up, color: AppColors.textPrimary, size: 18),
-                        const SizedBox(width: 8),
+                        Icon(Icons.trending_up, color: AppColors.textPrimary, size: 16),
+                        const SizedBox(width: 6),
                         Text(
                           'JOIN THE MOVEMENT',
                           style: theme.textTheme.labelMedium?.copyWith(
@@ -863,7 +863,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   Text(
                     'Ready to Get Started?',
                     style: theme.textTheme.headlineLarge?.copyWith(
@@ -873,20 +873,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 700),
                     child: Text(
                       'Join thousands of students, institutions, and educators across Africa who are transforming education with Flow.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
-                        height: 1.6,
-                        fontSize: 16,
+                        height: 1.5,
+                        fontSize: 15,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 16),
                   Wrap(
                     spacing: 16,
                     runSpacing: 12,
@@ -894,29 +894,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       ElevatedButton.icon(
                         onPressed: () => context.go('/register'),
-                        icon: const Icon(Icons.person_add, size: 22),
+                        icon: const Icon(Icons.person_add, size: 20),
                         label: const Text('Sign Up Free'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 18,
+                            horizontal: 24,
+                            vertical: 14,
                           ),
-                          elevation: 6,
+                          elevation: 4,
                           shadowColor: AppColors.primary.withValues(alpha: 0.5),
                           textStyle: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
-                        icon: const Icon(Icons.login, size: 22),
+                        icon: const Icon(Icons.login, size: 20),
                         label: const Text('Login'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
@@ -925,15 +925,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             width: 2,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 18,
+                            horizontal: 24,
+                            vertical: 14,
                           ),
                           textStyle: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
@@ -946,7 +946,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Footer
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.primaryDark, AppColors.primary],
@@ -960,18 +960,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.school, color: AppColors.accent, size: 28),
-                      const SizedBox(width: 10),
+                      Icon(Icons.school, color: AppColors.accent, size: 24),
+                      const SizedBox(width: 8),
                       Text(
                         'Flow EdTech',
-                        style: theme.textTheme.headlineSmall?.copyWith(
+                        style: theme.textTheme.titleLarge?.copyWith(
                           color: AppColors.textOnPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     'Transforming Education Across Africa',
                     style: theme.textTheme.bodySmall?.copyWith(
@@ -979,12 +979,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
                   // Quick Links
                   Wrap(
-                    spacing: 20,
-                    runSpacing: 12,
+                    spacing: 16,
+                    runSpacing: 8,
                     alignment: WrapAlignment.center,
                     children: [
                       _FooterLinkWithIcon(
@@ -1019,11 +1019,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
 
                   // Social Media Icons
                   Wrap(
-                    spacing: 16,
+                    spacing: 12,
                     alignment: WrapAlignment.center,
                     children: [
                       _SocialIcon(icon: Icons.facebook, onTap: () {}),
@@ -1033,10 +1033,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       _SocialIcon(icon: Icons.chat_bubble_outline, onTap: () {}), // WhatsApp
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
 
                   Divider(color: AppColors.border, thickness: 1),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
 
                   // Bottom Row - Copyright and Back to Top
                   Row(
@@ -1137,8 +1137,8 @@ class _StatItem extends StatelessWidget{
     final theme = Theme.of(context);
 
     return Container(
-      constraints: const BoxConstraints(minWidth: 160),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      constraints: const BoxConstraints(minWidth: 140),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -1161,7 +1161,7 @@ class _StatItem extends StatelessWidget{
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [color, color.withValues(alpha: 0.8)],
@@ -1175,18 +1175,18 @@ class _StatItem extends StatelessWidget{
                 ),
               ],
             ),
-            child: Icon(icon, size: 28, color: AppColors.textOnPrimary),
+            child: Icon(icon, size: 24, color: AppColors.textOnPrimary),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             value,
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: color,
-              fontSize: 28,
+              fontSize: 24,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             label,
             style: theme.textTheme.bodyLarge?.copyWith(
@@ -1436,8 +1436,8 @@ class _PlatformFeature extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 320,
-      padding: const EdgeInsets.all(20),
+      width: 280,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
@@ -1457,7 +1457,7 @@ class _PlatformFeature extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -1475,21 +1475,21 @@ class _PlatformFeature extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              size: 36,
+              size: 28,
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           Text(
             title,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
-              fontSize: 16,
+              fontSize: 15,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             description,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -1523,8 +1523,8 @@ class _HowItWorksStep extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 280,
-      padding: const EdgeInsets.all(20),
+      width: 250,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
@@ -1543,8 +1543,8 @@ class _HowItWorksStep extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Container(
-                width: 72,
-                height: 72,
+                width: 56,
+                height: 56,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -1555,14 +1555,14 @@ class _HowItWorksStep extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primary.withValues(alpha: 0.4),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: Icon(
                   icon,
-                  size: 32,
+                  size: 26,
                   color: AppColors.textOnPrimary,
                 ),
               ),
@@ -1570,18 +1570,18 @@ class _HowItWorksStep extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: Container(
-                  width: 28,
-                  height: 28,
+                  width: 22,
+                  height: 22,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [AppColors.accent, AppColors.accentLight],
                     ),
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.surface, width: 3),
+                    border: Border.all(color: AppColors.surface, width: 2),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.accent.withValues(alpha: 0.4),
-                        blurRadius: 6,
+                        blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
                     ],
@@ -1592,24 +1592,24 @@ class _HowItWorksStep extends StatelessWidget {
                     style: const TextStyle(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           Text(
             title,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
-              fontSize: 17,
+              fontSize: 15,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             description,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -1643,8 +1643,8 @@ class _TestimonialCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 340,
-      padding: const EdgeInsets.all(20),
+      width: 300,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
@@ -1669,30 +1669,30 @@ class _TestimonialCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: avatarColor.withValues(alpha: 0.3),
-                    width: 3,
+                    width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: avatarColor.withValues(alpha: 0.3),
-                      blurRadius: 8,
+                      blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
                 child: CircleAvatar(
-                  radius: 32,
+                  radius: 26,
                   backgroundColor: avatarColor,
                   child: Text(
                     name.split(' ').map((n) => n[0]).take(2).join(),
                     style: const TextStyle(
                       color: AppColors.textOnPrimary,
                       fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 18,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1704,10 +1704,10 @@ class _TestimonialCard extends StatelessWidget {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       role,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: theme.textTheme.bodySmall?.copyWith(
                         color: avatarColor,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1717,7 +1717,7 @@ class _TestimonialCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
@@ -1726,15 +1726,15 @@ class _TestimonialCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 1),
                 child: Icon(
                   Icons.star,
-                  size: 18,
+                  size: 16,
                   color: AppColors.accent,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: avatarColor.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
@@ -1785,7 +1785,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       child: Column(
         children: [
           Text(
@@ -1795,7 +1795,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 6),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 700),
             child: Text(
@@ -1806,7 +1806,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 16),
 
           // Tab Navigation
           Container(
@@ -1853,11 +1853,11 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               ],
             ),
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 16),
 
           // Tab Content
           SizedBox(
-            height: 550,
+            height: 480,
             child: TabBarView(
               controller: _tabController,
               children: const [
@@ -2093,27 +2093,27 @@ class _AccountTypeDetails extends StatelessWidget {
           children: [
             // Header
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [color.withValues(alpha: 0.1), color.withValues(alpha: 0.05)],
                 ),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: color.withValues(alpha: 0.3), width: 2),
               ),
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [color, color.withValues(alpha: 0.8)],
                       ),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(icon, size: 48, color: AppColors.textOnPrimary),
+                    child: Icon(icon, size: 36, color: AppColors.textOnPrimary),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
                   Text(
                     title,
                     style: theme.textTheme.headlineMedium?.copyWith(
@@ -2121,37 +2121,37 @@ class _AccountTypeDetails extends StatelessWidget {
                       color: color,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   Text(
                     description,
-                    style: theme.textTheme.bodyLarge?.copyWith(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: AppColors.textPrimary,
-                      height: 1.6,
+                      height: 1.5,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 20),
 
             // Features Grid
             Wrap(
-              spacing: 20,
-              runSpacing: 20,
+              spacing: 12,
+              runSpacing: 12,
               alignment: WrapAlignment.center,
               children: features.map((feature) {
                 return Container(
-                  width: 280,
-                  padding: const EdgeInsets.all(20),
+                  width: 250,
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16),
@@ -2170,18 +2170,18 @@ class _AccountTypeDetails extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: color.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Icon(feature.icon, color: color, size: 24),
+                            child: Icon(feature.icon, color: color, size: 20),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               feature.title,
-                              style: theme.textTheme.titleMedium?.copyWith(
+                              style: theme.textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.textPrimary,
                               ),
@@ -2189,12 +2189,12 @@ class _AccountTypeDetails extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       Text(
                         feature.description,
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
-                          height: 1.5,
+                          height: 1.4,
                         ),
                       ),
                     ],
@@ -2203,18 +2203,18 @@ class _AccountTypeDetails extends StatelessWidget {
               }).toList(),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 20),
 
             // CTA Button
             ElevatedButton.icon(
               onPressed: () => context.go('/register'),
-              icon: const Icon(Icons.arrow_forward),
+              icon: const Icon(Icons.arrow_forward, size: 18),
               label: Text('Get Started as ${title.replaceAll("For ", "")}'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: color,
                 foregroundColor: AppColors.textOnPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -2371,26 +2371,26 @@ class _FindYourPathBenefit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.3),
-          width: 1.5,
+          width: 1,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 20),
-          const SizedBox(width: 12),
+          Icon(icon, color: Colors.white, size: 16),
+          const SizedBox(width: 8),
           Text(
             text,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
-              fontSize: 15,
+              fontSize: 13,
             ),
           ),
         ],
