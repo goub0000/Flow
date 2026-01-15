@@ -113,7 +113,12 @@ class AsyncAutoFillOrchestrator:
         else:
             return 3
 
-    def get_universities_to_enrich(self, limit: int = None, priority_fields: List[str] = None) -> List[Dict]:
+    def get_universities_to_enrich(
+        self,
+        limit: int = None,
+        priority_fields: List[str] = None,
+        prioritize_us: bool = True
+    ) -> List[Dict]:
         """
         Get list of universities that need enrichment
         (Synchronous - database operation)
@@ -121,11 +126,12 @@ class AsyncAutoFillOrchestrator:
         Args:
             limit: Maximum number of universities to return
             priority_fields: Only consider universities with NULLs in these fields
+            prioritize_us: If True, prioritize US universities (College Scorecard data)
 
         Returns:
             List of university dicts sorted by enrichment priority
         """
-        logger.info(f"Finding universities to enrich (limit={limit})...")
+        logger.info(f"Finding universities to enrich (limit={limit}, prioritize_us={prioritize_us})...")
 
         # Get all universities
         response = self.db.table('universities').select('*').execute()
@@ -152,8 +158,14 @@ class AsyncAutoFillOrchestrator:
                     if priority_fields and field in priority_fields:
                         missing_critical += 1
 
-            # Score: missing_critical * 100 + missing_total
+            # Base score: missing_critical * 100 + missing_total
             score = missing_critical * 100 + missing_count
+
+            # US universities get priority boost (College Scorecard provides high-quality data)
+            if prioritize_us:
+                country = university.get('country', '')
+                if country in ['USA', 'United States', 'US', 'U.S.', 'U.S.A.']:
+                    score += 10000  # Significant boost to ensure US universities processed first
 
             if score > 0:  # Has at least one missing field
                 scored_universities.append((university, score, missing_count))
@@ -166,7 +178,64 @@ class AsyncAutoFillOrchestrator:
             scored_universities = scored_universities[:limit]
 
         result = [item[0] for item in scored_universities]
-        logger.info(f"Found {len(result)} universities needing enrichment")
+
+        # Log country breakdown
+        us_count = sum(1 for u in result if u.get('country') in ['USA', 'United States', 'US', 'U.S.', 'U.S.A.'])
+        logger.info(f"Found {len(result)} universities needing enrichment ({us_count} US universities)")
+
+        return result
+
+    def get_us_universities_to_enrich(self, limit: int = None) -> List[Dict]:
+        """
+        Get only US universities that need enrichment
+        Best used with College Scorecard API for authoritative data
+
+        Args:
+            limit: Maximum number of universities to return
+
+        Returns:
+            List of US university dicts sorted by enrichment priority
+        """
+        logger.info(f"Finding US universities to enrich (limit={limit})...")
+
+        # Get US universities only
+        response = self.db.table('universities').select('*').in_(
+            'country', ['USA', 'United States', 'US', 'U.S.', 'U.S.A.']
+        ).execute()
+        universities = response.data
+
+        if not universities:
+            logger.info("No US universities found in database")
+            return []
+
+        # Score by missing critical fields
+        scored_universities = []
+
+        for university in universities:
+            missing_count = 0
+            missing_critical = 0
+
+            for field in self.FILLABLE_FIELDS:
+                if not university.get(field):
+                    missing_count += 1
+                    priority = self._get_field_priority(field)
+                    if priority == 1:
+                        missing_critical += 1
+
+            score = missing_critical * 100 + missing_count
+
+            if score > 0:
+                scored_universities.append((university, score, missing_count))
+
+        # Sort by score (descending)
+        scored_universities.sort(key=lambda x: x[1], reverse=True)
+
+        # Apply limit
+        if limit:
+            scored_universities = scored_universities[:limit]
+
+        result = [item[0] for item in scored_universities]
+        logger.info(f"Found {len(result)} US universities needing enrichment")
 
         return result
 

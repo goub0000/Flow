@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List
 import logging
+import aiohttp
 from datetime import datetime
 from app.database.config import get_supabase
 from app.enrichment.auto_fill_orchestrator import AutoFillOrchestrator
@@ -524,6 +525,193 @@ async def run_monthly_async_enrichment():
         max_concurrent=20
     )
     return await start_async_enrichment(request)
+
+
+@router.post("/enrichment/us-universities")
+async def enrich_us_universities(limit: int = 100):
+    """
+    Enrich US universities with College Scorecard data (priority endpoint)
+
+    US universities are prioritized because College Scorecard API provides:
+    - Official government data (high accuracy)
+    - Comprehensive coverage (7,000+ institutions)
+    - High-quality fields: acceptance rate, SAT/ACT scores, tuition, graduation rates
+
+    Args:
+        limit: Maximum universities to process (default: 100)
+    """
+    try:
+        job_id = f"us_enrich_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        job_status = _create_job_in_db(job_id, status='pending', message='US university enrichment queued (College Scorecard priority)')
+
+        import asyncio
+        asyncio.create_task(run_us_enrichment_job(job_id, limit))
+
+        return job_status
+
+    except Exception as e:
+        logger.error(f"Failed to start US enrichment: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+async def run_us_enrichment_job(job_id: str, limit: int):
+    """Background task to run US-focused enrichment"""
+    try:
+        logger.info(f"Starting US university enrichment job {job_id}")
+        _update_job_in_db(job_id, {'status': 'running', 'started_at': datetime.now()})
+
+        db = get_supabase()
+
+        # Use orchestrator with US-only query
+        orchestrator = AsyncAutoFillOrchestrator(
+            db=db,
+            rate_limit_delay=0.5,  # Faster for College Scorecard
+            max_concurrent=15
+        )
+
+        # Get US universities specifically
+        universities = orchestrator.get_us_universities_to_enrich(limit=limit)
+
+        if not universities:
+            _update_job_in_db(job_id, {
+                'status': 'completed',
+                'completed_at': datetime.now(),
+                'message': 'No US universities need enrichment'
+            })
+            return
+
+        logger.info(f"Processing {len(universities)} US universities with College Scorecard priority")
+
+        # Initialize enrichers
+        from app.enrichment.async_web_search_enricher import AsyncWebSearchEnricher
+        from app.enrichment.async_field_scrapers import AsyncFieldScrapers
+        from app.enrichment.async_college_scorecard_enricher import AsyncCollegeScorecardEnricher
+        from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
+
+        async with aiohttp.ClientSession() as session:
+            web_enricher = AsyncWebSearchEnricher()
+            field_scrapers = AsyncFieldScrapers()
+            scorecard_enricher = AsyncCollegeScorecardEnricher()
+            cache = AsyncEnrichmentCache(db)
+
+            results = {'processed': 0, 'updated': 0, 'errors': 0, 'fields_filled': 0}
+
+            for university in universities:
+                try:
+                    enriched_data, fields_filled = await orchestrator.enrich_university_async(
+                        university, session, web_enricher, field_scrapers, scorecard_enricher, cache
+                    )
+
+                    if enriched_data:
+                        success = orchestrator.update_university(university['id'], enriched_data)
+                        if success:
+                            results['updated'] += 1
+                            results['fields_filled'] += fields_filled
+
+                    results['processed'] += 1
+
+                    # Update progress every 10 universities
+                    if results['processed'] % 10 == 0:
+                        _update_job_in_db(job_id, {
+                            'universities_processed': results['processed'],
+                            'universities_updated': results['updated'],
+                            'total_fields_filled': results['fields_filled']
+                        })
+
+                except Exception as e:
+                    logger.error(f"Error enriching {university.get('name')}: {e}")
+                    results['errors'] += 1
+
+        _update_job_in_db(job_id, {
+            'status': 'completed',
+            'completed_at': datetime.now(),
+            'universities_processed': results['processed'],
+            'universities_updated': results['updated'],
+            'total_fields_filled': results['fields_filled'],
+            'errors': results['errors'],
+            'message': f"US university enrichment complete: {results['updated']}/{results['processed']} updated"
+        })
+
+        logger.info(f"US enrichment job {job_id} completed: {results}")
+
+    except Exception as e:
+        logger.error(f"US enrichment job {job_id} failed: {e}")
+        _update_job_in_db(job_id, {
+            'status': 'failed',
+            'completed_at': datetime.now(),
+            'message': str(e)
+        })
+
+
+@router.get("/enrichment/us-stats")
+async def get_us_university_stats():
+    """
+    Get statistics about US universities and their enrichment status
+
+    Shows how many US universities need College Scorecard enrichment
+    """
+    try:
+        db = get_supabase()
+
+        # Get all US universities
+        response = db.table('universities').select('*').in_(
+            'country', ['USA', 'United States', 'US', 'U.S.', 'U.S.A.']
+        ).execute()
+
+        us_universities = response.data or []
+        total_us = len(us_universities)
+
+        if total_us == 0:
+            return {
+                'total_us_universities': 0,
+                'message': 'No US universities in database'
+            }
+
+        # Count fields that College Scorecard can provide
+        scorecard_fields = [
+            'city', 'state', 'website', 'location_type', 'university_type',
+            'total_students', 'acceptance_rate', 'sat_math_25th', 'sat_math_75th',
+            'sat_ebrw_25th', 'sat_ebrw_75th', 'act_composite_25th', 'act_composite_75th',
+            'tuition_out_state', 'total_cost', 'graduation_rate_4year', 'median_earnings_10year'
+        ]
+
+        field_stats = {}
+        need_enrichment = 0
+
+        for uni in us_universities:
+            needs_any = False
+            for field in scorecard_fields:
+                if field not in field_stats:
+                    field_stats[field] = {'filled': 0, 'null': 0}
+
+                if uni.get(field):
+                    field_stats[field]['filled'] += 1
+                else:
+                    field_stats[field]['null'] += 1
+                    needs_any = True
+
+            if needs_any:
+                need_enrichment += 1
+
+        return {
+            'total_us_universities': total_us,
+            'need_enrichment': need_enrichment,
+            'fully_enriched': total_us - need_enrichment,
+            'enrichment_coverage': round((total_us - need_enrichment) / total_us * 100, 1),
+            'field_stats': {
+                field: {
+                    'filled': stats['filled'],
+                    'null': stats['null'],
+                    'fill_rate': round(stats['filled'] / total_us * 100, 1)
+                }
+                for field, stats in sorted(field_stats.items(), key=lambda x: x[1]['null'], reverse=True)
+            },
+            'college_scorecard_api_status': 'Check COLLEGE_SCORECARD_API_KEY environment variable'
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to get US stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.delete("/enrichment/jobs")
