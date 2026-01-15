@@ -482,15 +482,15 @@ async def start_async_enrichment(request: EnrichmentRequest):
 @router.post("/enrichment/daily-async")
 async def run_daily_async_enrichment():
     """
-    Run daily ASYNC enrichment (30 critical priority universities)
+    Run daily ASYNC enrichment (100 critical priority universities)
 
-    5-10x faster than sync version (2-5 minutes vs 20-30 minutes)
+    AGGRESSIVE MODE: 3x larger batches for faster coverage
     """
     request = EnrichmentRequest(
-        limit=30,
+        limit=100,
         priority='critical',
         dry_run=False,
-        max_concurrent=10
+        max_concurrent=20
     )
     return await start_async_enrichment(request)
 
@@ -498,15 +498,15 @@ async def run_daily_async_enrichment():
 @router.post("/enrichment/weekly-async")
 async def run_weekly_async_enrichment():
     """
-    Run weekly ASYNC enrichment (100 high priority universities)
+    Run weekly ASYNC enrichment (300 high priority universities)
 
-    5-10x faster than sync version (7-13 minutes vs 1-2 hours)
+    AGGRESSIVE MODE: 3x larger batches for faster coverage
     """
     request = EnrichmentRequest(
-        limit=100,
+        limit=300,
         priority='high',
         dry_run=False,
-        max_concurrent=15
+        max_concurrent=25
     )
     return await start_async_enrichment(request)
 
@@ -514,15 +514,15 @@ async def run_weekly_async_enrichment():
 @router.post("/enrichment/monthly-async")
 async def run_monthly_async_enrichment():
     """
-    Run monthly ASYNC enrichment (300 medium priority universities)
+    Run monthly ASYNC enrichment (500 medium priority universities)
 
-    5-10x faster than sync version (20-40 minutes vs 3-5 hours)
+    AGGRESSIVE MODE: Runs every 2 hours for maximum coverage
     """
     request = EnrichmentRequest(
-        limit=300,
+        limit=500,
         priority='medium',
         dry_run=False,
-        max_concurrent=20
+        max_concurrent=30
     )
     return await start_async_enrichment(request)
 

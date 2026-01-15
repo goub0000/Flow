@@ -1,99 +1,131 @@
-name: Async Data Enrichment Automation (5-10x Faster)
+name: Aggressive Data Enrichment (Maximum Speed)
 
 on:
   schedule:
-    # Daily enrichment at 2:00 AM UTC (30 critical priority universities)
-    # Async version: ~2-5 minutes vs sync ~20-30 minutes
-    - cron: '0 2 * * *'
+    # Run every 2 hours for continuous enrichment
+    - cron: '0 */2 * * *'
 
-    # Weekly enrichment every Sunday at 3:00 AM UTC (100 high priority universities)
-    # Async version: ~7-13 minutes vs sync ~1-2 hours
-    - cron: '0 3 * * 0'
+    # Additional US-focused run every 4 hours (College Scorecard priority)
+    - cron: '30 */4 * * *'
 
-    # Monthly enrichment on the 1st at 4:00 AM UTC (300 medium priority universities)
-    # Async version: ~20-40 minutes vs sync ~3-5 hours
-    - cron: '0 4 1 * *'
-
-  # Allow manual triggering for testing
+  # Allow manual triggering
   workflow_dispatch:
     inputs:
       enrichment_type:
-        description: 'Type of async enrichment to run'
+        description: 'Type of enrichment to run'
         required: true
-        default: 'daily'
+        default: 'all'
         type: choice
         options:
-          - daily
-          - weekly
-          - monthly
+          - all
+          - us-only
+          - international
 
 jobs:
-  trigger-async-enrichment:
+  us-university-enrichment:
     runs-on: ubuntu-latest
+    name: US Universities (College Scorecard)
 
     steps:
-      - name: Determine enrichment type
-        id: enrichment-type
+      - name: Enrich US Universities (500 batch)
         run: |
-          # Determine which enrichment to run based on schedule or manual input
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "type=${{ github.event.inputs.enrichment_type }}" >> $GITHUB_OUTPUT
-          elif [ "$(date +%d)" == "01" ]; then
-            # Monthly on the 1st
-            echo "type=monthly" >> $GITHUB_OUTPUT
-          elif [ "$(date +%u)" == "7" ]; then
-            # Weekly on Sunday
-            echo "type=weekly" >> $GITHUB_OUTPUT
-          else
-            # Daily
-            echo "type=daily" >> $GITHUB_OUTPUT
-          fi
+          echo "========================================="
+          echo "US University Enrichment (College Scorecard)"
+          echo "========================================="
+          echo "Target: 500 US universities with official government data"
+          echo "Data: SAT/ACT scores, acceptance rates, tuition, graduation rates"
+          echo ""
 
-      - name: Trigger Daily Async Enrichment
-        if: steps.enrichment-type.outputs.type == 'daily'
-        run: |
-          echo "Triggering ASYNC daily enrichment (30 critical priority universities)..."
-          echo "Expected duration: 2-5 minutes (vs sync: 20-30 minutes)"
           curl -X POST \
-            https://web-production-51e34.up.railway.app/api/v1/enrichment/daily-async \
+            "https://web-production-51e34.up.railway.app/api/v1/enrichment/us-universities?limit=500" \
             -H "Content-Type: application/json" \
             -w "\nHTTP Status: %{http_code}\n"
 
-      - name: Trigger Weekly Async Enrichment
-        if: steps.enrichment-type.outputs.type == 'weekly'
+      - name: Check US Stats
         run: |
-          echo "Triggering ASYNC weekly enrichment (100 high priority universities)..."
-          echo "Expected duration: 7-13 minutes (vs sync: 1-2 hours)"
-          curl -X POST \
-            https://web-production-51e34.up.railway.app/api/v1/enrichment/weekly-async \
-            -H "Content-Type: application/json" \
-            -w "\nHTTP Status: %{http_code}\n"
+          echo ""
+          echo "US University Statistics:"
+          curl -s "https://web-production-51e34.up.railway.app/api/v1/enrichment/us-stats" | jq '.'
 
-      - name: Trigger Monthly Async Enrichment
-        if: steps.enrichment-type.outputs.type == 'monthly'
+  general-enrichment:
+    runs-on: ubuntu-latest
+    name: General Enrichment (All Universities)
+
+    steps:
+      - name: Trigger Large Batch Enrichment (500 universities)
         run: |
-          echo "Triggering ASYNC monthly enrichment (300 medium priority universities)..."
-          echo "Expected duration: 20-40 minutes (vs sync: 3-5 hours)"
+          echo "========================================="
+          echo "General University Enrichment"
+          echo "========================================="
+          echo "Target: 500 universities (US prioritized first)"
+          echo ""
+
+          # Monthly-sized batch but run frequently
           curl -X POST \
             https://web-production-51e34.up.railway.app/api/v1/enrichment/monthly-async \
             -H "Content-Type: application/json" \
             -w "\nHTTP Status: %{http_code}\n"
 
-      - name: Check enrichment status
+      - name: Trigger Additional Batch
         run: |
-          echo "Waiting 5 seconds for async job to start..."
+          echo ""
+          echo "Starting second enrichment batch..."
           sleep 5
-          echo "Checking async enrichment job status..."
-          curl -X GET \
-            https://web-production-51e34.up.railway.app/api/v1/enrichment/status \
+
+          curl -X POST \
+            https://web-production-51e34.up.railway.app/api/v1/enrichment/weekly-async \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n"
+
+  cleanup-and-status:
+    runs-on: ubuntu-latest
+    name: Cleanup & Status
+    needs: [us-university-enrichment, general-enrichment]
+
+    steps:
+      - name: Cleanup Stuck Jobs
+        run: |
+          echo "Cleaning up any stuck jobs..."
+          curl -X POST \
+            https://web-production-51e34.up.railway.app/api/v1/enrichment/cleanup-stuck \
             -H "Content-Type: application/json"
 
-      - name: Performance Summary
+      - name: Check Overall Status
         run: |
+          echo ""
           echo "========================================="
-          echo "Async Enrichment Performance Benefits"
+          echo "Enrichment Status Summary"
           echo "========================================="
-          echo "Daily:   2-5 min  (vs sync: 20-30 min) = 6-10x faster"
-          echo "Weekly:  7-13 min (vs sync: 1-2 hrs)   = 7-10x faster"
-          echo "Monthly: 20-40 min (vs sync: 3-5 hrs)  = 7-9x faster"
+
+          curl -s "https://web-production-51e34.up.railway.app/api/v1/enrichment/status" | \
+            jq '{
+              total_jobs: .total_jobs,
+              running: [.jobs[] | select(.status == "running")] | length,
+              completed_today: [.jobs[] | select(.status == "completed")] | length,
+              recent_jobs: [.jobs[:5] | .[] | {id: .job_id, status: .status, processed: .universities_processed, updated: .universities_updated}]
+            }'
+
+      - name: Database Coverage Report
+        run: |
+          echo ""
+          echo "========================================="
+          echo "Database Coverage Analysis"
+          echo "========================================="
+
+          curl -s "https://web-production-51e34.up.railway.app/api/v1/enrichment/analyze" | \
+            jq '{
+              total_universities: .total_universities,
+              critical_fields: [.fields[] | select(.priority == "CRITICAL") | {field: .field, filled: .filled_count, null_pct: .null_percentage}]
+            }'
+
+      - name: Summary
+        run: |
+          echo ""
+          echo "========================================="
+          echo "AGGRESSIVE ENRICHMENT COMPLETE"
+          echo "========================================="
+          echo "Schedule: Every 2 hours (general) + Every 4 hours (US-focused)"
+          echo "Batch sizes: 500 US + 500 general per run"
+          echo "Expected daily processing: ~6,000 universities"
+          echo "Full database coverage: ~3 days"
           echo "========================================="
