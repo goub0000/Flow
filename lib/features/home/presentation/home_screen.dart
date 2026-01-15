@@ -250,12 +250,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               decoration: BoxDecoration(
                 color: AppColors.surface,
               ),
-              padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
               child: Column(
                 children: [
                   // Badge/Tag above title
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [AppColors.accent, AppColors.accentLight],
@@ -284,7 +284,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   Text(
                     'Welcome to Flow',
                     style: theme.textTheme.displayLarge?.copyWith(
@@ -294,20 +294,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 900),
                     child: Text(
                       'A comprehensive EdTech platform designed to connect students, institutions, parents, counselors, and recommenders across Africa. Built for offline-first experiences with mobile money integration.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
-                        height: 1.8,
-                        fontSize: 18,
+                        height: 1.6,
+                        fontSize: 17,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 28),
 
                   // Primary CTA Buttons
                   Wrap(
@@ -323,10 +323,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 20,
+                            horizontal: 28,
+                            vertical: 16,
                           ),
-                          elevation: 6,
+                          elevation: 4,
                           shadowColor: AppColors.primary.withValues(alpha: 0.4),
                           textStyle: const TextStyle(
                             fontSize: 16,
@@ -339,7 +339,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
-                        icon: const Icon(Icons.login, size: 22),
+                        icon: const Icon(Icons.login, size: 20),
                         label: const Text('Sign In'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
@@ -348,8 +348,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             width: 2,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 20,
+                            horizontal: 28,
+                            vertical: 16,
                           ),
                           textStyle: const TextStyle(
                             fontSize: 16,
@@ -362,12 +362,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 56),
+                  const SizedBox(height: 36),
 
                   // Platform Stats - Enhanced
                   Wrap(
-                    spacing: 32,
-                    runSpacing: 32,
+                    spacing: 24,
+                    runSpacing: 24,
                     alignment: WrapAlignment.center,
                     children: [
                       _StatItem(
@@ -397,7 +397,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Find Your Path Feature Highlight - NEW
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -418,12 +418,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 56, horizontal: 40),
+                padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 32),
                 child: Column(
                   children: [
                     // Badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
@@ -448,25 +448,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
                     Icon(
                       Icons.school,
-                      size: 64,
+                      size: 48,
                       color: Colors.white.withValues(alpha: 0.95),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
                     Text(
                       'Find Your Path',
-                      style: theme.textTheme.displayMedium?.copyWith(
+                      style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         height: 1.2,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
 
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 700),
@@ -474,18 +474,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         'Answer a few questions about your academic profile and goals, and we\'ll recommend the perfect universities for you.',
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: Colors.white.withValues(alpha: 0.95),
-                          height: 1.7,
-                          fontSize: 18,
+                          height: 1.5,
+                          fontSize: 16,
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 20),
 
                     // Benefits
                     Wrap(
-                      spacing: 24,
-                      runSpacing: 16,
+                      spacing: 16,
+                      runSpacing: 12,
                       alignment: WrapAlignment.center,
                       children: [
                         _FindYourPathBenefit(
@@ -502,21 +502,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 24),
 
                     // CTA Button
                     ElevatedButton.icon(
                       onPressed: () => context.go('/find-your-path'),
-                      icon: const Icon(Icons.arrow_forward, size: 24),
+                      icon: const Icon(Icons.arrow_forward, size: 22),
                       label: const Text('Start Your Journey'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primary,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 48,
-                          vertical: 24,
+                          horizontal: 36,
+                          vertical: 18,
                         ),
-                        elevation: 8,
+                        elevation: 6,
                         shadowColor: Colors.black.withValues(alpha: 0.3),
                         textStyle: const TextStyle(
                           fontSize: 18,
@@ -528,7 +528,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
 
                     Text(
                       'Create a free account to see your results',
@@ -545,7 +545,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Key Features Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -582,16 +582,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
                     'Platform Features',
                     style: theme.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontSize: 32,
+                      fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 700),
                     child: Text(
@@ -603,10 +603,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
                   Wrap(
-                    spacing: 28,
-                    runSpacing: 28,
+                    spacing: 20,
+                    runSpacing: 20,
                     alignment: WrapAlignment.center,
                     children: [
                       _PlatformFeature(
@@ -648,7 +648,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // How It Works Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -680,19 +680,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
                     'How It Works',
                     style: theme.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontSize: 32,
+                      fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
                   Wrap(
-                    spacing: 32,
-                    runSpacing: 40,
+                    spacing: 24,
+                    runSpacing: 24,
                     alignment: WrapAlignment.center,
                     children: [
                       _HowItWorksStep(
@@ -728,7 +728,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Testimonials Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -761,16 +761,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
                     'Trusted Across Africa',
                     style: theme.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontSize: 32,
+                      fontSize: 28,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 600),
                     child: Text(
@@ -782,10 +782,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
                   Wrap(
-                    spacing: 28,
-                    runSpacing: 28,
+                    spacing: 20,
+                    runSpacing: 20,
                     alignment: WrapAlignment.center,
                     children: [
                       _TestimonialCard(
@@ -818,7 +818,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Final CTA Section
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -863,47 +863,47 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   Text(
                     'Ready to Get Started?',
-                    style: theme.textTheme.displayMedium?.copyWith(
+                    style: theme.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
                       height: 1.2,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 700),
                     child: Text(
                       'Join thousands of students, institutions, and educators across Africa who are transforming education with Flow.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
-                        height: 1.8,
-                        fontSize: 17,
+                        height: 1.6,
+                        fontSize: 16,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 28),
                   Wrap(
-                    spacing: 20,
-                    runSpacing: 16,
+                    spacing: 16,
+                    runSpacing: 12,
                     alignment: WrapAlignment.center,
                     children: [
                       ElevatedButton.icon(
                         onPressed: () => context.go('/register'),
-                        icon: const Icon(Icons.person_add, size: 24),
+                        icon: const Icon(Icons.person_add, size: 22),
                         label: const Text('Sign Up Free'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 24,
+                            horizontal: 32,
+                            vertical: 18,
                           ),
-                          elevation: 10,
+                          elevation: 6,
                           shadowColor: AppColors.primary.withValues(alpha: 0.5),
                           textStyle: const TextStyle(
                             fontSize: 18,
@@ -916,17 +916,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
-                        icon: const Icon(Icons.login, size: 24),
+                        icon: const Icon(Icons.login, size: 22),
                         label: const Text('Login'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
                           side: BorderSide(
                             color: AppColors.secondary,
-                            width: 2.5,
+                            width: 2,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 24,
+                            horizontal: 32,
+                            vertical: 18,
                           ),
                           textStyle: const TextStyle(
                             fontSize: 18,
@@ -946,7 +946,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             // Footer
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.primaryDark, AppColors.primary],
@@ -979,7 +979,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Quick Links
                   Wrap(
@@ -1019,7 +1019,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Social Media Icons
                   Wrap(
@@ -1033,10 +1033,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       _SocialIcon(icon: Icons.chat_bubble_outline, onTap: () {}), // WhatsApp
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   Divider(color: AppColors.border, thickness: 1),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
 
                   // Bottom Row - Copyright and Back to Top
                   Row(
@@ -1137,8 +1137,8 @@ class _StatItem extends StatelessWidget{
     final theme = Theme.of(context);
 
     return Container(
-      constraints: const BoxConstraints(minWidth: 180),
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+      constraints: const BoxConstraints(minWidth: 160),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -1161,7 +1161,7 @@ class _StatItem extends StatelessWidget{
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [color, color.withValues(alpha: 0.8)],
@@ -1170,23 +1170,23 @@ class _StatItem extends StatelessWidget{
               boxShadow: [
                 BoxShadow(
                   color: color.withValues(alpha: 0.3),
-                  blurRadius: 8,
+                  blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child: Icon(icon, size: 36, color: AppColors.textOnPrimary),
+            child: Icon(icon, size: 28, color: AppColors.textOnPrimary),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Text(
             value,
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: color,
-              fontSize: 36,
+              fontSize: 28,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             label,
             style: theme.textTheme.bodyLarge?.copyWith(
@@ -1436,8 +1436,8 @@ class _PlatformFeature extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 350,
-      padding: const EdgeInsets.all(28),
+      width: 320,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
@@ -1457,7 +1457,7 @@ class _PlatformFeature extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -1475,21 +1475,21 @@ class _PlatformFeature extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              size: 44,
+              size: 36,
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
           Text(
             title,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
-              fontSize: 18,
+              fontSize: 16,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             description,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -1523,11 +1523,11 @@ class _HowItWorksStep extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 300,
-      padding: const EdgeInsets.all(28),
+      width: 280,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 2),
         boxShadow: [
           BoxShadow(
@@ -1543,8 +1543,8 @@ class _HowItWorksStep extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Container(
-                width: 90,
-                height: 90,
+                width: 72,
+                height: 72,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -1562,7 +1562,7 @@ class _HowItWorksStep extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  size: 40,
+                  size: 32,
                   color: AppColors.textOnPrimary,
                 ),
               ),
@@ -1570,8 +1570,8 @@ class _HowItWorksStep extends StatelessWidget {
                 top: 0,
                 right: 0,
                 child: Container(
-                  width: 32,
-                  height: 32,
+                  width: 28,
+                  height: 28,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [AppColors.accent, AppColors.accentLight],
@@ -1592,24 +1592,24 @@ class _HowItWorksStep extends StatelessWidget {
                     style: const TextStyle(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           Text(
             title,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
-              fontSize: 20,
+              fontSize: 17,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             description,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -1643,8 +1643,8 @@ class _TestimonialCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: 380,
-      padding: const EdgeInsets.all(28),
+      width: 340,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
@@ -1717,24 +1717,24 @@ class _TestimonialCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               5,
               (index) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 1),
                 child: Icon(
                   Icons.star,
-                  size: 22,
+                  size: 18,
                   color: AppColors.accent,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: avatarColor.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
@@ -1785,7 +1785,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
       child: Column(
         children: [
           Text(
@@ -1795,7 +1795,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 700),
             child: Text(
@@ -1806,7 +1806,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 28),
 
           // Tab Navigation
           Container(
@@ -1853,11 +1853,11 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               ],
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 28),
 
           // Tab Content
           SizedBox(
-            height: 600,
+            height: 550,
             child: TabBarView(
               controller: _tabController,
               children: const [
