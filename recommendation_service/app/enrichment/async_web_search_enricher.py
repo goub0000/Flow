@@ -72,6 +72,12 @@ class AsyncWebSearchEnricher:
 
         enriched_data = {}
 
+        # Create session if not provided
+        close_session = False
+        if session is None:
+            session = aiohttp.ClientSession()
+            close_session = True
+
         try:
             # Run all searches concurrently - prioritize reliable sources
             tasks = [
@@ -113,6 +119,11 @@ class AsyncWebSearchEnricher:
 
         except Exception as e:
             logger.error(f"Error searching for {university_name}: {e}")
+
+        finally:
+            # Close session if we created it
+            if close_session and session:
+                await session.close()
 
         return enriched_data
 
