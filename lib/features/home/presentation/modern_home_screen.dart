@@ -136,6 +136,11 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                 child: _SocialProofSection(),
               ),
 
+              // University Search Section
+              const SliverToBoxAdapter(
+                child: _UniversitySearchSection(),
+              ),
+
               // Find Your Path Feature Highlight
               const SliverToBoxAdapter(
                 child: _FindYourPathSection(),
@@ -1626,6 +1631,197 @@ class _FindYourPathBenefit extends StatelessWidget {
             style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// University Search Section - Search universities worldwide
+class _UniversitySearchSection extends StatelessWidget {
+  const _UniversitySearchSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.secondary,
+                  theme.colorScheme.tertiary,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.secondary.withOpacity(0.3),
+                  blurRadius: 30,
+                  offset: const Offset(0, 12),
+                ),
+              ],
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 40),
+              child: Column(
+                children: [
+                  // Icon
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.school_rounded,
+                      size: 48,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Title
+                  Text(
+                    'Search Universities',
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 36,
+                      letterSpacing: -0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Description
+                  Text(
+                    'Explore 18,000+ universities from around the world.\nFilter by country, tuition, acceptance rate, and more.',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white.withOpacity(0.95),
+                      height: 1.6,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Stats Row
+                  Wrap(
+                    spacing: 32,
+                    runSpacing: 16,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      _UniversityStatChip(
+                        icon: Icons.public,
+                        value: '100+',
+                        label: 'Countries',
+                      ),
+                      _UniversityStatChip(
+                        icon: Icons.account_balance,
+                        value: '18K+',
+                        label: 'Universities',
+                      ),
+                      _UniversityStatChip(
+                        icon: Icons.filter_list,
+                        value: '10+',
+                        label: 'Filters',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+
+                  // CTA Button
+                  ElevatedButton.icon(
+                    onPressed: () => context.go('/universities'),
+                    icon: const Icon(Icons.search, size: 22),
+                    label: const Text(
+                      'Browse Universities',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: theme.colorScheme.secondary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 18,
+                      ),
+                      elevation: 4,
+                      shadowColor: Colors.black.withOpacity(0.2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Helper widget for university search stats
+class _UniversityStatChip extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String label;
+
+  const _UniversityStatChip({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.25),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: Colors.white,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.85),
+              fontSize: 13,
             ),
           ),
         ],

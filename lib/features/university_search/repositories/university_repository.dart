@@ -1,0 +1,214 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../core/models/university_model.dart';
+
+/// Filter options for university search
+class UniversityFilters {
+  final String? searchQuery;
+  final String? country;
+  final String? universityType;
+  final String? locationType;
+  final double? maxTuition;
+  final double? minAcceptanceRate;
+  final double? maxAcceptanceRate;
+
+  const UniversityFilters({
+    this.searchQuery,
+    this.country,
+    this.universityType,
+    this.locationType,
+    this.maxTuition,
+    this.minAcceptanceRate,
+    this.maxAcceptanceRate,
+  });
+
+  UniversityFilters copyWith({
+    String? searchQuery,
+    String? country,
+    String? universityType,
+    String? locationType,
+    double? maxTuition,
+    double? minAcceptanceRate,
+    double? maxAcceptanceRate,
+  }) {
+    return UniversityFilters(
+      searchQuery: searchQuery ?? this.searchQuery,
+      country: country ?? this.country,
+      universityType: universityType ?? this.universityType,
+      locationType: locationType ?? this.locationType,
+      maxTuition: maxTuition ?? this.maxTuition,
+      minAcceptanceRate: minAcceptanceRate ?? this.minAcceptanceRate,
+      maxAcceptanceRate: maxAcceptanceRate ?? this.maxAcceptanceRate,
+    );
+  }
+
+  bool get hasFilters =>
+      (searchQuery?.isNotEmpty ?? false) ||
+      country != null ||
+      universityType != null ||
+      locationType != null ||
+      maxTuition != null ||
+      minAcceptanceRate != null ||
+      maxAcceptanceRate != null;
+
+  UniversityFilters clear() => const UniversityFilters();
+}
+
+/// Sort options for university list
+enum UniversitySortOption {
+  nameAsc('Name (A-Z)', 'name', true),
+  nameDesc('Name (Z-A)', 'name', false),
+  tuitionAsc('Tuition (Low to High)', 'tuition_out_state', true),
+  tuitionDesc('Tuition (High to Low)', 'tuition_out_state', false),
+  acceptanceAsc('Acceptance Rate (Low to High)', 'acceptance_rate', true),
+  acceptanceDesc('Acceptance Rate (High to Low)', 'acceptance_rate', false),
+  studentsDesc('Students (Most)', 'total_students', false),
+  studentsAsc('Students (Least)', 'total_students', true);
+
+  final String label;
+  final String field;
+  final bool ascending;
+
+  const UniversitySortOption(this.label, this.field, this.ascending);
+}
+
+/// Repository for university data operations
+class UniversityRepository {
+  final SupabaseClient _supabase;
+
+  UniversityRepository(this._supabase);
+
+  /// Search universities with filters and pagination
+  Future<List<University>> searchUniversities({
+    UniversityFilters filters = const UniversityFilters(),
+    UniversitySortOption sortOption = UniversitySortOption.nameAsc,
+    int page = 0,
+    int pageSize = 20,
+  }) async {
+    var query = _supabase.from('universities').select();
+
+    // Apply search query
+    if (filters.searchQuery?.isNotEmpty ?? false) {
+      query = query.ilike('name', '%${filters.searchQuery}%');
+    }
+
+    // Apply filters
+    if (filters.country != null) {
+      query = query.eq('country', filters.country!);
+    }
+
+    if (filters.universityType != null) {
+      query = query.eq('university_type', filters.universityType!);
+    }
+
+    if (filters.locationType != null) {
+      query = query.eq('location_type', filters.locationType!);
+    }
+
+    if (filters.maxTuition != null) {
+      query = query.lte('tuition_out_state', filters.maxTuition!);
+    }
+
+    if (filters.minAcceptanceRate != null) {
+      query = query.gte('acceptance_rate', filters.minAcceptanceRate!);
+    }
+
+    if (filters.maxAcceptanceRate != null) {
+      query = query.lte('acceptance_rate', filters.maxAcceptanceRate!);
+    }
+
+    // Apply sorting and pagination
+    final start = page * pageSize;
+    final response = await query
+        .order(sortOption.field, ascending: sortOption.ascending, nullsFirst: false)
+        .range(start, start + pageSize - 1);
+
+    return (response as List).map((json) => University.fromJson(json)).toList();
+  }
+
+  /// Get a single university by ID
+  Future<University?> getUniversityById(int id) async {
+    final response = await _supabase
+        .from('universities')
+        .select()
+        .eq('id', id)
+        .maybeSingle();
+
+    if (response == null) return null;
+    return University.fromJson(response);
+  }
+
+  /// Get list of unique countries
+  Future<List<String>> getCountries() async {
+    final response = await _supabase
+        .from('universities')
+        .select('country')
+        .not('country', 'is', null)
+        .order('country');
+
+    final countries = <String>{};
+    for (final row in response as List) {
+      if (row['country'] != null) {
+        countries.add(row['country'] as String);
+      }
+    }
+    return countries.toList()..sort();
+  }
+
+  /// Get list of unique university types
+  Future<List<String>> getUniversityTypes() async {
+    final response = await _supabase
+        .from('universities')
+        .select('university_type')
+        .not('university_type', 'is', null);
+
+    final types = <String>{};
+    for (final row in response as List) {
+      if (row['university_type'] != null) {
+        types.add(row['university_type'] as String);
+      }
+    }
+    return types.toList()..sort();
+  }
+
+  /// Get list of unique location types
+  Future<List<String>> getLocationTypes() async {
+    final response = await _supabase
+        .from('universities')
+        .select('location_type')
+        .not('location_type', 'is', null);
+
+    final types = <String>{};
+    for (final row in response as List) {
+      if (row['location_type'] != null) {
+        types.add(row['location_type'] as String);
+      }
+    }
+    return types.toList()..sort();
+  }
+
+  /// Get total count of universities matching filters
+  Future<int> getUniversityCount({
+    UniversityFilters filters = const UniversityFilters(),
+  }) async {
+    var query = _supabase.from('universities').select('id');
+
+    if (filters.searchQuery?.isNotEmpty ?? false) {
+      query = query.ilike('name', '%${filters.searchQuery}%');
+    }
+
+    if (filters.country != null) {
+      query = query.eq('country', filters.country!);
+    }
+
+    if (filters.universityType != null) {
+      query = query.eq('university_type', filters.universityType!);
+    }
+
+    if (filters.locationType != null) {
+      query = query.eq('location_type', filters.locationType!);
+    }
+
+    final response = await query;
+    return (response as List).length;
+  }
+}
