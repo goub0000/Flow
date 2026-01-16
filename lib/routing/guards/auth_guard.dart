@@ -23,24 +23,29 @@ class AuthGuard {
     return location.startsWith('/find-your-path');
   }
 
+  /// Check if the route is a University Search route (public access)
+  static bool isUniversityRoute(String location) {
+    return location.startsWith('/universities');
+  }
+
   /// Determine if a redirect is needed based on authentication state
   static String? getRedirect({
     required String location,
     required bool isAuthenticated,
     required String? userDashboardRoute,
   }) {
-    logger.fine('AuthGuard redirect: location=$location, isAuthenticated=$isAuthenticated');
+    logger.fine('AuthGuard redirect: location=\$location, isAuthenticated=\$isAuthenticated');
 
     // PRIORITY 1: Redirect authenticated users away from auth routes and home page
     if (isAuthenticated) {
       if (isAuthRoute(location) || isHomeRoute(location)) {
-        logger.info('Redirecting authenticated user to dashboard: $userDashboardRoute');
+        logger.info('Redirecting authenticated user to dashboard: \$userDashboardRoute');
         return userDashboardRoute;
       }
     }
 
     // PRIORITY 2: Allow unauthenticated access to public routes
-    if (isHomeRoute(location) || isFindYourPathRoute(location)) {
+    if (isHomeRoute(location) || isFindYourPathRoute(location) || isUniversityRoute(location)) {
       return null;
     }
 
