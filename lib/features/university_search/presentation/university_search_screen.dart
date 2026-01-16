@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/models/university_model.dart';
-import '../data/university_repository.dart';
+import '../repositories/university_repository.dart';
 import '../providers/university_search_provider.dart';
 
 /// University Search Screen with filters and sorting
