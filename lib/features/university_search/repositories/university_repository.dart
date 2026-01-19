@@ -88,7 +88,7 @@ class UniversityRepository {
 
     // Apply search query
     if (filters.searchQuery?.isNotEmpty ?? false) {
-      query = query.ilike('name', '%${filters.searchQuery}%');
+      query = query.ilike('name', '%\${filters.searchQuery}%');
     }
 
     // Apply filters
@@ -137,78 +137,129 @@ class UniversityRepository {
     return University.fromJson(response);
   }
 
-  /// Get list of unique countries
+  /// Get list of unique countries - fetches in batches to overcome 1000 row limit
   Future<List<String>> getCountries() async {
-    final response = await _supabase
-        .from('universities')
-        .select('country')
-        .not('country', 'is', null)
-        .order('country');
-
     final countries = <String>{};
-    for (final row in response as List) {
-      if (row['country'] != null) {
-        countries.add(row['country'] as String);
+    int offset = 0;
+    const batchSize = 1000;
+
+    while (true) {
+      final response = await _supabase
+          .from('universities')
+          .select('country')
+          .not('country', 'is', null)
+          .order('country')
+          .range(offset, offset + batchSize - 1);
+
+      final batch = response as List;
+      if (batch.isEmpty) break;
+
+      for (final row in batch) {
+        if (row['country'] != null) {
+          countries.add(row['country'] as String);
+        }
       }
+
+      if (batch.length < batchSize) break;
+      offset += batchSize;
     }
+
     return countries.toList()..sort();
   }
 
   /// Get list of unique university types
   Future<List<String>> getUniversityTypes() async {
-    final response = await _supabase
-        .from('universities')
-        .select('university_type')
-        .not('university_type', 'is', null);
-
     final types = <String>{};
-    for (final row in response as List) {
-      if (row['university_type'] != null) {
-        types.add(row['university_type'] as String);
+    int offset = 0;
+    const batchSize = 1000;
+
+    while (true) {
+      final response = await _supabase
+          .from('universities')
+          .select('university_type')
+          .not('university_type', 'is', null)
+          .range(offset, offset + batchSize - 1);
+
+      final batch = response as List;
+      if (batch.isEmpty) break;
+
+      for (final row in batch) {
+        if (row['university_type'] != null) {
+          types.add(row['university_type'] as String);
+        }
       }
+
+      if (batch.length < batchSize) break;
+      offset += batchSize;
     }
+
     return types.toList()..sort();
   }
 
   /// Get list of unique location types
   Future<List<String>> getLocationTypes() async {
-    final response = await _supabase
-        .from('universities')
-        .select('location_type')
-        .not('location_type', 'is', null);
-
     final types = <String>{};
-    for (final row in response as List) {
-      if (row['location_type'] != null) {
-        types.add(row['location_type'] as String);
+    int offset = 0;
+    const batchSize = 1000;
+
+    while (true) {
+      final response = await _supabase
+          .from('universities')
+          .select('location_type')
+          .not('location_type', 'is', null)
+          .range(offset, offset + batchSize - 1);
+
+      final batch = response as List;
+      if (batch.isEmpty) break;
+
+      for (final row in batch) {
+        if (row['location_type'] != null) {
+          types.add(row['location_type'] as String);
+        }
       }
+
+      if (batch.length < batchSize) break;
+      offset += batchSize;
     }
+
     return types.toList()..sort();
   }
 
-  /// Get total count of universities matching filters
+  /// Get total count of universities matching filters - batched
   Future<int> getUniversityCount({
     UniversityFilters filters = const UniversityFilters(),
   }) async {
-    var query = _supabase.from('universities').select('id');
+    int totalCount = 0;
+    int offset = 0;
+    const batchSize = 1000;
 
-    if (filters.searchQuery?.isNotEmpty ?? false) {
-      query = query.ilike('name', '%${filters.searchQuery}%');
+    while (true) {
+      var query = _supabase.from('universities').select('id');
+
+      if (filters.searchQuery?.isNotEmpty ?? false) {
+        query = query.ilike('name', '%${filters.searchQuery}%');
+      }
+
+      if (filters.country != null) {
+        query = query.eq('country', filters.country!);
+      }
+
+      if (filters.universityType != null) {
+        query = query.eq('university_type', filters.universityType!);
+      }
+
+      if (filters.locationType != null) {
+        query = query.eq('location_type', filters.locationType!);
+      }
+
+      final response = await query.range(offset, offset + batchSize - 1);
+      final batch = response as List;
+      totalCount += batch.length;
+
+      if (batch.length < batchSize) break;
+      offset += batchSize;
     }
 
-    if (filters.country != null) {
-      query = query.eq('country', filters.country!);
-    }
-
-    if (filters.universityType != null) {
-      query = query.eq('university_type', filters.universityType!);
-    }
-
-    if (filters.locationType != null) {
-      query = query.eq('location_type', filters.locationType!);
-    }
-
-    final response = await query;
-    return (response as List).length;
+    return totalCount;
   }
 }
