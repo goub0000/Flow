@@ -1,6 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/university_model.dart';
 
+/// Sentinel value to distinguish between null and not provided
+const _sentinel = Object();
+
 /// Filter options for university search
 class UniversityFilters {
   final String? searchQuery;
@@ -22,22 +25,22 @@ class UniversityFilters {
   });
 
   UniversityFilters copyWith({
-    String? searchQuery,
-    String? country,
-    String? universityType,
-    String? locationType,
-    double? maxTuition,
-    double? minAcceptanceRate,
-    double? maxAcceptanceRate,
+    Object? searchQuery = _sentinel,
+    Object? country = _sentinel,
+    Object? universityType = _sentinel,
+    Object? locationType = _sentinel,
+    Object? maxTuition = _sentinel,
+    Object? minAcceptanceRate = _sentinel,
+    Object? maxAcceptanceRate = _sentinel,
   }) {
     return UniversityFilters(
-      searchQuery: searchQuery ?? this.searchQuery,
-      country: country ?? this.country,
-      universityType: universityType ?? this.universityType,
-      locationType: locationType ?? this.locationType,
-      maxTuition: maxTuition ?? this.maxTuition,
-      minAcceptanceRate: minAcceptanceRate ?? this.minAcceptanceRate,
-      maxAcceptanceRate: maxAcceptanceRate ?? this.maxAcceptanceRate,
+      searchQuery: searchQuery == _sentinel ? this.searchQuery : searchQuery as String?,
+      country: country == _sentinel ? this.country : country as String?,
+      universityType: universityType == _sentinel ? this.universityType : universityType as String?,
+      locationType: locationType == _sentinel ? this.locationType : locationType as String?,
+      maxTuition: maxTuition == _sentinel ? this.maxTuition : maxTuition as double?,
+      minAcceptanceRate: minAcceptanceRate == _sentinel ? this.minAcceptanceRate : minAcceptanceRate as double?,
+      maxAcceptanceRate: maxAcceptanceRate == _sentinel ? this.maxAcceptanceRate : maxAcceptanceRate as double?,
     );
   }
 
