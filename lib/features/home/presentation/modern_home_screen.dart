@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'dart:ui' as ui;
 import '../../../core/theme/app_colors.dart';
 import 'dart:math' as math;
+import 'widgets/demo_video_dialog.dart';
 
 /// Modern Home Screen - Minimalistic Material Design 3
 class ModernHomeScreen extends ConsumerStatefulWidget {
@@ -336,9 +337,7 @@ class _HeroSection extends StatelessWidget {
                         ),
                         const SizedBox(width: 16),
                         OutlinedButton.icon(
-                          onPressed: () {
-                            // Demo video
-                          },
+                          onPressed: () => showDemoVideoDialog(context),
                           icon: const Icon(Icons.play_circle_outline),
                           label: const Text('Watch Demo'),
                           style: OutlinedButton.styleFrom(
@@ -1126,11 +1125,11 @@ class _MinimalFooter extends StatelessWidget {
                       child: _FooterColumn(
                         title: 'Company',
                         links: [
-                          _FooterLink('About Us', () {}),
+                          _FooterLink('About Us', () => context.go('/about')),
                           _FooterLink('Careers', () {}),
                           _FooterLink('Press Kit', () {}),
                           _FooterLink('Partners', () {}),
-                          _FooterLink('Contact', () {}),
+                          _FooterLink('Contact', () => context.go('/contact')),
                         ],
                       ),
                     ),
@@ -1156,10 +1155,10 @@ class _MinimalFooter extends StatelessWidget {
                       child: _FooterColumn(
                         title: 'Legal',
                         links: [
-                          _FooterLink('Privacy Policy', () {}),
-                          _FooterLink('Terms of Service', () {}),
-                          _FooterLink('Cookie Policy', () {}),
-                          _FooterLink('Data Protection', () {}),
+                          _FooterLink('Privacy Policy', () => context.go('/privacy')),
+                          _FooterLink('Terms of Service', () => context.go('/terms')),
+                          _FooterLink('Cookie Policy', () => context.go('/settings/cookies')),
+                          _FooterLink('Data Protection', () => context.go('/privacy')),
                           _FooterLink('Compliance', () {}),
                         ],
                       ),
@@ -1219,9 +1218,9 @@ class _MinimalFooter extends StatelessWidget {
                         _FooterColumn(
                           title: 'Company',
                           links: [
-                            _FooterLink('About Us', () {}),
+                            _FooterLink('About Us', () => context.go('/about')),
                             _FooterLink('Careers', () {}),
-                            _FooterLink('Contact', () {}),
+                            _FooterLink('Contact', () => context.go('/contact')),
                           ],
                         ),
                         _FooterColumn(
@@ -1235,8 +1234,8 @@ class _MinimalFooter extends StatelessWidget {
                         _FooterColumn(
                           title: 'Legal',
                           links: [
-                            _FooterLink('Privacy Policy', () {}),
-                            _FooterLink('Terms of Service', () {}),
+                            _FooterLink('Privacy Policy', () => context.go('/privacy')),
+                            _FooterLink('Terms of Service', () => context.go('/terms')),
                           ],
                         ),
                       ],

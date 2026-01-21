@@ -223,6 +223,62 @@ class AnalyticsService {
     }
   }
 
+  /// Track CTA (Call to Action) click - simplified for public/unauthenticated users
+  Future<void> trackCTAClick(
+    String ctaName, {
+    String? location,
+    String? userId,
+    Map<String, dynamic>? additionalData,
+  }) async {
+    // For public pages, we can track without full consent if it's anonymized
+    final effectiveUserId = userId ?? 'anonymous';
+
+    final data = CookieData(
+      id: _uuid.v4(),
+      userId: effectiveUserId,
+      type: CookieDataType.clickEvent,
+      timestamp: DateTime.now(),
+      sessionId: _currentSessionId,
+      data: {
+        'elementType': 'cta',
+        'elementId': ctaName,
+        'location': location ?? 'unknown',
+        ...?additionalData,
+      },
+    );
+
+    await _cookieService.storeCookieData(data);
+
+    if (_currentSession != null) {
+      _currentSession = _currentSession!.recordInteraction('cta_$ctaName');
+      await _saveSession();
+    }
+  }
+
+  /// Track video interaction
+  Future<void> trackVideoEvent(
+    String action,
+    String videoId, {
+    String? userId,
+  }) async {
+    final effectiveUserId = userId ?? 'anonymous';
+
+    final data = CookieData(
+      id: _uuid.v4(),
+      userId: effectiveUserId,
+      type: CookieDataType.clickEvent,
+      timestamp: DateTime.now(),
+      sessionId: _currentSessionId,
+      data: {
+        'elementType': 'video',
+        'action': action,
+        'videoId': videoId,
+      },
+    );
+
+    await _cookieService.storeCookieData(data);
+  }
+
   /// Get analytics summary for user
   Future<Map<String, dynamic>> getUserAnalyticsSummary(String userId) async {
     final sessions = await getUserSessions(userId);

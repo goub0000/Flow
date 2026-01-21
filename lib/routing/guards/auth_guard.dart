@@ -28,6 +28,14 @@ class AuthGuard {
     return location.startsWith('/universities');
   }
 
+  /// Check if the route is a public info page (About, Contact, Privacy, Terms)
+  static bool isPublicInfoRoute(String location) {
+    return location == '/about' ||
+        location == '/contact' ||
+        location == '/privacy' ||
+        location == '/terms';
+  }
+
   /// Determine if a redirect is needed based on authentication state
   static String? getRedirect({
     required String location,
@@ -45,7 +53,7 @@ class AuthGuard {
     }
 
     // PRIORITY 2: Allow unauthenticated access to public routes
-    if (isHomeRoute(location) || isFindYourPathRoute(location) || isUniversityRoute(location)) {
+    if (isHomeRoute(location) || isFindYourPathRoute(location) || isUniversityRoute(location) || isPublicInfoRoute(location)) {
       return null;
     }
 

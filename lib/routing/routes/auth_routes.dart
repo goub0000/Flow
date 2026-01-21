@@ -7,6 +7,10 @@ import '../../features/authentication/presentation/screens/email_verification_sc
 import '../../features/authentication/presentation/screens/onboarding_screen.dart';
 import '../../features/authentication/presentation/screens/biometric_setup_screen.dart';
 import '../../features/home/presentation/modern_home_screen.dart';
+import '../../features/home/presentation/pages/about_page.dart';
+import '../../features/home/presentation/pages/contact_page.dart';
+import '../../features/home/presentation/pages/privacy_page.dart';
+import '../../features/home/presentation/pages/terms_page.dart';
 
 /// Authentication and public routes
 List<RouteBase> authRoutes = [
@@ -59,5 +63,27 @@ List<RouteBase> authRoutes = [
       final isSetup = state.uri.queryParameters['setup'] == 'true';
       return BiometricSetupScreen(isSetup: isSetup);
     },
+  ),
+
+  // Public footer pages
+  GoRoute(
+    path: '/about',
+    name: 'about',
+    builder: (context, state) => const AboutPage(),
+  ),
+  GoRoute(
+    path: '/contact',
+    name: 'contact',
+    builder: (context, state) => const ContactPage(),
+  ),
+  GoRoute(
+    path: '/privacy',
+    name: 'privacy',
+    builder: (context, state) => const PrivacyPage(),
+  ),
+  GoRoute(
+    path: '/terms',
+    name: 'terms',
+    builder: (context, state) => const TermsPage(),
   ),
 ];
