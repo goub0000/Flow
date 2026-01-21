@@ -1,12 +1,12 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import '../../../../../core/theme/app_colors.dart';
 
-/// A rich text editor widget for CMS content editing using flutter_quill.
-/// Provides WYSIWYG editing with toolbar for formatting text.
+/// A rich text editor widget for CMS content editing.
+/// Uses flutter_quill on mobile/desktop and a styled TextField on web for compatibility.
 class RichTextContentEditor extends StatefulWidget {
-  /// The initial content in Quill Delta JSON format.
-  /// If null or invalid, starts with empty document.
+  /// The initial content in Quill Delta JSON format or plain text.
   final Map<String, dynamic>? initialContent;
 
   /// Callback when content changes. Returns Quill Delta JSON.
@@ -39,82 +39,100 @@ class RichTextContentEditor extends StatefulWidget {
 }
 
 class _RichTextContentEditorState extends State<RichTextContentEditor> {
-  late QuillController _controller;
+  // For Quill editor (mobile/desktop)
+  QuillController? _quillController;
+
+  // For TextField fallback (web)
+  TextEditingController? _textController;
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _initController();
+    _initControllers();
   }
 
-  void _initController() {
+  void _initControllers() {
+    final initialText = _extractInitialText();
+
+    if (kIsWeb) {
+      // Use simple TextField on web for reliability
+      _textController = TextEditingController(text: initialText);
+      _textController!.addListener(_onTextChanged);
+    } else {
+      // Use Quill on mobile/desktop
+      _initQuillController(initialText);
+    }
+  }
+
+  void _initQuillController(String initialText) {
     Document document;
 
-    if (widget.initialContent != null) {
+    if (widget.initialContent != null && widget.initialContent!.containsKey('ops')) {
       try {
-        // Check if it's already a Quill Delta format
-        if (widget.initialContent!.containsKey('ops')) {
-          document = Document.fromJson(widget.initialContent!['ops'] as List);
-        } else {
-          // Convert plain text content to Quill format
-          document = Document()..insert(0, _extractPlainText(widget.initialContent!));
-        }
+        document = Document.fromJson(widget.initialContent!['ops'] as List);
       } catch (e) {
-        // If parsing fails, start with empty document
-        document = Document();
+        document = Document()..insert(0, initialText);
       }
     } else {
-      document = Document();
+      document = Document()..insert(0, initialText);
     }
 
-    _controller = QuillController(
+    _quillController = QuillController(
       document: document,
       selection: const TextSelection.collapsed(offset: 0),
       readOnly: widget.readOnly,
     );
-
-    _controller.addListener(_onContentChanged);
+    _quillController!.addListener(_onQuillChanged);
   }
 
-  @override
-  void dispose() {
-    _controller.removeListener(_onContentChanged);
-    _controller.dispose();
-    super.dispose();
-  }
+  String _extractInitialText() {
+    if (widget.initialContent == null) return '';
 
-  /// Extract plain text from various content formats
-  String _extractPlainText(Map<String, dynamic> content) {
-    // Handle case where content is a simple text field
-    if (content.containsKey('text')) {
-      return content['text'].toString();
-    }
-    // Handle case where content has a content field (for sections)
-    if (content.containsKey('content')) {
-      final c = content['content'];
-      if (c is String) return c;
-      if (c is Map && c.containsKey('ops')) {
-        // It's already Quill format, parse it
+    // If it's already Quill Delta format, extract text
+    if (widget.initialContent!.containsKey('ops')) {
+      try {
+        final doc = Document.fromJson(widget.initialContent!['ops'] as List);
+        return doc.toPlainText().trim();
+      } catch (e) {
         return '';
       }
+    }
+
+    // Handle other content formats
+    if (widget.initialContent!.containsKey('text')) {
+      return widget.initialContent!['text'].toString();
+    }
+    if (widget.initialContent!.containsKey('content')) {
+      final c = widget.initialContent!['content'];
+      if (c is String) return c;
     }
     return '';
   }
 
-  void _onContentChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged!(getDeltaJson());
+  @override
+  void dispose() {
+    _quillController?.removeListener(_onQuillChanged);
+    _quillController?.dispose();
+    _textController?.removeListener(_onTextChanged);
+    _textController?.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onQuillChanged() {
+    if (widget.onChanged != null && _quillController != null) {
+      widget.onChanged!({'ops': _quillController!.document.toDelta().toJson()});
     }
   }
 
-  /// Get the current content as Quill Delta JSON
-  Map<String, dynamic> getDeltaJson() {
-    return {'ops': _controller.document.toDelta().toJson()};
-  }
-
-  /// Get the current content as plain text
-  String getPlainText() {
-    return _controller.document.toPlainText();
+  void _onTextChanged() {
+    if (widget.onChanged != null && _textController != null) {
+      // Convert plain text to Quill Delta format for consistency
+      final text = _textController!.text;
+      final doc = Document()..insert(0, text);
+      widget.onChanged!({'ops': doc.toDelta().toJson()});
+    }
   }
 
   @override
@@ -140,139 +158,206 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.border),
           ),
-          child: Column(
-            children: [
-              // Toolbar
-              if (!widget.readOnly) ...[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
-                  ),
-                  child: QuillSimpleToolbar(
-                    controller: _controller,
-                    config: const QuillSimpleToolbarConfig(
-                      showDividers: true,
-                      showFontFamily: false,
-                      showFontSize: false,
-                      showBoldButton: true,
-                      showItalicButton: true,
-                      showUnderLineButton: true,
-                      showStrikeThrough: true,
-                      showInlineCode: false,
-                      showColorButton: true,
-                      showBackgroundColorButton: false,
-                      showClearFormat: true,
-                      showAlignmentButtons: true,
-                      showLeftAlignment: true,
-                      showCenterAlignment: true,
-                      showRightAlignment: true,
-                      showJustifyAlignment: false,
-                      showHeaderStyle: true,
-                      showListNumbers: true,
-                      showListBullets: true,
-                      showListCheck: false,
-                      showCodeBlock: false,
-                      showQuote: true,
-                      showIndent: true,
-                      showLink: true,
-                      showUndo: true,
-                      showRedo: true,
-                      showSearchButton: false,
-                      showSubscript: false,
-                      showSuperscript: false,
-                    ),
+          child: kIsWeb ? _buildWebEditor(theme) : _buildQuillEditor(theme),
+        ),
+      ],
+    );
+  }
+
+  /// Web-compatible text editor using standard TextField
+  Widget _buildWebEditor(ThemeData theme) {
+    return Column(
+      children: [
+        // Simple formatting hint bar
+        if (!widget.readOnly)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.edit_note, size: 18, color: AppColors.textSecondary),
+                const SizedBox(width: 8),
+                Text(
+                  'Plain text editor - formatting will be applied on display',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
                   ),
                 ),
-                Divider(height: 1, color: AppColors.border),
               ],
-              // Editor area wrapped in Material for proper web text input
-              Material(
-                color: Colors.white,
-                child: SizedBox(
-                  height: widget.height,
-                  child: QuillEditor.basic(
-                    controller: _controller,
-                    config: QuillEditorConfig(
-                      padding: const EdgeInsets.all(16),
-                      placeholder: widget.hintText ?? 'Start typing...',
-                      autoFocus: false,
-                      customStyles: DefaultStyles(
-                        h1: DefaultTextBlockStyle(
-                          TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                            height: 1.3,
-                          ),
-                          const HorizontalSpacing(0, 0),
-                          const VerticalSpacing(16, 8),
-                          const VerticalSpacing(0, 0),
-                          null,
-                        ),
-                        h2: DefaultTextBlockStyle(
-                          TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                            height: 1.3,
-                          ),
-                          const HorizontalSpacing(0, 0),
-                          const VerticalSpacing(14, 6),
-                          const VerticalSpacing(0, 0),
-                          null,
-                        ),
-                        h3: DefaultTextBlockStyle(
-                          TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
-                            height: 1.3,
-                          ),
-                          const HorizontalSpacing(0, 0),
-                          const VerticalSpacing(12, 4),
-                          const VerticalSpacing(0, 0),
-                          null,
-                        ),
-                        paragraph: DefaultTextBlockStyle(
-                          TextStyle(
-                            fontSize: 16,
-                            color: AppColors.textPrimary,
-                            height: 1.5,
-                          ),
-                          const HorizontalSpacing(0, 0),
-                          const VerticalSpacing(8, 8),
-                          const VerticalSpacing(0, 0),
-                          null,
-                        ),
-                        bold: const TextStyle(fontWeight: FontWeight.bold),
-                        italic: const TextStyle(fontStyle: FontStyle.italic),
-                        underline: const TextStyle(decoration: TextDecoration.underline),
-                        strikeThrough: const TextStyle(decoration: TextDecoration.lineThrough),
-                        link: TextStyle(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                        ),
-                        placeHolder: DefaultTextBlockStyle(
-                          TextStyle(
-                            fontSize: 16,
-                            color: AppColors.textSecondary.withValues(alpha: 0.6),
-                          ),
-                          const HorizontalSpacing(0, 0),
-                          const VerticalSpacing(0, 0),
-                          const VerticalSpacing(0, 0),
-                          null,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+            ),
+          ),
+        if (!widget.readOnly) Divider(height: 1, color: AppColors.border),
+        // Text input area
+        SizedBox(
+          height: widget.height,
+          child: TextField(
+            controller: _textController,
+            focusNode: _focusNode,
+            readOnly: widget.readOnly,
+            maxLines: null,
+            expands: true,
+            textAlignVertical: TextAlignVertical.top,
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.textPrimary,
+              height: 1.5,
+            ),
+            decoration: InputDecoration(
+              hintText: widget.hintText ?? 'Start typing...',
+              hintStyle: TextStyle(
+                color: AppColors.textSecondary.withValues(alpha: 0.6),
               ),
-            ],
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.all(16),
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  /// Native Quill editor for mobile/desktop
+  Widget _buildQuillEditor(ThemeData theme) {
+    if (_quillController == null) return const SizedBox.shrink();
+
+    return Column(
+      children: [
+        // Toolbar
+        if (!widget.readOnly) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
+            ),
+            child: QuillSimpleToolbar(
+              controller: _quillController!,
+              config: const QuillSimpleToolbarConfig(
+                showDividers: true,
+                showFontFamily: false,
+                showFontSize: false,
+                showBoldButton: true,
+                showItalicButton: true,
+                showUnderLineButton: true,
+                showStrikeThrough: true,
+                showInlineCode: false,
+                showColorButton: true,
+                showBackgroundColorButton: false,
+                showClearFormat: true,
+                showAlignmentButtons: true,
+                showLeftAlignment: true,
+                showCenterAlignment: true,
+                showRightAlignment: true,
+                showJustifyAlignment: false,
+                showHeaderStyle: true,
+                showListNumbers: true,
+                showListBullets: true,
+                showListCheck: false,
+                showCodeBlock: false,
+                showQuote: true,
+                showIndent: true,
+                showLink: true,
+                showUndo: true,
+                showRedo: true,
+                showSearchButton: false,
+                showSubscript: false,
+                showSuperscript: false,
+              ),
+            ),
+          ),
+          Divider(height: 1, color: AppColors.border),
+        ],
+        // Editor
+        Material(
+          color: Colors.white,
+          child: SizedBox(
+            height: widget.height,
+            child: QuillEditor.basic(
+              controller: _quillController!,
+              config: QuillEditorConfig(
+                padding: const EdgeInsets.all(16),
+                placeholder: widget.hintText ?? 'Start typing...',
+                autoFocus: false,
+                customStyles: _buildStyles(),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  DefaultStyles _buildStyles() {
+    return DefaultStyles(
+      h1: DefaultTextBlockStyle(
+        TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+          height: 1.3,
+        ),
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(16, 8),
+        const VerticalSpacing(0, 0),
+        null,
+      ),
+      h2: DefaultTextBlockStyle(
+        TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+          height: 1.3,
+        ),
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(14, 6),
+        const VerticalSpacing(0, 0),
+        null,
+      ),
+      h3: DefaultTextBlockStyle(
+        TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+          height: 1.3,
+        ),
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(12, 4),
+        const VerticalSpacing(0, 0),
+        null,
+      ),
+      paragraph: DefaultTextBlockStyle(
+        TextStyle(
+          fontSize: 16,
+          color: AppColors.textPrimary,
+          height: 1.5,
+        ),
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(8, 8),
+        const VerticalSpacing(0, 0),
+        null,
+      ),
+      bold: const TextStyle(fontWeight: FontWeight.bold),
+      italic: const TextStyle(fontStyle: FontStyle.italic),
+      underline: const TextStyle(decoration: TextDecoration.underline),
+      strikeThrough: const TextStyle(decoration: TextDecoration.lineThrough),
+      link: TextStyle(
+        color: AppColors.primary,
+        decoration: TextDecoration.underline,
+      ),
+      placeHolder: DefaultTextBlockStyle(
+        TextStyle(
+          fontSize: 16,
+          color: AppColors.textSecondary.withValues(alpha: 0.6),
+        ),
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(0, 0),
+        const VerticalSpacing(0, 0),
+        null,
+      ),
     );
   }
 }
