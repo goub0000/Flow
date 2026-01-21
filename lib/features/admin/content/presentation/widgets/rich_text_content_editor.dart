@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import '../../../../../core/theme/app_colors.dart';
 
-/// A text editor widget for CMS content editing.
-/// Uses a simple TextField for reliable cross-platform compatibility.
+/// A text editor widget for CMS content editing with markdown formatting toolbar.
 class RichTextContentEditor extends StatefulWidget {
   /// The initial content in Quill Delta JSON format or plain text.
   final Map<String, dynamic>? initialContent;
@@ -89,6 +88,64 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
     }
   }
 
+  /// Apply formatting to selected text or insert at cursor
+  void _applyFormatting(String prefix, String suffix, {String? placeholder}) {
+    final text = _textController.text;
+    final selection = _textController.selection;
+
+    if (!selection.isValid) {
+      // No valid selection, insert at end
+      final newText = '$text$prefix${placeholder ?? ''}$suffix';
+      _textController.text = newText;
+      _textController.selection = TextSelection.collapsed(
+        offset: newText.length - suffix.length,
+      );
+      return;
+    }
+
+    final selectedText = selection.textInside(text);
+    final before = text.substring(0, selection.start);
+    final after = text.substring(selection.end);
+
+    String newText;
+    int newCursorPos;
+
+    if (selectedText.isEmpty) {
+      // No text selected, insert placeholder
+      final insert = placeholder ?? '';
+      newText = '$before$prefix$insert$suffix$after';
+      newCursorPos = selection.start + prefix.length + insert.length;
+    } else {
+      // Wrap selected text
+      newText = '$before$prefix$selectedText$suffix$after';
+      newCursorPos = selection.start + prefix.length + selectedText.length + suffix.length;
+    }
+
+    _textController.text = newText;
+    _textController.selection = TextSelection.collapsed(offset: newCursorPos);
+    _focusNode.requestFocus();
+  }
+
+  /// Insert text at cursor position
+  void _insertAtCursor(String insert) {
+    final text = _textController.text;
+    final selection = _textController.selection;
+
+    if (!selection.isValid) {
+      _textController.text = '$text$insert';
+      return;
+    }
+
+    final before = text.substring(0, selection.start);
+    final after = text.substring(selection.end);
+
+    _textController.text = '$before$insert$after';
+    _textController.selection = TextSelection.collapsed(
+      offset: selection.start + insert.length,
+    );
+    _focusNode.requestFocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -114,39 +171,10 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
           ),
           child: Column(
             children: [
-              // Simple info bar
-              if (!widget.readOnly)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.edit_note, size: 20, color: AppColors.primary),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Content Editor',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '${_textController.text.length} characters',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              // Formatting toolbar
+              if (!widget.readOnly) _buildToolbar(theme),
               if (!widget.readOnly) Divider(height: 1, color: AppColors.border),
-              // Text input area - using TextFormField for better web compatibility
+              // Text input area
               Container(
                 height: widget.height,
                 padding: const EdgeInsets.all(16),
@@ -175,10 +203,189 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
                   ),
                 ),
               ),
+              // Character count footer
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(7)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Supports Markdown formatting',
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                    ),
+                    Text(
+                      '${_textController.text.length} characters',
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildToolbar(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
+      ),
+      child: Wrap(
+        spacing: 2,
+        runSpacing: 4,
+        children: [
+          // Bold
+          _ToolbarButton(
+            icon: Icons.format_bold,
+            tooltip: 'Bold (**text**)',
+            onPressed: () => _applyFormatting('**', '**', placeholder: 'bold text'),
+          ),
+          // Italic
+          _ToolbarButton(
+            icon: Icons.format_italic,
+            tooltip: 'Italic (*text*)',
+            onPressed: () => _applyFormatting('*', '*', placeholder: 'italic text'),
+          ),
+          // Underline (using HTML tag for markdown compatibility)
+          _ToolbarButton(
+            icon: Icons.format_underlined,
+            tooltip: 'Underline',
+            onPressed: () => _applyFormatting('<u>', '</u>', placeholder: 'underlined text'),
+          ),
+          // Strikethrough
+          _ToolbarButton(
+            icon: Icons.format_strikethrough,
+            tooltip: 'Strikethrough (~~text~~)',
+            onPressed: () => _applyFormatting('~~', '~~', placeholder: 'strikethrough'),
+          ),
+
+          _ToolbarDivider(),
+
+          // Heading 1
+          _ToolbarButton(
+            icon: Icons.title,
+            tooltip: 'Heading 1',
+            label: 'H1',
+            onPressed: () => _insertAtCursor('\n# '),
+          ),
+          // Heading 2
+          _ToolbarButton(
+            icon: Icons.title,
+            tooltip: 'Heading 2',
+            label: 'H2',
+            onPressed: () => _insertAtCursor('\n## '),
+          ),
+          // Heading 3
+          _ToolbarButton(
+            icon: Icons.title,
+            tooltip: 'Heading 3',
+            label: 'H3',
+            onPressed: () => _insertAtCursor('\n### '),
+          ),
+
+          _ToolbarDivider(),
+
+          // Bullet list
+          _ToolbarButton(
+            icon: Icons.format_list_bulleted,
+            tooltip: 'Bullet list',
+            onPressed: () => _insertAtCursor('\n- '),
+          ),
+          // Numbered list
+          _ToolbarButton(
+            icon: Icons.format_list_numbered,
+            tooltip: 'Numbered list',
+            onPressed: () => _insertAtCursor('\n1. '),
+          ),
+          // Quote
+          _ToolbarButton(
+            icon: Icons.format_quote,
+            tooltip: 'Quote',
+            onPressed: () => _insertAtCursor('\n> '),
+          ),
+
+          _ToolbarDivider(),
+
+          // Link
+          _ToolbarButton(
+            icon: Icons.link,
+            tooltip: 'Insert link [text](url)',
+            onPressed: () => _applyFormatting('[', '](url)', placeholder: 'link text'),
+          ),
+          // Code
+          _ToolbarButton(
+            icon: Icons.code,
+            tooltip: 'Inline code',
+            onPressed: () => _applyFormatting('`', '`', placeholder: 'code'),
+          ),
+          // Horizontal rule
+          _ToolbarButton(
+            icon: Icons.horizontal_rule,
+            tooltip: 'Horizontal line',
+            onPressed: () => _insertAtCursor('\n\n---\n\n'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Toolbar button widget
+class _ToolbarButton extends StatelessWidget {
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+  final String? label;
+
+  const _ToolbarButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+    this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(4),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          child: label != null
+              ? Text(
+                  label!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                )
+              : Icon(icon, size: 18, color: AppColors.textPrimary),
+        ),
+      ),
+    );
+  }
+}
+
+/// Toolbar divider widget
+class _ToolbarDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 1,
+      height: 24,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      color: AppColors.border,
     );
   }
 }
