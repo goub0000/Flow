@@ -370,7 +370,63 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
-          // Decorative background animations removed (caused layout issues on web)
+          // Decorative circles (web-compatible - using Positioned with explicit sizes)
+          if (!isMobile) ...[
+            // Top right decorative circle
+            Positioned(
+              top: -60,
+              right: -60,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      theme.colorScheme.primary.withValues(alpha: 0.08),
+                      theme.colorScheme.primary.withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // Bottom left decorative circle
+            Positioned(
+              bottom: -40,
+              left: -40,
+              child: Container(
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppColors.terracotta.withValues(alpha: 0.06),
+                      AppColors.terracotta.withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // Middle right small circle
+            Positioned(
+              top: size.height * 0.3,
+              right: 80,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppColors.coral.withValues(alpha: 0.05),
+                      AppColors.coral.withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
 
           // Content
           Center(
