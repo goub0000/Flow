@@ -1,13 +1,198 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Press Kit page with media resources
-class PressPage extends StatelessWidget {
+/// Press Kit page with media resources - fetches content from CMS
+class PressPage extends ConsumerWidget {
   const PressPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'press',
+      fallbackTitle: 'Press Kit',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final overview = content.getString('overview');
+    final facts = content.getMap('facts');
+    final releases = content.getPressReleases();
+    final pressEmail = content.getString('press_email');
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
+        title: Text(content.title),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  content.title,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (content.subtitle != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    content.subtitle!,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+
+                const SizedBox(height: 32),
+
+                // Company Overview
+                if (overview.isNotEmpty)
+                  _buildSection(
+                    theme,
+                    icon: Icons.business,
+                    title: 'Company Overview',
+                    content: overview,
+                  ),
+
+                const SizedBox(height: 24),
+
+                // Key Facts
+                if (facts.isNotEmpty) ...[
+                  Text(
+                    'Key Facts',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Column(
+                      children: facts.entries.map((e) => _buildFactRow(theme, e.key, e.value.toString())).toList(),
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+                ],
+
+                // Brand Assets
+                Text(
+                  'Brand Assets',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children: [
+                    _buildAssetCard(theme, Icons.image, 'Logo Pack', 'PNG, SVG, and vector formats'),
+                    _buildAssetCard(theme, Icons.color_lens, 'Brand Guidelines', 'Colors, typography, usage'),
+                    _buildAssetCard(theme, Icons.photo_library, 'Screenshots', 'App screenshots and demos'),
+                    _buildAssetCard(theme, Icons.videocam, 'Video Assets', 'Product videos and B-roll'),
+                  ],
+                ),
+
+                const SizedBox(height: 32),
+
+                // Recent News
+                if (releases.isNotEmpty) ...[
+                  Text(
+                    'Recent News',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  ...releases.map((release) => _buildNewsCard(
+                        theme,
+                        date: release.date ?? '',
+                        title: release.title,
+                        description: release.excerpt ?? '',
+                      )),
+                ],
+
+                const SizedBox(height: 32),
+
+                // Media Contact
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primary.withOpacity(0.1),
+                        AppColors.accent.withOpacity(0.1),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.contact_mail, size: 40, color: AppColors.primary),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Media Contact',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'For press inquiries, please contact:',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        pressEmail.isNotEmpty ? pressEmail : 'press@flowedtech.com',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 48),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -98,14 +283,10 @@ class PressPage extends StatelessWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildAssetCard(theme, Icons.image, 'Logo Pack',
-                        'PNG, SVG, and vector formats'),
-                    _buildAssetCard(theme, Icons.color_lens, 'Brand Guidelines',
-                        'Colors, typography, usage'),
-                    _buildAssetCard(theme, Icons.photo_library, 'Screenshots',
-                        'App screenshots and demos'),
-                    _buildAssetCard(theme, Icons.videocam, 'Video Assets',
-                        'Product videos and B-roll'),
+                    _buildAssetCard(theme, Icons.image, 'Logo Pack', 'PNG, SVG, and vector formats'),
+                    _buildAssetCard(theme, Icons.color_lens, 'Brand Guidelines', 'Colors, typography, usage'),
+                    _buildAssetCard(theme, Icons.photo_library, 'Screenshots', 'App screenshots and demos'),
+                    _buildAssetCard(theme, Icons.videocam, 'Video Assets', 'Product videos and B-roll'),
                   ],
                 ),
 
@@ -124,22 +305,19 @@ class PressPage extends StatelessWidget {
                   theme,
                   date: 'January 2026',
                   title: 'Flow Expands to East Africa',
-                  description:
-                      'Flow EdTech announces expansion to Kenya, Tanzania, and Uganda with new regional partnerships.',
+                  description: 'Flow EdTech announces expansion to Kenya, Tanzania, and Uganda with new regional partnerships.',
                 ),
                 _buildNewsCard(
                   theme,
                   date: 'December 2025',
                   title: 'AI-Powered University Matching Launched',
-                  description:
-                      'New machine learning algorithm helps students find their perfect university match.',
+                  description: 'New machine learning algorithm helps students find their perfect university match.',
                 ),
                 _buildNewsCard(
                   theme,
                   date: 'November 2025',
                   title: 'Partnership with African Union Education Initiative',
-                  description:
-                      'Flow joins continental effort to improve education access across Africa.',
+                  description: 'Flow joins continental effort to improve education access across Africa.',
                 ),
 
                 const SizedBox(height: 32),
@@ -159,11 +337,7 @@ class PressPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.contact_mail,
-                        size: 40,
-                        color: AppColors.primary,
-                      ),
+                      Icon(Icons.contact_mail, size: 40, color: AppColors.primary),
                       const SizedBox(height: 16),
                       Text(
                         'Media Contact',

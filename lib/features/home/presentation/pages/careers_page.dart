@@ -1,13 +1,199 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Careers page showing job opportunities
-class CareersPage extends StatelessWidget {
+/// Careers page showing job opportunities - fetches content from CMS
+class CareersPage extends ConsumerWidget {
   const CareersPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'careers',
+      fallbackTitle: 'Careers',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final intro = content.getString('intro');
+    final benefits = content.getBenefits();
+    final positions = content.getPositions();
+    final applicationEmail = content.getString('application_email');
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
+        title: Text(content.title),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Hero section
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(40),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primary,
+                        AppColors.accent,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.rocket_launch,
+                        size: 64,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        content.title,
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      if (content.subtitle != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          content.subtitle!,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white70,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Intro
+                if (intro.isNotEmpty) ...[
+                  Text(
+                    intro,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.6,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                ],
+
+                // Why Join Us / Benefits
+                if (benefits.isNotEmpty) ...[
+                  Text(
+                    'Why Join Flow?',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: benefits.map((benefit) => _buildBenefitCard(
+                      theme,
+                      Icons.check_circle_outline,
+                      benefit.title,
+                      benefit.description,
+                    )).toList(),
+                  ),
+                  const SizedBox(height: 40),
+                ],
+
+                // Open Positions
+                if (positions.isNotEmpty) ...[
+                  Text(
+                    'Open Positions',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  PositionsListWidget(
+                    positions: positions,
+                    applicationEmail: applicationEmail.isNotEmpty ? applicationEmail : null,
+                  ),
+                  const SizedBox(height: 40),
+                ],
+
+                // Don't see a fit?
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.mail_outline,
+                        size: 40,
+                        color: AppColors.primary,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Don't see a perfect fit?",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        applicationEmail.isNotEmpty
+                            ? "We're always looking for talented individuals. Send your resume to $applicationEmail"
+                            : "We're always looking for talented individuals. Send your resume to careers@flowedtech.com",
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      OutlinedButton.icon(
+                        onPressed: () => context.go('/contact'),
+                        icon: const Icon(Icons.send),
+                        label: const Text('Contact Us'),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 48),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(

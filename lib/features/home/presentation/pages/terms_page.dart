@@ -1,13 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Terms of Service page
-class TermsPage extends StatelessWidget {
+/// Terms of Service page - fetches content from CMS
+class TermsPage extends ConsumerWidget {
   const TermsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'terms',
+      fallbackTitle: 'Terms of Service',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final sections = content.getSections();
+    final lastUpdated = content.getString('last_updated');
+
+    return FooterPageScaffold(
+      title: content.title,
+      subtitle: content.subtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (lastUpdated.isNotEmpty) ...[
+            Text(
+              'Last updated: $lastUpdated',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
+          ContentSectionsWidget(sections: sections),
+          const SizedBox(height: 32),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: [
+                Icon(Icons.gavel, color: AppColors.primary, size: 32),
+                const SizedBox(height: 12),
+                Text(
+                  'By using Flow, you agree to these terms',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -41,148 +102,23 @@ class TermsPage extends StatelessWidget {
                     color: AppColors.textSecondary,
                   ),
                 ),
-
                 const SizedBox(height: 32),
-
-                _buildSection(
-                  theme,
-                  title: '1. Acceptance of Terms',
-                  content: '''
+                _buildSection(theme, title: '1. Acceptance of Terms', content: '''
 By accessing or using Flow EdTech ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
-
-These terms apply to all users, including students, parents, counselors, and institutions.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '2. Description of Service',
-                  content: '''
-Flow EdTech provides an educational technology platform that:
-
-- Connects students with universities and programs
-- Provides AI-powered university recommendations
-- Facilitates communication between students, parents, and counselors
-- Tracks university applications
-- Offers educational resources and guidance
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '3. User Accounts',
-                  content: '''
-To use certain features, you must create an account. You agree to:
-
-- Provide accurate and complete information
-- Maintain the security of your account credentials
-- Notify us immediately of any unauthorized access
-- Take responsibility for all activities under your account
-- Not share your account with others
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '4. User Conduct',
-                  content: '''
-You agree not to:
-
-- Use the Service for any unlawful purpose
-- Harass, abuse, or harm other users
-- Submit false or misleading information
-- Attempt to gain unauthorized access to systems
-- Interfere with the proper operation of the Service
-- Scrape or collect data without permission
-- Impersonate others or misrepresent your identity
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '5. Content and Intellectual Property',
-                  content: '''
-- You retain ownership of content you submit
-- By submitting content, you grant us a license to use it for providing our services
-- All Flow EdTech branding, logos, and content are our property
-- You may not use our intellectual property without permission
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '6. University Information',
-                  content: '''
-- We strive to provide accurate university information
-- University data may change without notice
-- We are not responsible for decisions made based on our information
-- Always verify information directly with universities
-- Recommendations are suggestions, not guarantees of admission
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '7. Payments and Refunds',
-                  content: '''
-- Some features may require payment
-- Prices are listed in your local currency where possible
-- Payments are processed securely through our payment partners
-- Refund policies vary by service type
-- Contact support for refund requests
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '8. Termination',
-                  content: '''
-- You may close your account at any time
-- We may suspend or terminate accounts that violate these terms
-- Upon termination, your right to use the Service ceases
-- Some provisions survive termination
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '9. Disclaimers',
-                  content: '''
-THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-
-We do not guarantee admission to any university or program.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '10. Limitation of Liability',
-                  content: '''
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, FLOW EDTECH SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF THE SERVICE.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '11. Changes to Terms',
-                  content: '''
-We may modify these terms at any time. Continued use of the Service after changes constitutes acceptance of the new terms. We will notify you of significant changes.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '12. Contact',
-                  content: '''
-For questions about these terms, contact us at:
-
-Email: legal@flowedtech.com
-Address: Accra, Ghana
-                  ''',
-                ),
-
+                '''),
+                _buildSection(theme, title: '2. User Accounts', content: '''
+To use certain features, you must create an account. You agree to provide accurate and complete information, maintain the security of your account credentials, and take responsibility for all activities under your account.
+                '''),
+                _buildSection(theme, title: '3. User Conduct', content: '''
+You agree not to use the Service for any unlawful purpose, harass other users, submit false information, or attempt to gain unauthorized access to systems.
+                '''),
+                _buildSection(theme, title: '4. Limitation of Liability', content: '''
+THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED.
+                '''),
+                _buildSection(theme, title: '5. Contact', content: '''
+For questions about these terms, contact us at: legal@flowedtech.com
+                '''),
                 const SizedBox(height: 32),
-
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -192,11 +128,7 @@ Address: Accra, Ghana
                   ),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.gavel,
-                        color: AppColors.primary,
-                        size: 32,
-                      ),
+                      Icon(Icons.gavel, color: AppColors.primary, size: 32),
                       const SizedBox(height: 12),
                       Text(
                         'By using Flow, you agree to these terms',
@@ -208,7 +140,6 @@ Address: Accra, Ghana
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 48),
               ],
             ),
@@ -224,20 +155,9 @@ Address: Accra, Ghana
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Text(title, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
-          Text(
-            content.trim(),
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.6,
-            ),
-          ),
+          Text(content.trim(), style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary, height: 1.6)),
         ],
       ),
     );

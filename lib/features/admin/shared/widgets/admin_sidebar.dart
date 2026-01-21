@@ -366,6 +366,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
             label: 'Resources',
             route: '/admin/content/resources',
           ),
+          AdminNavigationItem(
+            icon: Icons.article,
+            label: 'Page Content (CMS)',
+            route: '/admin/pages',
+          ),
         ],
       ),
       const AdminNavigationItem(
@@ -501,6 +506,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
         icon: Icons.folder,
         label: 'Resources',
         route: '/admin/resources',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.article,
+        label: 'Page Content (CMS)',
+        route: '/admin/pages',
       ),
       const AdminNavigationItem(
         icon: Icons.translate,

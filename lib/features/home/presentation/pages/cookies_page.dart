@@ -1,13 +1,153 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Cookie Policy page
-class CookiesPage extends StatelessWidget {
+/// Cookie Policy page - fetches content from CMS
+class CookiesPage extends ConsumerWidget {
   const CookiesPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'cookies',
+      fallbackTitle: 'Cookie Policy',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final sections = content.getSections();
+    final lastUpdated = content.getString('last_updated');
+
+    return FooterPageScaffold(
+      title: content.title,
+      subtitle: content.subtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (lastUpdated.isNotEmpty) ...[
+            Text(
+              'Last updated: $lastUpdated',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
+          ContentSectionsWidget(sections: sections),
+          const SizedBox(height: 24),
+
+          // Cookie Types Table (dynamic if available)
+          if (content.getList('cookie_types').isNotEmpty) ...[
+            Text(
+              'Types of Cookies We Use',
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildDynamicCookieTable(theme, content.getList('cookie_types')),
+            const SizedBox(height: 32),
+          ],
+
+          // Manage preferences CTA
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.cookie, size: 40, color: AppColors.primary),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Manage Cookie Preferences',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Customize which cookies you allow',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                FilledButton(
+                  onPressed: () => context.go('/settings/cookies'),
+                  child: const Text('Manage'),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 32),
+
+          // Contact
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  'Questions about cookies?',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Contact us at privacy@flowedtech.com',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDynamicCookieTable(ThemeData theme, List<dynamic> cookieTypes) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          _buildTableRow(theme, 'Cookie Type', 'Purpose', 'Duration', isHeader: true),
+          ...cookieTypes.map((cookie) {
+            final c = cookie as Map<String, dynamic>;
+            return _buildTableRow(
+              theme,
+              c['type']?.toString() ?? '',
+              c['purpose']?.toString() ?? '',
+              c['duration']?.toString() ?? '',
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(

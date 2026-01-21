@@ -1,13 +1,180 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Compliance page with regulatory information
-class CompliancePage extends StatelessWidget {
+/// Compliance page with regulatory information - fetches content from CMS
+class CompliancePage extends ConsumerWidget {
   const CompliancePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'compliance',
+      fallbackTitle: 'Compliance',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final sections = content.getSections();
+    final lastUpdated = content.getString('last_updated');
+    final certifications = content.getList('certifications');
+    final complianceEmail = content.getString('compliance_email');
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
+        title: Text(content.title),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  content.title,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (content.subtitle != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    content.subtitle!,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+                if (lastUpdated.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    'Last updated: $lastUpdated',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+
+                const SizedBox(height: 32),
+
+                // Certifications
+                if (certifications.isNotEmpty) ...[
+                  Text(
+                    'Certifications',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: certifications.map((cert) {
+                      final c = cert as Map<String, dynamic>;
+                      return _buildCertCard(
+                        theme,
+                        icon: _getCertIcon(c['icon']?.toString()),
+                        title: c['title']?.toString() ?? '',
+                        description: c['description']?.toString() ?? '',
+                      );
+                    }).toList(),
+                  ),
+
+                  const SizedBox(height: 32),
+                ],
+
+                // Sections from CMS
+                if (sections.isNotEmpty)
+                  ...sections.map((section) => _buildComplianceSection(
+                        theme,
+                        icon: Icons.verified,
+                        title: section.title,
+                        content: section.content,
+                      )),
+
+                const SizedBox(height: 32),
+
+                // Contact
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primary.withOpacity(0.1),
+                        AppColors.accent.withOpacity(0.1),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.contact_support, size: 40, color: AppColors.primary),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Compliance Questions?',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Contact our compliance team for inquiries',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        complianceEmail.isNotEmpty ? complianceEmail : 'compliance@flowedtech.com',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 48),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  IconData _getCertIcon(String? iconName) {
+    switch (iconName) {
+      case 'verified_user':
+        return Icons.verified_user;
+      case 'security':
+        return Icons.security;
+      case 'shield':
+        return Icons.shield;
+      default:
+        return Icons.verified;
+    }
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(

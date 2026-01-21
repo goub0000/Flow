@@ -34,6 +34,8 @@ import '../../features/admin/chatbot/presentation/conversation_detail_screen.dar
 import '../../features/admin/chatbot/presentation/faq_management_screen.dart';
 import '../../features/admin/chatbot/presentation/support_queue_screen.dart';
 import '../../features/admin/chatbot/presentation/live_conversations_screen.dart';
+import '../../features/admin/content/presentation/page_content_list_screen.dart';
+import '../../features/admin/content/presentation/page_content_editor_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
 import '../../features/admin/shared/widgets/admin_shell.dart';
 import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
@@ -364,6 +366,27 @@ List<RouteBase> adminRoutes = [
               final courseId = state.pathParameters['id']!;
               return NoTransitionPage(
                 child: CourseContentBuilderScreen(courseId: courseId),
+              );
+            },
+          ),
+        ],
+      ),
+
+      // Page Content Management (CMS for footer pages)
+      GoRoute(
+        path: '/admin/pages',
+        name: 'admin-pages',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const PageContentListScreen(),
+        ),
+        routes: [
+          GoRoute(
+            path: ':slug/edit',
+            name: 'admin-page-edit',
+            pageBuilder: (context, state) {
+              final pageSlug = state.pathParameters['slug']!;
+              return NoTransitionPage(
+                child: PageContentEditorScreen(pageSlug: pageSlug),
               );
             },
           ),

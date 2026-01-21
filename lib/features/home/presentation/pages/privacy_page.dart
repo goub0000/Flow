@@ -1,13 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Privacy Policy page
-class PrivacyPage extends StatelessWidget {
+/// Privacy Policy page - fetches content from CMS
+class PrivacyPage extends ConsumerWidget {
   const PrivacyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'privacy',
+      fallbackTitle: 'Privacy Policy',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final sections = content.getSections();
+    final lastUpdated = content.getString('last_updated');
+
+    return FooterPageScaffold(
+      title: content.title,
+      subtitle: content.subtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (lastUpdated.isNotEmpty) ...[
+            Text(
+              'Last updated: $lastUpdated',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
+          ContentSectionsWidget(sections: sections),
+          const SizedBox(height: 32),
+          Center(
+            child: OutlinedButton.icon(
+              onPressed: () => context.go('/contact'),
+              icon: const Icon(Icons.mail_outline),
+              label: const Text('Contact Privacy Team'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -119,38 +166,7 @@ You have the right to:
 
                 _buildSection(
                   theme,
-                  title: '6. Cookies and Tracking',
-                  content: '''
-We use cookies and similar technologies to:
-
-- Keep you signed in
-- Remember your preferences
-- Analyze site traffic and usage
-- Improve our services
-
-You can manage cookie preferences in your account settings.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '7. Children\'s Privacy',
-                  content: '''
-Our services are intended for users aged 13 and older. We do not knowingly collect information from children under 13. If you believe we have collected information from a child under 13, please contact us.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '8. Changes to This Policy',
-                  content: '''
-We may update this privacy policy from time to time. We will notify you of any significant changes by posting the new policy on this page and updating the "Last updated" date.
-                  ''',
-                ),
-
-                _buildSection(
-                  theme,
-                  title: '9. Contact Us',
+                  title: '6. Contact Us',
                   content: '''
 If you have questions about this privacy policy, please contact us at:
 

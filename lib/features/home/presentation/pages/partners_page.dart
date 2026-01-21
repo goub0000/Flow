@@ -1,13 +1,200 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/providers/page_content_provider.dart';
+import '../../../../core/models/page_content_model.dart';
+import '../widgets/dynamic_page_wrapper.dart';
 
-/// Partners page showing partnership opportunities
-class PartnersPage extends StatelessWidget {
+/// Partners page showing partnership opportunities - fetches content from CMS
+class PartnersPage extends ConsumerWidget {
   const PartnersPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicPageWrapper(
+      pageSlug: 'partners',
+      fallbackTitle: 'Partners',
+      builder: (context, content) => _buildDynamicPage(context, content),
+      fallbackBuilder: (context) => _buildStaticPage(context),
+    );
+  }
+
+  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
+    final theme = Theme.of(context);
+    final sections = content.getSections();
+    final partnerships = content.getList('partnerships');
+    final currentPartners = content.getList('current_partners');
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
+        title: Text(content.title),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Hero
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(40),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [AppColors.primary, AppColors.accent],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      const Icon(Icons.handshake, size: 64, color: Colors.white),
+                      const SizedBox(height: 16),
+                      Text(
+                        content.title,
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      if (content.subtitle != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          content.subtitle!,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white70,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Partnership Types
+                if (partnerships.isNotEmpty) ...[
+                  Text(
+                    'Partnership Opportunities',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  ...partnerships.map((p) {
+                    final partnership = p as Map<String, dynamic>;
+                    final benefits = (partnership['benefits'] as List<dynamic>?)
+                            ?.map((b) => b.toString())
+                            .toList() ??
+                        [];
+                    return _buildPartnershipCard(
+                      theme,
+                      icon: _getPartnerIcon(partnership['icon']?.toString()),
+                      title: partnership['title']?.toString() ?? '',
+                      description: partnership['description']?.toString() ?? '',
+                      benefits: benefits,
+                    );
+                  }),
+
+                  const SizedBox(height: 40),
+                ],
+
+                // Sections from CMS
+                if (sections.isNotEmpty)
+                  ContentSectionsWidget(sections: sections),
+
+                // Current Partners
+                if (currentPartners.isNotEmpty) ...[
+                  Text(
+                    'Our Partners',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: currentPartners
+                        .map((partner) => _buildPartnerLogo(theme, partner.toString()))
+                        .toList(),
+                  ),
+
+                  const SizedBox(height: 40),
+                ],
+
+                // CTA
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Ready to Partner?',
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Let's discuss how we can work together",
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton.icon(
+                        onPressed: () => context.go('/contact'),
+                        icon: const Icon(Icons.mail),
+                        label: const Text('Contact Partnership Team'),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 48),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  IconData _getPartnerIcon(String? iconName) {
+    switch (iconName) {
+      case 'school':
+        return Icons.school;
+      case 'support_agent':
+        return Icons.support_agent;
+      case 'business':
+        return Icons.business;
+      case 'public':
+        return Icons.public;
+      default:
+        return Icons.handshake;
+    }
+  }
+
+  Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(

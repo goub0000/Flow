@@ -136,6 +136,7 @@ from app.api import (
     enrichment, ml_training, location_cleaning, auth,
     applications_api, messaging_api, notifications_api,
     counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
+    page_content,  # CMS for footer pages
     test_debug,  # TEMPORARY - DEBUG
     institution_debug  # Institution debug endpoints
 )
@@ -158,6 +159,7 @@ app.include_router(ml_training.router, prefix="/api/v1", tags=["ML Training"])
 app.include_router(location_cleaning.router, prefix="/api/v1", tags=["Location Cleaning"])
 app.include_router(monitoring.router, prefix="/api/v1", tags=["Monitoring"])
 app.include_router(admin.router, prefix="/api/v1", tags=["Admin"])
+app.include_router(page_content.router, prefix="/api/v1", tags=["Page Content"])
 
 # System monitoring and health checks (no /api/v1 prefix for standard health endpoints)
 app.include_router(system_monitoring_api.router, tags=["System"])
