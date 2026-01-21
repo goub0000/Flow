@@ -1,8 +1,1 @@
-Deploy trigger Thu, Jan 02, 2026 - Fix content assignment and publishing
-
-Changes:
-- Fixed column name mismatch: user_id -> target_id in content_assignments
-- Added target_type field to assignments
-- Optimized all_students assignment to create single record
-- Created content_assignments table migration
-
+Trigger backend deploy Tue, Jan 20, 2026 11:54:08 PM
