@@ -242,7 +242,11 @@ class FloatingShapes extends StatelessWidget {
 
     return IgnorePointer(
       child: Stack(
+        fit: StackFit.expand,  // Fix: ensure Stack fills available space
+        clipBehavior: Clip.none,  // Allow overflow for positioned elements
         children: [
+          // Invisible spacer to give Stack size
+          const SizedBox.expand(),
           // Top right circle
           Positioned(
             top: -50,
