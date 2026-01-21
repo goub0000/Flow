@@ -10,7 +10,7 @@ import 'widgets/rich_text_content_editor.dart';
 /// Enum for editor modes
 enum EditorMode { visual, rawJson }
 
-/// Admin screen for editing a single page's content
+/// Admin screen for editing a single page's content with rich text support
 class PageContentEditorScreen extends ConsumerStatefulWidget {
   final String pageSlug;
 
@@ -38,13 +38,22 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   String? _error;
   EditorMode _editorMode = EditorMode.visual;
 
-  // Section-based content
+  // Content data for visual editing
+  Map<String, dynamic> _contentData = {};
   List<Map<String, dynamic>> _sections = [];
 
-  // Dynamically detect if page has sections based on content structure
-  bool _hasSectionsInContent = false;
+  // Rich text fields mapped by field name
+  Map<String, Map<String, dynamic>> _richTextFields = {};
 
-  bool get _hasSections => _hasSectionsInContent;
+  // Fields that should use rich text editor
+  static const _richTextFieldNames = ['intro', 'story', 'content', 'description'];
+
+  // Detect content structure type
+  bool get _hasSections => _contentData.containsKey('sections') && _contentData['sections'] is List;
+  bool get _hasRichTextFields => _richTextFieldNames.any((f) => _contentData.containsKey(f) && _contentData[f] is String);
+
+  // All pages support visual editing now
+  bool get _supportsVisualEditor => _hasSections || _hasRichTextFields || _contentData.isNotEmpty;
 
   @override
   void initState() {
@@ -78,15 +87,10 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         _subtitleController.text = page.subtitle ?? '';
         _metaDescriptionController.text = page.metaDescription ?? '';
         _contentController.text = const JsonEncoder.withIndent('  ').convert(page.content);
+        _contentData = Map<String, dynamic>.from(page.content);
 
-        // Dynamically detect if content has sections
-        _hasSectionsInContent = page.content.containsKey('sections') &&
-            page.content['sections'] is List;
-
-        // Initialize sections if this page has sections
-        if (_hasSections) {
-          _initializeSections(page.content);
-        }
+        // Initialize based on content structure
+        _initializeContent();
 
         setState(() {
           _isLoading = false;
@@ -100,17 +104,31 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     }
   }
 
-  void _initializeSections(Map<String, dynamic> content) {
-    final sections = content['sections'];
-    if (sections is List) {
-      _sections = sections.map((s) {
-        if (s is Map<String, dynamic>) {
-          return ContentConverter.convertSectionToQuillFormat(s);
+  void _initializeContent() {
+    // Initialize sections if present
+    if (_hasSections) {
+      final sections = _contentData['sections'];
+      if (sections is List) {
+        _sections = sections.map((s) {
+          if (s is Map<String, dynamic>) {
+            return ContentConverter.convertSectionToQuillFormat(s);
+          }
+          return <String, dynamic>{};
+        }).toList();
+      }
+    }
+
+    // Initialize rich text fields
+    _richTextFields = {};
+    for (final fieldName in _richTextFieldNames) {
+      if (_contentData.containsKey(fieldName)) {
+        final value = _contentData[fieldName];
+        if (value is String) {
+          _richTextFields[fieldName] = ContentConverter.plainTextToDelta(value);
+        } else if (value is Map<String, dynamic> && ContentConverter.isQuillDelta(value)) {
+          _richTextFields[fieldName] = value;
         }
-        return <String, dynamic>{};
-      }).toList();
-    } else {
-      _sections = [];
+      }
     }
   }
 
@@ -122,21 +140,31 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     }
   }
 
-  void _syncContentFromSections() {
-    // Build content JSON from sections
-    final content = Map<String, dynamic>.from(
-      json.decode(_contentController.text) as Map<String, dynamic>,
-    );
-    content['sections'] = _sections;
+  void _syncContentFromVisual() {
+    // Build content JSON from visual editor data
+    final content = Map<String, dynamic>.from(_contentData);
+
+    // Sync sections
+    if (_hasSections) {
+      content['sections'] = _sections;
+    }
+
+    // Sync rich text fields
+    for (final entry in _richTextFields.entries) {
+      content[entry.key] = entry.value;
+    }
+
     _contentController.text = const JsonEncoder.withIndent('  ').convert(content);
   }
 
-  void _syncSectionsFromContent() {
+  void _syncVisualFromContent() {
     try {
-      final content = json.decode(_contentController.text) as Map<String, dynamic>;
-      _initializeSections(content);
+      _contentData = Map<String, dynamic>.from(
+        json.decode(_contentController.text) as Map<String, dynamic>,
+      );
+      _initializeContent();
     } catch (e) {
-      // Invalid JSON, keep current sections
+      // Invalid JSON, keep current data
     }
   }
 
@@ -144,15 +172,9 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     if (_editorMode == mode) return;
 
     if (_editorMode == EditorMode.visual && mode == EditorMode.rawJson) {
-      // Switching from visual to raw - sync sections to JSON
-      if (_hasSections) {
-        _syncContentFromSections();
-      }
+      _syncContentFromVisual();
     } else if (_editorMode == EditorMode.rawJson && mode == EditorMode.visual) {
-      // Switching from raw to visual - sync JSON to sections
-      if (_hasSections) {
-        _syncSectionsFromContent();
-      }
+      _syncVisualFromContent();
     }
 
     setState(() {
@@ -214,12 +236,26 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     });
   }
 
+  void _updateRichTextField(String fieldName, Map<String, dynamic> delta) {
+    setState(() {
+      _richTextFields[fieldName] = delta;
+      _hasChanges = true;
+    });
+  }
+
+  void _updateContentField(String fieldName, dynamic value) {
+    setState(() {
+      _contentData[fieldName] = value;
+      _hasChanges = true;
+    });
+  }
+
   Future<void> _savePage() async {
     if (!_formKey.currentState!.validate()) return;
 
     // Sync content based on current mode
-    if (_editorMode == EditorMode.visual && _hasSections) {
-      _syncContentFromSections();
+    if (_editorMode == EditorMode.visual) {
+      _syncContentFromVisual();
     }
 
     // Parse content JSON
@@ -256,7 +292,6 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
 
       if (response.success) {
         _hasChanges = false;
-        // Refresh the admin pages list
         ref.invalidate(adminPagesProvider);
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -277,70 +312,48 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   }
 
   Future<void> _publishPage() async {
-    setState(() {
-      _isSaving = true;
-    });
+    setState(() => _isSaving = true);
 
     final service = ref.read(pageContentServiceProvider);
     final response = await service.publishPage(widget.pageSlug);
 
     if (mounted) {
-      setState(() {
-        _isSaving = false;
-      });
+      setState(() => _isSaving = false);
 
       if (response.success) {
         _originalPage = response.data;
         ref.invalidate(adminPagesProvider);
-
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Page published successfully'),
-            backgroundColor: AppColors.success,
-          ),
+          SnackBar(content: const Text('Page published successfully'), backgroundColor: AppColors.success),
         );
-        setState(() {}); // Refresh UI
+        setState(() {});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(response.message ?? 'Failed to publish page'),
-            backgroundColor: AppColors.error,
-          ),
+          SnackBar(content: Text(response.message ?? 'Failed to publish page'), backgroundColor: AppColors.error),
         );
       }
     }
   }
 
   Future<void> _unpublishPage() async {
-    setState(() {
-      _isSaving = true;
-    });
+    setState(() => _isSaving = true);
 
     final service = ref.read(pageContentServiceProvider);
     final response = await service.unpublishPage(widget.pageSlug);
 
     if (mounted) {
-      setState(() {
-        _isSaving = false;
-      });
+      setState(() => _isSaving = false);
 
       if (response.success) {
         _originalPage = response.data;
         ref.invalidate(adminPagesProvider);
-
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Page unpublished (set to draft)'),
-            backgroundColor: AppColors.warning,
-          ),
+          SnackBar(content: const Text('Page unpublished'), backgroundColor: AppColors.warning),
         );
-        setState(() {}); // Refresh UI
+        setState(() {});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(response.message ?? 'Failed to unpublish page'),
-            backgroundColor: AppColors.error,
-          ),
+          SnackBar(content: Text(response.message ?? 'Failed to unpublish page'), backgroundColor: AppColors.error),
         );
       }
     }
@@ -355,10 +368,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         title: const Text('Unsaved Changes'),
         content: const Text('You have unsaved changes. Do you want to discard them?'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
@@ -367,7 +377,6 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         ],
       ),
     );
-
     return result ?? false;
   }
 
@@ -404,43 +413,18 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: AppColors.error,
-            ),
+            Icon(Icons.error_outline, size: 64, color: AppColors.error),
             const SizedBox(height: 16),
-            Text(
-              'Error loading page',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: AppColors.error,
-              ),
-            ),
+            Text('Error loading page', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.error)),
             const SizedBox(height: 8),
-            Text(
-              _error!,
-              style: TextStyle(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            Text(_error!, style: TextStyle(color: AppColors.textSecondary), textAlign: TextAlign.center),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                OutlinedButton.icon(
-                  onPressed: () => context.go('/admin/pages'),
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('Back to List'),
-                ),
+                OutlinedButton.icon(onPressed: () => context.go('/admin/pages'), icon: const Icon(Icons.arrow_back), label: const Text('Back')),
                 const SizedBox(width: 16),
-                ElevatedButton.icon(
-                  onPressed: _loadPage,
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
-                ),
+                ElevatedButton.icon(onPressed: _loadPage, icon: const Icon(Icons.refresh), label: const Text('Retry')),
               ],
             ),
           ],
@@ -452,7 +436,6 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   Widget _buildPreviewMode(ThemeData theme) {
     return Column(
       children: [
-        // Preview header
         Container(
           padding: const EdgeInsets.all(16),
           color: AppColors.info.withValues(alpha: 0.1),
@@ -460,13 +443,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             children: [
               Icon(Icons.visibility, color: AppColors.info),
               const SizedBox(width: 12),
-              Text(
-                'Preview Mode',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.info,
-                ),
-              ),
+              Text('Preview Mode', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: AppColors.info)),
               const Spacer(),
               ElevatedButton.icon(
                 onPressed: () => setState(() => _isPreviewMode = false),
@@ -476,57 +453,40 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             ],
           ),
         ),
-        // Preview content
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  _titleController.text,
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text(_titleController.text, style: theme.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold)),
                 if (_subtitleController.text.isNotEmpty) ...[
                   const SizedBox(height: 8),
-                  Text(
-                    _subtitleController.text,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
+                  Text(_subtitleController.text, style: theme.textTheme.titleLarge?.copyWith(color: AppColors.textSecondary)),
                 ],
                 const SizedBox(height: 32),
+                // Preview rich text fields
+                for (final entry in _richTextFields.entries)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      ContentConverter.deltaToPlainText(entry.value),
+                      style: theme.textTheme.bodyLarge?.copyWith(height: 1.6),
+                    ),
+                  ),
+                // Preview sections
                 if (_hasSections)
-                  ..._sections.asMap().entries.map((entry) {
-                    final section = entry.value;
+                  ..._sections.map((section) {
                     final title = section['title']?.toString() ?? '';
                     final content = section['content'];
-                    final plainText = ContentConverter.deltaToPlainText(
-                      content is Map<String, dynamic> ? content : null,
-                    );
-
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (title.isNotEmpty)
-                            Text(
-                              title,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                          if (title.isNotEmpty) Text(title, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600)),
                           if (title.isNotEmpty) const SizedBox(height: 12),
-                          Text(
-                            plainText,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              height: 1.6,
-                            ),
-                          ),
+                          Text(ContentConverter.deltaToPlainText(content is Map<String, dynamic> ? content : null), style: theme.textTheme.bodyLarge?.copyWith(height: 1.6)),
                         ],
                       ),
                     );
@@ -547,30 +507,17 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
             _buildHeader(theme),
             const SizedBox(height: 32),
-
-            // Form fields
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Left column - Basic info
-                Expanded(
-                  flex: 1,
-                  child: _buildBasicInfoCard(theme),
-                ),
+                Expanded(flex: 1, child: _buildBasicInfoCard(theme)),
                 const SizedBox(width: 24),
-                // Right column - Content editor
-                Expanded(
-                  flex: 2,
-                  child: _buildContentEditorCard(theme),
-                ),
+                Expanded(flex: 2, child: _buildContentEditorCard(theme)),
               ],
             ),
             const SizedBox(height: 24),
-
-            // Help section
             _buildHelpSection(),
           ],
         ),
@@ -586,9 +533,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
           onPressed: () async {
             if (_hasChanges) {
               final shouldPop = await _onWillPop();
-              if (shouldPop && mounted) {
-                context.go('/admin/pages');
-              }
+              if (shouldPop && mounted) context.go('/admin/pages');
             } else {
               context.go('/admin/pages');
             }
@@ -599,39 +544,19 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Edit Page: ${_formatSlug(widget.pageSlug)}',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text('Edit Page: ${_formatSlug(widget.pageSlug)}', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Text(
-                    'Slug: ${widget.pageSlug}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
+                  Text('Slug: ${widget.pageSlug}', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
                   const SizedBox(width: 16),
                   _buildStatusBadge(_originalPage?.status ?? 'draft'),
                   if (_hasChanges) ...[
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: AppColors.warning.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        'UNSAVED',
-                        style: TextStyle(
-                          color: AppColors.warning,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      decoration: BoxDecoration(color: AppColors.warning.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
+                      child: Text('UNSAVED', style: TextStyle(color: AppColors.warning, fontSize: 10, fontWeight: FontWeight.w600)),
                     ),
                   ],
                 ],
@@ -639,47 +564,18 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             ],
           ),
         ),
-        // Action buttons
         Row(
           children: [
-            // Preview button
-            OutlinedButton.icon(
-              onPressed: () => setState(() => _isPreviewMode = true),
-              icon: const Icon(Icons.visibility, size: 18),
-              label: const Text('Preview'),
-            ),
+            OutlinedButton.icon(onPressed: () => setState(() => _isPreviewMode = true), icon: const Icon(Icons.visibility, size: 18), label: const Text('Preview')),
             const SizedBox(width: 12),
             if (_originalPage?.isPublished == true)
-              OutlinedButton.icon(
-                onPressed: _isSaving ? null : _unpublishPage,
-                icon: const Icon(Icons.visibility_off, size: 18),
-                label: const Text('Unpublish'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.warning,
-                ),
-              )
+              OutlinedButton.icon(onPressed: _isSaving ? null : _unpublishPage, icon: const Icon(Icons.visibility_off, size: 18), label: const Text('Unpublish'), style: OutlinedButton.styleFrom(foregroundColor: AppColors.warning))
             else
-              OutlinedButton.icon(
-                onPressed: _isSaving ? null : _publishPage,
-                icon: const Icon(Icons.visibility, size: 18),
-                label: const Text('Publish'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.success,
-                ),
-              ),
+              OutlinedButton.icon(onPressed: _isSaving ? null : _publishPage, icon: const Icon(Icons.visibility, size: 18), label: const Text('Publish'), style: OutlinedButton.styleFrom(foregroundColor: AppColors.success)),
             const SizedBox(width: 12),
             ElevatedButton.icon(
               onPressed: _isSaving ? null : _savePage,
-              icon: _isSaving
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Icon(Icons.save, size: 18),
+              icon: _isSaving ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Icon(Icons.save, size: 18),
               label: Text(_isSaving ? 'Saving...' : 'Save'),
             ),
           ],
@@ -691,55 +587,29 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   Widget _buildBasicInfoCard(ThemeData theme) {
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.border)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Basic Information',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text('Basic Information', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 20),
-          // Title
           TextFormField(
             controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Page Title',
-              hintText: 'Enter the page title',
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Title is required';
-              }
-              return null;
-            },
+            decoration: const InputDecoration(labelText: 'Page Title', hintText: 'Enter the page title'),
+            validator: (value) => (value == null || value.isEmpty) ? 'Title is required' : null,
             onChanged: (_) => _markChanged(),
           ),
           const SizedBox(height: 20),
-          // Subtitle
           TextFormField(
             controller: _subtitleController,
-            decoration: const InputDecoration(
-              labelText: 'Subtitle (optional)',
-              hintText: 'Enter a subtitle or tagline',
-            ),
+            decoration: const InputDecoration(labelText: 'Subtitle (optional)', hintText: 'Enter a subtitle or tagline'),
             maxLines: 2,
             onChanged: (_) => _markChanged(),
           ),
           const SizedBox(height: 20),
-          // Meta description
           TextFormField(
             controller: _metaDescriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Meta Description (SEO)',
-              hintText: 'Brief description for search engines',
-            ),
+            decoration: const InputDecoration(labelText: 'Meta Description (SEO)', hintText: 'Brief description for search engines'),
             maxLines: 3,
             maxLength: 300,
             onChanged: (_) => _markChanged(),
@@ -752,39 +622,26 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   Widget _buildContentEditorCard(ThemeData theme) {
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.border)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Content',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              // Editor mode toggle
-              if (_hasSections) _buildEditorModeToggle(theme),
+              Text('Content', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              _buildEditorModeToggle(theme),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             _editorMode == EditorMode.visual
-                ? 'Use the rich text editor to format your content.'
-                : 'Edit the page content in JSON format. Structure varies by page type.',
-            style: TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 13,
-            ),
+                ? 'Use the rich text editor to format your content with bold, italic, headings, and lists.'
+                : 'Edit the page content in JSON format.',
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
           ),
           const SizedBox(height: 16),
-          if (_editorMode == EditorMode.visual && _hasSections)
+          if (_editorMode == EditorMode.visual)
             _buildVisualEditor(theme)
           else
             _buildRawJsonEditor(theme),
@@ -795,62 +652,29 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
 
   Widget _buildEditorModeToggle(ThemeData theme) {
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.border),
-      ),
+      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.border)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildModeButton(
-            icon: Icons.edit_note,
-            label: 'Visual',
-            isSelected: _editorMode == EditorMode.visual,
-            onTap: () => _switchToMode(EditorMode.visual),
-          ),
-          _buildModeButton(
-            icon: Icons.code,
-            label: 'Raw JSON',
-            isSelected: _editorMode == EditorMode.rawJson,
-            onTap: () => _switchToMode(EditorMode.rawJson),
-          ),
+          _buildModeButton(icon: Icons.edit_note, label: 'Visual', isSelected: _editorMode == EditorMode.visual, onTap: () => _switchToMode(EditorMode.visual)),
+          _buildModeButton(icon: Icons.code, label: 'Raw JSON', isSelected: _editorMode == EditorMode.rawJson, onTap: () => _switchToMode(EditorMode.rawJson)),
         ],
       ),
     );
   }
 
-  Widget _buildModeButton({
-    required IconData icon,
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildModeButton({required IconData icon, required String label, required bool isSelected, required VoidCallback onTap}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(7),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : null,
-          borderRadius: BorderRadius.circular(7),
-        ),
+        decoration: BoxDecoration(color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : null, borderRadius: BorderRadius.circular(7)),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 16,
-              color: isSelected ? AppColors.primary : AppColors.textSecondary,
-            ),
+            Icon(icon, size: 16, color: isSelected ? AppColors.primary : AppColors.textSecondary),
             const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
-              ),
-            ),
+            Text(label, style: TextStyle(fontSize: 13, fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal, color: isSelected ? AppColors.primary : AppColors.textSecondary)),
           ],
         ),
       ),
@@ -861,35 +685,127 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Sections
-        ..._sections.asMap().entries.map((entry) {
-          final index = entry.key;
-          final section = entry.value;
-          return SectionEditor(
-            key: ValueKey('section_$index'),
-            index: index,
-            initialTitle: section['title']?.toString() ?? '',
-            initialContent: section['content'] is Map<String, dynamic>
-                ? section['content'] as Map<String, dynamic>
-                : null,
-            onChanged: (data) => _updateSection(index, data),
-            onRemove: () => _removeSection(index),
-            canRemove: _sections.length > 1,
-          );
-        }),
+        // Rich text fields (intro, story, etc.)
+        if (_hasRichTextFields || _richTextFields.isNotEmpty)
+          ..._buildRichTextFieldEditors(theme),
 
-        // Add section button
-        Center(
-          child: OutlinedButton.icon(
-            onPressed: _addSection,
-            icon: const Icon(Icons.add, size: 18),
-            label: const Text('Add Section'),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: AppColors.primary,
+        // Sections
+        if (_hasSections) ...[
+          if (_richTextFields.isNotEmpty) const Divider(height: 32),
+          Text('Sections', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
+          const SizedBox(height: 16),
+          ..._sections.asMap().entries.map((entry) {
+            final index = entry.key;
+            final section = entry.value;
+            return SectionEditor(
+              key: ValueKey('section_$index'),
+              index: index,
+              initialTitle: section['title']?.toString() ?? '',
+              initialContent: section['content'] is Map<String, dynamic> ? section['content'] as Map<String, dynamic> : null,
+              onChanged: (data) => _updateSection(index, data),
+              onRemove: () => _removeSection(index),
+              canRemove: _sections.length > 1,
+            );
+          }),
+          Center(
+            child: OutlinedButton.icon(
+              onPressed: _addSection,
+              icon: const Icon(Icons.add, size: 18),
+              label: const Text('Add Section'),
+              style: OutlinedButton.styleFrom(foregroundColor: AppColors.primary),
             ),
           ),
-        ),
+        ],
+
+        // Other content fields (non-rich text)
+        if (!_hasSections && _richTextFields.isEmpty)
+          _buildGenericFieldsEditor(theme),
       ],
+    );
+  }
+
+  List<Widget> _buildRichTextFieldEditors(ThemeData theme) {
+    final widgets = <Widget>[];
+
+    // Find and display rich text fields from content
+    for (final fieldName in _richTextFieldNames) {
+      if (_contentData.containsKey(fieldName)) {
+        final value = _contentData[fieldName];
+        Map<String, dynamic>? initialContent;
+
+        if (value is String) {
+          initialContent = _richTextFields[fieldName] ?? ContentConverter.plainTextToDelta(value);
+        } else if (value is Map<String, dynamic>) {
+          initialContent = _richTextFields[fieldName] ?? value;
+        }
+
+        if (initialContent != null || value is String) {
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 24),
+              child: RichTextContentEditor(
+                key: ValueKey('rich_$fieldName'),
+                label: _formatFieldName(fieldName),
+                initialContent: initialContent,
+                onChanged: (delta) => _updateRichTextField(fieldName, delta),
+                hintText: 'Enter ${_formatFieldName(fieldName).toLowerCase()}...',
+                height: 200,
+              ),
+            ),
+          );
+        }
+      }
+    }
+
+    return widgets;
+  }
+
+  Widget _buildGenericFieldsEditor(ThemeData theme) {
+    // For pages without sections or standard rich text fields,
+    // show editable text fields for string values
+    final stringFields = _contentData.entries.where((e) => e.value is String).toList();
+
+    if (stringFields.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Column(
+          children: [
+            Icon(Icons.data_object, size: 48, color: AppColors.textSecondary),
+            const SizedBox(height: 16),
+            Text(
+              'This page has a complex structure.',
+              style: theme.textTheme.titleSmall?.copyWith(color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Use Raw JSON mode to edit this page\'s content.',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: stringFields.map((entry) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: RichTextContentEditor(
+            key: ValueKey('field_${entry.key}'),
+            label: _formatFieldName(entry.key),
+            initialContent: _richTextFields[entry.key] ?? ContentConverter.plainTextToDelta(entry.value as String),
+            onChanged: (delta) => _updateRichTextField(entry.key, delta),
+            hintText: 'Enter ${_formatFieldName(entry.key).toLowerCase()}...',
+            height: 150,
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -900,31 +816,17 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            TextButton.icon(
-              onPressed: _formatJson,
-              icon: const Icon(Icons.format_align_left, size: 16),
-              label: const Text('Format'),
-            ),
+            TextButton.icon(onPressed: _formatJson, icon: const Icon(Icons.format_align_left, size: 16), label: const Text('Format')),
           ],
         ),
         const SizedBox(height: 8),
         TextFormField(
           controller: _contentController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            contentPadding: const EdgeInsets.all(16),
-          ),
+          decoration: InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)), contentPadding: const EdgeInsets.all(16)),
           maxLines: 25,
-          style: const TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 13,
-          ),
+          style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
           validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Content is required';
-            }
+            if (value == null || value.isEmpty) return 'Content is required';
             try {
               json.decode(value);
             } catch (e) {
@@ -948,37 +850,18 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.info_outline,
-            color: AppColors.info,
-            size: 24,
-          ),
+          Icon(Icons.info_outline, color: AppColors.info, size: 24),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Content Structure Tips',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.info,
-                  ),
-                ),
+                Text('Rich Text Editor', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.info)),
                 const SizedBox(height: 4),
                 Text(
-                  _hasSections
-                      ? 'This page uses a section-based structure. '
-                          'Use the Visual Editor to easily format text with bold, italic, headings, and lists. '
-                          'Switch to Raw JSON mode for advanced editing.'
-                      : 'Each page type has a specific content structure. '
-                          'Policy pages use "sections" array with title/content. '
-                          'Careers page uses "benefits" and "positions" arrays. '
-                          'Check the API documentation for detailed schema.',
-                  style: TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 13,
-                  ),
+                  'Use the Visual Editor for WYSIWYG editing with formatting toolbar. '
+                  'Switch to Raw JSON for advanced editing of complex content structures.',
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                 ),
               ],
             ),
@@ -989,63 +872,32 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   }
 
   Widget _buildStatusBadge(String status) {
-    Color backgroundColor;
-    Color textColor;
-
-    switch (status.toLowerCase()) {
-      case 'published':
-        backgroundColor = AppColors.success.withValues(alpha: 0.1);
-        textColor = AppColors.success;
-        break;
-      case 'draft':
-        backgroundColor = AppColors.warning.withValues(alpha: 0.1);
-        textColor = AppColors.warning;
-        break;
-      case 'archived':
-        backgroundColor = AppColors.textSecondary.withValues(alpha: 0.1);
-        textColor = AppColors.textSecondary;
-        break;
-      default:
-        backgroundColor = AppColors.border;
-        textColor = AppColors.textSecondary;
-    }
+    final colors = {
+      'published': (AppColors.success.withValues(alpha: 0.1), AppColors.success),
+      'draft': (AppColors.warning.withValues(alpha: 0.1), AppColors.warning),
+      'archived': (AppColors.textSecondary.withValues(alpha: 0.1), AppColors.textSecondary),
+    };
+    final (bg, fg) = colors[status.toLowerCase()] ?? (AppColors.border, AppColors.textSecondary);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        status.toUpperCase(),
-        style: TextStyle(
-          color: textColor,
-          fontSize: 10,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(4)),
+      child: Text(status.toUpperCase(), style: TextStyle(color: fg, fontSize: 10, fontWeight: FontWeight.w600)),
     );
   }
 
-  String _formatSlug(String slug) {
-    return slug
-        .split('-')
-        .map((word) => word[0].toUpperCase() + word.substring(1))
-        .join(' ');
-  }
+  String _formatSlug(String slug) => slug.split('-').map((w) => w[0].toUpperCase() + w.substring(1)).join(' ');
+
+  String _formatFieldName(String name) => name.split('_').map((w) => w[0].toUpperCase() + w.substring(1)).join(' ');
 
   void _formatJson() {
     try {
       final parsed = json.decode(_contentController.text);
-      final formatted = const JsonEncoder.withIndent('  ').convert(parsed);
-      _contentController.text = formatted;
+      _contentController.text = const JsonEncoder.withIndent('  ').convert(parsed);
       _markChanged();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Cannot format: Invalid JSON'),
-          backgroundColor: AppColors.error,
-        ),
+        SnackBar(content: const Text('Cannot format: Invalid JSON'), backgroundColor: AppColors.error),
       );
     }
   }
