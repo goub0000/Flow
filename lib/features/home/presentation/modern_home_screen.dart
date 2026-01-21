@@ -370,13 +370,13 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
-          // Floating decorative shapes - temporarily disabled for debugging
-          // if (!isMobile)
-          //   FloatingShapes(
-          //     primaryColor: theme.colorScheme.primary,
-          //     secondaryColor: AppColors.terracotta,
-          //     opacity: 0.08,
-          //   ),
+          // Floating decorative shapes
+          if (!isMobile)
+            FloatingShapes(
+              primaryColor: theme.colorScheme.primary,
+              secondaryColor: AppColors.terracotta,
+              opacity: 0.08,
+            ),
 
           // Mouse-following gradient overlay (desktop only) - temporarily disabled
           // if (!isMobile)
