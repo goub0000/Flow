@@ -10,7 +10,7 @@ import 'widgets/section_divider.dart';
 import 'widgets/testimonial_carousel.dart';
 import 'widgets/university_logos_section.dart';
 // import 'widgets/animated_counter.dart';  // temporarily disabled
-// import 'widgets/floating_elements.dart';  // temporarily disabled
+import 'widgets/floating_elements.dart';  // re-enabled for testing
 // import 'widgets/search_preview.dart';     // temporarily disabled
 import 'widgets/mini_quiz_preview.dart';
 import '../data/testimonials_data.dart';
@@ -398,45 +398,50 @@ class _HeroSectionState extends State<_HeroSection>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // 0: Trust Badge - Updated copy (simplified without PulsingElement)
+                    // 0: Trust Badge - with PulsingElement
                     _buildAnimatedChild(
                       0,
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                      PulsingElement(
+                        minScale: 0.98,
+                        maxScale: 1.02,
+                        duration: const Duration(seconds: 3),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
                           ),
-                          boxShadow: [
-                            BoxShadow(
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(
                               color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                              blurRadius: 20,
-                              offset: const Offset(0, 4),
                             ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.verified_rounded,
-                              size: 18,
-                              color: theme.colorScheme.primary,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Trusted by 200+ Universities',
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                color: theme.colorScheme.onPrimaryContainer,
-                                fontWeight: FontWeight.w600,
+                            boxShadow: [
+                              BoxShadow(
+                                color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                                blurRadius: 20,
+                                offset: const Offset(0, 4),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.verified_rounded,
+                                size: 18,
+                                color: theme.colorScheme.primary,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Trusted by 200+ Universities',
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: theme.colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
