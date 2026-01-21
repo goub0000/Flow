@@ -9,6 +9,10 @@ import 'widgets/demo_video_dialog.dart';
 import 'widgets/section_divider.dart';
 import 'widgets/testimonial_carousel.dart';
 import 'widgets/university_logos_section.dart';
+import 'widgets/animated_counter.dart';
+import 'widgets/floating_elements.dart';
+import 'widgets/search_preview.dart';
+import 'widgets/mini_quiz_preview.dart';
 import '../data/testimonials_data.dart';
 
 /// Modern Home Screen - Minimalistic Material Design 3
@@ -190,6 +194,11 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                 child: _TestimonialsSection(),
               ),
 
+              // Interactive Quiz Teaser Section
+              const SliverToBoxAdapter(
+                child: _QuizTeaserSection(),
+              ),
+
               // Wave Divider before Final CTA
               SliverToBoxAdapter(
                 child: WaveDivider(
@@ -332,7 +341,7 @@ class _HeroSectionState extends State<_HeroSection>
 
     return Container(
       constraints: BoxConstraints(
-        minHeight: isMobile ? size.height * 0.9 : size.height * 0.85,
+        minHeight: isMobile ? size.height * 0.95 : size.height * 0.9,
       ),
       child: Stack(
         children: [
@@ -361,6 +370,22 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
+          // Floating decorative shapes
+          if (!isMobile)
+            FloatingShapes(
+              primaryColor: theme.colorScheme.primary,
+              secondaryColor: AppColors.terracotta,
+              opacity: 0.08,
+            ),
+
+          // Mouse-following gradient overlay (desktop only)
+          if (!isMobile)
+            MouseFollowingGradient(
+              colors: [theme.colorScheme.primary, AppColors.terracotta],
+              intensity: 0.08,
+              child: const SizedBox.expand(),
+            ),
+
           // Content
           Center(
             child: ConstrainedBox(
@@ -376,35 +401,47 @@ class _HeroSectionState extends State<_HeroSection>
                     // 0: Trust Badge - Updated copy
                     _buildAnimatedChild(
                       0,
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                      PulsingElement(
+                        minScale: 0.98,
+                        maxScale: 1.02,
+                        duration: const Duration(seconds: 3),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
                           ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.verified_rounded,
-                              size: 18,
-                              color: theme.colorScheme.primary,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(
+                              color: theme.colorScheme.primary.withValues(alpha: 0.2),
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Trusted by 200+ Universities',
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                color: theme.colorScheme.onPrimaryContainer,
-                                fontWeight: FontWeight.w600,
+                            boxShadow: [
+                              BoxShadow(
+                                color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                                blurRadius: 20,
+                                offset: const Offset(0, 4),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.verified_rounded,
+                                size: 18,
+                                color: theme.colorScheme.primary,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Trusted by 200+ Universities',
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: theme.colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -441,7 +478,14 @@ class _HeroSectionState extends State<_HeroSection>
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 32),
+
+                    // 2.5: Interactive Search Bar
+                    _buildAnimatedChild(
+                      2,
+                      const SearchBarButton(),
+                    ),
+                    const SizedBox(height: 32),
 
                     // 3: CTA Buttons - Larger with min height
                     _buildAnimatedChild(
@@ -469,7 +513,7 @@ class _HeroSectionState extends State<_HeroSection>
                                   fontWeight: FontWeight.w600,
                                 ),
                                 elevation: 2,
-                                shadowColor: theme.colorScheme.primary.withOpacity(0.3),
+                                shadowColor: theme.colorScheme.primary.withValues(alpha: 0.3),
                               ),
                             ),
                           ),
@@ -499,44 +543,52 @@ class _HeroSectionState extends State<_HeroSection>
                         ],
                       ),
                     ),
-                    const SizedBox(height: 64),
+                    const SizedBox(height: 48),
 
-                    // 4: Trust Indicators with animated counters
+                    // 4: Animated Stats Counters
                     _buildAnimatedChild(
                       4,
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 32,
-                          vertical: 24,
+                          vertical: 28,
                         ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.surface.withOpacity(0.8),
+                          color: theme.colorScheme.surface.withValues(alpha: 0.9),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: theme.colorScheme.outlineVariant,
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
                         ),
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: isMobile ? 32 : 64,
-                          runSpacing: 24,
-                          children: const [
-                            _TrustIndicator(
-                              icon: Icons.verified_rounded,
-                              value: '50K+',
+                        child: AnimatedStatsRow(
+                          stats: const [
+                            StatItem(
+                              icon: Icons.people_rounded,
+                              value: 50000,
+                              suffix: '+',
                               label: 'Active Users',
                             ),
-                            _TrustIndicator(
-                              icon: Icons.account_balance,
-                              value: '18K+',
+                            StatItem(
+                              icon: Icons.account_balance_rounded,
+                              value: 18000,
+                              suffix: '+',
                               label: 'Universities',
                             ),
-                            _TrustIndicator(
+                            StatItem(
                               icon: Icons.public_rounded,
-                              value: '100+',
+                              value: 100,
+                              suffix: '+',
                               label: 'Countries',
                             ),
                           ],
+                          spacing: isMobile ? 32 : 64,
                         ),
                       ),
                     ),
@@ -823,6 +875,144 @@ class _TestimonialsSection extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Interactive Quiz Teaser Section
+class _QuizTeaserSection extends StatelessWidget {
+  const _QuizTeaserSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < HomeConstants.mobileBreakpoint;
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingLarge,
+        horizontal: 24,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.sectionLight,
+            AppColors.warmSand.withValues(alpha: 0.3),
+          ],
+        ),
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
+          child: isMobile
+              ? Column(
+                  children: [
+                    _buildContent(context, theme),
+                    const SizedBox(height: 40),
+                    const MiniQuizPreview(),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: _buildContent(context, theme),
+                    ),
+                    const SizedBox(width: 64),
+                    const Expanded(
+                      child: MiniQuizPreview(),
+                    ),
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.accent.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.explore_rounded,
+                size: 18,
+                color: AppColors.accentDark,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Find Your Path',
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: AppColors.accentDark,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Not Sure Where\nto Start?',
+          style: theme.textTheme.displaySmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: -0.5,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Take our quick quiz to discover universities and programs '
+          'that match your interests, goals, and academic profile.',
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Row(
+          children: [
+            Icon(
+              Icons.timer_outlined,
+              size: 20,
+              color: theme.colorScheme.primary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '2 minutes',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(width: 24),
+            Icon(
+              Icons.psychology_outlined,
+              size: 20,
+              color: theme.colorScheme.primary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'AI-Powered',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
