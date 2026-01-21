@@ -3,8 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:ui' as ui;
 import '../../../core/theme/app_colors.dart';
+import '../../../core/constants/home_constants.dart';
 import 'dart:math' as math;
 import 'widgets/demo_video_dialog.dart';
+import 'widgets/section_divider.dart';
+import 'widgets/testimonial_carousel.dart';
+import 'widgets/university_logos_section.dart';
+import '../data/testimonials_data.dart';
 
 /// Modern Home Screen - Minimalistic Material Design 3
 class ModernHomeScreen extends ConsumerStatefulWidget {
@@ -44,7 +49,6 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -127,14 +131,35 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                 child: _HeroSection(animationController: _animationController),
               ),
 
-              // Value Proposition
-              const SliverToBoxAdapter(
-                child: _ValuePropositionSection(),
+              // Wave Divider - Hero to Value Props
+              SliverToBoxAdapter(
+                child: WaveDivider(
+                  color: AppColors.sectionLight,
+                  height: 60,
+                  style: WaveStyle.gentle,
+                ),
               ),
 
-              // Social Proof
+              // Value Proposition - Light background
+              SliverToBoxAdapter(
+                child: Container(
+                  color: AppColors.sectionLight,
+                  child: const _ValuePropositionSection(),
+                ),
+              ),
+
+              // Social Proof with University Logos - White background
               const SliverToBoxAdapter(
                 child: _SocialProofSection(),
+              ),
+
+              // Wave Divider - Social Proof to University Search
+              SliverToBoxAdapter(
+                child: WaveDivider(
+                  color: theme.colorScheme.secondary.withOpacity(0.1),
+                  height: 50,
+                  style: WaveStyle.minimal,
+                ),
               ),
 
               // University Search Section
@@ -147,14 +172,31 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                 child: _FindYourPathSection(),
               ),
 
-              // Key Features - Minimalistic
+              // Key Features - White background
               const SliverToBoxAdapter(
                 child: _KeyFeaturesSection(),
               ),
 
-              // User Types - Segmented
+              // User Types - Warm background
+              SliverToBoxAdapter(
+                child: Container(
+                  color: AppColors.sectionWarm,
+                  child: const _UserTypesSection(),
+                ),
+              ),
+
+              // Testimonials Section
               const SliverToBoxAdapter(
-                child: _UserTypesSection(),
+                child: _TestimonialsSection(),
+              ),
+
+              // Wave Divider before Final CTA
+              SliverToBoxAdapter(
+                child: WaveDivider(
+                  color: theme.colorScheme.primaryContainer,
+                  height: 60,
+                  style: WaveStyle.curved,
+                ),
               ),
 
               // Final CTA
@@ -162,9 +204,12 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                 child: _FinalCTASection(),
               ),
 
-              // Minimal Footer
+              // Minimal Footer - Dark background
               SliverToBoxAdapter(
-                child: _MinimalFooter(),
+                child: Container(
+                  color: AppColors.sectionDark,
+                  child: _MinimalFooter(),
+                ),
               ),
             ],
           ),
@@ -197,24 +242,103 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
   }
 }
 
-/// Hero Section with Animated Gradient
-class _HeroSection extends StatelessWidget {
+/// Hero Section with Animated Gradient and Staggered Animations
+class _HeroSection extends StatefulWidget {
   final AnimationController animationController;
 
   const _HeroSection({required this.animationController});
 
   @override
+  State<_HeroSection> createState() => _HeroSectionState();
+}
+
+class _HeroSectionState extends State<_HeroSection>
+    with TickerProviderStateMixin {
+  late List<AnimationController> _staggerControllers;
+  late List<Animation<double>> _fadeAnimations;
+  late List<Animation<Offset>> _slideAnimations;
+
+  @override
+  void initState() {
+    super.initState();
+    _initStaggerAnimations();
+  }
+
+  void _initStaggerAnimations() {
+    // 5 elements: badge, title, subtitle, CTAs, stats
+    _staggerControllers = List.generate(5, (index) {
+      return AnimationController(
+        vsync: this,
+        duration: HomeConstants.fadeInDuration,
+      );
+    });
+
+    _fadeAnimations = _staggerControllers.map((controller) {
+      return Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(parent: controller, curve: HomeConstants.fadeInCurve),
+      );
+    }).toList();
+
+    _slideAnimations = _staggerControllers.map((controller) {
+      return Tween<Offset>(
+        begin: const Offset(0, 30),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(parent: controller, curve: HomeConstants.fadeInCurve),
+      );
+    }).toList();
+
+    // Start staggered animations
+    _startStaggeredAnimations();
+  }
+
+  Future<void> _startStaggeredAnimations() async {
+    for (int i = 0; i < _staggerControllers.length; i++) {
+      await Future.delayed(HomeConstants.staggerDelay);
+      if (mounted) {
+        _staggerControllers[i].forward();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _staggerControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  Widget _buildAnimatedChild(int index, Widget child) {
+    return AnimatedBuilder(
+      animation: _staggerControllers[index],
+      builder: (context, _) {
+        return Transform.translate(
+          offset: _slideAnimations[index].value,
+          child: Opacity(
+            opacity: _fadeAnimations[index].value,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+    final isMobile = size.width < HomeConstants.mobileBreakpoint;
 
     return Container(
-      height: size.height * 0.85,
+      constraints: BoxConstraints(
+        minHeight: isMobile ? size.height * 0.9 : size.height * 0.85,
+      ),
       child: Stack(
         children: [
-          // Animated Gradient Background
+          // Animated Gradient Background with African warmth
           AnimatedBuilder(
-            animation: animationController,
+            animation: widget.animationController,
             builder: (context, child) {
               return Container(
                 decoration: BoxDecoration(
@@ -222,13 +346,13 @@ class _HeroSection extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      theme.colorScheme.primary.withValues(alpha: 0.03),
-                      theme.colorScheme.secondary.withValues(alpha: 0.05),
-                      theme.colorScheme.tertiary.withValues(alpha: 0.03),
+                      theme.colorScheme.primary.withValues(alpha: 0.04),
+                      AppColors.terracotta.withValues(alpha: 0.03),
+                      AppColors.coral.withValues(alpha: 0.02),
                     ],
                     stops: [
                       0.0,
-                      0.5 + (0.2 * math.sin(animationController.value * 2 * math.pi)),
+                      0.5 + (0.15 * math.sin(widget.animationController.value * 2 * math.pi)),
                       1.0,
                     ],
                   ),
@@ -240,147 +364,181 @@ class _HeroSection extends StatelessWidget {
           // Content
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 900),
+              constraints: BoxConstraints(maxWidth: HomeConstants.maxHeroWidth),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 20 : 24,
+                  vertical: isMobile ? 40 : 0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Floating Badge
-                    Hero(
-                      tag: 'badge',
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
+                    // 0: Trust Badge - Updated copy
+                    _buildAnimatedChild(
+                      0,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            color: theme.colorScheme.primary.withValues(alpha: 0.2),
                           ),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.verified_rounded,
+                              size: 18,
+                              color: theme.colorScheme.primary,
                             ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.stars_rounded,
-                                size: 18,
-                                color: theme.colorScheme.primary,
+                            const SizedBox(width: 8),
+                            Text(
+                              'Trusted by 200+ Universities',
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.w600,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Africa\'s Leading EdTech Platform',
-                                style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.onPrimaryContainer,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     const SizedBox(height: 32),
 
-                    // Main Headline - Bold & Minimal
-                    Text(
-                      'Education Without\nBoundaries',
-                      style: theme.textTheme.displayLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 72,
-                        height: 1.1,
-                        letterSpacing: -2,
-                        color: theme.colorScheme.onSurface,
+                    // 1: Main Headline - Benefit-focused
+                    _buildAnimatedChild(
+                      1,
+                      Text(
+                        'Find Your Perfect\nUniversity Match',
+                        style: theme.textTheme.displayLarge?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: isMobile ? 40 : 56,
+                          height: 1.1,
+                          letterSpacing: -1.5,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
 
-                    // Subheadline
-                    Text(
-                      'Connect, learn, and grow with Africa\'s first\noffline-first educational ecosystem',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        height: 1.6,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w400,
+                    // 2: Subheadline - Benefit-focused
+                    _buildAnimatedChild(
+                      2,
+                      Text(
+                        'Discover, compare, and apply to 18,000+ universities\nwith personalized recommendations powered by AI',
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.6,
+                          fontSize: isMobile ? 16 : 20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 48),
 
-                    // CTA Buttons - Material 3
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FilledButton.icon(
-                          onPressed: () => context.go('/register'),
-                          icon: const Icon(Icons.rocket_launch_rounded),
-                          label: const Text('Start Free Trial'),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: theme.colorScheme.onPrimary,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 32,
-                              vertical: 20,
-                            ),
-                            textStyle: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            elevation: 0,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        OutlinedButton.icon(
-                          onPressed: () => showDemoVideoDialog(context),
-                          icon: const Icon(Icons.play_circle_outline),
-                          label: const Text('Watch Demo'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: theme.colorScheme.primary,
-                            side: BorderSide(
-                              color: theme.colorScheme.outline,
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 32,
-                              vertical: 20,
-                            ),
-                            textStyle: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
+                    // 3: CTA Buttons - Larger with min height
+                    _buildAnimatedChild(
+                      3,
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: [
+                          SizedBox(
+                            height: HomeConstants.buttonMinHeight,
+                            child: FilledButton.icon(
+                              onPressed: () => context.go('/register'),
+                              icon: const Icon(Icons.rocket_launch_rounded),
+                              label: const Text('Start Free Trial'),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: theme.colorScheme.primary,
+                                foregroundColor: theme.colorScheme.onPrimary,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 40,
+                                  vertical: 0,
+                                ),
+                                textStyle: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                elevation: 2,
+                                shadowColor: theme.colorScheme.primary.withOpacity(0.3),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: HomeConstants.buttonMinHeight,
+                            child: OutlinedButton.icon(
+                              onPressed: () => showDemoVideoDialog(context),
+                              icon: const Icon(Icons.play_circle_outline),
+                              label: const Text('Watch Demo'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: theme.colorScheme.primary,
+                                side: BorderSide(
+                                  color: theme.colorScheme.outline,
+                                  width: 1.5,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 40,
+                                  vertical: 0,
+                                ),
+                                textStyle: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 64),
 
-                    // Trust Indicators - Minimal
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 48,
-                      runSpacing: 24,
-                      children: [
-                        _TrustIndicator(
-                          icon: Icons.verified_rounded,
-                          value: '50K+',
-                          label: 'Active Users',
+                    // 4: Trust Indicators with animated counters
+                    _buildAnimatedChild(
+                      4,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 24,
                         ),
-                        _TrustIndicator(
-                          icon: Icons.business,
-                          value: '200+',
-                          label: 'Institutions',
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: theme.colorScheme.outlineVariant,
+                          ),
                         ),
-                        _TrustIndicator(
-                          icon: Icons.public_rounded,
-                          value: '20+',
-                          label: 'Countries',
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: isMobile ? 32 : 64,
+                          runSpacing: 24,
+                          children: const [
+                            _TrustIndicator(
+                              icon: Icons.verified_rounded,
+                              value: '50K+',
+                              label: 'Active Users',
+                            ),
+                            _TrustIndicator(
+                              icon: Icons.account_balance,
+                              value: '18K+',
+                              label: 'Universities',
+                            ),
+                            _TrustIndicator(
+                              icon: Icons.public_rounded,
+                              value: '100+',
+                              label: 'Countries',
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -443,17 +601,20 @@ class _ValuePropositionSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingLarge,
+        horizontal: 24,
+      ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
           child: Column(
             children: [
               Text(
                 'Why Choose Flow?',
-                style: theme.textTheme.displaySmall?.copyWith(
+                style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  letterSpacing: -1,
+                  letterSpacing: -0.5,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -467,30 +628,30 @@ class _ValuePropositionSection extends StatelessWidget {
               ),
               const SizedBox(height: 64),
               Wrap(
-                spacing: 32,
-                runSpacing: 32,
+                spacing: HomeConstants.cardSpacing,
+                runSpacing: HomeConstants.cardSpacing,
                 alignment: WrapAlignment.center,
                 children: [
                   _ValueCard(
                     icon: Icons.offline_bolt_rounded,
                     title: 'Offline-First',
                     description:
-                        'Access your content anytime, anywhere—even without internet',
+                        'Access your content anytime, anywhere—even without internet connectivity',
                     color: theme.colorScheme.primary,
                   ),
                   _ValueCard(
                     icon: Icons.payment_rounded,
                     title: 'Mobile Money',
                     description:
-                        'Pay with M-Pesa, MTN Money, and other local payment methods',
-                    color: theme.colorScheme.secondary,
+                        'Pay with M-Pesa, MTN Money, and other local payment methods you trust',
+                    color: AppColors.terracotta,
                   ),
                   _ValueCard(
                     icon: Icons.translate_rounded,
                     title: 'Multi-Language',
                     description:
-                        'Platform available in multiple African languages',
-                    color: theme.colorScheme.tertiary,
+                        'Platform available in multiple African languages for your convenience',
+                    color: AppColors.deepOchre,
                   ),
                 ],
               ),
@@ -502,7 +663,7 @@ class _ValuePropositionSection extends StatelessWidget {
   }
 }
 
-class _ValueCard extends StatelessWidget {
+class _ValueCard extends StatefulWidget {
   final IconData icon;
   final String title;
   final String description;
@@ -516,57 +677,86 @@ class _ValueCard extends StatelessWidget {
   });
 
   @override
+  State<_ValueCard> createState() => _ValueCardState();
+}
+
+class _ValueCardState extends State<_ValueCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      width: 340,
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant,
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: HomeConstants.hoverDuration,
+        curve: HomeConstants.hoverCurve,
+        width: HomeConstants.cardMinWidth,
+        padding: EdgeInsets.all(HomeConstants.cardPadding),
+        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        transformAlignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: _isHovered
+                ? widget.color.withOpacity(0.4)
+                : theme.colorScheme.outlineVariant,
+            width: _isHovered ? 2 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered
+                  ? widget.color.withOpacity(0.15)
+                  : Colors.black.withOpacity(0.05),
+              blurRadius: _isHovered ? 24 : 10,
+              offset: Offset(0, _isHovered ? 12 : 4),
+            ),
+          ],
         ),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+        child: Column(
+          children: [
+            AnimatedContainer(
+              duration: HomeConstants.hoverDuration,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: widget.color.withValues(alpha: _isHovered ? 0.15 : 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                widget.icon,
+                size: 48,
+                color: widget.color,
+              ),
             ),
-            child: Icon(
-              icon,
-              size: 40,
-              color: color,
+            const SizedBox(height: 28),
+            Text(
+              widget.title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 14),
+            Text(
+              widget.description,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            description,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              height: 1.6,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-/// Social Proof Section
+/// Social Proof Section with University Logos
 class _SocialProofSection extends StatelessWidget {
   const _SocialProofSection();
 
@@ -575,33 +765,59 @@ class _SocialProofSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingMedium,
+        horizontal: 24,
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
+          child: const UniversityLogosSection(
+            title: 'Trusted by Leading Institutions Across Africa',
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Testimonials Section with Carousel
+class _TestimonialsSection extends StatelessWidget {
+  const _TestimonialsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingLarge,
+        horizontal: 24,
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
           child: Column(
             children: [
               Text(
-                'Trusted by Institutions Across Africa',
-                style: theme.textTheme.headlineSmall?.copyWith(
+                'What Our Users Say',
+                style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Success stories from students, institutions, and educators',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 48),
-              Wrap(
-                spacing: 64,
-                runSpacing: 32,
-                alignment: WrapAlignment.center,
-                children: [
-                  _LogoPlaceholder('University of Ghana'),
-                  _LogoPlaceholder('Ashesi University'),
-                  _LogoPlaceholder('Kenyatta University'),
-                  _LogoPlaceholder('University of Lagos'),
-                ],
+              TestimonialCarousel(
+                testimonials: Testimonials.all,
               ),
             ],
           ),
@@ -611,121 +827,192 @@ class _SocialProofSection extends StatelessWidget {
   }
 }
 
-class _LogoPlaceholder extends StatelessWidget {
-  final String name;
-
-  const _LogoPlaceholder(this.name);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant,
-        ),
-      ),
-      child: Text(
-        name,
-        style: theme.textTheme.titleMedium?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-}
-
-/// Key Features Section - Minimalistic
+/// Key Features Section - Minimalistic with responsive layout
 class _KeyFeaturesSection extends StatelessWidget {
   const _KeyFeaturesSection();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < HomeConstants.tabletBreakpoint;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingLarge,
+        horizontal: 24,
+      ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Row(
+          constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
+          child: isMobile
+              ? _buildMobileLayout(context, theme)
+              : _buildDesktopLayout(context, theme),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context, ThemeData theme) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Left side - Feature list
+        Expanded(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left side - Feature list
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Everything you need',
-                      style: theme.textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: -1,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'A complete educational ecosystem designed for modern Africa',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 48),
-                    _FeatureItem(
-                      icon: Icons.auto_stories,
-                      title: 'Comprehensive Learning',
-                      description: 'Access courses, track progress, and manage applications',
-                    ),
-                    const SizedBox(height: 24),
-                    _FeatureItem(
-                      icon: Icons.people_rounded,
-                      title: 'Built for Collaboration',
-                      description: 'Connect students, parents, counselors, and institutions',
-                    ),
-                    const SizedBox(height: 24),
-                    _FeatureItem(
-                      icon: Icons.security_rounded,
-                      title: 'Enterprise-Grade Security',
-                      description: 'Bank-level encryption and data protection',
-                    ),
-                  ],
+              Text(
+                'Everything you need',
+                style: theme.textTheme.displayMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
                 ),
               ),
-              const SizedBox(width: 80),
-
-              // Right side - Visual
-              Expanded(
-                child: Container(
-                  height: 500,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        theme.colorScheme.primaryContainer,
-                        theme.colorScheme.secondaryContainer,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(32),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.devices_rounded,
-                      size: 120,
-                      color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.5),
-                    ),
-                  ),
+              const SizedBox(height: 16),
+              Text(
+                'A complete educational ecosystem designed for modern Africa',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
+              ),
+              const SizedBox(height: 48),
+              const _FeatureItem(
+                icon: Icons.auto_stories,
+                title: 'Comprehensive Learning',
+                description: 'Access courses, track progress, and manage applications all in one place',
+              ),
+              const SizedBox(height: 28),
+              const _FeatureItem(
+                icon: Icons.people_rounded,
+                title: 'Built for Collaboration',
+                description: 'Connect students, parents, counselors, and institutions seamlessly',
+              ),
+              const SizedBox(height: 28),
+              const _FeatureItem(
+                icon: Icons.security_rounded,
+                title: 'Enterprise-Grade Security',
+                description: 'Bank-level encryption and GDPR-compliant data protection',
               ),
             ],
           ),
         ),
-      ),
+        const SizedBox(width: 80),
+
+        // Right side - Visual
+        Expanded(
+          child: Container(
+            height: 500,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.primaryContainer,
+                  AppColors.terracotta.withOpacity(0.3),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(32),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  blurRadius: 40,
+                  offset: const Offset(0, 20),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                // Decorative circles
+                Positioned(
+                  top: 40,
+                  right: 40,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 60,
+                  left: 30,
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.devices_rounded,
+                        size: 100,
+                        color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.6),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Works on all devices',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.colorScheme.onPrimaryContainer.withOpacity(0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context, ThemeData theme) {
+    return Column(
+      children: [
+        Text(
+          'Everything you need',
+          style: theme.textTheme.displaySmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: -0.5,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'A complete educational ecosystem designed for modern Africa',
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 40),
+        const _FeatureItem(
+          icon: Icons.auto_stories,
+          title: 'Comprehensive Learning',
+          description: 'Access courses, track progress, and manage applications all in one place',
+        ),
+        const SizedBox(height: 24),
+        const _FeatureItem(
+          icon: Icons.people_rounded,
+          title: 'Built for Collaboration',
+          description: 'Connect students, parents, counselors, and institutions seamlessly',
+        ),
+        const SizedBox(height: 24),
+        const _FeatureItem(
+          icon: Icons.security_rounded,
+          title: 'Enterprise-Grade Security',
+          description: 'Bank-level encryption and GDPR-compliant data protection',
+        ),
+      ],
     );
   }
 }
@@ -830,20 +1117,28 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
     final selected = _userTypes[_selectedIndex];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingLarge,
+        horizontal: 24,
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
+          constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
           child: Column(
             children: [
               Text(
                 'Built for Everyone',
-                style: theme.textTheme.displaySmall?.copyWith(
+                style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  letterSpacing: -1,
+                  letterSpacing: -0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Choose your role and get started with a personalized experience',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -964,68 +1259,123 @@ class _FinalCTASection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < HomeConstants.mobileBreakpoint;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        vertical: HomeConstants.sectionSpacingLarge,
+        horizontal: 24,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.primaryContainer.withOpacity(0.5),
+            AppColors.warmSand.withOpacity(0.3),
+          ],
+        ),
+      ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
+          constraints: const BoxConstraints(maxWidth: 900),
           child: Container(
-            padding: const EdgeInsets.all(64),
+            padding: EdgeInsets.all(isMobile ? 40 : 64),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  theme.colorScheme.primaryContainer,
-                  theme.colorScheme.secondaryContainer,
+                  theme.colorScheme.primary,
+                  AppColors.primaryDark,
                 ],
               ),
               borderRadius: BorderRadius.circular(32),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withOpacity(0.3),
+                  blurRadius: 40,
+                  offset: const Offset(0, 20),
+                ),
+              ],
             ),
             child: Column(
               children: [
                 Text(
-                  'Ready to Transform Education?',
+                  'Ready to Transform\nYour Educational Journey?',
                   style: theme.textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    letterSpacing: -1,
-                    color: theme.colorScheme.onPrimaryContainer,
+                    letterSpacing: -0.5,
+                    color: Colors.white,
+                    fontSize: isMobile ? 28 : 36,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Text(
-                  'Join thousands of students, institutions, and educators',
+                  'Join 50,000+ students, institutions, and educators who trust Flow',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: isMobile ? 14 : 16,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 48),
-                FilledButton.icon(
-                  onPressed: () => context.go('/register'),
-                  icon: const Icon(Icons.rocket_launch_rounded),
-                  label: const Text('Start Your Free Trial'),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 24,
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                const SizedBox(height: 40),
+                SizedBox(
+                  height: HomeConstants.buttonMinHeight,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.go('/register'),
+                    icon: const Icon(Icons.rocket_launch_rounded),
+                    label: const Text('Start Your Free Trial'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: theme.colorScheme.primary,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 32 : 48,
+                        vertical: 0,
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: isMobile ? 16 : 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  'No credit card required • 14-day free trial',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
-                  ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline,
+                      size: 16,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'No credit card required',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Icon(
+                      Icons.check_circle_outline,
+                      size: 16,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '14-day free trial',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -1036,7 +1386,7 @@ class _FinalCTASection extends StatelessWidget {
   }
 }
 
-/// Comprehensive Footer
+/// Comprehensive Footer with Dark Theme
 class _MinimalFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -1044,15 +1394,14 @@ class _MinimalFooter extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final isDesktop = size.width > 900;
 
+    // Use light colors for dark background
+    final textColor = Colors.white.withOpacity(0.9);
+    final secondaryTextColor = Colors.white.withOpacity(0.6);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        border: Border(
-          top: BorderSide(
-            color: theme.colorScheme.outlineVariant,
-          ),
-        ),
+      decoration: const BoxDecoration(
+        color: AppColors.sectionDark,
       ),
       child: Center(
         child: ConstrainedBox(
@@ -1087,6 +1436,7 @@ class _MinimalFooter extends StatelessWidget {
                                 'Flow',
                                 style: theme.textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
+                                  color: textColor,
                                 ),
                               ),
                             ],
@@ -1095,11 +1445,10 @@ class _MinimalFooter extends StatelessWidget {
                           Text(
                             'Africa\'s Leading EdTech Platform\nEmpowering education without boundaries.',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                              color: secondaryTextColor,
                               height: 1.6,
                             ),
                           ),
-                          // Social media icons removed - will be added when actual links are available
                         ],
                       ),
                     ),
@@ -1109,12 +1458,13 @@ class _MinimalFooter extends StatelessWidget {
                     Expanded(
                       child: _FooterColumn(
                         title: 'Products',
+                        isDark: true,
                         links: [
-                          _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined),
-                          _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined),
-                          _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined),
-                          _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined),
-                          _FooterLink('Mobile Apps', () => context.go('/mobile-apps'), icon: Icons.phone_iphone_outlined),
+                          _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined, isDark: true),
+                          _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined, isDark: true),
+                          _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined, isDark: true),
+                          _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined, isDark: true),
+                          _FooterLink('Mobile Apps', () => context.go('/mobile-apps'), icon: Icons.phone_iphone_outlined, isDark: true),
                         ],
                       ),
                     ),
@@ -1124,12 +1474,13 @@ class _MinimalFooter extends StatelessWidget {
                     Expanded(
                       child: _FooterColumn(
                         title: 'Company',
+                        isDark: true,
                         links: [
-                          _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline),
-                          _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline),
-                          _FooterLink('Press Kit', () => context.go('/press'), icon: Icons.newspaper_outlined),
-                          _FooterLink('Partners', () => context.go('/partners'), icon: Icons.handshake_outlined),
-                          _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline),
+                          _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline, isDark: true),
+                          _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline, isDark: true),
+                          _FooterLink('Press Kit', () => context.go('/press'), icon: Icons.newspaper_outlined, isDark: true),
+                          _FooterLink('Partners', () => context.go('/partners'), icon: Icons.handshake_outlined, isDark: true),
+                          _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline, isDark: true),
                         ],
                       ),
                     ),
@@ -1139,12 +1490,13 @@ class _MinimalFooter extends StatelessWidget {
                     Expanded(
                       child: _FooterColumn(
                         title: 'Resources',
+                        isDark: true,
                         links: [
-                          _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline),
-                          _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined),
-                          _FooterLink('API Reference', () => context.go('/api-docs'), icon: Icons.code_outlined),
-                          _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined),
-                          _FooterLink('Blog', () => context.go('/blog'), icon: Icons.article_outlined),
+                          _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline, isDark: true),
+                          _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined, isDark: true),
+                          _FooterLink('API Reference', () => context.go('/api-docs'), icon: Icons.code_outlined, isDark: true),
+                          _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined, isDark: true),
+                          _FooterLink('Blog', () => context.go('/blog'), icon: Icons.article_outlined, isDark: true),
                         ],
                       ),
                     ),
@@ -1154,12 +1506,13 @@ class _MinimalFooter extends StatelessWidget {
                     Expanded(
                       child: _FooterColumn(
                         title: 'Legal',
+                        isDark: true,
                         links: [
-                          _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined),
-                          _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined),
-                          _FooterLink('Cookie Policy', () => context.go('/cookies'), icon: Icons.cookie_outlined),
-                          _FooterLink('Data Protection', () => context.go('/data-protection'), icon: Icons.security_outlined),
-                          _FooterLink('Compliance', () => context.go('/compliance'), icon: Icons.verified_outlined),
+                          _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined, isDark: true),
+                          _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined, isDark: true),
+                          _FooterLink('Cookie Policy', () => context.go('/cookies'), icon: Icons.cookie_outlined, isDark: true),
+                          _FooterLink('Data Protection', () => context.go('/data-protection'), icon: Icons.security_outlined, isDark: true),
+                          _FooterLink('Compliance', () => context.go('/compliance'), icon: Icons.verified_outlined, isDark: true),
                         ],
                       ),
                     ),
@@ -1187,6 +1540,7 @@ class _MinimalFooter extends StatelessWidget {
                           'Flow',
                           style: theme.textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.bold,
+                            color: textColor,
                           ),
                         ),
                       ],
@@ -1195,7 +1549,7 @@ class _MinimalFooter extends StatelessWidget {
                     Text(
                       'Africa\'s Leading EdTech Platform\nEmpowering education without boundaries.',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: secondaryTextColor,
                         height: 1.6,
                       ),
                     ),
@@ -1208,49 +1562,50 @@ class _MinimalFooter extends StatelessWidget {
                       children: [
                         _FooterColumn(
                           title: 'Products',
+                          isDark: true,
                           links: [
-                            _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined),
-                            _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined),
-                            _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined),
-                            _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined),
+                            _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined, isDark: true),
+                            _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined, isDark: true),
+                            _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined, isDark: true),
+                            _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined, isDark: true),
                           ],
                         ),
                         _FooterColumn(
                           title: 'Company',
+                          isDark: true,
                           links: [
-                            _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline),
-                            _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline),
-                            _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline),
+                            _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline, isDark: true),
+                            _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline, isDark: true),
+                            _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline, isDark: true),
                           ],
                         ),
                         _FooterColumn(
                           title: 'Resources',
+                          isDark: true,
                           links: [
-                            _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline),
-                            _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined),
-                            _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined),
+                            _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline, isDark: true),
+                            _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined, isDark: true),
+                            _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined, isDark: true),
                           ],
                         ),
                         _FooterColumn(
                           title: 'Legal',
+                          isDark: true,
                           links: [
-                            _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined),
-                            _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined),
+                            _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined, isDark: true),
+                            _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined, isDark: true),
                           ],
                         ),
                       ],
                     ),
                     const SizedBox(height: 32),
-
-                    // Social Media Icons (Mobile) - removed until actual links are available
-                    const SizedBox.shrink(),
                   ],
                 ),
 
               const SizedBox(height: 48),
 
               // Divider
-              Divider(color: theme.colorScheme.outlineVariant),
+              Divider(color: Colors.white.withOpacity(0.2)),
 
               const SizedBox(height: 24),
 
@@ -1264,7 +1619,7 @@ class _MinimalFooter extends StatelessWidget {
                   Text(
                     '© 2025 Flow EdTech. All rights reserved.',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                      color: secondaryTextColor,
                     ),
                   ),
                   Row(
@@ -1273,39 +1628,39 @@ class _MinimalFooter extends StatelessWidget {
                       Icon(
                         Icons.verified_user,
                         size: 16,
-                        color: theme.colorScheme.primary,
+                        color: AppColors.accent,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         'SOC 2 Certified',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: secondaryTextColor,
                         ),
                       ),
                       const SizedBox(width: 16),
                       Icon(
                         Icons.security,
                         size: 16,
-                        color: theme.colorScheme.primary,
+                        color: AppColors.accent,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         'ISO 27001',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: secondaryTextColor,
                         ),
                       ),
                       const SizedBox(width: 16),
                       Icon(
                         Icons.lock,
                         size: 16,
-                        color: theme.colorScheme.primary,
+                        color: AppColors.accent,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         'GDPR Compliant',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: secondaryTextColor,
                         ),
                       ),
                     ],
@@ -1324,10 +1679,12 @@ class _MinimalFooter extends StatelessWidget {
 class _FooterColumn extends StatelessWidget {
   final String title;
   final List<_FooterLink> links;
+  final bool isDark;
 
   const _FooterColumn({
     required this.title,
     required this.links,
+    this.isDark = false,
   });
 
   @override
@@ -1341,6 +1698,7 @@ class _FooterColumn extends StatelessWidget {
           title,
           style: theme.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
+            color: isDark ? Colors.white.withOpacity(0.9) : null,
           ),
         ),
         const SizedBox(height: 16),
@@ -1355,12 +1713,14 @@ class _FooterLink extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final IconData? icon;
+  final bool isDark;
 
-  const _FooterLink(this.text, this.onPressed, {this.icon});
+  const _FooterLink(this.text, this.onPressed, {this.icon, this.isDark = false});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textColor = isDark ? Colors.white.withOpacity(0.7) : theme.colorScheme.onSurfaceVariant;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -1376,7 +1736,7 @@ class _FooterLink extends StatelessWidget {
                 Icon(
                   icon,
                   size: 16,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  color: textColor,
                 ),
                 const SizedBox(width: 8),
               ],
@@ -1384,7 +1744,7 @@ class _FooterLink extends StatelessWidget {
                 child: Text(
                   text,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: textColor,
                   ),
                 ),
               ),

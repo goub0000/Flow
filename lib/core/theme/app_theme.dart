@@ -37,64 +37,79 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
+      // Hero title: 56px / weight 800 / height 1.1
       displayLarge: GoogleFonts.inter(
-        fontSize: 32,
-        fontWeight: FontWeight.bold,
+        fontSize: 56,
+        fontWeight: FontWeight.w800,
+        height: 1.1,
         color: AppColors.textPrimary,
       ),
+      // Section title: 36px / weight 700 / height 1.2
       displayMedium: GoogleFonts.inter(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
+        fontSize: 36,
+        fontWeight: FontWeight.w700,
+        height: 1.2,
         color: AppColors.textPrimary,
       ),
       displaySmall: GoogleFonts.inter(
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: FontWeight.w600,
+        height: 1.2,
         color: AppColors.textPrimary,
       ),
       headlineLarge: GoogleFonts.inter(
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: FontWeight.w600,
+        height: 1.3,
         color: AppColors.textPrimary,
       ),
       headlineMedium: GoogleFonts.inter(
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: FontWeight.w600,
+        height: 1.3,
         color: AppColors.textPrimary,
       ),
       headlineSmall: GoogleFonts.inter(
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: FontWeight.w600,
+        height: 1.3,
         color: AppColors.textPrimary,
       ),
       titleLarge: GoogleFonts.inter(
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: FontWeight.w600,
+        height: 1.4,
         color: AppColors.textPrimary,
       ),
       titleMedium: GoogleFonts.inter(
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.w500,
+        height: 1.4,
         color: AppColors.textPrimary,
       ),
       titleSmall: GoogleFonts.inter(
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
+        height: 1.4,
         color: AppColors.textPrimary,
       ),
+      // Body text: 16px / height 1.6
       bodyLarge: GoogleFonts.inter(
         fontSize: 16,
         fontWeight: FontWeight.normal,
+        height: 1.6,
         color: AppColors.textPrimary,
       ),
       bodyMedium: GoogleFonts.inter(
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: FontWeight.normal,
+        height: 1.6,
         color: AppColors.textPrimary,
       ),
       bodySmall: GoogleFonts.inter(
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: FontWeight.normal,
+        height: 1.5,
         color: AppColors.textSecondary,
       ),
       labelLarge: GoogleFonts.inter(
