@@ -304,7 +304,7 @@ from app.api import (
     counseling_api, parent_monitoring_api, achievements_api, system_monitoring_api,
     institutions_api, batch_enrichment_api, meetings, student_activities_api, grades,
     recommendation_letters, consent_api, institution_debug_api, course_content,
-    chatbot_api
+    chatbot_api, page_content  # CMS for footer pages
 )
 
 app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
@@ -335,6 +335,7 @@ app.include_router(ml_training.router, prefix="/api/v1", tags=["ML Training"])
 app.include_router(location_cleaning.router, prefix="/api/v1", tags=["Location Cleaning"])
 app.include_router(monitoring.router, prefix="/api/v1", tags=["Monitoring"])
 app.include_router(admin.router, prefix="/api/v1", tags=["Admin"])
+app.include_router(page_content.router, prefix="/api/v1", tags=["Page Content"])
 
 # System monitoring and health checks (no /api/v1 prefix for standard health endpoints)
 app.include_router(system_monitoring_api.router, tags=["System"])
