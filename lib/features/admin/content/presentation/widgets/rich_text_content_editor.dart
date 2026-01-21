@@ -40,26 +40,14 @@ class RichTextContentEditor extends StatefulWidget {
 
 class _RichTextContentEditorState extends State<RichTextContentEditor> {
   late QuillController _controller;
-  final FocusNode _focusNode = FocusNode();
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _controller = _createController();
-    _controller.addListener(_onContentChanged);
+    _initController();
   }
 
-  @override
-  void dispose() {
-    _controller.removeListener(_onContentChanged);
-    _controller.dispose();
-    _focusNode.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  QuillController _createController() {
+  void _initController() {
     Document document;
 
     if (widget.initialContent != null) {
@@ -79,11 +67,20 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
       document = Document();
     }
 
-    return QuillController(
+    _controller = QuillController(
       document: document,
       selection: const TextSelection.collapsed(offset: 0),
       readOnly: widget.readOnly,
     );
+
+    _controller.addListener(_onContentChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onContentChanged);
+    _controller.dispose();
+    super.dispose();
   }
 
   /// Extract plain text from various content formats
@@ -120,31 +117,6 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
     return _controller.document.toPlainText();
   }
 
-  /// Set content from Quill Delta JSON
-  void setContent(Map<String, dynamic>? content) {
-    _controller.removeListener(_onContentChanged);
-
-    Document document;
-    if (content != null && content.containsKey('ops')) {
-      try {
-        document = Document.fromJson(content['ops'] as List);
-      } catch (e) {
-        document = Document();
-      }
-    } else {
-      document = Document();
-    }
-
-    _controller = QuillController(
-      document: document,
-      selection: const TextSelection.collapsed(offset: 0),
-      readOnly: widget.readOnly,
-    );
-
-    _controller.addListener(_onContentChanged);
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -164,41 +136,135 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
         ],
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.border),
           ),
           child: Column(
             children: [
               // Toolbar
-              if (!widget.readOnly) _buildToolbar(theme),
-              // Editor
-              Container(
-                height: widget.height,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: widget.readOnly
-                      ? null
-                      : Border(
-                          top: BorderSide(color: AppColors.border),
-                        ),
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    _focusNode.requestFocus();
-                  },
-                  behavior: HitTestBehavior.translucent,
-                  child: QuillEditor(
+              if (!widget.readOnly) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.background,
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
+                  ),
+                  child: QuillSimpleToolbar(
                     controller: _controller,
-                    focusNode: _focusNode,
-                    scrollController: _scrollController,
+                    config: const QuillSimpleToolbarConfig(
+                      showDividers: true,
+                      showFontFamily: false,
+                      showFontSize: false,
+                      showBoldButton: true,
+                      showItalicButton: true,
+                      showUnderLineButton: true,
+                      showStrikeThrough: true,
+                      showInlineCode: false,
+                      showColorButton: true,
+                      showBackgroundColorButton: false,
+                      showClearFormat: true,
+                      showAlignmentButtons: true,
+                      showLeftAlignment: true,
+                      showCenterAlignment: true,
+                      showRightAlignment: true,
+                      showJustifyAlignment: false,
+                      showHeaderStyle: true,
+                      showListNumbers: true,
+                      showListBullets: true,
+                      showListCheck: false,
+                      showCodeBlock: false,
+                      showQuote: true,
+                      showIndent: true,
+                      showLink: true,
+                      showUndo: true,
+                      showRedo: true,
+                      showSearchButton: false,
+                      showSubscript: false,
+                      showSuperscript: false,
+                    ),
+                  ),
+                ),
+                Divider(height: 1, color: AppColors.border),
+              ],
+              // Editor area wrapped in Material for proper web text input
+              Material(
+                color: Colors.white,
+                child: SizedBox(
+                  height: widget.height,
+                  child: QuillEditor.basic(
+                    controller: _controller,
                     config: QuillEditorConfig(
                       padding: const EdgeInsets.all(16),
                       placeholder: widget.hintText ?? 'Start typing...',
-                      expands: false,
                       autoFocus: false,
-                      scrollable: true,
-                      customStyles: _buildCustomStyles(theme),
+                      customStyles: DefaultStyles(
+                        h1: DefaultTextBlockStyle(
+                          TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                            height: 1.3,
+                          ),
+                          const HorizontalSpacing(0, 0),
+                          const VerticalSpacing(16, 8),
+                          const VerticalSpacing(0, 0),
+                          null,
+                        ),
+                        h2: DefaultTextBlockStyle(
+                          TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                            height: 1.3,
+                          ),
+                          const HorizontalSpacing(0, 0),
+                          const VerticalSpacing(14, 6),
+                          const VerticalSpacing(0, 0),
+                          null,
+                        ),
+                        h3: DefaultTextBlockStyle(
+                          TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                            height: 1.3,
+                          ),
+                          const HorizontalSpacing(0, 0),
+                          const VerticalSpacing(12, 4),
+                          const VerticalSpacing(0, 0),
+                          null,
+                        ),
+                        paragraph: DefaultTextBlockStyle(
+                          TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textPrimary,
+                            height: 1.5,
+                          ),
+                          const HorizontalSpacing(0, 0),
+                          const VerticalSpacing(8, 8),
+                          const VerticalSpacing(0, 0),
+                          null,
+                        ),
+                        bold: const TextStyle(fontWeight: FontWeight.bold),
+                        italic: const TextStyle(fontStyle: FontStyle.italic),
+                        underline: const TextStyle(decoration: TextDecoration.underline),
+                        strikeThrough: const TextStyle(decoration: TextDecoration.lineThrough),
+                        link: TextStyle(
+                          color: AppColors.primary,
+                          decoration: TextDecoration.underline,
+                        ),
+                        placeHolder: DefaultTextBlockStyle(
+                          TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textSecondary.withValues(alpha: 0.6),
+                          ),
+                          const HorizontalSpacing(0, 0),
+                          const VerticalSpacing(0, 0),
+                          const VerticalSpacing(0, 0),
+                          null,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -207,120 +273,6 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildToolbar(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(7)),
-      ),
-      child: QuillSimpleToolbar(
-        controller: _controller,
-        config: QuillSimpleToolbarConfig(
-          showDividers: true,
-          showFontFamily: false,
-          showFontSize: false,
-          showBoldButton: true,
-          showItalicButton: true,
-          showUnderLineButton: true,
-          showStrikeThrough: true,
-          showInlineCode: false,
-          showColorButton: true,
-          showBackgroundColorButton: false,
-          showClearFormat: true,
-          showAlignmentButtons: true,
-          showLeftAlignment: true,
-          showCenterAlignment: true,
-          showRightAlignment: true,
-          showJustifyAlignment: false,
-          showHeaderStyle: true,
-          showListNumbers: true,
-          showListBullets: true,
-          showListCheck: false,
-          showCodeBlock: false,
-          showQuote: true,
-          showIndent: true,
-          showLink: true,
-          showUndo: true,
-          showRedo: true,
-          showSearchButton: false,
-          showSubscript: false,
-          showSuperscript: false,
-        ),
-      ),
-    );
-  }
-
-  DefaultStyles _buildCustomStyles(ThemeData theme) {
-    return DefaultStyles(
-      h1: DefaultTextBlockStyle(
-        TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textPrimary,
-          height: 1.3,
-        ),
-        const HorizontalSpacing(0, 0),
-        const VerticalSpacing(16, 8),
-        const VerticalSpacing(0, 0),
-        null,
-      ),
-      h2: DefaultTextBlockStyle(
-        TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textPrimary,
-          height: 1.3,
-        ),
-        const HorizontalSpacing(0, 0),
-        const VerticalSpacing(14, 6),
-        const VerticalSpacing(0, 0),
-        null,
-      ),
-      h3: DefaultTextBlockStyle(
-        TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-          height: 1.3,
-        ),
-        const HorizontalSpacing(0, 0),
-        const VerticalSpacing(12, 4),
-        const VerticalSpacing(0, 0),
-        null,
-      ),
-      paragraph: DefaultTextBlockStyle(
-        TextStyle(
-          fontSize: 16,
-          color: AppColors.textPrimary,
-          height: 1.5,
-        ),
-        const HorizontalSpacing(0, 0),
-        const VerticalSpacing(8, 8),
-        const VerticalSpacing(0, 0),
-        null,
-      ),
-      bold: const TextStyle(fontWeight: FontWeight.bold),
-      italic: const TextStyle(fontStyle: FontStyle.italic),
-      underline: const TextStyle(decoration: TextDecoration.underline),
-      strikeThrough: const TextStyle(decoration: TextDecoration.lineThrough),
-      link: TextStyle(
-        color: AppColors.primary,
-        decoration: TextDecoration.underline,
-      ),
-      placeHolder: DefaultTextBlockStyle(
-        TextStyle(
-          fontSize: 16,
-          color: AppColors.textSecondary.withValues(alpha: 0.6),
-        ),
-        const HorizontalSpacing(0, 0),
-        const VerticalSpacing(0, 0),
-        const VerticalSpacing(0, 0),
-        null,
-      ),
     );
   }
 }
