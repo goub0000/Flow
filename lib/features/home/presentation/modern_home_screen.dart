@@ -9,9 +9,9 @@ import 'widgets/demo_video_dialog.dart';
 import 'widgets/section_divider.dart';
 import 'widgets/testimonial_carousel.dart';
 import 'widgets/university_logos_section.dart';
-import 'widgets/animated_counter.dart';
-import 'widgets/floating_elements.dart';
-import 'widgets/search_preview.dart';
+// import 'widgets/animated_counter.dart';  // temporarily disabled
+// import 'widgets/floating_elements.dart';  // temporarily disabled
+// import 'widgets/search_preview.dart';     // temporarily disabled
 import 'widgets/mini_quiz_preview.dart';
 import '../data/testimonials_data.dart';
 
@@ -370,21 +370,21 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
-          // Floating decorative shapes
-          if (!isMobile)
-            FloatingShapes(
-              primaryColor: theme.colorScheme.primary,
-              secondaryColor: AppColors.terracotta,
-              opacity: 0.08,
-            ),
+          // Floating decorative shapes - temporarily disabled for debugging
+          // if (!isMobile)
+          //   FloatingShapes(
+          //     primaryColor: theme.colorScheme.primary,
+          //     secondaryColor: AppColors.terracotta,
+          //     opacity: 0.08,
+          //   ),
 
-          // Mouse-following gradient overlay (desktop only)
-          if (!isMobile)
-            MouseFollowingGradient(
-              colors: [theme.colorScheme.primary, AppColors.terracotta],
-              intensity: 0.08,
-              child: const SizedBox.expand(),
-            ),
+          // Mouse-following gradient overlay (desktop only) - temporarily disabled
+          // if (!isMobile)
+          //   MouseFollowingGradient(
+          //     colors: [theme.colorScheme.primary, AppColors.terracotta],
+          //     intensity: 0.08,
+          //     child: const SizedBox.expand(),
+          //   ),
 
           // Content
           Center(
@@ -398,50 +398,45 @@ class _HeroSectionState extends State<_HeroSection>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // 0: Trust Badge - Updated copy
+                    // 0: Trust Badge - Updated copy (simplified without PulsingElement)
                     _buildAnimatedChild(
                       0,
-                      PulsingElement(
-                        minScale: 0.98,
-                        maxScale: 1.02,
-                        duration: const Duration(seconds: 3),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            color: theme.colorScheme.primary.withValues(alpha: 0.2),
                           ),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
+                          boxShadow: [
+                            BoxShadow(
                               color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                              blurRadius: 20,
+                              offset: const Offset(0, 4),
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                                blurRadius: 20,
-                                offset: const Offset(0, 4),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.verified_rounded,
+                              size: 18,
+                              color: theme.colorScheme.primary,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Trusted by 200+ Universities',
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.verified_rounded,
-                                size: 18,
-                                color: theme.colorScheme.primary,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Trusted by 200+ Universities',
-                                style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.onPrimaryContainer,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -480,12 +475,12 @@ class _HeroSectionState extends State<_HeroSection>
                     ),
                     const SizedBox(height: 32),
 
-                    // 2.5: Interactive Search Bar
-                    _buildAnimatedChild(
-                      2,
-                      const SearchBarButton(),
-                    ),
-                    const SizedBox(height: 32),
+                    // 2.5: Interactive Search Bar - temporarily disabled
+                    // _buildAnimatedChild(
+                    //   2,
+                    //   const SearchBarButton(),
+                    // ),
+                    // const SizedBox(height: 32),
 
                     // 3: CTA Buttons - Larger with min height
                     _buildAnimatedChild(
@@ -545,7 +540,7 @@ class _HeroSectionState extends State<_HeroSection>
                     ),
                     const SizedBox(height: 48),
 
-                    // 4: Animated Stats Counters
+                    // 4: Stats - simplified for debugging
                     _buildAnimatedChild(
                       4,
                       Container(
@@ -567,28 +562,15 @@ class _HeroSectionState extends State<_HeroSection>
                             ),
                           ],
                         ),
-                        child: AnimatedStatsRow(
-                          stats: const [
-                            StatItem(
-                              icon: Icons.people_rounded,
-                              value: 50000,
-                              suffix: '+',
-                              label: 'Active Users',
-                            ),
-                            StatItem(
-                              icon: Icons.account_balance_rounded,
-                              value: 18000,
-                              suffix: '+',
-                              label: 'Universities',
-                            ),
-                            StatItem(
-                              icon: Icons.public_rounded,
-                              value: 100,
-                              suffix: '+',
-                              label: 'Countries',
-                            ),
-                          ],
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
                           spacing: isMobile ? 32 : 64,
+                          runSpacing: 24,
+                          children: [
+                            _StatItem(icon: Icons.people_rounded, value: '50K+', label: 'Active Users'),
+                            _StatItem(icon: Icons.account_balance_rounded, value: '18K+', label: 'Universities'),
+                            _StatItem(icon: Icons.public_rounded, value: '100+', label: 'Countries'),
+                          ],
                         ),
                       ),
                     ),
@@ -633,6 +615,44 @@ class _TrustIndicator extends StatelessWidget {
             color: theme.colorScheme.onSurface,
           ),
         ),
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Simple stat item for debugging
+class _StatItem extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String label;
+
+  const _StatItem({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 28, color: theme.colorScheme.primary),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: theme.textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 4),
         Text(
           label,
           style: theme.textTheme.bodyMedium?.copyWith(
