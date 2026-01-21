@@ -41,19 +41,10 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   // Section-based content
   List<Map<String, dynamic>> _sections = [];
 
-  // Page types that use sections
-  static const _sectionBasedPages = [
-    'privacy-policy',
-    'terms-of-service',
-    'cookie-policy',
-    'accessibility',
-    'security',
-    'data-protection',
-    'community-guidelines',
-    'refund-policy',
-  ];
+  // Dynamically detect if page has sections based on content structure
+  bool _hasSectionsInContent = false;
 
-  bool get _hasSections => _sectionBasedPages.contains(widget.pageSlug);
+  bool get _hasSections => _hasSectionsInContent;
 
   @override
   void initState() {
@@ -88,7 +79,11 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         _metaDescriptionController.text = page.metaDescription ?? '';
         _contentController.text = const JsonEncoder.withIndent('  ').convert(page.content);
 
-        // Initialize sections if this is a section-based page
+        // Dynamically detect if content has sections
+        _hasSectionsInContent = page.content.containsKey('sections') &&
+            page.content['sections'] is List;
+
+        // Initialize sections if this page has sections
         if (_hasSections) {
           _initializeSections(page.content);
         }
