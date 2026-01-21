@@ -176,22 +176,30 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
               Container(
                 height: widget.height,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: widget.readOnly
                       ? null
                       : Border(
                           top: BorderSide(color: AppColors.border),
                         ),
                 ),
-                child: QuillEditor.basic(
-                  controller: _controller,
-                  focusNode: _focusNode,
-                  scrollController: _scrollController,
-                  config: QuillEditorConfig(
-                    padding: const EdgeInsets.all(16),
-                    placeholder: widget.hintText ?? 'Start typing...',
-                    expands: true,
-                    autoFocus: false,
-                    customStyles: _buildCustomStyles(theme),
+                child: GestureDetector(
+                  onTap: () {
+                    _focusNode.requestFocus();
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: QuillEditor(
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    scrollController: _scrollController,
+                    config: QuillEditorConfig(
+                      padding: const EdgeInsets.all(16),
+                      placeholder: widget.hintText ?? 'Start typing...',
+                      expands: false,
+                      autoFocus: false,
+                      scrollable: true,
+                      customStyles: _buildCustomStyles(theme),
+                    ),
                   ),
                 ),
               ),
