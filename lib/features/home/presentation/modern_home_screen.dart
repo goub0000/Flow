@@ -1110,11 +1110,11 @@ class _MinimalFooter extends StatelessWidget {
                       child: _FooterColumn(
                         title: 'Products',
                         links: [
-                          _FooterLink('Student Portal', () {}),
-                          _FooterLink('Institution Dashboard', () {}),
-                          _FooterLink('Parent App', () {}),
-                          _FooterLink('Counselor Tools', () {}),
-                          _FooterLink('Mobile Apps', () {}),
+                          _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined),
+                          _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined),
+                          _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined),
+                          _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined),
+                          _FooterLink('Mobile Apps', () => context.go('/mobile-apps'), icon: Icons.phone_iphone_outlined),
                         ],
                       ),
                     ),
@@ -1125,11 +1125,11 @@ class _MinimalFooter extends StatelessWidget {
                       child: _FooterColumn(
                         title: 'Company',
                         links: [
-                          _FooterLink('About Us', () => context.go('/about')),
-                          _FooterLink('Careers', () {}),
-                          _FooterLink('Press Kit', () {}),
-                          _FooterLink('Partners', () {}),
-                          _FooterLink('Contact', () => context.go('/contact')),
+                          _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline),
+                          _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline),
+                          _FooterLink('Press Kit', () => context.go('/press'), icon: Icons.newspaper_outlined),
+                          _FooterLink('Partners', () => context.go('/partners'), icon: Icons.handshake_outlined),
+                          _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline),
                         ],
                       ),
                     ),
@@ -1140,11 +1140,11 @@ class _MinimalFooter extends StatelessWidget {
                       child: _FooterColumn(
                         title: 'Resources',
                         links: [
-                          _FooterLink('Help Center', () {}),
-                          _FooterLink('Documentation', () {}),
-                          _FooterLink('API Reference', () {}),
-                          _FooterLink('Community', () {}),
-                          _FooterLink('Blog', () {}),
+                          _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline),
+                          _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined),
+                          _FooterLink('API Reference', () => context.go('/api-docs'), icon: Icons.code_outlined),
+                          _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined),
+                          _FooterLink('Blog', () => context.go('/blog'), icon: Icons.article_outlined),
                         ],
                       ),
                     ),
@@ -1155,11 +1155,11 @@ class _MinimalFooter extends StatelessWidget {
                       child: _FooterColumn(
                         title: 'Legal',
                         links: [
-                          _FooterLink('Privacy Policy', () => context.go('/privacy')),
-                          _FooterLink('Terms of Service', () => context.go('/terms')),
-                          _FooterLink('Cookie Policy', () => context.go('/settings/cookies')),
-                          _FooterLink('Data Protection', () => context.go('/privacy')),
-                          _FooterLink('Compliance', () {}),
+                          _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined),
+                          _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined),
+                          _FooterLink('Cookie Policy', () => context.go('/cookies'), icon: Icons.cookie_outlined),
+                          _FooterLink('Data Protection', () => context.go('/data-protection'), icon: Icons.security_outlined),
+                          _FooterLink('Compliance', () => context.go('/compliance'), icon: Icons.verified_outlined),
                         ],
                       ),
                     ),
@@ -1209,33 +1209,33 @@ class _MinimalFooter extends StatelessWidget {
                         _FooterColumn(
                           title: 'Products',
                           links: [
-                            _FooterLink('Student Portal', () {}),
-                            _FooterLink('Institution Dashboard', () {}),
-                            _FooterLink('Parent App', () {}),
-                            _FooterLink('Counselor Tools', () {}),
+                            _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined),
+                            _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined),
+                            _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined),
+                            _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined),
                           ],
                         ),
                         _FooterColumn(
                           title: 'Company',
                           links: [
-                            _FooterLink('About Us', () => context.go('/about')),
-                            _FooterLink('Careers', () {}),
-                            _FooterLink('Contact', () => context.go('/contact')),
+                            _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline),
+                            _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline),
+                            _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline),
                           ],
                         ),
                         _FooterColumn(
                           title: 'Resources',
                           links: [
-                            _FooterLink('Help Center', () {}),
-                            _FooterLink('Documentation', () {}),
-                            _FooterLink('Community', () {}),
+                            _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline),
+                            _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined),
+                            _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined),
                           ],
                         ),
                         _FooterColumn(
                           title: 'Legal',
                           links: [
-                            _FooterLink('Privacy Policy', () => context.go('/privacy')),
-                            _FooterLink('Terms of Service', () => context.go('/terms')),
+                            _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined),
+                            _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined),
                           ],
                         ),
                       ],
@@ -1350,12 +1350,13 @@ class _FooterColumn extends StatelessWidget {
   }
 }
 
-/// Footer Link Widget
+/// Footer Link Widget with optional icon
 class _FooterLink extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final IconData? icon;
 
-  const _FooterLink(this.text, this.onPressed);
+  const _FooterLink(this.text, this.onPressed, {this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -1365,10 +1366,29 @@ class _FooterLink extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: onPressed,
-        child: Text(
-          text,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
+        borderRadius: BorderRadius.circular(4),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                Icon(
+                  icon,
+                  size: 16,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 8),
+              ],
+              Flexible(
+                child: Text(
+                  text,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

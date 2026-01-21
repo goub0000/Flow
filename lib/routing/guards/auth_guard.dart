@@ -28,12 +28,27 @@ class AuthGuard {
     return location.startsWith('/universities');
   }
 
-  /// Check if the route is a public info page (About, Contact, Privacy, Terms)
+  /// Check if the route is a public info page (footer pages)
   static bool isPublicInfoRoute(String location) {
-    return location == '/about' ||
-        location == '/contact' ||
-        location == '/privacy' ||
-        location == '/terms';
+    const publicRoutes = [
+      '/about',
+      '/contact',
+      '/privacy',
+      '/terms',
+      '/careers',
+      '/press',
+      '/partners',
+      '/help',
+      '/docs',
+      '/api-docs',
+      '/community',
+      '/blog',
+      '/compliance',
+      '/cookies',
+      '/data-protection',
+      '/mobile-apps',
+    ];
+    return publicRoutes.contains(location);
   }
 
   /// Determine if a redirect is needed based on authentication state
