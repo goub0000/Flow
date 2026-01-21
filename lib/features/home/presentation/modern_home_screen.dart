@@ -370,21 +370,21 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
-          // Floating decorative shapes
-          if (!isMobile)
-            FloatingShapes(
-              primaryColor: theme.colorScheme.primary,
-              secondaryColor: AppColors.terracotta,
-              opacity: 0.08,
-            ),
-
-          // Mouse-following gradient overlay (desktop only) - temporarily disabled
+          // Floating decorative shapes - DISABLED (layout issue)
           // if (!isMobile)
-          //   MouseFollowingGradient(
-          //     colors: [theme.colorScheme.primary, AppColors.terracotta],
-          //     intensity: 0.08,
-          //     child: const SizedBox.expand(),
+          //   FloatingShapes(
+          //     primaryColor: theme.colorScheme.primary,
+          //     secondaryColor: AppColors.terracotta,
+          //     opacity: 0.08,
           //   ),
+
+          // Mouse-following gradient overlay (desktop only)
+          if (!isMobile)
+            MouseFollowingGradient(
+              colors: [theme.colorScheme.primary, AppColors.terracotta],
+              intensity: 0.08,
+              child: const SizedBox.expand(),
+            ),
 
           // Content
           Center(
