@@ -9,9 +9,9 @@ import 'widgets/demo_video_dialog.dart';
 import 'widgets/section_divider.dart';
 import 'widgets/testimonial_carousel.dart';
 import 'widgets/university_logos_section.dart';
-// import 'widgets/animated_counter.dart';  // temporarily disabled
-import 'widgets/floating_elements.dart';  // re-enabled for testing
-// import 'widgets/search_preview.dart';     // temporarily disabled
+import 'widgets/animated_counter.dart';
+import 'widgets/floating_elements.dart';
+import 'widgets/search_preview.dart';
 import 'widgets/mini_quiz_preview.dart';
 import '../data/testimonials_data.dart';
 
@@ -370,21 +370,7 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
-          // Floating decorative shapes - DISABLED (layout issue)
-          // if (!isMobile)
-          //   FloatingShapes(
-          //     primaryColor: theme.colorScheme.primary,
-          //     secondaryColor: AppColors.terracotta,
-          //     opacity: 0.08,
-          //   ),
-
-          // Mouse-following gradient overlay (desktop only)
-          if (!isMobile)
-            MouseFollowingGradient(
-              colors: [theme.colorScheme.primary, AppColors.terracotta],
-              intensity: 0.08,
-              child: const SizedBox.expand(),
-            ),
+          // Decorative background animations removed (caused layout issues on web)
 
           // Content
           Center(
@@ -480,12 +466,12 @@ class _HeroSectionState extends State<_HeroSection>
                     ),
                     const SizedBox(height: 32),
 
-                    // 2.5: Interactive Search Bar - temporarily disabled
-                    // _buildAnimatedChild(
-                    //   2,
-                    //   const SearchBarButton(),
-                    // ),
-                    // const SizedBox(height: 32),
+                    // 2.5: Interactive Search Bar
+                    _buildAnimatedChild(
+                      2,
+                      const SearchBarButton(),
+                    ),
+                    const SizedBox(height: 32),
 
                     // 3: CTA Buttons - Larger with min height
                     _buildAnimatedChild(
@@ -545,7 +531,7 @@ class _HeroSectionState extends State<_HeroSection>
                     ),
                     const SizedBox(height: 48),
 
-                    // 4: Stats - simplified for debugging
+                    // 4: Animated Stats Counters
                     _buildAnimatedChild(
                       4,
                       Container(
@@ -567,15 +553,28 @@ class _HeroSectionState extends State<_HeroSection>
                             ),
                           ],
                         ),
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: isMobile ? 32 : 64,
-                          runSpacing: 24,
-                          children: [
-                            _StatItem(icon: Icons.people_rounded, value: '50K+', label: 'Active Users'),
-                            _StatItem(icon: Icons.account_balance_rounded, value: '18K+', label: 'Universities'),
-                            _StatItem(icon: Icons.public_rounded, value: '100+', label: 'Countries'),
+                        child: AnimatedStatsRow(
+                          stats: const [
+                            StatItem(
+                              icon: Icons.people_rounded,
+                              value: 50000,
+                              suffix: '+',
+                              label: 'Active Users',
+                            ),
+                            StatItem(
+                              icon: Icons.account_balance_rounded,
+                              value: 18000,
+                              suffix: '+',
+                              label: 'Universities',
+                            ),
+                            StatItem(
+                              icon: Icons.public_rounded,
+                              value: 100,
+                              suffix: '+',
+                              label: 'Countries',
+                            ),
                           ],
+                          spacing: isMobile ? 32 : 64,
                         ),
                       ),
                     ),
