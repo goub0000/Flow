@@ -142,9 +142,8 @@ class ApprovalsListNotifier extends StateNotifier<ApprovalsListState> {
   }
 
   void _initService() {
-    // Get token from ApiClient for the service
-    final token = _apiClient.token;
-    _service = ApprovalsApiService(accessToken: token);
+    // Use token getter for dynamic token retrieval
+    _service = ApprovalsApiService(tokenGetter: () => _apiClient.token);
   }
 
   /// Fetch approval requests with optional filters
@@ -257,8 +256,8 @@ class ApprovalDetailNotifier extends StateNotifier<ApprovalDetailState> {
   }
 
   void _initService() {
-    final token = _apiClient.token;
-    _service = ApprovalsApiService(accessToken: token);
+    // Use token getter for dynamic token retrieval
+    _service = ApprovalsApiService(tokenGetter: () => _apiClient.token);
   }
 
   /// Fetch single approval request details
@@ -562,8 +561,8 @@ class ApprovalStatsNotifier extends StateNotifier<ApprovalStatsState> {
   }
 
   void _initService() {
-    final token = _apiClient.token;
-    _service = ApprovalsApiService(accessToken: token);
+    // Use token getter for dynamic token retrieval
+    _service = ApprovalsApiService(tokenGetter: () => _apiClient.token);
   }
 
   /// Fetch approval statistics
@@ -601,8 +600,8 @@ class PendingActionsNotifier extends StateNotifier<PendingActionsState> {
   }
 
   void _initService() {
-    final token = _apiClient.token;
-    _service = ApprovalsApiService(accessToken: token);
+    // Use token getter for dynamic token retrieval
+    _service = ApprovalsApiService(tokenGetter: () => _apiClient.token);
   }
 
   /// Fetch pending actions for current admin

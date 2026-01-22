@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/approval_models.dart';
 
+/// Function type for getting the current access token
+typedef TokenGetter = String? Function();
+
 /// Service for communicating with Approvals API
 /// Handles admin approval workflow operations
 class ApprovalsApiService {
@@ -10,19 +13,30 @@ class ApprovalsApiService {
       'https://web-production-51e34.up.railway.app/api/v1';
 
   final http.Client _client;
-  final String? _accessToken;
+  final TokenGetter? _tokenGetter;
+  final String? _staticToken;
 
+  /// Creates an ApprovalsApiService.
+  ///
+  /// Use [tokenGetter] for dynamic token retrieval (recommended) or
+  /// [accessToken] for a static token value.
   ApprovalsApiService({
     http.Client? client,
+    TokenGetter? tokenGetter,
     String? accessToken,
   })  : _client = client ?? http.Client(),
-        _accessToken = accessToken;
+        _tokenGetter = tokenGetter,
+        _staticToken = accessToken;
+
+  /// Get the current access token (dynamic or static)
+  String? get _accessToken => _tokenGetter?.call() ?? _staticToken;
 
   /// Build headers with authentication
   Map<String, String> _buildHeaders() {
+    final token = _accessToken;
     final headers = <String, String>{'Content-Type': 'application/json'};
-    if (_accessToken != null) {
-      headers['Authorization'] = 'Bearer $_accessToken';
+    if (token != null) {
+      headers['Authorization'] = 'Bearer $token';
     }
     return headers;
   }
