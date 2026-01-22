@@ -165,6 +165,180 @@ async def list_approval_requests(
         )
 
 
+# ============================================================================
+# IMPORTANT: Specific routes MUST be defined BEFORE parameterized routes
+# FastAPI matches routes in order, so /stats must come before /{request_id}
+# ============================================================================
+
+# Dashboard Endpoints (moved before {request_id} routes)
+# ============================================================================
+
+@router.get("/admin/approvals/stats")
+async def get_approval_statistics(
+    regional_scope: Optional[str] = None,
+    current_user: CurrentUser = Depends(require_admin)
+) -> ApprovalStatistics:
+    """
+    Get approval workflow statistics
+
+    **Requires:** Admin authentication
+
+    **Query Parameters:**
+    - regional_scope: Filter by regional scope (optional)
+
+    **Returns:**
+    - Approval statistics including counts by status, type, and trends
+    """
+    try:
+        service = ApprovalService()
+        result = await service.get_statistics(
+            admin_id=current_user.id,
+            admin_role=UserRole.normalize_role(current_user.role),
+            regional_scope=regional_scope
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/admin/approvals/my-pending")
+async def get_my_pending_actions(
+    current_user: CurrentUser = Depends(require_admin)
+) -> MyPendingActionsResponse:
+    """
+    Get pending actions for the current admin
+
+    **Requires:** Admin authentication
+
+    **Returns:**
+    - Pending reviews: Requests awaiting your review
+    - Awaiting my info: Your requests that need more information
+    - Delegated to me: Requests delegated to you
+    """
+    try:
+        service = ApprovalService()
+        result = await service.get_my_pending_actions(
+            admin_id=current_user.id,
+            admin_role=UserRole.normalize_role(current_user.role)
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/admin/approvals/my-requests")
+async def get_my_submitted_requests(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user: CurrentUser = Depends(require_admin)
+) -> MySubmittedRequestsResponse:
+    """
+    Get requests submitted by the current admin
+
+    **Requires:** Admin authentication
+
+    **Query Parameters:**
+    - page: Page number (default: 1)
+    - page_size: Items per page (default: 20, max: 100)
+
+    **Returns:**
+    - Paginated list of requests submitted by the current admin
+    """
+    try:
+        service = ApprovalService()
+        result = await service.get_my_requests(
+            admin_id=current_user.id,
+            admin_role=UserRole.normalize_role(current_user.role),
+            page=page,
+            page_size=page_size
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/admin/approvals/config")
+async def list_approval_configs(
+    current_user: CurrentUser = Depends(require_admin)
+) -> ApprovalConfigListResponse:
+    """
+    List all approval configurations
+
+    **Requires:** Admin authentication
+
+    **Returns:**
+    - List of all approval workflow configurations
+    """
+    try:
+        service = ApprovalService()
+        result = await service.list_configs(
+            admin_id=current_user.id,
+            admin_role=UserRole.normalize_role(current_user.role)
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/admin/approvals/audit")
+async def get_system_audit_log(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(50, ge=1, le=100),
+    from_date: Optional[str] = None,
+    to_date: Optional[str] = None,
+    event_type: Optional[str] = None,
+    current_user: CurrentUser = Depends(require_super_admin)
+) -> ApprovalAuditLogResponse:
+    """
+    Get system-wide audit log for approvals
+
+    **Requires:** Super Admin authentication
+
+    **Query Parameters:**
+    - page: Page number (default: 1)
+    - page_size: Items per page (default: 50, max: 100)
+    - from_date: Filter from date (ISO format)
+    - to_date: Filter to date (ISO format)
+    - event_type: Filter by event type
+
+    **Returns:**
+    - Paginated system-wide audit log entries
+    """
+    try:
+        service = ApprovalService()
+        result = await service.get_system_audit_log(
+            admin_id=current_user.id,
+            admin_role=UserRole.normalize_role(current_user.role),
+            from_date=from_date,
+            to_date=to_date,
+            event_type=event_type,
+            page=page,
+            page_size=page_size
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+# ============================================================================
+# Parameterized routes (must come AFTER specific routes)
+# ============================================================================
+
 @router.get("/admin/approvals/{request_id}")
 async def get_approval_request(
     request_id: str,
@@ -682,131 +856,8 @@ async def delete_comment(
 
 
 # ============================================================================
-# Dashboard Endpoints
+# Configuration Update Endpoint (Super Admin only)
 # ============================================================================
-
-@router.get("/admin/approvals/stats")
-async def get_approval_statistics(
-    regional_scope: Optional[str] = None,
-    current_user: CurrentUser = Depends(require_admin)
-) -> ApprovalStatistics:
-    """
-    Get approval workflow statistics
-
-    **Requires:** Admin authentication
-
-    **Query Parameters:**
-    - regional_scope: Filter by regional scope (optional)
-
-    **Returns:**
-    - Approval statistics including counts by status, type, and trends
-    """
-    try:
-        service = ApprovalService()
-        result = await service.get_statistics(
-            admin_id=current_user.id,
-            admin_role=UserRole.normalize_role(current_user.role),
-            regional_scope=regional_scope
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-
-
-@router.get("/admin/approvals/my-pending")
-async def get_my_pending_actions(
-    current_user: CurrentUser = Depends(require_admin)
-) -> MyPendingActionsResponse:
-    """
-    Get pending actions for the current admin
-
-    **Requires:** Admin authentication
-
-    **Returns:**
-    - Pending reviews: Requests awaiting your review
-    - Awaiting my info: Your requests that need more information
-    - Delegated to me: Requests delegated to you
-    """
-    try:
-        service = ApprovalService()
-        result = await service.get_my_pending_actions(
-            admin_id=current_user.id,
-            admin_role=UserRole.normalize_role(current_user.role)
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-
-
-@router.get("/admin/approvals/my-requests")
-async def get_my_submitted_requests(
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
-    current_user: CurrentUser = Depends(require_admin)
-) -> MySubmittedRequestsResponse:
-    """
-    Get requests submitted by the current admin
-
-    **Requires:** Admin authentication
-
-    **Query Parameters:**
-    - page: Page number (default: 1)
-    - page_size: Items per page (default: 20, max: 100)
-
-    **Returns:**
-    - Paginated list of requests submitted by the current admin
-    """
-    try:
-        service = ApprovalService()
-        result = await service.get_my_requests(
-            admin_id=current_user.id,
-            admin_role=UserRole.normalize_role(current_user.role),
-            page=page,
-            page_size=page_size
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-
-
-# ============================================================================
-# Configuration Endpoints (Super Admin only)
-# ============================================================================
-
-@router.get("/admin/approvals/config")
-async def list_approval_configs(
-    current_user: CurrentUser = Depends(require_admin)
-) -> ApprovalConfigListResponse:
-    """
-    List all approval configurations
-
-    **Requires:** Admin authentication
-
-    **Returns:**
-    - List of all approval workflow configurations
-    """
-    try:
-        service = ApprovalService()
-        result = await service.list_configs(
-            admin_id=current_user.id,
-            admin_role=UserRole.normalize_role(current_user.role)
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-
 
 @router.patch("/admin/approvals/config/{config_id}")
 async def update_approval_config(
@@ -853,7 +904,7 @@ async def update_approval_config(
 
 
 # ============================================================================
-# Audit Log Endpoints
+# Request-Specific Audit Log Endpoint
 # ============================================================================
 
 @router.get("/admin/approvals/{request_id}/audit")
@@ -884,49 +935,6 @@ async def get_request_audit_log(
             request_id=request_id,
             admin_id=current_user.id,
             admin_role=UserRole.normalize_role(current_user.role),
-            page=page,
-            page_size=page_size
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
-
-
-@router.get("/admin/approvals/audit")
-async def get_system_audit_log(
-    page: int = Query(1, ge=1),
-    page_size: int = Query(50, ge=1, le=100),
-    from_date: Optional[str] = None,
-    to_date: Optional[str] = None,
-    event_type: Optional[str] = None,
-    current_user: CurrentUser = Depends(require_super_admin)
-) -> ApprovalAuditLogResponse:
-    """
-    Get system-wide audit log for approvals
-
-    **Requires:** Super Admin authentication
-
-    **Query Parameters:**
-    - page: Page number (default: 1)
-    - page_size: Items per page (default: 50, max: 100)
-    - from_date: Filter from date (ISO format)
-    - to_date: Filter to date (ISO format)
-    - event_type: Filter by event type
-
-    **Returns:**
-    - Paginated system-wide audit log entries
-    """
-    try:
-        service = ApprovalService()
-        result = await service.get_system_audit_log(
-            admin_id=current_user.id,
-            admin_role=UserRole.normalize_role(current_user.role),
-            from_date=from_date,
-            to_date=to_date,
-            event_type=event_type,
             page=page,
             page_size=page_size
         )
