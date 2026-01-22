@@ -406,6 +406,28 @@ class _AdminSidebarState extends State<AdminSidebar> {
         route: '/admin/support/tickets',
       ),
       const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
+        children: [
+          AdminNavigationItem(
+            icon: Icons.dashboard,
+            label: 'Dashboard',
+            route: '/admin/approvals',
+          ),
+          AdminNavigationItem(
+            icon: Icons.list,
+            label: 'All Requests',
+            route: '/admin/approvals/list',
+          ),
+          AdminNavigationItem(
+            icon: Icons.add_circle,
+            label: 'New Request',
+            route: '/admin/approvals/create',
+          ),
+        ],
+      ),
+      const AdminNavigationItem(
         icon: Icons.settings,
         label: 'System',
         route: '/admin/system',
@@ -448,6 +470,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
         route: '/admin/dashboard',
       ),
       const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
+      ),
+      const AdminNavigationItem(
         icon: Icons.people,
         label: 'Users',
         route: '/admin/users',
@@ -486,6 +513,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
         icon: Icons.dashboard,
         label: 'Dashboard',
         route: '/admin/dashboard',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
       ),
       const AdminNavigationItem(
         icon: Icons.menu_book,
@@ -533,6 +565,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
         route: '/admin/dashboard',
       ),
       const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
+      ),
+      const AdminNavigationItem(
         icon: Icons.confirmation_number,
         label: 'Tickets',
         route: '/admin/tickets',
@@ -566,6 +603,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
         icon: Icons.dashboard,
         label: 'Dashboard',
         route: '/admin/dashboard',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
       ),
       const AdminNavigationItem(
         icon: Icons.receipt_long,
@@ -606,6 +648,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
         icon: Icons.dashboard,
         label: 'Dashboard',
         route: '/admin/dashboard',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
       ),
       const AdminNavigationItem(
         icon: Icons.bar_chart,

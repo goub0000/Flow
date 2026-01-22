@@ -401,6 +401,18 @@ class NotificationService {
         return 'mention';
       case NotificationType.eventReminder:
         return 'event_reminder';
+      case NotificationType.approvalRequestNew:
+        return 'approval_request_new';
+      case NotificationType.approvalRequestActionNeeded:
+        return 'approval_request_action_needed';
+      case NotificationType.approvalRequestStatusChanged:
+        return 'approval_request_status_changed';
+      case NotificationType.approvalRequestEscalated:
+        return 'approval_request_escalated';
+      case NotificationType.approvalRequestExpiring:
+        return 'approval_request_expiring';
+      case NotificationType.approvalRequestComment:
+        return 'approval_request_comment';
     }
   }
 }

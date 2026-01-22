@@ -428,6 +428,18 @@ class _NotificationPreferencesScreenState
         return 'Receive notifications when you are mentioned';
       case NotificationType.eventReminder:
         return 'Get reminders about upcoming events';
+      case NotificationType.approvalRequestNew:
+        return 'Get notified about new approval requests';
+      case NotificationType.approvalRequestActionNeeded:
+        return 'Receive reminders about pending approval actions';
+      case NotificationType.approvalRequestStatusChanged:
+        return 'Get notified when your request status changes';
+      case NotificationType.approvalRequestEscalated:
+        return 'Receive notifications when requests are escalated to you';
+      case NotificationType.approvalRequestExpiring:
+        return 'Get reminders about expiring approval requests';
+      case NotificationType.approvalRequestComment:
+        return 'Get notified about new comments on requests';
     }
   }
 

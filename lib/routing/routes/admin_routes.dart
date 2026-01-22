@@ -39,6 +39,10 @@ import '../../features/admin/content/presentation/page_content_editor_screen.dar
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
 import '../../features/admin/shared/widgets/admin_shell.dart';
 import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
+import '../../features/admin/approvals/presentation/screens/approval_dashboard_screen.dart';
+import '../../features/admin/approvals/presentation/screens/approval_list_screen.dart';
+import '../../features/admin/approvals/presentation/screens/approval_detail_screen.dart';
+import '../../features/admin/approvals/presentation/screens/create_approval_request_screen.dart';
 
 /// Custom page with no transition for seamless admin navigation
 class NoTransitionPage<T> extends CustomTransitionPage<T> {
@@ -693,6 +697,39 @@ List<RouteBase> adminRoutes = [
             icon: Icons.business,
           ),
         ),
+      ),
+
+      // Approval Workflow Routes
+      GoRoute(
+        path: '/admin/approvals',
+        name: 'admin-approvals',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ApprovalDashboardScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/approvals/list',
+        name: 'admin-approvals-list',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ApprovalListScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/approvals/create',
+        name: 'admin-approval-create',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const CreateApprovalRequestScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/approvals/:id',
+        name: 'admin-approval-detail',
+        pageBuilder: (context, state) {
+          final approvalId = state.pathParameters['id']!;
+          return NoTransitionPage(
+            child: ApprovalDetailScreen(requestId: approvalId),
+          );
+        },
       ),
     ],
   ),

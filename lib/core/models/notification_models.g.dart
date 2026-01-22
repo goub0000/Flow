@@ -65,6 +65,14 @@ const _$NotificationTypeEnumMap = {
   NotificationType.commentReceived: 'comment_received',
   NotificationType.mention: 'mention',
   NotificationType.eventReminder: 'event_reminder',
+  NotificationType.approvalRequestNew: 'approval_request_new',
+  NotificationType.approvalRequestActionNeeded:
+      'approval_request_action_needed',
+  NotificationType.approvalRequestStatusChanged:
+      'approval_request_status_changed',
+  NotificationType.approvalRequestEscalated: 'approval_request_escalated',
+  NotificationType.approvalRequestExpiring: 'approval_request_expiring',
+  NotificationType.approvalRequestComment: 'approval_request_comment',
 };
 
 const _$NotificationPriorityEnumMap = {

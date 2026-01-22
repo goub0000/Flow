@@ -40,6 +40,25 @@ enum NotificationType {
 
   @JsonValue('event_reminder')
   eventReminder,
+
+  // Approval workflow notifications
+  @JsonValue('approval_request_new')
+  approvalRequestNew,
+
+  @JsonValue('approval_request_action_needed')
+  approvalRequestActionNeeded,
+
+  @JsonValue('approval_request_status_changed')
+  approvalRequestStatusChanged,
+
+  @JsonValue('approval_request_escalated')
+  approvalRequestEscalated,
+
+  @JsonValue('approval_request_expiring')
+  approvalRequestExpiring,
+
+  @JsonValue('approval_request_comment')
+  approvalRequestComment,
 }
 
 /// Notification priority
@@ -83,6 +102,18 @@ extension NotificationTypeExtension on NotificationType {
         return 'You Were Mentioned';
       case NotificationType.eventReminder:
         return 'Event Reminder';
+      case NotificationType.approvalRequestNew:
+        return 'New Approval Request';
+      case NotificationType.approvalRequestActionNeeded:
+        return 'Action Required';
+      case NotificationType.approvalRequestStatusChanged:
+        return 'Request Status Update';
+      case NotificationType.approvalRequestEscalated:
+        return 'Request Escalated';
+      case NotificationType.approvalRequestExpiring:
+        return 'Request Expiring Soon';
+      case NotificationType.approvalRequestComment:
+        return 'New Comment on Request';
     }
   }
 
@@ -113,6 +144,18 @@ extension NotificationTypeExtension on NotificationType {
         return 'alternate_email';
       case NotificationType.eventReminder:
         return 'event_available';
+      case NotificationType.approvalRequestNew:
+        return 'assignment';
+      case NotificationType.approvalRequestActionNeeded:
+        return 'pending_actions';
+      case NotificationType.approvalRequestStatusChanged:
+        return 'update';
+      case NotificationType.approvalRequestEscalated:
+        return 'trending_up';
+      case NotificationType.approvalRequestExpiring:
+        return 'timer';
+      case NotificationType.approvalRequestComment:
+        return 'chat';
     }
   }
 
@@ -143,6 +186,18 @@ extension NotificationTypeExtension on NotificationType {
         return 'pink';
       case NotificationType.eventReminder:
         return 'cyan';
+      case NotificationType.approvalRequestNew:
+        return 'blue';
+      case NotificationType.approvalRequestActionNeeded:
+        return 'orange';
+      case NotificationType.approvalRequestStatusChanged:
+        return 'teal';
+      case NotificationType.approvalRequestEscalated:
+        return 'purple';
+      case NotificationType.approvalRequestExpiring:
+        return 'red';
+      case NotificationType.approvalRequestComment:
+        return 'indigo';
     }
   }
 
@@ -155,6 +210,9 @@ extension NotificationTypeExtension on NotificationType {
       case NotificationType.achievementEarned:
       case NotificationType.commentReceived:
       case NotificationType.mention:
+      case NotificationType.approvalRequestNew:
+      case NotificationType.approvalRequestActionNeeded:
+      case NotificationType.approvalRequestEscalated:
         return true;
       default:
         return false;

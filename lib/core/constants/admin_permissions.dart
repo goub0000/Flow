@@ -70,6 +70,24 @@ enum AdminPermission {
   manageFeatureFlags,
   manageDatabaseBackups,
   manageAPIKeys,
+
+  // Approval Workflow Permissions
+  initiateApprovalRequest,
+  viewApprovalRequests,
+  approveLevel1Requests,
+  approveLevel2Requests,
+  escalateRequests,
+  delegateRequests,
+  configureApprovalWorkflows,
+
+  // Cross-Domain Permissions (expanded admin scope)
+  viewAllInstitutionContent,
+  manageAllInstitutionContent,
+  viewAllUserSupport,
+  manageAllUserSupport,
+  viewAllFinancials,
+  manageAllFinancials,
+  requestDataExport,
 }
 
 /// Admin permissions set with scope
@@ -157,6 +175,14 @@ class AdminPermissions {
         // System
         AdminPermission.viewAuditLogs,
         AdminPermission.manageSystemSettings,
+
+        // Approval Workflow (Level 2 approver)
+        AdminPermission.initiateApprovalRequest,
+        AdminPermission.viewApprovalRequests,
+        AdminPermission.approveLevel1Requests,
+        AdminPermission.approveLevel2Requests,
+        AdminPermission.escalateRequests,
+        AdminPermission.delegateRequests,
       },
     );
   }
@@ -182,6 +208,14 @@ class AdminPermissions {
         // Communication (content-related only)
         AdminPermission.sendAnnouncements,
         AdminPermission.managePushNotifications,
+
+        // Approval Workflow (Level 1 initiator)
+        AdminPermission.initiateApprovalRequest,
+        AdminPermission.viewApprovalRequests,
+
+        // Cross-Domain Content Permissions
+        AdminPermission.viewAllInstitutionContent,
+        AdminPermission.manageAllInstitutionContent,
       },
     );
   }
@@ -216,6 +250,14 @@ class AdminPermissions {
         AdminPermission.sendSMS,
         AdminPermission.managePushNotifications,
         AdminPermission.manageTemplates,
+
+        // Approval Workflow (Level 1 initiator)
+        AdminPermission.initiateApprovalRequest,
+        AdminPermission.viewApprovalRequests,
+
+        // Cross-Domain Support Permissions
+        AdminPermission.viewAllUserSupport,
+        AdminPermission.manageAllUserSupport,
       },
     );
   }
@@ -243,6 +285,14 @@ class AdminPermissions {
 
         // Audit
         AdminPermission.viewAuditLogs,
+
+        // Approval Workflow (Level 1 initiator)
+        AdminPermission.initiateApprovalRequest,
+        AdminPermission.viewApprovalRequests,
+
+        // Cross-Domain Financial Permissions
+        AdminPermission.viewAllFinancials,
+        AdminPermission.manageAllFinancials,
       },
     );
   }
@@ -268,6 +318,13 @@ class AdminPermissions {
 
         // Audit
         AdminPermission.viewAuditLogs,
+
+        // Approval Workflow (Level 1 initiator)
+        AdminPermission.initiateApprovalRequest,
+        AdminPermission.viewApprovalRequests,
+
+        // Cross-Domain Analytics Permissions
+        AdminPermission.requestDataExport,
       },
     );
   }
