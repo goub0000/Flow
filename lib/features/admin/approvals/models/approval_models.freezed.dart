@@ -21,20 +21,34 @@ ApprovalAction _$ApprovalActionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ApprovalAction {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_id')
   String get requestId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reviewer_id')
   String get reviewerId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reviewer_role')
   String get reviewerRole => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reviewer_level')
   int get reviewerLevel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'action_type')
   String get actionType => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delegated_to')
   String? get delegatedTo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delegated_reason')
   String? get delegatedReason => throw _privateConstructorUsedError;
+  @JsonKey(name: 'escalated_to_level')
   int? get escalatedToLevel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'escalation_reason')
   String? get escalationReason => throw _privateConstructorUsedError;
+  @JsonKey(name: 'info_requested')
   String? get infoRequested => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mfa_verified')
   bool get mfaVerified => throw _privateConstructorUsedError;
+  @JsonKey(name: 'acted_at')
   DateTime get actedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reviewer_name')
   String? get reviewerName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reviewer_email')
   String? get reviewerEmail => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,21 +65,21 @@ abstract class $ApprovalActionCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String requestId,
-      String reviewerId,
-      String reviewerRole,
-      int reviewerLevel,
-      String actionType,
+      @JsonKey(name: 'request_id') String requestId,
+      @JsonKey(name: 'reviewer_id') String reviewerId,
+      @JsonKey(name: 'reviewer_role') String reviewerRole,
+      @JsonKey(name: 'reviewer_level') int reviewerLevel,
+      @JsonKey(name: 'action_type') String actionType,
       String? notes,
-      String? delegatedTo,
-      String? delegatedReason,
-      int? escalatedToLevel,
-      String? escalationReason,
-      String? infoRequested,
-      bool mfaVerified,
-      DateTime actedAt,
-      String? reviewerName,
-      String? reviewerEmail});
+      @JsonKey(name: 'delegated_to') String? delegatedTo,
+      @JsonKey(name: 'delegated_reason') String? delegatedReason,
+      @JsonKey(name: 'escalated_to_level') int? escalatedToLevel,
+      @JsonKey(name: 'escalation_reason') String? escalationReason,
+      @JsonKey(name: 'info_requested') String? infoRequested,
+      @JsonKey(name: 'mfa_verified') bool mfaVerified,
+      @JsonKey(name: 'acted_at') DateTime actedAt,
+      @JsonKey(name: 'reviewer_name') String? reviewerName,
+      @JsonKey(name: 'reviewer_email') String? reviewerEmail});
 }
 
 /// @nodoc
@@ -177,21 +191,21 @@ abstract class _$$ApprovalActionImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String requestId,
-      String reviewerId,
-      String reviewerRole,
-      int reviewerLevel,
-      String actionType,
+      @JsonKey(name: 'request_id') String requestId,
+      @JsonKey(name: 'reviewer_id') String reviewerId,
+      @JsonKey(name: 'reviewer_role') String reviewerRole,
+      @JsonKey(name: 'reviewer_level') int reviewerLevel,
+      @JsonKey(name: 'action_type') String actionType,
       String? notes,
-      String? delegatedTo,
-      String? delegatedReason,
-      int? escalatedToLevel,
-      String? escalationReason,
-      String? infoRequested,
-      bool mfaVerified,
-      DateTime actedAt,
-      String? reviewerName,
-      String? reviewerEmail});
+      @JsonKey(name: 'delegated_to') String? delegatedTo,
+      @JsonKey(name: 'delegated_reason') String? delegatedReason,
+      @JsonKey(name: 'escalated_to_level') int? escalatedToLevel,
+      @JsonKey(name: 'escalation_reason') String? escalationReason,
+      @JsonKey(name: 'info_requested') String? infoRequested,
+      @JsonKey(name: 'mfa_verified') bool mfaVerified,
+      @JsonKey(name: 'acted_at') DateTime actedAt,
+      @JsonKey(name: 'reviewer_name') String? reviewerName,
+      @JsonKey(name: 'reviewer_email') String? reviewerEmail});
 }
 
 /// @nodoc
@@ -296,21 +310,21 @@ class __$$ApprovalActionImplCopyWithImpl<$Res>
 class _$ApprovalActionImpl implements _ApprovalAction {
   const _$ApprovalActionImpl(
       {required this.id,
-      required this.requestId,
-      required this.reviewerId,
-      required this.reviewerRole,
-      required this.reviewerLevel,
-      required this.actionType,
+      @JsonKey(name: 'request_id') required this.requestId,
+      @JsonKey(name: 'reviewer_id') required this.reviewerId,
+      @JsonKey(name: 'reviewer_role') required this.reviewerRole,
+      @JsonKey(name: 'reviewer_level') required this.reviewerLevel,
+      @JsonKey(name: 'action_type') required this.actionType,
       this.notes,
-      this.delegatedTo,
-      this.delegatedReason,
-      this.escalatedToLevel,
-      this.escalationReason,
-      this.infoRequested,
-      this.mfaVerified = false,
-      required this.actedAt,
-      this.reviewerName,
-      this.reviewerEmail});
+      @JsonKey(name: 'delegated_to') this.delegatedTo,
+      @JsonKey(name: 'delegated_reason') this.delegatedReason,
+      @JsonKey(name: 'escalated_to_level') this.escalatedToLevel,
+      @JsonKey(name: 'escalation_reason') this.escalationReason,
+      @JsonKey(name: 'info_requested') this.infoRequested,
+      @JsonKey(name: 'mfa_verified') this.mfaVerified = false,
+      @JsonKey(name: 'acted_at') required this.actedAt,
+      @JsonKey(name: 'reviewer_name') this.reviewerName,
+      @JsonKey(name: 'reviewer_email') this.reviewerEmail});
 
   factory _$ApprovalActionImpl.fromJson(Map<String, dynamic> json) =>
       _$$ApprovalActionImplFromJson(json);
@@ -318,35 +332,48 @@ class _$ApprovalActionImpl implements _ApprovalAction {
   @override
   final String id;
   @override
+  @JsonKey(name: 'request_id')
   final String requestId;
   @override
+  @JsonKey(name: 'reviewer_id')
   final String reviewerId;
   @override
+  @JsonKey(name: 'reviewer_role')
   final String reviewerRole;
   @override
+  @JsonKey(name: 'reviewer_level')
   final int reviewerLevel;
   @override
+  @JsonKey(name: 'action_type')
   final String actionType;
   @override
   final String? notes;
   @override
+  @JsonKey(name: 'delegated_to')
   final String? delegatedTo;
   @override
+  @JsonKey(name: 'delegated_reason')
   final String? delegatedReason;
   @override
+  @JsonKey(name: 'escalated_to_level')
   final int? escalatedToLevel;
   @override
+  @JsonKey(name: 'escalation_reason')
   final String? escalationReason;
   @override
+  @JsonKey(name: 'info_requested')
   final String? infoRequested;
   @override
-  @JsonKey()
+  @JsonKey(name: 'mfa_verified')
   final bool mfaVerified;
   @override
+  @JsonKey(name: 'acted_at')
   final DateTime actedAt;
   @override
+  @JsonKey(name: 'reviewer_name')
   final String? reviewerName;
   @override
+  @JsonKey(name: 'reviewer_email')
   final String? reviewerEmail;
 
   @override
@@ -428,22 +455,23 @@ class _$ApprovalActionImpl implements _ApprovalAction {
 
 abstract class _ApprovalAction implements ApprovalAction {
   const factory _ApprovalAction(
-      {required final String id,
-      required final String requestId,
-      required final String reviewerId,
-      required final String reviewerRole,
-      required final int reviewerLevel,
-      required final String actionType,
-      final String? notes,
-      final String? delegatedTo,
-      final String? delegatedReason,
-      final int? escalatedToLevel,
-      final String? escalationReason,
-      final String? infoRequested,
-      final bool mfaVerified,
-      required final DateTime actedAt,
-      final String? reviewerName,
-      final String? reviewerEmail}) = _$ApprovalActionImpl;
+          {required final String id,
+          @JsonKey(name: 'request_id') required final String requestId,
+          @JsonKey(name: 'reviewer_id') required final String reviewerId,
+          @JsonKey(name: 'reviewer_role') required final String reviewerRole,
+          @JsonKey(name: 'reviewer_level') required final int reviewerLevel,
+          @JsonKey(name: 'action_type') required final String actionType,
+          final String? notes,
+          @JsonKey(name: 'delegated_to') final String? delegatedTo,
+          @JsonKey(name: 'delegated_reason') final String? delegatedReason,
+          @JsonKey(name: 'escalated_to_level') final int? escalatedToLevel,
+          @JsonKey(name: 'escalation_reason') final String? escalationReason,
+          @JsonKey(name: 'info_requested') final String? infoRequested,
+          @JsonKey(name: 'mfa_verified') final bool mfaVerified,
+          @JsonKey(name: 'acted_at') required final DateTime actedAt,
+          @JsonKey(name: 'reviewer_name') final String? reviewerName,
+          @JsonKey(name: 'reviewer_email') final String? reviewerEmail}) =
+      _$ApprovalActionImpl;
 
   factory _ApprovalAction.fromJson(Map<String, dynamic> json) =
       _$ApprovalActionImpl.fromJson;
@@ -451,34 +479,48 @@ abstract class _ApprovalAction implements ApprovalAction {
   @override
   String get id;
   @override
+  @JsonKey(name: 'request_id')
   String get requestId;
   @override
+  @JsonKey(name: 'reviewer_id')
   String get reviewerId;
   @override
+  @JsonKey(name: 'reviewer_role')
   String get reviewerRole;
   @override
+  @JsonKey(name: 'reviewer_level')
   int get reviewerLevel;
   @override
+  @JsonKey(name: 'action_type')
   String get actionType;
   @override
   String? get notes;
   @override
+  @JsonKey(name: 'delegated_to')
   String? get delegatedTo;
   @override
+  @JsonKey(name: 'delegated_reason')
   String? get delegatedReason;
   @override
+  @JsonKey(name: 'escalated_to_level')
   int? get escalatedToLevel;
   @override
+  @JsonKey(name: 'escalation_reason')
   String? get escalationReason;
   @override
+  @JsonKey(name: 'info_requested')
   String? get infoRequested;
   @override
+  @JsonKey(name: 'mfa_verified')
   bool get mfaVerified;
   @override
+  @JsonKey(name: 'acted_at')
   DateTime get actedAt;
   @override
+  @JsonKey(name: 'reviewer_name')
   String? get reviewerName;
   @override
+  @JsonKey(name: 'reviewer_email')
   String? get reviewerEmail;
   @override
   @JsonKey(ignore: true)
@@ -493,18 +535,28 @@ ApprovalComment _$ApprovalCommentFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ApprovalComment {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_id')
   String get requestId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'author_id')
   String get authorId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'author_role')
   String get authorRole => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_internal')
   bool get isInternal => throw _privateConstructorUsedError;
   List<Map<String, String>> get attachments =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'parent_comment_id')
   String? get parentCommentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deleted_at')
   DateTime? get deletedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'author_name')
   String? get authorName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'author_email')
   String? get authorEmail => throw _privateConstructorUsedError;
   List<ApprovalComment> get replies => throw _privateConstructorUsedError;
 
@@ -522,18 +574,18 @@ abstract class $ApprovalCommentCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String requestId,
-      String authorId,
-      String authorRole,
+      @JsonKey(name: 'request_id') String requestId,
+      @JsonKey(name: 'author_id') String authorId,
+      @JsonKey(name: 'author_role') String authorRole,
       String content,
-      bool isInternal,
+      @JsonKey(name: 'is_internal') bool isInternal,
       List<Map<String, String>> attachments,
-      String? parentCommentId,
-      DateTime createdAt,
-      DateTime? updatedAt,
-      DateTime? deletedAt,
-      String? authorName,
-      String? authorEmail,
+      @JsonKey(name: 'parent_comment_id') String? parentCommentId,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime? updatedAt,
+      @JsonKey(name: 'deleted_at') DateTime? deletedAt,
+      @JsonKey(name: 'author_name') String? authorName,
+      @JsonKey(name: 'author_email') String? authorEmail,
       List<ApprovalComment> replies});
 }
 
@@ -636,18 +688,18 @@ abstract class _$$ApprovalCommentImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String requestId,
-      String authorId,
-      String authorRole,
+      @JsonKey(name: 'request_id') String requestId,
+      @JsonKey(name: 'author_id') String authorId,
+      @JsonKey(name: 'author_role') String authorRole,
       String content,
-      bool isInternal,
+      @JsonKey(name: 'is_internal') bool isInternal,
       List<Map<String, String>> attachments,
-      String? parentCommentId,
-      DateTime createdAt,
-      DateTime? updatedAt,
-      DateTime? deletedAt,
-      String? authorName,
-      String? authorEmail,
+      @JsonKey(name: 'parent_comment_id') String? parentCommentId,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime? updatedAt,
+      @JsonKey(name: 'deleted_at') DateTime? deletedAt,
+      @JsonKey(name: 'author_name') String? authorName,
+      @JsonKey(name: 'author_email') String? authorEmail,
       List<ApprovalComment> replies});
 }
 
@@ -743,18 +795,18 @@ class __$$ApprovalCommentImplCopyWithImpl<$Res>
 class _$ApprovalCommentImpl implements _ApprovalComment {
   const _$ApprovalCommentImpl(
       {required this.id,
-      required this.requestId,
-      required this.authorId,
-      required this.authorRole,
+      @JsonKey(name: 'request_id') required this.requestId,
+      @JsonKey(name: 'author_id') required this.authorId,
+      @JsonKey(name: 'author_role') required this.authorRole,
       required this.content,
-      this.isInternal = false,
+      @JsonKey(name: 'is_internal') this.isInternal = false,
       final List<Map<String, String>> attachments = const [],
-      this.parentCommentId,
-      required this.createdAt,
-      this.updatedAt,
-      this.deletedAt,
-      this.authorName,
-      this.authorEmail,
+      @JsonKey(name: 'parent_comment_id') this.parentCommentId,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') this.updatedAt,
+      @JsonKey(name: 'deleted_at') this.deletedAt,
+      @JsonKey(name: 'author_name') this.authorName,
+      @JsonKey(name: 'author_email') this.authorEmail,
       final List<ApprovalComment> replies = const []})
       : _attachments = attachments,
         _replies = replies;
@@ -765,15 +817,18 @@ class _$ApprovalCommentImpl implements _ApprovalComment {
   @override
   final String id;
   @override
+  @JsonKey(name: 'request_id')
   final String requestId;
   @override
+  @JsonKey(name: 'author_id')
   final String authorId;
   @override
+  @JsonKey(name: 'author_role')
   final String authorRole;
   @override
   final String content;
   @override
-  @JsonKey()
+  @JsonKey(name: 'is_internal')
   final bool isInternal;
   final List<Map<String, String>> _attachments;
   @override
@@ -785,16 +840,22 @@ class _$ApprovalCommentImpl implements _ApprovalComment {
   }
 
   @override
+  @JsonKey(name: 'parent_comment_id')
   final String? parentCommentId;
   @override
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
   @override
+  @JsonKey(name: 'deleted_at')
   final DateTime? deletedAt;
   @override
+  @JsonKey(name: 'author_name')
   final String? authorName;
   @override
+  @JsonKey(name: 'author_email')
   final String? authorEmail;
   final List<ApprovalComment> _replies;
   @override
@@ -879,18 +940,18 @@ class _$ApprovalCommentImpl implements _ApprovalComment {
 abstract class _ApprovalComment implements ApprovalComment {
   const factory _ApprovalComment(
       {required final String id,
-      required final String requestId,
-      required final String authorId,
-      required final String authorRole,
+      @JsonKey(name: 'request_id') required final String requestId,
+      @JsonKey(name: 'author_id') required final String authorId,
+      @JsonKey(name: 'author_role') required final String authorRole,
       required final String content,
-      final bool isInternal,
+      @JsonKey(name: 'is_internal') final bool isInternal,
       final List<Map<String, String>> attachments,
-      final String? parentCommentId,
-      required final DateTime createdAt,
-      final DateTime? updatedAt,
-      final DateTime? deletedAt,
-      final String? authorName,
-      final String? authorEmail,
+      @JsonKey(name: 'parent_comment_id') final String? parentCommentId,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at') final DateTime? updatedAt,
+      @JsonKey(name: 'deleted_at') final DateTime? deletedAt,
+      @JsonKey(name: 'author_name') final String? authorName,
+      @JsonKey(name: 'author_email') final String? authorEmail,
       final List<ApprovalComment> replies}) = _$ApprovalCommentImpl;
 
   factory _ApprovalComment.fromJson(Map<String, dynamic> json) =
@@ -899,28 +960,38 @@ abstract class _ApprovalComment implements ApprovalComment {
   @override
   String get id;
   @override
+  @JsonKey(name: 'request_id')
   String get requestId;
   @override
+  @JsonKey(name: 'author_id')
   String get authorId;
   @override
+  @JsonKey(name: 'author_role')
   String get authorRole;
   @override
   String get content;
   @override
+  @JsonKey(name: 'is_internal')
   bool get isInternal;
   @override
   List<Map<String, String>> get attachments;
   @override
+  @JsonKey(name: 'parent_comment_id')
   String? get parentCommentId;
   @override
+  @JsonKey(name: 'created_at')
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   DateTime? get updatedAt;
   @override
+  @JsonKey(name: 'deleted_at')
   DateTime? get deletedAt;
   @override
+  @JsonKey(name: 'author_name')
   String? get authorName;
   @override
+  @JsonKey(name: 'author_email')
   String? get authorEmail;
   @override
   List<ApprovalComment> get replies;
@@ -937,35 +1008,56 @@ ApprovalRequest _$ApprovalRequestFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ApprovalRequest {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_number')
   String get requestNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_type')
   String get requestType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiated_by')
   String get initiatedBy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiated_by_role')
   String get initiatedByRole => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiated_at')
   DateTime get initiatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'target_resource_type')
   String get targetResourceType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'target_resource_id')
   String? get targetResourceId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'target_resource_snapshot')
   Map<String, dynamic>? get targetResourceSnapshot =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'action_type')
   String get actionType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'action_payload')
   Map<String, dynamic> get actionPayload => throw _privateConstructorUsedError;
   String get justification => throw _privateConstructorUsedError;
   String get priority => throw _privateConstructorUsedError;
+  @JsonKey(name: 'expires_at')
   DateTime? get expiresAt => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'current_approval_level')
   int get currentApprovalLevel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'required_approval_level')
   int get requiredApprovalLevel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'approval_chain')
   List<Map<String, dynamic>> get approvalChain =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'regional_scope')
   String? get regionalScope => throw _privateConstructorUsedError;
   List<Map<String, String>> get attachments =>
       throw _privateConstructorUsedError;
   Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
+  @JsonKey(name: 'executed_at')
   DateTime? get executedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'execution_result')
   Map<String, dynamic>? get executionResult =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiator_name')
   String? get initiatorName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiator_email')
   String? get initiatorEmail => throw _privateConstructorUsedError;
   List<ApprovalAction> get actions => throw _privateConstructorUsedError;
   List<ApprovalComment> get comments => throw _privateConstructorUsedError;
@@ -984,32 +1076,33 @@ abstract class $ApprovalRequestCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String requestNumber,
-      String requestType,
-      String initiatedBy,
-      String initiatedByRole,
-      DateTime initiatedAt,
-      String targetResourceType,
-      String? targetResourceId,
+      @JsonKey(name: 'request_number') String requestNumber,
+      @JsonKey(name: 'request_type') String requestType,
+      @JsonKey(name: 'initiated_by') String initiatedBy,
+      @JsonKey(name: 'initiated_by_role') String initiatedByRole,
+      @JsonKey(name: 'initiated_at') DateTime initiatedAt,
+      @JsonKey(name: 'target_resource_type') String targetResourceType,
+      @JsonKey(name: 'target_resource_id') String? targetResourceId,
+      @JsonKey(name: 'target_resource_snapshot')
       Map<String, dynamic>? targetResourceSnapshot,
-      String actionType,
-      Map<String, dynamic> actionPayload,
+      @JsonKey(name: 'action_type') String actionType,
+      @JsonKey(name: 'action_payload') Map<String, dynamic> actionPayload,
       String justification,
       String priority,
-      DateTime? expiresAt,
+      @JsonKey(name: 'expires_at') DateTime? expiresAt,
       String status,
-      int currentApprovalLevel,
-      int requiredApprovalLevel,
-      List<Map<String, dynamic>> approvalChain,
-      String? regionalScope,
+      @JsonKey(name: 'current_approval_level') int currentApprovalLevel,
+      @JsonKey(name: 'required_approval_level') int requiredApprovalLevel,
+      @JsonKey(name: 'approval_chain') List<Map<String, dynamic>> approvalChain,
+      @JsonKey(name: 'regional_scope') String? regionalScope,
       List<Map<String, String>> attachments,
       Map<String, dynamic>? metadata,
-      DateTime? executedAt,
-      Map<String, dynamic>? executionResult,
-      DateTime createdAt,
-      DateTime updatedAt,
-      String? initiatorName,
-      String? initiatorEmail,
+      @JsonKey(name: 'executed_at') DateTime? executedAt,
+      @JsonKey(name: 'execution_result') Map<String, dynamic>? executionResult,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      @JsonKey(name: 'initiator_name') String? initiatorName,
+      @JsonKey(name: 'initiator_email') String? initiatorEmail,
       List<ApprovalAction> actions,
       List<ApprovalComment> comments});
 }
@@ -1188,32 +1281,33 @@ abstract class _$$ApprovalRequestImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String requestNumber,
-      String requestType,
-      String initiatedBy,
-      String initiatedByRole,
-      DateTime initiatedAt,
-      String targetResourceType,
-      String? targetResourceId,
+      @JsonKey(name: 'request_number') String requestNumber,
+      @JsonKey(name: 'request_type') String requestType,
+      @JsonKey(name: 'initiated_by') String initiatedBy,
+      @JsonKey(name: 'initiated_by_role') String initiatedByRole,
+      @JsonKey(name: 'initiated_at') DateTime initiatedAt,
+      @JsonKey(name: 'target_resource_type') String targetResourceType,
+      @JsonKey(name: 'target_resource_id') String? targetResourceId,
+      @JsonKey(name: 'target_resource_snapshot')
       Map<String, dynamic>? targetResourceSnapshot,
-      String actionType,
-      Map<String, dynamic> actionPayload,
+      @JsonKey(name: 'action_type') String actionType,
+      @JsonKey(name: 'action_payload') Map<String, dynamic> actionPayload,
       String justification,
       String priority,
-      DateTime? expiresAt,
+      @JsonKey(name: 'expires_at') DateTime? expiresAt,
       String status,
-      int currentApprovalLevel,
-      int requiredApprovalLevel,
-      List<Map<String, dynamic>> approvalChain,
-      String? regionalScope,
+      @JsonKey(name: 'current_approval_level') int currentApprovalLevel,
+      @JsonKey(name: 'required_approval_level') int requiredApprovalLevel,
+      @JsonKey(name: 'approval_chain') List<Map<String, dynamic>> approvalChain,
+      @JsonKey(name: 'regional_scope') String? regionalScope,
       List<Map<String, String>> attachments,
       Map<String, dynamic>? metadata,
-      DateTime? executedAt,
-      Map<String, dynamic>? executionResult,
-      DateTime createdAt,
-      DateTime updatedAt,
-      String? initiatorName,
-      String? initiatorEmail,
+      @JsonKey(name: 'executed_at') DateTime? executedAt,
+      @JsonKey(name: 'execution_result') Map<String, dynamic>? executionResult,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime updatedAt,
+      @JsonKey(name: 'initiator_name') String? initiatorName,
+      @JsonKey(name: 'initiator_email') String? initiatorEmail,
       List<ApprovalAction> actions,
       List<ApprovalComment> comments});
 }
@@ -1385,32 +1479,38 @@ class __$$ApprovalRequestImplCopyWithImpl<$Res>
 class _$ApprovalRequestImpl implements _ApprovalRequest {
   const _$ApprovalRequestImpl(
       {required this.id,
-      required this.requestNumber,
-      required this.requestType,
-      required this.initiatedBy,
-      required this.initiatedByRole,
-      required this.initiatedAt,
-      required this.targetResourceType,
-      this.targetResourceId,
+      @JsonKey(name: 'request_number') required this.requestNumber,
+      @JsonKey(name: 'request_type') required this.requestType,
+      @JsonKey(name: 'initiated_by') required this.initiatedBy,
+      @JsonKey(name: 'initiated_by_role') required this.initiatedByRole,
+      @JsonKey(name: 'initiated_at') required this.initiatedAt,
+      @JsonKey(name: 'target_resource_type') required this.targetResourceType,
+      @JsonKey(name: 'target_resource_id') this.targetResourceId,
+      @JsonKey(name: 'target_resource_snapshot')
       final Map<String, dynamic>? targetResourceSnapshot,
-      required this.actionType,
+      @JsonKey(name: 'action_type') required this.actionType,
+      @JsonKey(name: 'action_payload')
       final Map<String, dynamic> actionPayload = const {},
       required this.justification,
       required this.priority,
-      this.expiresAt,
+      @JsonKey(name: 'expires_at') this.expiresAt,
       required this.status,
+      @JsonKey(name: 'current_approval_level')
       required this.currentApprovalLevel,
+      @JsonKey(name: 'required_approval_level')
       required this.requiredApprovalLevel,
+      @JsonKey(name: 'approval_chain')
       final List<Map<String, dynamic>> approvalChain = const [],
-      this.regionalScope,
+      @JsonKey(name: 'regional_scope') this.regionalScope,
       final List<Map<String, String>> attachments = const [],
       final Map<String, dynamic>? metadata,
-      this.executedAt,
+      @JsonKey(name: 'executed_at') this.executedAt,
+      @JsonKey(name: 'execution_result')
       final Map<String, dynamic>? executionResult,
-      required this.createdAt,
-      required this.updatedAt,
-      this.initiatorName,
-      this.initiatorEmail,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt,
+      @JsonKey(name: 'initiator_name') this.initiatorName,
+      @JsonKey(name: 'initiator_email') this.initiatorEmail,
       final List<ApprovalAction> actions = const [],
       final List<ApprovalComment> comments = const []})
       : _targetResourceSnapshot = targetResourceSnapshot,
@@ -1428,21 +1528,29 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
   @override
   final String id;
   @override
+  @JsonKey(name: 'request_number')
   final String requestNumber;
   @override
+  @JsonKey(name: 'request_type')
   final String requestType;
   @override
+  @JsonKey(name: 'initiated_by')
   final String initiatedBy;
   @override
+  @JsonKey(name: 'initiated_by_role')
   final String initiatedByRole;
   @override
+  @JsonKey(name: 'initiated_at')
   final DateTime initiatedAt;
   @override
+  @JsonKey(name: 'target_resource_type')
   final String targetResourceType;
   @override
+  @JsonKey(name: 'target_resource_id')
   final String? targetResourceId;
   final Map<String, dynamic>? _targetResourceSnapshot;
   @override
+  @JsonKey(name: 'target_resource_snapshot')
   Map<String, dynamic>? get targetResourceSnapshot {
     final value = _targetResourceSnapshot;
     if (value == null) return null;
@@ -1453,10 +1561,11 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
   }
 
   @override
+  @JsonKey(name: 'action_type')
   final String actionType;
   final Map<String, dynamic> _actionPayload;
   @override
-  @JsonKey()
+  @JsonKey(name: 'action_payload')
   Map<String, dynamic> get actionPayload {
     if (_actionPayload is EqualUnmodifiableMapView) return _actionPayload;
     // ignore: implicit_dynamic_type
@@ -1468,16 +1577,19 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
   @override
   final String priority;
   @override
+  @JsonKey(name: 'expires_at')
   final DateTime? expiresAt;
   @override
   final String status;
   @override
+  @JsonKey(name: 'current_approval_level')
   final int currentApprovalLevel;
   @override
+  @JsonKey(name: 'required_approval_level')
   final int requiredApprovalLevel;
   final List<Map<String, dynamic>> _approvalChain;
   @override
-  @JsonKey()
+  @JsonKey(name: 'approval_chain')
   List<Map<String, dynamic>> get approvalChain {
     if (_approvalChain is EqualUnmodifiableListView) return _approvalChain;
     // ignore: implicit_dynamic_type
@@ -1485,6 +1597,7 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
   }
 
   @override
+  @JsonKey(name: 'regional_scope')
   final String? regionalScope;
   final List<Map<String, String>> _attachments;
   @override
@@ -1506,9 +1619,11 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
   }
 
   @override
+  @JsonKey(name: 'executed_at')
   final DateTime? executedAt;
   final Map<String, dynamic>? _executionResult;
   @override
+  @JsonKey(name: 'execution_result')
   Map<String, dynamic>? get executionResult {
     final value = _executionResult;
     if (value == null) return null;
@@ -1518,12 +1633,16 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
   }
 
   @override
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
   @override
+  @JsonKey(name: 'initiator_name')
   final String? initiatorName;
   @override
+  @JsonKey(name: 'initiator_email')
   final String? initiatorEmail;
   final List<ApprovalAction> _actions;
   @override
@@ -1661,32 +1780,38 @@ class _$ApprovalRequestImpl implements _ApprovalRequest {
 abstract class _ApprovalRequest implements ApprovalRequest {
   const factory _ApprovalRequest(
       {required final String id,
-      required final String requestNumber,
-      required final String requestType,
-      required final String initiatedBy,
-      required final String initiatedByRole,
-      required final DateTime initiatedAt,
+      @JsonKey(name: 'request_number') required final String requestNumber,
+      @JsonKey(name: 'request_type') required final String requestType,
+      @JsonKey(name: 'initiated_by') required final String initiatedBy,
+      @JsonKey(name: 'initiated_by_role') required final String initiatedByRole,
+      @JsonKey(name: 'initiated_at') required final DateTime initiatedAt,
+      @JsonKey(name: 'target_resource_type')
       required final String targetResourceType,
-      final String? targetResourceId,
+      @JsonKey(name: 'target_resource_id') final String? targetResourceId,
+      @JsonKey(name: 'target_resource_snapshot')
       final Map<String, dynamic>? targetResourceSnapshot,
-      required final String actionType,
-      final Map<String, dynamic> actionPayload,
+      @JsonKey(name: 'action_type') required final String actionType,
+      @JsonKey(name: 'action_payload') final Map<String, dynamic> actionPayload,
       required final String justification,
       required final String priority,
-      final DateTime? expiresAt,
+      @JsonKey(name: 'expires_at') final DateTime? expiresAt,
       required final String status,
+      @JsonKey(name: 'current_approval_level')
       required final int currentApprovalLevel,
+      @JsonKey(name: 'required_approval_level')
       required final int requiredApprovalLevel,
+      @JsonKey(name: 'approval_chain')
       final List<Map<String, dynamic>> approvalChain,
-      final String? regionalScope,
+      @JsonKey(name: 'regional_scope') final String? regionalScope,
       final List<Map<String, String>> attachments,
       final Map<String, dynamic>? metadata,
-      final DateTime? executedAt,
+      @JsonKey(name: 'executed_at') final DateTime? executedAt,
+      @JsonKey(name: 'execution_result')
       final Map<String, dynamic>? executionResult,
-      required final DateTime createdAt,
-      required final DateTime updatedAt,
-      final String? initiatorName,
-      final String? initiatorEmail,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+      @JsonKey(name: 'initiator_name') final String? initiatorName,
+      @JsonKey(name: 'initiator_email') final String? initiatorEmail,
       final List<ApprovalAction> actions,
       final List<ApprovalComment> comments}) = _$ApprovalRequestImpl;
 
@@ -1696,56 +1821,77 @@ abstract class _ApprovalRequest implements ApprovalRequest {
   @override
   String get id;
   @override
+  @JsonKey(name: 'request_number')
   String get requestNumber;
   @override
+  @JsonKey(name: 'request_type')
   String get requestType;
   @override
+  @JsonKey(name: 'initiated_by')
   String get initiatedBy;
   @override
+  @JsonKey(name: 'initiated_by_role')
   String get initiatedByRole;
   @override
+  @JsonKey(name: 'initiated_at')
   DateTime get initiatedAt;
   @override
+  @JsonKey(name: 'target_resource_type')
   String get targetResourceType;
   @override
+  @JsonKey(name: 'target_resource_id')
   String? get targetResourceId;
   @override
+  @JsonKey(name: 'target_resource_snapshot')
   Map<String, dynamic>? get targetResourceSnapshot;
   @override
+  @JsonKey(name: 'action_type')
   String get actionType;
   @override
+  @JsonKey(name: 'action_payload')
   Map<String, dynamic> get actionPayload;
   @override
   String get justification;
   @override
   String get priority;
   @override
+  @JsonKey(name: 'expires_at')
   DateTime? get expiresAt;
   @override
   String get status;
   @override
+  @JsonKey(name: 'current_approval_level')
   int get currentApprovalLevel;
   @override
+  @JsonKey(name: 'required_approval_level')
   int get requiredApprovalLevel;
   @override
+  @JsonKey(name: 'approval_chain')
   List<Map<String, dynamic>> get approvalChain;
   @override
+  @JsonKey(name: 'regional_scope')
   String? get regionalScope;
   @override
   List<Map<String, String>> get attachments;
   @override
   Map<String, dynamic>? get metadata;
   @override
+  @JsonKey(name: 'executed_at')
   DateTime? get executedAt;
   @override
+  @JsonKey(name: 'execution_result')
   Map<String, dynamic>? get executionResult;
   @override
+  @JsonKey(name: 'created_at')
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   DateTime get updatedAt;
   @override
+  @JsonKey(name: 'initiator_name')
   String? get initiatorName;
   @override
+  @JsonKey(name: 'initiator_email')
   String? get initiatorEmail;
   @override
   List<ApprovalAction> get actions;
@@ -1767,7 +1913,9 @@ mixin _$ApprovalRequestListResponse {
   List<ApprovalRequest> get requests => throw _privateConstructorUsedError;
   int get total => throw _privateConstructorUsedError;
   int get page => throw _privateConstructorUsedError;
+  @JsonKey(name: 'page_size')
   int get pageSize => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_more')
   bool get hasMore => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1788,8 +1936,8 @@ abstract class $ApprovalRequestListResponseCopyWith<$Res> {
       {List<ApprovalRequest> requests,
       int total,
       int page,
-      int pageSize,
-      bool hasMore});
+      @JsonKey(name: 'page_size') int pageSize,
+      @JsonKey(name: 'has_more') bool hasMore});
 }
 
 /// @nodoc
@@ -1850,8 +1998,8 @@ abstract class _$$ApprovalRequestListResponseImplCopyWith<$Res>
       {List<ApprovalRequest> requests,
       int total,
       int page,
-      int pageSize,
-      bool hasMore});
+      @JsonKey(name: 'page_size') int pageSize,
+      @JsonKey(name: 'has_more') bool hasMore});
 }
 
 /// @nodoc
@@ -1906,8 +2054,8 @@ class _$ApprovalRequestListResponseImpl
       {required final List<ApprovalRequest> requests,
       required this.total,
       required this.page,
-      required this.pageSize,
-      required this.hasMore})
+      @JsonKey(name: 'page_size') required this.pageSize,
+      @JsonKey(name: 'has_more') required this.hasMore})
       : _requests = requests;
 
   factory _$ApprovalRequestListResponseImpl.fromJson(
@@ -1927,8 +2075,10 @@ class _$ApprovalRequestListResponseImpl
   @override
   final int page;
   @override
+  @JsonKey(name: 'page_size')
   final int pageSize;
   @override
+  @JsonKey(name: 'has_more')
   final bool hasMore;
 
   @override
@@ -1977,11 +2127,12 @@ class _$ApprovalRequestListResponseImpl
 abstract class _ApprovalRequestListResponse
     implements ApprovalRequestListResponse {
   const factory _ApprovalRequestListResponse(
-      {required final List<ApprovalRequest> requests,
-      required final int total,
-      required final int page,
-      required final int pageSize,
-      required final bool hasMore}) = _$ApprovalRequestListResponseImpl;
+          {required final List<ApprovalRequest> requests,
+          required final int total,
+          required final int page,
+          @JsonKey(name: 'page_size') required final int pageSize,
+          @JsonKey(name: 'has_more') required final bool hasMore}) =
+      _$ApprovalRequestListResponseImpl;
 
   factory _ApprovalRequestListResponse.fromJson(Map<String, dynamic> json) =
       _$ApprovalRequestListResponseImpl.fromJson;
@@ -1993,8 +2144,10 @@ abstract class _ApprovalRequestListResponse
   @override
   int get page;
   @override
+  @JsonKey(name: 'page_size')
   int get pageSize;
   @override
+  @JsonKey(name: 'has_more')
   bool get hasMore;
   @override
   @JsonKey(ignore: true)
@@ -2009,23 +2162,39 @@ ApprovalConfig _$ApprovalConfigFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ApprovalConfig {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_type')
   String get requestType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'action_type')
   String get actionType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'target_resource_type')
   String? get targetResourceType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'required_approval_level')
   int get requiredApprovalLevel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'can_skip_levels')
   bool get canSkipLevels => throw _privateConstructorUsedError;
+  @JsonKey(name: 'skip_level_conditions')
   Map<String, dynamic> get skipLevelConditions =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'allowed_initiator_roles')
   List<String> get allowedInitiatorRoles => throw _privateConstructorUsedError;
+  @JsonKey(name: 'allowed_approver_roles')
   List<String> get allowedApproverRoles => throw _privateConstructorUsedError;
+  @JsonKey(name: 'default_priority')
   String get defaultPriority => throw _privateConstructorUsedError;
+  @JsonKey(name: 'default_expiration_hours')
   int? get defaultExpirationHours => throw _privateConstructorUsedError;
+  @JsonKey(name: 'requires_mfa')
   bool get requiresMfa => throw _privateConstructorUsedError;
+  @JsonKey(name: 'auto_execute')
   bool get autoExecute => throw _privateConstructorUsedError;
+  @JsonKey(name: 'notification_channels')
   List<String> get notificationChannels => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_active')
   bool get isActive => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2042,23 +2211,26 @@ abstract class $ApprovalConfigCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String requestType,
-      String actionType,
-      String? targetResourceType,
-      int requiredApprovalLevel,
-      bool canSkipLevels,
+      @JsonKey(name: 'request_type') String requestType,
+      @JsonKey(name: 'action_type') String actionType,
+      @JsonKey(name: 'target_resource_type') String? targetResourceType,
+      @JsonKey(name: 'required_approval_level') int requiredApprovalLevel,
+      @JsonKey(name: 'can_skip_levels') bool canSkipLevels,
+      @JsonKey(name: 'skip_level_conditions')
       Map<String, dynamic> skipLevelConditions,
+      @JsonKey(name: 'allowed_initiator_roles')
       List<String> allowedInitiatorRoles,
+      @JsonKey(name: 'allowed_approver_roles')
       List<String> allowedApproverRoles,
-      String defaultPriority,
-      int? defaultExpirationHours,
-      bool requiresMfa,
-      bool autoExecute,
-      List<String> notificationChannels,
-      bool isActive,
+      @JsonKey(name: 'default_priority') String defaultPriority,
+      @JsonKey(name: 'default_expiration_hours') int? defaultExpirationHours,
+      @JsonKey(name: 'requires_mfa') bool requiresMfa,
+      @JsonKey(name: 'auto_execute') bool autoExecute,
+      @JsonKey(name: 'notification_channels') List<String> notificationChannels,
+      @JsonKey(name: 'is_active') bool isActive,
       String? description,
-      DateTime createdAt,
-      DateTime updatedAt});
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
@@ -2180,23 +2352,26 @@ abstract class _$$ApprovalConfigImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String requestType,
-      String actionType,
-      String? targetResourceType,
-      int requiredApprovalLevel,
-      bool canSkipLevels,
+      @JsonKey(name: 'request_type') String requestType,
+      @JsonKey(name: 'action_type') String actionType,
+      @JsonKey(name: 'target_resource_type') String? targetResourceType,
+      @JsonKey(name: 'required_approval_level') int requiredApprovalLevel,
+      @JsonKey(name: 'can_skip_levels') bool canSkipLevels,
+      @JsonKey(name: 'skip_level_conditions')
       Map<String, dynamic> skipLevelConditions,
+      @JsonKey(name: 'allowed_initiator_roles')
       List<String> allowedInitiatorRoles,
+      @JsonKey(name: 'allowed_approver_roles')
       List<String> allowedApproverRoles,
-      String defaultPriority,
-      int? defaultExpirationHours,
-      bool requiresMfa,
-      bool autoExecute,
-      List<String> notificationChannels,
-      bool isActive,
+      @JsonKey(name: 'default_priority') String defaultPriority,
+      @JsonKey(name: 'default_expiration_hours') int? defaultExpirationHours,
+      @JsonKey(name: 'requires_mfa') bool requiresMfa,
+      @JsonKey(name: 'auto_execute') bool autoExecute,
+      @JsonKey(name: 'notification_channels') List<String> notificationChannels,
+      @JsonKey(name: 'is_active') bool isActive,
       String? description,
-      DateTime createdAt,
-      DateTime updatedAt});
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
@@ -2311,23 +2486,28 @@ class __$$ApprovalConfigImplCopyWithImpl<$Res>
 class _$ApprovalConfigImpl implements _ApprovalConfig {
   const _$ApprovalConfigImpl(
       {required this.id,
-      required this.requestType,
-      required this.actionType,
-      this.targetResourceType,
+      @JsonKey(name: 'request_type') required this.requestType,
+      @JsonKey(name: 'action_type') required this.actionType,
+      @JsonKey(name: 'target_resource_type') this.targetResourceType,
+      @JsonKey(name: 'required_approval_level')
       required this.requiredApprovalLevel,
-      this.canSkipLevels = false,
+      @JsonKey(name: 'can_skip_levels') this.canSkipLevels = false,
+      @JsonKey(name: 'skip_level_conditions')
       final Map<String, dynamic> skipLevelConditions = const {},
+      @JsonKey(name: 'allowed_initiator_roles')
       final List<String> allowedInitiatorRoles = const [],
+      @JsonKey(name: 'allowed_approver_roles')
       final List<String> allowedApproverRoles = const [],
-      this.defaultPriority = 'normal',
-      this.defaultExpirationHours,
-      this.requiresMfa = false,
-      this.autoExecute = true,
+      @JsonKey(name: 'default_priority') this.defaultPriority = 'normal',
+      @JsonKey(name: 'default_expiration_hours') this.defaultExpirationHours,
+      @JsonKey(name: 'requires_mfa') this.requiresMfa = false,
+      @JsonKey(name: 'auto_execute') this.autoExecute = true,
+      @JsonKey(name: 'notification_channels')
       final List<String> notificationChannels = const ['in_app', 'email'],
-      this.isActive = true,
+      @JsonKey(name: 'is_active') this.isActive = true,
       this.description,
-      required this.createdAt,
-      required this.updatedAt})
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt})
       : _skipLevelConditions = skipLevelConditions,
         _allowedInitiatorRoles = allowedInitiatorRoles,
         _allowedApproverRoles = allowedApproverRoles,
@@ -2339,19 +2519,23 @@ class _$ApprovalConfigImpl implements _ApprovalConfig {
   @override
   final String id;
   @override
+  @JsonKey(name: 'request_type')
   final String requestType;
   @override
+  @JsonKey(name: 'action_type')
   final String actionType;
   @override
+  @JsonKey(name: 'target_resource_type')
   final String? targetResourceType;
   @override
+  @JsonKey(name: 'required_approval_level')
   final int requiredApprovalLevel;
   @override
-  @JsonKey()
+  @JsonKey(name: 'can_skip_levels')
   final bool canSkipLevels;
   final Map<String, dynamic> _skipLevelConditions;
   @override
-  @JsonKey()
+  @JsonKey(name: 'skip_level_conditions')
   Map<String, dynamic> get skipLevelConditions {
     if (_skipLevelConditions is EqualUnmodifiableMapView)
       return _skipLevelConditions;
@@ -2361,7 +2545,7 @@ class _$ApprovalConfigImpl implements _ApprovalConfig {
 
   final List<String> _allowedInitiatorRoles;
   @override
-  @JsonKey()
+  @JsonKey(name: 'allowed_initiator_roles')
   List<String> get allowedInitiatorRoles {
     if (_allowedInitiatorRoles is EqualUnmodifiableListView)
       return _allowedInitiatorRoles;
@@ -2371,7 +2555,7 @@ class _$ApprovalConfigImpl implements _ApprovalConfig {
 
   final List<String> _allowedApproverRoles;
   @override
-  @JsonKey()
+  @JsonKey(name: 'allowed_approver_roles')
   List<String> get allowedApproverRoles {
     if (_allowedApproverRoles is EqualUnmodifiableListView)
       return _allowedApproverRoles;
@@ -2380,19 +2564,20 @@ class _$ApprovalConfigImpl implements _ApprovalConfig {
   }
 
   @override
-  @JsonKey()
+  @JsonKey(name: 'default_priority')
   final String defaultPriority;
   @override
+  @JsonKey(name: 'default_expiration_hours')
   final int? defaultExpirationHours;
   @override
-  @JsonKey()
+  @JsonKey(name: 'requires_mfa')
   final bool requiresMfa;
   @override
-  @JsonKey()
+  @JsonKey(name: 'auto_execute')
   final bool autoExecute;
   final List<String> _notificationChannels;
   @override
-  @JsonKey()
+  @JsonKey(name: 'notification_channels')
   List<String> get notificationChannels {
     if (_notificationChannels is EqualUnmodifiableListView)
       return _notificationChannels;
@@ -2401,13 +2586,15 @@ class _$ApprovalConfigImpl implements _ApprovalConfig {
   }
 
   @override
-  @JsonKey()
+  @JsonKey(name: 'is_active')
   final bool isActive;
   @override
   final String? description;
   @override
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
   @override
@@ -2498,22 +2685,29 @@ class _$ApprovalConfigImpl implements _ApprovalConfig {
 abstract class _ApprovalConfig implements ApprovalConfig {
   const factory _ApprovalConfig(
       {required final String id,
-      required final String requestType,
-      required final String actionType,
-      final String? targetResourceType,
+      @JsonKey(name: 'request_type') required final String requestType,
+      @JsonKey(name: 'action_type') required final String actionType,
+      @JsonKey(name: 'target_resource_type') final String? targetResourceType,
+      @JsonKey(name: 'required_approval_level')
       required final int requiredApprovalLevel,
-      final bool canSkipLevels,
+      @JsonKey(name: 'can_skip_levels') final bool canSkipLevels,
+      @JsonKey(name: 'skip_level_conditions')
       final Map<String, dynamic> skipLevelConditions,
+      @JsonKey(name: 'allowed_initiator_roles')
       final List<String> allowedInitiatorRoles,
+      @JsonKey(name: 'allowed_approver_roles')
       final List<String> allowedApproverRoles,
-      final String defaultPriority,
+      @JsonKey(name: 'default_priority') final String defaultPriority,
+      @JsonKey(name: 'default_expiration_hours')
       final int? defaultExpirationHours,
-      final bool requiresMfa,
-      final bool autoExecute,
+      @JsonKey(name: 'requires_mfa') final bool requiresMfa,
+      @JsonKey(name: 'auto_execute') final bool autoExecute,
+      @JsonKey(name: 'notification_channels')
       final List<String> notificationChannels,
-      final bool isActive,
+      @JsonKey(name: 'is_active') final bool isActive,
       final String? description,
-      required final DateTime createdAt,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at')
       required final DateTime updatedAt}) = _$ApprovalConfigImpl;
 
   factory _ApprovalConfig.fromJson(Map<String, dynamic> json) =
@@ -2522,38 +2716,54 @@ abstract class _ApprovalConfig implements ApprovalConfig {
   @override
   String get id;
   @override
+  @JsonKey(name: 'request_type')
   String get requestType;
   @override
+  @JsonKey(name: 'action_type')
   String get actionType;
   @override
+  @JsonKey(name: 'target_resource_type')
   String? get targetResourceType;
   @override
+  @JsonKey(name: 'required_approval_level')
   int get requiredApprovalLevel;
   @override
+  @JsonKey(name: 'can_skip_levels')
   bool get canSkipLevels;
   @override
+  @JsonKey(name: 'skip_level_conditions')
   Map<String, dynamic> get skipLevelConditions;
   @override
+  @JsonKey(name: 'allowed_initiator_roles')
   List<String> get allowedInitiatorRoles;
   @override
+  @JsonKey(name: 'allowed_approver_roles')
   List<String> get allowedApproverRoles;
   @override
+  @JsonKey(name: 'default_priority')
   String get defaultPriority;
   @override
+  @JsonKey(name: 'default_expiration_hours')
   int? get defaultExpirationHours;
   @override
+  @JsonKey(name: 'requires_mfa')
   bool get requiresMfa;
   @override
+  @JsonKey(name: 'auto_execute')
   bool get autoExecute;
   @override
+  @JsonKey(name: 'notification_channels')
   List<String> get notificationChannels;
   @override
+  @JsonKey(name: 'is_active')
   bool get isActive;
   @override
   String? get description;
   @override
+  @JsonKey(name: 'created_at')
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
@@ -2567,23 +2777,41 @@ ApprovalStatistics _$ApprovalStatisticsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ApprovalStatistics {
+  @JsonKey(name: 'total_requests')
   int get totalRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pending_requests')
   int get pendingRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'under_review_requests')
   int get underReviewRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'awaiting_info_requests')
   int get awaitingInfoRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'approved_requests')
   int get approvedRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'denied_requests')
   int get deniedRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'withdrawn_requests')
   int get withdrawnRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'expired_requests')
   int get expiredRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'executed_requests')
   int get executedRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'failed_requests')
   int get failedRequests => throw _privateConstructorUsedError;
+  @JsonKey(name: 'requests_today')
   int get requestsToday => throw _privateConstructorUsedError;
+  @JsonKey(name: 'requests_this_week')
   int get requestsThisWeek => throw _privateConstructorUsedError;
+  @JsonKey(name: 'requests_this_month')
   int get requestsThisMonth => throw _privateConstructorUsedError;
+  @JsonKey(name: 'avg_approval_time_hours')
   double? get avgApprovalTimeHours => throw _privateConstructorUsedError;
+  @JsonKey(name: 'approval_rate')
   double? get approvalRate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'by_request_type')
   Map<String, int> get byRequestType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'by_action_type')
   Map<String, int> get byActionType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'by_priority')
   Map<String, int> get byPriority => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2599,24 +2827,24 @@ abstract class $ApprovalStatisticsCopyWith<$Res> {
       _$ApprovalStatisticsCopyWithImpl<$Res, ApprovalStatistics>;
   @useResult
   $Res call(
-      {int totalRequests,
-      int pendingRequests,
-      int underReviewRequests,
-      int awaitingInfoRequests,
-      int approvedRequests,
-      int deniedRequests,
-      int withdrawnRequests,
-      int expiredRequests,
-      int executedRequests,
-      int failedRequests,
-      int requestsToday,
-      int requestsThisWeek,
-      int requestsThisMonth,
-      double? avgApprovalTimeHours,
-      double? approvalRate,
-      Map<String, int> byRequestType,
-      Map<String, int> byActionType,
-      Map<String, int> byPriority});
+      {@JsonKey(name: 'total_requests') int totalRequests,
+      @JsonKey(name: 'pending_requests') int pendingRequests,
+      @JsonKey(name: 'under_review_requests') int underReviewRequests,
+      @JsonKey(name: 'awaiting_info_requests') int awaitingInfoRequests,
+      @JsonKey(name: 'approved_requests') int approvedRequests,
+      @JsonKey(name: 'denied_requests') int deniedRequests,
+      @JsonKey(name: 'withdrawn_requests') int withdrawnRequests,
+      @JsonKey(name: 'expired_requests') int expiredRequests,
+      @JsonKey(name: 'executed_requests') int executedRequests,
+      @JsonKey(name: 'failed_requests') int failedRequests,
+      @JsonKey(name: 'requests_today') int requestsToday,
+      @JsonKey(name: 'requests_this_week') int requestsThisWeek,
+      @JsonKey(name: 'requests_this_month') int requestsThisMonth,
+      @JsonKey(name: 'avg_approval_time_hours') double? avgApprovalTimeHours,
+      @JsonKey(name: 'approval_rate') double? approvalRate,
+      @JsonKey(name: 'by_request_type') Map<String, int> byRequestType,
+      @JsonKey(name: 'by_action_type') Map<String, int> byActionType,
+      @JsonKey(name: 'by_priority') Map<String, int> byPriority});
 }
 
 /// @nodoc
@@ -2737,24 +2965,24 @@ abstract class _$$ApprovalStatisticsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int totalRequests,
-      int pendingRequests,
-      int underReviewRequests,
-      int awaitingInfoRequests,
-      int approvedRequests,
-      int deniedRequests,
-      int withdrawnRequests,
-      int expiredRequests,
-      int executedRequests,
-      int failedRequests,
-      int requestsToday,
-      int requestsThisWeek,
-      int requestsThisMonth,
-      double? avgApprovalTimeHours,
-      double? approvalRate,
-      Map<String, int> byRequestType,
-      Map<String, int> byActionType,
-      Map<String, int> byPriority});
+      {@JsonKey(name: 'total_requests') int totalRequests,
+      @JsonKey(name: 'pending_requests') int pendingRequests,
+      @JsonKey(name: 'under_review_requests') int underReviewRequests,
+      @JsonKey(name: 'awaiting_info_requests') int awaitingInfoRequests,
+      @JsonKey(name: 'approved_requests') int approvedRequests,
+      @JsonKey(name: 'denied_requests') int deniedRequests,
+      @JsonKey(name: 'withdrawn_requests') int withdrawnRequests,
+      @JsonKey(name: 'expired_requests') int expiredRequests,
+      @JsonKey(name: 'executed_requests') int executedRequests,
+      @JsonKey(name: 'failed_requests') int failedRequests,
+      @JsonKey(name: 'requests_today') int requestsToday,
+      @JsonKey(name: 'requests_this_week') int requestsThisWeek,
+      @JsonKey(name: 'requests_this_month') int requestsThisMonth,
+      @JsonKey(name: 'avg_approval_time_hours') double? avgApprovalTimeHours,
+      @JsonKey(name: 'approval_rate') double? approvalRate,
+      @JsonKey(name: 'by_request_type') Map<String, int> byRequestType,
+      @JsonKey(name: 'by_action_type') Map<String, int> byActionType,
+      @JsonKey(name: 'by_priority') Map<String, int> byPriority});
 }
 
 /// @nodoc
@@ -2868,23 +3096,26 @@ class __$$ApprovalStatisticsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ApprovalStatisticsImpl implements _ApprovalStatistics {
   const _$ApprovalStatisticsImpl(
-      {this.totalRequests = 0,
-      this.pendingRequests = 0,
-      this.underReviewRequests = 0,
-      this.awaitingInfoRequests = 0,
-      this.approvedRequests = 0,
-      this.deniedRequests = 0,
-      this.withdrawnRequests = 0,
-      this.expiredRequests = 0,
-      this.executedRequests = 0,
-      this.failedRequests = 0,
-      this.requestsToday = 0,
-      this.requestsThisWeek = 0,
-      this.requestsThisMonth = 0,
-      this.avgApprovalTimeHours,
-      this.approvalRate,
+      {@JsonKey(name: 'total_requests') this.totalRequests = 0,
+      @JsonKey(name: 'pending_requests') this.pendingRequests = 0,
+      @JsonKey(name: 'under_review_requests') this.underReviewRequests = 0,
+      @JsonKey(name: 'awaiting_info_requests') this.awaitingInfoRequests = 0,
+      @JsonKey(name: 'approved_requests') this.approvedRequests = 0,
+      @JsonKey(name: 'denied_requests') this.deniedRequests = 0,
+      @JsonKey(name: 'withdrawn_requests') this.withdrawnRequests = 0,
+      @JsonKey(name: 'expired_requests') this.expiredRequests = 0,
+      @JsonKey(name: 'executed_requests') this.executedRequests = 0,
+      @JsonKey(name: 'failed_requests') this.failedRequests = 0,
+      @JsonKey(name: 'requests_today') this.requestsToday = 0,
+      @JsonKey(name: 'requests_this_week') this.requestsThisWeek = 0,
+      @JsonKey(name: 'requests_this_month') this.requestsThisMonth = 0,
+      @JsonKey(name: 'avg_approval_time_hours') this.avgApprovalTimeHours,
+      @JsonKey(name: 'approval_rate') this.approvalRate,
+      @JsonKey(name: 'by_request_type')
       final Map<String, int> byRequestType = const {},
+      @JsonKey(name: 'by_action_type')
       final Map<String, int> byActionType = const {},
+      @JsonKey(name: 'by_priority')
       final Map<String, int> byPriority = const {}})
       : _byRequestType = byRequestType,
         _byActionType = byActionType,
@@ -2894,51 +3125,53 @@ class _$ApprovalStatisticsImpl implements _ApprovalStatistics {
       _$$ApprovalStatisticsImplFromJson(json);
 
   @override
-  @JsonKey()
+  @JsonKey(name: 'total_requests')
   final int totalRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'pending_requests')
   final int pendingRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'under_review_requests')
   final int underReviewRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'awaiting_info_requests')
   final int awaitingInfoRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'approved_requests')
   final int approvedRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'denied_requests')
   final int deniedRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'withdrawn_requests')
   final int withdrawnRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'expired_requests')
   final int expiredRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'executed_requests')
   final int executedRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'failed_requests')
   final int failedRequests;
   @override
-  @JsonKey()
+  @JsonKey(name: 'requests_today')
   final int requestsToday;
   @override
-  @JsonKey()
+  @JsonKey(name: 'requests_this_week')
   final int requestsThisWeek;
   @override
-  @JsonKey()
+  @JsonKey(name: 'requests_this_month')
   final int requestsThisMonth;
   @override
+  @JsonKey(name: 'avg_approval_time_hours')
   final double? avgApprovalTimeHours;
   @override
+  @JsonKey(name: 'approval_rate')
   final double? approvalRate;
   final Map<String, int> _byRequestType;
   @override
-  @JsonKey()
+  @JsonKey(name: 'by_request_type')
   Map<String, int> get byRequestType {
     if (_byRequestType is EqualUnmodifiableMapView) return _byRequestType;
     // ignore: implicit_dynamic_type
@@ -2947,7 +3180,7 @@ class _$ApprovalStatisticsImpl implements _ApprovalStatistics {
 
   final Map<String, int> _byActionType;
   @override
-  @JsonKey()
+  @JsonKey(name: 'by_action_type')
   Map<String, int> get byActionType {
     if (_byActionType is EqualUnmodifiableMapView) return _byActionType;
     // ignore: implicit_dynamic_type
@@ -2956,7 +3189,7 @@ class _$ApprovalStatisticsImpl implements _ApprovalStatistics {
 
   final Map<String, int> _byPriority;
   @override
-  @JsonKey()
+  @JsonKey(name: 'by_priority')
   Map<String, int> get byPriority {
     if (_byPriority is EqualUnmodifiableMapView) return _byPriority;
     // ignore: implicit_dynamic_type
@@ -3051,63 +3284,83 @@ class _$ApprovalStatisticsImpl implements _ApprovalStatistics {
 
 abstract class _ApprovalStatistics implements ApprovalStatistics {
   const factory _ApprovalStatistics(
-      {final int totalRequests,
-      final int pendingRequests,
-      final int underReviewRequests,
-      final int awaitingInfoRequests,
-      final int approvedRequests,
-      final int deniedRequests,
-      final int withdrawnRequests,
-      final int expiredRequests,
-      final int executedRequests,
-      final int failedRequests,
-      final int requestsToday,
-      final int requestsThisWeek,
-      final int requestsThisMonth,
+      {@JsonKey(name: 'total_requests') final int totalRequests,
+      @JsonKey(name: 'pending_requests') final int pendingRequests,
+      @JsonKey(name: 'under_review_requests') final int underReviewRequests,
+      @JsonKey(name: 'awaiting_info_requests') final int awaitingInfoRequests,
+      @JsonKey(name: 'approved_requests') final int approvedRequests,
+      @JsonKey(name: 'denied_requests') final int deniedRequests,
+      @JsonKey(name: 'withdrawn_requests') final int withdrawnRequests,
+      @JsonKey(name: 'expired_requests') final int expiredRequests,
+      @JsonKey(name: 'executed_requests') final int executedRequests,
+      @JsonKey(name: 'failed_requests') final int failedRequests,
+      @JsonKey(name: 'requests_today') final int requestsToday,
+      @JsonKey(name: 'requests_this_week') final int requestsThisWeek,
+      @JsonKey(name: 'requests_this_month') final int requestsThisMonth,
+      @JsonKey(name: 'avg_approval_time_hours')
       final double? avgApprovalTimeHours,
-      final double? approvalRate,
-      final Map<String, int> byRequestType,
-      final Map<String, int> byActionType,
+      @JsonKey(name: 'approval_rate') final double? approvalRate,
+      @JsonKey(name: 'by_request_type') final Map<String, int> byRequestType,
+      @JsonKey(name: 'by_action_type') final Map<String, int> byActionType,
+      @JsonKey(name: 'by_priority')
       final Map<String, int> byPriority}) = _$ApprovalStatisticsImpl;
 
   factory _ApprovalStatistics.fromJson(Map<String, dynamic> json) =
       _$ApprovalStatisticsImpl.fromJson;
 
   @override
+  @JsonKey(name: 'total_requests')
   int get totalRequests;
   @override
+  @JsonKey(name: 'pending_requests')
   int get pendingRequests;
   @override
+  @JsonKey(name: 'under_review_requests')
   int get underReviewRequests;
   @override
+  @JsonKey(name: 'awaiting_info_requests')
   int get awaitingInfoRequests;
   @override
+  @JsonKey(name: 'approved_requests')
   int get approvedRequests;
   @override
+  @JsonKey(name: 'denied_requests')
   int get deniedRequests;
   @override
+  @JsonKey(name: 'withdrawn_requests')
   int get withdrawnRequests;
   @override
+  @JsonKey(name: 'expired_requests')
   int get expiredRequests;
   @override
+  @JsonKey(name: 'executed_requests')
   int get executedRequests;
   @override
+  @JsonKey(name: 'failed_requests')
   int get failedRequests;
   @override
+  @JsonKey(name: 'requests_today')
   int get requestsToday;
   @override
+  @JsonKey(name: 'requests_this_week')
   int get requestsThisWeek;
   @override
+  @JsonKey(name: 'requests_this_month')
   int get requestsThisMonth;
   @override
+  @JsonKey(name: 'avg_approval_time_hours')
   double? get avgApprovalTimeHours;
   @override
+  @JsonKey(name: 'approval_rate')
   double? get approvalRate;
   @override
+  @JsonKey(name: 'by_request_type')
   Map<String, int> get byRequestType;
   @override
+  @JsonKey(name: 'by_action_type')
   Map<String, int> get byActionType;
   @override
+  @JsonKey(name: 'by_priority')
   Map<String, int> get byPriority;
   @override
   @JsonKey(ignore: true)
@@ -3122,16 +3375,25 @@ PendingApprovalItem _$PendingApprovalItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PendingApprovalItem {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_number')
   String get requestNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_type')
   String get requestType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'action_type')
   String get actionType => throw _privateConstructorUsedError;
   String get priority => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiated_by')
   String get initiatedBy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'initiator_name')
   String? get initiatorName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'target_resource_type')
   String get targetResourceType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'current_approval_level')
   int get currentApprovalLevel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'expires_at')
   DateTime? get expiresAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -3148,17 +3410,17 @@ abstract class $PendingApprovalItemCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String requestNumber,
-      String requestType,
-      String actionType,
+      @JsonKey(name: 'request_number') String requestNumber,
+      @JsonKey(name: 'request_type') String requestType,
+      @JsonKey(name: 'action_type') String actionType,
       String priority,
       String status,
-      String initiatedBy,
-      String? initiatorName,
-      String targetResourceType,
-      int currentApprovalLevel,
-      DateTime createdAt,
-      DateTime? expiresAt});
+      @JsonKey(name: 'initiated_by') String initiatedBy,
+      @JsonKey(name: 'initiator_name') String? initiatorName,
+      @JsonKey(name: 'target_resource_type') String targetResourceType,
+      @JsonKey(name: 'current_approval_level') int currentApprovalLevel,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'expires_at') DateTime? expiresAt});
 }
 
 /// @nodoc
@@ -3250,17 +3512,17 @@ abstract class _$$PendingApprovalItemImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String requestNumber,
-      String requestType,
-      String actionType,
+      @JsonKey(name: 'request_number') String requestNumber,
+      @JsonKey(name: 'request_type') String requestType,
+      @JsonKey(name: 'action_type') String actionType,
       String priority,
       String status,
-      String initiatedBy,
-      String? initiatorName,
-      String targetResourceType,
-      int currentApprovalLevel,
-      DateTime createdAt,
-      DateTime? expiresAt});
+      @JsonKey(name: 'initiated_by') String initiatedBy,
+      @JsonKey(name: 'initiator_name') String? initiatorName,
+      @JsonKey(name: 'target_resource_type') String targetResourceType,
+      @JsonKey(name: 'current_approval_level') int currentApprovalLevel,
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'expires_at') DateTime? expiresAt});
 }
 
 /// @nodoc
@@ -3345,17 +3607,18 @@ class __$$PendingApprovalItemImplCopyWithImpl<$Res>
 class _$PendingApprovalItemImpl implements _PendingApprovalItem {
   const _$PendingApprovalItemImpl(
       {required this.id,
-      required this.requestNumber,
-      required this.requestType,
-      required this.actionType,
+      @JsonKey(name: 'request_number') required this.requestNumber,
+      @JsonKey(name: 'request_type') required this.requestType,
+      @JsonKey(name: 'action_type') required this.actionType,
       required this.priority,
       required this.status,
-      required this.initiatedBy,
-      this.initiatorName,
-      required this.targetResourceType,
+      @JsonKey(name: 'initiated_by') required this.initiatedBy,
+      @JsonKey(name: 'initiator_name') this.initiatorName,
+      @JsonKey(name: 'target_resource_type') required this.targetResourceType,
+      @JsonKey(name: 'current_approval_level')
       required this.currentApprovalLevel,
-      required this.createdAt,
-      this.expiresAt});
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'expires_at') this.expiresAt});
 
   factory _$PendingApprovalItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$PendingApprovalItemImplFromJson(json);
@@ -3363,26 +3626,35 @@ class _$PendingApprovalItemImpl implements _PendingApprovalItem {
   @override
   final String id;
   @override
+  @JsonKey(name: 'request_number')
   final String requestNumber;
   @override
+  @JsonKey(name: 'request_type')
   final String requestType;
   @override
+  @JsonKey(name: 'action_type')
   final String actionType;
   @override
   final String priority;
   @override
   final String status;
   @override
+  @JsonKey(name: 'initiated_by')
   final String initiatedBy;
   @override
+  @JsonKey(name: 'initiator_name')
   final String? initiatorName;
   @override
+  @JsonKey(name: 'target_resource_type')
   final String targetResourceType;
   @override
+  @JsonKey(name: 'current_approval_level')
   final int currentApprovalLevel;
   @override
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'expires_at')
   final DateTime? expiresAt;
 
   @override
@@ -3453,18 +3725,21 @@ class _$PendingApprovalItemImpl implements _PendingApprovalItem {
 
 abstract class _PendingApprovalItem implements PendingApprovalItem {
   const factory _PendingApprovalItem(
-      {required final String id,
-      required final String requestNumber,
-      required final String requestType,
-      required final String actionType,
-      required final String priority,
-      required final String status,
-      required final String initiatedBy,
-      final String? initiatorName,
-      required final String targetResourceType,
-      required final int currentApprovalLevel,
-      required final DateTime createdAt,
-      final DateTime? expiresAt}) = _$PendingApprovalItemImpl;
+          {required final String id,
+          @JsonKey(name: 'request_number') required final String requestNumber,
+          @JsonKey(name: 'request_type') required final String requestType,
+          @JsonKey(name: 'action_type') required final String actionType,
+          required final String priority,
+          required final String status,
+          @JsonKey(name: 'initiated_by') required final String initiatedBy,
+          @JsonKey(name: 'initiator_name') final String? initiatorName,
+          @JsonKey(name: 'target_resource_type')
+          required final String targetResourceType,
+          @JsonKey(name: 'current_approval_level')
+          required final int currentApprovalLevel,
+          @JsonKey(name: 'created_at') required final DateTime createdAt,
+          @JsonKey(name: 'expires_at') final DateTime? expiresAt}) =
+      _$PendingApprovalItemImpl;
 
   factory _PendingApprovalItem.fromJson(Map<String, dynamic> json) =
       _$PendingApprovalItemImpl.fromJson;
@@ -3472,26 +3747,35 @@ abstract class _PendingApprovalItem implements PendingApprovalItem {
   @override
   String get id;
   @override
+  @JsonKey(name: 'request_number')
   String get requestNumber;
   @override
+  @JsonKey(name: 'request_type')
   String get requestType;
   @override
+  @JsonKey(name: 'action_type')
   String get actionType;
   @override
   String get priority;
   @override
   String get status;
   @override
+  @JsonKey(name: 'initiated_by')
   String get initiatedBy;
   @override
+  @JsonKey(name: 'initiator_name')
   String? get initiatorName;
   @override
+  @JsonKey(name: 'target_resource_type')
   String get targetResourceType;
   @override
+  @JsonKey(name: 'current_approval_level')
   int get currentApprovalLevel;
   @override
+  @JsonKey(name: 'created_at')
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'expires_at')
   DateTime? get expiresAt;
   @override
   @JsonKey(ignore: true)
@@ -3506,10 +3790,13 @@ MyPendingActionsResponse _$MyPendingActionsResponseFromJson(
 
 /// @nodoc
 mixin _$MyPendingActionsResponse {
+  @JsonKey(name: 'pending_reviews')
   List<PendingApprovalItem> get pendingReviews =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'awaiting_my_info')
   List<PendingApprovalItem> get awaitingMyInfo =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'delegated_to_me')
   List<PendingApprovalItem> get delegatedToMe =>
       throw _privateConstructorUsedError;
   int get total => throw _privateConstructorUsedError;
@@ -3527,9 +3814,11 @@ abstract class $MyPendingActionsResponseCopyWith<$Res> {
       _$MyPendingActionsResponseCopyWithImpl<$Res, MyPendingActionsResponse>;
   @useResult
   $Res call(
-      {List<PendingApprovalItem> pendingReviews,
+      {@JsonKey(name: 'pending_reviews')
+      List<PendingApprovalItem> pendingReviews,
+      @JsonKey(name: 'awaiting_my_info')
       List<PendingApprovalItem> awaitingMyInfo,
-      List<PendingApprovalItem> delegatedToMe,
+      @JsonKey(name: 'delegated_to_me') List<PendingApprovalItem> delegatedToMe,
       int total});
 }
 
@@ -3583,9 +3872,11 @@ abstract class _$$MyPendingActionsResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<PendingApprovalItem> pendingReviews,
+      {@JsonKey(name: 'pending_reviews')
+      List<PendingApprovalItem> pendingReviews,
+      @JsonKey(name: 'awaiting_my_info')
       List<PendingApprovalItem> awaitingMyInfo,
-      List<PendingApprovalItem> delegatedToMe,
+      @JsonKey(name: 'delegated_to_me') List<PendingApprovalItem> delegatedToMe,
       int total});
 }
 
@@ -3632,8 +3923,11 @@ class __$$MyPendingActionsResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MyPendingActionsResponseImpl implements _MyPendingActionsResponse {
   const _$MyPendingActionsResponseImpl(
-      {final List<PendingApprovalItem> pendingReviews = const [],
+      {@JsonKey(name: 'pending_reviews')
+      final List<PendingApprovalItem> pendingReviews = const [],
+      @JsonKey(name: 'awaiting_my_info')
       final List<PendingApprovalItem> awaitingMyInfo = const [],
+      @JsonKey(name: 'delegated_to_me')
       final List<PendingApprovalItem> delegatedToMe = const [],
       this.total = 0})
       : _pendingReviews = pendingReviews,
@@ -3645,7 +3939,7 @@ class _$MyPendingActionsResponseImpl implements _MyPendingActionsResponse {
 
   final List<PendingApprovalItem> _pendingReviews;
   @override
-  @JsonKey()
+  @JsonKey(name: 'pending_reviews')
   List<PendingApprovalItem> get pendingReviews {
     if (_pendingReviews is EqualUnmodifiableListView) return _pendingReviews;
     // ignore: implicit_dynamic_type
@@ -3654,7 +3948,7 @@ class _$MyPendingActionsResponseImpl implements _MyPendingActionsResponse {
 
   final List<PendingApprovalItem> _awaitingMyInfo;
   @override
-  @JsonKey()
+  @JsonKey(name: 'awaiting_my_info')
   List<PendingApprovalItem> get awaitingMyInfo {
     if (_awaitingMyInfo is EqualUnmodifiableListView) return _awaitingMyInfo;
     // ignore: implicit_dynamic_type
@@ -3663,7 +3957,7 @@ class _$MyPendingActionsResponseImpl implements _MyPendingActionsResponse {
 
   final List<PendingApprovalItem> _delegatedToMe;
   @override
-  @JsonKey()
+  @JsonKey(name: 'delegated_to_me')
   List<PendingApprovalItem> get delegatedToMe {
     if (_delegatedToMe is EqualUnmodifiableListView) return _delegatedToMe;
     // ignore: implicit_dynamic_type
@@ -3719,8 +4013,11 @@ class _$MyPendingActionsResponseImpl implements _MyPendingActionsResponse {
 
 abstract class _MyPendingActionsResponse implements MyPendingActionsResponse {
   const factory _MyPendingActionsResponse(
-      {final List<PendingApprovalItem> pendingReviews,
+      {@JsonKey(name: 'pending_reviews')
+      final List<PendingApprovalItem> pendingReviews,
+      @JsonKey(name: 'awaiting_my_info')
       final List<PendingApprovalItem> awaitingMyInfo,
+      @JsonKey(name: 'delegated_to_me')
       final List<PendingApprovalItem> delegatedToMe,
       final int total}) = _$MyPendingActionsResponseImpl;
 
@@ -3728,10 +4025,13 @@ abstract class _MyPendingActionsResponse implements MyPendingActionsResponse {
       _$MyPendingActionsResponseImpl.fromJson;
 
   @override
+  @JsonKey(name: 'pending_reviews')
   List<PendingApprovalItem> get pendingReviews;
   @override
+  @JsonKey(name: 'awaiting_my_info')
   List<PendingApprovalItem> get awaitingMyInfo;
   @override
+  @JsonKey(name: 'delegated_to_me')
   List<PendingApprovalItem> get delegatedToMe;
   @override
   int get total;
@@ -3749,18 +4049,30 @@ ApprovalAuditLogEntry _$ApprovalAuditLogEntryFromJson(
 /// @nodoc
 mixin _$ApprovalAuditLogEntry {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'request_id')
   String get requestId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'actor_id')
   String get actorId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'actor_role')
   String get actorRole => throw _privateConstructorUsedError;
+  @JsonKey(name: 'event_type')
   String get eventType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'event_description')
   String? get eventDescription => throw _privateConstructorUsedError;
+  @JsonKey(name: 'previous_state')
   Map<String, dynamic>? get previousState => throw _privateConstructorUsedError;
+  @JsonKey(name: 'new_state')
   Map<String, dynamic>? get newState => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ip_address')
   String? get ipAddress => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_agent')
   String? get userAgent => throw _privateConstructorUsedError;
+  @JsonKey(name: 'session_id')
   String? get sessionId => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
+  @JsonKey(name: 'actor_name')
   String? get actorName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'actor_email')
   String? get actorEmail => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -3777,19 +4089,19 @@ abstract class $ApprovalAuditLogEntryCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String requestId,
-      String actorId,
-      String actorRole,
-      String eventType,
-      String? eventDescription,
-      Map<String, dynamic>? previousState,
-      Map<String, dynamic>? newState,
-      String? ipAddress,
-      String? userAgent,
-      String? sessionId,
+      @JsonKey(name: 'request_id') String requestId,
+      @JsonKey(name: 'actor_id') String actorId,
+      @JsonKey(name: 'actor_role') String actorRole,
+      @JsonKey(name: 'event_type') String eventType,
+      @JsonKey(name: 'event_description') String? eventDescription,
+      @JsonKey(name: 'previous_state') Map<String, dynamic>? previousState,
+      @JsonKey(name: 'new_state') Map<String, dynamic>? newState,
+      @JsonKey(name: 'ip_address') String? ipAddress,
+      @JsonKey(name: 'user_agent') String? userAgent,
+      @JsonKey(name: 'session_id') String? sessionId,
       DateTime timestamp,
-      String? actorName,
-      String? actorEmail});
+      @JsonKey(name: 'actor_name') String? actorName,
+      @JsonKey(name: 'actor_email') String? actorEmail});
 }
 
 /// @nodoc
@@ -3893,19 +4205,19 @@ abstract class _$$ApprovalAuditLogEntryImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String requestId,
-      String actorId,
-      String actorRole,
-      String eventType,
-      String? eventDescription,
-      Map<String, dynamic>? previousState,
-      Map<String, dynamic>? newState,
-      String? ipAddress,
-      String? userAgent,
-      String? sessionId,
+      @JsonKey(name: 'request_id') String requestId,
+      @JsonKey(name: 'actor_id') String actorId,
+      @JsonKey(name: 'actor_role') String actorRole,
+      @JsonKey(name: 'event_type') String eventType,
+      @JsonKey(name: 'event_description') String? eventDescription,
+      @JsonKey(name: 'previous_state') Map<String, dynamic>? previousState,
+      @JsonKey(name: 'new_state') Map<String, dynamic>? newState,
+      @JsonKey(name: 'ip_address') String? ipAddress,
+      @JsonKey(name: 'user_agent') String? userAgent,
+      @JsonKey(name: 'session_id') String? sessionId,
       DateTime timestamp,
-      String? actorName,
-      String? actorEmail});
+      @JsonKey(name: 'actor_name') String? actorName,
+      @JsonKey(name: 'actor_email') String? actorEmail});
 }
 
 /// @nodoc
@@ -4001,19 +4313,20 @@ class __$$ApprovalAuditLogEntryImplCopyWithImpl<$Res>
 class _$ApprovalAuditLogEntryImpl implements _ApprovalAuditLogEntry {
   const _$ApprovalAuditLogEntryImpl(
       {required this.id,
-      required this.requestId,
-      required this.actorId,
-      required this.actorRole,
-      required this.eventType,
-      this.eventDescription,
+      @JsonKey(name: 'request_id') required this.requestId,
+      @JsonKey(name: 'actor_id') required this.actorId,
+      @JsonKey(name: 'actor_role') required this.actorRole,
+      @JsonKey(name: 'event_type') required this.eventType,
+      @JsonKey(name: 'event_description') this.eventDescription,
+      @JsonKey(name: 'previous_state')
       final Map<String, dynamic>? previousState,
-      final Map<String, dynamic>? newState,
-      this.ipAddress,
-      this.userAgent,
-      this.sessionId,
+      @JsonKey(name: 'new_state') final Map<String, dynamic>? newState,
+      @JsonKey(name: 'ip_address') this.ipAddress,
+      @JsonKey(name: 'user_agent') this.userAgent,
+      @JsonKey(name: 'session_id') this.sessionId,
       required this.timestamp,
-      this.actorName,
-      this.actorEmail})
+      @JsonKey(name: 'actor_name') this.actorName,
+      @JsonKey(name: 'actor_email') this.actorEmail})
       : _previousState = previousState,
         _newState = newState;
 
@@ -4023,17 +4336,23 @@ class _$ApprovalAuditLogEntryImpl implements _ApprovalAuditLogEntry {
   @override
   final String id;
   @override
+  @JsonKey(name: 'request_id')
   final String requestId;
   @override
+  @JsonKey(name: 'actor_id')
   final String actorId;
   @override
+  @JsonKey(name: 'actor_role')
   final String actorRole;
   @override
+  @JsonKey(name: 'event_type')
   final String eventType;
   @override
+  @JsonKey(name: 'event_description')
   final String? eventDescription;
   final Map<String, dynamic>? _previousState;
   @override
+  @JsonKey(name: 'previous_state')
   Map<String, dynamic>? get previousState {
     final value = _previousState;
     if (value == null) return null;
@@ -4044,6 +4363,7 @@ class _$ApprovalAuditLogEntryImpl implements _ApprovalAuditLogEntry {
 
   final Map<String, dynamic>? _newState;
   @override
+  @JsonKey(name: 'new_state')
   Map<String, dynamic>? get newState {
     final value = _newState;
     if (value == null) return null;
@@ -4053,16 +4373,21 @@ class _$ApprovalAuditLogEntryImpl implements _ApprovalAuditLogEntry {
   }
 
   @override
+  @JsonKey(name: 'ip_address')
   final String? ipAddress;
   @override
+  @JsonKey(name: 'user_agent')
   final String? userAgent;
   @override
+  @JsonKey(name: 'session_id')
   final String? sessionId;
   @override
   final DateTime timestamp;
   @override
+  @JsonKey(name: 'actor_name')
   final String? actorName;
   @override
+  @JsonKey(name: 'actor_email')
   final String? actorEmail;
 
   @override
@@ -4138,20 +4463,22 @@ class _$ApprovalAuditLogEntryImpl implements _ApprovalAuditLogEntry {
 
 abstract class _ApprovalAuditLogEntry implements ApprovalAuditLogEntry {
   const factory _ApprovalAuditLogEntry(
-      {required final String id,
-      required final String requestId,
-      required final String actorId,
-      required final String actorRole,
-      required final String eventType,
-      final String? eventDescription,
-      final Map<String, dynamic>? previousState,
-      final Map<String, dynamic>? newState,
-      final String? ipAddress,
-      final String? userAgent,
-      final String? sessionId,
-      required final DateTime timestamp,
-      final String? actorName,
-      final String? actorEmail}) = _$ApprovalAuditLogEntryImpl;
+          {required final String id,
+          @JsonKey(name: 'request_id') required final String requestId,
+          @JsonKey(name: 'actor_id') required final String actorId,
+          @JsonKey(name: 'actor_role') required final String actorRole,
+          @JsonKey(name: 'event_type') required final String eventType,
+          @JsonKey(name: 'event_description') final String? eventDescription,
+          @JsonKey(name: 'previous_state')
+          final Map<String, dynamic>? previousState,
+          @JsonKey(name: 'new_state') final Map<String, dynamic>? newState,
+          @JsonKey(name: 'ip_address') final String? ipAddress,
+          @JsonKey(name: 'user_agent') final String? userAgent,
+          @JsonKey(name: 'session_id') final String? sessionId,
+          required final DateTime timestamp,
+          @JsonKey(name: 'actor_name') final String? actorName,
+          @JsonKey(name: 'actor_email') final String? actorEmail}) =
+      _$ApprovalAuditLogEntryImpl;
 
   factory _ApprovalAuditLogEntry.fromJson(Map<String, dynamic> json) =
       _$ApprovalAuditLogEntryImpl.fromJson;
@@ -4159,30 +4486,42 @@ abstract class _ApprovalAuditLogEntry implements ApprovalAuditLogEntry {
   @override
   String get id;
   @override
+  @JsonKey(name: 'request_id')
   String get requestId;
   @override
+  @JsonKey(name: 'actor_id')
   String get actorId;
   @override
+  @JsonKey(name: 'actor_role')
   String get actorRole;
   @override
+  @JsonKey(name: 'event_type')
   String get eventType;
   @override
+  @JsonKey(name: 'event_description')
   String? get eventDescription;
   @override
+  @JsonKey(name: 'previous_state')
   Map<String, dynamic>? get previousState;
   @override
+  @JsonKey(name: 'new_state')
   Map<String, dynamic>? get newState;
   @override
+  @JsonKey(name: 'ip_address')
   String? get ipAddress;
   @override
+  @JsonKey(name: 'user_agent')
   String? get userAgent;
   @override
+  @JsonKey(name: 'session_id')
   String? get sessionId;
   @override
   DateTime get timestamp;
   @override
+  @JsonKey(name: 'actor_name')
   String? get actorName;
   @override
+  @JsonKey(name: 'actor_email')
   String? get actorEmail;
   @override
   @JsonKey(ignore: true)
@@ -4200,7 +4539,9 @@ mixin _$ApprovalAuditLogResponse {
   List<ApprovalAuditLogEntry> get entries => throw _privateConstructorUsedError;
   int get total => throw _privateConstructorUsedError;
   int get page => throw _privateConstructorUsedError;
+  @JsonKey(name: 'page_size')
   int get pageSize => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_more')
   bool get hasMore => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -4219,8 +4560,8 @@ abstract class $ApprovalAuditLogResponseCopyWith<$Res> {
       {List<ApprovalAuditLogEntry> entries,
       int total,
       int page,
-      int pageSize,
-      bool hasMore});
+      @JsonKey(name: 'page_size') int pageSize,
+      @JsonKey(name: 'has_more') bool hasMore});
 }
 
 /// @nodoc
@@ -4281,8 +4622,8 @@ abstract class _$$ApprovalAuditLogResponseImplCopyWith<$Res>
       {List<ApprovalAuditLogEntry> entries,
       int total,
       int page,
-      int pageSize,
-      bool hasMore});
+      @JsonKey(name: 'page_size') int pageSize,
+      @JsonKey(name: 'has_more') bool hasMore});
 }
 
 /// @nodoc
@@ -4336,8 +4677,8 @@ class _$ApprovalAuditLogResponseImpl implements _ApprovalAuditLogResponse {
       {required final List<ApprovalAuditLogEntry> entries,
       required this.total,
       required this.page,
-      required this.pageSize,
-      required this.hasMore})
+      @JsonKey(name: 'page_size') required this.pageSize,
+      @JsonKey(name: 'has_more') required this.hasMore})
       : _entries = entries;
 
   factory _$ApprovalAuditLogResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -4356,8 +4697,10 @@ class _$ApprovalAuditLogResponseImpl implements _ApprovalAuditLogResponse {
   @override
   final int page;
   @override
+  @JsonKey(name: 'page_size')
   final int pageSize;
   @override
+  @JsonKey(name: 'has_more')
   final bool hasMore;
 
   @override
@@ -4405,11 +4748,12 @@ class _$ApprovalAuditLogResponseImpl implements _ApprovalAuditLogResponse {
 
 abstract class _ApprovalAuditLogResponse implements ApprovalAuditLogResponse {
   const factory _ApprovalAuditLogResponse(
-      {required final List<ApprovalAuditLogEntry> entries,
-      required final int total,
-      required final int page,
-      required final int pageSize,
-      required final bool hasMore}) = _$ApprovalAuditLogResponseImpl;
+          {required final List<ApprovalAuditLogEntry> entries,
+          required final int total,
+          required final int page,
+          @JsonKey(name: 'page_size') required final int pageSize,
+          @JsonKey(name: 'has_more') required final bool hasMore}) =
+      _$ApprovalAuditLogResponseImpl;
 
   factory _ApprovalAuditLogResponse.fromJson(Map<String, dynamic> json) =
       _$ApprovalAuditLogResponseImpl.fromJson;
@@ -4421,8 +4765,10 @@ abstract class _ApprovalAuditLogResponse implements ApprovalAuditLogResponse {
   @override
   int get page;
   @override
+  @JsonKey(name: 'page_size')
   int get pageSize;
   @override
+  @JsonKey(name: 'has_more')
   bool get hasMore;
   @override
   @JsonKey(ignore: true)

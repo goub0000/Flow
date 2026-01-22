@@ -9,67 +9,67 @@ part of 'approval_models.dart';
 _$ApprovalActionImpl _$$ApprovalActionImplFromJson(Map<String, dynamic> json) =>
     _$ApprovalActionImpl(
       id: json['id'] as String,
-      requestId: json['requestId'] as String,
-      reviewerId: json['reviewerId'] as String,
-      reviewerRole: json['reviewerRole'] as String,
-      reviewerLevel: (json['reviewerLevel'] as num).toInt(),
-      actionType: json['actionType'] as String,
+      requestId: json['request_id'] as String,
+      reviewerId: json['reviewer_id'] as String,
+      reviewerRole: json['reviewer_role'] as String,
+      reviewerLevel: (json['reviewer_level'] as num).toInt(),
+      actionType: json['action_type'] as String,
       notes: json['notes'] as String?,
-      delegatedTo: json['delegatedTo'] as String?,
-      delegatedReason: json['delegatedReason'] as String?,
-      escalatedToLevel: (json['escalatedToLevel'] as num?)?.toInt(),
-      escalationReason: json['escalationReason'] as String?,
-      infoRequested: json['infoRequested'] as String?,
-      mfaVerified: json['mfaVerified'] as bool? ?? false,
-      actedAt: DateTime.parse(json['actedAt'] as String),
-      reviewerName: json['reviewerName'] as String?,
-      reviewerEmail: json['reviewerEmail'] as String?,
+      delegatedTo: json['delegated_to'] as String?,
+      delegatedReason: json['delegated_reason'] as String?,
+      escalatedToLevel: (json['escalated_to_level'] as num?)?.toInt(),
+      escalationReason: json['escalation_reason'] as String?,
+      infoRequested: json['info_requested'] as String?,
+      mfaVerified: json['mfa_verified'] as bool? ?? false,
+      actedAt: DateTime.parse(json['acted_at'] as String),
+      reviewerName: json['reviewer_name'] as String?,
+      reviewerEmail: json['reviewer_email'] as String?,
     );
 
 Map<String, dynamic> _$$ApprovalActionImplToJson(
         _$ApprovalActionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'requestId': instance.requestId,
-      'reviewerId': instance.reviewerId,
-      'reviewerRole': instance.reviewerRole,
-      'reviewerLevel': instance.reviewerLevel,
-      'actionType': instance.actionType,
+      'request_id': instance.requestId,
+      'reviewer_id': instance.reviewerId,
+      'reviewer_role': instance.reviewerRole,
+      'reviewer_level': instance.reviewerLevel,
+      'action_type': instance.actionType,
       'notes': instance.notes,
-      'delegatedTo': instance.delegatedTo,
-      'delegatedReason': instance.delegatedReason,
-      'escalatedToLevel': instance.escalatedToLevel,
-      'escalationReason': instance.escalationReason,
-      'infoRequested': instance.infoRequested,
-      'mfaVerified': instance.mfaVerified,
-      'actedAt': instance.actedAt.toIso8601String(),
-      'reviewerName': instance.reviewerName,
-      'reviewerEmail': instance.reviewerEmail,
+      'delegated_to': instance.delegatedTo,
+      'delegated_reason': instance.delegatedReason,
+      'escalated_to_level': instance.escalatedToLevel,
+      'escalation_reason': instance.escalationReason,
+      'info_requested': instance.infoRequested,
+      'mfa_verified': instance.mfaVerified,
+      'acted_at': instance.actedAt.toIso8601String(),
+      'reviewer_name': instance.reviewerName,
+      'reviewer_email': instance.reviewerEmail,
     };
 
 _$ApprovalCommentImpl _$$ApprovalCommentImplFromJson(
         Map<String, dynamic> json) =>
     _$ApprovalCommentImpl(
       id: json['id'] as String,
-      requestId: json['requestId'] as String,
-      authorId: json['authorId'] as String,
-      authorRole: json['authorRole'] as String,
+      requestId: json['request_id'] as String,
+      authorId: json['author_id'] as String,
+      authorRole: json['author_role'] as String,
       content: json['content'] as String,
-      isInternal: json['isInternal'] as bool? ?? false,
+      isInternal: json['is_internal'] as bool? ?? false,
       attachments: (json['attachments'] as List<dynamic>?)
               ?.map((e) => Map<String, String>.from(e as Map))
               .toList() ??
           const [],
-      parentCommentId: json['parentCommentId'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
+      parentCommentId: json['parent_comment_id'] as String?,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] == null
           ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      deletedAt: json['deletedAt'] == null
+          : DateTime.parse(json['updated_at'] as String),
+      deletedAt: json['deleted_at'] == null
           ? null
-          : DateTime.parse(json['deletedAt'] as String),
-      authorName: json['authorName'] as String?,
-      authorEmail: json['authorEmail'] as String?,
+          : DateTime.parse(json['deleted_at'] as String),
+      authorName: json['author_name'] as String?,
+      authorEmail: json['author_email'] as String?,
       replies: (json['replies'] as List<dynamic>?)
               ?.map((e) => ApprovalComment.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -80,18 +80,18 @@ Map<String, dynamic> _$$ApprovalCommentImplToJson(
         _$ApprovalCommentImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'requestId': instance.requestId,
-      'authorId': instance.authorId,
-      'authorRole': instance.authorRole,
+      'request_id': instance.requestId,
+      'author_id': instance.authorId,
+      'author_role': instance.authorRole,
       'content': instance.content,
-      'isInternal': instance.isInternal,
+      'is_internal': instance.isInternal,
       'attachments': instance.attachments,
-      'parentCommentId': instance.parentCommentId,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
-      'deletedAt': instance.deletedAt?.toIso8601String(),
-      'authorName': instance.authorName,
-      'authorEmail': instance.authorEmail,
+      'parent_comment_id': instance.parentCommentId,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
+      'deleted_at': instance.deletedAt?.toIso8601String(),
+      'author_name': instance.authorName,
+      'author_email': instance.authorEmail,
       'replies': instance.replies,
     };
 
@@ -99,43 +99,44 @@ _$ApprovalRequestImpl _$$ApprovalRequestImplFromJson(
         Map<String, dynamic> json) =>
     _$ApprovalRequestImpl(
       id: json['id'] as String,
-      requestNumber: json['requestNumber'] as String,
-      requestType: json['requestType'] as String,
-      initiatedBy: json['initiatedBy'] as String,
-      initiatedByRole: json['initiatedByRole'] as String,
-      initiatedAt: DateTime.parse(json['initiatedAt'] as String),
-      targetResourceType: json['targetResourceType'] as String,
-      targetResourceId: json['targetResourceId'] as String?,
+      requestNumber: json['request_number'] as String,
+      requestType: json['request_type'] as String,
+      initiatedBy: json['initiated_by'] as String,
+      initiatedByRole: json['initiated_by_role'] as String,
+      initiatedAt: DateTime.parse(json['initiated_at'] as String),
+      targetResourceType: json['target_resource_type'] as String,
+      targetResourceId: json['target_resource_id'] as String?,
       targetResourceSnapshot:
-          json['targetResourceSnapshot'] as Map<String, dynamic>?,
-      actionType: json['actionType'] as String,
-      actionPayload: json['actionPayload'] as Map<String, dynamic>? ?? const {},
+          json['target_resource_snapshot'] as Map<String, dynamic>?,
+      actionType: json['action_type'] as String,
+      actionPayload:
+          json['action_payload'] as Map<String, dynamic>? ?? const {},
       justification: json['justification'] as String,
       priority: json['priority'] as String,
-      expiresAt: json['expiresAt'] == null
+      expiresAt: json['expires_at'] == null
           ? null
-          : DateTime.parse(json['expiresAt'] as String),
+          : DateTime.parse(json['expires_at'] as String),
       status: json['status'] as String,
-      currentApprovalLevel: (json['currentApprovalLevel'] as num).toInt(),
-      requiredApprovalLevel: (json['requiredApprovalLevel'] as num).toInt(),
-      approvalChain: (json['approvalChain'] as List<dynamic>?)
+      currentApprovalLevel: (json['current_approval_level'] as num).toInt(),
+      requiredApprovalLevel: (json['required_approval_level'] as num).toInt(),
+      approvalChain: (json['approval_chain'] as List<dynamic>?)
               ?.map((e) => e as Map<String, dynamic>)
               .toList() ??
           const [],
-      regionalScope: json['regionalScope'] as String?,
+      regionalScope: json['regional_scope'] as String?,
       attachments: (json['attachments'] as List<dynamic>?)
               ?.map((e) => Map<String, String>.from(e as Map))
               .toList() ??
           const [],
       metadata: json['metadata'] as Map<String, dynamic>?,
-      executedAt: json['executedAt'] == null
+      executedAt: json['executed_at'] == null
           ? null
-          : DateTime.parse(json['executedAt'] as String),
-      executionResult: json['executionResult'] as Map<String, dynamic>?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      initiatorName: json['initiatorName'] as String?,
-      initiatorEmail: json['initiatorEmail'] as String?,
+          : DateTime.parse(json['executed_at'] as String),
+      executionResult: json['execution_result'] as Map<String, dynamic>?,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+      initiatorName: json['initiator_name'] as String?,
+      initiatorEmail: json['initiator_email'] as String?,
       actions: (json['actions'] as List<dynamic>?)
               ?.map((e) => ApprovalAction.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -150,32 +151,32 @@ Map<String, dynamic> _$$ApprovalRequestImplToJson(
         _$ApprovalRequestImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'requestNumber': instance.requestNumber,
-      'requestType': instance.requestType,
-      'initiatedBy': instance.initiatedBy,
-      'initiatedByRole': instance.initiatedByRole,
-      'initiatedAt': instance.initiatedAt.toIso8601String(),
-      'targetResourceType': instance.targetResourceType,
-      'targetResourceId': instance.targetResourceId,
-      'targetResourceSnapshot': instance.targetResourceSnapshot,
-      'actionType': instance.actionType,
-      'actionPayload': instance.actionPayload,
+      'request_number': instance.requestNumber,
+      'request_type': instance.requestType,
+      'initiated_by': instance.initiatedBy,
+      'initiated_by_role': instance.initiatedByRole,
+      'initiated_at': instance.initiatedAt.toIso8601String(),
+      'target_resource_type': instance.targetResourceType,
+      'target_resource_id': instance.targetResourceId,
+      'target_resource_snapshot': instance.targetResourceSnapshot,
+      'action_type': instance.actionType,
+      'action_payload': instance.actionPayload,
       'justification': instance.justification,
       'priority': instance.priority,
-      'expiresAt': instance.expiresAt?.toIso8601String(),
+      'expires_at': instance.expiresAt?.toIso8601String(),
       'status': instance.status,
-      'currentApprovalLevel': instance.currentApprovalLevel,
-      'requiredApprovalLevel': instance.requiredApprovalLevel,
-      'approvalChain': instance.approvalChain,
-      'regionalScope': instance.regionalScope,
+      'current_approval_level': instance.currentApprovalLevel,
+      'required_approval_level': instance.requiredApprovalLevel,
+      'approval_chain': instance.approvalChain,
+      'regional_scope': instance.regionalScope,
       'attachments': instance.attachments,
       'metadata': instance.metadata,
-      'executedAt': instance.executedAt?.toIso8601String(),
-      'executionResult': instance.executionResult,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
-      'initiatorName': instance.initiatorName,
-      'initiatorEmail': instance.initiatorEmail,
+      'executed_at': instance.executedAt?.toIso8601String(),
+      'execution_result': instance.executionResult,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
+      'initiator_name': instance.initiatorName,
+      'initiator_email': instance.initiatorEmail,
       'actions': instance.actions,
       'comments': instance.comments,
     };
@@ -188,8 +189,8 @@ _$ApprovalRequestListResponseImpl _$$ApprovalRequestListResponseImplFromJson(
           .toList(),
       total: (json['total'] as num).toInt(),
       page: (json['page'] as num).toInt(),
-      pageSize: (json['pageSize'] as num).toInt(),
-      hasMore: json['hasMore'] as bool,
+      pageSize: (json['page_size'] as num).toInt(),
+      hasMore: json['has_more'] as bool,
     );
 
 Map<String, dynamic> _$$ApprovalRequestListResponseImplToJson(
@@ -198,93 +199,96 @@ Map<String, dynamic> _$$ApprovalRequestListResponseImplToJson(
       'requests': instance.requests,
       'total': instance.total,
       'page': instance.page,
-      'pageSize': instance.pageSize,
-      'hasMore': instance.hasMore,
+      'page_size': instance.pageSize,
+      'has_more': instance.hasMore,
     };
 
 _$ApprovalConfigImpl _$$ApprovalConfigImplFromJson(Map<String, dynamic> json) =>
     _$ApprovalConfigImpl(
       id: json['id'] as String,
-      requestType: json['requestType'] as String,
-      actionType: json['actionType'] as String,
-      targetResourceType: json['targetResourceType'] as String?,
-      requiredApprovalLevel: (json['requiredApprovalLevel'] as num).toInt(),
-      canSkipLevels: json['canSkipLevels'] as bool? ?? false,
+      requestType: json['request_type'] as String,
+      actionType: json['action_type'] as String,
+      targetResourceType: json['target_resource_type'] as String?,
+      requiredApprovalLevel: (json['required_approval_level'] as num).toInt(),
+      canSkipLevels: json['can_skip_levels'] as bool? ?? false,
       skipLevelConditions:
-          json['skipLevelConditions'] as Map<String, dynamic>? ?? const {},
-      allowedInitiatorRoles: (json['allowedInitiatorRoles'] as List<dynamic>?)
+          json['skip_level_conditions'] as Map<String, dynamic>? ?? const {},
+      allowedInitiatorRoles: (json['allowed_initiator_roles'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      allowedApproverRoles: (json['allowedApproverRoles'] as List<dynamic>?)
+      allowedApproverRoles: (json['allowed_approver_roles'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      defaultPriority: json['defaultPriority'] as String? ?? 'normal',
-      defaultExpirationHours: (json['defaultExpirationHours'] as num?)?.toInt(),
-      requiresMfa: json['requiresMfa'] as bool? ?? false,
-      autoExecute: json['autoExecute'] as bool? ?? true,
-      notificationChannels: (json['notificationChannels'] as List<dynamic>?)
+      defaultPriority: json['default_priority'] as String? ?? 'normal',
+      defaultExpirationHours:
+          (json['default_expiration_hours'] as num?)?.toInt(),
+      requiresMfa: json['requires_mfa'] as bool? ?? false,
+      autoExecute: json['auto_execute'] as bool? ?? true,
+      notificationChannels: (json['notification_channels'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const ['in_app', 'email'],
-      isActive: json['isActive'] as bool? ?? true,
+      isActive: json['is_active'] as bool? ?? true,
       description: json['description'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$$ApprovalConfigImplToJson(
         _$ApprovalConfigImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'requestType': instance.requestType,
-      'actionType': instance.actionType,
-      'targetResourceType': instance.targetResourceType,
-      'requiredApprovalLevel': instance.requiredApprovalLevel,
-      'canSkipLevels': instance.canSkipLevels,
-      'skipLevelConditions': instance.skipLevelConditions,
-      'allowedInitiatorRoles': instance.allowedInitiatorRoles,
-      'allowedApproverRoles': instance.allowedApproverRoles,
-      'defaultPriority': instance.defaultPriority,
-      'defaultExpirationHours': instance.defaultExpirationHours,
-      'requiresMfa': instance.requiresMfa,
-      'autoExecute': instance.autoExecute,
-      'notificationChannels': instance.notificationChannels,
-      'isActive': instance.isActive,
+      'request_type': instance.requestType,
+      'action_type': instance.actionType,
+      'target_resource_type': instance.targetResourceType,
+      'required_approval_level': instance.requiredApprovalLevel,
+      'can_skip_levels': instance.canSkipLevels,
+      'skip_level_conditions': instance.skipLevelConditions,
+      'allowed_initiator_roles': instance.allowedInitiatorRoles,
+      'allowed_approver_roles': instance.allowedApproverRoles,
+      'default_priority': instance.defaultPriority,
+      'default_expiration_hours': instance.defaultExpirationHours,
+      'requires_mfa': instance.requiresMfa,
+      'auto_execute': instance.autoExecute,
+      'notification_channels': instance.notificationChannels,
+      'is_active': instance.isActive,
       'description': instance.description,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };
 
 _$ApprovalStatisticsImpl _$$ApprovalStatisticsImplFromJson(
         Map<String, dynamic> json) =>
     _$ApprovalStatisticsImpl(
-      totalRequests: (json['totalRequests'] as num?)?.toInt() ?? 0,
-      pendingRequests: (json['pendingRequests'] as num?)?.toInt() ?? 0,
-      underReviewRequests: (json['underReviewRequests'] as num?)?.toInt() ?? 0,
+      totalRequests: (json['total_requests'] as num?)?.toInt() ?? 0,
+      pendingRequests: (json['pending_requests'] as num?)?.toInt() ?? 0,
+      underReviewRequests:
+          (json['under_review_requests'] as num?)?.toInt() ?? 0,
       awaitingInfoRequests:
-          (json['awaitingInfoRequests'] as num?)?.toInt() ?? 0,
-      approvedRequests: (json['approvedRequests'] as num?)?.toInt() ?? 0,
-      deniedRequests: (json['deniedRequests'] as num?)?.toInt() ?? 0,
-      withdrawnRequests: (json['withdrawnRequests'] as num?)?.toInt() ?? 0,
-      expiredRequests: (json['expiredRequests'] as num?)?.toInt() ?? 0,
-      executedRequests: (json['executedRequests'] as num?)?.toInt() ?? 0,
-      failedRequests: (json['failedRequests'] as num?)?.toInt() ?? 0,
-      requestsToday: (json['requestsToday'] as num?)?.toInt() ?? 0,
-      requestsThisWeek: (json['requestsThisWeek'] as num?)?.toInt() ?? 0,
-      requestsThisMonth: (json['requestsThisMonth'] as num?)?.toInt() ?? 0,
-      avgApprovalTimeHours: (json['avgApprovalTimeHours'] as num?)?.toDouble(),
-      approvalRate: (json['approvalRate'] as num?)?.toDouble(),
-      byRequestType: (json['byRequestType'] as Map<String, dynamic>?)?.map(
+          (json['awaiting_info_requests'] as num?)?.toInt() ?? 0,
+      approvedRequests: (json['approved_requests'] as num?)?.toInt() ?? 0,
+      deniedRequests: (json['denied_requests'] as num?)?.toInt() ?? 0,
+      withdrawnRequests: (json['withdrawn_requests'] as num?)?.toInt() ?? 0,
+      expiredRequests: (json['expired_requests'] as num?)?.toInt() ?? 0,
+      executedRequests: (json['executed_requests'] as num?)?.toInt() ?? 0,
+      failedRequests: (json['failed_requests'] as num?)?.toInt() ?? 0,
+      requestsToday: (json['requests_today'] as num?)?.toInt() ?? 0,
+      requestsThisWeek: (json['requests_this_week'] as num?)?.toInt() ?? 0,
+      requestsThisMonth: (json['requests_this_month'] as num?)?.toInt() ?? 0,
+      avgApprovalTimeHours:
+          (json['avg_approval_time_hours'] as num?)?.toDouble(),
+      approvalRate: (json['approval_rate'] as num?)?.toDouble(),
+      byRequestType: (json['by_request_type'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, (e as num).toInt()),
           ) ??
           const {},
-      byActionType: (json['byActionType'] as Map<String, dynamic>?)?.map(
+      byActionType: (json['by_action_type'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, (e as num).toInt()),
           ) ??
           const {},
-      byPriority: (json['byPriority'] as Map<String, dynamic>?)?.map(
+      byPriority: (json['by_priority'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, (e as num).toInt()),
           ) ??
           const {},
@@ -293,76 +297,76 @@ _$ApprovalStatisticsImpl _$$ApprovalStatisticsImplFromJson(
 Map<String, dynamic> _$$ApprovalStatisticsImplToJson(
         _$ApprovalStatisticsImpl instance) =>
     <String, dynamic>{
-      'totalRequests': instance.totalRequests,
-      'pendingRequests': instance.pendingRequests,
-      'underReviewRequests': instance.underReviewRequests,
-      'awaitingInfoRequests': instance.awaitingInfoRequests,
-      'approvedRequests': instance.approvedRequests,
-      'deniedRequests': instance.deniedRequests,
-      'withdrawnRequests': instance.withdrawnRequests,
-      'expiredRequests': instance.expiredRequests,
-      'executedRequests': instance.executedRequests,
-      'failedRequests': instance.failedRequests,
-      'requestsToday': instance.requestsToday,
-      'requestsThisWeek': instance.requestsThisWeek,
-      'requestsThisMonth': instance.requestsThisMonth,
-      'avgApprovalTimeHours': instance.avgApprovalTimeHours,
-      'approvalRate': instance.approvalRate,
-      'byRequestType': instance.byRequestType,
-      'byActionType': instance.byActionType,
-      'byPriority': instance.byPriority,
+      'total_requests': instance.totalRequests,
+      'pending_requests': instance.pendingRequests,
+      'under_review_requests': instance.underReviewRequests,
+      'awaiting_info_requests': instance.awaitingInfoRequests,
+      'approved_requests': instance.approvedRequests,
+      'denied_requests': instance.deniedRequests,
+      'withdrawn_requests': instance.withdrawnRequests,
+      'expired_requests': instance.expiredRequests,
+      'executed_requests': instance.executedRequests,
+      'failed_requests': instance.failedRequests,
+      'requests_today': instance.requestsToday,
+      'requests_this_week': instance.requestsThisWeek,
+      'requests_this_month': instance.requestsThisMonth,
+      'avg_approval_time_hours': instance.avgApprovalTimeHours,
+      'approval_rate': instance.approvalRate,
+      'by_request_type': instance.byRequestType,
+      'by_action_type': instance.byActionType,
+      'by_priority': instance.byPriority,
     };
 
 _$PendingApprovalItemImpl _$$PendingApprovalItemImplFromJson(
         Map<String, dynamic> json) =>
     _$PendingApprovalItemImpl(
       id: json['id'] as String,
-      requestNumber: json['requestNumber'] as String,
-      requestType: json['requestType'] as String,
-      actionType: json['actionType'] as String,
+      requestNumber: json['request_number'] as String,
+      requestType: json['request_type'] as String,
+      actionType: json['action_type'] as String,
       priority: json['priority'] as String,
       status: json['status'] as String,
-      initiatedBy: json['initiatedBy'] as String,
-      initiatorName: json['initiatorName'] as String?,
-      targetResourceType: json['targetResourceType'] as String,
-      currentApprovalLevel: (json['currentApprovalLevel'] as num).toInt(),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      expiresAt: json['expiresAt'] == null
+      initiatedBy: json['initiated_by'] as String,
+      initiatorName: json['initiator_name'] as String?,
+      targetResourceType: json['target_resource_type'] as String,
+      currentApprovalLevel: (json['current_approval_level'] as num).toInt(),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      expiresAt: json['expires_at'] == null
           ? null
-          : DateTime.parse(json['expiresAt'] as String),
+          : DateTime.parse(json['expires_at'] as String),
     );
 
 Map<String, dynamic> _$$PendingApprovalItemImplToJson(
         _$PendingApprovalItemImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'requestNumber': instance.requestNumber,
-      'requestType': instance.requestType,
-      'actionType': instance.actionType,
+      'request_number': instance.requestNumber,
+      'request_type': instance.requestType,
+      'action_type': instance.actionType,
       'priority': instance.priority,
       'status': instance.status,
-      'initiatedBy': instance.initiatedBy,
-      'initiatorName': instance.initiatorName,
-      'targetResourceType': instance.targetResourceType,
-      'currentApprovalLevel': instance.currentApprovalLevel,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'expiresAt': instance.expiresAt?.toIso8601String(),
+      'initiated_by': instance.initiatedBy,
+      'initiator_name': instance.initiatorName,
+      'target_resource_type': instance.targetResourceType,
+      'current_approval_level': instance.currentApprovalLevel,
+      'created_at': instance.createdAt.toIso8601String(),
+      'expires_at': instance.expiresAt?.toIso8601String(),
     };
 
 _$MyPendingActionsResponseImpl _$$MyPendingActionsResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$MyPendingActionsResponseImpl(
-      pendingReviews: (json['pendingReviews'] as List<dynamic>?)
+      pendingReviews: (json['pending_reviews'] as List<dynamic>?)
               ?.map((e) =>
                   PendingApprovalItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      awaitingMyInfo: (json['awaitingMyInfo'] as List<dynamic>?)
+      awaitingMyInfo: (json['awaiting_my_info'] as List<dynamic>?)
               ?.map((e) =>
                   PendingApprovalItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      delegatedToMe: (json['delegatedToMe'] as List<dynamic>?)
+      delegatedToMe: (json['delegated_to_me'] as List<dynamic>?)
               ?.map((e) =>
                   PendingApprovalItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -373,9 +377,9 @@ _$MyPendingActionsResponseImpl _$$MyPendingActionsResponseImplFromJson(
 Map<String, dynamic> _$$MyPendingActionsResponseImplToJson(
         _$MyPendingActionsResponseImpl instance) =>
     <String, dynamic>{
-      'pendingReviews': instance.pendingReviews,
-      'awaitingMyInfo': instance.awaitingMyInfo,
-      'delegatedToMe': instance.delegatedToMe,
+      'pending_reviews': instance.pendingReviews,
+      'awaiting_my_info': instance.awaitingMyInfo,
+      'delegated_to_me': instance.delegatedToMe,
       'total': instance.total,
     };
 
@@ -383,38 +387,38 @@ _$ApprovalAuditLogEntryImpl _$$ApprovalAuditLogEntryImplFromJson(
         Map<String, dynamic> json) =>
     _$ApprovalAuditLogEntryImpl(
       id: json['id'] as String,
-      requestId: json['requestId'] as String,
-      actorId: json['actorId'] as String,
-      actorRole: json['actorRole'] as String,
-      eventType: json['eventType'] as String,
-      eventDescription: json['eventDescription'] as String?,
-      previousState: json['previousState'] as Map<String, dynamic>?,
-      newState: json['newState'] as Map<String, dynamic>?,
-      ipAddress: json['ipAddress'] as String?,
-      userAgent: json['userAgent'] as String?,
-      sessionId: json['sessionId'] as String?,
+      requestId: json['request_id'] as String,
+      actorId: json['actor_id'] as String,
+      actorRole: json['actor_role'] as String,
+      eventType: json['event_type'] as String,
+      eventDescription: json['event_description'] as String?,
+      previousState: json['previous_state'] as Map<String, dynamic>?,
+      newState: json['new_state'] as Map<String, dynamic>?,
+      ipAddress: json['ip_address'] as String?,
+      userAgent: json['user_agent'] as String?,
+      sessionId: json['session_id'] as String?,
       timestamp: DateTime.parse(json['timestamp'] as String),
-      actorName: json['actorName'] as String?,
-      actorEmail: json['actorEmail'] as String?,
+      actorName: json['actor_name'] as String?,
+      actorEmail: json['actor_email'] as String?,
     );
 
 Map<String, dynamic> _$$ApprovalAuditLogEntryImplToJson(
         _$ApprovalAuditLogEntryImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'requestId': instance.requestId,
-      'actorId': instance.actorId,
-      'actorRole': instance.actorRole,
-      'eventType': instance.eventType,
-      'eventDescription': instance.eventDescription,
-      'previousState': instance.previousState,
-      'newState': instance.newState,
-      'ipAddress': instance.ipAddress,
-      'userAgent': instance.userAgent,
-      'sessionId': instance.sessionId,
+      'request_id': instance.requestId,
+      'actor_id': instance.actorId,
+      'actor_role': instance.actorRole,
+      'event_type': instance.eventType,
+      'event_description': instance.eventDescription,
+      'previous_state': instance.previousState,
+      'new_state': instance.newState,
+      'ip_address': instance.ipAddress,
+      'user_agent': instance.userAgent,
+      'session_id': instance.sessionId,
       'timestamp': instance.timestamp.toIso8601String(),
-      'actorName': instance.actorName,
-      'actorEmail': instance.actorEmail,
+      'actor_name': instance.actorName,
+      'actor_email': instance.actorEmail,
     };
 
 _$ApprovalAuditLogResponseImpl _$$ApprovalAuditLogResponseImplFromJson(
@@ -425,8 +429,8 @@ _$ApprovalAuditLogResponseImpl _$$ApprovalAuditLogResponseImplFromJson(
           .toList(),
       total: (json['total'] as num).toInt(),
       page: (json['page'] as num).toInt(),
-      pageSize: (json['pageSize'] as num).toInt(),
-      hasMore: json['hasMore'] as bool,
+      pageSize: (json['page_size'] as num).toInt(),
+      hasMore: json['has_more'] as bool,
     );
 
 Map<String, dynamic> _$$ApprovalAuditLogResponseImplToJson(
@@ -435,8 +439,8 @@ Map<String, dynamic> _$$ApprovalAuditLogResponseImplToJson(
       'entries': instance.entries,
       'total': instance.total,
       'page': instance.page,
-      'pageSize': instance.pageSize,
-      'hasMore': instance.hasMore,
+      'page_size': instance.pageSize,
+      'has_more': instance.hasMore,
     };
 
 _$CreateApprovalRequestImpl _$$CreateApprovalRequestImplFromJson(
