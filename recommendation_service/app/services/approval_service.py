@@ -45,13 +45,22 @@ logger = logging.getLogger(__name__)
 
 
 # Admin role to approval level mapping
+# Supports both naming conventions (snake_case and camelCase without separator)
 ROLE_LEVELS = {
+    # Snake_case format
     'content_admin': 1,
     'support_admin': 1,
     'finance_admin': 1,
     'analytics_admin': 1,
     'regional_admin': 2,
     'super_admin': 3,
+    # Normalized format (from UserRole.normalize_role)
+    'contentadmin': 1,
+    'supportadmin': 1,
+    'financeadmin': 1,
+    'analyticsadmin': 1,
+    'regionaladmin': 2,
+    'superadmin': 3,
 }
 
 
