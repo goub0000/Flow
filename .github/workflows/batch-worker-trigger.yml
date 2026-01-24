@@ -2,8 +2,8 @@ name: Batch Processing Worker Trigger
 
 on:
   schedule:
-    # Run every 5 minutes to process any pending batch jobs
-    - cron: '*/5 * * * *'
+    # Run every 30 minutes (reduced from 5 min to prevent server overload)
+    - cron: '*/30 * * * *'
 
   # Allow manual triggering for testing
   workflow_dispatch:
@@ -11,6 +11,7 @@ on:
 jobs:
   trigger-batch-worker:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Trigger Batch Worker
@@ -21,12 +22,13 @@ jobs:
           echo "Time: $(date -u)"
           echo ""
 
-          # Trigger the batch worker to process pending jobs
+          # Trigger the batch worker to process pending jobs (with 60s timeout)
           response=$(curl -X POST \
             https://web-production-51e34.up.railway.app/api/v1/batch/worker/start \
             -H "Content-Type: application/json" \
             -w "\nHTTP Status: %{http_code}\n" \
-            -s)
+            --max-time 60 \
+            -s) || echo "Request timed out or failed"
 
           echo "$response"
 
@@ -49,11 +51,12 @@ jobs:
           # Wait a moment for worker to start
           sleep 2
 
-          # Check queue stats
+          # Check queue stats (with 30s timeout)
           curl -X GET \
             https://web-production-51e34.up.railway.app/api/v1/batch/queue/stats \
             -H "Content-Type: application/json" \
-            -s | jq '.'
+            --max-time 30 \
+            -s | jq '.' || echo "Failed to get queue stats"
 
       - name: Summary
         run: |
@@ -61,7 +64,7 @@ jobs:
           echo "========================================="
           echo "Batch Worker Trigger Complete"
           echo "========================================="
-          echo "This workflow runs every 5 minutes to:"
+          echo "This workflow runs every 30 minutes to:"
           echo "  1. Trigger the batch worker"
           echo "  2. Process any pending enrichment jobs"
           echo "  3. Update university data with retry logic"

@@ -1,12 +1,9 @@
-name: Aggressive Data Enrichment (Maximum Speed)
+name: Data Enrichment (Balanced)
 
 on:
   schedule:
-    # Run every 2 hours for continuous enrichment
-    - cron: '0 */2 * * *'
-
-    # Additional US-focused run every 4 hours (College Scorecard priority)
-    - cron: '30 */4 * * *'
+    # Run every 8 hours (reduced from 2 hours to prevent server overload)
+    - cron: '0 */8 * * *'
 
   # Allow manual triggering
   workflow_dispatch:
@@ -25,62 +22,56 @@ jobs:
   us-university-enrichment:
     runs-on: ubuntu-latest
     name: US Universities (College Scorecard)
+    timeout-minutes: 5
 
     steps:
-      - name: Enrich US Universities (500 batch)
+      - name: Enrich US Universities (100 batch)
         run: |
           echo "========================================="
           echo "US University Enrichment (College Scorecard)"
           echo "========================================="
-          echo "Target: 500 US universities with official government data"
+          echo "Target: 100 US universities with official government data"
           echo "Data: SAT/ACT scores, acceptance rates, tuition, graduation rates"
           echo ""
 
           curl -X POST \
-            "https://web-production-51e34.up.railway.app/api/v1/enrichment/us-universities?limit=500" \
+            "https://web-production-51e34.up.railway.app/api/v1/enrichment/us-universities?limit=100" \
             -H "Content-Type: application/json" \
-            -w "\nHTTP Status: %{http_code}\n"
+            -w "\nHTTP Status: %{http_code}\n" \
+            --max-time 120 || echo "Request timed out"
 
       - name: Check US Stats
         run: |
           echo ""
           echo "US University Statistics:"
-          curl -s "https://web-production-51e34.up.railway.app/api/v1/enrichment/us-stats" | jq '.'
+          curl -s --max-time 30 "https://web-production-51e34.up.railway.app/api/v1/enrichment/us-stats" | jq '.' || echo "Failed to get stats"
 
   general-enrichment:
     runs-on: ubuntu-latest
     name: General Enrichment (All Universities)
+    timeout-minutes: 5
 
     steps:
-      - name: Trigger Large Batch Enrichment (500 universities)
+      - name: Trigger Batch Enrichment (100 universities)
         run: |
           echo "========================================="
           echo "General University Enrichment"
           echo "========================================="
-          echo "Target: 500 universities (US prioritized first)"
+          echo "Target: 100 universities (US prioritized first)"
           echo ""
 
-          # Monthly-sized batch but run frequently
+          # Smaller batch to prevent overload
           curl -X POST \
-            https://web-production-51e34.up.railway.app/api/v1/enrichment/monthly-async \
+            "https://web-production-51e34.up.railway.app/api/v1/enrichment/weekly-async" \
             -H "Content-Type: application/json" \
-            -w "\nHTTP Status: %{http_code}\n"
-
-      - name: Trigger Additional Batch
-        run: |
-          echo ""
-          echo "Starting second enrichment batch..."
-          sleep 5
-
-          curl -X POST \
-            https://web-production-51e34.up.railway.app/api/v1/enrichment/weekly-async \
-            -H "Content-Type: application/json" \
-            -w "\nHTTP Status: %{http_code}\n"
+            -w "\nHTTP Status: %{http_code}\n" \
+            --max-time 120 || echo "Request timed out"
 
   cleanup-and-status:
     runs-on: ubuntu-latest
     name: Cleanup & Status
     needs: [us-university-enrichment, general-enrichment]
+    timeout-minutes: 5
 
     steps:
       - name: Cleanup Stuck Jobs
@@ -88,7 +79,8 @@ jobs:
           echo "Cleaning up any stuck jobs..."
           curl -X POST \
             https://web-production-51e34.up.railway.app/api/v1/enrichment/cleanup-stuck \
-            -H "Content-Type: application/json"
+            -H "Content-Type: application/json" \
+            --max-time 60 || echo "Cleanup request timed out"
 
       - name: Check Overall Status
         run: |
@@ -97,35 +89,22 @@ jobs:
           echo "Enrichment Status Summary"
           echo "========================================="
 
-          curl -s "https://web-production-51e34.up.railway.app/api/v1/enrichment/status" | \
+          curl -s --max-time 30 "https://web-production-51e34.up.railway.app/api/v1/enrichment/status" | \
             jq '{
               total_jobs: .total_jobs,
               running: [.jobs[] | select(.status == "running")] | length,
               completed_today: [.jobs[] | select(.status == "completed")] | length,
               recent_jobs: [.jobs[:5] | .[] | {id: .job_id, status: .status, processed: .universities_processed, updated: .universities_updated}]
-            }'
-
-      - name: Database Coverage Report
-        run: |
-          echo ""
-          echo "========================================="
-          echo "Database Coverage Analysis"
-          echo "========================================="
-
-          curl -s "https://web-production-51e34.up.railway.app/api/v1/enrichment/analyze" | \
-            jq '{
-              total_universities: .total_universities,
-              critical_fields: [.fields[] | select(.priority == "CRITICAL") | {field: .field, filled: .filled_count, null_pct: .null_percentage}]
-            }'
+            }' || echo "Failed to get status"
 
       - name: Summary
         run: |
           echo ""
           echo "========================================="
-          echo "AGGRESSIVE ENRICHMENT COMPLETE"
+          echo "DATA ENRICHMENT COMPLETE"
           echo "========================================="
-          echo "Schedule: Every 2 hours (general) + Every 4 hours (US-focused)"
-          echo "Batch sizes: 500 US + 500 general per run"
-          echo "Expected daily processing: ~6,000 universities"
-          echo "Full database coverage: ~3 days"
+          echo "Schedule: Every 8 hours (balanced for server health)"
+          echo "Batch sizes: 100 US + 100 general per run"
+          echo "Expected daily processing: ~600 universities"
+          echo "Full database coverage: ~30 days"
           echo "========================================="
