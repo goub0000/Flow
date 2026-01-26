@@ -49,7 +49,7 @@ class RecommendationListResponse(BaseModel):
 class GenerateRecommendationsRequest(BaseModel):
     """Request schema for generating recommendations"""
     user_id: str
-    max_results: Optional[int] = 15
+    max_results: Optional[int] = 30  # Increased from 15 for better coverage across countries
 
 
 class UpdateRecommendationRequest(BaseModel):

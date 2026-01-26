@@ -111,8 +111,42 @@ class MLRecommendationEngine:
         scored_universities = list(zip(universities, scores))
         scored_universities.sort(key=lambda x: x[1], reverse=True)
 
-        # Select top universities
-        top_universities = scored_universities[:max_results]
+        # Ensure diversity across countries when multiple countries are selected
+        # Group by country and select proportionally to ensure mix
+        preferred_countries = student.get("preferred_countries", [])
+        if len(preferred_countries) > 1:
+            # Group universities by country
+            by_country = {}
+            for univ, score in scored_universities:
+                country = univ.get("country", "Unknown")
+                if country not in by_country:
+                    by_country[country] = []
+                by_country[country].append((univ, score))
+
+            # Calculate how many to take from each country (proportional to total available)
+            total_available = sum(len(unis) for unis in by_country.values())
+            top_universities = []
+
+            # Round-robin selection from each country to ensure diversity
+            country_indices = {c: 0 for c in by_country}
+            countries = list(by_country.keys())
+
+            while len(top_universities) < max_results:
+                added_this_round = False
+                for country in countries:
+                    if country_indices[country] < len(by_country[country]):
+                        top_universities.append(by_country[country][country_indices[country]])
+                        country_indices[country] += 1
+                        added_this_round = True
+                        if len(top_universities) >= max_results:
+                            break
+                if not added_this_round:
+                    break  # No more universities to add
+
+            logger.info(f"Selected {len(top_universities)} universities with diversity across {len(countries)} countries")
+        else:
+            # Single country or no preference - just take top by score
+            top_universities = scored_universities[:max_results]
 
         # Create recommendation dictionaries
         recommendations = []
