@@ -54,10 +54,9 @@ class RecommendationEngine:
         if student.get('preferred_university_type'):
             query = query.eq('university_type', student['preferred_university_type'])
 
-        # Only get universities with critical data (to ensure quality recommendations)
-        # Require acceptance_rate and at least one cost metric
-        query = query.not_.is_('acceptance_rate', 'null')
-        query = query.or_('tuition_out_state.not.is.null,total_cost.not.is.null')
+        # Note: Removed strict acceptance_rate filter to include international universities
+        # that may not have this data. Scoring will still prioritize universities with
+        # more complete data.
 
         # LIMIT: Even with filters, cap at reasonable number for performance
         # We'll score and filter down to max_results anyway
@@ -72,10 +71,9 @@ class RecommendationEngine:
                 "No universities found matching student filters. "
                 "Falling back to broader search..."
             )
-            # Fallback: Get top universities without strict filters
+            # Fallback: Get universities without country filter
             response = self.db.table('universities')\
                 .select('*')\
-                .not_.is_('acceptance_rate', 'null')\
                 .limit(200)\
                 .execute()
             universities = response.data
