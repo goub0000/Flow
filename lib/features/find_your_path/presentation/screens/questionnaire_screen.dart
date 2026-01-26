@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../domain/models/student_profile.dart';
@@ -958,95 +959,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
 
   Future<void> _submitProfile() async {
     final authState = ref.read(authProvider);
-    final userId = authState.user?.id;
-
-    if (userId == null) {
-      // Show dialog to prompt user to sign up or login
-      final shouldProceed = await showDialog<bool>(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          title: Row(
-            children: [
-              Icon(Icons.lock, color: AppColors.primary),
-              const SizedBox(width: 12),
-              const Text('Sign Up to See Results'),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'You\'ve completed the questionnaire! To see your personalized university recommendations, you need to create a free account.',
-                style: TextStyle(fontSize: 16, height: 1.5),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.accent.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.accent.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.check_circle, color: AppColors.accent, size: 20),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Why sign up?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _buildBenefit('Save your recommendations'),
-                    _buildBenefit('Track applications'),
-                    _buildBenefit('Get updates on universities'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-                context.go('/login?redirect=/find-your-path/questionnaire');
-              },
-              child: const Text('Sign In'),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-                context.go('/register?redirect=/find-your-path/questionnaire');
-              },
-              icon: const Icon(Icons.person_add),
-              label: const Text('Create Account'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      );
-
-      if (shouldProceed != true) return;
-      return; // Wait for user to sign up/login
-    }
+    // Use real user ID if logged in, otherwise generate anonymous ID
+    final userId = authState.user?.id ?? 'anonymous_${const Uuid().v4()}';
+    final isAnonymous = authState.user?.id == null;
 
     // Create profile with new global fields
     final profile = StudentProfile(
@@ -1143,6 +1058,26 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
       // Navigate to results
       if (mounted) {
         context.go('/find-your-path/results');
+
+        // Show sign-up suggestion for anonymous users (non-blocking)
+        if (isAnonymous) {
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Sign up to save your recommendations!'),
+                  backgroundColor: AppColors.primary,
+                  duration: const Duration(seconds: 5),
+                  action: SnackBarAction(
+                    label: 'Sign Up',
+                    textColor: Colors.white,
+                    onPressed: () => context.go('/register'),
+                  ),
+                ),
+              );
+            }
+          });
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -1158,28 +1093,6 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     }
   }
 
-  Widget _buildBenefit(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.check,
-            color: AppColors.accent,
-            size: 18,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// Loading dialog widget shown during profile submission and recommendation generation

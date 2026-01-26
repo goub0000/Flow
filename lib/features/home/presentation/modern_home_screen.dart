@@ -2227,7 +2227,7 @@ class _FindYourPathSection extends StatelessWidget {
 
                   // Subtext
                   Text(
-                    'Create a free account to see your results',
+                    'No account required - get started instantly',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 14,
