@@ -245,6 +245,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
             labelText: 'Where are you currently studying? *',
             prefixIcon: Icon(Icons.school),
             border: OutlineInputBorder(),
+            helperText: 'Your current location (not where you want to study)',
           ),
           items: worldCountries.map((country) {
             return DropdownMenuItem(
@@ -625,7 +626,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
 
         // Preferred Countries
         const Text(
-          'Preferred Countries *',
+          'Where do you want to study? *',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -633,7 +634,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         ),
         const SizedBox(height: 12),
         Text(
-          'Select at least one country where you\'d like to study',
+          'Select countries where you\'d like to attend university (can be different from your current location)',
           style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 12),
@@ -647,7 +648,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           child: ListView(
             shrinkWrap: true,
             children: worldCountries.map((country) {
-              final isSelected = _preferredCountries.contains(country.code);
+              final isSelected = _preferredCountries.contains(country.name);
               return CheckboxListTile(
                 dense: true,
                 title: Text(country.name),
@@ -655,9 +656,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
                 onChanged: (selected) {
                   setState(() {
                     if (selected == true) {
-                      _preferredCountries.add(country.code);
+                      _preferredCountries.add(country.name);
                     } else {
-                      _preferredCountries.remove(country.code);
+                      _preferredCountries.remove(country.name);
                     }
                   });
                 },
