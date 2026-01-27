@@ -89,9 +89,13 @@ class UniversityRepository {
   }) async {
     var query = _supabase.from('universities').select();
 
-    // Apply search query
+    // Apply search query (searches name, city, and state)
     if (filters.searchQuery?.isNotEmpty ?? false) {
-      query = query.ilike('name', '%\${filters.searchQuery}%');
+      query = query.or(
+        'name.ilike.%${filters.searchQuery}%,'
+        'city.ilike.%${filters.searchQuery}%,'
+        'state.ilike.%${filters.searchQuery}%'
+      );
     }
 
     // Apply filters
@@ -228,41 +232,46 @@ class UniversityRepository {
     return types.toList()..sort();
   }
 
-  /// Get total count of universities matching filters - batched
+  /// Get total count of universities matching filters
   Future<int> getUniversityCount({
     UniversityFilters filters = const UniversityFilters(),
   }) async {
-    int totalCount = 0;
-    int offset = 0;
-    const batchSize = 1000;
+    var query = _supabase.from('universities').select('id');
 
-    while (true) {
-      var query = _supabase.from('universities').select('id');
-
-      if (filters.searchQuery?.isNotEmpty ?? false) {
-        query = query.ilike('name', '%${filters.searchQuery}%');
-      }
-
-      if (filters.country != null) {
-        query = query.eq('country', filters.country!);
-      }
-
-      if (filters.universityType != null) {
-        query = query.eq('university_type', filters.universityType!);
-      }
-
-      if (filters.locationType != null) {
-        query = query.eq('location_type', filters.locationType!);
-      }
-
-      final response = await query.range(offset, offset + batchSize - 1);
-      final batch = response as List;
-      totalCount += batch.length;
-
-      if (batch.length < batchSize) break;
-      offset += batchSize;
+    // Apply same filters as searchUniversities
+    if (filters.searchQuery?.isNotEmpty ?? false) {
+      query = query.or(
+        'name.ilike.%${filters.searchQuery}%,'
+        'city.ilike.%${filters.searchQuery}%,'
+        'state.ilike.%${filters.searchQuery}%'
+      );
     }
 
-    return totalCount;
+    if (filters.country != null) {
+      query = query.eq('country', filters.country!);
+    }
+
+    if (filters.universityType != null) {
+      query = query.eq('university_type', filters.universityType!);
+    }
+
+    if (filters.locationType != null) {
+      query = query.eq('location_type', filters.locationType!);
+    }
+
+    if (filters.maxTuition != null) {
+      query = query.lte('tuition_out_state', filters.maxTuition!);
+    }
+
+    if (filters.minAcceptanceRate != null) {
+      query = query.gte('acceptance_rate', filters.minAcceptanceRate!);
+    }
+
+    if (filters.maxAcceptanceRate != null) {
+      query = query.lte('acceptance_rate', filters.maxAcceptanceRate!);
+    }
+
+    final response = await query.count(CountOption.exact);
+    return response.count;
   }
 }
