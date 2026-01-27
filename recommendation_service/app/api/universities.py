@@ -60,6 +60,9 @@ def search_universities(
             # Using or_ for multiple columns
             query = query.or_(f'name.ilike.%{search}%,city.ilike.%{search}%,state.ilike.%{search}%')
 
+        # Sort alphabetically by name (case-insensitive ordering)
+        query = query.order('name')
+
         # Apply pagination
         query = query.range(skip, skip + limit - 1)
 
