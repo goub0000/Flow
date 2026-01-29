@@ -201,14 +201,14 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
   /// TODO: Connect to backend API
   Future<void> fetchSystemInfo() async {
     try {
-      // TODO: Fetch system stats from Firebase
+      // TODO: Fetch system stats from Supabase
       await Future.delayed(const Duration(milliseconds: 500));
 
       final info = {
         'version': '1.0.0',
         'environment': 'production',
-        'database': 'Firebase Firestore',
-        'storage': 'Firebase Storage',
+        'database': 'Supabase PostgreSQL',
+        'storage': 'Supabase Storage',
         'uptime': '99.9%',
         'lastBackup': DateTime.now().subtract(const Duration(hours: 2)),
         'storageUsed': '2.5 GB',
@@ -224,10 +224,10 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
   }
 
   /// Update a setting
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API (Supabase)
   Future<bool> updateSetting(String key, dynamic value) async {
     try {
-      // TODO: Update in Firebase
+      // TODO: Update in Supabase
       await Future.delayed(const Duration(milliseconds: 300));
 
       final setting = state.settings[key];
@@ -249,10 +249,10 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
   }
 
   /// Batch update settings
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API (Supabase)
   Future<bool> batchUpdateSettings(Map<String, dynamic> updates) async {
     try {
-      // TODO: Batch update in Firebase
+      // TODO: Batch update in Supabase
       await Future.delayed(const Duration(milliseconds: 500));
 
       final updatedSettings = Map<String, SystemSetting>.from(state.settings);

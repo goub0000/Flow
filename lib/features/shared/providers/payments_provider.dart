@@ -42,17 +42,17 @@ class PaymentsNotifier extends StateNotifier<PaymentsState> {
   }
 
   /// Fetch all payments for current user
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> fetchPayments() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('payments')
-      //   .where('userId', isEqualTo: currentUserId)
-      //   .orderBy('createdAt', descending: true)
-      //   .get()
+      // TODO: Replace with actual Supabase query
+      // Example: supabase
+      //   .from('payments')
+      //   .select()
+      //   .eq('user_id', currentUserId)
+      //   .order('created_at', ascending: false)
 
       await Future.delayed(const Duration(seconds: 1));
 
@@ -75,10 +75,10 @@ class PaymentsNotifier extends StateNotifier<PaymentsState> {
   }
 
   /// Fetch payment methods
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> fetchPaymentMethods() async {
     try {
-      // TODO: Fetch saved payment methods from Firebase
+      // TODO: Fetch saved payment methods from backend API
 
       await Future.delayed(const Duration(milliseconds: 500));
 
@@ -114,7 +114,7 @@ class PaymentsNotifier extends StateNotifier<PaymentsState> {
       // 1. Initialize payment with gateway
       // 2. Handle payment callback
       // 3. Verify payment
-      // 4. Update payment record in Firebase
+      // 4. Update payment record in backend API
 
       await Future.delayed(const Duration(seconds: 2));
 
@@ -145,10 +145,10 @@ class PaymentsNotifier extends StateNotifier<PaymentsState> {
   }
 
   /// Add payment method
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<bool> addPaymentMethod(PaymentMethod method) async {
     try {
-      // TODO: Save to Firebase (store securely)
+      // TODO: Save to backend API (store securely)
 
       await Future.delayed(const Duration(milliseconds: 500));
 
@@ -165,10 +165,10 @@ class PaymentsNotifier extends StateNotifier<PaymentsState> {
   }
 
   /// Remove payment method
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<bool> removePaymentMethod(String methodId) async {
     try {
-      // TODO: Remove from Firebase
+      // TODO: Remove from backend API
 
       await Future.delayed(const Duration(milliseconds: 500));
 
@@ -188,10 +188,10 @@ class PaymentsNotifier extends StateNotifier<PaymentsState> {
   }
 
   /// Set default payment method
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> setDefaultPaymentMethod(String methodId) async {
     try {
-      // TODO: Update in Firebase
+      // TODO: Update in backend API
 
       final method = state.paymentMethods.firstWhere((m) => m.id == methodId);
       state = state.copyWith(defaultPaymentMethod: method);

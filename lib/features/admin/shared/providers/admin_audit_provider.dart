@@ -130,7 +130,7 @@ class AdminAuditNotifier extends StateNotifier<AdminAuditState> {
   }
 
   /// Log an action
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> logAction({
     required String userId,
     required String userName,
@@ -142,7 +142,7 @@ class AdminAuditNotifier extends StateNotifier<AdminAuditState> {
     required String ipAddress,
   }) async {
     try {
-      // TODO: Write to Firebase
+      // TODO: Write to backend API
       final entry = AuditLogEntry(
         id: 'audit_${DateTime.now().millisecondsSinceEpoch}',
         userId: userId,

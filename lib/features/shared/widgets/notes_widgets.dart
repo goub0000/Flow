@@ -12,56 +12,56 @@ import '../../../core/theme/app_colors.dart';
 ///
 /// Backend Integration TODO:
 /// ```dart
-/// // Option 1: Firebase Firestore for real-time sync
-/// import 'package:cloud_firestore/cloud_firestore.dart';
+/// // Option 1: Supabase for real-time sync
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// class NotesRepository {
-///   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+///   final _supabase = Supabase.instance.client;
 ///   final String userId;
 ///
-///   CollectionReference get _notesCollection =>
-///       _firestore.collection('users').doc(userId).collection('notes');
-///
-///   Stream<List<NoteModel>> watchNotes({String? categoryId}) {
-///     Query query = _notesCollection.orderBy('updatedAt', descending: true);
+///   Future<List<NoteModel>> getNotes({String? categoryId}) async {
+///     var query = _supabase
+///         .from('notes')
+///         .select()
+///         .eq('user_id', userId)
+///         .order('updated_at', ascending: false);
 ///
 ///     if (categoryId != null) {
-///       query = query.where('categoryId', isEqualTo: categoryId);
+///       query = query.eq('category_id', categoryId);
 ///     }
 ///
-///     return query.snapshots().map((snapshot) {
-///       return snapshot.docs
-///           .map((doc) => NoteModel.fromJson(doc.data() as Map<String, dynamic>))
-///           .toList();
-///     });
+///     final data = await query;
+///     return data.map((json) => NoteModel.fromJson(json)).toList();
+///   }
+///
+///   Stream<List<NoteModel>> watchNotes() {
+///     return _supabase
+///         .from('notes')
+///         .stream(primaryKey: ['id'])
+///         .eq('user_id', userId)
+///         .map((data) => data.map((json) => NoteModel.fromJson(json)).toList());
 ///   }
 ///
 ///   Future<void> createNote(NoteModel note) async {
-///     await _notesCollection.doc(note.id).set(note.toJson());
+///     await _supabase.from('notes').insert(note.toJson());
 ///   }
 ///
 ///   Future<void> updateNote(NoteModel note) async {
-///     await _notesCollection.doc(note.id).update({
-///       ...note.toJson(),
-///       'updatedAt': FieldValue.serverTimestamp(),
-///     });
+///     await _supabase.from('notes').update(note.toJson()).eq('id', note.id);
 ///   }
 ///
 ///   Future<void> deleteNote(String noteId) async {
-///     await _notesCollection.doc(noteId).delete();
+///     await _supabase.from('notes').delete().eq('id', noteId);
 ///   }
 ///
 ///   Future<List<NoteModel>> searchNotes(String query) async {
-///     // Note: Firestore doesn't support full-text search natively
-///     // Consider using Algolia or ElasticSearch for better search
-///     final snapshot = await _notesCollection
-///         .where('title', isGreaterThanOrEqualTo: query)
-///         .where('title', isLessThanOrEqualTo: '$query\uf8ff')
-///         .get();
+///     final data = await _supabase
+///         .from('notes')
+///         .select()
+///         .eq('user_id', userId)
+///         .ilike('title', '%$query%');
 ///
-///     return snapshot.docs
-///         .map((doc) => NoteModel.fromJson(doc.data() as Map<String, dynamic>))
-///         .toList();
+///     return data.map((json) => NoteModel.fromJson(json)).toList();
 ///   }
 /// }
 ///

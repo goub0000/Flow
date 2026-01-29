@@ -115,17 +115,17 @@ class ParentAlertsNotifier extends StateNotifier<ParentAlertsState> {
   }
 
   /// Fetch all alerts for the parent
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> fetchAlerts() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase query
-      // Example: FirebaseFirestore.instance
-      //   .collection('alerts')
-      //   .where('parentId', isEqualTo: currentParentId)
-      //   .orderBy('timestamp', descending: true)
-      //   .get()
+      // TODO: Replace with actual Supabase query
+      // Example: supabase
+      //   .from('alerts')
+      //   .select()
+      //   .eq('parent_id', currentParentId)
+      //   .order('timestamp', ascending: false)
 
       await Future.delayed(const Duration(seconds: 1));
 
@@ -203,10 +203,10 @@ class ParentAlertsNotifier extends StateNotifier<ParentAlertsState> {
   }
 
   /// Mark alert as read
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> markAsRead(String alertId) async {
     try {
-      // TODO: Update in Firebase
+      // TODO: Update in backend API
 
       final updatedAlerts = state.alerts.map((alert) {
         return alert.id == alertId ? alert.copyWith(isRead: true) : alert;
@@ -221,10 +221,10 @@ class ParentAlertsNotifier extends StateNotifier<ParentAlertsState> {
   }
 
   /// Mark all alerts as read
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> markAllAsRead() async {
     try {
-      // TODO: Update in Firebase
+      // TODO: Update in backend API
 
       final updatedAlerts = state.alerts.map((alert) {
         return alert.copyWith(isRead: true);
@@ -239,10 +239,10 @@ class ParentAlertsNotifier extends StateNotifier<ParentAlertsState> {
   }
 
   /// Delete an alert
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> deleteAlert(String alertId) async {
     try {
-      // TODO: Delete from Firebase
+      // TODO: Delete from backend API
 
       final updatedAlerts = state.alerts.where((alert) => alert.id != alertId).toList();
       state = state.copyWith(alerts: updatedAlerts);

@@ -13,24 +13,22 @@ import '../../../core/theme/app_colors.dart';
 ///
 /// Backend Integration TODO:
 /// ```dart
-/// // File Storage with Firebase Storage
-/// import 'package:firebase_storage/firebase_storage.dart';
+/// // File Storage with Supabase Storage
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 /// import 'package:path_provider/path_provider.dart';
 /// import 'dart:io';
 ///
 /// class ResourceStorageService {
-///   final FirebaseStorage _storage = FirebaseStorage.instance;
+///   final _storage = Supabase.instance.client.storage;
 ///
 ///   Future<String> uploadResource({
 ///     required File file,
 ///     required String courseId,
 ///     required String fileName,
 ///   }) async {
-///     final ref = _storage.ref().child('resources/$courseId/$fileName');
-///     final uploadTask = ref.putFile(file);
-///
-///     final snapshot = await uploadTask;
-///     return await snapshot.ref.getDownloadURL();
+///     final storagePath = 'resources/$courseId/$fileName';
+///     await _storage.from('resources').upload(storagePath, file);
+///     return _storage.from('resources').getPublicUrl(storagePath);
 ///   }
 ///
 ///   Future<void> downloadResource({
@@ -38,22 +36,15 @@ import '../../../core/theme/app_colors.dart';
 ///     required String fileName,
 ///     required Function(double) onProgress,
 ///   }) async {
-///     final ref = _storage.refFromURL(url);
+///     // TODO: Implement with Supabase Storage download
 ///     final dir = await getApplicationDocumentsDirectory();
 ///     final file = File('${dir.path}/$fileName');
-///
-///     final downloadTask = ref.writeToFile(file);
-///     downloadTask.snapshotEvents.listen((snapshot) {
-///       final progress = snapshot.bytesTransferred / snapshot.totalBytes;
-///       onProgress(progress);
-///     });
-///
-///     await downloadTask;
+///     final bytes = await _storage.from('resources').download(fileName);
+///     await file.writeAsBytes(bytes);
 ///   }
 ///
-///   Future<void> deleteResource(String url) async {
-///     final ref = _storage.refFromURL(url);
-///     await ref.delete();
+///   Future<void> deleteResource(String path) async {
+///     await _storage.from('resources').remove([path]);
 ///   }
 /// }
 ///

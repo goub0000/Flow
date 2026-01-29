@@ -473,9 +473,9 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen>
                     child: FileUploadWidget(
                       onFilesSelected: (files) {
                         // TODO: Implement actual upload to backend
-                        // Example with Firebase Storage:
+                        // Example with Supabase Storage:
                         // for (final file in files) {
-                        //   await uploadToFirebaseStorage(file);
+                        //   await uploadToSupabaseStorage(file);
                         // }
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(

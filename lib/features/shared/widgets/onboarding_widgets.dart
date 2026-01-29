@@ -49,38 +49,27 @@ import '../../../core/theme/app_colors.dart';
 /// }
 ///
 /// // Analytics tracking
-/// import 'package:firebase_analytics/firebase_analytics.dart';
+/// // TODO: Implement with Supabase or analytics service
 ///
 /// class OnboardingAnalytics {
-///   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
-///
 ///   Future<void> trackOnboardingStarted() async {
-///     await _analytics.logEvent(name: 'onboarding_started');
+///     // TODO: Implement analytics tracking
 ///   }
 ///
 ///   Future<void> trackOnboardingCompleted() async {
-///     await _analytics.logEvent(name: 'onboarding_completed');
+///     // TODO: Implement analytics tracking
 ///   }
 ///
 ///   Future<void> trackOnboardingSkipped(int pageIndex) async {
-///     await _analytics.logEvent(
-///       name: 'onboarding_skipped',
-///       parameters: {'page_index': pageIndex},
-///     );
+///     // TODO: Implement analytics tracking
 ///   }
 ///
 ///   Future<void> trackTutorialShown(String tutorialId) async {
-///     await _analytics.logEvent(
-///       name: 'tutorial_shown',
-///       parameters: {'tutorial_id': tutorialId},
-///     );
+///     // TODO: Implement analytics tracking
 ///   }
 ///
 ///   Future<void> trackTutorialCompleted(String tutorialId) async {
-///     await _analytics.logEvent(
-///       name: 'tutorial_completed',
-///       parameters: {'tutorial_id': tutorialId},
-///     );
+///     // TODO: Implement analytics tracking
 ///   }
 /// }
 ///

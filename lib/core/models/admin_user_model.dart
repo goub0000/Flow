@@ -118,7 +118,7 @@ class AdminUser {
     );
   }
 
-  /// Convert to JSON for Firebase
+  /// Convert to JSON for backend API
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -134,7 +134,7 @@ class AdminUser {
     };
   }
 
-  /// Create from JSON (Firebase)
+  /// Create from JSON from backend API
   factory AdminUser.fromJson(Map<String, dynamic> json) {
     final role = UserRole.values.firstWhere(
       (r) => r.name == json['adminRole'],

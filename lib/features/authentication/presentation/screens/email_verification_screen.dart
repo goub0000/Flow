@@ -11,19 +11,19 @@ import '../../../../core/theme/app_colors.dart';
 ///
 /// Backend Integration TODO:
 /// ```dart
-/// // Option 1: Firebase Auth
-/// import 'package:firebase_auth/firebase_auth.dart';
+/// // Option 1: Supabase Auth
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// class EmailVerificationService {
-///   final _auth = FirebaseAuth.instance;
+///   final _supabase = Supabase.instance.client;
 ///
 ///   Future<bool> isEmailVerified() async {
-///     await _auth.currentUser?.reload();
-///     return _auth.currentUser?.emailVerified ?? false;
+///     final user = _supabase.auth.currentUser;
+///     return user?.emailConfirmedAt != null;
 ///   }
 ///
 ///   Future<void> sendVerificationEmail() async {
-///     await _auth.currentUser?.sendEmailVerification();
+///     await _supabase.auth.resend(type: OtpType.signup);
 ///   }
 /// }
 ///

@@ -86,7 +86,7 @@ class UserModel {
     );
   }
 
-  /// Convert to JSON (for Firebase/backend)
+  /// Convert to JSON for backend API
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -104,7 +104,7 @@ class UserModel {
     };
   }
 
-  /// Create from JSON (from Firebase/backend)
+  /// Create from JSON from backend API
   /// Handles null values gracefully with sensible defaults
   factory UserModel.fromJson(Map<String, dynamic> json) {
     // Safe extraction with null checks

@@ -40,12 +40,12 @@ class CounselorDashboardNotifier extends StateNotifier<CounselorDashboardState> 
   }
 
   /// Load all dashboard data
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<void> loadDashboardData() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Replace with actual Firebase aggregation queries
+      // TODO: Replace with actual backend API queries
 
       await Future.delayed(const Duration(seconds: 1));
 
@@ -104,7 +104,7 @@ class CounselorDashboardNotifier extends StateNotifier<CounselorDashboardState> 
   }
 
   /// Generate mock recent activity
-  /// TODO: Replace with actual data from Firebase
+  /// TODO: Replace with actual data from backend API
   List<Map<String, dynamic>> _generateMockActivity() {
     return [
       {
