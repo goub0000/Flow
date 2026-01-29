@@ -9,6 +9,20 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
+// Runtime config: expose env vars to Flutter web app as a JS global.
+// Loaded synchronously by index.html before flutter_bootstrap.js.
+app.get('/env-config.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Cache-Control', 'no-store');
+  res.send(
+    `window.FLOW_CONFIG={` +
+    `SUPABASE_URL:${JSON.stringify(process.env.SUPABASE_URL||'')},` +
+    `SUPABASE_ANON_KEY:${JSON.stringify(process.env.SUPABASE_ANON_KEY||'')},` +
+    `API_BASE_URL:${JSON.stringify(process.env.API_BASE_URL||'')}` +
+    `};`
+  );
+});
+
 // Serve static files from Flutter web build with explicit options
 app.use(express.static(path.join(__dirname, 'build', 'web'), {
   setHeaders: (res, filePath) => {

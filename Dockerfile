@@ -35,19 +35,9 @@ COPY assets/ assets/
 COPY web/ web/
 COPY analysis_options.yaml ./
 
-# Build args - Railway injects all service variables as Docker build args
-ARG SUPABASE_URL
-ARG SUPABASE_ANON_KEY
-ARG API_BASE_URL
-
-# Verify build args were received (lengths only — no secrets in logs)
-RUN echo "Build-arg check: SUPABASE_URL=${#SUPABASE_URL} chars, ANON_KEY=${#SUPABASE_ANON_KEY} chars, API_BASE_URL=${#API_BASE_URL} chars"
-
-# Build Flutter web with credentials injected at build time
-RUN flutter build web --release \
-  --dart-define="SUPABASE_URL=${SUPABASE_URL}" \
-  --dart-define="SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}" \
-  --dart-define="API_BASE_URL=${API_BASE_URL}"
+# Build Flutter web (credentials are injected at runtime by server.js,
+# so no --dart-define build args needed here)
+RUN flutter build web --release
 
 # ---------------------------------------------------------------------------
 # Stage 2: Serve with Node.js
