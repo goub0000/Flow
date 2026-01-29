@@ -146,7 +146,7 @@ abstract class ErrorListener {
 class AnalyticsErrorListener implements ErrorListener {
   @override
   void onError(Object error, StackTrace stackTrace) {
-    // TODO: Send error to analytics service (e.g., Firebase Crashlytics, Sentry)
+    // TODO: Send error to analytics service (e.g., Sentry)
     if (kDebugMode) {
       // ignore: avoid_print
       print('AnalyticsErrorListener: $error');

@@ -67,19 +67,16 @@ import '../../../core/theme/app_colors.dart';
 /// }
 ///
 /// // Real-time quiz tracking
-/// import 'package:cloud_firestore/cloud_firestore.dart';
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// class QuizTrackingService {
-///   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+///   final _supabase = Supabase.instance.client;
 ///
 ///   Future<void> startQuiz(String userId, String quizId) async {
-///     await _firestore
-///         .collection('quiz_sessions')
-///         .doc('${userId}_$quizId')
-///         .set({
-///       'userId': userId,
-///       'quizId': quizId,
-///       'startedAt': FieldValue.serverTimestamp(),
+///     await _supabase.from('quiz_sessions').insert({
+///       'user_id': userId,
+///       'quiz_id': quizId,
+///       'started_at': DateTime.now().toIso8601String(),
 ///       'status': 'in_progress',
 ///     });
 ///   }
@@ -90,23 +87,24 @@ import '../../../core/theme/app_colors.dart';
 ///     required String questionId,
 ///     required dynamic answer,
 ///   }) async {
-///     await _firestore
-///         .collection('quiz_sessions')
-///         .doc('${userId}_$quizId')
-///         .update({
-///       'answers.$questionId': answer,
-///       'lastUpdated': FieldValue.serverTimestamp(),
+///     await _supabase.from('quiz_answers').upsert({
+///       'user_id': userId,
+///       'quiz_id': quizId,
+///       'question_id': questionId,
+///       'answer': answer,
+///       'last_updated': DateTime.now().toIso8601String(),
 ///     });
 ///   }
 ///
 ///   Future<void> completeQuiz(String userId, String quizId) async {
-///     await _firestore
-///         .collection('quiz_sessions')
-///         .doc('${userId}_$quizId')
+///     await _supabase
+///         .from('quiz_sessions')
 ///         .update({
-///       'completedAt': FieldValue.serverTimestamp(),
-///       'status': 'completed',
-///     });
+///           'completed_at': DateTime.now().toIso8601String(),
+///           'status': 'completed',
+///         })
+///         .eq('user_id', userId)
+///         .eq('quiz_id', quizId);
 ///   }
 /// }
 /// ```

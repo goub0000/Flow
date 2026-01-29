@@ -78,18 +78,20 @@ import '../widgets/notes_widgets.dart';
 ///
 /// // File attachments
 /// import 'package:file_picker/file_picker.dart';
-/// import 'package:firebase_storage/firebase_storage.dart';
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// class AttachmentService {
 ///   Future<String> uploadAttachment(String filePath, String noteId) async {
 ///     final file = File(filePath);
 ///     final fileName = path.basename(filePath);
-///     final ref = FirebaseStorage.instance
-///         .ref()
-///         .child('notes/$noteId/$fileName');
+///     final storagePath = 'notes/$noteId/$fileName';
 ///
-///     await ref.putFile(file);
-///     return await ref.getDownloadURL();
+///     await Supabase.instance.client.storage
+///         .from('attachments')
+///         .upload(storagePath, file);
+///     return Supabase.instance.client.storage
+///         .from('attachments')
+///         .getPublicUrl(storagePath);
 ///   }
 ///
 ///   Future<List<String>> pickFiles() async {

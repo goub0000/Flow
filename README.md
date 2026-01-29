@@ -41,7 +41,7 @@ Flow is an offline-first EdTech platform designed for African markets with:
 #### 4. Authentication
 - ✅ Login screen
 - ✅ Registration screen
-- ✅ Firebase authentication placeholders
+- ✅ Supabase authentication integration
 - ✅ Mock authentication for development
 - ✅ Role selection during registration
 
@@ -98,7 +98,7 @@ flutter run
 
 The app currently runs in development mode with:
 - Mock authentication (any email/password combination works)
-- Firebase integration placeholders
+- Supabase backend integration
 - Placeholder data in dashboards
 
 ### Test Credentials
@@ -114,20 +114,6 @@ During registration, you can select from 5 roles:
 - 🟠 Counselor
 - 🔷 Recommender
 
-## Firebase Integration (Pending)
-
-Firebase placeholders are in place for:
-- Authentication (email/password)
-- Firestore database
-- Cloud Storage
-- Push notifications
-
-To integrate Firebase:
-1. Create a Firebase project
-2. Add Firebase configuration files
-3. Uncomment Firebase dependencies in pubspec.yaml
-4. Implement actual Firebase calls in auth_provider.dart
-5. Set up security rules
 
 ## Color Specification
 
@@ -152,9 +138,8 @@ To integrate Firebase:
 ## Next Steps
 
 ### Immediate Priorities
-1. Integrate Firebase authentication
-2. Set up Firestore database structure
-3. Implement offline-first data sync
+1. Complete Supabase authentication integration
+2. Implement offline-first data sync
 4. Add course management features
 5. Build application tracking system
 

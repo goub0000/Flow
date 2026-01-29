@@ -137,10 +137,10 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Implement Firebase authentication
-      // 1. Call Firebase Auth to validate email/password
-      // 2. Verify MFA code with Firebase
-      // 3. Fetch admin user data from Firestore
+      // TODO: Implement Supabase authentication
+      // 1. Call Supabase Auth to validate email/password
+      // 2. Verify MFA code with Supabase Auth
+      // 3. Fetch admin user data from Supabase
       // 4. Load admin permissions based on role
       // 5. Create secure session token
       // 6. Log authentication event to audit log
@@ -148,17 +148,18 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
       throw UnimplementedError('Backend authentication not yet implemented');
 
       // Example of what the implementation should look like:
-      // final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      // final response = await supabase.auth.signInWithPassword(
       //   email: email,
       //   password: password,
       // );
       //
-      // final adminDoc = await FirebaseFirestore.instance
-      //   .collection('admins')
-      //   .doc(credential.user!.uid)
-      //   .get();
+      // final adminData = await supabase
+      //   .from('admins')
+      //   .select()
+      //   .eq('id', response.user!.id)
+      //   .single();
       //
-      // final adminUser = AdminUser.fromFirestore(adminDoc);
+      // final adminUser = AdminUser.fromJson(adminData);
       //
       // state = state.copyWith(
       //   currentAdmin: adminUser,
@@ -220,7 +221,7 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      // TODO: Implement Firebase profile update
+      // TODO: Implement Supabase profile update
 
       final updatedAdmin = state.currentAdmin!.copyWith(
         displayName: displayName ?? state.currentAdmin!.displayName,

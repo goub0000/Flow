@@ -11,18 +11,15 @@ import '../../../../core/utils/validators.dart';
 ///
 /// Backend Integration TODO:
 /// ```dart
-/// // Option 1: Firebase Auth
-/// import 'package:firebase_auth/firebase_auth.dart';
+/// // Option 1: Supabase Auth
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Future<void> sendPasswordResetEmail(String email) async {
 ///   try {
-///     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+///     await Supabase.instance.client.auth.resetPasswordForEmail(email);
 ///     // Show success message
-///   } on FirebaseAuthException catch (e) {
-///     if (e.code == 'user-not-found') {
-///       throw 'No user found with this email';
-///     }
-///     throw 'Failed to send reset email: ${e.message}';
+///   } catch (e) {
+///     throw 'Failed to send reset email: ${e.toString()}';
 ///   }
 /// }
 ///

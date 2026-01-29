@@ -15,23 +15,17 @@ import '../../../core/theme/app_colors.dart';
 /// Backend Integration TODO:
 /// For file uploads to backend/cloud storage:
 /// ```dart
-/// // Option 1: Firebase Storage
-/// import 'package:firebase_storage/firebase_storage.dart';
+/// // Option 1: Supabase Storage
+/// import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Future<String> uploadFile(PlatformFile file) async {
-///   final ref = FirebaseStorage.instance
-///       .ref()
-///       .child('uploads/${file.name}');
-///
-///   final uploadTask = ref.putFile(File(file.path!));
-///
-///   uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-///     final progress = snapshot.bytesTransferred / snapshot.totalBytes;
-///     // Update UI with progress
-///   });
-///
-///   await uploadTask;
-///   return await ref.getDownloadURL();
+///   final storagePath = 'uploads/${file.name}';
+///   await Supabase.instance.client.storage
+///       .from('uploads')
+///       .upload(storagePath, File(file.path!));
+///   return Supabase.instance.client.storage
+///       .from('uploads')
+///       .getPublicUrl(storagePath);
 /// }
 ///
 /// // Option 2: Custom API with dio

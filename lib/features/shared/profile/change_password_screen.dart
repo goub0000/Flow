@@ -220,7 +220,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
     setState(() => _isSubmitting = true);
 
-    // TODO: Change password in Firebase
+    // TODO: Change password in Supabase Auth
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {

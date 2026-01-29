@@ -262,7 +262,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
   }
 
   Widget _buildSessionsTab() {
-    // TODO: Fetch session history for this student from Firebase
+    // TODO: Fetch session history for this student from backend API
     final sessions = <CounselingSession>[]; // No mock data
 
     if (sessions.isEmpty) {

@@ -240,7 +240,7 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
   /// TODO: Connect to backend API
   Future<bool> scheduleCampaign(String campaignId, DateTime scheduledTime) async {
     try {
-      // TODO: Update in Firebase and set up scheduled job
+      // TODO: Update in backend API and set up scheduled job
       await Future.delayed(const Duration(milliseconds: 500));
 
       final updatedCampaigns = state.campaigns.map((c) {
@@ -277,7 +277,7 @@ class AdminCommunicationsNotifier extends StateNotifier<AdminCommunicationsState
   /// Delete campaign
   Future<bool> deleteCampaign(String campaignId) async {
     try {
-      // TODO: Delete from Firebase
+      // TODO: Delete from backend API
       await Future.delayed(const Duration(milliseconds: 300));
 
       final updatedCampaigns = state.campaigns.where((c) => c.id != campaignId).toList();

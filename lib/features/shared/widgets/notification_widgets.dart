@@ -11,36 +11,13 @@ import '../../../core/theme/app_colors.dart';
 ///
 /// Backend Integration TODO:
 /// ```dart
-/// // Option 1: Firebase Cloud Messaging (FCM)
-/// import 'package:firebase_messaging/firebase_messaging.dart';
+/// // Option 1: Push notifications via backend API
+/// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 ///
 /// class NotificationService {
-///   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-///
 ///   Future<void> initialize() async {
-///     // Request permission (iOS)
-///     NotificationSettings settings = await _messaging.requestPermission(
-///       alert: true,
-///       badge: true,
-///       sound: true,
-///     );
-///
-///     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-///       // Get FCM token
-///       String? token = await _messaging.getToken();
-///       print('FCM Token: $token');
-///       // Send token to backend
-///       await sendTokenToBackend(token);
-///     }
-///
-///     // Handle foreground messages
-///     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-///       // Show in-app notification
-///       showInAppNotification(message);
-///     });
-///
-///     // Handle background messages
-///     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+///     // TODO: Implement push notification registration with Supabase Edge Functions
+///     // or a dedicated push notification service
 ///   }
 ///
 ///   Future<void> sendTokenToBackend(String? token) async {
@@ -49,11 +26,6 @@ import '../../../core/theme/app_colors.dart';
 ///       'platform': Platform.isIOS ? 'ios' : 'android',
 ///     });
 ///   }
-/// }
-///
-/// @pragma('vm:entry-point')
-/// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-///   // Handle background notification
 /// }
 ///
 /// // Option 2: OneSignal (Third-party service)

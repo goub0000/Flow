@@ -221,10 +221,10 @@ class AdminSupportNotifier extends StateNotifier<AdminSupportState> {
   }
 
   /// Add response to ticket
-  /// TODO: Connect to backend API (Firebase Firestore)
+  /// TODO: Connect to backend API
   Future<bool> addResponse(String ticketId, String message) async {
     try {
-      // TODO: Add message to Firebase and notify user
+      // TODO: Add message to backend API and notify user
       await Future.delayed(const Duration(milliseconds: 500));
 
       final updatedTickets = state.tickets.map((ticket) {
