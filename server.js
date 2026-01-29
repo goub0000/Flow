@@ -34,6 +34,28 @@ app.get('/env-config.js', (req, res) => {
   );
 });
 
+// PWA manifest — served directly because Docker's .dockerignore excludes
+// *.json from the build context and Flutter may not copy it to build/web/.
+app.get('/manifest.json', (req, res) => {
+  res.json({
+    name: 'Flow EdTech Platform',
+    short_name: 'Flow',
+    start_url: '.',
+    display: 'standalone',
+    background_color: '#373890',
+    theme_color: '#373890',
+    description: 'African EdTech platform for students, institutions, parents, counselors, and recommenders.',
+    orientation: 'portrait-primary',
+    prefer_related_applications: false,
+    icons: [
+      { src: 'icons/Icon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: 'icons/Icon-512.png', sizes: '512x512', type: 'image/png' },
+      { src: 'icons/Icon-maskable-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+      { src: 'icons/Icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    ]
+  });
+});
+
 // Serve static files from Flutter web build with explicit options
 app.use(express.static(path.join(__dirname, 'build', 'web'), {
   setHeaders: (res, filePath) => {
