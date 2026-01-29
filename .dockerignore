@@ -36,8 +36,7 @@ data/
 *.csv
 *.json
 !package.json
-!pubspec.yaml
-!pubspec.lock
+!web/manifest.json
 
 # Supabase local
 supabase/
