@@ -37,8 +37,7 @@ COPY analysis_options.yaml ./
 
 # Build Flutter web (credentials are injected at runtime by server.js,
 # so no --dart-define build args needed here)
-RUN flutter build web --release \
-    && cp -n web/manifest.json build/web/manifest.json 2>/dev/null || true
+RUN flutter build web --release
 
 # ---------------------------------------------------------------------------
 # Stage 2: Serve with Node.js
