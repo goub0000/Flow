@@ -4,6 +4,17 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Resolve env var by name, tolerating leading/trailing whitespace in key names.
+// Railway stored some variables with accidental spaces in their names
+// (e.g. " SUPABASE_ANON_KEY" instead of "SUPABASE_ANON_KEY").
+function env(name) {
+  if (process.env[name]) return process.env[name];
+  for (const key of Object.keys(process.env)) {
+    if (key.trim() === name) return process.env[key];
+  }
+  return '';
+}
+
 // Health check endpoint for Railway
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
@@ -16,9 +27,9 @@ app.get('/env-config.js', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.send(
     `window.FLOW_CONFIG={` +
-    `SUPABASE_URL:${JSON.stringify(process.env.SUPABASE_URL||'')},` +
-    `SUPABASE_ANON_KEY:${JSON.stringify(process.env.SUPABASE_ANON_KEY||'')},` +
-    `API_BASE_URL:${JSON.stringify(process.env.API_BASE_URL||'')}` +
+    `SUPABASE_URL:${JSON.stringify(env('SUPABASE_URL'))},` +
+    `SUPABASE_ANON_KEY:${JSON.stringify(env('SUPABASE_ANON_KEY'))},` +
+    `API_BASE_URL:${JSON.stringify(env('API_BASE_URL'))}` +
     `};`
   );
 });
