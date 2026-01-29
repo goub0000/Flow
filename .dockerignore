@@ -1,0 +1,49 @@
+# Git
+.git/
+.gitignore
+
+# Build output (built inside Docker now)
+build/
+
+# Backend service (separate Railway project)
+recommendation_service/
+
+# Platform-specific (not needed for web)
+android/
+ios/
+linux/
+macos/
+windows/
+
+# Test & documentation
+test/
+*.md
+*.txt
+
+# IDE & OS
+.idea/
+.vscode/
+.cursor/
+.claude/
+.DS_Store
+Thumbs.db
+
+# Env files (secrets passed as build args)
+.env*
+
+# Data & scripts
+data/
+*.csv
+*.json
+!package.json
+!pubspec.yaml
+!pubspec.lock
+
+# Supabase local
+supabase/
+
+# Migrations
+migrations/
+
+# Node modules (installed in Docker)
+node_modules/
