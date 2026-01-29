@@ -11,14 +11,10 @@
 /// Production:
 ///   server.js reads Railway env vars and serves /env-config.js before Flutter boots.
 
-import 'dart:js_interop';
+import 'dart:js' as js;
 
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-
-/// Runtime config object set by /env-config.js before Flutter boots
-@JS('FLOW_CONFIG')
-external JSObject? get _flowConfig;
 
 class ApiConfig {
   static final _logger = Logger('ApiConfig');
@@ -64,12 +60,10 @@ class ApiConfig {
   /// Read a value from the runtime JS config (window.FLOW_CONFIG).
   static String _readRuntimeConfig(String key) {
     try {
-      final config = _flowConfig;
+      final config = js.context['FLOW_CONFIG'];
       if (config == null) return '';
-      final value = config.getProperty<JSAny?>(key.toJS);
-      if (value == null) return '';
-      if (value.isA<JSString>()) return (value as JSString).toDart;
-      return value.dartify()?.toString() ?? '';
+      final value = config[key];
+      return value?.toString() ?? '';
     } catch (_) {
       return '';
     }
