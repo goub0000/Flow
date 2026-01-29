@@ -1,43 +1,45 @@
 /// API Configuration
 /// Contains all API endpoints and configuration settings
 ///
-/// IMPORTANT: API keys MUST be provided via --dart-define flags during build:
-/// flutter build web --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
-/// flutter run --dart-define=SUPABASE_URL=your_url --dart-define=SUPABASE_ANON_KEY=your_key
+/// Credentials are resolved in this order:
+/// 1. Compile-time: --dart-define flags (local dev)
+/// 2. Runtime: window.FLOW_CONFIG injected by server.js (production on Railway)
 ///
-/// Production build example:
-/// flutter build web \
-///   --dart-define=SUPABASE_URL=https://your-project.supabase.co \
-///   --dart-define=SUPABASE_ANON_KEY=your_anon_key \
-///   --dart-define=API_BASE_URL=https://web-production-51e34.up.railway.app
+/// Local dev:
+///   flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...
+///
+/// Production:
+///   server.js reads Railway env vars and serves /env-config.js before Flutter boots.
+
+import 'dart:js_interop';
 
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
+/// Runtime config object set by /env-config.js before Flutter boots
+@JS('FLOW_CONFIG')
+external JSObject? get _flowConfig;
+
 class ApiConfig {
   static final _logger = Logger('ApiConfig');
 
-  // Base URLs - configured via environment variables
-  // MUST be provided via --dart-define=API_BASE_URL=your_url
-  // Production URL: https://web-production-51e34.up.railway.app
-  static const String _apiBaseUrlEnv = String.fromEnvironment('API_BASE_URL');
+  // ── Compile-time values (from --dart-define, used in local dev) ──
+  static const String _apiBaseUrlCompile = String.fromEnvironment('API_BASE_URL');
+  static const String _supabaseUrlCompile = String.fromEnvironment('SUPABASE_URL');
+  static const String _supabaseAnonKeyCompile = String.fromEnvironment('SUPABASE_ANON_KEY');
 
-  // Production backend URL (used when API_BASE_URL is not explicitly set)
+  // Production backend URL (hard-coded fallback)
   static const String _productionBackendUrl = 'https://web-production-51e34.up.railway.app';
 
   // Current environment - auto-detect based on kReleaseMode
   static bool get isProduction => kReleaseMode;
 
-  // Get the active base URL - prioritize explicit env var, then use production URL in release mode
+  // Get the active base URL
   static String get baseUrl {
-    if (_apiBaseUrlEnv.isNotEmpty) {
-      return _apiBaseUrlEnv;
-    }
-    // In release mode, default to production URL
-    if (kReleaseMode) {
-      return _productionBackendUrl;
-    }
-    // In debug mode, use localhost for development
+    if (_apiBaseUrlCompile.isNotEmpty) return _apiBaseUrlCompile;
+    final runtime = _readRuntimeConfig('API_BASE_URL');
+    if (runtime.isNotEmpty) return runtime;
+    if (kReleaseMode) return _productionBackendUrl;
     return 'http://localhost:8000';
   }
 
@@ -52,22 +54,26 @@ class ApiConfig {
   static const Duration receiveTimeout = Duration(seconds: 30);
   static const Duration sendTimeout = Duration(seconds: 30);
 
-  // Supabase Configuration
-  // SECURITY: These MUST be provided via --dart-define flags
-  // NEVER commit credentials to source control
-  //
-  // Development: Create .env file and use --dart-define-from-file=.env
-  // Production: Use CI/CD secrets or build-time environment variables
-  //
-  // Required build command:
-  // flutter build web \
-  //   --dart-define=SUPABASE_URL=https://your-project.supabase.co \
-  //   --dart-define=SUPABASE_ANON_KEY=your_anon_key \
-  //   --dart-define=API_BASE_URL=https://web-production-51e34.up.railway.app
+  // ── Supabase credentials (compile-time → runtime fallback) ──
+  static String get supabaseUrl =>
+      _supabaseUrlCompile.isNotEmpty ? _supabaseUrlCompile : _readRuntimeConfig('SUPABASE_URL');
 
-  // NO DEFAULT VALUES - credentials MUST be provided at build time
-  static const String supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-  static const String supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+  static String get supabaseAnonKey =>
+      _supabaseAnonKeyCompile.isNotEmpty ? _supabaseAnonKeyCompile : _readRuntimeConfig('SUPABASE_ANON_KEY');
+
+  /// Read a value from the runtime JS config (window.FLOW_CONFIG).
+  static String _readRuntimeConfig(String key) {
+    try {
+      final config = _flowConfig;
+      if (config == null) return '';
+      final value = config.getProperty<JSAny?>(key.toJS);
+      if (value == null) return '';
+      if (value.isA<JSString>()) return (value as JSString).toDart;
+      return value.dartify()?.toString() ?? '';
+    } catch (_) {
+      return '';
+    }
+  }
 
   /// Validates that all required configuration is provided.
   /// Throws [StateError] if critical configuration is missing.
