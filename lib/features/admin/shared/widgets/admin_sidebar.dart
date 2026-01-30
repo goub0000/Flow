@@ -470,29 +470,80 @@ class _AdminSidebarState extends State<AdminSidebar> {
         route: '/admin/dashboard',
       ),
       const AdminNavigationItem(
-        icon: Icons.approval,
-        label: 'Approvals',
-        route: '/admin/approvals',
-      ),
-      const AdminNavigationItem(
         icon: Icons.people,
-        label: 'Users',
+        label: 'User Management',
         route: '/admin/users',
-      ),
-      const AdminNavigationItem(
-        icon: Icons.business,
-        label: 'Institutions',
-        route: '/admin/institutions',
+        children: [
+          AdminNavigationItem(
+            icon: Icons.school,
+            label: 'Students',
+            route: '/admin/users/students',
+          ),
+          AdminNavigationItem(
+            icon: Icons.business,
+            label: 'Institutions',
+            route: '/admin/users/institutions',
+          ),
+          AdminNavigationItem(
+            icon: Icons.family_restroom,
+            label: 'Parents',
+            route: '/admin/users/parents',
+          ),
+          AdminNavigationItem(
+            icon: Icons.support_agent,
+            label: 'Counselors',
+            route: '/admin/users/counselors',
+          ),
+          AdminNavigationItem(
+            icon: Icons.rate_review,
+            label: 'Recommenders',
+            route: '/admin/users/recommenders',
+          ),
+          AdminNavigationItem(
+            icon: Icons.admin_panel_settings,
+            label: 'Admins',
+            route: '/admin/system/admins',
+          ),
+        ],
       ),
       const AdminNavigationItem(
         icon: Icons.library_books,
         label: 'Content',
         route: '/admin/content',
+        children: [
+          AdminNavigationItem(
+            icon: Icons.menu_book,
+            label: 'Courses',
+            route: '/admin/content/courses',
+          ),
+          AdminNavigationItem(
+            icon: Icons.school,
+            label: 'Curriculum',
+            route: '/admin/content/curriculum',
+          ),
+          AdminNavigationItem(
+            icon: Icons.folder,
+            label: 'Resources',
+            route: '/admin/content/resources',
+          ),
+          AdminNavigationItem(
+            icon: Icons.article,
+            label: 'Page Content (CMS)',
+            route: '/admin/pages',
+          ),
+        ],
       ),
       const AdminNavigationItem(
         icon: Icons.attach_money,
         label: 'Financial',
         route: '/admin/finance/transactions',
+        children: [
+          AdminNavigationItem(
+            icon: Icons.receipt,
+            label: 'Transactions',
+            route: '/admin/finance/transactions',
+          ),
+        ],
       ),
       const AdminNavigationItem(
         icon: Icons.analytics,
@@ -500,9 +551,41 @@ class _AdminSidebarState extends State<AdminSidebar> {
         route: '/admin/analytics',
       ),
       const AdminNavigationItem(
+        icon: Icons.notifications,
+        label: 'Communications',
+        route: '/admin/communications',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.chat,
+        label: 'Chatbot',
+        route: '/admin/chatbot',
+      ),
+      const AdminNavigationItem(
         icon: Icons.support,
         label: 'Support',
         route: '/admin/support/tickets',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.approval,
+        label: 'Approvals',
+        route: '/admin/approvals',
+        children: [
+          AdminNavigationItem(
+            icon: Icons.dashboard,
+            label: 'Dashboard',
+            route: '/admin/approvals',
+          ),
+          AdminNavigationItem(
+            icon: Icons.list,
+            label: 'All Requests',
+            route: '/admin/approvals/list',
+          ),
+          AdminNavigationItem(
+            icon: Icons.add_circle,
+            label: 'New Request',
+            route: '/admin/approvals/create',
+          ),
+        ],
       ),
     ];
   }

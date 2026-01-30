@@ -13,9 +13,9 @@ from app.enrichment.auto_fill_orchestrator import AutoFillOrchestrator
 from app.enrichment.web_search_enricher import WebSearchEnricher
 from app.enrichment.field_scrapers import FieldSpecificScrapers
 from app.utils.security import (
-    get_current_user, CurrentUser, require_admin, require_super_admin,
-    require_content_admin, require_finance_admin, require_support_admin,
-    require_analytics_admin, apply_regional_filter,
+    get_current_user, CurrentUser, UserRole, require_admin, require_super_admin,
+    require_senior_admin, require_content_admin, require_finance_admin,
+    require_support_admin, require_analytics_admin, apply_regional_filter,
 )
 from app.utils.activity_logger import get_recent_activities, ActivityType
 from app.schemas.activity import (
@@ -232,24 +232,51 @@ ALLOWED_ADMIN_ROLES = [
 # Default permissions per role (text[] in PostgreSQL)
 _ROLE_PERMISSIONS = {
     'superadmin': ['*'],
-    'regionaladmin': ['users', 'content', 'support', 'analytics'],
+    'regionaladmin': ['users', 'content', 'support', 'analytics', 'finance', 'admins', 'communications', 'chatbot'],
     'contentadmin': ['content'],
     'supportadmin': ['support', 'users_read'],
     'financeadmin': ['finance', 'analytics'],
     'analyticsadmin': ['analytics'],
 }
 
+# Hierarchy levels for admin role enforcement
+_ROLE_HIERARCHY = {
+    'superadmin': 3,
+    'regionaladmin': 2,
+    'contentadmin': 1,
+    'supportadmin': 1,
+    'financeadmin': 1,
+    'analyticsadmin': 1,
+}
+
+
+def _enforce_hierarchy(current_user: CurrentUser, target_role: str):
+    """
+    Enforce that the caller cannot create/edit admins at or above their own
+    hierarchy level, unless they are a super admin (level 3).
+    """
+    caller_role = UserRole.normalize_role(current_user.role)
+    caller_level = _ROLE_HIERARCHY.get(caller_role, 0)
+    target_level = _ROLE_HIERARCHY.get(target_role, 0)
+
+    if target_level >= caller_level and caller_level < 3:
+        raise HTTPException(
+            status_code=403,
+            detail="Cannot create/edit admins at or above your hierarchy level",
+        )
+
 
 @router.post("/admin/users/admins")
 async def create_admin_user(
     request: CreateAdminRequest,
-    current_user: CurrentUser = Depends(require_super_admin),
+    current_user: CurrentUser = Depends(require_senior_admin),
 ) -> Dict[str, Any]:
     """
-    Create a new admin user (Super Admin only).
+    Create a new admin user (Super Admin and Regional Admin).
 
     Creates a Supabase Auth user, inserts into `users` table,
     and inserts into `admin_users` table with role and permissions.
+    Regional admins can only create admins below their hierarchy level.
     """
     # Validate role
     if request.admin_role not in ALLOWED_ADMIN_ROLES:
@@ -257,6 +284,9 @@ async def create_admin_user(
             status_code=400,
             detail=f"Invalid admin_role. Must be one of: {ALLOWED_ADMIN_ROLES}"
         )
+
+    # Enforce hierarchy: regional admins cannot create super or regional admins
+    _enforce_hierarchy(current_user, request.admin_role)
 
     # Regional admin requires regional_scope
     if request.admin_role == 'regionaladmin' and not request.regional_scope:
@@ -312,7 +342,7 @@ async def create_admin_user(
         }).execute()
 
         logger.info(
-            f"Super admin {current_user.id} created admin user "
+            f"Admin {current_user.id} ({current_user.role}) created admin user "
             f"{request.email} with role {request.admin_role}"
         )
 
@@ -373,12 +403,13 @@ async def get_current_admin_profile(
 
 @router.get("/admin/users/admins")
 async def list_admin_users(
-    current_user: CurrentUser = Depends(require_super_admin),
+    current_user: CurrentUser = Depends(require_senior_admin),
 ) -> Dict[str, Any]:
     """
-    List all admin users (Super Admin only).
+    List admin users (Super Admin and Regional Admin).
 
     Joins admin_users with users to get display names and emails.
+    Regional admins only see admins below their hierarchy level.
     """
     try:
         db = get_supabase()
@@ -386,14 +417,25 @@ async def list_admin_users(
             '*, users!inner(email, display_name)'
         ).execute()
 
+        # Determine caller's hierarchy level for filtering
+        caller_role = UserRole.normalize_role(current_user.role)
+        caller_level = _ROLE_HIERARCHY.get(caller_role, 0)
+
         admins = []
         for row in response.data or []:
+            admin_role = row.get('admin_role', '')
+            # Non-super admins only see admins below their level
+            if caller_level < 3:
+                target_level = _ROLE_HIERARCHY.get(admin_role, 0)
+                if target_level >= caller_level:
+                    continue
+
             user_info = row.get('users', {})
             admins.append(AdminProfileResponse(
                 id=row['id'],
                 email=user_info.get('email', ''),
                 display_name=user_info.get('display_name'),
-                admin_role=row.get('admin_role'),
+                admin_role=admin_role,
                 permissions=row.get('permissions'),
                 regional_scope=row.get('regional_scope'),
                 is_active=row.get('is_active', True),
@@ -423,10 +465,10 @@ class UpdateAdminRequest(BaseModel):
 @router.get("/admin/users/admins/{admin_id}")
 async def get_admin_user(
     admin_id: str,
-    current_user: CurrentUser = Depends(require_super_admin),
+    current_user: CurrentUser = Depends(require_senior_admin),
 ) -> Dict[str, Any]:
     """
-    Get a single admin user by ID (Super Admin only).
+    Get a single admin user by ID (Super Admin and Regional Admin).
     """
     try:
         db = get_supabase()
@@ -466,12 +508,13 @@ async def get_admin_user(
 async def update_admin_user(
     admin_id: str,
     request: UpdateAdminRequest,
-    current_user: CurrentUser = Depends(require_super_admin),
+    current_user: CurrentUser = Depends(require_senior_admin),
 ) -> Dict[str, Any]:
     """
-    Update an admin user (Super Admin only).
+    Update an admin user (Super Admin and Regional Admin).
 
     Updates both `users` and `admin_users` tables as needed.
+    Regional admins can only edit admins below their hierarchy level.
     """
     # Validate role if provided
     if request.admin_role is not None:
@@ -480,6 +523,9 @@ async def update_admin_user(
                 status_code=400,
                 detail=f"Invalid admin_role. Must be one of: {ALLOWED_ADMIN_ROLES}"
             )
+        # Enforce hierarchy on the target role being assigned
+        _enforce_hierarchy(current_user, request.admin_role)
+
         if request.admin_role == 'regionaladmin' and not request.regional_scope:
             # Check if existing record already has regional_scope
             db = get_supabase()
@@ -488,6 +534,21 @@ async def update_admin_user(
                 raise HTTPException(
                     status_code=400,
                     detail="regional_scope is required for regionaladmin role"
+                )
+
+    # Enforce hierarchy on the existing admin's role
+    caller_role = UserRole.normalize_role(current_user.role)
+    caller_level = _ROLE_HIERARCHY.get(caller_role, 0)
+    if caller_level < 3:
+        db = get_supabase()
+        existing_admin = db.table('admin_users').select('admin_role').eq('id', admin_id).single().execute()
+        if existing_admin.data:
+            existing_role = existing_admin.data.get('admin_role', '')
+            existing_level = _ROLE_HIERARCHY.get(existing_role, 0)
+            if existing_level >= caller_level:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Cannot edit admins at or above your hierarchy level",
                 )
 
     try:
@@ -522,7 +583,7 @@ async def update_admin_user(
             admin_db.table('admin_users').update(admin_updates).eq('id', admin_id).execute()
 
         logger.info(
-            f"Super admin {current_user.id} updated admin user {admin_id}"
+            f"Admin {current_user.id} ({current_user.role}) updated admin user {admin_id}"
         )
 
         return {

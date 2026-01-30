@@ -326,6 +326,10 @@ require_super_admin = RoleChecker([UserRole.ADMIN_SUPER, UserRole.SUPER_ADMIN])
 # Role-specific admin checkers (super admin always included)
 _super = [UserRole.ADMIN_SUPER, UserRole.SUPER_ADMIN]
 
+require_senior_admin = RoleChecker(
+    _super + [UserRole.ADMIN_REGIONAL, UserRole.REGIONAL_ADMIN]
+)
+
 require_content_admin = RoleChecker(
     _super + [UserRole.ADMIN_CONTENT, UserRole.CONTENT_ADMIN]
 )
