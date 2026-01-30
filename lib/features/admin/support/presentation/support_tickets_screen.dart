@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../shared/widgets/admin_data_table.dart';
@@ -158,7 +159,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 permission: AdminPermission.manageKnowledgeBase,
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    // TODO: Navigate to knowledge base
+                    context.go('/admin/knowledge-base');
                   },
                   icon: const Icon(Icons.menu_book, size: 20),
                   label: const Text('Knowledge Base'),
@@ -169,7 +170,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 permission: AdminPermission.accessLiveChat,
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    // TODO: Open live chat
+                    context.go('/admin/chat');
                   },
                   icon: const Icon(Icons.chat, size: 20),
                   label: const Text('Live Chat'),
