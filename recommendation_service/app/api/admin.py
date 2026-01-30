@@ -397,6 +397,135 @@ async def list_admin_users(
         raise HTTPException(status_code=500, detail=f"Failed to list admin users: {str(e)}")
 
 
+class UpdateAdminRequest(BaseModel):
+    """Request model for updating an admin user"""
+    display_name: Optional[str] = None
+    admin_role: Optional[str] = None
+    phone_number: Optional[str] = None
+    regional_scope: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+@router.get("/admin/users/admins/{admin_id}")
+async def get_admin_user(
+    admin_id: str,
+    current_user: CurrentUser = Depends(require_super_admin),
+) -> Dict[str, Any]:
+    """
+    Get a single admin user by ID (Super Admin only).
+    """
+    try:
+        db = get_supabase()
+        response = db.table('admin_users').select(
+            '*, users!inner(email, display_name, phone_number)'
+        ).eq('id', admin_id).single().execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Admin user not found")
+
+        row = response.data
+        user_info = row.get('users', {})
+
+        return {
+            'success': True,
+            'admin': {
+                'id': row['id'],
+                'email': user_info.get('email', ''),
+                'display_name': user_info.get('display_name'),
+                'phone_number': user_info.get('phone_number'),
+                'admin_role': row.get('admin_role'),
+                'permissions': row.get('permissions'),
+                'regional_scope': row.get('regional_scope'),
+                'is_active': row.get('is_active', True),
+                'created_at': row.get('created_at'),
+            }
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching admin user {admin_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch admin user: {str(e)}")
+
+
+@router.put("/admin/users/admins/{admin_id}")
+async def update_admin_user(
+    admin_id: str,
+    request: UpdateAdminRequest,
+    current_user: CurrentUser = Depends(require_super_admin),
+) -> Dict[str, Any]:
+    """
+    Update an admin user (Super Admin only).
+
+    Updates both `users` and `admin_users` tables as needed.
+    """
+    # Validate role if provided
+    if request.admin_role is not None:
+        if request.admin_role not in ALLOWED_ADMIN_ROLES:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid admin_role. Must be one of: {ALLOWED_ADMIN_ROLES}"
+            )
+        if request.admin_role == 'regionaladmin' and not request.regional_scope:
+            # Check if existing record already has regional_scope
+            db = get_supabase()
+            existing = db.table('admin_users').select('regional_scope').eq('id', admin_id).single().execute()
+            if not (existing.data and existing.data.get('regional_scope')):
+                raise HTTPException(
+                    status_code=400,
+                    detail="regional_scope is required for regionaladmin role"
+                )
+
+    try:
+        admin_db = get_supabase_admin()
+
+        # Update users table fields
+        user_updates = {}
+        if request.display_name is not None:
+            user_updates['display_name'] = request.display_name
+        if request.phone_number is not None:
+            user_updates['phone_number'] = request.phone_number
+        if request.admin_role is not None:
+            user_updates['active_role'] = request.admin_role
+            user_updates['available_roles'] = [request.admin_role]
+        if request.is_active is not None:
+            user_updates['is_active'] = request.is_active
+
+        if user_updates:
+            admin_db.table('users').update(user_updates).eq('id', admin_id).execute()
+
+        # Update admin_users table fields
+        admin_updates = {}
+        if request.admin_role is not None:
+            admin_updates['admin_role'] = request.admin_role
+            admin_updates['permissions'] = _ROLE_PERMISSIONS.get(request.admin_role, [])
+        if request.regional_scope is not None:
+            admin_updates['regional_scope'] = request.regional_scope
+        if request.is_active is not None:
+            admin_updates['is_active'] = request.is_active
+
+        if admin_updates:
+            admin_db.table('admin_users').update(admin_updates).eq('id', admin_id).execute()
+
+        logger.info(
+            f"Super admin {current_user.id} updated admin user {admin_id}"
+        )
+
+        return {
+            'success': True,
+            'message': f'Admin account updated successfully',
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating admin user {admin_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update admin user: {str(e)}"
+        )
+
+
 # ==================== ADMIN DASHBOARD ACTIVITY FEED ====================
 
 @router.get("/admin/dashboard/recent-activity")
