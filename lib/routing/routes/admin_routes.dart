@@ -18,7 +18,7 @@ import '../../features/admin/users/presentation/recommenders_list_screen.dart';
 import '../../features/admin/users/presentation/recommender_detail_screen.dart';
 import '../../features/admin/users/presentation/recommender_form_screen.dart';
 import '../../features/admin/users/presentation/admins_list_screen.dart';
-// Admin creation removed for security - admins are created via database or Super Admin promotion
+import '../../features/admin/users/presentation/admin_form_screen.dart';
 import '../../features/admin/system/presentation/audit_log_screen.dart';
 import '../../features/admin/finance/presentation/transactions_screen.dart';
 import '../../features/admin/content/presentation/content_management_screen.dart';
@@ -271,13 +271,22 @@ List<RouteBase> adminRoutes = [
         ],
       ),
 
-      // Admin User Management (view only - creation is done via database)
+      // Admin User Management
       GoRoute(
         path: '/admin/system/admins',
         name: 'admin-admins',
         pageBuilder: (context, state) => NoTransitionPage(
           child: const AdminsListScreen(),
         ),
+        routes: [
+          GoRoute(
+            path: 'create',
+            name: 'admin-admin-create',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const AdminFormScreen(),
+            ),
+          ),
+        ],
       ),
 
       // Financial Management
