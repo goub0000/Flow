@@ -26,6 +26,9 @@ import '../../features/admin/system/presentation/system_settings_screen.dart';
 import '../../features/admin/analytics/presentation/analytics_dashboard_screen.dart';
 import '../../features/admin/communications/presentation/communications_hub_screen.dart';
 import '../../features/admin/support/presentation/support_tickets_screen.dart';
+import '../../features/admin/support/presentation/live_chat_screen.dart';
+import '../../features/admin/support/presentation/knowledge_base_screen.dart';
+import '../../features/admin/support/presentation/user_lookup_screen.dart';
 import '../../features/admin/cookies/presentation/consent_analytics_screen.dart';
 import '../../features/admin/cookies/presentation/user_data_viewer_screen.dart';
 import '../../features/admin/chatbot/presentation/admin_chatbot_dashboard.dart';
@@ -563,45 +566,27 @@ List<RouteBase> adminRoutes = [
       GoRoute(
         path: '/admin/tickets',
         name: 'admin-tickets',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Support Tickets',
-            description: 'View and manage customer support tickets.',
-            icon: Icons.confirmation_number,
-          ),
-        ),
+        redirect: (context, state) => '/admin/support/tickets',
       ),
       GoRoute(
         path: '/admin/chat',
         name: 'admin-live-chat',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Live Chat Support',
-            description: 'Provide real-time chat support to users.',
-            icon: Icons.chat,
-          ),
+          child: const LiveChatScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/knowledge-base',
         name: 'admin-knowledge-base',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Knowledge Base',
-            description: 'Manage help articles and documentation.',
-            icon: Icons.help,
-          ),
+          child: const KnowledgeBaseScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/user-lookup',
         name: 'admin-user-lookup',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'User Lookup',
-            description: 'Search and view detailed user information.',
-            icon: Icons.search,
-          ),
+          child: const UserLookupScreen(),
         ),
       ),
 
