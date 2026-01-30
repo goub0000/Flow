@@ -608,29 +608,9 @@ class _AdminSidebarState extends State<AdminSidebar> {
         route: '/admin/courses',
       ),
       const AdminNavigationItem(
-        icon: Icons.school,
-        label: 'Curriculum',
-        route: '/admin/curriculum',
-      ),
-      const AdminNavigationItem(
-        icon: Icons.quiz,
-        label: 'Assessments',
-        route: '/admin/assessments',
-      ),
-      const AdminNavigationItem(
-        icon: Icons.folder,
-        label: 'Resources',
-        route: '/admin/resources',
-      ),
-      const AdminNavigationItem(
         icon: Icons.article,
         label: 'Page Content (CMS)',
         route: '/admin/pages',
-      ),
-      const AdminNavigationItem(
-        icon: Icons.translate,
-        label: 'Translations',
-        route: '/admin/translations',
       ),
       const AdminNavigationItem(
         icon: Icons.analytics,
