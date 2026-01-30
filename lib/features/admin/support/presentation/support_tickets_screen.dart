@@ -2,21 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
-// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
+import '../../shared/providers/admin_support_provider.dart';
 
 /// Support Tickets Screen - Manage user support tickets
-///
-/// Features:
-/// - View all support tickets
-/// - Assign tickets to support agents
-/// - Update ticket status
-/// - Reply to tickets
-/// - Categorize tickets by type and priority
-/// - Track resolution time
-/// - Ticket escalation
-/// - Knowledge base integration
 class SupportTicketsScreen extends ConsumerStatefulWidget {
   const SupportTicketsScreen({super.key});
 
@@ -27,7 +17,7 @@ class SupportTicketsScreen extends ConsumerStatefulWidget {
 
 class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
   final TextEditingController _searchController = TextEditingController();
-  String _selectedStatus = 'open';
+  String _selectedStatus = 'all';
   String _selectedPriority = 'all';
   String _selectedCategory = 'all';
 
@@ -37,35 +27,82 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
     super.dispose();
   }
 
+  List<SupportTicket> _getFilteredTickets(List<SupportTicket> tickets) {
+    var filtered = tickets;
+
+    if (_selectedStatus != 'all') {
+      filtered = filtered.where((t) => t.status == _selectedStatus).toList();
+    }
+    if (_selectedPriority != 'all') {
+      filtered = filtered.where((t) => t.priority == _selectedPriority).toList();
+    }
+    if (_selectedCategory != 'all') {
+      filtered = filtered.where((t) => t.category == _selectedCategory).toList();
+    }
+
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isNotEmpty) {
+      filtered = filtered.where((t) =>
+        t.id.toLowerCase().contains(query) ||
+        t.subject.toLowerCase().contains(query) ||
+        t.userName.toLowerCase().contains(query) ||
+        t.description.toLowerCase().contains(query)
+      ).toList();
+    }
+
+    return filtered;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch tickets from backend
-    // - API endpoint: GET /api/admin/support/tickets
-    // - Support pagination, filtering, search
-    // - Real-time updates for new tickets
-    // - Include user information and ticket history
-
-    // Content is wrapped by AdminShell via ShellRoute
     return _buildContent();
   }
 
   Widget _buildContent() {
+    final supportState = ref.watch(adminSupportProvider);
+    final stats = ref.watch(adminTicketStatisticsProvider);
+    final avgResolution = ref.watch(adminAverageResolutionTimeProvider);
+    final filteredTickets = _getFilteredTickets(supportState.tickets);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Page Header
         _buildHeader(),
         const SizedBox(height: 24),
-
-        // Stats Cards
-        _buildStatsCards(),
+        _buildStatsCards(stats, avgResolution),
         const SizedBox(height: 24),
-
-        // Filters and Search
+        if (supportState.error != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.error.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.error_outline, color: AppColors.error, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      supportState.error!,
+                      style: TextStyle(color: AppColors.error, fontSize: 13),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh, size: 18),
+                    onPressed: () => ref.read(adminSupportProvider.notifier).fetchTickets(),
+                    tooltip: 'Retry',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (supportState.error != null) const SizedBox(height: 24),
         _buildFiltersSection(),
         const SizedBox(height: 24),
-
-        // Data Table
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -73,7 +110,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border),
             ),
-            child: _buildDataTable(),
+            child: _buildDataTable(filteredTickets, supportState.isLoading),
           ),
         ),
       ],
@@ -117,7 +154,6 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           ),
           Row(
             children: [
-              // Knowledge Base button
               PermissionGuard(
                 permission: AdminPermission.manageKnowledgeBase,
                 child: OutlinedButton.icon(
@@ -129,7 +165,6 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              // Live Chat button
               PermissionGuard(
                 permission: AdminPermission.accessLiveChat,
                 child: OutlinedButton.icon(
@@ -141,10 +176,9 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              // Refresh button
               IconButton(
                 onPressed: () {
-                  // TODO: Refresh tickets
+                  ref.read(adminSupportProvider.notifier).fetchTickets();
                 },
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Refresh Tickets',
@@ -156,7 +190,10 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
     );
   }
 
-  Widget _buildStatsCards() {
+  Widget _buildStatsCards(Map<String, int> stats, double avgResolution) {
+    final resolvedCount = stats['resolved'] ?? 0;
+    final avgHours = avgResolution.toStringAsFixed(1);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -164,7 +201,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           Expanded(
             child: _buildStatCard(
               'Open Tickets',
-              '0',
+              '${stats['open'] ?? 0}',
               'Pending resolution',
               Icons.pending,
               AppColors.warning,
@@ -174,7 +211,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           Expanded(
             child: _buildStatCard(
               'In Progress',
-              '0',
+              '${stats['inProgress'] ?? 0}',
               'Being handled',
               Icons.timelapse,
               AppColors.primary,
@@ -184,8 +221,8 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           Expanded(
             child: _buildStatCard(
               'Resolved',
-              '0',
-              'Last 7 days',
+              '$resolvedCount',
+              'Total resolved',
               Icons.check_circle,
               AppColors.success,
             ),
@@ -194,8 +231,8 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           Expanded(
             child: _buildStatCard(
               'Avg Response',
-              '0h',
-              'Average response time',
+              '${avgHours}h',
+              'Average resolution time',
               Icons.access_time,
               AppColors.textSecondary,
             ),
@@ -262,7 +299,6 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          // Search
           Expanded(
             flex: 2,
             child: TextField(
@@ -280,13 +316,11 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 ),
               ),
               onChanged: (value) {
-                // TODO: Implement search
+                setState(() {});
               },
             ),
           ),
           const SizedBox(width: 16),
-
-          // Status Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
@@ -310,14 +344,11 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedStatus = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
           ),
           const SizedBox(width: 16),
-
-          // Priority Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedPriority,
@@ -341,14 +372,11 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedPriority = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
           ),
           const SizedBox(width: 16),
-
-          // Category Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedCategory,
@@ -372,7 +400,6 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedCategory = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
@@ -382,16 +409,25 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
     );
   }
 
-  Widget _buildDataTable() {
-    // TODO: Replace with actual data from backend
-    final List<TicketRowData> tickets = [];
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
 
-    return AdminDataTable<TicketRowData>(
+  String _timeSince(DateTime date) {
+    final diff = DateTime.now().difference(date);
+    if (diff.inDays > 0) return '${diff.inDays}d ago';
+    if (diff.inHours > 0) return '${diff.inHours}h ago';
+    if (diff.inMinutes > 0) return '${diff.inMinutes}m ago';
+    return 'Just now';
+  }
+
+  Widget _buildDataTable(List<SupportTicket> tickets, bool isLoading) {
+    return AdminDataTable<SupportTicket>(
       columns: [
         DataTableColumn(
           label: 'Ticket ID',
           cellBuilder: (ticket) => Text(
-            ticket.ticketId,
+            ticket.id,
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 13,
@@ -415,12 +451,13 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                ticket.preview,
+                ticket.description,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 11,
                 ),
                 overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ],
           ),
@@ -439,7 +476,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                 ),
               ),
               Text(
-                ticket.userEmail,
+                ticket.userRole,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 11,
@@ -484,11 +521,11 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                ticket.createdDate,
+                _formatDate(ticket.createdAt),
                 style: const TextStyle(fontSize: 13),
               ),
               Text(
-                ticket.timeSince,
+                _timeSince(ticket.createdAt),
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 11,
@@ -500,10 +537,10 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
         ),
       ],
       data: tickets,
-      isLoading: false,
+      isLoading: isLoading,
       enableSelection: true,
       onSelectionChanged: (selectedItems) {
-        // TODO: Handle bulk actions
+        // Handle bulk actions
       },
       onRowTap: (ticket) {
         _showTicketDetails(ticket);
@@ -642,12 +679,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
     );
   }
 
-  void _showTicketDetails(TicketRowData ticket) {
-    // TODO: Implement detailed ticket view
-    // - Full ticket history
-    // - All messages/replies
-    // - User information
-    // - Ticket actions (assign, resolve, escalate)
+  void _showTicketDetails(SupportTicket ticket) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -657,7 +689,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Ticket ${ticket.ticketId}',
+                'Ticket ${ticket.id}',
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -676,14 +708,24 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Text(
-                'Full ticket details and conversation history will be available with backend integration.',
+                ticket.description,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
                 ),
               ),
+              const SizedBox(height: 16),
+              _buildDetailRow('User', ticket.userName),
+              _buildDetailRow('Role', ticket.userRole),
+              _buildDetailRow('Category', ticket.category),
+              _buildDetailRow('Priority', ticket.priority),
+              _buildDetailRow('Status', ticket.status),
+              _buildDetailRow('Assigned To', ticket.assignedTo ?? 'Unassigned'),
+              _buildDetailRow('Created', _formatDate(ticket.createdAt)),
+              if (ticket.resolvedAt != null)
+                _buildDetailRow('Resolved', _formatDate(ticket.resolvedAt!)),
             ],
           ),
         ),
@@ -707,10 +749,41 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
     );
   }
 
-  void _showAssignDialog(TicketRowData ticket) {
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(
+              '$label:',
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAssignDialog(SupportTicket ticket) {
+    final agentController = TextEditingController();
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
             Icon(Icons.person_add, color: AppColors.primary),
@@ -721,21 +794,41 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Assign ticket ${ticket.ticketId} to:'),
+            Text('Assign ticket ${ticket.id} to:'),
             const SizedBox(height: 16),
-            // TODO: Load list of support agents from backend
-            const Text('Support agent selection will be available with backend integration.'),
+            TextField(
+              controller: agentController,
+              decoration: const InputDecoration(
+                labelText: 'Agent ID or Name',
+                hintText: 'Enter support agent ID...',
+                border: OutlineInputBorder(),
+              ),
+            ),
           ],
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Assign ticket
-              Navigator.pop(context);
+            onPressed: () async {
+              final agentId = agentController.text.trim();
+              if (agentId.isEmpty) return;
+              Navigator.pop(dialogContext);
+              final success = await ref
+                  .read(adminSupportProvider.notifier)
+                  .assignTicket(ticket.id, agentId);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Ticket assigned successfully'
+                        : 'Failed to assign ticket'),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
+              }
             },
             child: const Text('Assign'),
           ),
@@ -744,10 +837,10 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
     );
   }
 
-  void _resolveTicket(TicketRowData ticket) {
+  void _resolveTicket(SupportTicket ticket) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
             Icon(Icons.check_circle, color: AppColors.success),
@@ -759,7 +852,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Mark ticket ${ticket.ticketId} as resolved?'),
+            Text('Mark ticket ${ticket.id} as resolved?'),
             const SizedBox(height: 16),
             const TextField(
               maxLines: 3,
@@ -773,19 +866,25 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Resolve ticket
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Ticket will be resolved with backend integration'),
-                  backgroundColor: AppColors.success,
-                ),
-              );
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              final success = await ref
+                  .read(adminSupportProvider.notifier)
+                  .updateTicketStatus(ticket.id, 'resolved');
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Ticket resolved successfully'
+                        : 'Failed to resolve ticket'),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.success,
@@ -796,36 +895,4 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
       ),
     );
   }
-}
-
-/// Temporary data model for table rows
-/// TODO: Replace with actual Ticket model from backend
-class TicketRowData {
-  final String id;
-  final String ticketId;
-  final String subject;
-  final String preview;
-  final String userName;
-  final String userEmail;
-  final String category;
-  final String priority;
-  final String status;
-  final String? assignedTo;
-  final String createdDate;
-  final String timeSince;
-
-  TicketRowData({
-    required this.id,
-    required this.ticketId,
-    required this.subject,
-    required this.preview,
-    required this.userName,
-    required this.userEmail,
-    required this.category,
-    required this.priority,
-    required this.status,
-    this.assignedTo,
-    required this.createdDate,
-    required this.timeSince,
-  });
 }
