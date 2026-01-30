@@ -273,8 +273,22 @@ async def create_admin_user(
             "email": request.email,
             "password": request.password,
             "email_confirm": True,
+            "user_metadata": {
+                "role": request.admin_role,
+                "display_name": request.display_name,
+            },
         })
         new_user_id = auth_response.user.id
+
+        # Explicitly confirm email (belt-and-suspenders for Supabase versions
+        # where email_confirm in create_user may not take effect)
+        try:
+            admin_db.auth.admin.update_user_by_id(
+                new_user_id,
+                {"email_confirm": True}
+            )
+        except Exception as confirm_err:
+            logger.warning(f"Could not explicitly confirm email: {confirm_err}")
 
         # 2. Insert into users table
         admin_db.table('users').insert({
