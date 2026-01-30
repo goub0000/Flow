@@ -128,50 +128,44 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     await _initializeFromAuthState();
   }
 
-  /// Sign in admin user with email, password, and MFA code
+  /// Sign in admin user with email and password
   Future<void> signIn({
     required String email,
     required String password,
-    required String mfaCode,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      // TODO: Implement Supabase authentication
-      // 1. Call Supabase Auth to validate email/password
-      // 2. Verify MFA code with Supabase Auth
-      // 3. Fetch admin user data from Supabase
-      // 4. Load admin permissions based on role
-      // 5. Create secure session token
-      // 6. Log authentication event to audit log
+      final response = await _authService.login(
+        email: email,
+        password: password,
+      );
 
-      throw UnimplementedError('Backend authentication not yet implemented');
+      if (!response.success || response.data == null) {
+        throw Exception(response.message ?? 'Login failed');
+      }
 
-      // Example of what the implementation should look like:
-      // final response = await supabase.auth.signInWithPassword(
-      //   email: email,
-      //   password: password,
-      // );
-      //
-      // final adminData = await supabase
-      //   .from('admins')
-      //   .select()
-      //   .eq('id', response.user!.id)
-      //   .single();
-      //
-      // final adminUser = AdminUser.fromJson(adminData);
-      //
-      // state = state.copyWith(
-      //   currentAdmin: adminUser,
-      //   isLoading: false,
-      //   isAuthenticated: true,
-      // );
+      final userData = response.data!;
+      final role = UserRoleHelper.getRoleName(userData.activeRole).toLowerCase();
+
+      if (!role.contains('admin')) {
+        await _authService.logout();
+        throw Exception('Access denied: admin role required');
+      }
+
+      final adminUser = _createAdminUserFromUserModel(userData, role);
+      state = AdminAuthState(
+        currentAdmin: adminUser,
+        isAuthenticated: true,
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),
         isAuthenticated: false,
       );
+      rethrow;
     }
   }
 

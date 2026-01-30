@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/constants/admin_permissions.dart';
-import '../../../../core/services/auth_service.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/utils/validators.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
@@ -54,19 +53,53 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
       return;
     }
 
+    // Validate passwords match
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     try {
-      final authService = ref.read(authServiceProvider);
-      final response = await authService.register(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        confirmPassword: _confirmPasswordController.text,
-        role: _selectedRole,
-        fullName: _fullNameController.text.trim(),
-        phoneNumber: _phoneController.text.trim().isNotEmpty
-            ? _phoneController.text.trim()
-            : null,
+      final apiClient = ref.read(apiClientProvider);
+
+      // Map UserRole enum to the backend string
+      final roleMap = {
+        UserRole.superAdmin: 'superadmin',
+        UserRole.regionalAdmin: 'regionaladmin',
+        UserRole.contentAdmin: 'contentadmin',
+        UserRole.supportAdmin: 'supportadmin',
+        UserRole.financeAdmin: 'financeadmin',
+        UserRole.analyticsAdmin: 'analyticsadmin',
+      };
+
+      final adminRoleStr = roleMap[_selectedRole] ?? 'supportadmin';
+
+      final body = <String, dynamic>{
+        'email': _emailController.text.trim(),
+        'password': _passwordController.text,
+        'display_name': _fullNameController.text.trim(),
+        'admin_role': adminRoleStr,
+      };
+
+      if (_phoneController.text.trim().isNotEmpty) {
+        body['phone_number'] = _phoneController.text.trim();
+      }
+
+      if (_selectedRole == UserRole.regionalAdmin &&
+          _regionalScopeController.text.trim().isNotEmpty) {
+        body['regional_scope'] = _regionalScopeController.text.trim();
+      }
+
+      final response = await apiClient.post(
+        '/admin/users/admins',
+        data: body,
       );
 
       setState(() => _isLoading = false);
@@ -76,7 +109,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Admin account created successfully for ${response.data?.email}'),
+            content: Text('Admin account created successfully for ${_emailController.text.trim()}'),
             backgroundColor: AppColors.success,
           ),
         );

@@ -5,11 +5,11 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 
-/// Admin Login Screen - Secure login with MFA for admin users
+/// Admin Login Screen - Secure login for admin users
 ///
 /// Features:
 /// - Email/password authentication
-/// - Multi-factor authentication (MFA) required
+/// - Admin role verification
 /// - Enhanced security measures
 /// - Audit logging
 /// - Session management
@@ -24,7 +24,6 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _mfaCodeController = TextEditingController();
 
   bool _obscurePassword = true;
   bool _isLoading = false;
@@ -33,7 +32,6 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _mfaCodeController.dispose();
     super.dispose();
   }
 
@@ -48,11 +46,9 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
       await ref.read(adminAuthProvider.notifier).signIn(
             email: _emailController.text.trim(),
             password: _passwordController.text,
-            mfaCode: _mfaCodeController.text.trim(),
           );
 
-      if (mounted) {
-        // Navigate to admin dashboard on success
+      if (mounted && ref.read(adminAuthProvider).isAuthenticated) {
         context.go('/admin/dashboard');
       }
     } catch (e) {
@@ -203,7 +199,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
           TextFormField(
             controller: _passwordController,
             obscureText: _obscurePassword,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               labelText: 'Password',
               hintText: 'Enter your password',
@@ -226,37 +222,6 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
               }
               if (value.length < 8) {
                 return 'Password must be at least 8 characters';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-
-          // MFA Code Field
-          TextFormField(
-            controller: _mfaCodeController,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            maxLength: 6,
-            decoration: InputDecoration(
-              labelText: 'MFA Code',
-              hintText: '000000',
-              prefixIcon: const Icon(Icons.security),
-              helperText: 'Enter 6-digit code from authenticator app',
-              counterText: '',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter MFA code';
-              }
-              if (value.length != 6) {
-                return 'MFA code must be 6 digits';
-              }
-              if (int.tryParse(value) == null) {
-                return 'MFA code must contain only numbers';
               }
               return null;
             },
