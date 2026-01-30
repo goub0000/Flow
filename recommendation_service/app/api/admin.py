@@ -3166,3 +3166,772 @@ async def update_system_settings(
             status_code=500,
             detail=f"Failed to update system settings: {str(e)}"
         )
+
+
+# ==================== CURRICULUM / RESOURCES / ASSESSMENTS ====================
+
+class AdminCurriculumModule(BaseModel):
+    id: str
+    course_id: str
+    course_title: str
+    course_status: Optional[str] = None
+    title: str
+    description: Optional[str] = None
+    order_index: int = 0
+    lesson_count: int = 0
+    duration_minutes: int = 0
+    is_published: bool = False
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+class AdminCurriculumStats(BaseModel):
+    total_modules: int = 0
+    published_modules: int = 0
+    draft_modules: int = 0
+    total_lessons: int = 0
+    total_courses_with_modules: int = 0
+
+class AdminCurriculumResponse(BaseModel):
+    modules: List[AdminCurriculumModule] = []
+    total: int = 0
+    stats: AdminCurriculumStats = AdminCurriculumStats()
+
+class AdminResource(BaseModel):
+    id: str
+    resource_type: str  # 'video' or 'text'
+    lesson_id: Optional[str] = None
+    lesson_title: Optional[str] = None
+    module_title: Optional[str] = None
+    course_id: Optional[str] = None
+    course_title: Optional[str] = None
+    title: str
+    video_url: Optional[str] = None
+    video_platform: Optional[str] = None
+    duration_seconds: Optional[int] = None
+    content_format: Optional[str] = None
+    estimated_reading_time: Optional[int] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+class AdminResourceStats(BaseModel):
+    total_resources: int = 0
+    video_count: int = 0
+    text_count: int = 0
+    total_duration_minutes: int = 0
+    total_courses_with_resources: int = 0
+
+class AdminResourcesResponse(BaseModel):
+    resources: List[AdminResource] = []
+    total: int = 0
+    stats: AdminResourceStats = AdminResourceStats()
+
+class AdminAssessment(BaseModel):
+    id: str
+    assessment_type: str  # 'quiz' or 'assignment'
+    lesson_id: Optional[str] = None
+    lesson_title: Optional[str] = None
+    module_title: Optional[str] = None
+    course_id: Optional[str] = None
+    course_title: Optional[str] = None
+    title: str
+    passing_score: Optional[float] = None
+    total_points: Optional[float] = None
+    question_count: int = 0
+    attempt_count: int = 0
+    average_score: Optional[float] = None
+    pass_rate: Optional[float] = None
+    points_possible: Optional[float] = None
+    submission_count: int = 0
+    graded_count: int = 0
+    average_grade: Optional[float] = None
+    due_date: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+class AdminAssessmentStats(BaseModel):
+    total_assessments: int = 0
+    quiz_count: int = 0
+    assignment_count: int = 0
+    total_attempts: int = 0
+    total_submissions: int = 0
+    average_pass_rate: Optional[float] = None
+    pending_grading: int = 0
+
+class AdminAssessmentsResponse(BaseModel):
+    assessments: List[AdminAssessment] = []
+    total: int = 0
+    stats: AdminAssessmentStats = AdminAssessmentStats()
+
+
+@router.get("/admin/curriculum")
+async def get_admin_curriculum(
+    search: Optional[str] = Query(None),
+    course_id: Optional[str] = Query(None),
+    is_published: Optional[bool] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(50, ge=1, le=200),
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """
+    List all modules across all courses with course context.
+    Supports search, filtering by course_id and publish status.
+    """
+    try:
+        db = get_supabase_admin()
+
+        # Fetch modules with course info
+        query = db.table('course_modules').select(
+            '*, courses(id, title, status)'
+        )
+
+        if course_id:
+            query = query.eq('course_id', course_id)
+        if is_published is not None:
+            query = query.eq('is_published', is_published)
+        if search:
+            query = query.or_(f"title.ilike.%{search}%,description.ilike.%{search}%")
+
+        query = query.order('created_at', desc=True)
+        response = query.execute()
+        all_modules = response.data or []
+
+        # Fetch lesson counts per module
+        lessons_resp = db.table('course_lessons').select('module_id, id').execute()
+        lessons_data = lessons_resp.data or []
+        lesson_counts = {}
+        for lesson in lessons_data:
+            mid = lesson.get('module_id')
+            if mid:
+                lesson_counts[mid] = lesson_counts.get(mid, 0) + 1
+
+        # Build module list
+        modules = []
+        course_ids_set = set()
+        published_count = 0
+        draft_count = 0
+        total_lessons = 0
+
+        for m in all_modules:
+            course_data = m.get('courses') or {}
+            mid = m.get('id', '')
+            lcount = lesson_counts.get(mid, 0)
+            is_pub = m.get('is_published', False)
+
+            if is_pub:
+                published_count += 1
+            else:
+                draft_count += 1
+            total_lessons += lcount
+            cid = m.get('course_id', '')
+            if cid:
+                course_ids_set.add(cid)
+
+            modules.append({
+                'id': mid,
+                'course_id': cid,
+                'course_title': course_data.get('title', 'Unknown Course'),
+                'course_status': course_data.get('status'),
+                'title': m.get('title', ''),
+                'description': m.get('description'),
+                'order_index': m.get('order_index', 0),
+                'lesson_count': lcount,
+                'duration_minutes': m.get('duration_minutes', 0) or 0,
+                'is_published': is_pub,
+                'created_at': m.get('created_at'),
+                'updated_at': m.get('updated_at'),
+            })
+
+        total = len(modules)
+        # Paginate
+        start = (page - 1) * page_size
+        end = start + page_size
+        paginated = modules[start:end]
+
+        stats = {
+            'total_modules': total,
+            'published_modules': published_count,
+            'draft_modules': draft_count,
+            'total_lessons': total_lessons,
+            'total_courses_with_modules': len(course_ids_set),
+        }
+
+        return {'modules': paginated, 'total': total, 'stats': stats}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching curriculum: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch curriculum: {str(e)}")
+
+
+@router.get("/admin/curriculum/{module_id}/detail")
+async def get_admin_curriculum_detail(
+    module_id: str,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """Get single module with its lessons list."""
+    try:
+        db = get_supabase_admin()
+
+        # Fetch module with course info
+        mod_resp = db.table('course_modules').select(
+            '*, courses(id, title)'
+        ).eq('id', module_id).single().execute()
+        mod = mod_resp.data
+
+        if not mod:
+            raise HTTPException(status_code=404, detail="Module not found")
+
+        course_data = mod.get('courses') or {}
+
+        # Fetch lessons for this module
+        lessons_resp = db.table('course_lessons').select('*').eq(
+            'module_id', module_id
+        ).order('order_index').execute()
+        lessons = lessons_resp.data or []
+
+        lesson_list = []
+        for lesson in lessons:
+            lesson_list.append({
+                'id': lesson.get('id'),
+                'title': lesson.get('title', ''),
+                'lesson_type': lesson.get('lesson_type'),
+                'order_index': lesson.get('order_index', 0),
+                'duration_minutes': lesson.get('duration_minutes', 0),
+                'is_published': lesson.get('is_published', False),
+                'is_mandatory': lesson.get('is_mandatory', True),
+            })
+
+        return {
+            'module': {
+                'id': mod.get('id'),
+                'course_id': mod.get('course_id'),
+                'course_title': course_data.get('title', 'Unknown Course'),
+                'title': mod.get('title', ''),
+                'description': mod.get('description'),
+                'order_index': mod.get('order_index', 0),
+                'learning_objectives': mod.get('learning_objectives'),
+                'is_published': mod.get('is_published', False),
+                'lessons': lesson_list,
+            }
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching module detail: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch module detail: {str(e)}")
+
+
+@router.get("/admin/resources")
+async def get_admin_resources(
+    resource_type: Optional[str] = Query(None, description="video, text, or all"),
+    search: Optional[str] = Query(None),
+    course_id: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(50, ge=1, le=200),
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """
+    List all video and text content across all courses.
+    Combines lesson_videos and lesson_texts into a unified list.
+    """
+    try:
+        db = get_supabase_admin()
+        resources = []
+
+        # Fetch lessons with module and course info for context
+        lessons_resp = db.table('course_lessons').select(
+            'id, title, module_id, course_modules(id, title, course_id, courses(id, title))'
+        ).execute()
+        lessons_data = lessons_resp.data or []
+
+        # Build lesson context lookup
+        lesson_context = {}
+        for lesson in lessons_data:
+            lid = lesson.get('id')
+            mod = lesson.get('course_modules') or {}
+            course = mod.get('courses') or {}
+            lesson_context[lid] = {
+                'lesson_title': lesson.get('title', ''),
+                'module_title': mod.get('title', ''),
+                'course_id': course.get('id', mod.get('course_id', '')),
+                'course_title': course.get('title', 'Unknown Course'),
+            }
+
+        # Fetch videos
+        if resource_type in (None, 'all', 'video'):
+            vid_query = db.table('lesson_videos').select('*')
+            if search:
+                vid_query = vid_query.or_(f"title.ilike.%{search}%")
+            vid_resp = vid_query.execute()
+            for v in (vid_resp.data or []):
+                lid = v.get('lesson_id')
+                ctx = lesson_context.get(lid, {})
+                cid = ctx.get('course_id', '')
+                if course_id and cid != course_id:
+                    continue
+                resources.append({
+                    'id': v.get('id', ''),
+                    'resource_type': 'video',
+                    'lesson_id': lid,
+                    'lesson_title': ctx.get('lesson_title', ''),
+                    'module_title': ctx.get('module_title', ''),
+                    'course_id': cid,
+                    'course_title': ctx.get('course_title', ''),
+                    'title': v.get('title', ''),
+                    'video_url': v.get('video_url'),
+                    'video_platform': v.get('video_platform'),
+                    'duration_seconds': v.get('duration_seconds'),
+                    'content_format': None,
+                    'estimated_reading_time': None,
+                    'created_at': v.get('created_at'),
+                    'updated_at': v.get('updated_at'),
+                })
+
+        # Fetch text content
+        if resource_type in (None, 'all', 'text'):
+            txt_query = db.table('lesson_texts').select('*')
+            if search:
+                txt_query = txt_query.or_(f"title.ilike.%{search}%")
+            txt_resp = txt_query.execute()
+            for t in (txt_resp.data or []):
+                lid = t.get('lesson_id')
+                ctx = lesson_context.get(lid, {})
+                cid = ctx.get('course_id', '')
+                if course_id and cid != course_id:
+                    continue
+                resources.append({
+                    'id': t.get('id', ''),
+                    'resource_type': 'text',
+                    'lesson_id': lid,
+                    'lesson_title': ctx.get('lesson_title', ''),
+                    'module_title': ctx.get('module_title', ''),
+                    'course_id': cid,
+                    'course_title': ctx.get('course_title', ''),
+                    'title': t.get('title', ''),
+                    'video_url': None,
+                    'video_platform': None,
+                    'duration_seconds': None,
+                    'content_format': t.get('content_format'),
+                    'estimated_reading_time': t.get('estimated_reading_time'),
+                    'created_at': t.get('created_at'),
+                    'updated_at': t.get('updated_at'),
+                })
+
+        # Sort by created_at descending
+        resources.sort(key=lambda r: r.get('created_at') or '', reverse=True)
+
+        total = len(resources)
+        video_count = sum(1 for r in resources if r['resource_type'] == 'video')
+        text_count = total - video_count
+        total_duration = sum(
+            (r.get('duration_seconds') or 0) for r in resources if r['resource_type'] == 'video'
+        )
+        course_ids_with_resources = set(
+            r['course_id'] for r in resources if r.get('course_id')
+        )
+
+        # Paginate
+        start = (page - 1) * page_size
+        end = start + page_size
+        paginated = resources[start:end]
+
+        stats = {
+            'total_resources': total,
+            'video_count': video_count,
+            'text_count': text_count,
+            'total_duration_minutes': total_duration // 60,
+            'total_courses_with_resources': len(course_ids_with_resources),
+        }
+
+        return {'resources': paginated, 'total': total, 'stats': stats}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching resources: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch resources: {str(e)}")
+
+
+@router.get("/admin/assessments")
+async def get_admin_assessments(
+    assessment_type: Optional[str] = Query(None, description="quiz, assignment, or all"),
+    search: Optional[str] = Query(None),
+    course_id: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(50, ge=1, le=200),
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """
+    List all quizzes and assignments across all courses.
+    Combines lesson_quizzes and lesson_assignments into a unified list.
+    """
+    try:
+        db = get_supabase_admin()
+        assessments = []
+
+        # Fetch lessons with context
+        lessons_resp = db.table('course_lessons').select(
+            'id, title, module_id, course_modules(id, title, course_id, courses(id, title))'
+        ).execute()
+        lessons_data = lessons_resp.data or []
+
+        lesson_context = {}
+        for lesson in lessons_data:
+            lid = lesson.get('id')
+            mod = lesson.get('course_modules') or {}
+            course = mod.get('courses') or {}
+            lesson_context[lid] = {
+                'lesson_title': lesson.get('title', ''),
+                'module_title': mod.get('title', ''),
+                'course_id': course.get('id', mod.get('course_id', '')),
+                'course_title': course.get('title', 'Unknown Course'),
+            }
+
+        # Fetch quizzes
+        if assessment_type in (None, 'all', 'quiz'):
+            quiz_query = db.table('lesson_quizzes').select('*')
+            if search:
+                quiz_query = quiz_query.or_(f"title.ilike.%{search}%")
+            quiz_resp = quiz_query.execute()
+
+            # Get question counts per quiz
+            questions_resp = db.table('quiz_questions').select('quiz_id, id').execute()
+            question_counts = {}
+            for q in (questions_resp.data or []):
+                qid = q.get('quiz_id')
+                if qid:
+                    question_counts[qid] = question_counts.get(qid, 0) + 1
+
+            # Get attempt stats per quiz
+            attempts_resp = db.table('quiz_attempts').select(
+                'quiz_id, score, passed'
+            ).execute()
+            attempt_stats = {}
+            for a in (attempts_resp.data or []):
+                qid = a.get('quiz_id')
+                if qid:
+                    if qid not in attempt_stats:
+                        attempt_stats[qid] = {'count': 0, 'scores': [], 'passed': 0}
+                    attempt_stats[qid]['count'] += 1
+                    score = a.get('score')
+                    if score is not None:
+                        attempt_stats[qid]['scores'].append(float(score))
+                    if a.get('passed'):
+                        attempt_stats[qid]['passed'] += 1
+
+            for quiz in (quiz_resp.data or []):
+                lid = quiz.get('lesson_id')
+                ctx = lesson_context.get(lid, {})
+                cid = ctx.get('course_id', '')
+                if course_id and cid != course_id:
+                    continue
+                qid = quiz.get('id', '')
+                stats_data = attempt_stats.get(qid, {})
+                scores = stats_data.get('scores', [])
+                attempt_count = stats_data.get('count', 0)
+                passed_count = stats_data.get('passed', 0)
+
+                assessments.append({
+                    'id': qid,
+                    'assessment_type': 'quiz',
+                    'lesson_id': lid,
+                    'lesson_title': ctx.get('lesson_title', ''),
+                    'module_title': ctx.get('module_title', ''),
+                    'course_id': cid,
+                    'course_title': ctx.get('course_title', ''),
+                    'title': quiz.get('title', ''),
+                    'passing_score': quiz.get('passing_score'),
+                    'total_points': quiz.get('total_points'),
+                    'question_count': question_counts.get(qid, 0),
+                    'attempt_count': attempt_count,
+                    'average_score': round(sum(scores) / len(scores), 1) if scores else None,
+                    'pass_rate': round(passed_count / attempt_count * 100, 1) if attempt_count > 0 else None,
+                    'points_possible': None,
+                    'submission_count': 0,
+                    'graded_count': 0,
+                    'average_grade': None,
+                    'due_date': None,
+                    'created_at': quiz.get('created_at'),
+                    'updated_at': quiz.get('updated_at'),
+                })
+
+        # Fetch assignments
+        if assessment_type in (None, 'all', 'assignment'):
+            asgn_query = db.table('lesson_assignments').select('*')
+            if search:
+                asgn_query = asgn_query.or_(f"title.ilike.%{search}%")
+            asgn_resp = asgn_query.execute()
+
+            # Get submission stats per assignment
+            subs_resp = db.table('assignment_submissions').select(
+                'assignment_id, status, points_earned'
+            ).execute()
+            sub_stats = {}
+            for s in (subs_resp.data or []):
+                aid = s.get('assignment_id')
+                if aid:
+                    if aid not in sub_stats:
+                        sub_stats[aid] = {'count': 0, 'graded': 0, 'grades': [], 'pending': 0}
+                    sub_stats[aid]['count'] += 1
+                    status = s.get('status', '')
+                    if status == 'graded':
+                        sub_stats[aid]['graded'] += 1
+                        pe = s.get('points_earned')
+                        if pe is not None:
+                            sub_stats[aid]['grades'].append(float(pe))
+                    elif status in ('submitted', 'pending'):
+                        sub_stats[aid]['pending'] += 1
+
+            for asgn in (asgn_resp.data or []):
+                lid = asgn.get('lesson_id')
+                ctx = lesson_context.get(lid, {})
+                cid = ctx.get('course_id', '')
+                if course_id and cid != course_id:
+                    continue
+                aid = asgn.get('id', '')
+                ss = sub_stats.get(aid, {})
+                grades = ss.get('grades', [])
+                submission_count = ss.get('count', 0)
+                graded_count = ss.get('graded', 0)
+
+                assessments.append({
+                    'id': aid,
+                    'assessment_type': 'assignment',
+                    'lesson_id': lid,
+                    'lesson_title': ctx.get('lesson_title', ''),
+                    'module_title': ctx.get('module_title', ''),
+                    'course_id': cid,
+                    'course_title': ctx.get('course_title', ''),
+                    'title': asgn.get('title', ''),
+                    'passing_score': None,
+                    'total_points': None,
+                    'question_count': 0,
+                    'attempt_count': 0,
+                    'average_score': None,
+                    'pass_rate': None,
+                    'points_possible': asgn.get('points_possible'),
+                    'submission_count': submission_count,
+                    'graded_count': graded_count,
+                    'average_grade': round(sum(grades) / len(grades), 1) if grades else None,
+                    'due_date': asgn.get('due_date'),
+                    'created_at': asgn.get('created_at'),
+                    'updated_at': asgn.get('updated_at'),
+                })
+
+        # Sort by created_at descending
+        assessments.sort(key=lambda a: a.get('created_at') or '', reverse=True)
+
+        total = len(assessments)
+        quiz_count = sum(1 for a in assessments if a['assessment_type'] == 'quiz')
+        assignment_count = total - quiz_count
+        total_attempts = sum(a.get('attempt_count', 0) for a in assessments)
+        total_submissions = sum(a.get('submission_count', 0) for a in assessments)
+        pending_grading = sum(
+            (s.get('count', 0) - s.get('graded', 0))
+            for s in sub_stats.values()
+        ) if assessment_type in (None, 'all', 'assignment') else 0
+        pass_rates = [
+            a['pass_rate'] for a in assessments
+            if a.get('pass_rate') is not None
+        ]
+        avg_pass_rate = round(sum(pass_rates) / len(pass_rates), 1) if pass_rates else None
+
+        # Paginate
+        start = (page - 1) * page_size
+        end = start + page_size
+        paginated = assessments[start:end]
+
+        stats = {
+            'total_assessments': total,
+            'quiz_count': quiz_count,
+            'assignment_count': assignment_count,
+            'total_attempts': total_attempts,
+            'total_submissions': total_submissions,
+            'average_pass_rate': avg_pass_rate,
+            'pending_grading': pending_grading,
+        }
+
+        return {'assessments': paginated, 'total': total, 'stats': stats}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching assessments: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch assessments: {str(e)}")
+
+
+@router.get("/admin/assessments/quiz/{quiz_id}/stats")
+async def get_admin_quiz_stats(
+    quiz_id: str,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """Detailed quiz statistics including questions and recent attempts."""
+    try:
+        db = get_supabase_admin()
+
+        # Fetch quiz
+        quiz_resp = db.table('lesson_quizzes').select('*').eq('id', quiz_id).single().execute()
+        quiz = quiz_resp.data
+        if not quiz:
+            raise HTTPException(status_code=404, detail="Quiz not found")
+
+        # Fetch questions
+        questions_resp = db.table('quiz_questions').select('*').eq(
+            'quiz_id', quiz_id
+        ).order('order_index').execute()
+        questions = questions_resp.data or []
+
+        # Fetch attempts
+        attempts_resp = db.table('quiz_attempts').select(
+            '*, users(id, display_name, email)'
+        ).eq('quiz_id', quiz_id).order('created_at', desc=True).execute()
+        attempts = attempts_resp.data or []
+
+        scores = []
+        unique_students = set()
+        passed_count = 0
+        for a in attempts:
+            score = a.get('score')
+            if score is not None:
+                scores.append(float(score))
+            user = a.get('users') or {}
+            uid = a.get('user_id') or user.get('id')
+            if uid:
+                unique_students.add(uid)
+            if a.get('passed'):
+                passed_count += 1
+
+        # Score distribution (0-20, 20-40, 40-60, 60-80, 80-100)
+        distribution = [0, 0, 0, 0, 0]
+        for s in scores:
+            idx = min(int(s / 20), 4)
+            distribution[idx] += 1
+
+        stats = {
+            'total_attempts': len(attempts),
+            'unique_students': len(unique_students),
+            'average_score': round(sum(scores) / len(scores), 1) if scores else None,
+            'pass_rate': round(passed_count / len(attempts) * 100, 1) if attempts else None,
+            'average_time_minutes': None,  # Would need time tracking data
+            'score_distribution': {
+                '0-20': distribution[0],
+                '20-40': distribution[1],
+                '40-60': distribution[2],
+                '60-80': distribution[3],
+                '80-100': distribution[4],
+            },
+        }
+
+        recent = []
+        for a in attempts[:20]:
+            user = a.get('users') or {}
+            recent.append({
+                'id': a.get('id'),
+                'user_id': a.get('user_id'),
+                'user_name': user.get('display_name') or user.get('email', 'Unknown'),
+                'score': a.get('score'),
+                'passed': a.get('passed'),
+                'started_at': a.get('started_at'),
+                'completed_at': a.get('completed_at'),
+            })
+
+        return {
+            'quiz': quiz,
+            'questions': questions,
+            'stats': stats,
+            'recent_attempts': recent,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching quiz stats: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch quiz stats: {str(e)}")
+
+
+@router.get("/admin/assessments/assignment/{assignment_id}/submissions")
+async def get_admin_assignment_submissions(
+    assignment_id: str,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """All submissions for an assignment with grading stats."""
+    try:
+        db = get_supabase_admin()
+
+        # Fetch assignment
+        asgn_resp = db.table('lesson_assignments').select('*').eq(
+            'id', assignment_id
+        ).single().execute()
+        assignment = asgn_resp.data
+        if not assignment:
+            raise HTTPException(status_code=404, detail="Assignment not found")
+
+        # Fetch submissions
+        subs_resp = db.table('assignment_submissions').select(
+            '*, users(id, display_name, email)'
+        ).eq('assignment_id', assignment_id).order('submitted_at', desc=True).execute()
+        submissions = subs_resp.data or []
+
+        sub_list = []
+        graded = 0
+        pending = 0
+        grades = []
+        late_count = 0
+        for s in submissions:
+            user = s.get('users') or {}
+            status = s.get('status', '')
+            if status == 'graded':
+                graded += 1
+                pe = s.get('points_earned')
+                pp = assignment.get('points_possible')
+                if pe is not None and pp:
+                    grades.append(float(pe) / float(pp) * 100)
+            else:
+                pending += 1
+
+            is_late = False
+            due = assignment.get('due_date')
+            submitted_at = s.get('submitted_at')
+            if due and submitted_at:
+                is_late = submitted_at > due
+            if is_late:
+                late_count += 1
+
+            sub_list.append({
+                'id': s.get('id'),
+                'user_id': s.get('user_id'),
+                'user_name': user.get('display_name') or user.get('email', 'Unknown'),
+                'status': status,
+                'points_earned': s.get('points_earned'),
+                'grade_percentage': round(
+                    float(s.get('points_earned', 0)) / float(assignment.get('points_possible', 1)) * 100, 1
+                ) if s.get('points_earned') is not None and assignment.get('points_possible') else None,
+                'submitted_at': s.get('submitted_at'),
+                'graded_at': s.get('graded_at'),
+                'is_late': is_late,
+            })
+
+        stats = {
+            'total_submissions': len(submissions),
+            'graded': graded,
+            'pending_grading': pending,
+            'average_grade': round(sum(grades) / len(grades), 1) if grades else None,
+            'late_submissions': late_count,
+        }
+
+        return {
+            'assignment': assignment,
+            'submissions': sub_list,
+            'stats': stats,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching assignment submissions: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch assignment submissions: {str(e)}"
+        )

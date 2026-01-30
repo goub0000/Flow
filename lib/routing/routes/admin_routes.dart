@@ -36,6 +36,9 @@ import '../../features/admin/chatbot/presentation/support_queue_screen.dart';
 import '../../features/admin/chatbot/presentation/live_conversations_screen.dart';
 import '../../features/admin/content/presentation/page_content_list_screen.dart';
 import '../../features/admin/content/presentation/page_content_editor_screen.dart';
+import '../../features/admin/content/presentation/curriculum_management_screen.dart';
+import '../../features/admin/content/presentation/resources_management_screen.dart';
+import '../../features/admin/content/presentation/assessments_management_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
 import '../../features/admin/notifications/presentation/notifications_center_screen.dart';
 import '../../features/admin/reports/presentation/reports_screen.dart';
@@ -386,14 +389,21 @@ List<RouteBase> adminRoutes = [
             path: 'curriculum',
             name: 'admin-content-curriculum',
             pageBuilder: (context, state) => NoTransitionPage(
-              child: const ContentManagementScreen(pageTitle: 'Curriculum'),
+              child: const CurriculumManagementScreen(),
             ),
           ),
           GoRoute(
             path: 'resources',
             name: 'admin-content-resources',
             pageBuilder: (context, state) => NoTransitionPage(
-              child: const ContentManagementScreen(pageTitle: 'Resources'),
+              child: const ResourcesManagementScreen(),
+            ),
+          ),
+          GoRoute(
+            path: 'assessments',
+            name: 'admin-content-assessments',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: const AssessmentsManagementScreen(),
             ),
           ),
           // Course content builder for editing
@@ -532,50 +542,21 @@ List<RouteBase> adminRoutes = [
         ),
       ),
 
-      // Content Admin Routes
+      // Content Admin shortcut routes (redirect to /admin/content/...)
       GoRoute(
         path: '/admin/curriculum',
         name: 'admin-curriculum-management',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Curriculum Management',
-            description: 'Design and manage curriculum structure.',
-            icon: Icons.school,
-          ),
-        ),
+        redirect: (context, state) => '/admin/content/curriculum',
       ),
       GoRoute(
         path: '/admin/assessments',
         name: 'admin-assessments',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Assessments Management',
-            description: 'Create and manage quizzes, tests, and assessments.',
-            icon: Icons.quiz,
-          ),
-        ),
+        redirect: (context, state) => '/admin/content/assessments',
       ),
       GoRoute(
         path: '/admin/resources',
         name: 'admin-resources-management',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Resources Management',
-            description: 'Manage educational resources and learning materials.',
-            icon: Icons.folder,
-          ),
-        ),
-      ),
-      GoRoute(
-        path: '/admin/translations',
-        name: 'admin-translations',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Translations Management',
-            description: 'Manage multilingual content and translations.',
-            icon: Icons.translate,
-          ),
-        ),
+        redirect: (context, state) => '/admin/content/resources',
       ),
 
       // Support Admin Routes

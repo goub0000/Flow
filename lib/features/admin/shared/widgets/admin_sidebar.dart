@@ -367,6 +367,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
             route: '/admin/content/resources',
           ),
           AdminNavigationItem(
+            icon: Icons.quiz,
+            label: 'Assessments',
+            route: '/admin/content/assessments',
+          ),
+          AdminNavigationItem(
             icon: Icons.article,
             label: 'Page Content (CMS)',
             route: '/admin/pages',
@@ -527,6 +532,11 @@ class _AdminSidebarState extends State<AdminSidebar> {
             route: '/admin/content/resources',
           ),
           AdminNavigationItem(
+            icon: Icons.quiz,
+            label: 'Assessments',
+            route: '/admin/content/assessments',
+          ),
+          AdminNavigationItem(
             icon: Icons.article,
             label: 'Page Content (CMS)',
             route: '/admin/pages',
@@ -606,6 +616,21 @@ class _AdminSidebarState extends State<AdminSidebar> {
         icon: Icons.menu_book,
         label: 'Courses',
         route: '/admin/courses',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.school,
+        label: 'Curriculum',
+        route: '/admin/content/curriculum',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.folder,
+        label: 'Resources',
+        route: '/admin/content/resources',
+      ),
+      const AdminNavigationItem(
+        icon: Icons.quiz,
+        label: 'Assessments',
+        route: '/admin/content/assessments',
       ),
       const AdminNavigationItem(
         icon: Icons.article,
