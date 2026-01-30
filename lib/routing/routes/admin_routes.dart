@@ -286,6 +286,33 @@ List<RouteBase> adminRoutes = [
               child: const AdminFormScreen(),
             ),
           ),
+          GoRoute(
+            path: ':id',
+            name: 'admin-admin-detail',
+            pageBuilder: (context, state) {
+              final adminId = state.pathParameters['id']!;
+              return NoTransitionPage(
+                child: AdminPlaceholderScreen(
+                  title: 'Admin Details',
+                  description: 'Admin detail view for $adminId. This screen is under development.',
+                  icon: Icons.admin_panel_settings,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'admin-admin-edit',
+                pageBuilder: (context, state) => NoTransitionPage(
+                  child: const AdminPlaceholderScreen(
+                    title: 'Edit Admin',
+                    description: 'Admin edit functionality is under development.',
+                    icon: Icons.edit,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
 

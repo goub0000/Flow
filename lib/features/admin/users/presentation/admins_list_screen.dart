@@ -222,12 +222,12 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
               ),
               items: const [
                 DropdownMenuItem(value: 'all', child: Text('All Roles')),
-                DropdownMenuItem(value: 'superAdmin', child: Text('Super Admin')),
-                DropdownMenuItem(value: 'regionalAdmin', child: Text('Regional Admin')),
-                DropdownMenuItem(value: 'contentAdmin', child: Text('Content Admin')),
-                DropdownMenuItem(value: 'supportAdmin', child: Text('Support Admin')),
-                DropdownMenuItem(value: 'financeAdmin', child: Text('Finance Admin')),
-                DropdownMenuItem(value: 'analyticsAdmin', child: Text('Analytics Admin')),
+                DropdownMenuItem(value: 'superadmin', child: Text('Super Admin')),
+                DropdownMenuItem(value: 'regionaladmin', child: Text('Regional Admin')),
+                DropdownMenuItem(value: 'contentadmin', child: Text('Content Admin')),
+                DropdownMenuItem(value: 'supportadmin', child: Text('Support Admin')),
+                DropdownMenuItem(value: 'financeadmin', child: Text('Finance Admin')),
+                DropdownMenuItem(value: 'analyticsadmin', child: Text('Analytics Admin')),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -394,19 +394,11 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           icon: Icons.edit,
           tooltip: 'Edit Admin',
           onPressed: (admin) {
-            // Since admins are pre-filtered by hierarchy, this admin can be edited
-            // Additional hierarchy check is performed here for safety
             final currentAdmin = ref.read(currentAdminUserProvider);
             if (currentAdmin != null) {
-              final targetRole = UserRole.values.firstWhere(
-                (r) => r.name == admin.role,
-                orElse: () => UserRole.superAdmin,
-              );
-
-              if (currentAdmin.adminRole.canManage(targetRole)) {
+              if (currentAdmin.adminRole.canManage(admin.userRole)) {
                 context.go('/admin/system/admins/${admin.id}/edit');
               } else {
-                // This should not happen due to list filtering, but included for safety
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('You do not have permission to edit this admin'),
@@ -422,16 +414,9 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           tooltip: 'Deactivate',
           color: AppColors.error,
           onPressed: (admin) {
-            // Since admins are pre-filtered by hierarchy, this admin can be deactivated
-            // Additional hierarchy check is performed here for safety
             final currentAdmin = ref.read(currentAdminUserProvider);
             if (currentAdmin != null) {
-              final targetRole = UserRole.values.firstWhere(
-                (r) => r.name == admin.role,
-                orElse: () => UserRole.superAdmin,
-              );
-
-              if (currentAdmin.adminRole.canManage(targetRole)) {
+              if (currentAdmin.adminRole.canManage(admin.userRole)) {
                 // TODO: Show confirmation dialog
                 // TODO: Call deactivate API
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -537,11 +522,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
     final currentAdmin = ref.read(currentAdminUserProvider);
     if (currentAdmin != null) {
       final invalidSelections = _selectedItems.where((admin) {
-        final targetRole = UserRole.values.firstWhere(
-          (r) => r.name == admin.role,
-          orElse: () => UserRole.superAdmin,
-        );
-        return !currentAdmin.adminRole.canManage(targetRole);
+        return !currentAdmin.adminRole.canManage(admin.userRole);
       }).toList();
 
       if (invalidSelections.isNotEmpty) {
@@ -589,11 +570,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
     final currentAdmin = ref.read(currentAdminUserProvider);
     if (currentAdmin != null) {
       final invalidSelections = _selectedItems.where((admin) {
-        final targetRole = UserRole.values.firstWhere(
-          (r) => r.name == admin.role,
-          orElse: () => UserRole.superAdmin,
-        );
-        return !currentAdmin.adminRole.canManage(targetRole);
+        return !currentAdmin.adminRole.canManage(admin.userRole);
       }).toList();
 
       if (invalidSelections.isNotEmpty) {
@@ -693,25 +670,14 @@ class AdminRowData {
     return name.substring(0, 1).toUpperCase();
   }
 
-  String get roleDisplayName {
-    final userRole = UserRole.values.firstWhere(
-      (r) => r.name == role,
-      orElse: () => UserRole.superAdmin,
-    );
-    return userRole.displayName;
-  }
+  UserRole get userRole => UserRole.values.firstWhere(
+    (r) => UserRoleHelper.getRoleName(r) == role,
+    orElse: () => UserRole.superAdmin,
+  );
 
-  Color get roleColor {
-    return AppColors.getAdminRoleColor(UserRole.values.firstWhere(
-      (r) => r.name == role,
-      orElse: () => UserRole.superAdmin,
-    ));
-  }
+  String get roleDisplayName => userRole.displayName;
 
-  IconData get roleIcon {
-    return AppColors.getAdminRoleIcon(UserRole.values.firstWhere(
-      (r) => r.name == role,
-      orElse: () => UserRole.superAdmin,
-    ));
-  }
+  Color get roleColor => AppColors.getAdminRoleColor(userRole);
+
+  IconData get roleIcon => AppColors.getAdminRoleIcon(userRole);
 }
