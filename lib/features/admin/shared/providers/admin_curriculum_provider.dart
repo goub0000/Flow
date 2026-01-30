@@ -171,6 +171,41 @@ class AdminCurriculumNotifier extends StateNotifier<AdminCurriculumState> {
       );
     }
   }
+
+  /// Create a new module in a course
+  Future<bool> createModule({
+    required String courseId,
+    required String title,
+    String? description,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/curriculum',
+        data: {
+          'course_id': courseId,
+          'title': title,
+          'description': description,
+        },
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success) {
+        await fetchCurriculum();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to create module',
+        );
+        return false;
+      }
+    } catch (e) {
+      print('[AdminCurriculum] Error creating module: $e');
+      state = state.copyWith(
+        error: 'Failed to create module: ${e.toString()}',
+      );
+      return false;
+    }
+  }
 }
 
 /// Provider for admin curriculum state

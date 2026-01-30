@@ -3935,3 +3935,291 @@ async def get_admin_assignment_submissions(
             status_code=500,
             detail=f"Failed to fetch assignment submissions: {str(e)}"
         )
+
+
+# ==================== ADMIN CONTENT CREATION ====================
+
+class AdminCourseListItem(BaseModel):
+    id: str
+    title: str
+    status: Optional[str] = None
+
+class AdminModuleListItem(BaseModel):
+    id: str
+    title: str
+    order_index: int = 0
+
+class AdminCreateModuleRequest(BaseModel):
+    course_id: str
+    title: str
+    description: Optional[str] = None
+
+class AdminCreateResourceRequest(BaseModel):
+    resource_type: str  # 'video' or 'text'
+    course_id: str
+    module_id: str
+    lesson_title: str
+    # Video fields
+    video_url: Optional[str] = None
+    video_platform: Optional[str] = 'youtube'
+    duration_seconds: Optional[int] = None
+    # Text fields
+    content: Optional[str] = None
+    content_format: Optional[str] = 'markdown'
+    estimated_reading_time: Optional[int] = None
+
+class AdminCreateAssessmentRequest(BaseModel):
+    assessment_type: str  # 'quiz' or 'assignment'
+    course_id: str
+    module_id: str
+    lesson_title: str
+    title: str
+    # Quiz fields
+    passing_score: Optional[float] = 70.0
+    time_limit_minutes: Optional[int] = None
+    # Assignment fields
+    instructions: Optional[str] = None
+    points_possible: Optional[int] = 100
+    due_date: Optional[str] = None
+
+
+@router.get("/admin/courses/list")
+async def get_admin_courses_list(
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """Lightweight course list for dropdown selectors."""
+    try:
+        db = get_supabase_admin()
+        resp = db.table('courses').select('id, title, status').order('title').execute()
+        courses = [
+            {'id': c['id'], 'title': c.get('title', ''), 'status': c.get('status')}
+            for c in (resp.data or [])
+        ]
+        return {'courses': courses}
+    except Exception as e:
+        logger.error(f"Error fetching courses list: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/admin/courses/{course_id}/modules/list")
+async def get_admin_modules_list(
+    course_id: str,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """Lightweight module list for a course, for dropdown selectors."""
+    try:
+        db = get_supabase_admin()
+        resp = db.table('course_modules').select(
+            'id, title, order_index'
+        ).eq('course_id', course_id).order('order_index').execute()
+        modules = [
+            {'id': m['id'], 'title': m.get('title', ''), 'order_index': m.get('order_index', 0)}
+            for m in (resp.data or [])
+        ]
+        return {'modules': modules}
+    except Exception as e:
+        logger.error(f"Error fetching modules list: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/admin/curriculum")
+async def create_admin_module(
+    body: AdminCreateModuleRequest,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """Create a new module in a course."""
+    try:
+        db = get_supabase_admin()
+
+        # Verify course exists
+        course_resp = db.table('courses').select('id, title').eq(
+            'id', body.course_id
+        ).single().execute()
+        if not course_resp.data:
+            raise HTTPException(status_code=404, detail="Course not found")
+
+        # Get next order_index
+        existing = db.table('course_modules').select('order_index').eq(
+            'course_id', body.course_id
+        ).order('order_index', desc=True).limit(1).execute()
+        next_order = (existing.data[0]['order_index'] + 1) if existing.data else 0
+
+        # Create module
+        insert_data = {
+            'course_id': body.course_id,
+            'title': body.title,
+            'description': body.description,
+            'order_index': next_order,
+            'is_published': False,
+        }
+        result = db.table('course_modules').insert(insert_data).execute()
+
+        if not result.data:
+            raise HTTPException(status_code=500, detail="Failed to create module")
+
+        logger.info(f"Admin {current_user.id} created module '{body.title}' in course {body.course_id}")
+        return {'module': result.data[0], 'message': 'Module created successfully'}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating module: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to create module: {str(e)}")
+
+
+@router.post("/admin/resources")
+async def create_admin_resource(
+    body: AdminCreateResourceRequest,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """
+    Create a new resource (video or text).
+    Creates a lesson of the appropriate type, then the content record.
+    """
+    try:
+        db = get_supabase_admin()
+
+        if body.resource_type not in ('video', 'text'):
+            raise HTTPException(status_code=400, detail="resource_type must be 'video' or 'text'")
+
+        if body.resource_type == 'video' and not body.video_url:
+            raise HTTPException(status_code=400, detail="video_url is required for video resources")
+
+        if body.resource_type == 'text' and not body.content:
+            raise HTTPException(status_code=400, detail="content is required for text resources")
+
+        # Get next lesson order_index for this module
+        existing_lessons = db.table('course_lessons').select('order_index').eq(
+            'module_id', body.module_id
+        ).order('order_index', desc=True).limit(1).execute()
+        next_order = (existing_lessons.data[0]['order_index'] + 1) if existing_lessons.data else 0
+
+        # Step 1: Create the lesson
+        lesson_data = {
+            'module_id': body.module_id,
+            'title': body.lesson_title,
+            'lesson_type': body.resource_type,
+            'order_index': next_order,
+            'is_published': False,
+            'is_mandatory': True,
+        }
+        lesson_result = db.table('course_lessons').insert(lesson_data).execute()
+        if not lesson_result.data:
+            raise HTTPException(status_code=500, detail="Failed to create lesson")
+
+        lesson_id = lesson_result.data[0]['id']
+
+        # Step 2: Create the content
+        if body.resource_type == 'video':
+            content_data = {
+                'lesson_id': lesson_id,
+                'video_url': body.video_url,
+                'video_platform': body.video_platform or 'youtube',
+                'duration_seconds': body.duration_seconds,
+                'title': body.lesson_title,
+            }
+            db.table('lesson_videos').insert(content_data).execute()
+        else:
+            content_data = {
+                'lesson_id': lesson_id,
+                'content': body.content,
+                'content_format': body.content_format or 'markdown',
+                'estimated_reading_time': body.estimated_reading_time,
+                'title': body.lesson_title,
+            }
+            db.table('lesson_texts').insert(content_data).execute()
+
+        logger.info(
+            f"Admin {current_user.id} created {body.resource_type} resource "
+            f"'{body.lesson_title}' in module {body.module_id}"
+        )
+        return {
+            'lesson': lesson_result.data[0],
+            'message': f'{body.resource_type.capitalize()} resource created successfully',
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating resource: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to create resource: {str(e)}")
+
+
+@router.post("/admin/assessments")
+async def create_admin_assessment(
+    body: AdminCreateAssessmentRequest,
+    current_user: CurrentUser = Depends(require_content_admin),
+) -> Dict[str, Any]:
+    """
+    Create a new assessment (quiz or assignment).
+    Creates a lesson of the appropriate type, then the content record.
+    """
+    try:
+        db = get_supabase_admin()
+
+        if body.assessment_type not in ('quiz', 'assignment'):
+            raise HTTPException(
+                status_code=400,
+                detail="assessment_type must be 'quiz' or 'assignment'",
+            )
+
+        if body.assessment_type == 'assignment' and not body.instructions:
+            raise HTTPException(
+                status_code=400,
+                detail="instructions is required for assignments",
+            )
+
+        # Get next lesson order_index
+        existing_lessons = db.table('course_lessons').select('order_index').eq(
+            'module_id', body.module_id
+        ).order('order_index', desc=True).limit(1).execute()
+        next_order = (existing_lessons.data[0]['order_index'] + 1) if existing_lessons.data else 0
+
+        # Step 1: Create the lesson
+        lesson_data = {
+            'module_id': body.module_id,
+            'title': body.lesson_title,
+            'lesson_type': body.assessment_type,
+            'order_index': next_order,
+            'is_published': False,
+            'is_mandatory': True,
+        }
+        lesson_result = db.table('course_lessons').insert(lesson_data).execute()
+        if not lesson_result.data:
+            raise HTTPException(status_code=500, detail="Failed to create lesson")
+
+        lesson_id = lesson_result.data[0]['id']
+
+        # Step 2: Create the content
+        if body.assessment_type == 'quiz':
+            quiz_data = {
+                'lesson_id': lesson_id,
+                'title': body.title,
+                'passing_score': body.passing_score or 70.0,
+                'time_limit_minutes': body.time_limit_minutes,
+            }
+            db.table('lesson_quizzes').insert(quiz_data).execute()
+        else:
+            assignment_data = {
+                'lesson_id': lesson_id,
+                'title': body.title,
+                'instructions': body.instructions or '',
+                'points_possible': body.points_possible or 100,
+                'due_date': body.due_date,
+            }
+            db.table('lesson_assignments').insert(assignment_data).execute()
+
+        logger.info(
+            f"Admin {current_user.id} created {body.assessment_type} "
+            f"'{body.title}' in module {body.module_id}"
+        )
+        return {
+            'lesson': lesson_result.data[0],
+            'message': f'{body.assessment_type.capitalize()} created successfully',
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating assessment: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to create assessment: {str(e)}")

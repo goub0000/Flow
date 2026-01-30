@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/providers/admin_assessments_provider.dart';
+import '../../shared/providers/admin_course_list_provider.dart';
 import '../../shared/utils/debouncer.dart';
 
 /// Assessments Management Screen - Manage quizzes and assignments across all courses
@@ -82,14 +83,321 @@ class _AssessmentsManagementScreenState
               ),
             ],
           ),
-          OutlinedButton.icon(
-            onPressed: () {
-              ref.read(adminAssessmentsProvider.notifier).fetchAssessments();
-            },
-            icon: const Icon(Icons.refresh, size: 20),
-            label: const Text('Refresh'),
+          Row(
+            children: [
+              OutlinedButton.icon(
+                onPressed: () {
+                  ref.read(adminAssessmentsProvider.notifier).fetchAssessments();
+                },
+                icon: const Icon(Icons.refresh, size: 20),
+                label: const Text('Refresh'),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton.icon(
+                onPressed: _showCreateAssessmentDialog,
+                icon: const Icon(Icons.add, size: 20),
+                label: const Text('Create Assessment'),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  void _showCreateAssessmentDialog() {
+    final lessonTitleController = TextEditingController();
+    final titleController = TextEditingController();
+    final instructionsController = TextEditingController();
+    final pointsController = TextEditingController(text: '100');
+    final passingScoreController = TextEditingController(text: '70');
+    String selectedType = 'quiz';
+    String? selectedCourseId;
+    String? selectedModuleId;
+    List<ModuleListItem> modules = [];
+    bool isCreating = false;
+    bool isLoadingModules = false;
+
+    ref.read(adminCourseListProvider.notifier).fetchCourses();
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          final courseListState = ref.watch(adminCourseListProvider);
+
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.add_circle, color: AppColors.primary),
+                const SizedBox(width: 12),
+                const Text('Create New Assessment'),
+              ],
+            ),
+            content: SizedBox(
+              width: 550,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Assessment type
+                    DropdownButtonFormField<String>(
+                      value: selectedType,
+                      decoration: InputDecoration(
+                        labelText: 'Assessment Type *',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      items: const [
+                        DropdownMenuItem(value: 'quiz', child: Text('Quiz')),
+                        DropdownMenuItem(
+                            value: 'assignment', child: Text('Assignment')),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          setDialogState(() => selectedType = value);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    // Course selector
+                    DropdownButtonFormField<String>(
+                      value: selectedCourseId,
+                      decoration: InputDecoration(
+                        labelText: 'Course *',
+                        hintText: courseListState.isLoading
+                            ? 'Loading courses...'
+                            : 'Select a course',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      items: courseListState.courses
+                          .map((c) => DropdownMenuItem(
+                                value: c.id,
+                                child: Text(c.title,
+                                    overflow: TextOverflow.ellipsis),
+                              ))
+                          .toList(),
+                      onChanged: (value) async {
+                        setDialogState(() {
+                          selectedCourseId = value;
+                          selectedModuleId = null;
+                          modules = [];
+                          isLoadingModules = true;
+                        });
+                        if (value != null) {
+                          final fetched = await ref
+                              .read(adminCourseListProvider.notifier)
+                              .fetchModules(value);
+                          setDialogState(() {
+                            modules = fetched;
+                            isLoadingModules = false;
+                          });
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    // Module selector
+                    DropdownButtonFormField<String>(
+                      value: selectedModuleId,
+                      decoration: InputDecoration(
+                        labelText: 'Module *',
+                        hintText: isLoadingModules
+                            ? 'Loading modules...'
+                            : selectedCourseId == null
+                                ? 'Select a course first'
+                                : modules.isEmpty
+                                    ? 'No modules in this course'
+                                    : 'Select a module',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      items: modules
+                          .map((m) => DropdownMenuItem(
+                                value: m.id,
+                                child: Text(m.title,
+                                    overflow: TextOverflow.ellipsis),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setDialogState(() => selectedModuleId = value);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: lessonTitleController,
+                      decoration: InputDecoration(
+                        labelText: 'Lesson Title *',
+                        hintText: 'Enter lesson title',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        labelText:
+                            '${selectedType == 'quiz' ? 'Quiz' : 'Assignment'} Title *',
+                        hintText: 'Enter title',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // Type-specific fields
+                    if (selectedType == 'quiz') ...[
+                      TextField(
+                        controller: passingScoreController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Passing Score (%)',
+                          hintText: '70',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      TextField(
+                        controller: instructionsController,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          labelText: 'Instructions *',
+                          hintText: 'Enter assignment instructions',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: pointsController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Points Possible',
+                          hintText: '100',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    Text(
+                      selectedType == 'quiz'
+                          ? 'Quiz will be created as a draft. Add questions in the Course Builder.'
+                          : 'Assignment will be created as a draft. Configure details in the Course Builder.',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: isCreating ? null : () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: isCreating
+                    ? null
+                    : () async {
+                        if (selectedCourseId == null ||
+                            selectedModuleId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  const Text('Please select course and module'),
+                              backgroundColor: AppColors.error,
+                            ),
+                          );
+                          return;
+                        }
+                        if (lessonTitleController.text.trim().isEmpty ||
+                            titleController.text.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                  'Please fill in all required fields'),
+                              backgroundColor: AppColors.error,
+                            ),
+                          );
+                          return;
+                        }
+                        if (selectedType == 'assignment' &&
+                            instructionsController.text.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                  'Please enter assignment instructions'),
+                              backgroundColor: AppColors.error,
+                            ),
+                          );
+                          return;
+                        }
+
+                        setDialogState(() => isCreating = true);
+
+                        final success = await ref
+                            .read(adminAssessmentsProvider.notifier)
+                            .createAssessment(
+                              assessmentType: selectedType,
+                              courseId: selectedCourseId!,
+                              moduleId: selectedModuleId!,
+                              lessonTitle:
+                                  lessonTitleController.text.trim(),
+                              title: titleController.text.trim(),
+                              passingScore: selectedType == 'quiz'
+                                  ? double.tryParse(
+                                      passingScoreController.text.trim())
+                                  : null,
+                              instructions: selectedType == 'assignment'
+                                  ? instructionsController.text.trim()
+                                  : null,
+                              pointsPossible: selectedType == 'assignment'
+                                  ? int.tryParse(
+                                      pointsController.text.trim())
+                                  : null,
+                            );
+
+                        if (mounted) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(success
+                                  ? '${selectedType == 'quiz' ? 'Quiz' : 'Assignment'} created'
+                                  : 'Failed to create assessment'),
+                              backgroundColor:
+                                  success ? AppColors.success : AppColors.error,
+                            ),
+                          );
+                        }
+                      },
+                child: isCreating
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Create'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

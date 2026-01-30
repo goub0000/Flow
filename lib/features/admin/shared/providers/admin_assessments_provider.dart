@@ -204,6 +204,57 @@ class AdminAssessmentsNotifier extends StateNotifier<AdminAssessmentsState> {
       );
     }
   }
+
+  /// Create a new assessment (quiz or assignment) — creates lesson + content
+  Future<bool> createAssessment({
+    required String assessmentType,
+    required String courseId,
+    required String moduleId,
+    required String lessonTitle,
+    required String title,
+    // Quiz fields
+    double? passingScore,
+    int? timeLimitMinutes,
+    // Assignment fields
+    String? instructions,
+    int? pointsPossible,
+    String? dueDate,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/assessments',
+        data: {
+          'assessment_type': assessmentType,
+          'course_id': courseId,
+          'module_id': moduleId,
+          'lesson_title': lessonTitle,
+          'title': title,
+          'passing_score': passingScore,
+          'time_limit_minutes': timeLimitMinutes,
+          'instructions': instructions,
+          'points_possible': pointsPossible,
+          'due_date': dueDate,
+        },
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success) {
+        await fetchAssessments();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to create assessment',
+        );
+        return false;
+      }
+    } catch (e) {
+      print('[AdminAssessments] Error creating assessment: $e');
+      state = state.copyWith(
+        error: 'Failed to create assessment: ${e.toString()}',
+      );
+      return false;
+    }
+  }
 }
 
 /// Provider for admin assessments state
