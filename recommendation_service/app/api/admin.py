@@ -45,6 +45,10 @@ class EnrichmentRequest(BaseModel):
     rate_limit_delay: float = 3.0
 
 
+class SystemSettingsUpdate(BaseModel):
+    settings: Dict[str, Any]
+
+
 def run_enrichment_task(limit: Optional[int], priority_high_only: bool, rate_limit_delay: float):
     """Background task to run data enrichment"""
     global enrichment_status
@@ -2863,4 +2867,97 @@ async def update_campaign_status(
         raise HTTPException(
             status_code=500,
             detail=f"Failed to update campaign status: {str(e)}"
+        )
+
+
+# ── System Settings Endpoints ──────────────────────────────────────────────
+
+
+@router.get("/admin/system/settings")
+async def get_system_settings(
+    current_user: CurrentUser = Depends(require_admin),
+) -> Dict[str, Any]:
+    """
+    Get all system settings from app_config table.
+
+    **Admin Only** - Returns all settings as a dict keyed by setting name.
+    Secret values are masked.
+    """
+    try:
+        db = get_supabase_admin()
+        response = db.table('app_config').select('*').execute()
+
+        settings: Dict[str, Any] = {}
+        for row in (response.data or []):
+            key = row.get('key', '')
+            is_secret = row.get('is_secret', False)
+            settings[key] = {
+                'value': '••••••••' if is_secret else row.get('value'),
+                'category': row.get('category', 'general'),
+                'type': row.get('type', 'string'),
+                'description': row.get('description'),
+                'is_secret': is_secret,
+            }
+
+        return settings
+
+    except Exception as e:
+        logger.error(f"Error fetching system settings: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch system settings: {str(e)}"
+        )
+
+
+@router.put("/admin/system/settings")
+async def update_system_settings(
+    body: SystemSettingsUpdate,
+    current_user: CurrentUser = Depends(require_super_admin),
+) -> Dict[str, Any]:
+    """
+    Batch upsert system settings into app_config table.
+
+    **Super Admin Only** - Accepts { settings: { key: value, ... } }
+    and upserts each key into app_config.
+    """
+    try:
+        db = get_supabase_admin()
+        updated_keys: list[str] = []
+
+        for key, value in body.settings.items():
+            db.table('app_config').upsert({
+                'key': key,
+                'value': value,
+                'updated_at': datetime.now(timezone.utc).isoformat(),
+                'updated_by': current_user.id,
+            }, on_conflict='key').execute()
+            updated_keys.append(key)
+
+        logger.info(
+            f"Admin {current_user.id} updated system settings: {updated_keys}"
+        )
+
+        # Return the refreshed settings
+        response = db.table('app_config').select('*').execute()
+        settings: Dict[str, Any] = {}
+        for row in (response.data or []):
+            k = row.get('key', '')
+            is_secret = row.get('is_secret', False)
+            settings[k] = {
+                'value': '••••••••' if is_secret else row.get('value'),
+                'category': row.get('category', 'general'),
+                'type': row.get('type', 'string'),
+                'description': row.get('description'),
+                'is_secret': is_secret,
+            }
+
+        return settings
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating system settings: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update system settings: {str(e)}"
         )

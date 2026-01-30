@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
-// AdminShell is now provided by ShellRoute in admin_routes.dart
+import '../../../../core/constants/country_data.dart';
 import '../../shared/widgets/permission_guard.dart';
+import '../../shared/providers/admin_system_provider.dart';
 
 /// System Settings Screen - Configure system-wide settings
 ///
@@ -26,14 +27,71 @@ class SystemSettingsScreen extends ConsumerStatefulWidget {
 class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
   String _selectedTab = 'general';
 
+  /// Local editable copy of all settings (key -> value).
+  final Map<String, dynamic> _localSettings = {};
+
+  /// Whether any setting has been changed since the last save / load.
+  bool _isDirty = false;
+
+  /// Whether a save operation is in progress.
+  bool _isSaving = false;
+
+  /// Whether the local settings have been seeded from the provider yet.
+  bool _seeded = false;
+
+  // ── Lifecycle ──────────────────────────────────────────────────────────
+
+  void _seedFromProvider(AdminSystemState systemState) {
+    if (_seeded) return;
+    _seeded = true;
+    for (final entry in systemState.settings.entries) {
+      _localSettings[entry.key] = entry.value.value;
+    }
+  }
+
+  void _updateLocal(String key, dynamic value) {
+    setState(() {
+      _localSettings[key] = value;
+      _isDirty = true;
+    });
+  }
+
+  Future<void> _save() async {
+    setState(() => _isSaving = true);
+
+    final success = await ref
+        .read(adminSystemProvider.notifier)
+        .batchUpdateSettings(Map<String, dynamic>.from(_localSettings));
+
+    if (!mounted) return;
+
+    setState(() => _isSaving = false);
+
+    if (success) {
+      setState(() => _isDirty = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Settings saved successfully'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Failed to save settings'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+
+  // ── Build ──────────────────────────────────────────────────────────────
+
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch settings from backend
-    // - API endpoint: GET /api/admin/system/settings
-    // - Only accessible to Super Admins and Regional Admins
-    // - Settings should be encrypted at rest
+    final systemState = ref.watch(adminSystemProvider);
+    _seedFromProvider(systemState);
 
-    // Content is wrapped by AdminShell via ShellRoute
     return _buildContent();
   }
 
@@ -109,6 +167,18 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           Row(
             children: [
+              if (_isDirty)
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: Text(
+                    'Unsaved changes',
+                    style: TextStyle(
+                      color: AppColors.warning,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
               // View Audit Logs button
               PermissionGuard(
                 permission: AdminPermission.viewAuditLogs,
@@ -247,6 +317,8 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
     }
   }
 
+  // ── Tab panels ─────────────────────────────────────────────────────────
+
   Widget _buildGeneralSettings() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -274,16 +346,19 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Application',
             [
               _buildTextSetting(
+                'app_name',
                 'Application Name',
                 'Flow Education Platform',
                 'The name displayed throughout the application',
               ),
               _buildTextSetting(
+                'support_email',
                 'Support Email',
                 'support@flow.edu',
                 'Email address for user support inquiries',
               ),
               _buildTextSetting(
+                'support_phone',
                 'Support Phone',
                 '+254 123 456 789',
                 'Phone number for user support',
@@ -295,18 +370,30 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Regional',
             [
               _buildDropdownSetting(
+                'default_region',
                 'Default Region',
                 'Kenya',
-                ['Kenya', 'Uganda', 'Tanzania', 'Rwanda'],
+                allCountries,
                 'Default region for new users',
+                onChanged: (value) {
+                  if (value == null) return;
+                  _updateLocal('default_region', value);
+                  // Auto-select currency based on country
+                  final currency = countryCurrencyMap[value];
+                  if (currency != null) {
+                    _updateLocal('currency', currency);
+                  }
+                },
               ),
               _buildDropdownSetting(
+                'currency',
                 'Default Currency',
                 'KES',
-                ['KES', 'UGX', 'TZS', 'RWF'],
+                allCurrencies,
                 'Default currency for transactions',
               ),
               _buildDropdownSetting(
+                'default_language',
                 'Default Language',
                 'English',
                 ['English', 'Swahili', 'French'],
@@ -349,16 +436,19 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'User Features',
             [
               _buildToggleSetting(
+                'allow_registration',
                 'User Registration',
                 true,
                 'Allow new users to register accounts',
               ),
               _buildToggleSetting(
+                'social_login',
                 'Social Login',
                 false,
                 'Enable login with Google, Facebook, etc.',
               ),
               _buildToggleSetting(
+                'require_email_verification',
                 'Email Verification',
                 true,
                 'Require email verification for new accounts',
@@ -370,21 +460,25 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Application Features',
             [
               _buildToggleSetting(
+                'application_submissions',
                 'Application Submissions',
                 true,
                 'Allow users to submit scholarship applications',
               ),
               _buildToggleSetting(
+                'enable_recommendations',
                 'Recommendations',
                 true,
                 'Enable recommendation system',
               ),
               _buildToggleSetting(
+                'document_upload',
                 'Document Upload',
                 true,
                 'Allow users to upload documents',
               ),
               _buildToggleSetting(
+                'enable_payments',
                 'Payment Processing',
                 true,
                 'Enable payment processing for fees',
@@ -396,16 +490,19 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Communication',
             [
               _buildToggleSetting(
+                'email_notifications',
                 'Email Notifications',
                 true,
                 'Send email notifications to users',
               ),
               _buildToggleSetting(
+                'sms_notifications',
                 'SMS Notifications',
                 false,
                 'Send SMS notifications to users',
               ),
               _buildToggleSetting(
+                'push_notifications',
                 'Push Notifications',
                 true,
                 'Send push notifications to mobile apps',
@@ -447,16 +544,19 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'API Configuration',
             [
               _buildTextSetting(
+                'api_base_url',
                 'API Base URL',
                 'https://api.flow.edu',
                 'Base URL for API endpoints',
               ),
               _buildTextSetting(
+                'api_version',
                 'API Version',
                 'v1',
                 'Current API version',
               ),
               _buildToggleSetting(
+                'api_rate_limiting',
                 'API Rate Limiting',
                 true,
                 'Enable rate limiting for API requests',
@@ -468,11 +568,13 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Third-Party Services',
             [
               _buildTextSetting(
+                'google_analytics_id',
                 'Google Analytics ID',
                 'UA-XXXXXXXXX-X',
                 'Google Analytics tracking ID',
               ),
               _buildTextSetting(
+                'sentry_dsn',
                 'Sentry DSN',
                 'https://xxx@sentry.io/xxx',
                 'Sentry error tracking DSN',
@@ -514,23 +616,27 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Email Provider',
             [
               _buildDropdownSetting(
+                'email_service',
                 'Email Service',
                 'SendGrid',
                 ['SendGrid', 'AWS SES', 'Mailgun', 'SMTP'],
                 'Email service provider',
               ),
               _buildTextSetting(
+                'email_api_key',
                 'API Key',
-                '••••••••••••••••',
+                '',
                 'Email service API key',
                 obscureText: true,
               ),
               _buildTextSetting(
+                'from_email',
                 'From Email',
                 'noreply@flow.edu',
                 'Default sender email address',
               ),
               _buildTextSetting(
+                'from_name',
                 'From Name',
                 'Flow Education',
                 'Default sender name',
@@ -572,18 +678,21 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'SMS Provider',
             [
               _buildDropdownSetting(
+                'sms_service',
                 'SMS Service',
                 'AfricasTalking',
                 ['AfricasTalking', 'Twilio', 'Nexmo'],
                 'SMS service provider',
               ),
               _buildTextSetting(
+                'sms_api_key',
                 'API Key',
-                '••••••••••••••••',
+                '',
                 'SMS service API key',
                 obscureText: true,
               ),
               _buildTextSetting(
+                'sms_sender_id',
                 'Sender ID',
                 'FLOW_EDU',
                 'SMS sender ID/shortcode',
@@ -625,23 +734,27 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'M-Pesa (Kenya)',
             [
               _buildToggleSetting(
+                'enable_mpesa',
                 'Enable M-Pesa',
                 true,
                 'Accept M-Pesa payments',
               ),
               _buildTextSetting(
+                'mpesa_consumer_key',
                 'Consumer Key',
-                '••••••••••••••••',
+                '',
                 'M-Pesa consumer key',
                 obscureText: true,
               ),
               _buildTextSetting(
+                'mpesa_consumer_secret',
                 'Consumer Secret',
-                '••••••••••••••••',
+                '',
                 'M-Pesa consumer secret',
                 obscureText: true,
               ),
               _buildTextSetting(
+                'mpesa_shortcode',
                 'Shortcode',
                 '174379',
                 'M-Pesa paybill/till number',
@@ -653,24 +766,28 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Card Payments',
             [
               _buildToggleSetting(
+                'enable_card_payments',
                 'Enable Card Payments',
                 true,
                 'Accept credit/debit card payments',
               ),
               _buildDropdownSetting(
+                'payment_gateway',
                 'Payment Processor',
                 'Stripe',
                 ['Stripe', 'Paystack', 'Flutterwave'],
                 'Card payment processor',
               ),
               _buildTextSetting(
+                'payment_publishable_key',
                 'Publishable Key',
-                'pk_test_••••••••••••••••',
+                '',
                 'Payment processor publishable key',
               ),
               _buildTextSetting(
+                'payment_secret_key',
                 'Secret Key',
-                '••••••••••••••••',
+                '',
                 'Payment processor secret key',
                 obscureText: true,
               ),
@@ -711,22 +828,26 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Authentication',
             [
               _buildToggleSetting(
+                'require_mfa_admins',
                 'Require MFA for Admins',
                 true,
                 'Require multi-factor authentication for admin accounts',
               ),
               _buildToggleSetting(
+                'require_mfa_users',
                 'Require MFA for Users',
                 false,
                 'Require multi-factor authentication for all users',
               ),
               _buildDropdownSetting(
+                'session_timeout',
                 'Session Timeout',
                 '30 minutes',
                 ['15 minutes', '30 minutes', '1 hour', '2 hours'],
                 'Automatic logout after inactivity',
               ),
               _buildDropdownSetting(
+                'password_min_length',
                 'Password Min Length',
                 '8 characters',
                 ['6 characters', '8 characters', '10 characters', '12 characters'],
@@ -739,16 +860,19 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Data Protection',
             [
               _buildToggleSetting(
+                'encrypt_sensitive_data',
                 'Encrypt Sensitive Data',
                 true,
                 'Encrypt sensitive data at rest',
               ),
               _buildToggleSetting(
+                'gdpr_compliance',
                 'GDPR Compliance Mode',
                 true,
                 'Enable GDPR compliance features',
               ),
               _buildDropdownSetting(
+                'data_retention_period',
                 'Data Retention Period',
                 '7 years',
                 ['1 year', '3 years', '5 years', '7 years', '10 years'],
@@ -791,23 +915,27 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
             'Backup Configuration',
             [
               _buildToggleSetting(
+                'enable_auto_backups',
                 'Enable Automated Backups',
                 true,
                 'Automatically backup database and files',
               ),
               _buildDropdownSetting(
+                'backup_frequency',
                 'Backup Frequency',
                 'Daily',
                 ['Hourly', 'Every 6 hours', 'Daily', 'Weekly'],
                 'How often to create backups',
               ),
               _buildDropdownSetting(
+                'backup_retention',
                 'Backup Retention',
                 '30 days',
                 ['7 days', '14 days', '30 days', '90 days', '1 year'],
                 'How long to keep backups',
               ),
               _buildTextSetting(
+                'backup_storage_location',
                 'Backup Storage Location',
                 'AWS S3 - us-east-1',
                 'Where backups are stored',
@@ -842,6 +970,8 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
       ),
     );
   }
+
+  // ── Shared setting widgets ─────────────────────────────────────────────
 
   Widget _buildSettingSection(String title, List<Widget> settings) {
     return Column(
@@ -884,11 +1014,14 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
   }
 
   Widget _buildTextSetting(
+    String settingKey,
     String label,
-    String value,
+    String defaultValue,
     String description, {
     bool obscureText = false,
   }) {
+    final currentValue = _localSettings[settingKey]?.toString() ?? defaultValue;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -923,7 +1056,8 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
               SizedBox(
                 width: 300,
                 child: TextFormField(
-                  initialValue: value,
+                  key: ValueKey('$settingKey-$currentValue'),
+                  initialValue: currentValue,
                   obscureText: obscureText,
                   decoration: InputDecoration(
                     isDense: true,
@@ -936,6 +1070,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
                     ),
                   ),
                   style: const TextStyle(fontSize: 13),
+                  onChanged: (v) => _updateLocal(settingKey, v),
                 ),
               ),
             ],
@@ -946,11 +1081,17 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
   }
 
   Widget _buildDropdownSetting(
+    String settingKey,
     String label,
-    String value,
+    String defaultValue,
     List<String> options,
-    String description,
-  ) {
+    String description, {
+    ValueChanged<String?>? onChanged,
+  }) {
+    final currentValue = (_localSettings[settingKey]?.toString()) ?? defaultValue;
+    // Ensure the current value is in the options list; if not fall back to default.
+    final effectiveValue = options.contains(currentValue) ? currentValue : defaultValue;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -982,7 +1123,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           SizedBox(
             width: 300,
             child: DropdownButtonFormField<String>(
-              value: value,
+              value: effectiveValue,
               decoration: InputDecoration(
                 isDense: true,
                 border: OutlineInputBorder(
@@ -993,14 +1134,15 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
                   vertical: 10,
                 ),
               ),
+              isExpanded: true,
               items: options
                   .map((option) => DropdownMenuItem(
                         value: option,
                         child: Text(option, style: const TextStyle(fontSize: 13)),
                       ))
                   .toList(),
-              onChanged: (value) {
-                // TODO: Handle dropdown change
+              onChanged: onChanged ?? (value) {
+                if (value != null) _updateLocal(settingKey, value);
               },
             ),
           ),
@@ -1009,7 +1151,16 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
     );
   }
 
-  Widget _buildToggleSetting(String label, bool value, String description) {
+  Widget _buildToggleSetting(
+    String settingKey,
+    String label,
+    bool defaultValue,
+    String description,
+  ) {
+    final currentValue = _localSettings[settingKey] is bool
+        ? _localSettings[settingKey] as bool
+        : defaultValue;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -1039,10 +1190,8 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(width: 16),
           Switch(
-            value: value,
-            onChanged: (newValue) {
-              // TODO: Handle toggle change
-            },
+            value: currentValue,
+            onChanged: (newValue) => _updateLocal(settingKey, newValue),
             activeColor: AppColors.success,
           ),
         ],
@@ -1079,21 +1228,18 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
     return PermissionGuard(
       permission: AdminPermission.manageSystemSettings,
       child: ElevatedButton.icon(
-        onPressed: () {
-          // TODO: Save settings to backend
-          // - Validate all settings
-          // - Call API to save
-          // - Show success/error message
-          // - Log changes to audit log
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Settings will be saved with backend integration'),
-              backgroundColor: AppColors.success,
-            ),
-          );
-        },
-        icon: const Icon(Icons.save, size: 20),
-        label: const Text('Save Changes'),
+        onPressed: (_isDirty && !_isSaving) ? _save : null,
+        icon: _isSaving
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : const Icon(Icons.save, size: 20),
+        label: Text(_isSaving ? 'Saving...' : 'Save Changes'),
       ),
     );
   }

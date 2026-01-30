@@ -223,23 +223,31 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
     }
   }
 
-  /// Update a setting
-  /// TODO: Connect to backend API (Supabase)
+  /// Update a single setting via backend API
   Future<bool> updateSetting(String key, dynamic value) async {
     try {
-      // TODO: Update in Supabase
-      await Future.delayed(const Duration(milliseconds: 300));
+      final response = await _apiClient.put(
+        '${ApiConfig.admin}/system/settings',
+        data: {
+          'settings': {key: value},
+        },
+      );
 
-      final setting = state.settings[key];
-      if (setting == null) return false;
+      if (response.success) {
+        // Update local state
+        final setting = state.settings[key];
+        if (setting == null) return false;
 
-      final updatedSetting = setting.copyWith(value: value);
-      final updatedSettings = Map<String, SystemSetting>.from(state.settings);
-      updatedSettings[key] = updatedSetting;
+        final updatedSetting = setting.copyWith(value: value);
+        final updatedSettings =
+            Map<String, SystemSetting>.from(state.settings);
+        updatedSettings[key] = updatedSetting;
 
-      state = state.copyWith(settings: updatedSettings);
+        state = state.copyWith(settings: updatedSettings);
+        return true;
+      }
 
-      return true;
+      return false;
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to update setting: ${e.toString()}',
@@ -248,25 +256,33 @@ class AdminSystemNotifier extends StateNotifier<AdminSystemState> {
     }
   }
 
-  /// Batch update settings
-  /// TODO: Connect to backend API (Supabase)
+  /// Batch update settings via backend API
   Future<bool> batchUpdateSettings(Map<String, dynamic> updates) async {
     try {
-      // TODO: Batch update in Supabase
-      await Future.delayed(const Duration(milliseconds: 500));
+      final response = await _apiClient.put(
+        '${ApiConfig.admin}/system/settings',
+        data: {
+          'settings': updates,
+        },
+      );
 
-      final updatedSettings = Map<String, SystemSetting>.from(state.settings);
+      if (response.success) {
+        // Update local state
+        final updatedSettings =
+            Map<String, SystemSetting>.from(state.settings);
 
-      updates.forEach((key, value) {
-        final setting = updatedSettings[key];
-        if (setting != null) {
-          updatedSettings[key] = setting.copyWith(value: value);
-        }
-      });
+        updates.forEach((key, value) {
+          final setting = updatedSettings[key];
+          if (setting != null) {
+            updatedSettings[key] = setting.copyWith(value: value);
+          }
+        });
 
-      state = state.copyWith(settings: updatedSettings);
+        state = state.copyWith(settings: updatedSettings);
+        return true;
+      }
 
-      return true;
+      return false;
     } catch (e) {
       state = state.copyWith(
         error: 'Failed to batch update settings: ${e.toString()}',
