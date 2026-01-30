@@ -210,8 +210,10 @@ class AdminLiveChatNotifier extends StateNotifier<AdminLiveChatState> {
   /// Assign a queue item to self
   Future<bool> assignToSelf(String queueId) async {
     try {
+      final agentId = _authService?.currentUser?.id ?? '';
       final uri = Uri.parse('$_baseUrl/chatbot/admin/queue/$queueId/assign');
-      final response = await _client.post(uri, headers: _buildHeaders());
+      final body = jsonEncode({'agent_id': agentId});
+      final response = await _client.post(uri, headers: _buildHeaders(), body: body);
 
       if (response.statusCode == 200) {
         await fetchQueue();
