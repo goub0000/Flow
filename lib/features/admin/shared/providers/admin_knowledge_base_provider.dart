@@ -52,9 +52,10 @@ class AdminKnowledgeBaseNotifier extends StateNotifier<AdminKnowledgeBaseState> 
 
     try {
       final response = await _faqService.listFAQs(
-        pageSize: 200,
+        pageSize: 100,
         category: category,
         search: search,
+        activeOnly: false,
       );
 
       final faqs = response.faqs;
