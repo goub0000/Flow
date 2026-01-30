@@ -8,11 +8,15 @@ from typing import Optional, List, Dict, Any
 import logging
 from datetime import datetime, timedelta, timezone
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.enrichment.auto_fill_orchestrator import AutoFillOrchestrator
 from app.enrichment.web_search_enricher import WebSearchEnricher
 from app.enrichment.field_scrapers import FieldSpecificScrapers
-from app.utils.security import get_current_user, CurrentUser, require_admin
+from app.utils.security import (
+    get_current_user, CurrentUser, require_admin, require_super_admin,
+    require_content_admin, require_finance_admin, require_support_admin,
+    require_analytics_admin, apply_regional_filter,
+)
 from app.utils.activity_logger import get_recent_activities, ActivityType
 from app.schemas.activity import (
     RecentActivityResponse,
@@ -91,7 +95,8 @@ def run_enrichment_task(limit: Optional[int], priority_high_only: bool, rate_lim
 @router.post("/admin/enrich/start")
 async def start_enrichment(
     request: EnrichmentRequest,
-    background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks,
+    current_user: CurrentUser = Depends(require_super_admin),
 ):
     """
     Start data enrichment process in the background
@@ -131,7 +136,9 @@ async def start_enrichment(
 
 
 @router.get("/admin/enrich/status")
-async def get_enrichment_status():
+async def get_enrichment_status(
+    current_user: CurrentUser = Depends(require_super_admin),
+):
     """
     Get current status of data enrichment process
 
@@ -147,7 +154,9 @@ async def get_enrichment_status():
 
 
 @router.post("/admin/enrich/analyze")
-async def analyze_null_values():
+async def analyze_null_values(
+    current_user: CurrentUser = Depends(require_super_admin),
+):
     """
     Analyze NULL values in the database
 
@@ -185,6 +194,203 @@ async def analyze_null_values():
     except Exception as e:
         logger.error(f"Analysis failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== ADMIN USER MANAGEMENT ====================
+
+class CreateAdminRequest(BaseModel):
+    """Request model for creating an admin user"""
+    email: str
+    password: str
+    display_name: str
+    admin_role: str  # superadmin, regionaladmin, contentadmin, supportadmin, financeadmin, analyticsadmin
+    phone_number: Optional[str] = None
+    regional_scope: Optional[str] = None
+
+
+class AdminProfileResponse(BaseModel):
+    """Response model for admin profile"""
+    id: str
+    email: str
+    display_name: Optional[str] = None
+    admin_role: Optional[str] = None
+    permissions: Optional[List[str]] = None
+    regional_scope: Optional[str] = None
+    is_active: bool = True
+    created_at: Optional[str] = None
+
+
+ALLOWED_ADMIN_ROLES = [
+    'superadmin', 'regionaladmin', 'contentadmin',
+    'supportadmin', 'financeadmin', 'analyticsadmin',
+]
+
+# Default permissions per role (text[] in PostgreSQL)
+_ROLE_PERMISSIONS = {
+    'superadmin': ['*'],
+    'regionaladmin': ['users', 'content', 'support', 'analytics'],
+    'contentadmin': ['content'],
+    'supportadmin': ['support', 'users_read'],
+    'financeadmin': ['finance', 'analytics'],
+    'analyticsadmin': ['analytics'],
+}
+
+
+@router.post("/admin/users/admins")
+async def create_admin_user(
+    request: CreateAdminRequest,
+    current_user: CurrentUser = Depends(require_super_admin),
+) -> Dict[str, Any]:
+    """
+    Create a new admin user (Super Admin only).
+
+    Creates a Supabase Auth user, inserts into `users` table,
+    and inserts into `admin_users` table with role and permissions.
+    """
+    # Validate role
+    if request.admin_role not in ALLOWED_ADMIN_ROLES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid admin_role. Must be one of: {ALLOWED_ADMIN_ROLES}"
+        )
+
+    # Regional admin requires regional_scope
+    if request.admin_role == 'regionaladmin' and not request.regional_scope:
+        raise HTTPException(
+            status_code=400,
+            detail="regional_scope is required for regionaladmin role"
+        )
+
+    try:
+        admin_db = get_supabase_admin()
+
+        # 1. Create Supabase Auth user via admin API
+        auth_response = admin_db.auth.admin.create_user({
+            "email": request.email,
+            "password": request.password,
+            "email_confirm": True,
+        })
+        new_user_id = auth_response.user.id
+
+        # 2. Insert into users table
+        admin_db.table('users').insert({
+            'id': new_user_id,
+            'email': request.email,
+            'display_name': request.display_name,
+            'active_role': request.admin_role,
+            'available_roles': [request.admin_role],
+            'phone_number': request.phone_number,
+            'is_active': True,
+        }).execute()
+
+        # 3. Insert into admin_users table
+        permissions = _ROLE_PERMISSIONS.get(request.admin_role, {})
+        admin_db.table('admin_users').insert({
+            'id': new_user_id,
+            'admin_role': request.admin_role,
+            'permissions': permissions,
+            'regional_scope': request.regional_scope,
+            'is_active': True,
+        }).execute()
+
+        logger.info(
+            f"Super admin {current_user.id} created admin user "
+            f"{request.email} with role {request.admin_role}"
+        )
+
+        return {
+            'success': True,
+            'message': f'Admin account created for {request.email}',
+            'admin': {
+                'id': new_user_id,
+                'email': request.email,
+                'display_name': request.display_name,
+                'admin_role': request.admin_role,
+                'regional_scope': request.regional_scope,
+            }
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating admin user: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create admin user: {str(e)}"
+        )
+
+
+@router.get("/admin/users/admins/me", response_model=AdminProfileResponse)
+async def get_current_admin_profile(
+    current_user: CurrentUser = Depends(require_admin),
+) -> AdminProfileResponse:
+    """
+    Get current admin's profile (any admin role).
+    """
+    try:
+        db = get_supabase()
+        response = db.table('admin_users').select('*').eq('id', current_user.id).single().execute()
+
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Admin profile not found")
+
+        data = response.data
+        return AdminProfileResponse(
+            id=current_user.id,
+            email=current_user.email,
+            display_name=current_user.display_name,
+            admin_role=data.get('admin_role'),
+            permissions=data.get('permissions'),
+            regional_scope=data.get('regional_scope'),
+            is_active=data.get('is_active', True),
+            created_at=data.get('created_at'),
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching admin profile: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to fetch admin profile: {str(e)}")
+
+
+@router.get("/admin/users/admins")
+async def list_admin_users(
+    current_user: CurrentUser = Depends(require_super_admin),
+) -> Dict[str, Any]:
+    """
+    List all admin users (Super Admin only).
+
+    Joins admin_users with users to get display names and emails.
+    """
+    try:
+        db = get_supabase()
+        response = db.table('admin_users').select(
+            '*, users!inner(email, display_name)'
+        ).execute()
+
+        admins = []
+        for row in response.data or []:
+            user_info = row.get('users', {})
+            admins.append(AdminProfileResponse(
+                id=row['id'],
+                email=user_info.get('email', ''),
+                display_name=user_info.get('display_name'),
+                admin_role=row.get('admin_role'),
+                permissions=row.get('permissions'),
+                regional_scope=row.get('regional_scope'),
+                is_active=row.get('is_active', True),
+                created_at=row.get('created_at'),
+            ))
+
+        return {
+            'success': True,
+            'admins': [a.model_dump() for a in admins],
+            'total': len(admins),
+        }
+
+    except Exception as e:
+        logger.error(f"Error listing admin users: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to list admin users: {str(e)}")
 
 
 # ==================== ADMIN DASHBOARD ACTIVITY FEED ====================
@@ -443,7 +649,7 @@ async def get_activity_stats(
 @router.delete("/admin/data/courses")
 async def clear_all_courses(
     confirm: bool = Query(False, description="Set to true to confirm deletion"),
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_super_admin)
 ) -> Dict:
     """
     Clear all courses from the database (Admin only)
@@ -901,6 +1107,9 @@ async def get_all_users_for_admin(
         if role:
             query = query.eq('active_role', role.lower())
 
+        # Apply regional scope filter for regional admins
+        query = apply_regional_filter(query, current_user, region_column='location')
+
         response = query.execute()
 
         users = []
@@ -1135,7 +1344,7 @@ async def get_all_content_for_admin(
     content_type: Optional[str] = Query(None, alias="type", description="Filter by type"),
     category: Optional[str] = Query(None, description="Filter by category"),
     search: Optional[str] = Query(None, description="Search in title"),
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_content_admin)
 ) -> AdminContentListResponse:
     """
     Get all content for admin panel
@@ -1225,7 +1434,7 @@ async def get_all_content_for_admin(
 
 @router.get("/admin/content/stats", response_model=AdminContentStatsResponse)
 async def get_content_statistics(
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_content_admin)
 ) -> AdminContentStatsResponse:
     """
     Get content statistics for admin dashboard
@@ -1286,7 +1495,7 @@ async def get_content_statistics(
 async def update_content_status(
     content_id: str,
     status_update: Dict[str, str],
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_content_admin)
 ) -> Dict[str, Any]:
     """
     Update content status (approve, reject, archive)
@@ -1349,7 +1558,7 @@ async def update_content_status(
 @router.delete("/admin/content/{content_id}")
 async def delete_content(
     content_id: str,
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_content_admin)
 ) -> Dict[str, Any]:
     """
     Delete content (soft delete by archiving)
@@ -1408,7 +1617,7 @@ class CreateContentRequest(BaseModel):
 @router.post("/admin/content")
 async def create_content(
     request: CreateContentRequest,
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_content_admin)
 ) -> Dict[str, Any]:
     """
     Create new content (course, lesson, resource)
@@ -1530,7 +1739,7 @@ class ContentAssignmentResponse(BaseModel):
 @router.post("/admin/content/assign")
 async def assign_content(
     request: ContentAssignmentRequest,
-    current_user: CurrentUser = Depends(require_admin)
+    current_user: CurrentUser = Depends(require_content_admin)
 ) -> Dict[str, Any]:
     """
     Assign content to students or institutions

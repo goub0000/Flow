@@ -141,6 +141,9 @@ class CurrentUser(BaseModel):
     role: str
     display_name: Optional[str] = None
     available_roles: List[str] = []
+    admin_role: Optional[str] = None
+    regional_scope: Optional[str] = None
+    is_regional_admin: bool = False
 
 
 async def verify_supabase_token(token: str) -> TokenPayload:
@@ -214,14 +217,38 @@ async def get_current_user(
             )
 
         user_data = response.data
+        user_role = user_data.get('active_role', UserRole.STUDENT)
 
-        return CurrentUser(
+        # Build base user
+        current_user = CurrentUser(
             id=user_data['id'],
             email=user_data['email'],
-            role=user_data.get('active_role', UserRole.STUDENT),
+            role=user_role,
             display_name=user_data.get('display_name'),
             available_roles=user_data.get('available_roles', [])
         )
+
+        # If user has an admin role, fetch admin-specific fields
+        normalized = UserRole.normalize_role(user_role)
+        if normalized in [UserRole.normalize_role(r) for r in UserRole.admin_roles()]:
+            try:
+                admin_resp = db.table('admin_users').select(
+                    'admin_role, regional_scope'
+                ).eq('id', user_data['id']).single().execute()
+
+                if admin_resp.data:
+                    admin_role = admin_resp.data.get('admin_role')
+                    regional_scope = admin_resp.data.get('regional_scope')
+                    current_user.admin_role = admin_role
+                    current_user.regional_scope = regional_scope
+                    current_user.is_regional_admin = (
+                        admin_role in ('regionaladmin', 'admin_regional')
+                        and regional_scope is not None
+                    )
+            except Exception as admin_err:
+                logger.warning(f"Could not fetch admin_users record: {admin_err}")
+
+        return current_user
 
     except HTTPException:
         raise
@@ -296,6 +323,22 @@ require_recommender = RoleChecker([UserRole.RECOMMENDER])
 require_admin = RoleChecker(UserRole.admin_roles())
 require_super_admin = RoleChecker([UserRole.ADMIN_SUPER, UserRole.SUPER_ADMIN])
 
+# Role-specific admin checkers (super admin always included)
+_super = [UserRole.ADMIN_SUPER, UserRole.SUPER_ADMIN]
+
+require_content_admin = RoleChecker(
+    _super + [UserRole.ADMIN_CONTENT, UserRole.CONTENT_ADMIN]
+)
+require_finance_admin = RoleChecker(
+    _super + [UserRole.ADMIN_FINANCE, UserRole.FINANCE_ADMIN]
+)
+require_support_admin = RoleChecker(
+    _super + [UserRole.ADMIN_SUPPORT, UserRole.SUPPORT_ADMIN]
+)
+require_analytics_admin = RoleChecker(
+    _super + [UserRole.ADMIN_ANALYTICS, UserRole.ANALYTICS_ADMIN]
+)
+
 
 def check_user_owns_resource(user_id: str, resource_user_id: str):
     """
@@ -330,6 +373,17 @@ def check_user_can_access_student(current_user: CurrentUser, student_id: str):
         status_code=status.HTTP_403_FORBIDDEN,
         detail="Not authorized to access this student's data"
     )
+
+
+def apply_regional_filter(query, current_user: CurrentUser, region_column: str = 'location'):
+    """
+    Filter query results by the admin's regional scope.
+    Only applies if the current user is a regional admin with a scope set.
+    Super admins and other roles see all records.
+    """
+    if current_user.is_regional_admin and current_user.regional_scope:
+        query = query.ilike(region_column, f'%{current_user.regional_scope}%')
+    return query
 
 
 # API Key authentication (for system-to-system communication)
