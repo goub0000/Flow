@@ -628,6 +628,53 @@ class PendingActionsNotifier extends StateNotifier<PendingActionsState> {
   }
 }
 
+/// State class for approval configurations
+class ApprovalConfigState {
+  final List<ApprovalConfig> configs;
+  final bool isLoading;
+  final String? error;
+
+  const ApprovalConfigState({
+    this.configs = const [],
+    this.isLoading = false,
+    this.error,
+  });
+
+  ApprovalConfigState copyWith({
+    List<ApprovalConfig>? configs,
+    bool? isLoading,
+    String? error,
+  }) {
+    return ApprovalConfigState(
+      configs: configs ?? this.configs,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
+}
+
+/// StateNotifier for managing approval configurations
+class ApprovalConfigNotifier extends StateNotifier<ApprovalConfigState> {
+  final ApiClient _apiClient;
+  late final ApprovalsApiService _service;
+
+  ApprovalConfigNotifier(this._apiClient) : super(const ApprovalConfigState()) {
+    _service = ApprovalsApiService(tokenGetter: () => _apiClient.token);
+  }
+
+  Future<void> fetchConfigs() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final configs = await _service.getConfigs();
+      state = state.copyWith(configs: configs, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(error: e.toString(), isLoading: false);
+    }
+  }
+
+  Future<void> refresh() async => fetchConfigs();
+}
+
 // ============================================================================
 // Providers
 // ============================================================================
@@ -658,6 +705,13 @@ final pendingActionsProvider =
     StateNotifierProvider<PendingActionsNotifier, PendingActionsState>((ref) {
   final apiClient = ref.watch(apiClientProvider);
   return PendingActionsNotifier(apiClient);
+});
+
+/// Provider for approval configurations
+final approvalConfigProvider =
+    StateNotifierProvider<ApprovalConfigNotifier, ApprovalConfigState>((ref) {
+  final apiClient = ref.watch(apiClientProvider);
+  return ApprovalConfigNotifier(apiClient);
 });
 
 /// Provider for approval requests list

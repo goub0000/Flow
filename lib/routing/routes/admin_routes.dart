@@ -43,6 +43,7 @@ import '../../features/admin/approvals/presentation/screens/approval_dashboard_s
 import '../../features/admin/approvals/presentation/screens/approval_list_screen.dart';
 import '../../features/admin/approvals/presentation/screens/approval_detail_screen.dart';
 import '../../features/admin/approvals/presentation/screens/create_approval_request_screen.dart';
+import '../../features/admin/approvals/presentation/screens/approval_config_screen.dart';
 
 /// Custom page with no transition for seamless admin navigation
 class NoTransitionPage<T> extends CustomTransitionPage<T> {
@@ -719,6 +720,13 @@ List<RouteBase> adminRoutes = [
         name: 'admin-approval-create',
         pageBuilder: (context, state) => NoTransitionPage(
           child: const CreateApprovalRequestScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/approvals/config',
+        name: 'admin-approvals-config',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ApprovalConfigScreen(),
         ),
       ),
       GoRoute(
