@@ -2,20 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
-// AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
+import '../../shared/providers/admin_finance_provider.dart';
 
 /// Transactions Screen - View and manage payment transactions
-///
-/// Features:
-/// - View all payment transactions
-/// - Filter by status, type, date range, amount
-/// - Search transactions
-/// - Process refunds
-/// - View transaction details
-/// - Export transaction reports
-/// - Monitor payment settlement status
 class TransactionsScreen extends ConsumerStatefulWidget {
   const TransactionsScreen({super.key});
 
@@ -24,7 +15,6 @@ class TransactionsScreen extends ConsumerStatefulWidget {
 }
 
 class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
-  // TODO: Replace with actual state management
   final TextEditingController _searchController = TextEditingController();
   String _selectedStatus = 'all';
   String _selectedType = 'all';
@@ -36,35 +26,112 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     super.dispose();
   }
 
+  List<Transaction> _getFilteredTransactions(List<Transaction> transactions) {
+    var filtered = transactions;
+
+    if (_selectedStatus != 'all') {
+      filtered = filtered.where((t) => t.status == _selectedStatus).toList();
+    }
+    if (_selectedType != 'all') {
+      filtered = filtered.where((t) => t.type == _selectedType).toList();
+    }
+
+    // Date range filtering
+    final now = DateTime.now();
+    DateTime? startDate;
+    switch (_selectedDateRange) {
+      case 'today':
+        startDate = DateTime(now.year, now.month, now.day);
+        break;
+      case 'yesterday':
+        startDate = DateTime(now.year, now.month, now.day - 1);
+        break;
+      case 'last7days':
+        startDate = now.subtract(const Duration(days: 7));
+        break;
+      case 'last30days':
+        startDate = now.subtract(const Duration(days: 30));
+        break;
+    }
+    if (startDate != null) {
+      filtered = filtered.where((t) => t.createdAt.isAfter(startDate!)).toList();
+    }
+
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isNotEmpty) {
+      filtered = filtered.where((t) =>
+        t.id.toLowerCase().contains(query) ||
+        t.userName.toLowerCase().contains(query) ||
+        t.amount.toStringAsFixed(2).contains(query) ||
+        (t.itemName?.toLowerCase().contains(query) ?? false)
+      ).toList();
+    }
+
+    return filtered;
+  }
+
+  String _formatCurrency(dynamic value) {
+    final num amount = value is num ? value : 0;
+    return 'KES ${amount.toStringAsFixed(2)}';
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  String _formatTime(DateTime date) {
+    return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch transactions from backend
-    // - API endpoint: GET /api/admin/finance/transactions
-    // - Support pagination, filtering, search
-    // - Include: transaction details, user info, payment method, status
-    // - Real-time updates for status changes
-
-    // Content is wrapped by AdminShell via ShellRoute
     return _buildContent();
   }
 
   Widget _buildContent() {
+    final financeState = ref.watch(adminFinanceProvider);
+    final statistics = ref.watch(adminFinanceStatisticsProvider);
+    final filteredTransactions = _getFilteredTransactions(financeState.transactions);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Page Header with Stats
         _buildHeader(),
         const SizedBox(height: 24),
-
-        // Stats Cards
-        _buildStatsCards(),
+        _buildStatsCards(statistics),
         const SizedBox(height: 24),
-
-        // Filters and Search
+        if (financeState.error != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.error.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.error_outline, color: AppColors.error, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      financeState.error!,
+                      style: TextStyle(color: AppColors.error, fontSize: 13),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh, size: 18),
+                    onPressed: () => ref.read(adminFinanceProvider.notifier).fetchTransactions(),
+                    tooltip: 'Retry',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (financeState.error != null) const SizedBox(height: 24),
         _buildFiltersSection(),
         const SizedBox(height: 24),
-
-        // Data Table
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -72,7 +139,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border),
             ),
-            child: _buildDataTable(),
+            child: _buildDataTable(filteredTransactions, financeState.isLoading),
           ),
         ),
       ],
@@ -116,24 +183,19 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           ),
           Row(
             children: [
-              // Refresh button
               IconButton(
                 onPressed: () {
-                  // TODO: Refresh transactions
+                  ref.read(adminFinanceProvider.notifier).fetchTransactions();
                 },
                 icon: const Icon(Icons.refresh),
                 tooltip: 'Refresh Transactions',
               ),
               const SizedBox(width: 8),
-              // Export button (requires permission)
               PermissionGuard(
                 permission: AdminPermission.exportData,
                 child: OutlinedButton.icon(
                   onPressed: () {
                     // TODO: Implement export functionality
-                    // - Generate CSV/Excel report
-                    // - Include filtered data
-                    // - Trigger download
                   },
                   icon: const Icon(Icons.download, size: 20),
                   label: const Text('Export Report'),
@@ -146,7 +208,15 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     );
   }
 
-  Widget _buildStatsCards() {
+  Widget _buildStatsCards(Map<String, dynamic> statistics) {
+    final totalRevenue = statistics['totalRevenue'] ?? 0.0;
+    final successfulCount = statistics['successfulTransactions'] ?? 0;
+    final successRate = statistics['successRate'] ?? 0.0;
+    final failedCount = statistics['failedTransactions'] ?? 0;
+    final totalCount = statistics['totalTransactions'] ?? 0;
+    final failureRate = totalCount > 0 ? (failedCount / totalCount * 100) : 0.0;
+    final pendingAmount = statistics['pendingAmount'] ?? 0.0;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -154,8 +224,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           Expanded(
             child: _buildStatCard(
               'Total Volume',
-              'KES 0.00', // TODO: Replace with actual data
-              'Last 30 days',
+              _formatCurrency(totalRevenue),
+              'All completed payments',
               Icons.trending_up,
               AppColors.success,
             ),
@@ -164,8 +234,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           Expanded(
             child: _buildStatCard(
               'Successful',
-              '0', // TODO: Replace with actual data
-              '0.0% success rate',
+              '$successfulCount',
+              '${successRate.toStringAsFixed(1)}% success rate',
               Icons.check_circle,
               AppColors.success,
             ),
@@ -174,8 +244,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           Expanded(
             child: _buildStatCard(
               'Failed',
-              '0', // TODO: Replace with actual data
-              '0.0% failure rate',
+              '$failedCount',
+              '${failureRate.toStringAsFixed(1)}% failure rate',
               Icons.error,
               AppColors.error,
             ),
@@ -184,7 +254,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           Expanded(
             child: _buildStatCard(
               'Pending',
-              '0', // TODO: Replace with actual data
+              _formatCurrency(pendingAmount),
               'Awaiting processing',
               Icons.pending,
               AppColors.warning,
@@ -252,7 +322,6 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          // Search
           Expanded(
             flex: 2,
             child: TextField(
@@ -270,16 +339,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 ),
               ),
               onChanged: (value) {
-                // TODO: Implement search
-                // - Debounce input
-                // - Call API with search query
-                // - Update results
+                setState(() {});
               },
             ),
           ),
           const SizedBox(width: 16),
-
-          // Status Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
@@ -303,14 +367,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedStatus = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
           ),
           const SizedBox(width: 16),
-
-          // Type Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedType,
@@ -326,21 +387,18 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               ),
               items: const [
                 DropdownMenuItem(value: 'all', child: Text('All Types')),
-                DropdownMenuItem(value: 'application', child: Text('Application Fee')),
-                DropdownMenuItem(value: 'subscription', child: Text('Subscription')),
-                DropdownMenuItem(value: 'service', child: Text('Service Fee')),
+                DropdownMenuItem(value: 'payment', child: Text('Payment')),
+                DropdownMenuItem(value: 'refund', child: Text('Refund')),
+                DropdownMenuItem(value: 'settlement', child: Text('Settlement')),
               ],
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedType = value);
-                  // TODO: Apply filter and reload data
                 }
               },
             ),
           ),
           const SizedBox(width: 16),
-
-          // Date Range Filter
           Expanded(
             child: DropdownButtonFormField<String>(
               value: _selectedDateRange,
@@ -359,13 +417,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 DropdownMenuItem(value: 'yesterday', child: Text('Yesterday')),
                 DropdownMenuItem(value: 'last7days', child: Text('Last 7 Days')),
                 DropdownMenuItem(value: 'last30days', child: Text('Last 30 Days')),
-                DropdownMenuItem(value: 'custom', child: Text('Custom Range')),
+                DropdownMenuItem(value: 'all', child: Text('All Time')),
               ],
               onChanged: (value) {
                 if (value != null) {
                   setState(() => _selectedDateRange = value);
-                  // TODO: Apply filter and reload data
-                  // TODO: Show date picker for custom range
                 }
               },
             ),
@@ -375,16 +431,13 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     );
   }
 
-  Widget _buildDataTable() {
-    // TODO: Replace with actual data from backend
-    final List<TransactionRowData> transactions = [];
-
-    return AdminDataTable<TransactionRowData>(
+  Widget _buildDataTable(List<Transaction> transactions, bool isLoading) {
+    return AdminDataTable<Transaction>(
       columns: [
         DataTableColumn(
           label: 'Transaction ID',
           cellBuilder: (txn) => Text(
-            txn.transactionId,
+            txn.id,
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 13,
@@ -407,7 +460,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 ),
               ),
               Text(
-                txn.userEmail,
+                txn.userId,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 11,
@@ -426,7 +479,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         DataTableColumn(
           label: 'Amount',
           cellBuilder: (txn) => Text(
-            txn.amount,
+            _formatCurrency(txn.amount),
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14,
@@ -434,8 +487,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Payment Method',
-          cellBuilder: (txn) => _buildPaymentMethodChip(txn.paymentMethod),
+          label: 'Description',
+          cellBuilder: (txn) => Text(
+            txn.itemName ?? txn.itemType ?? '-',
+            style: const TextStyle(fontSize: 13),
+          ),
         ),
         DataTableColumn(
           label: 'Status',
@@ -448,11 +504,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                txn.date,
+                _formatDate(txn.createdAt),
                 style: const TextStyle(fontSize: 13),
               ),
               Text(
-                txn.time,
+                _formatTime(txn.createdAt),
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 11,
@@ -464,10 +520,10 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         ),
       ],
       data: transactions,
-      isLoading: false, // TODO: Set from actual loading state
+      isLoading: isLoading,
       enableSelection: true,
       onSelectionChanged: (selectedItems) {
-        // TODO: Handle bulk actions on selected items
+        // Handle bulk actions
       },
       onRowTap: (txn) {
         _showTransactionDetails(txn);
@@ -492,8 +548,6 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           tooltip: 'Process Refund',
           color: AppColors.warning,
           onPressed: (txn) {
-            // TODO: Show refund confirmation dialog
-            // TODO: Process refund (requires AdminPermission.processRefunds)
             _showRefundDialog(txn);
           },
         ),
@@ -545,52 +599,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     );
   }
 
-  Widget _buildPaymentMethodChip(String method) {
-    IconData icon;
-    Color color = AppColors.primary;
-
-    switch (method.toLowerCase()) {
-      case 'm-pesa':
-      case 'mpesa':
-        icon = Icons.phone_android;
-        color = AppColors.success;
-        break;
-      case 'card':
-      case 'credit card':
-        icon = Icons.credit_card;
-        break;
-      case 'bank':
-      case 'bank transfer':
-        icon = Icons.account_balance;
-        break;
-      default:
-        icon = Icons.payment;
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 14, color: color),
-        const SizedBox(width: 4),
-        Text(
-          method,
-          style: TextStyle(
-            fontSize: 12,
-            color: color,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _showTransactionDetails(TransactionRowData txn) {
-    // TODO: Implement detailed transaction modal
-    // - Full transaction details
-    // - Payment gateway response
-    // - User information
-    // - Timeline of status changes
-    // - Related transactions (refunds, etc.)
+  void _showTransactionDetails(Transaction txn) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -610,23 +619,18 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Transaction ID', txn.transactionId),
+              _buildDetailRow('Transaction ID', txn.id),
               _buildDetailRow('User', txn.userName),
-              _buildDetailRow('Email', txn.userEmail),
+              _buildDetailRow('User ID', txn.userId),
               _buildDetailRow('Type', txn.type),
-              _buildDetailRow('Amount', txn.amount),
-              _buildDetailRow('Payment Method', txn.paymentMethod),
+              _buildDetailRow('Amount', _formatCurrency(txn.amount)),
+              _buildDetailRow('Currency', txn.currency),
               _buildDetailRow('Status', txn.status),
-              _buildDetailRow('Date', '${txn.date} ${txn.time}'),
-              const SizedBox(height: 16),
-              Text(
-                'Full details will be available with backend integration.',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
+              if (txn.itemName != null)
+                _buildDetailRow('Description', txn.itemName!),
+              if (txn.itemType != null)
+                _buildDetailRow('Item Type', txn.itemType!),
+              _buildDetailRow('Date', '${_formatDate(txn.createdAt)} ${_formatTime(txn.createdAt)}'),
             ],
           ),
         ),
@@ -650,15 +654,10 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     );
   }
 
-  void _showRefundDialog(TransactionRowData txn) {
-    // TODO: Implement refund processing dialog
-    // - Confirm refund amount
-    // - Add refund reason
-    // - Call refund API
-    // - Show confirmation
+  void _showRefundDialog(Transaction txn) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
             Icon(
@@ -673,14 +672,14 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Are you sure you want to refund this transaction?',
-              style: const TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 16),
-            _buildDetailRow('Transaction ID', txn.transactionId),
+            _buildDetailRow('Transaction ID', txn.id),
             _buildDetailRow('User', txn.userName),
-            _buildDetailRow('Amount', txn.amount),
+            _buildDetailRow('Amount', _formatCurrency(txn.amount)),
             const SizedBox(height: 16),
             Text(
               'This action cannot be undone.',
@@ -694,22 +693,25 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Process refund
-              // - Call refund API
-              // - Update transaction status
-              // - Show success message
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Refund will be processed with backend integration'),
-                  backgroundColor: AppColors.success,
-                ),
-              );
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              final success = await ref
+                  .read(adminFinanceProvider.notifier)
+                  .processRefund(txn.id, txn.amount, 'Admin initiated refund');
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Refund processed successfully'
+                        : 'Failed to process refund'),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.warning,
@@ -750,32 +752,4 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
       ),
     );
   }
-}
-
-/// Temporary data model for table rows
-/// TODO: Replace with actual Transaction model from backend
-class TransactionRowData {
-  final String id;
-  final String transactionId;
-  final String userName;
-  final String userEmail;
-  final String type;
-  final String amount;
-  final String paymentMethod;
-  final String status;
-  final String date;
-  final String time;
-
-  TransactionRowData({
-    required this.id,
-    required this.transactionId,
-    required this.userName,
-    required this.userEmail,
-    required this.type,
-    required this.amount,
-    required this.paymentMethod,
-    required this.status,
-    required this.date,
-    required this.time,
-  });
 }
