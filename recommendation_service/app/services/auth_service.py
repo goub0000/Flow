@@ -9,7 +9,7 @@ import logging
 from pydantic import BaseModel, EmailStr
 from fastapi import status
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.utils.security import UserRole
 from app.utils.activity_logger import log_activity_sync, ActivityType
 from app.utils.exceptions import (
@@ -223,8 +223,9 @@ class AuthService:
                     status_code=status.HTTP_401_UNAUTHORIZED
                 )
 
-            # Fetch user profile
-            user_response = self.db.table('users').select('*').eq('id', auth_response.user.id).execute()
+            # Fetch user profile using admin client to bypass RLS
+            admin_db = get_supabase_admin()
+            user_response = admin_db.table('users').select('*').eq('id', auth_response.user.id).execute()
 
             # If user profile doesn't exist, create it (handles orphaned auth users)
             if not user_response.data or len(user_response.data) == 0:
@@ -251,7 +252,7 @@ class AuthService:
                     "updated_at": datetime.utcnow().isoformat(),
                 }
 
-                profile_response = self.db.table('users').insert(new_profile).execute()
+                profile_response = admin_db.table('users').insert(new_profile).execute()
                 user_data = profile_response.data[0] if profile_response.data else new_profile
             else:
                 user_data = user_response.data[0]
@@ -308,6 +309,51 @@ class AuthService:
 
             # Check for email not verified
             if "not confirmed" in error_message or "verify" in error_message:
+                # For admin users, auto-confirm email and retry sign-in
+                try:
+                    admin_db = get_supabase_admin()
+                    # Look up the user by email to get their ID
+                    users_by_email = admin_db.table('users').select('id').eq(
+                        'email', signin_data.email
+                    ).execute()
+                    if users_by_email.data:
+                        uid = users_by_email.data[0]['id']
+                        # Check if they're an admin
+                        admin_check = admin_db.table('admin_users').select('id').eq(
+                            'id', uid
+                        ).execute()
+                        if admin_check.data:
+                            # Auto-confirm admin email and retry
+                            logger.info(f"Auto-confirming email for admin user {signin_data.email}")
+                            admin_db.auth.admin.update_user_by_id(
+                                uid, {"email_confirm": True}
+                            )
+                            # Retry sign-in
+                            retry_response = self.db.auth.sign_in_with_password({
+                                "email": signin_data.email,
+                                "password": signin_data.password,
+                            })
+                            if retry_response.user and retry_response.session:
+                                # Fetch profile and continue
+                                user_response = admin_db.table('users').select('*').eq(
+                                    'id', retry_response.user.id
+                                ).execute()
+                                user_data = user_response.data[0] if user_response.data else None
+                                if user_data:
+                                    # Update last login
+                                    admin_db.table('users').update({
+                                        "last_login_at": datetime.utcnow().isoformat()
+                                    }).eq('id', retry_response.user.id).execute()
+
+                                    return SignInResponse(
+                                        access_token=retry_response.session.access_token,
+                                        refresh_token=retry_response.session.refresh_token,
+                                        user=user_data,
+                                        expires_in=retry_response.session.expires_in or 3600,
+                                    )
+                except Exception as retry_err:
+                    logger.warning(f"Admin email auto-confirm retry failed: {retry_err}")
+
                 raise AuthException(
                     error_code=AuthErrorCode.EMAIL_NOT_VERIFIED,
                     message="Please verify your email address before logging in.",
