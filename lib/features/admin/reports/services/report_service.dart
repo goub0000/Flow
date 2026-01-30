@@ -274,7 +274,6 @@ class ReportService {
         await ExportUtils.exportToExcel(
           data: data,
           filename: '$filename.xlsx',
-          sheetName: 'Report',
         );
         break;
       case ReportFormat.pdf:
