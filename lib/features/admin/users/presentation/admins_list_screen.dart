@@ -205,36 +205,51 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           ),
           const SizedBox(width: 16),
 
-          // Role filter
-          Container(
-            width: 180,
-            child: DropdownButtonFormField<String>(
-              value: _selectedRole,
-              decoration: InputDecoration(
-                labelText: 'Admin Role',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+          // Role filter (filtered by hierarchy)
+          Builder(
+            builder: (context) {
+              final currentAdmin = ref.watch(currentAdminUserProvider);
+              final isSuperAdmin = currentAdmin?.adminRole == UserRole.superAdmin;
+
+              final roleItems = <DropdownMenuItem<String>>[
+                const DropdownMenuItem(value: 'all', child: Text('All Roles')),
+                if (isSuperAdmin) ...[
+                  const DropdownMenuItem(value: 'superadmin', child: Text('Super Admin')),
+                  const DropdownMenuItem(value: 'regionaladmin', child: Text('Regional Admin')),
+                ],
+                const DropdownMenuItem(value: 'contentadmin', child: Text('Content Admin')),
+                const DropdownMenuItem(value: 'supportadmin', child: Text('Support Admin')),
+                const DropdownMenuItem(value: 'financeadmin', child: Text('Finance Admin')),
+                const DropdownMenuItem(value: 'analyticsadmin', child: Text('Analytics Admin')),
+              ];
+
+              // Reset filter if current value is no longer available
+              final validValues = roleItems.map((i) => i.value).toSet();
+              final effectiveRole = validValues.contains(_selectedRole) ? _selectedRole : 'all';
+
+              return Container(
+                width: 180,
+                child: DropdownButtonFormField<String>(
+                  value: effectiveRole,
+                  decoration: InputDecoration(
+                    labelText: 'Admin Role',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
+                  items: roleItems,
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => _selectedRole = value);
+                    }
+                  },
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Roles')),
-                DropdownMenuItem(value: 'superadmin', child: Text('Super Admin')),
-                DropdownMenuItem(value: 'regionaladmin', child: Text('Regional Admin')),
-                DropdownMenuItem(value: 'contentadmin', child: Text('Content Admin')),
-                DropdownMenuItem(value: 'supportadmin', child: Text('Support Admin')),
-                DropdownMenuItem(value: 'financeadmin', child: Text('Finance Admin')),
-                DropdownMenuItem(value: 'analyticsadmin', child: Text('Analytics Admin')),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedRole = value);
-                }
-              },
-            ),
+              );
+            },
           ),
           const SizedBox(width: 16),
 

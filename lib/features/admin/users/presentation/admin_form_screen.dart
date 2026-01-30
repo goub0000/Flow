@@ -8,6 +8,7 @@ import '../../../../core/providers/service_providers.dart';
 import '../../../../core/utils/validators.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
+import '../../shared/providers/admin_auth_provider.dart';
 
 /// Admin Form Screen - Create or edit admin accounts
 ///
@@ -362,14 +363,25 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
   }
 
   Widget _buildRoleDropdown() {
-    final adminRoles = [
-      UserRole.superAdmin,
-      UserRole.regionalAdmin,
-      UserRole.contentAdmin,
-      UserRole.supportAdmin,
-      UserRole.financeAdmin,
-      UserRole.analyticsAdmin,
-    ];
+    final currentAdmin = ref.watch(currentAdminUserProvider);
+    final isSuperAdmin = currentAdmin?.adminRole == UserRole.superAdmin;
+
+    // Regional admins can only create lower-level admins (not super or regional)
+    final adminRoles = isSuperAdmin
+        ? [
+            UserRole.superAdmin,
+            UserRole.regionalAdmin,
+            UserRole.contentAdmin,
+            UserRole.supportAdmin,
+            UserRole.financeAdmin,
+            UserRole.analyticsAdmin,
+          ]
+        : [
+            UserRole.contentAdmin,
+            UserRole.supportAdmin,
+            UserRole.financeAdmin,
+            UserRole.analyticsAdmin,
+          ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
