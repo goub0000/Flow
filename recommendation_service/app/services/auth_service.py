@@ -72,6 +72,57 @@ class AuthService:
     def __init__(self):
         self.db = get_supabase()
 
+    async def _try_auto_confirm_admin(self, signin_data: SignInRequest) -> Optional[SignInResponse]:
+        """
+        If the user is an admin whose email wasn't confirmed,
+        auto-confirm and retry sign-in. Returns SignInResponse on success, None on failure.
+        """
+        try:
+            admin_db = get_supabase_admin()
+            users_by_email = admin_db.table('users').select('id').eq(
+                'email', signin_data.email
+            ).execute()
+            if not users_by_email.data:
+                return None
+
+            uid = users_by_email.data[0]['id']
+            admin_check = admin_db.table('admin_users').select('id').eq(
+                'id', uid
+            ).execute()
+            if not admin_check.data:
+                return None
+
+            # Auto-confirm admin email and retry
+            logger.info(f"Auto-confirming email for admin user {signin_data.email}")
+            admin_db.auth.admin.update_user_by_id(
+                uid, {"email_confirm": True}
+            )
+
+            # Retry sign-in
+            retry_response = self.db.auth.sign_in_with_password({
+                "email": signin_data.email,
+                "password": signin_data.password,
+            })
+            if retry_response.user and retry_response.session:
+                user_response = admin_db.table('users').select('*').eq(
+                    'id', retry_response.user.id
+                ).execute()
+                user_data = user_response.data[0] if user_response.data else None
+                if user_data:
+                    admin_db.table('users').update({
+                        "last_login_at": datetime.utcnow().isoformat()
+                    }).eq('id', retry_response.user.id).execute()
+
+                    return SignInResponse(
+                        access_token=retry_response.session.access_token,
+                        refresh_token=retry_response.session.refresh_token,
+                        user=user_data,
+                        expires_in=retry_response.session.expires_in or 3600,
+                    )
+        except Exception as e:
+            logger.warning(f"Auto-confirm admin failed: {e}")
+        return None
+
     async def sign_up(self, signup_data: SignUpRequest) -> Dict[str, Any]:
         """
         Register a new user
@@ -217,6 +268,13 @@ class AuthService:
             })
 
             if not auth_response.user or not auth_response.session:
+                # Supabase may return user but no session when email is not confirmed.
+                # Check if this is an admin user and auto-confirm if so.
+                if auth_response.user and not auth_response.session:
+                    confirmed = await self._try_auto_confirm_admin(signin_data)
+                    if confirmed is not None:
+                        return confirmed
+
                 raise AuthException(
                     error_code=AuthErrorCode.INVALID_CREDENTIALS,
                     message="Invalid email or password.",
@@ -265,8 +323,8 @@ class AuthService:
                     status_code=status.HTTP_403_FORBIDDEN
                 )
 
-            # Update last login timestamp
-            self.db.table('users').update({
+            # Update last login timestamp (use admin client to bypass RLS)
+            admin_db.table('users').update({
                 "last_login_at": datetime.utcnow().isoformat()
             }).eq('id', auth_response.user.id).execute()
 
@@ -307,52 +365,15 @@ class AuthService:
                     status_code=status.HTTP_401_UNAUTHORIZED
                 )
 
-            # Check for email not verified
-            if "not confirmed" in error_message or "verify" in error_message:
+            # Check for email not verified (handles various Supabase error formats)
+            if any(term in error_message for term in [
+                "not confirmed", "not_confirmed", "verify", "email_not_verified",
+                "confirmation", "confirm"
+            ]):
                 # For admin users, auto-confirm email and retry sign-in
-                try:
-                    admin_db = get_supabase_admin()
-                    # Look up the user by email to get their ID
-                    users_by_email = admin_db.table('users').select('id').eq(
-                        'email', signin_data.email
-                    ).execute()
-                    if users_by_email.data:
-                        uid = users_by_email.data[0]['id']
-                        # Check if they're an admin
-                        admin_check = admin_db.table('admin_users').select('id').eq(
-                            'id', uid
-                        ).execute()
-                        if admin_check.data:
-                            # Auto-confirm admin email and retry
-                            logger.info(f"Auto-confirming email for admin user {signin_data.email}")
-                            admin_db.auth.admin.update_user_by_id(
-                                uid, {"email_confirm": True}
-                            )
-                            # Retry sign-in
-                            retry_response = self.db.auth.sign_in_with_password({
-                                "email": signin_data.email,
-                                "password": signin_data.password,
-                            })
-                            if retry_response.user and retry_response.session:
-                                # Fetch profile and continue
-                                user_response = admin_db.table('users').select('*').eq(
-                                    'id', retry_response.user.id
-                                ).execute()
-                                user_data = user_response.data[0] if user_response.data else None
-                                if user_data:
-                                    # Update last login
-                                    admin_db.table('users').update({
-                                        "last_login_at": datetime.utcnow().isoformat()
-                                    }).eq('id', retry_response.user.id).execute()
-
-                                    return SignInResponse(
-                                        access_token=retry_response.session.access_token,
-                                        refresh_token=retry_response.session.refresh_token,
-                                        user=user_data,
-                                        expires_in=retry_response.session.expires_in or 3600,
-                                    )
-                except Exception as retry_err:
-                    logger.warning(f"Admin email auto-confirm retry failed: {retry_err}")
+                confirmed = await self._try_auto_confirm_admin(signin_data)
+                if confirmed is not None:
+                    return confirmed
 
                 raise AuthException(
                     error_code=AuthErrorCode.EMAIL_NOT_VERIFIED,
