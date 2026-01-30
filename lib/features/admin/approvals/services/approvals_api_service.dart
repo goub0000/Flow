@@ -547,6 +547,30 @@ class ApprovalsApiService {
     }
   }
 
+  /// Update approval configuration (Super Admin only)
+  Future<ApprovalConfig> updateConfig(
+    String configId,
+    Map<String, dynamic> updates,
+  ) async {
+    try {
+      final response = await _client.patch(
+        Uri.parse('$baseUrl/admin/approvals/config/$configId'),
+        headers: _buildHeaders(),
+        body: jsonEncode(updates),
+      );
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        return ApprovalConfig.fromJson(json);
+      } else {
+        _handleError(response, 'Update config');
+        throw Exception('Failed to update config');
+      }
+    } catch (e) {
+      throw Exception('Error updating config: $e');
+    }
+  }
+
   // ==================== Audit ====================
 
   /// Get audit log for a request

@@ -673,6 +673,19 @@ class ApprovalConfigNotifier extends StateNotifier<ApprovalConfigState> {
   }
 
   Future<void> refresh() async => fetchConfigs();
+
+  Future<bool> updateConfig(String configId, Map<String, dynamic> updates) async {
+    try {
+      final updated = await _service.updateConfig(configId, updates);
+      // Replace in list
+      final configs = state.configs.map((c) => c.id == configId ? updated : c).toList();
+      state = state.copyWith(configs: configs);
+      return true;
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+      return false;
+    }
+  }
 }
 
 // ============================================================================
