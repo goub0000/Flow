@@ -523,6 +523,15 @@ List<RouteBase> adminRoutes = [
         ),
       ),
 
+      // Content Admin shortcut route (maps to /admin/content/courses)
+      GoRoute(
+        path: '/admin/courses',
+        name: 'admin-courses-shortcut',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const ContentManagementScreen(pageTitle: 'Courses'),
+        ),
+      ),
+
       // Content Admin Routes
       GoRoute(
         path: '/admin/curriculum',
