@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../shared/widgets/coming_soon_dialog.dart';
 import '../../../shared/widgets/refresh_utilities.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
@@ -166,32 +166,16 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
                 onSelected: (String value) {
                   switch (value) {
                     case 'add_user':
-                      ComingSoonDialog.show(
-                        context,
-                        featureName: 'Add User',
-                        customMessage: 'Quickly add new users to the system with role assignments and permissions.',
-                      );
+                      context.go('/admin/users/students/create');
                       break;
                     case 'create_announcement':
-                      ComingSoonDialog.show(
-                        context,
-                        featureName: 'Create Announcement',
-                        customMessage: 'Send announcements to all users or specific groups.',
-                      );
+                      context.go('/admin/communications');
                       break;
                     case 'generate_report':
-                      ComingSoonDialog.show(
-                        context,
-                        featureName: 'Generate Report',
-                        customMessage: 'Generate comprehensive reports with analytics and insights.',
-                      );
+                      context.go('/admin/analytics');
                       break;
                     case 'bulk_actions':
-                      ComingSoonDialog.show(
-                        context,
-                        featureName: 'Bulk Actions',
-                        customMessage: 'Perform bulk operations on multiple entities at once.',
-                      );
+                      context.go('/admin/users/students');
                       break;
                   }
                 },
