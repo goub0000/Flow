@@ -1266,7 +1266,7 @@ class ApprovalService:
             if not comment_response.data:
                 raise Exception("Comment not found")
 
-            if comment_response.data['author_id'] != admin_id and admin_role != 'super_admin':
+            if comment_response.data['author_id'] != admin_id and admin_role not in ('super_admin', 'superadmin'):
                 raise Exception("Can only delete your own comments")
 
             update_data = {
@@ -1550,7 +1550,7 @@ class ApprovalService:
     ) -> ApprovalConfigResponse:
         """Update an approval configuration (Super Admin only)"""
         try:
-            if admin_role != 'super_admin':
+            if admin_role not in ('super_admin', 'superadmin'):
                 raise Exception("Only Super Admins can modify configurations")
 
             update_dict = {'updated_at': datetime.utcnow().isoformat()}
@@ -1644,7 +1644,7 @@ class ApprovalService:
     ) -> ApprovalAuditLogResponse:
         """Get system-wide audit log"""
         try:
-            if admin_role != 'super_admin':
+            if admin_role not in ('super_admin', 'superadmin'):
                 raise Exception("Only Super Admins can view system-wide audit logs")
 
             query = self.db.table('approval_audit_log').select('*', count='exact')
