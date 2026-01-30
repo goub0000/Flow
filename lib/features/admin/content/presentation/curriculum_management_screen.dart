@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/providers/admin_curriculum_provider.dart';
+import '../../shared/providers/admin_course_list_provider.dart';
 import '../../shared/utils/debouncer.dart';
 
 /// Curriculum Management Screen - Manage modules across all courses
@@ -82,14 +83,185 @@ class _CurriculumManagementScreenState
               ),
             ],
           ),
-          OutlinedButton.icon(
-            onPressed: () {
-              ref.read(adminCurriculumProvider.notifier).fetchCurriculum();
-            },
-            icon: const Icon(Icons.refresh, size: 20),
-            label: const Text('Refresh'),
+          Row(
+            children: [
+              OutlinedButton.icon(
+                onPressed: () {
+                  ref.read(adminCurriculumProvider.notifier).fetchCurriculum();
+                },
+                icon: const Icon(Icons.refresh, size: 20),
+                label: const Text('Refresh'),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton.icon(
+                onPressed: _showCreateModuleDialog,
+                icon: const Icon(Icons.add, size: 20),
+                label: const Text('Create Module'),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  void _showCreateModuleDialog() {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+    String? selectedCourseId;
+    bool isCreating = false;
+
+    // Pre-fetch courses
+    ref.read(adminCourseListProvider.notifier).fetchCourses();
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          final courseListState = ref.watch(adminCourseListProvider);
+
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.add_circle, color: AppColors.primary),
+                const SizedBox(width: 12),
+                const Text('Create New Module'),
+              ],
+            ),
+            content: SizedBox(
+              width: 500,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Course selector
+                  DropdownButtonFormField<String>(
+                    value: selectedCourseId,
+                    decoration: InputDecoration(
+                      labelText: 'Course *',
+                      hintText: courseListState.isLoading
+                          ? 'Loading courses...'
+                          : 'Select a course',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    items: courseListState.courses
+                        .map((c) => DropdownMenuItem(
+                              value: c.id,
+                              child: Text(
+                                c.title,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setDialogState(() => selectedCourseId = value);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                      labelText: 'Module Title *',
+                      hintText: 'Enter module title',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: descriptionController,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                      hintText: 'Enter module description (optional)',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Module will be created as a draft. Use the Course Builder to add lessons.',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: isCreating ? null : () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: isCreating
+                    ? null
+                    : () async {
+                        if (selectedCourseId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Please select a course'),
+                              backgroundColor: AppColors.error,
+                            ),
+                          );
+                          return;
+                        }
+                        if (titleController.text.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Please enter a title'),
+                              backgroundColor: AppColors.error,
+                            ),
+                          );
+                          return;
+                        }
+
+                        setDialogState(() => isCreating = true);
+
+                        final success = await ref
+                            .read(adminCurriculumProvider.notifier)
+                            .createModule(
+                              courseId: selectedCourseId!,
+                              title: titleController.text.trim(),
+                              description:
+                                  descriptionController.text.trim().isEmpty
+                                      ? null
+                                      : descriptionController.text.trim(),
+                            );
+
+                        if (mounted) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(success
+                                  ? 'Module "${titleController.text}" created'
+                                  : 'Failed to create module'),
+                              backgroundColor:
+                                  success ? AppColors.success : AppColors.error,
+                            ),
+                          );
+                        }
+                      },
+                child: isCreating
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Create'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

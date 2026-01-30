@@ -180,6 +180,57 @@ class AdminResourcesNotifier extends StateNotifier<AdminResourcesState> {
       );
     }
   }
+
+  /// Create a new resource (video or text) — creates lesson + content
+  Future<bool> createResource({
+    required String resourceType,
+    required String courseId,
+    required String moduleId,
+    required String lessonTitle,
+    // Video fields
+    String? videoUrl,
+    String? videoPlatform,
+    int? durationSeconds,
+    // Text fields
+    String? content,
+    String? contentFormat,
+    int? estimatedReadingTime,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.admin}/resources',
+        data: {
+          'resource_type': resourceType,
+          'course_id': courseId,
+          'module_id': moduleId,
+          'lesson_title': lessonTitle,
+          'video_url': videoUrl,
+          'video_platform': videoPlatform,
+          'duration_seconds': durationSeconds,
+          'content': content,
+          'content_format': contentFormat,
+          'estimated_reading_time': estimatedReadingTime,
+        },
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success) {
+        await fetchResources();
+        return true;
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to create resource',
+        );
+        return false;
+      }
+    } catch (e) {
+      print('[AdminResources] Error creating resource: $e');
+      state = state.copyWith(
+        error: 'Failed to create resource: ${e.toString()}',
+      );
+      return false;
+    }
+  }
 }
 
 /// Provider for admin resources state
