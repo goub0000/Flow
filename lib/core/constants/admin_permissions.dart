@@ -127,33 +127,45 @@ class AdminPermissions {
     );
   }
 
-  /// Regional Admin - Regional management permissions
+  /// Regional Admin - Regional management permissions (mini Super Admin)
   factory AdminPermissions.regionalAdmin(String region) {
     return AdminPermissions(
       regionalScope: region,
       permissions: {
         // User Management
+        AdminPermission.viewAllUsers,
         AdminPermission.viewRegionalUsers,
         AdminPermission.editUsers,
+        AdminPermission.suspendUsers,
+        AdminPermission.deleteUsers,
         AdminPermission.bulkUserOperations,
         AdminPermission.resetUserPasswords,
         AdminPermission.unlockUserAccounts,
+
+        // Admin Management
+        AdminPermission.manageAdmins,
 
         // Institution Management
         AdminPermission.viewInstitutions,
         AdminPermission.editInstitutions,
         AdminPermission.approveInstitutions,
+        AdminPermission.verifyInstitutions,
 
         // Content Management
         AdminPermission.viewContent,
         AdminPermission.createContent,
         AdminPermission.editContent,
+        AdminPermission.deleteContent,
         AdminPermission.approveContent,
+        AdminPermission.manageVersions,
 
         // Financial Management
         AdminPermission.viewTransactions,
         AdminPermission.viewFinancialReports,
         AdminPermission.configureFees,
+        AdminPermission.processRefunds,
+        AdminPermission.manageFraudDetection,
+        AdminPermission.manageCommissions,
 
         // Support
         AdminPermission.viewTickets,
@@ -171,10 +183,10 @@ class AdminPermissions {
         AdminPermission.sendEmailCampaigns,
         AdminPermission.sendSMS,
         AdminPermission.managePushNotifications,
+        AdminPermission.manageTemplates,
 
-        // System
+        // Audit (read-only, no system settings)
         AdminPermission.viewAuditLogs,
-        AdminPermission.manageSystemSettings,
 
         // Approval Workflow (Level 2 approver)
         AdminPermission.initiateApprovalRequest,
