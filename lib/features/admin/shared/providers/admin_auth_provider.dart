@@ -136,10 +136,21 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final response = await _authService.login(
+      // Attempt login - backend auto-confirms admin emails if needed
+      var response = await _authService.login(
         email: email,
         password: password,
       );
+
+      // If first attempt fails, wait and retry once (backend may need time
+      // to auto-confirm admin email on first login)
+      if (!response.success || response.data == null) {
+        await Future.delayed(const Duration(seconds: 2));
+        response = await _authService.login(
+          email: email,
+          password: password,
+        );
+      }
 
       if (!response.success || response.data == null) {
         throw Exception(response.message ?? 'Login failed');

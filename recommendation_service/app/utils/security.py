@@ -11,7 +11,7 @@ from jose import JWTError, jwt
 from pydantic import BaseModel
 import logging
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 
 logger = logging.getLogger(__name__)
 
@@ -205,9 +205,9 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Fetch user from database
+    # Fetch user from database (use admin client to bypass RLS)
     try:
-        db = get_supabase()
+        db = get_supabase_admin()
         response = db.table('users').select('*').eq('id', token_data.sub).single().execute()
 
         if not response.data:
@@ -277,7 +277,7 @@ async def get_optional_user(
         if not token_data.sub:
             return None
 
-        db = get_supabase()
+        db = get_supabase_admin()
         response = db.table('users').select('*').eq('id', token_data.sub).single().execute()
 
         if not response.data:

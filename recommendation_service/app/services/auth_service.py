@@ -6,6 +6,7 @@ Updated: 2025-11-27 - Enhanced error handling with structured error responses
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 import logging
+import asyncio
 from pydantic import BaseModel, EmailStr
 from fastapi import status
 
@@ -92,33 +93,49 @@ class AuthService:
             if not admin_check.data:
                 return None
 
-            # Auto-confirm admin email and retry
+            # Auto-confirm admin email via admin API
             logger.info(f"Auto-confirming email for admin user {signin_data.email}")
             admin_db.auth.admin.update_user_by_id(
                 uid, {"email_confirm": True}
             )
 
-            # Retry sign-in
-            retry_response = self.db.auth.sign_in_with_password({
-                "email": signin_data.email,
-                "password": signin_data.password,
-            })
-            if retry_response.user and retry_response.session:
-                user_response = admin_db.table('users').select('*').eq(
-                    'id', retry_response.user.id
-                ).execute()
-                user_data = user_response.data[0] if user_response.data else None
-                if user_data:
-                    admin_db.table('users').update({
-                        "last_login_at": datetime.utcnow().isoformat()
-                    }).eq('id', retry_response.user.id).execute()
+            # Wait for confirmation to propagate in Supabase
+            await asyncio.sleep(1.0)
 
-                    return SignInResponse(
-                        access_token=retry_response.session.access_token,
-                        refresh_token=retry_response.session.refresh_token,
-                        user=user_data,
-                        expires_in=retry_response.session.expires_in or 3600,
+            # Retry sign-in with up to 2 attempts
+            last_error = None
+            for attempt in range(2):
+                try:
+                    retry_response = self.db.auth.sign_in_with_password({
+                        "email": signin_data.email,
+                        "password": signin_data.password,
+                    })
+                    if retry_response.user and retry_response.session:
+                        user_response = admin_db.table('users').select('*').eq(
+                            'id', retry_response.user.id
+                        ).execute()
+                        user_data = user_response.data[0] if user_response.data else None
+                        if user_data:
+                            admin_db.table('users').update({
+                                "last_login_at": datetime.utcnow().isoformat()
+                            }).eq('id', retry_response.user.id).execute()
+
+                            return SignInResponse(
+                                access_token=retry_response.session.access_token,
+                                refresh_token=retry_response.session.refresh_token,
+                                user=user_data,
+                                expires_in=retry_response.session.expires_in or 3600,
+                            )
+                except Exception as retry_err:
+                    last_error = retry_err
+                    logger.warning(
+                        f"Auto-confirm retry attempt {attempt + 1} failed: {retry_err}"
                     )
+                    if attempt == 0:
+                        await asyncio.sleep(2.0)
+
+            if last_error:
+                logger.warning(f"All auto-confirm retry attempts failed: {last_error}")
         except Exception as e:
             logger.warning(f"Auto-confirm admin failed: {e}")
         return None
@@ -357,14 +374,6 @@ class AuthService:
             error_message = str(e).lower()
             logger.error(f"Sign in error: {e}")
 
-            # Check for invalid credentials
-            if any(term in error_message for term in ["invalid", "credentials", "password", "email"]):
-                raise AuthException(
-                    error_code=AuthErrorCode.INVALID_CREDENTIALS,
-                    message="Invalid email or password.",
-                    status_code=status.HTTP_401_UNAUTHORIZED
-                )
-
             # Check for email not verified (handles various Supabase error formats)
             if any(term in error_message for term in [
                 "not confirmed", "not_confirmed", "verify", "email_not_verified",
@@ -380,6 +389,26 @@ class AuthService:
                     message="Please verify your email address before logging in.",
                     status_code=status.HTTP_403_FORBIDDEN
                 )
+
+            # Check for invalid credentials - but also try auto-confirm for admins
+            # because some Supabase versions return "Invalid login credentials"
+            # for unconfirmed emails (user enumeration protection)
+            if any(term in error_message for term in ["invalid", "credentials", "password"]):
+                # Try auto-confirm in case this is actually an unconfirmed email
+                confirmed = await self._try_auto_confirm_admin(signin_data)
+                if confirmed is not None:
+                    return confirmed
+
+                raise AuthException(
+                    error_code=AuthErrorCode.INVALID_CREDENTIALS,
+                    message="Invalid email or password.",
+                    status_code=status.HTTP_401_UNAUTHORIZED
+                )
+
+            # For any other error, still try auto-confirm for admin users
+            confirmed = await self._try_auto_confirm_admin(signin_data)
+            if confirmed is not None:
+                return confirmed
 
             # Parse other Supabase errors
             raise parse_supabase_auth_error(str(e))
