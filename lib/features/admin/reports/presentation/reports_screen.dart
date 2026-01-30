@@ -426,7 +426,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             'Track application submissions, conversions, and completion rates',
         type: ReportType.engagement,
         category: ReportCategory.operations,
-        icon: Icons.funnel_chart,
+        icon: Icons.filter_alt,
       ),
 
       // Compliance Reports
