@@ -67,7 +67,16 @@ final consentNeededProvider =
 final consentStatisticsProvider =
     FutureProvider<Map<String, dynamic>>((ref) async {
   final service = ref.watch(consentServiceProvider);
-  return await service.getConsentStatistics();
+  final token = ref.watch(accessTokenProvider);
+  return await service.getConsentStatistics(accessToken: token);
+});
+
+/// Admin consent users list provider (for admin user data viewer)
+final adminConsentUsersProvider =
+    FutureProvider<Map<String, dynamic>>((ref) async {
+  final service = ref.watch(consentServiceProvider);
+  final token = ref.watch(accessTokenProvider);
+  return await service.getAdminUserConsents(accessToken: token);
 });
 
 /// User analytics summary provider
