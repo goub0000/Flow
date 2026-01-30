@@ -2925,11 +2925,12 @@ async def update_system_settings(
         updated_keys: list[str] = []
 
         for key, value in body.settings.items():
+            # value column is text not null — convert to string
+            str_value = str(value) if value is not None else ''
             db.table('app_config').upsert({
                 'key': key,
-                'value': value,
+                'value': str_value,
                 'updated_at': datetime.now(timezone.utc).isoformat(),
-                'updated_by': current_user.id,
             }, on_conflict='key').execute()
             updated_keys.append(key)
 
