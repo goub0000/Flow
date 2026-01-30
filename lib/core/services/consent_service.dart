@@ -164,24 +164,82 @@ class ConsentService {
     }
   }
 
-  /// Get consent statistics (for admin dashboard)
-  /// Note: Admin statistics should be fetched from a backend admin endpoint
-  /// This method returns empty stats as a placeholder
-  Future<Map<String, dynamic>> getConsentStatistics() async {
-    // Admin statistics should be implemented via a backend admin endpoint
-    // This is a placeholder that returns empty stats
-    print('[ConsentService] getConsentStatistics: Use backend admin endpoint for statistics');
+  /// Get consent statistics from the admin backend endpoint
+  Future<Map<String, dynamic>> getConsentStatistics({String? accessToken}) async {
+    try {
+      final headers = {
+        'Content-Type': 'application/json',
+        if (accessToken != null && accessToken.isNotEmpty)
+          'Authorization': 'Bearer $accessToken',
+      };
+
+      final response = await _httpClient.get(
+        Uri.parse('${ApiConfig.apiBaseUrl}${ApiConfig.consent}/admin/statistics'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        print('[ConsentService] Failed to fetch statistics: ${response.statusCode}');
+        return _emptyStatistics();
+      }
+    } catch (e) {
+      print('[ConsentService] Error fetching statistics: $e');
+      return _emptyStatistics();
+    }
+  }
+
+  /// Get admin user consents list from the backend
+  Future<Map<String, dynamic>> getAdminUserConsents({
+    String? accessToken,
+    String? status,
+    String? search,
+  }) async {
+    try {
+      final headers = {
+        'Content-Type': 'application/json',
+        if (accessToken != null && accessToken.isNotEmpty)
+          'Authorization': 'Bearer $accessToken',
+      };
+
+      final queryParams = <String, String>{};
+      if (status != null && status.isNotEmpty) queryParams['status'] = status;
+      if (search != null && search.isNotEmpty) queryParams['search'] = search;
+
+      final uri = Uri.parse(
+        '${ApiConfig.apiBaseUrl}${ApiConfig.consent}/admin/users',
+      ).replace(queryParameters: queryParams.isNotEmpty ? queryParams : null);
+
+      final response = await _httpClient.get(uri, headers: headers);
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        print('[ConsentService] Failed to fetch user consents: ${response.statusCode}');
+        return {'users': [], 'total': 0};
+      }
+    } catch (e) {
+      print('[ConsentService] Error fetching user consents: $e');
+      return {'users': [], 'total': 0};
+    }
+  }
+
+  Map<String, dynamic> _emptyStatistics() {
     return {
       'totalUsers': 0,
-      'fullConsent': 0,
-      'partialConsent': 0,
-      'essentialOnly': 0,
-      'categoryStats': {
-        'necessary': 0,
-        'preferences': 0,
+      'totalConsented': 0,
+      'acceptedAll': 0,
+      'customized': 0,
+      'declined': 0,
+      'notAsked': 0,
+      'categoryBreakdown': {
+        'essential': 0,
+        'functional': 0,
         'analytics': 0,
         'marketing': 0,
       },
+      'recentActivity': [],
     };
   }
 

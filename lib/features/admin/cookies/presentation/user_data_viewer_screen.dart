@@ -151,52 +151,127 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
     );
   }
 
-  Widget _buildUserList() {
-    // Demo data - In production, this would come from a provider
-    final users = _getDemoUsers();
-    final filteredUsers = users.where((user) {
-      final matchesSearch = _searchQuery.isEmpty ||
-          user['userId'].toString().toLowerCase().contains(_searchQuery.toLowerCase());
-      final matchesFilter = _filterStatus == null ||
-          user['status'] == _filterStatus;
-      return matchesSearch && matchesFilter;
-    }).toList();
+  List<Map<String, dynamic>> _mapBackendUsers(Map<String, dynamic> data) {
+    final usersList = (data['users'] as List<dynamic>?) ?? [];
+    return usersList.map<Map<String, dynamic>>((u) {
+      final raw = u as Map<String, dynamic>;
+      final cats = raw['categories'] as Map<String, dynamic>? ?? {};
 
-    if (filteredUsers.isEmpty) {
-      return Center(
+      // Derive ConsentStatus from the backend status string
+      ConsentStatus status;
+      switch (raw['status']) {
+        case 'accepted':
+          status = ConsentStatus.accepted;
+          break;
+        case 'customized':
+          status = ConsentStatus.customized;
+          break;
+        case 'declined':
+          status = ConsentStatus.declined;
+          break;
+        default:
+          status = ConsentStatus.notAsked;
+      }
+
+      // Parse timestamp
+      DateTime timestamp;
+      try {
+        timestamp = DateTime.parse(raw['timestamp'] ?? raw['lastUpdated'] ?? '');
+      } catch (_) {
+        timestamp = DateTime.now();
+      }
+
+      return {
+        'userId': raw['userId'] ?? '',
+        'displayName': raw['displayName'] ?? '',
+        'status': status,
+        'timestamp': timestamp,
+        'consentDate': raw['consentDate'] ?? '',
+        'lastUpdated': raw['lastUpdated'] ?? '',
+        'categories': {
+          CookieCategory.essential: cats['essential'] == true,
+          CookieCategory.functional: cats['functional'] == true,
+          CookieCategory.analytics: cats['analytics'] == true,
+          CookieCategory.marketing: cats['marketing'] == true,
+        },
+      };
+    }).toList();
+  }
+
+  Widget _buildUserList() {
+    final usersAsync = ref.watch(adminConsentUsersProvider);
+
+    return usersAsync.when(
+      data: (data) {
+        final users = _mapBackendUsers(data);
+        final filteredUsers = users.where((user) {
+          final matchesSearch = _searchQuery.isEmpty ||
+              user['userId'].toString().toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              (user['displayName'] as String).toLowerCase().contains(_searchQuery.toLowerCase());
+          final matchesFilter = _filterStatus == null ||
+              user['status'] == _filterStatus;
+          return matchesSearch && matchesFilter;
+        }).toList();
+
+        if (filteredUsers.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.search_off,
+                  size: 64,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'No users found',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: filteredUsers.length,
+          itemBuilder: (context, index) {
+            final user = filteredUsers[index];
+            return _buildUserCard(user);
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.search_off,
-              size: 64,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              'No users found',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
+              'Error loading users: $error',
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () => ref.invalidate(adminConsentUsersProvider),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
             ),
           ],
         ),
-      );
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: filteredUsers.length,
-      itemBuilder: (context, index) {
-        final user = filteredUsers[index];
-        return _buildUserCard(user);
-      },
+      ),
     );
   }
 
   Widget _buildUserCard(Map<String, dynamic> user) {
     final userId = user['userId'] as String;
+    final displayName = user['displayName'] as String? ?? '';
     final status = user['status'] as ConsentStatus;
     final timestamp = user['timestamp'] as DateTime;
     final categories = user['categories'] as Map<CookieCategory, bool>;
@@ -212,7 +287,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
           ),
         ),
         title: Text(
-          'User: $userId',
+          displayName.isNotEmpty ? displayName : 'User: ${userId.length > 8 ? '${userId.substring(0, 8)}...' : userId}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
@@ -366,31 +441,67 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
   }
 
   void _viewUserDetails(String userId) {
+    // Find the user data from the current provider snapshot
+    final usersAsync = ref.read(adminConsentUsersProvider);
+    Map<String, dynamic>? userData;
+    usersAsync.whenData((data) {
+      final users = _mapBackendUsers(data);
+      for (final u in users) {
+        if (u['userId'] == userId) {
+          userData = u;
+          break;
+        }
+      }
+    });
+
+    final consentDate = userData?['consentDate'] as String? ?? '';
+    final lastUpdated = userData?['lastUpdated'] as String? ?? '';
+    final displayName = userData?['displayName'] as String? ?? '';
+    final categories = userData?['categories'] as Map<CookieCategory, bool>? ?? {};
+
+    final enabledCount = categories.values.where((v) => v).length;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('User Details: $userId'),
+        title: Text('User Details: ${displayName.isNotEmpty ? displayName : userId}'),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (displayName.isNotEmpty) ...[
+                Text('User ID: $userId', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                const SizedBox(height: 12),
+              ],
               const Text(
                 'Cookie Data Summary',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text('Total cookies stored: 0'),
-              const Text('Session data: 0 sessions'),
-              const Text('Analytics events: 0 events'),
+              Text('Categories enabled: $enabledCount / ${CookieCategory.values.length}'),
+              ...categories.entries.map((e) => Padding(
+                padding: const EdgeInsets.only(left: 8, top: 4),
+                child: Row(
+                  children: [
+                    Icon(
+                      e.value ? Icons.check_circle : Icons.cancel,
+                      size: 16,
+                      color: e.value ? AppColors.success : Colors.grey,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(e.key.displayName),
+                  ],
+                ),
+              )),
               const SizedBox(height: 16),
               const Text(
                 'Data Collection Period',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text('First consent: N/A'),
-              const Text('Last activity: N/A'),
+              Text('First consent: ${_formatIsoDate(consentDate)}'),
+              Text('Last updated: ${_formatIsoDate(lastUpdated)}'),
             ],
           ),
         ),
@@ -402,6 +513,16 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
         ],
       ),
     );
+  }
+
+  String _formatIsoDate(String isoDate) {
+    if (isoDate.isEmpty) return 'N/A';
+    try {
+      final dt = DateTime.parse(isoDate);
+      return '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
+    } catch (_) {
+      return isoDate;
+    }
   }
 
   void _exportUserData(String userId) async {
@@ -517,63 +638,4 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
     );
   }
 
-  List<Map<String, dynamic>> _getDemoUsers() {
-    return [
-      {
-        'userId': 'user-12345',
-        'status': ConsentStatus.accepted,
-        'timestamp': DateTime.now().subtract(const Duration(days: 1)),
-        'categories': {
-          CookieCategory.essential: true,
-          CookieCategory.functional: true,
-          CookieCategory.analytics: true,
-          CookieCategory.marketing: true,
-        },
-      },
-      {
-        'userId': 'user-12346',
-        'status': ConsentStatus.customized,
-        'timestamp': DateTime.now().subtract(const Duration(days: 2)),
-        'categories': {
-          CookieCategory.essential: true,
-          CookieCategory.functional: true,
-          CookieCategory.analytics: false,
-          CookieCategory.marketing: false,
-        },
-      },
-      {
-        'userId': 'user-12347',
-        'status': ConsentStatus.declined,
-        'timestamp': DateTime.now().subtract(const Duration(days: 3)),
-        'categories': {
-          CookieCategory.essential: true,
-          CookieCategory.functional: false,
-          CookieCategory.analytics: false,
-          CookieCategory.marketing: false,
-        },
-      },
-      {
-        'userId': 'user-12348',
-        'status': ConsentStatus.notAsked,
-        'timestamp': DateTime.now().subtract(const Duration(days: 4)),
-        'categories': {
-          CookieCategory.essential: true,
-          CookieCategory.functional: false,
-          CookieCategory.analytics: false,
-          CookieCategory.marketing: false,
-        },
-      },
-      {
-        'userId': 'user-12349',
-        'status': ConsentStatus.accepted,
-        'timestamp': DateTime.now().subtract(const Duration(hours: 5)),
-        'categories': {
-          CookieCategory.essential: true,
-          CookieCategory.functional: true,
-          CookieCategory.analytics: true,
-          CookieCategory.marketing: true,
-        },
-      },
-    ];
-  }
 }

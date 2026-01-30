@@ -410,6 +410,8 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
   }
 
   Widget _buildRecentActivitySection(BuildContext context, WidgetRef ref) {
+    final statsAsync = ref.watch(consentStatisticsProvider);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -436,27 +438,49 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 16),
-            // Placeholder for recent activity list
-            _buildActivityItem(
-              'User #12345',
-              'Accepted all cookies',
-              DateTime.now().subtract(const Duration(minutes: 5)),
-              Icons.check_circle,
-              AppColors.success,
-            ),
-            _buildActivityItem(
-              'User #12346',
-              'Customized preferences',
-              DateTime.now().subtract(const Duration(hours: 1)),
-              Icons.tune,
-              AppColors.warning,
-            ),
-            _buildActivityItem(
-              'User #12347',
-              'Declined cookies',
-              DateTime.now().subtract(const Duration(hours: 2)),
-              Icons.cancel,
-              AppColors.error,
+            statsAsync.when(
+              data: (stats) {
+                final recentActivity = (stats['recentActivity'] as List<dynamic>?) ?? [];
+                if (recentActivity.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: Text('No recent activity')),
+                  );
+                }
+                return Column(
+                  children: recentActivity.map<Widget>((item) {
+                    final activity = item as Map<String, dynamic>;
+                    final action = activity['action'] as String? ?? '';
+                    final userId = activity['userId'] as String? ?? '';
+                    final tsString = activity['timestamp'] as String? ?? '';
+
+                    DateTime ts;
+                    try {
+                      ts = DateTime.parse(tsString);
+                    } catch (_) {
+                      ts = DateTime.now();
+                    }
+
+                    IconData icon;
+                    Color color;
+                    if (action.toLowerCase().contains('accepted')) {
+                      icon = Icons.check_circle;
+                      color = AppColors.success;
+                    } else if (action.toLowerCase().contains('customized')) {
+                      icon = Icons.tune;
+                      color = AppColors.warning;
+                    } else {
+                      icon = Icons.cancel;
+                      color = AppColors.error;
+                    }
+
+                    final shortId = userId.length > 8 ? '${userId.substring(0, 8)}...' : userId;
+                    return _buildActivityItem(shortId, action, ts, icon, color);
+                  }).toList(),
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(child: Text('Error: $error')),
             ),
           ],
         ),
