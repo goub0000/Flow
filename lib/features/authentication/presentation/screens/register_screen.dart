@@ -280,7 +280,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     labelText: 'I am a...',
                     prefixIcon: Icon(Icons.badge_outlined),
                   ),
-                  items: UserRole.values.map((role) {
+                  items: UserRole.values.where((role) => !role.isAdmin).map((role) {
                     return DropdownMenuItem(
                       value: role,
                       child: Row(
