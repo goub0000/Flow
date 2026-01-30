@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import logging
 from uuid import uuid4
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase_admin
 from app.schemas.approvals import (
     ApprovalRequestCreate,
     ApprovalRequestUpdate,
@@ -68,7 +68,7 @@ class ApprovalService:
     """Service for managing approval workflows"""
 
     def __init__(self):
-        self.db = get_supabase()
+        self.db = get_supabase_admin()
 
     def _get_admin_level(self, role: str) -> int:
         """Get approval level for an admin role"""

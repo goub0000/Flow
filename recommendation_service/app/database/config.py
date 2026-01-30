@@ -50,8 +50,12 @@ def get_supabase_admin() -> Client:
 
     if _supabase_admin_client is None:
         url = os.environ.get('SUPABASE_URL')
-        # Try service role key first, fall back to SUPABASE_KEY
-        service_role_key = os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or os.environ.get('SUPABASE_KEY')
+        # Try service role key (various env var names), fall back to SUPABASE_KEY
+        service_role_key = (
+            os.environ.get('SUPABASE_SERVICE_ROLE_KEY')
+            or os.environ.get('SUPABASE_SERVICE_KEY')
+            or os.environ.get('SUPABASE_KEY')
+        )
 
         import logging
         logger = logging.getLogger(__name__)
