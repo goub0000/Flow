@@ -875,6 +875,39 @@ async def get_support_queue(
             except Exception:
                 pass  # Non-critical
 
+        # Valid enum values for safe parsing
+        valid_escalation_types = {e.value for e in EscalationType}
+        valid_priorities = {e.value for e in EscalationPriority}
+        valid_statuses = {e.value for e in QueueStatus}
+
+        def safe_escalation_type(raw):
+            """Map DB escalation_type to valid enum value"""
+            if not raw:
+                return None
+            val = raw.lower().strip()
+            if val in valid_escalation_types:
+                return val
+            # Map common free-text values to enum
+            if 'user' in val or 'human' in val or 'request' in val:
+                return EscalationType.USER_REQUEST.value
+            if 'confidence' in val:
+                return EscalationType.LOW_CONFIDENCE.value
+            if 'negative' in val or 'feedback' in val:
+                return EscalationType.NEGATIVE_FEEDBACK.value
+            if 'sensitive' in val or 'topic' in val:
+                return EscalationType.SENSITIVE_TOPIC.value
+            if 'unavailable' in val or 'ai' in val:
+                return EscalationType.AI_UNAVAILABLE.value
+            return None  # Unknown — omit rather than crash
+
+        def safe_priority(raw):
+            val = (raw or 'normal').lower().strip()
+            return val if val in valid_priorities else 'normal'
+
+        def safe_status(raw):
+            val = (raw or 'pending').lower().strip()
+            return val if val in valid_statuses else 'pending'
+
         for q in (result.data or []):
             conv = q.get('chatbot_conversations', {}) or {}
             uid = conv.get('user_id')
@@ -884,12 +917,12 @@ async def get_support_queue(
                 conversation_summary=conv.get('summary'),
                 user_name=conv.get('user_name'),
                 user_email=user_emails.get(uid, ''),
-                priority=q.get('priority', 'normal'),
+                priority=safe_priority(q.get('priority')),
                 reason=q.get('reason'),
-                escalation_type=q.get('escalation_type'),
+                escalation_type=safe_escalation_type(q.get('escalation_type')),
                 assigned_to=q.get('assigned_to'),
                 assigned_to_name=None,  # Would need another join
-                status=q.get('status', 'pending'),
+                status=safe_status(q.get('status')),
                 response_time_seconds=q.get('response_time_seconds'),
                 created_at=q['created_at'],
                 assigned_at=q.get('assigned_at')
