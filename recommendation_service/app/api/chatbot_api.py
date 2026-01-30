@@ -843,9 +843,9 @@ async def get_support_queue(
                 detail="Admin access required"
             )
 
-        # Build query with join
+        # Build query with join (user_email may not exist on conversations table)
         query = supabase.table('chatbot_support_queue').select(
-            '*, chatbot_conversations(summary, user_name, user_email)'
+            '*, chatbot_conversations(summary, user_name, user_id)'
         )
 
         if status_filter:
@@ -857,14 +857,33 @@ async def get_support_queue(
         result = query.execute()
 
         items = []
+        # Collect user_ids to look up emails from users table
+        user_ids = set()
         for q in (result.data or []):
             conv = q.get('chatbot_conversations', {}) or {}
+            uid = conv.get('user_id')
+            if uid:
+                user_ids.add(uid)
+
+        # Batch lookup user emails
+        user_emails = {}
+        if user_ids:
+            try:
+                users_result = supabase.table('users').select('id, email').in_('id', list(user_ids)).execute()
+                for u in (users_result.data or []):
+                    user_emails[u['id']] = u.get('email', '')
+            except Exception:
+                pass  # Non-critical
+
+        for q in (result.data or []):
+            conv = q.get('chatbot_conversations', {}) or {}
+            uid = conv.get('user_id')
             items.append(SupportQueueItem(
                 id=q['id'],
                 conversation_id=q['conversation_id'],
                 conversation_summary=conv.get('summary'),
                 user_name=conv.get('user_name'),
-                user_email=conv.get('user_email'),
+                user_email=user_emails.get(uid, ''),
                 priority=q.get('priority', 'normal'),
                 reason=q.get('reason'),
                 escalation_type=q.get('escalation_type'),

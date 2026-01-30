@@ -42,7 +42,7 @@ class LiveChatQueueItem {
     return LiveChatQueueItem(
       id: json['id']?.toString() ?? '',
       conversationId: json['conversation_id']?.toString() ?? '',
-      summary: json['summary']?.toString() ?? '',
+      summary: json['conversation_summary']?.toString() ?? json['summary']?.toString() ?? '',
       userName: json['user_name']?.toString() ?? 'Unknown',
       userEmail: json['user_email']?.toString() ?? '',
       priority: json['priority']?.toString() ?? 'medium',
@@ -152,7 +152,7 @@ class AdminLiveChatNotifier extends StateNotifier<AdminLiveChatState> {
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
-        final itemsData = json['queue_items'] as List<dynamic>? ?? [];
+        final itemsData = json['items'] as List<dynamic>? ?? [];
         final items = itemsData
             .map((e) => LiveChatQueueItem.fromJson(e as Map<String, dynamic>))
             .toList();
