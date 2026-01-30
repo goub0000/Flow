@@ -192,7 +192,7 @@ class _AdminQuickActionsState extends ConsumerState<AdminQuickActions>
       label: 'Add User',
       color: AppColors.primary,
       onTap: (context) {
-        _showAddUserDialog(context);
+        context.go('/admin/users/students/create');
       },
     ));
 
@@ -202,7 +202,7 @@ class _AdminQuickActionsState extends ConsumerState<AdminQuickActions>
       label: 'Add Institution',
       color: AppColors.success,
       onTap: (context) {
-        _showAddInstitutionDialog(context);
+        context.go('/admin/users/institutions/create');
       },
     ));
 
@@ -249,157 +249,6 @@ class _AdminQuickActionsState extends ConsumerState<AdminQuickActions>
     return actions;
   }
 
-  void _showAddUserDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New User'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Role',
-                  border: OutlineInputBorder(),
-                ),
-                items: const [
-                  // Standard user roles
-                  DropdownMenuItem(value: 'student', child: Text('Student')),
-                  DropdownMenuItem(value: 'parent', child: Text('Parent')),
-                  DropdownMenuItem(value: 'counselor', child: Text('Counselor')),
-                  DropdownMenuItem(value: 'institution', child: Text('Institution')),
-                  DropdownMenuItem(value: 'recommender', child: Text('Recommender')),
-                  // Admin roles
-                  DropdownMenuItem(value: 'superadmin', child: Text('Super Admin')),
-                  DropdownMenuItem(value: 'regionaladmin', child: Text('Regional Admin')),
-                  DropdownMenuItem(value: 'contentadmin', child: Text('Content Admin')),
-                  DropdownMenuItem(value: 'supportadmin', child: Text('Support Admin')),
-                  DropdownMenuItem(value: 'financeadmin', child: Text('Finance Admin')),
-                  DropdownMenuItem(value: 'analyticsadmin', child: Text('Analytics Admin')),
-                ],
-                onChanged: (value) {},
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('User creation requires backend integration'),
-                  backgroundColor: AppColors.info,
-                ),
-              );
-            },
-            child: const Text('Create User'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddInstitutionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Institution'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Institution Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Address',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 2,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Type',
-                  border: OutlineInputBorder(),
-                ),
-                items: const [
-                  DropdownMenuItem(value: 'university', child: Text('University')),
-                  DropdownMenuItem(value: 'college', child: Text('College')),
-                  DropdownMenuItem(value: 'highschool', child: Text('High School')),
-                ],
-                onChanged: (value) {},
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Institution creation requires backend integration'),
-                  backgroundColor: AppColors.info,
-                ),
-              );
-            },
-            child: const Text('Create Institution'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// Quick Action Model

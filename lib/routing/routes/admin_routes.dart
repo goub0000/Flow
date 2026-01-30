@@ -37,6 +37,8 @@ import '../../features/admin/chatbot/presentation/live_conversations_screen.dart
 import '../../features/admin/content/presentation/page_content_list_screen.dart';
 import '../../features/admin/content/presentation/page_content_editor_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
+import '../../features/admin/notifications/presentation/notifications_center_screen.dart';
+import '../../features/admin/reports/presentation/reports_screen.dart';
 import '../../features/admin/shared/widgets/admin_shell.dart';
 import '../../features/institution/courses/presentation/course_content_builder_screen.dart';
 import '../../features/admin/approvals/presentation/screens/approval_dashboard_screen.dart';
@@ -459,6 +461,15 @@ List<RouteBase> adminRoutes = [
         ),
       ),
 
+      // Notifications
+      GoRoute(
+        path: '/admin/notifications',
+        name: 'admin-notifications',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: const NotificationsCenterScreen(),
+        ),
+      ),
+
       // Support & Helpdesk
       GoRoute(
         path: '/admin/support/tickets',
@@ -622,11 +633,7 @@ List<RouteBase> adminRoutes = [
         path: '/admin/reports',
         name: 'admin-financial-reports',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Financial Reports',
-            description: 'Generate and view financial reports and analytics.',
-            icon: Icons.assessment,
-          ),
+          child: const ReportsScreen(),
         ),
       ),
       GoRoute(
