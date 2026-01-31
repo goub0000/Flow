@@ -129,37 +129,24 @@ class WikipediaUniversityImporter:
         return validated
 
     def _import_to_database(self, universities: List[Dict[str, Any]]):
-        """Import validated universities to Supabase"""
+        """Import validated universities to Supabase using upsert"""
         total = len(universities)
         processed = 0
 
         for i, uni in enumerate(universities, 1):
             try:
-                # Check if university already exists
-                existing = self.db_client.client.table('universities').select('*').eq(
-                    'name', uni['name']
-                ).eq(
-                    'country', uni['country']
+                # Upsert: insert or update on conflict (name, country)
+                result = self.db_client.client.table('universities').upsert(
+                    uni, on_conflict='name,country'
                 ).execute()
 
-                if existing.data:
-                    # Update existing record
-                    result = self.db_client.client.table('universities').update(uni).eq(
-                        'id', existing.data[0]['id']
-                    ).execute()
-
+                if result.data:
                     self.stats['updated'] += 1
-                    logger.debug(f"Updated: {uni['name']}")
-                else:
-                    # Insert new record
-                    result = self.db_client.client.table('universities').insert(uni).execute()
-
-                    self.stats['added'] += 1
-                    logger.debug(f"Added: {uni['name']}")
+                    logger.debug(f"Upserted: {uni['name']}")
 
                 processed += 1
 
-                # Commit in batches
+                # Log progress in batches
                 if processed % self.batch_size == 0:
                     logger.info(f"  Progress: {processed}/{total} ({processed/total*100:.1f}%)")
 
