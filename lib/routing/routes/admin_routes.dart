@@ -43,6 +43,10 @@ import '../../features/admin/content/presentation/curriculum_management_screen.d
 import '../../features/admin/content/presentation/resources_management_screen.dart';
 import '../../features/admin/content/presentation/assessments_management_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
+import '../../features/admin/finance/presentation/refunds_screen.dart';
+import '../../features/admin/finance/presentation/settlements_screen.dart';
+import '../../features/admin/finance/presentation/fraud_detection_screen.dart';
+import '../../features/admin/finance/presentation/fee_config_screen.dart';
 import '../../features/admin/analytics/presentation/data_explorer_screen.dart';
 import '../../features/admin/analytics/presentation/sql_queries_screen.dart';
 import '../../features/admin/analytics/presentation/dashboards_screen.dart';
@@ -599,44 +603,28 @@ List<RouteBase> adminRoutes = [
         path: '/admin/transactions',
         name: 'admin-all-transactions',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Transactions',
-            description: 'View and manage all financial transactions.',
-            icon: Icons.receipt_long,
-          ),
+          child: const TransactionsScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/refunds',
         name: 'admin-refunds',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Refunds Management',
-            description: 'Process and track refund requests.',
-            icon: Icons.replay,
-          ),
+          child: const RefundsScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/settlements',
         name: 'admin-settlements',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Settlements',
-            description: 'Manage payment settlements and disbursements.',
-            icon: Icons.account_balance,
-          ),
+          child: const SettlementsScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/fraud',
         name: 'admin-fraud-detection',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Fraud Detection',
-            description: 'Monitor and prevent fraudulent activities.',
-            icon: Icons.warning,
-          ),
+          child: const FraudDetectionScreen(),
         ),
       ),
       GoRoute(
@@ -650,11 +638,7 @@ List<RouteBase> adminRoutes = [
         path: '/admin/fee-config',
         name: 'admin-fee-config',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Fee Configuration',
-            description: 'Configure platform fees and pricing.',
-            icon: Icons.settings,
-          ),
+          child: const FeeConfigScreen(),
         ),
       ),
 
