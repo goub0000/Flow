@@ -119,20 +119,30 @@ class _AdminShellState extends ConsumerState<AdminShell> {
             Row(
               children: [
                 // Sidebar - collapsible navigation
-                AdminSidebar(adminUser: adminUser),
+                Semantics(
+                  label: 'Admin navigation sidebar',
+                  namesRoute: true,
+                  child: AdminSidebar(adminUser: adminUser),
+                ),
 
                 // Main content area
                 Expanded(
                   child: Column(
                     children: [
                       // Top bar with user info and actions
-                      AdminTopBar(adminUser: adminUser),
+                      Semantics(
+                        label: 'Admin toolbar',
+                        child: AdminTopBar(adminUser: adminUser),
+                      ),
 
                       // Page content
                       Expanded(
-                        child: Container(
-                          color: AppColors.background,
-                          child: widget.child,
+                        child: Semantics(
+                          label: 'Main content',
+                          child: Container(
+                            color: AppColors.background,
+                            child: widget.child,
+                          ),
                         ),
                       ),
                     ],

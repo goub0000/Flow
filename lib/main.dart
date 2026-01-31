@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -19,6 +20,9 @@ import 'features/chatbot/presentation/widgets/chatbot_fab.dart';
 void main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Enable semantics tree for screen readers without requiring user opt-in
+  SemanticsBinding.instance.ensureSemantics();
 
   // Initialize logging
   final mainLogger = Logger('Main');
