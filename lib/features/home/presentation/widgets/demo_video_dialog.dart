@@ -1,12 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-/// A dialog that displays a YouTube demo video for the Flow platform.
-///
-/// Usage:
-/// ```dart
-/// showDemoVideoDialog(context);
-/// ```
+/// Data class for a single feature tour slide.
+class _TourSlide {
+  final IconData icon;
+  final String title;
+  final String description;
+  final List<String> highlights;
+  final Color color;
+
+  const _TourSlide({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.highlights,
+    required this.color,
+  });
+}
+
+const _slides = [
+  _TourSlide(
+    icon: Icons.school_rounded,
+    title: 'Discover Universities',
+    description:
+        'Search and compare universities across Africa with detailed profiles, rankings, and program information.',
+    highlights: [
+      'Browse 500+ institutions',
+      'Filter by country, program & tuition',
+      'View detailed university profiles',
+    ],
+    color: Color(0xFF6366F1),
+  ),
+  _TourSlide(
+    icon: Icons.route_rounded,
+    title: 'Find Your Path',
+    description:
+        'Take our guided quiz to get personalized university and program recommendations matched to your goals.',
+    highlights: [
+      'AI-powered recommendations',
+      'Personality & interest matching',
+      'Tailored program suggestions',
+    ],
+    color: Color(0xFF0EA5E9),
+  ),
+  _TourSlide(
+    icon: Icons.dashboard_rounded,
+    title: 'Role-Based Dashboards',
+    description:
+        'Purpose-built dashboards for students, parents, counselors, and institutions — each with the tools they need.',
+    highlights: [
+      'Track applications & progress',
+      'Monitor student performance',
+      'Manage institutional data',
+    ],
+    color: Color(0xFF10B981),
+  ),
+  _TourSlide(
+    icon: Icons.chat_rounded,
+    title: 'AI Study Assistant',
+    description:
+        'Get instant help with admissions questions, application guidance, and academic planning from our AI chatbot.',
+    highlights: [
+      'Available 24/7',
+      'Context-aware answers',
+      'Application deadline reminders',
+    ],
+    color: Color(0xFFF59E0B),
+  ),
+  _TourSlide(
+    icon: Icons.people_rounded,
+    title: 'Connected Ecosystem',
+    description:
+        'Students, parents, counselors, and institutions collaborate seamlessly on one platform.',
+    highlights: [
+      'Real-time notifications',
+      'Shared progress tracking',
+      'Secure messaging',
+    ],
+    color: Color(0xFFEC4899),
+  ),
+];
+
+/// A dialog that displays a guided feature tour for the Flow platform.
 class DemoVideoDialog extends StatefulWidget {
   const DemoVideoDialog({super.key});
 
@@ -14,54 +88,46 @@ class DemoVideoDialog extends StatefulWidget {
   State<DemoVideoDialog> createState() => _DemoVideoDialogState();
 }
 
-class _DemoVideoDialogState extends State<DemoVideoDialog> {
-  late final YoutubePlayerController _controller;
-  bool _isLoading = true;
-
-  // Replace with your actual demo video ID
-  static const String _demoVideoId = 'dQw4w9WgXcQ'; // Placeholder - replace with real demo
+class _DemoVideoDialogState extends State<DemoVideoDialog>
+    with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
+  late final PageController _pageController;
+  late final AnimationController _progressController;
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController.fromVideoId(
-      videoId: _demoVideoId,
-      autoPlay: true,
-      params: const YoutubePlayerParams(
-        showControls: true,
-        showFullscreenButton: true,
-        mute: false,
-      ),
-    );
-
-    _controller.setFullScreenListener((isFullScreen) {
-      // Handle fullscreen changes if needed
-    });
-
-    // Mark as loaded after a brief delay to ensure player is ready
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    });
+    _pageController = PageController();
+    _progressController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    )..forward();
   }
 
   @override
   void dispose() {
-    _controller.close();
+    _pageController.dispose();
+    _progressController.dispose();
     super.dispose();
+  }
+
+  void _goTo(int index) {
+    if (index < 0 || index >= _slides.length) return;
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
+    );
+    _progressController.forward(from: 0);
+    setState(() => _currentIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenSize = MediaQuery.of(context).size;
-
-    // Responsive sizing
     final isDesktop = screenSize.width > 800;
-    final dialogWidth = isDesktop ? 800.0 : screenSize.width * 0.95;
-    final aspectRatio = 16 / 9;
-    final videoHeight = dialogWidth / aspectRatio;
+    final dialogWidth = isDesktop ? 720.0 : screenSize.width * 0.95;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -72,7 +138,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog> {
       child: Container(
         width: dialogWidth,
         constraints: BoxConstraints(
-          maxWidth: 900,
+          maxWidth: 780,
           maxHeight: screenSize.height * 0.85,
         ),
         decoration: BoxDecoration(
@@ -80,7 +146,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -111,7 +177,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog> {
                           ),
                         ),
                         Text(
-                          'Watch how Flow transforms education',
+                          'A guided tour of the platform',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -119,6 +185,23 @@ class _DemoVideoDialogState extends State<DemoVideoDialog> {
                       ],
                     ),
                   ),
+                  // Slide counter
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      '${_currentIndex + 1} / ${_slides.length}',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
                     icon: const Icon(Icons.close),
@@ -128,48 +211,115 @@ class _DemoVideoDialogState extends State<DemoVideoDialog> {
               ),
             ),
 
-            const Divider(height: 1),
-
-            // Video Player
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
-              child: SizedBox(
-                width: dialogWidth,
-                height: videoHeight.clamp(200.0, 500.0),
-                child: Stack(
-                  children: [
-                    YoutubePlayer(
-                      controller: _controller,
-                      aspectRatio: aspectRatio,
-                    ),
-
-                    // Loading overlay
-                    if (_isLoading)
-                      Container(
-                        color: Colors.black87,
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CircularProgressIndicator(
-                                color: theme.colorScheme.primary,
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'Loading demo...',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
+            // Progress indicator
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: List.generate(_slides.length, (i) {
+                  final isActive = i == _currentIndex;
+                  final isPast = i < _currentIndex;
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => _goTo(i),
+                      child: Container(
+                        height: 3,
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: isActive
+                              ? _slides[_currentIndex].color
+                              : isPast
+                                  ? _slides[i].color.withValues(alpha: 0.5)
+                                  : theme.colorScheme.outlineVariant,
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            // Slide content
+            Flexible(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: _slides.length,
+                onPageChanged: (i) {
+                  _progressController.forward(from: 0);
+                  setState(() => _currentIndex = i);
+                },
+                itemBuilder: (context, index) {
+                  final slide = _slides[index];
+                  return _SlideContent(
+                    slide: slide,
+                    animation: _progressController,
+                  );
+                },
+              ),
+            ),
+
+            // Navigation buttons
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
+              child: Row(
+                children: [
+                  // Back button
+                  if (_currentIndex > 0)
+                    TextButton.icon(
+                      onPressed: () => _goTo(_currentIndex - 1),
+                      icon: const Icon(Icons.arrow_back_rounded, size: 18),
+                      label: const Text('Back'),
+                    )
+                  else
+                    const SizedBox(width: 80),
+
+                  const Spacer(),
+
+                  // Dot indicators (compact)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(_slides.length, (i) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: i == _currentIndex ? 20 : 6,
+                        height: 6,
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: i == _currentIndex
+                              ? _slides[_currentIndex].color
+                              : theme.colorScheme.outlineVariant,
+                        ),
+                      );
+                    }),
+                  ),
+
+                  const Spacer(),
+
+                  // Next / Get Started button
+                  if (_currentIndex < _slides.length - 1)
+                    FilledButton.icon(
+                      onPressed: () => _goTo(_currentIndex + 1),
+                      icon: const Text('Next'),
+                      label: const Icon(Icons.arrow_forward_rounded, size: 18),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: _slides[_currentIndex].color,
+                      ),
+                    )
+                  else
+                    FilledButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Text('Get Started'),
+                      label: const Icon(Icons.arrow_forward_rounded, size: 18),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: _slides[_currentIndex].color,
+                      ),
+                    ),
+                ],
               ),
             ),
           ],
@@ -179,7 +329,127 @@ class _DemoVideoDialogState extends State<DemoVideoDialog> {
   }
 }
 
-/// Shows the demo video dialog.
+/// A single slide in the feature tour.
+class _SlideContent extends StatelessWidget {
+  final _TourSlide slide;
+  final Animation<double> animation;
+
+  const _SlideContent({required this.slide, required this.animation});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final screenSize = MediaQuery.of(context).size;
+    final isDesktop = screenSize.width > 600;
+
+    return FadeTransition(
+      opacity: animation,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        child: isDesktop
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Left: illustration
+                  Expanded(flex: 2, child: _buildIllustration(theme)),
+                  const SizedBox(width: 32),
+                  // Right: text content
+                  Expanded(flex: 3, child: _buildTextContent(theme)),
+                ],
+              )
+            : Column(
+                children: [
+                  _buildIllustration(theme),
+                  const SizedBox(height: 24),
+                  _buildTextContent(theme),
+                ],
+              ),
+      ),
+    );
+  }
+
+  Widget _buildIllustration(ThemeData theme) {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            slide.color.withValues(alpha: 0.1),
+            slide.color.withValues(alpha: 0.05),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: slide.color.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          slide.icon,
+          size: 80,
+          color: slide.color,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextContent(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          slide.title,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          slide.description,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+            height: 1.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        ...slide.highlights.map((h) => Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: [
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: slide.color.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.check_rounded,
+                      size: 16,
+                      color: slide.color,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      h,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )),
+      ],
+    );
+  }
+}
+
+/// Shows the demo feature tour dialog.
 ///
 /// Call this from any button's onPressed handler:
 /// ```dart

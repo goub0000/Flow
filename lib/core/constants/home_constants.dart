@@ -57,6 +57,4 @@ class HomeConstants {
   static const double hoverScale = 1.02;
   static const double hoverElevation = 12;
 
-  // Video
-  static const String demoVideoId = 'dQw4w9WgXcQ'; // Replace with actual demo video ID
 }
