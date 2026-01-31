@@ -160,7 +160,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
               // Wave Divider - Social Proof to University Search
               SliverToBoxAdapter(
                 child: WaveDivider(
-                  color: theme.colorScheme.secondary.withOpacity(0.1),
+                  color: theme.colorScheme.secondary.withValues(alpha:0.1),
                   height: 50,
                   style: WaveStyle.minimal,
                 ),
@@ -564,7 +564,7 @@ class _HeroSectionState extends State<_HeroSection>
                             child: OutlinedButton.icon(
                               onPressed: () => showDemoVideoDialog(context),
                               icon: const Icon(Icons.play_circle_outline),
-                              label: const Text('Watch Demo'),
+                              label: const Text('Take a Tour'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: theme.colorScheme.primary,
                                 side: BorderSide(
@@ -641,85 +641,6 @@ class _HeroSectionState extends State<_HeroSection>
           ),
         ],
       ),
-    );
-  }
-}
-
-class _TrustIndicator extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String label;
-
-  const _TrustIndicator({
-    required this.icon,
-    required this.value,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Column(
-      children: [
-        Icon(
-          icon,
-          size: 32,
-          color: theme.colorScheme.primary,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Simple stat item for debugging
-class _StatItem extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String label;
-
-  const _StatItem({
-    required this.icon,
-    required this.value,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 28, color: theme.colorScheme.primary),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: theme.textTheme.headlineMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ],
     );
   }
 }
@@ -827,22 +748,22 @@ class _ValueCardState extends State<_ValueCard> {
         curve: HomeConstants.hoverCurve,
         width: HomeConstants.cardMinWidth,
         padding: EdgeInsets.all(HomeConstants.cardPadding),
-        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        transform: Matrix4.identity()..scaleByDouble(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0, 1.0),
         transformAlignment: Alignment.center,
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(28),
           border: Border.all(
             color: _isHovered
-                ? widget.color.withOpacity(0.4)
+                ? widget.color.withValues(alpha:0.4)
                 : theme.colorScheme.outlineVariant,
             width: _isHovered ? 2 : 1,
           ),
           boxShadow: [
             BoxShadow(
               color: _isHovered
-                  ? widget.color.withOpacity(0.15)
-                  : Colors.black.withOpacity(0.05),
+                  ? widget.color.withValues(alpha:0.15)
+                  : Colors.black.withValues(alpha:0.05),
               blurRadius: _isHovered ? 24 : 10,
               offset: Offset(0, _isHovered ? 12 : 4),
             ),
@@ -894,8 +815,6 @@ class _SocialProofSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: HomeConstants.sectionSpacingMedium,
@@ -1179,13 +1098,13 @@ class _KeyFeaturesSection extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   theme.colorScheme.primaryContainer,
-                  AppColors.terracotta.withOpacity(0.3),
+                  AppColors.terracotta.withValues(alpha:0.3),
                 ],
               ),
               borderRadius: BorderRadius.circular(32),
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  color: theme.colorScheme.primary.withValues(alpha:0.1),
                   blurRadius: 40,
                   offset: const Offset(0, 20),
                 ),
@@ -1201,7 +1120,7 @@ class _KeyFeaturesSection extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha:0.2),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -1213,7 +1132,7 @@ class _KeyFeaturesSection extends StatelessWidget {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withValues(alpha:0.15),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -1231,7 +1150,7 @@ class _KeyFeaturesSection extends StatelessWidget {
                       Text(
                         'Works on all devices',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.onPrimaryContainer.withOpacity(0.7),
+                          color: theme.colorScheme.onPrimaryContainer.withValues(alpha:0.7),
                         ),
                       ),
                     ],
@@ -1542,8 +1461,8 @@ class _FinalCTASection extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            theme.colorScheme.primaryContainer.withOpacity(0.5),
-            AppColors.warmSand.withOpacity(0.3),
+            theme.colorScheme.primaryContainer.withValues(alpha:0.5),
+            AppColors.warmSand.withValues(alpha:0.3),
           ],
         ),
       ),
@@ -1564,7 +1483,7 @@ class _FinalCTASection extends StatelessWidget {
               borderRadius: BorderRadius.circular(32),
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withOpacity(0.3),
+                  color: theme.colorScheme.primary.withValues(alpha:0.3),
                   blurRadius: 40,
                   offset: const Offset(0, 20),
                 ),
@@ -1586,7 +1505,7 @@ class _FinalCTASection extends StatelessWidget {
                 Text(
                   'Join 50,000+ students, institutions, and educators who trust Flow',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha:0.9),
                     fontSize: isMobile ? 14 : 16,
                   ),
                   textAlign: TextAlign.center,
@@ -1623,26 +1542,26 @@ class _FinalCTASection extends StatelessWidget {
                     Icon(
                       Icons.check_circle_outline,
                       size: 16,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha:0.8),
                     ),
                     const SizedBox(width: 6),
                     Text(
                       'No credit card required',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha:0.8),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Icon(
                       Icons.check_circle_outline,
                       size: 16,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha:0.8),
                     ),
                     const SizedBox(width: 6),
                     Text(
                       '14-day free trial',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha:0.8),
                       ),
                     ),
                   ],
@@ -1665,8 +1584,8 @@ class _MinimalFooter extends StatelessWidget {
     final isDesktop = size.width > 900;
 
     // Use light colors for dark background
-    final textColor = Colors.white.withOpacity(0.9);
-    final secondaryTextColor = Colors.white.withOpacity(0.6);
+    final textColor = Colors.white.withValues(alpha:0.9);
+    final secondaryTextColor = Colors.white.withValues(alpha:0.6);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
@@ -1875,7 +1794,7 @@ class _MinimalFooter extends StatelessWidget {
               const SizedBox(height: 48),
 
               // Divider
-              Divider(color: Colors.white.withOpacity(0.2)),
+              Divider(color: Colors.white.withValues(alpha:0.2)),
 
               const SizedBox(height: 24),
 
@@ -1968,7 +1887,7 @@ class _FooterColumn extends StatelessWidget {
           title,
           style: theme.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white.withOpacity(0.9) : null,
+            color: isDark ? Colors.white.withValues(alpha:0.9) : null,
           ),
         ),
         const SizedBox(height: 16),
@@ -1990,7 +1909,7 @@ class _FooterLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textColor = isDark ? Colors.white.withOpacity(0.7) : theme.colorScheme.onSurfaceVariant;
+    final textColor = isDark ? Colors.white.withValues(alpha:0.7) : theme.colorScheme.onSurfaceVariant;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -2020,42 +1939,6 @@ class _FooterLink extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Social Media Button Widget
-class _SocialButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  const _SocialButton({
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: theme.colorScheme.outlineVariant,
-          ),
-        ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: theme.colorScheme.onSurfaceVariant,
         ),
       ),
     );
@@ -2315,7 +2198,7 @@ class _UniversitySearchSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.secondary.withOpacity(0.3),
+                  color: theme.colorScheme.secondary.withValues(alpha:0.3),
                   blurRadius: 30,
                   offset: const Offset(0, 12),
                 ),
@@ -2329,7 +2212,7 @@ class _UniversitySearchSection extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withValues(alpha:0.15),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -2357,7 +2240,7 @@ class _UniversitySearchSection extends StatelessWidget {
                   Text(
                     'Explore 18,000+ universities from around the world.\nFilter by country, tuition, acceptance rate, and more.',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white.withOpacity(0.95),
+                      color: Colors.white.withValues(alpha:0.95),
                       height: 1.6,
                       fontSize: 16,
                     ),
@@ -2409,7 +2292,7 @@ class _UniversitySearchSection extends StatelessWidget {
                         vertical: 18,
                       ),
                       elevation: 4,
-                      shadowColor: Colors.black.withOpacity(0.2),
+                      shadowColor: Colors.black.withValues(alpha:0.2),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -2442,10 +2325,10 @@ class _UniversityStatChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: Colors.white.withValues(alpha:0.15),
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
-          color: Colors.white.withOpacity(0.25),
+          color: Colors.white.withValues(alpha:0.25),
         ),
       ),
       child: Row(
@@ -2469,7 +2352,7 @@ class _UniversityStatChip extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha:0.85),
               fontSize: 13,
             ),
           ),
