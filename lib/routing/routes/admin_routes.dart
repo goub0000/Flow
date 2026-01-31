@@ -43,6 +43,10 @@ import '../../features/admin/content/presentation/curriculum_management_screen.d
 import '../../features/admin/content/presentation/resources_management_screen.dart';
 import '../../features/admin/content/presentation/assessments_management_screen.dart';
 import '../../features/admin/shared/widgets/placeholder_screen.dart';
+import '../../features/admin/analytics/presentation/data_explorer_screen.dart';
+import '../../features/admin/analytics/presentation/sql_queries_screen.dart';
+import '../../features/admin/analytics/presentation/dashboards_screen.dart';
+import '../../features/admin/analytics/presentation/exports_screen.dart';
 import '../../features/admin/notifications/presentation/notifications_center_screen.dart';
 import '../../features/admin/reports/presentation/reports_screen.dart';
 import '../../features/admin/shared/widgets/admin_shell.dart';
@@ -659,44 +663,28 @@ List<RouteBase> adminRoutes = [
         path: '/admin/data-explorer',
         name: 'admin-data-explorer',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Data Explorer',
-            description: 'Explore and analyze platform data.',
-            icon: Icons.grid_on,
-          ),
+          child: const DataExplorerScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/sql',
         name: 'admin-sql-queries',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'SQL Query Tool',
-            description: 'Run custom SQL queries for advanced analytics.',
-            icon: Icons.query_stats,
-          ),
+          child: const SqlQueriesScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/dashboards',
         name: 'admin-custom-dashboards',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Custom Dashboards',
-            description: 'Create and manage custom analytics dashboards.',
-            icon: Icons.dashboard_customize,
-          ),
+          child: const DashboardsScreen(),
         ),
       ),
       GoRoute(
         path: '/admin/exports',
         name: 'admin-data-exports',
         pageBuilder: (context, state) => NoTransitionPage(
-          child: const AdminPlaceholderScreen(
-            title: 'Data Exports',
-            description: 'Export data in various formats for analysis.',
-            icon: Icons.download,
-          ),
+          child: const ExportsScreen(),
         ),
       ),
 
