@@ -17,6 +17,7 @@ class _DashboardWidget {
     required this.title,
     required this.icon,
     required this.color,
+    this.visible = true,
   });
 }
 
