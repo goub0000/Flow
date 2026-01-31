@@ -72,56 +72,59 @@ class _AdminSidebarState extends State<AdminSidebar> {
   }
 
   Widget _buildHeader() {
-    return Container(
-      height: 70,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.border),
-        ),
-      ),
-      child: Row(
-        children: [
-          // Logo icon
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(
-              Icons.admin_panel_settings,
-              color: Colors.white,
-              size: 24,
-            ),
+    return Semantics(
+      label: 'Flow Admin Dashboard, navigation header',
+      child: Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: AppColors.border),
           ),
-          if (!_isCollapsed) ...[
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Flow Admin',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Dashboard',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
+        ),
+        child: Row(
+          children: [
+            // Logo icon
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.admin_panel_settings,
+                color: Colors.white,
+                size: 24,
               ),
             ),
+            if (!_isCollapsed) ...[
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Flow Admin',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Dashboard',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -134,55 +137,63 @@ class _AdminSidebarState extends State<AdminSidebar> {
 
     return Column(
       children: [
-        InkWell(
-          onTap: () {
-            if (hasChildren) {
-              setState(() {
-                _expandedItem = isExpanded ? null : item.route;
-              });
-            } else {
-              context.go(item.route);
-            }
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(
-              color: isActive
-                  ? AppColors.primary.withValues(alpha: 0.1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              child: Row(
-                children: [
-                  Icon(
-                    item.icon,
-                    size: 20,
-                    color: isActive ? AppColors.primary : AppColors.textPrimary,
-                  ),
-                  if (!_isCollapsed) ...[
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        item.label,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                          color: isActive ? AppColors.primary : AppColors.textPrimary,
+        Semantics(
+          button: true,
+          label: item.label,
+          selected: isActive,
+          child: InkWell(
+            onTap: () {
+              if (hasChildren) {
+                setState(() {
+                  _expandedItem = isExpanded ? null : item.route;
+                });
+              } else {
+                context.go(item.route);
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: isActive
+                    ? AppColors.primary.withValues(alpha: 0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Row(
+                  children: [
+                    Icon(
+                      item.icon,
+                      size: 20,
+                      color: isActive ? AppColors.primary : AppColors.textPrimary,
+                    ),
+                    if (!_isCollapsed) ...[
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          item.label,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+                            color: isActive ? AppColors.primary : AppColors.textPrimary,
+                          ),
                         ),
                       ),
-                    ),
-                    if (hasChildren)
-                      Icon(
-                        isExpanded
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        size: 20,
-                        color: AppColors.textSecondary,
-                      ),
+                      if (hasChildren)
+                        Semantics(
+                          label: isExpanded ? 'Collapse ${item.label} submenu' : 'Expand ${item.label} submenu',
+                          child: Icon(
+                            isExpanded
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                            size: 20,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -203,37 +214,42 @@ class _AdminSidebarState extends State<AdminSidebar> {
     final currentLocation = GoRouterState.of(context).matchedLocation;
     final isActive = currentLocation == item.route;
 
-    return InkWell(
-      onTap: () => context.go(item.route),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.primary.withValues(alpha: 0.05)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          child: Row(
-            children: [
-              Icon(
-                item.icon,
-                size: 18,
-                color: isActive ? AppColors.primary : AppColors.textSecondary,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  item.label,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                    color: isActive ? AppColors.primary : AppColors.textPrimary,
+    return Semantics(
+      button: true,
+      label: item.label,
+      selected: isActive,
+      child: InkWell(
+        onTap: () => context.go(item.route),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: isActive
+                ? AppColors.primary.withValues(alpha: 0.05)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: Row(
+              children: [
+                Icon(
+                  item.icon,
+                  size: 18,
+                  color: isActive ? AppColors.primary : AppColors.textSecondary,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    item.label,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+                      color: isActive ? AppColors.primary : AppColors.textPrimary,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -248,35 +264,39 @@ class _AdminSidebarState extends State<AdminSidebar> {
           top: BorderSide(color: AppColors.border),
         ),
       ),
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            _isCollapsed = !_isCollapsed;
-            if (_isCollapsed) {
-              _expandedItem = null;
-            }
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                _isCollapsed ? Icons.chevron_right : Icons.chevron_left,
-                color: AppColors.textSecondary,
-              ),
-              if (!_isCollapsed) ...[
-                const SizedBox(width: 8),
-                Text(
-                  'Collapse',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
-                  ),
+      child: Semantics(
+        button: true,
+        label: _isCollapsed ? 'Expand sidebar' : 'Collapse sidebar',
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _isCollapsed = !_isCollapsed;
+              if (_isCollapsed) {
+                _expandedItem = null;
+              }
+            });
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  _isCollapsed ? Icons.chevron_right : Icons.chevron_left,
+                  color: AppColors.textSecondary,
                 ),
+                if (!_isCollapsed) ...[
+                  const SizedBox(width: 8),
+                  Text(
+                    'Collapse',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),

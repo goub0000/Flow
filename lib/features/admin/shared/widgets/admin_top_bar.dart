@@ -45,49 +45,59 @@ class AdminTopBar extends ConsumerWidget {
           const SizedBox(width: 16),
 
           // Theme Toggle
-          IconButton(
-            icon: Icon(
-              ref.watch(themeModeProvider) == ThemeMode.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
+          Semantics(
+            button: true,
+            label: 'Toggle dark mode',
+            child: IconButton(
+              icon: Icon(
+                ref.watch(themeModeProvider) == ThemeMode.dark
+                    ? Icons.light_mode
+                    : Icons.dark_mode,
+              ),
+              onPressed: () {
+                ref.read(themeModeProvider.notifier).toggleTheme();
+              },
+              tooltip: ref.watch(themeModeProvider) == ThemeMode.dark
+                  ? 'Switch to Light Mode'
+                  : 'Switch to Dark Mode',
             ),
-            onPressed: () {
-              ref.read(themeModeProvider.notifier).toggleTheme();
-            },
-            tooltip: ref.watch(themeModeProvider) == ThemeMode.dark
-                ? 'Switch to Light Mode'
-                : 'Switch to Dark Mode',
           ),
           const SizedBox(width: 8),
 
           // Notifications icon (placeholder for Phase 3)
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.notifications_outlined),
-                onPressed: () {
-                  context.go('/admin/notifications');
-                },
-                tooltip: 'Notifications',
-              ),
-              // Notification badge
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: AppColors.error,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.surface,
-                      width: 2,
+          Semantics(
+            button: true,
+            label: 'Notifications',
+            child: Stack(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.notifications_outlined),
+                  onPressed: () {
+                    context.go('/admin/notifications');
+                  },
+                  tooltip: 'Notifications',
+                ),
+                // Notification badge (decorative)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: ExcludeSemantics(
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: AppColors.error,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.surface,
+                          width: 2,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(width: 16),
 
@@ -104,9 +114,12 @@ class AdminTopBar extends ConsumerWidget {
           const SizedBox(width: 16),
 
           // Quick Logout Button
-          IconButton(
-            icon: Icon(Icons.logout, color: AppColors.error),
-            onPressed: () async {
+          Semantics(
+            button: true,
+            label: 'Sign out',
+            child: IconButton(
+              icon: Icon(Icons.logout, color: AppColors.error),
+              onPressed: () async {
               final shouldLogout = await showDialog<bool>(
                 context: context,
                 builder: (ctx) => AlertDialog(
@@ -137,11 +150,15 @@ class AdminTopBar extends ConsumerWidget {
               }
             },
             tooltip: 'Sign Out',
+            ),
           ),
           const SizedBox(width: 8),
 
           // User profile menu
-          PopupMenuButton<String>(
+          Semantics(
+            button: true,
+            label: 'User menu for ${adminUser.displayName}',
+            child: PopupMenuButton<String>(
             offset: const Offset(0, 50),
             child: Row(
               children: [
@@ -266,6 +283,7 @@ class AdminTopBar extends ConsumerWidget {
                   break;
               }
             },
+            ),
           ),
         ],
       ),
