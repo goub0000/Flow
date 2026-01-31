@@ -58,16 +58,20 @@ class SupabaseClient:
 
     def insert_university(self, university_data: Dict[str, Any]) -> Optional[Dict]:
         """
-        Insert a single university
+        Insert a single university. If a duplicate (same name+country) already exists,
+        the existing record is updated with the new data instead.
 
         Args:
             university_data: University data dictionary
 
         Returns:
-            Inserted university record or None if failed
+            Inserted/updated university record or None if failed
         """
         try:
-            response = self.client.table('universities').insert(university_data).execute()
+            response = self.client.table('universities').upsert(
+                university_data,
+                on_conflict='name,country',
+            ).execute()
             if response.data:
                 return response.data[0]
             return None
@@ -77,7 +81,8 @@ class SupabaseClient:
 
     def upsert_university(self, university_data: Dict[str, Any]) -> Optional[Dict]:
         """
-        Insert or update university (based on name and country)
+        Insert or update university based on name and country.
+        Uses PostgreSQL upsert (ON CONFLICT) with the unique index on (name, country).
 
         Args:
             university_data: University data dictionary
@@ -86,29 +91,14 @@ class SupabaseClient:
             Upserted university record or None if failed
         """
         try:
-            # Check if exists
-            existing = self.client.table('universities').select('*').eq(
-                'name', university_data['name']
-            ).eq(
-                'country', university_data.get('country', 'USA')
+            response = self.client.table('universities').upsert(
+                university_data,
+                on_conflict='name,country',
             ).execute()
 
-            if existing.data:
-                # Update existing
-                university_id = existing.data[0]['id']
-                response = self.client.table('universities').update(
-                    university_data
-                ).eq('id', university_id).execute()
-
-                if response.data:
-                    logger.debug(f"Updated: {university_data['name']}")
-                    return response.data[0]
-            else:
-                # Insert new
-                response = self.client.table('universities').insert(university_data).execute()
-                if response.data:
-                    logger.debug(f"Inserted: {university_data['name']}")
-                    return response.data[0]
+            if response.data:
+                logger.debug(f"Upserted: {university_data['name']}")
+                return response.data[0]
 
             return None
 
