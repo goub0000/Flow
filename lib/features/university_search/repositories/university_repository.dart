@@ -58,6 +58,7 @@ class UniversityFilters {
 
 /// Sort options for university list
 enum UniversitySortOption {
+  relevance('Relevance', 'relevance', false),
   nameAsc('Name (A-Z)', 'name', true),
   nameDesc('Name (Z-A)', 'name', false),
   tuitionAsc('Tuition (Low to High)', 'tuition_out_state', true),
@@ -74,62 +75,74 @@ enum UniversitySortOption {
   const UniversitySortOption(this.label, this.field, this.ascending);
 }
 
+/// Result of a university search including both data and total count
+class UniversitySearchResult {
+  final List<University> universities;
+  final int totalCount;
+
+  const UniversitySearchResult({
+    required this.universities,
+    required this.totalCount,
+  });
+}
+
 /// Repository for university data operations
 class UniversityRepository {
   final SupabaseClient _supabase;
 
   UniversityRepository(this._supabase);
 
-  /// Search universities with filters and pagination
-  Future<List<University>> searchUniversities({
+  /// Search universities with filters, relevance ranking, and pagination.
+  /// Returns both the list of universities and the total count in one call.
+  Future<UniversitySearchResult> searchUniversities({
     UniversityFilters filters = const UniversityFilters(),
     UniversitySortOption sortOption = UniversitySortOption.nameAsc,
     int page = 0,
     int pageSize = 20,
   }) async {
-    var query = _supabase.from('universities').select();
+    final params = <String, dynamic>{
+      'sort_by': sortOption.field,
+      'sort_ascending': sortOption.ascending,
+      'result_limit': pageSize,
+      'result_offset': page * pageSize,
+    };
 
-    // Apply search query (searches name, city, and state)
     if (filters.searchQuery?.isNotEmpty ?? false) {
-      query = query.or(
-        'name.ilike.%${filters.searchQuery}%,'
-        'city.ilike.%${filters.searchQuery}%,'
-        'state.ilike.%${filters.searchQuery}%'
-      );
+      params['search_term'] = filters.searchQuery;
     }
-
-    // Apply filters
     if (filters.country != null) {
-      query = query.eq('country', filters.country!);
+      params['filter_country'] = filters.country;
     }
-
     if (filters.universityType != null) {
-      query = query.eq('university_type', filters.universityType!);
+      params['filter_university_type'] = filters.universityType;
     }
-
     if (filters.locationType != null) {
-      query = query.eq('location_type', filters.locationType!);
+      params['filter_location_type'] = filters.locationType;
     }
-
     if (filters.maxTuition != null) {
-      query = query.lte('tuition_out_state', filters.maxTuition!);
+      params['filter_max_tuition'] = filters.maxTuition;
     }
-
     if (filters.minAcceptanceRate != null) {
-      query = query.gte('acceptance_rate', filters.minAcceptanceRate!);
+      params['filter_min_acceptance_rate'] = filters.minAcceptanceRate;
     }
-
     if (filters.maxAcceptanceRate != null) {
-      query = query.lte('acceptance_rate', filters.maxAcceptanceRate!);
+      params['filter_max_acceptance_rate'] = filters.maxAcceptanceRate;
     }
 
-    // Apply sorting and pagination
-    final start = page * pageSize;
-    final response = await query
-        .order(sortOption.field, ascending: sortOption.ascending, nullsFirst: false)
-        .range(start, start + pageSize - 1);
+    final response = await _supabase.rpc('search_universities_ranked', params: params);
 
-    return (response as List).map((json) => University.fromJson(json)).toList();
+    final data = response as Map<String, dynamic>;
+    final universitiesJson = data['universities'] as List<dynamic>? ?? [];
+    final totalCount = data['total_count'] as int? ?? 0;
+
+    final universities = universitiesJson
+        .map((json) => University.fromJson(json as Map<String, dynamic>))
+        .toList();
+
+    return UniversitySearchResult(
+      universities: universities,
+      totalCount: totalCount,
+    );
   }
 
   /// Get a single university by ID
@@ -230,48 +243,5 @@ class UniversityRepository {
     }
 
     return types.toList()..sort();
-  }
-
-  /// Get total count of universities matching filters
-  Future<int> getUniversityCount({
-    UniversityFilters filters = const UniversityFilters(),
-  }) async {
-    var query = _supabase.from('universities').select('id');
-
-    // Apply same filters as searchUniversities
-    if (filters.searchQuery?.isNotEmpty ?? false) {
-      query = query.or(
-        'name.ilike.%${filters.searchQuery}%,'
-        'city.ilike.%${filters.searchQuery}%,'
-        'state.ilike.%${filters.searchQuery}%'
-      );
-    }
-
-    if (filters.country != null) {
-      query = query.eq('country', filters.country!);
-    }
-
-    if (filters.universityType != null) {
-      query = query.eq('university_type', filters.universityType!);
-    }
-
-    if (filters.locationType != null) {
-      query = query.eq('location_type', filters.locationType!);
-    }
-
-    if (filters.maxTuition != null) {
-      query = query.lte('tuition_out_state', filters.maxTuition!);
-    }
-
-    if (filters.minAcceptanceRate != null) {
-      query = query.gte('acceptance_rate', filters.minAcceptanceRate!);
-    }
-
-    if (filters.maxAcceptanceRate != null) {
-      query = query.lte('acceptance_rate', filters.maxAcceptanceRate!);
-    }
-
-    final response = await query.count(CountOption.exact);
-    return response.count;
   }
 }

@@ -120,26 +120,22 @@ class UniversitySearchNotifier extends StateNotifier<UniversitySearchState> {
     try {
       final page = resetPage ? 0 : state.currentPage;
 
-      final results = await Future.wait([
-        _repository.searchUniversities(
-          filters: state.filters,
-          sortOption: state.sortOption,
-          page: page,
-          pageSize: _pageSize,
-        ),
-        if (resetPage) _repository.getUniversityCount(filters: state.filters),
-      ]);
-
-      final universities = results[0] as List<University>;
-      final totalCount = resetPage ? results[1] as int : state.totalCount;
+      final result = await _repository.searchUniversities(
+        filters: state.filters,
+        sortOption: state.sortOption,
+        page: page,
+        pageSize: _pageSize,
+      );
 
       state = state.copyWith(
-        universities: resetPage ? universities : [...state.universities, ...universities],
+        universities: resetPage
+            ? result.universities
+            : [...state.universities, ...result.universities],
         isLoading: false,
         isLoadingMore: false,
-        hasMore: universities.length >= _pageSize,
+        hasMore: result.universities.length >= _pageSize,
         currentPage: page,
-        totalCount: totalCount,
+        totalCount: result.totalCount,
       );
     } catch (e) {
       state = state.copyWith(
@@ -164,8 +160,20 @@ class UniversitySearchNotifier extends StateNotifier<UniversitySearchState> {
 
   /// Update search query
   Future<void> setSearchQuery(String query) async {
+    final hasQuery = query.isNotEmpty;
+    final currentSort = state.sortOption;
+
+    // Auto-switch to relevance sort when searching, back to nameAsc when cleared
+    UniversitySortOption newSort = currentSort;
+    if (hasQuery && currentSort == UniversitySortOption.nameAsc) {
+      newSort = UniversitySortOption.relevance;
+    } else if (!hasQuery && currentSort == UniversitySortOption.relevance) {
+      newSort = UniversitySortOption.nameAsc;
+    }
+
     state = state.copyWith(
-      filters: state.filters.copyWith(searchQuery: query.isEmpty ? null : query),
+      filters: state.filters.copyWith(searchQuery: hasQuery ? query : null),
+      sortOption: newSort,
     );
     await searchUniversities();
   }
