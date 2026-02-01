@@ -230,7 +230,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
             child: AnimatedOpacity(
               opacity: _scrollOffset > 200 ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 300),
-              child: FloatingActionButton.extended(
+              child: FloatingActionButton.small(
                 onPressed: () {
                   _scrollController.animateTo(
                     0,
@@ -238,9 +238,9 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                     curve: Curves.easeInOut,
                   );
                 },
-                icon: const Icon(Icons.arrow_upward),
-                label: const Text('Back to Top'),
+                tooltip: 'Back to Top',
                 elevation: 4,
+                child: const Icon(Icons.arrow_upward),
               ),
             ),
           ),
