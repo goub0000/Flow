@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// An animated counter that counts up from 0 to a target value.
@@ -33,6 +34,8 @@ class _AnimatedCounterState extends State<AnimatedCounter>
   late Animation<double> _animation;
   bool _hasAnimated = false;
   final GlobalKey _key = GlobalKey();
+  ScrollPosition? _scrollPosition;
+  Timer? _fallbackTimer;
 
   @override
   void initState() {
@@ -55,7 +58,18 @@ class _AnimatedCounterState extends State<AnimatedCounter>
       _hasAnimated = true;
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
+      // Fallback: ensure counter shows final value even if visibility detection fails
+      _fallbackTimer = Timer(const Duration(seconds: 3), _forceComplete);
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Listen to the ancestor scrollable so we detect scroll-into-view
+    _scrollPosition?.removeListener(_checkVisibility);
+    _scrollPosition = Scrollable.maybeOf(context)?.position;
+    _scrollPosition?.addListener(_checkVisibility);
   }
 
   void _checkVisibility() {
@@ -68,15 +82,27 @@ class _AnimatedCounterState extends State<AnimatedCounter>
     final Offset position = box.localToGlobal(Offset.zero);
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    // Start animation when element is 80% up the screen
     if (position.dy < screenHeight * 0.8 && position.dy > -box.size.height) {
-      _hasAnimated = true;
-      _controller.forward();
+      _startAnimation();
     }
+  }
+
+  void _startAnimation() {
+    if (_hasAnimated) return;
+    _hasAnimated = true;
+    _fallbackTimer?.cancel();
+    _controller.forward();
+  }
+
+  void _forceComplete() {
+    if (!mounted || _hasAnimated) return;
+    _startAnimation();
   }
 
   @override
   void dispose() {
+    _fallbackTimer?.cancel();
+    _scrollPosition?.removeListener(_checkVisibility);
     _controller.dispose();
     super.dispose();
   }
@@ -94,26 +120,17 @@ class _AnimatedCounterState extends State<AnimatedCounter>
 
   @override
   Widget build(BuildContext context) {
-    // Schedule visibility check on scroll
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
-
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        _checkVisibility();
-        return false;
+    return AnimatedBuilder(
+      key: _key,
+      animation: _animation,
+      builder: (context, child) {
+        final value = _animation.value.round();
+        final displayValue = _formatNumber(value);
+        return Text(
+          '${widget.prefix ?? ''}$displayValue${widget.suffix}',
+          style: widget.textStyle,
+        );
       },
-      child: AnimatedBuilder(
-        key: _key,
-        animation: _animation,
-        builder: (context, child) {
-          final value = _animation.value.round();
-          final displayValue = _formatNumber(value);
-          return Text(
-            '${widget.prefix ?? ''}$displayValue${widget.suffix}',
-            style: widget.textStyle,
-          );
-        },
-      ),
     );
   }
 }
@@ -171,6 +188,8 @@ class _AnimatedStatItemState extends State<_AnimatedStatItem>
   late Animation<Offset> _slideAnimation;
   bool _hasAnimated = false;
   final GlobalKey _key = GlobalKey();
+  ScrollPosition? _scrollPosition;
+  Timer? _fallbackTimer;
 
   @override
   void initState() {
@@ -192,6 +211,17 @@ class _AnimatedStatItemState extends State<_AnimatedStatItem>
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
+    // Fallback: ensure stats are visible even if scroll detection fails
+    _fallbackTimer = Timer(const Duration(seconds: 3), _forceComplete);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Listen to the ancestor scrollable so we detect scroll-into-view
+    _scrollPosition?.removeListener(_checkVisibility);
+    _scrollPosition = Scrollable.maybeOf(context)?.position;
+    _scrollPosition?.addListener(_checkVisibility);
   }
 
   void _checkVisibility() {
@@ -205,15 +235,29 @@ class _AnimatedStatItemState extends State<_AnimatedStatItem>
     final double screenHeight = MediaQuery.of(context).size.height;
 
     if (position.dy < screenHeight * 0.85) {
-      _hasAnimated = true;
-      Future.delayed(widget.delay, () {
-        if (mounted) _fadeController.forward();
-      });
+      _startAnimation();
     }
+  }
+
+  void _startAnimation() {
+    if (_hasAnimated) return;
+    _hasAnimated = true;
+    _fallbackTimer?.cancel();
+    Future.delayed(widget.delay, () {
+      if (mounted) _fadeController.forward();
+    });
+  }
+
+  void _forceComplete() {
+    if (!mounted || _hasAnimated) return;
+    _hasAnimated = true;
+    _fadeController.value = 1.0; // snap to fully visible
   }
 
   @override
   void dispose() {
+    _fallbackTimer?.cancel();
+    _scrollPosition?.removeListener(_checkVisibility);
     _fadeController.dispose();
     super.dispose();
   }
@@ -222,52 +266,44 @@ class _AnimatedStatItemState extends State<_AnimatedStatItem>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
-
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        _checkVisibility();
-        return false;
-      },
-      child: AnimatedBuilder(
-        key: _key,
-        animation: _fadeController,
-        builder: (context, child) {
-          return Transform.translate(
-            offset: _slideAnimation.value,
-            child: Opacity(
-              opacity: _fadeAnimation.value,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    widget.stat.icon,
-                    size: 28,
-                    color: theme.colorScheme.primary,
+    return AnimatedBuilder(
+      key: _key,
+      animation: _fadeController,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: _slideAnimation.value,
+          child: Opacity(
+            opacity: _fadeAnimation.value,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  widget.stat.icon,
+                  size: 28,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(height: 8),
+                AnimatedCounter(
+                  targetValue: widget.stat.value,
+                  suffix: widget.stat.suffix,
+                  textStyle: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
-                  const SizedBox(height: 8),
-                  AnimatedCounter(
-                    targetValue: widget.stat.value,
-                    suffix: widget.stat.suffix,
-                    textStyle: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                    startOnVisible: _hasAnimated,
+                  startOnVisible: false,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  widget.stat.label,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    widget.stat.label,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
