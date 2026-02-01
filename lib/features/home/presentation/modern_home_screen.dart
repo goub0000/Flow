@@ -393,9 +393,9 @@ class _HeroSectionState extends State<_HeroSection>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      theme.colorScheme.primary.withValues(alpha: 0.04),
-                      AppColors.terracotta.withValues(alpha: 0.03),
-                      AppColors.coral.withValues(alpha: 0.02),
+                      theme.colorScheme.primary.withValues(alpha: 0.10),
+                      AppColors.terracotta.withValues(alpha: 0.07),
+                      AppColors.coral.withValues(alpha: 0.05),
                     ],
                     stops: [
                       0.0,
@@ -408,58 +408,100 @@ class _HeroSectionState extends State<_HeroSection>
             },
           ),
 
-          // Decorative circles (web-compatible - using Positioned with explicit sizes)
+          // Decorative floating circles (web-compatible)
           if (!isMobile) ...[
-            // Top right decorative circle
+            // Top right decorative circle - large, floating
             Positioned(
-              top: -60,
-              right: -60,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      theme.colorScheme.primary.withValues(alpha: 0.08),
-                      theme.colorScheme.primary.withValues(alpha: 0.0),
-                    ],
+              top: -50,
+              right: -50,
+              child: FloatingElement(
+                floatHeight: 12,
+                duration: const Duration(seconds: 5),
+                delay: 0,
+                child: Container(
+                  width: 260,
+                  height: 260,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        theme.colorScheme.primary.withValues(alpha: 0.18),
+                        theme.colorScheme.primary.withValues(alpha: 0.06),
+                        theme.colorScheme.primary.withValues(alpha: 0.0),
+                      ],
+                      stops: const [0.0, 0.6, 1.0],
+                    ),
                   ),
                 ),
               ),
             ),
-            // Bottom left decorative circle
+            // Bottom left decorative circle - floating
             Positioned(
-              bottom: -40,
-              left: -40,
-              child: Container(
-                width: 160,
-                height: 160,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppColors.terracotta.withValues(alpha: 0.06),
-                      AppColors.terracotta.withValues(alpha: 0.0),
-                    ],
+              bottom: -30,
+              left: -30,
+              child: FloatingElement(
+                floatHeight: 10,
+                duration: const Duration(seconds: 6),
+                delay: 0.5,
+                child: Container(
+                  width: 220,
+                  height: 220,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        AppColors.terracotta.withValues(alpha: 0.15),
+                        AppColors.terracotta.withValues(alpha: 0.05),
+                        AppColors.terracotta.withValues(alpha: 0.0),
+                      ],
+                      stops: const [0.0, 0.6, 1.0],
+                    ),
                   ),
                 ),
               ),
             ),
-            // Middle right small circle
+            // Middle right accent circle - floating
             Positioned(
               top: size.height * 0.3,
-              right: 80,
-              child: Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppColors.coral.withValues(alpha: 0.05),
-                      AppColors.coral.withValues(alpha: 0.0),
-                    ],
+              right: 60,
+              child: FloatingElement(
+                floatHeight: 8,
+                duration: const Duration(seconds: 4),
+                delay: 1.0,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        AppColors.coral.withValues(alpha: 0.14),
+                        AppColors.coral.withValues(alpha: 0.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Top left small accent circle - floating
+            Positioned(
+              top: size.height * 0.15,
+              left: 40,
+              child: FloatingElement(
+                floatHeight: 6,
+                duration: const Duration(seconds: 3),
+                delay: 1.5,
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        theme.colorScheme.primary.withValues(alpha: 0.12),
+                        theme.colorScheme.primary.withValues(alpha: 0.0),
+                      ],
+                    ),
                   ),
                 ),
               ),
