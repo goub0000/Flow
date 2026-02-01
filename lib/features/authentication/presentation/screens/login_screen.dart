@@ -68,6 +68,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  void _resetForm() {
+    _formKey.currentState?.reset();
+    _emailController.clear();
+    _passwordController.clear();
+    setState(() {
+      _errorMessage = null;
+      _errorType = null;
+      _obscurePassword = true;
+    });
+  }
+
+  Future<void> _pushAndReset(String path) async {
+    await context.push(path);
+    if (mounted) _resetForm();
+  }
+
   Widget _buildErrorWidget() {
     if (_errorMessage == null) return const SizedBox.shrink();
 
@@ -123,7 +139,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 const SizedBox(width: 32),
                 TextButton.icon(
-                  onPressed: () => context.push('/forgot-password'),
+                  onPressed: () => _pushAndReset('/forgot-password'),
                   icon: const Icon(Icons.lock_reset, size: 16),
                   label: const Text('Reset Password'),
                   style: TextButton.styleFrom(
@@ -141,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 const SizedBox(width: 32),
                 TextButton.icon(
-                  onPressed: () => context.push('/register'),
+                  onPressed: () => _pushAndReset('/register'),
                   icon: const Icon(Icons.person_add, size: 16),
                   label: const Text('Create Account'),
                   style: TextButton.styleFrom(
@@ -283,7 +299,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: TextButton(
                       onPressed: authState.isLoading
                           ? null
-                          : () => context.push('/forgot-password'),
+                          : () => _pushAndReset('/forgot-password'),
                       child: const Text('Forgot Password?'),
                     ),
                   ),
@@ -327,7 +343,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   OutlinedButton(
                     onPressed: authState.isLoading
                         ? null
-                        : () => context.push('/register'),
+                        : () => _pushAndReset('/register'),
                     child: const Text('Create Account'),
                   ),
                 ],
