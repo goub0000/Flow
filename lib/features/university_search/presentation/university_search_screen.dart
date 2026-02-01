@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/models/university_model.dart';
+import '../../../core/widgets/skeletons/shimmer_effect.dart';
 import '../repositories/university_repository.dart';
 import '../providers/university_search_provider.dart';
 
@@ -186,7 +187,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
           // University List
           Expanded(
             child: state.isLoading && state.universities.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const _UniversityListSkeleton()
                 : state.error != null && state.universities.isEmpty
                     ? _ErrorView(
                         error: state.error!,
@@ -866,6 +867,87 @@ class _ErrorView extends StatelessWidget {
               label: const Text('Retry'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Shimmer skeleton that mirrors _UniversityCard layout
+class _UniversityListSkeleton extends StatelessWidget {
+  const _UniversityListSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: 6,
+      itemBuilder: (_, __) => const _UniversityCardSkeleton(),
+    );
+  }
+}
+
+class _UniversityCardSkeleton extends StatelessWidget {
+  const _UniversityCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ShimmerEffect(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Logo placeholder
+                  SkeletonBox(
+                    width: 56,
+                    height: 56,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SkeletonLine(width: 180, height: 16),
+                        const SizedBox(height: 8),
+                        SkeletonLine(width: 140, height: 14),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // Stat chips row
+              Row(
+                children: [
+                  SkeletonBox(
+                    width: 80,
+                    height: 28,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  const SizedBox(width: 8),
+                  SkeletonBox(
+                    width: 100,
+                    height: 28,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  const SizedBox(width: 8),
+                  SkeletonBox(
+                    width: 70,
+                    height: 28,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

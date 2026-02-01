@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/models/university_model.dart';
+import '../../../core/widgets/skeletons/shimmer_effect.dart';
 import '../providers/university_search_provider.dart';
 
 /// University Detail Screen showing comprehensive university information
@@ -33,7 +34,7 @@ class UniversityDetailScreen extends ConsumerWidget {
         }
         return _UniversityDetailContent(university: uni);
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const _UniversityDetailSkeleton(),
       error: (error, _) => Center(
         child: Text('Error loading university: $error'),
       ),
@@ -345,6 +346,83 @@ class _InfoCard extends StatelessWidget {
           const Divider(height: 1),
           ...children,
         ],
+      ),
+    );
+  }
+}
+
+/// Shimmer skeleton matching the detail screen layout
+class _UniversityDetailSkeleton extends StatelessWidget {
+  const _UniversityDetailSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        // Header skeleton
+        SliverAppBar(
+          expandedHeight: 200,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            background: ShimmerEffect(
+              child: Container(color: Colors.grey),
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              _buildCardSkeleton(3),
+              const SizedBox(height: 16),
+              _buildCardSkeleton(4),
+              const SizedBox(height: 16),
+              _buildCardSkeleton(3),
+              const SizedBox(height: 16),
+              _buildCardSkeleton(2),
+            ]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCardSkeleton(int rows) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: ShimmerEffect(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  SkeletonBox(
+                    width: 20,
+                    height: 20,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  const SizedBox(width: 8),
+                  const SkeletonLine(width: 120, height: 18),
+                ],
+              ),
+              const SizedBox(height: 16),
+              for (int i = 0; i < rows; i++) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SkeletonLine(width: 100, height: 14),
+                      SkeletonLine(width: 80, height: 14),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

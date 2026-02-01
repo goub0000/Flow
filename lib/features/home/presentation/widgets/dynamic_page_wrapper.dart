@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/skeletons/shimmer_effect.dart';
 import '../../../../core/providers/page_content_provider.dart';
 import '../../../../core/models/page_content_model.dart';
 
@@ -39,8 +40,48 @@ class DynamicPageWrapper extends ConsumerWidget {
   }
 
   Widget _buildLoadingState(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800),
+          child: ShimmerEffect(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title
+                const SkeletonLine(width: 200, height: 28),
+                const SizedBox(height: 12),
+                const SkeletonLine(width: 300, height: 16),
+                const SizedBox(height: 32),
+                // Content paragraphs
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                const SkeletonLine(width: 250, height: 14),
+                const SizedBox(height: 24),
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                const SkeletonLine(width: 180, height: 14),
+                const SizedBox(height: 24),
+                // Another section
+                const SkeletonLine(width: 160, height: 22),
+                const SizedBox(height: 12),
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                SkeletonLine(width: double.infinity, height: 14),
+                const SizedBox(height: 8),
+                const SkeletonLine(width: 220, height: 14),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
