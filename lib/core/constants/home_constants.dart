@@ -15,10 +15,10 @@ class HomeConstants {
   static const double maxHeroWidth = 1000;
   static const double maxFooterWidth = 1000;
 
-  // Section spacing - increased for visual rhythm
-  static const double sectionSpacingLarge = 96;
-  static const double sectionSpacingMedium = 72;
-  static const double sectionSpacingSmall = 48;
+  // Section spacing
+  static const double sectionSpacingLarge = 64;
+  static const double sectionSpacingMedium = 48;
+  static const double sectionSpacingSmall = 32;
 
   // Card sizing
   static const double cardMinWidth = 280;
@@ -49,7 +49,7 @@ class HomeConstants {
   static const double blurEffectThreshold = 10;
 
   // Spacing (legacy - maintained for compatibility)
-  static const double sectionSpacing = 96;
+  static const double sectionSpacing = 64;
   static const double cardSpacing = 32;
   static const double itemSpacing = 24;
 

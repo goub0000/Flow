@@ -177,7 +177,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
               SliverToBoxAdapter(
                 child: WaveDivider(
                   color: AppColors.sectionLight,
-                  height: 60,
+                  height: 36,
                   style: WaveStyle.gentle,
                 ),
               ),
@@ -199,7 +199,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
               SliverToBoxAdapter(
                 child: WaveDivider(
                   color: theme.colorScheme.secondary.withValues(alpha:0.1),
-                  height: 50,
+                  height: 30,
                   style: WaveStyle.minimal,
                 ),
               ),
@@ -241,7 +241,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
               SliverToBoxAdapter(
                 child: WaveDivider(
                   color: theme.colorScheme.primaryContainer,
-                  height: 60,
+                  height: 36,
                   style: WaveStyle.curved,
                 ),
               ),
