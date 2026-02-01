@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'dart:ui' as ui;
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/home_constants.dart';
+import '../../../core/constants/user_roles.dart';
+import '../../authentication/providers/auth_provider.dart';
 import 'dart:math' as math;
 import 'widgets/demo_video_dialog.dart';
 import 'widgets/section_divider.dart';
@@ -54,6 +56,8 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final authState = ref.watch(authProvider);
+    final isWide = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -102,30 +106,64 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                         letterSpacing: -0.5,
                       ),
                     ),
+                    if (isWide) ...[
+                      const SizedBox(width: 32),
+                      _NavTextButton(label: 'Universities', path: '/universities', theme: theme),
+                      _NavTextButton(label: 'About', path: '/about', theme: theme),
+                      _NavTextButton(label: 'Contact', path: '/contact', theme: theme),
+                    ],
                   ],
                 ),
                 actions: [
-                  TextButton(
-                    onPressed: () => context.go('/login'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: theme.colorScheme.onSurface,
-                    ),
-                    child: const Text('Sign In'),
-                  ),
-                  const SizedBox(width: 8),
-                  FilledButton.icon(
-                    onPressed: () => context.go('/register'),
-                    icon: const Icon(Icons.arrow_forward, size: 18),
-                    label: const Text('Get Started'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
+                  if (authState.isAuthenticated) ...[
+                    FilledButton.icon(
+                      onPressed: () => context.go(
+                        authState.user?.activeRole.dashboardRoute ?? '/login',
+                      ),
+                      icon: const Icon(Icons.dashboard, size: 18),
+                      label: const Text('Dashboard'),
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                       ),
                     ),
-                  ),
+                  ] else ...[
+                    TextButton(
+                      onPressed: () => context.go('/login'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: theme.colorScheme.onSurface,
+                      ),
+                      child: const Text('Sign In'),
+                    ),
+                    const SizedBox(width: 8),
+                    FilledButton.icon(
+                      onPressed: () => context.go('/register'),
+                      icon: const Icon(Icons.arrow_forward, size: 18),
+                      label: const Text('Get Started'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (!isWide) ...[
+                    const SizedBox(width: 4),
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.menu),
+                      onSelected: (path) => context.go(path),
+                      itemBuilder: (_) => const [
+                        PopupMenuItem(value: '/universities', child: Text('Universities')),
+                        PopupMenuItem(value: '/about', child: Text('About')),
+                        PopupMenuItem(value: '/contact', child: Text('Contact')),
+                      ],
+                    ),
+                  ],
                   const SizedBox(width: 16),
                 ],
               ),
@@ -1450,6 +1488,31 @@ class _UserType {
     required this.description,
     required this.color,
   });
+}
+
+/// Navigation text button used in the homepage app bar.
+class _NavTextButton extends StatelessWidget {
+  final String label;
+  final String path;
+  final ThemeData theme;
+
+  const _NavTextButton({
+    required this.label,
+    required this.path,
+    required this.theme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => context.go(path),
+      style: TextButton.styleFrom(
+        foregroundColor: theme.colorScheme.onSurface,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      ),
+      child: Text(label),
+    );
+  }
 }
 
 /// Final CTA Section
