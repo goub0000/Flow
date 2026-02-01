@@ -27,24 +27,15 @@ class UniversityDetailScreen extends ConsumerWidget {
     return asyncUniversity.when(
       data: (uni) {
         if (uni == null) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('University Not Found')),
-            body: const Center(
-              child: Text('This university could not be found.'),
-            ),
+          return const Center(
+            child: Text('This university could not be found.'),
           );
         }
         return _UniversityDetailContent(university: uni);
       },
-      loading: () => Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: CircularProgressIndicator()),
-      ),
-      error: (error, _) => Scaffold(
-        appBar: AppBar(title: const Text('Error')),
-        body: Center(
-          child: Text('Error loading university: $error'),
-        ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => Center(
+        child: Text('Error loading university: $error'),
       ),
     );
   }
@@ -59,8 +50,7 @@ class _UniversityDetailContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      body: CustomScrollView(
+    return CustomScrollView(
         slivers: [
           // App Bar with Hero Header
           SliverAppBar(
@@ -285,8 +275,7 @@ class _UniversityDetailContent extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   String _formatNumber(int number) {

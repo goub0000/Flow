@@ -41,23 +41,41 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
     final state = ref.watch(universitySearchProvider);
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Universities'),
-        actions: [
-          if (state.filters.hasFilters)
-            TextButton.icon(
-              onPressed: () {
-                _searchController.clear();
-                ref.read(universitySearchProvider.notifier).clearFilters();
-              },
-              icon: const Icon(Icons.clear_all),
-              label: const Text('Clear'),
-            ),
-        ],
-      ),
-      body: Column(
+    return Column(
         children: [
+          // Title bar with clear action
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 8, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Search Universities',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (state.totalCount > 0) ...[
+                  const SizedBox(width: 8),
+                  Text(
+                    '(${state.totalCount})',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+                const Spacer(),
+                if (state.filters.hasFilters)
+                  TextButton.icon(
+                    onPressed: () {
+                      _searchController.clear();
+                      ref.read(universitySearchProvider.notifier).clearFilters();
+                    },
+                    icon: const Icon(Icons.clear_all, size: 18),
+                    label: const Text('Clear all'),
+                  ),
+              ],
+            ),
+          ),
           // Search and Filter Bar
           Container(
             padding: const EdgeInsets.all(16),
@@ -203,8 +221,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
                           ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   void _showFilterSheet(BuildContext context) {
