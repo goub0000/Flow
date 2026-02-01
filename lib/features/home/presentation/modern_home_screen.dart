@@ -1333,22 +1333,33 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
               ),
               const SizedBox(height: 48),
 
-              // Segmented Button
-              SegmentedButton<int>(
-                segments: _userTypes.asMap().entries.map((entry) {
-                  return ButtonSegment<int>(
-                    value: entry.key,
-                    icon: Icon(entry.value.icon),
-                    label: Text(entry.value.name),
+              // Segmented Button — hide icons on narrow screens to prevent label truncation
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final showIcons = constraints.maxWidth >= 500;
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                      child: SegmentedButton<int>(
+                        segments: _userTypes.asMap().entries.map((entry) {
+                          return ButtonSegment<int>(
+                            value: entry.key,
+                            icon: showIcons ? Icon(entry.value.icon) : null,
+                            label: Text(entry.value.name),
+                          );
+                        }).toList(),
+                        selected: {_selectedIndex},
+                        onSelectionChanged: (Set<int> newSelection) {
+                          setState(() {
+                            _selectedIndex = newSelection.first;
+                          });
+                        },
+                        showSelectedIcon: false,
+                      ),
+                    ),
                   );
-                }).toList(),
-                selected: {_selectedIndex},
-                onSelectionChanged: (Set<int> newSelection) {
-                  setState(() {
-                    _selectedIndex = newSelection.first;
-                  });
                 },
-                showSelectedIcon: false,
               ),
               const SizedBox(height: 48),
 
