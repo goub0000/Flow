@@ -26,6 +26,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _obscureConfirmPassword = true;
   String? _errorMessage;
   AuthErrorType? _errorType;
+  String _password = '';
 
   @override
   void dispose() {
@@ -328,8 +329,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   validator: Validators.password,
                   enabled: !authState.isLoading,
-                  onChanged: (_) => _clearError(),
+                  onChanged: (value) {
+                    _clearError();
+                    setState(() => _password = value);
+                  },
                 ),
+                const SizedBox(height: 8),
+
+                // Password strength indicator
+                _PasswordStrengthIndicator(password: _password),
                 const SizedBox(height: 16),
 
                 // Confirm Password Field
@@ -405,6 +413,126 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Live password strength meter with requirement checklist.
+class _PasswordStrengthIndicator extends StatelessWidget {
+  final String password;
+
+  const _PasswordStrengthIndicator({required this.password});
+
+  @override
+  Widget build(BuildContext context) {
+    if (password.isEmpty) return const SizedBox.shrink();
+
+    final theme = Theme.of(context);
+    final checks = _checks;
+    final passed = checks.where((c) => c.met).length;
+    final strength = passed / checks.length; // 0.0 – 1.0
+
+    final Color barColor;
+    final String label;
+    if (strength <= 0.25) {
+      barColor = AppColors.error;
+      label = 'Weak';
+    } else if (strength <= 0.5) {
+      barColor = Colors.orange;
+      label = 'Fair';
+    } else if (strength < 1.0) {
+      barColor = Colors.amber;
+      label = 'Good';
+    } else {
+      barColor = AppColors.success;
+      label = 'Strong';
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Strength bar + label
+        Row(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: strength,
+                  minHeight: 6,
+                  backgroundColor: theme.colorScheme.outlineVariant,
+                  color: barColor,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: barColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        // Requirement checklist
+        Wrap(
+          spacing: 16,
+          runSpacing: 4,
+          children: checks
+              .map((c) => _RequirementChip(label: c.label, met: c.met, theme: theme))
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  List<_Check> get _checks => [
+        _Check('8+ characters', password.length >= 8),
+        _Check('Uppercase', password.contains(RegExp(r'[A-Z]'))),
+        _Check('Lowercase', password.contains(RegExp(r'[a-z]'))),
+        _Check('Number', password.contains(RegExp(r'[0-9]'))),
+      ];
+}
+
+class _Check {
+  final String label;
+  final bool met;
+  const _Check(this.label, this.met);
+}
+
+class _RequirementChip extends StatelessWidget {
+  final String label;
+  final bool met;
+  final ThemeData theme;
+
+  const _RequirementChip({
+    required this.label,
+    required this.met,
+    required this.theme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          met ? Icons.check_circle : Icons.circle_outlined,
+          size: 14,
+          color: met ? AppColors.success : theme.colorScheme.outlineVariant,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: met
+                ? theme.colorScheme.onSurface
+                : theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
     );
   }
 }
