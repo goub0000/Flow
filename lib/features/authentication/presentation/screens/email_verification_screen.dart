@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Email Verification Screen
 ///
@@ -107,8 +108,8 @@ class _EmailVerificationScreenState
           _showSuccessAndNavigate();
         } else if (!silent) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Email not verified yet. Please check your inbox.'),
+            SnackBar(
+              content: Text(context.l10n.emailVerifyNotYet),
               backgroundColor: AppColors.warning,
             ),
           );
@@ -119,7 +120,7 @@ class _EmailVerificationScreenState
         setState(() => _isChecking = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error checking verification: ${e.toString()}'),
+            content: Text(context.l10n.emailVerifyCheckError(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -158,8 +159,8 @@ class _EmailVerificationScreenState
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Verification email sent! Check your inbox.'),
+          SnackBar(
+            content: Text(context.l10n.emailVerifySent),
             backgroundColor: AppColors.success,
           ),
         );
@@ -168,7 +169,7 @@ class _EmailVerificationScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to send email: ${e.toString()}'),
+            content: Text(context.l10n.emailVerifySendFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -215,19 +216,19 @@ class _EmailVerificationScreenState
               },
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Email Verified!',
-              style: TextStyle(
+            Text(
+              context.l10n.emailVerifySuccess,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppColors.success,
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
-              'Your email has been successfully verified.',
+            Text(
+              context.l10n.emailVerifySuccessMessage,
               textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.textSecondary),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -251,7 +252,7 @@ class _EmailVerificationScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Verify Email'),
+        title: Text(context.l10n.emailVerifyAppBarTitle),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -315,7 +316,7 @@ class _EmailVerificationScreenState
 
                 // Title
                 Text(
-                  'Verify Your Email',
+                  context.l10n.emailVerifyTitle,
                   style: theme.textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primary,
@@ -326,7 +327,7 @@ class _EmailVerificationScreenState
 
                 // Message
                 Text(
-                  'We\'ve sent a verification link to:',
+                  context.l10n.emailVerifySentTo,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -371,7 +372,7 @@ class _EmailVerificationScreenState
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'Next Steps',
+                            context.l10n.emailVerifyNextSteps,
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -381,17 +382,17 @@ class _EmailVerificationScreenState
                       const SizedBox(height: 16),
                       _buildInstructionStep(
                         '1',
-                        'Check your email inbox',
+                        context.l10n.emailVerifyStep1,
                       ),
                       const SizedBox(height: 12),
                       _buildInstructionStep(
                         '2',
-                        'Click the verification link',
+                        context.l10n.emailVerifyStep2,
                       ),
                       const SizedBox(height: 12),
                       _buildInstructionStep(
                         '3',
-                        'Return here to continue',
+                        context.l10n.emailVerifyStep3,
                       ),
                     ],
                   ),
@@ -415,7 +416,7 @@ class _EmailVerificationScreenState
                           )
                         : const Icon(Icons.check_circle_outline),
                     label: Text(
-                      _isChecking ? 'Checking...' : 'I\'ve Verified My Email',
+                      _isChecking ? context.l10n.emailVerifyChecking : context.l10n.emailVerifyCheckButton,
                       style: const TextStyle(fontSize: 16),
                     ),
                   ),
@@ -430,8 +431,8 @@ class _EmailVerificationScreenState
                     icon: const Icon(Icons.refresh),
                     label: Text(
                       _canResend
-                          ? 'Resend Email'
-                          : 'Resend in ${_resendCooldown}s',
+                          ? context.l10n.emailVerifyResend
+                          : context.l10n.emailVerifyResendIn(_resendCooldown),
                       style: const TextStyle(fontSize: 16),
                     ),
                   ),
@@ -454,7 +455,7 @@ class _EmailVerificationScreenState
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Didn\'t receive the email?',
+                        context.l10n.emailVerifyDidntReceive,
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -462,9 +463,7 @@ class _EmailVerificationScreenState
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '• Check your spam/junk folder\n'
-                        '• Make sure the email is correct\n'
-                        '• Wait a few minutes and try resending',
+                        '• ${context.l10n.emailVerifySpamTip}\n• ${context.l10n.emailVerifyCorrectTip}\n• ${context.l10n.emailVerifyWaitTip}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -489,7 +488,7 @@ class _EmailVerificationScreenState
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Auto-checking every 5 seconds',
+                      context.l10n.emailVerifyAutoCheck,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),

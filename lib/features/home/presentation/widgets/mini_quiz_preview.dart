@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// A mini quiz teaser widget for the home page.
@@ -17,30 +18,32 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
   int _currentQuestion = 0;
   String? _selectedAnswer;
 
-  final List<_QuizQuestion> _questions = const [
-    _QuizQuestion(
-      question: 'What field interests you most?',
-      options: [
-        'Technology & Engineering',
-        'Business & Finance',
-        'Healthcare & Medicine',
-        'Arts & Humanities',
-      ],
-      icon: Icons.lightbulb_outline,
-    ),
-    _QuizQuestion(
-      question: 'Where would you prefer to study?',
-      options: [
-        'West Africa',
-        'East Africa',
-        'Southern Africa',
-        'Anywhere in Africa',
-      ],
-      icon: Icons.public,
-    ),
-  ];
+  List<_QuizQuestion> _buildQuestions(BuildContext context) {
+    return [
+      _QuizQuestion(
+        question: context.l10n.quizFieldQuestion,
+        options: [
+          context.l10n.quizFieldTechEngineering,
+          context.l10n.quizFieldBusinessFinance,
+          context.l10n.quizFieldHealthcareMedicine,
+          context.l10n.quizFieldArtsHumanities,
+        ],
+        icon: Icons.lightbulb_outline,
+      ),
+      _QuizQuestion(
+        question: context.l10n.quizLocationQuestion,
+        options: [
+          context.l10n.quizLocationWestAfrica,
+          context.l10n.quizLocationEastAfrica,
+          context.l10n.quizLocationSouthernAfrica,
+          context.l10n.quizLocationAnywhereAfrica,
+        ],
+        icon: Icons.public,
+      ),
+    ];
+  }
 
-  void _selectAnswer(String answer) {
+  void _selectAnswer(String answer, int questionsLength) {
     setState(() {
       _selectedAnswer = answer;
     });
@@ -48,7 +51,7 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
     // After a brief delay, show CTA or next question
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
-        if (_currentQuestion < _questions.length - 1) {
+        if (_currentQuestion < questionsLength - 1) {
           setState(() {
             _currentQuestion++;
             _selectedAnswer = null;
@@ -61,7 +64,8 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final question = _questions[_currentQuestion];
+    final questions = _buildQuestions(context);
+    final question = questions[_currentQuestion];
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 500),
@@ -104,14 +108,14 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Find Your Path',
+                      context.l10n.quizFindYourPath,
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: AppColors.accent,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'Quick Preview',
+                      context.l10n.quizQuickPreview,
                       style: theme.textTheme.titleSmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -121,7 +125,7 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
               ),
               // Progress indicator
               Text(
-                '${_currentQuestion + 1}/${_questions.length}',
+                '${_currentQuestion + 1}/${questions.length}',
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -150,7 +154,7 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: InkWell(
-                onTap: () => _selectAnswer(option),
+                onTap: () => _selectAnswer(option, questions.length),
                 borderRadius: BorderRadius.circular(12),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
@@ -205,7 +209,7 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
             child: FilledButton.icon(
               onPressed: () => context.go('/find-your-path'),
               icon: const Icon(Icons.arrow_forward),
-              label: const Text('Get Your Recommendations'),
+              label: Text(context.l10n.quizGetRecommendations),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
@@ -298,14 +302,14 @@ class _QuizTeaserState extends State<QuizTeaser> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Find Your Path',
+                    context.l10n.quizFindYourPath,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'Take the quiz',
+                    context.l10n.quizTakeTheQuiz,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: Colors.white.withOpacity(0.9),
                     ),

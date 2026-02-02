@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/user_roles.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/utils/auth_error_mapper.dart';
@@ -141,7 +142,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 TextButton.icon(
                   onPressed: () => _pushAndReset('/forgot-password'),
                   icon: const Icon(Icons.lock_reset, size: 16),
-                  label: const Text('Reset Password'),
+                  label: Text(context.l10n.loginResetPassword),
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     minimumSize: Size.zero,
@@ -159,7 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 TextButton.icon(
                   onPressed: () => _pushAndReset('/register'),
                   icon: const Icon(Icons.person_add, size: 16),
-                  label: const Text('Create Account'),
+                  label: Text(context.l10n.loginCreateAccount),
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     minimumSize: Size.zero,
@@ -225,7 +226,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Flow',
+                    context.l10n.loginTitle,
                     style: theme.textTheme.displayLarge?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,
@@ -234,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'African EdTech Platform',
+                    context.l10n.loginSubtitle,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -249,9 +250,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email_outlined),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.loginEmailLabel,
+                      prefixIcon: const Icon(Icons.email_outlined),
                     ),
                     validator: Validators.email,
                     enabled: !authState.isLoading,
@@ -264,7 +265,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: context.l10n.loginPasswordLabel,
                       prefixIcon: const Icon(Icons.lock_outlined),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -281,10 +282,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return context.l10n.loginPasswordEmpty;
                       }
                       if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return context.l10n.loginPasswordTooShort;
                       }
                       return null;
                     },
@@ -300,7 +301,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: authState.isLoading
                           ? null
                           : () => _pushAndReset('/forgot-password'),
-                      child: const Text('Forgot Password?'),
+                      child: Text(context.l10n.loginForgotPassword),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -319,7 +320,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                             ),
                           )
-                        : const Text('Login'),
+                        : Text(context.l10n.loginButton),
                   ),
                   const SizedBox(height: 16),
 
@@ -330,7 +331,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          'OR',
+                          context.l10n.loginOr,
                           style: theme.textTheme.bodySmall,
                         ),
                       ),
@@ -344,7 +345,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onPressed: authState.isLoading
                         ? null
                         : () => _pushAndReset('/register'),
-                    child: const Text('Create Account'),
+                    child: Text(context.l10n.loginCreateAccount),
                   ),
                 ],
               ),

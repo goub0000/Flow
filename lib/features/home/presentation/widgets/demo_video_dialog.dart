@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/l10n_extension.dart';
+
 /// Data class for a single feature tour slide.
 class _TourSlide {
   final IconData icon;
@@ -17,68 +19,63 @@ class _TourSlide {
   });
 }
 
-const _slides = [
-  _TourSlide(
-    icon: Icons.school_rounded,
-    title: 'Discover Universities',
-    description:
-        'Search and compare universities across Africa with detailed profiles, rankings, and program information.',
-    highlights: [
-      'Browse 500+ institutions',
-      'Filter by country, program & tuition',
-      'View detailed university profiles',
-    ],
-    color: Color(0xFF6366F1),
-  ),
-  _TourSlide(
-    icon: Icons.route_rounded,
-    title: 'Find Your Path',
-    description:
-        'Take our guided quiz to get personalized university and program recommendations matched to your goals.',
-    highlights: [
-      'AI-powered recommendations',
-      'Personality & interest matching',
-      'Tailored program suggestions',
-    ],
-    color: Color(0xFF0EA5E9),
-  ),
-  _TourSlide(
-    icon: Icons.dashboard_rounded,
-    title: 'Role-Based Dashboards',
-    description:
-        'Purpose-built dashboards for students, parents, counselors, and institutions — each with the tools they need.',
-    highlights: [
-      'Track applications & progress',
-      'Monitor student performance',
-      'Manage institutional data',
-    ],
-    color: Color(0xFF10B981),
-  ),
-  _TourSlide(
-    icon: Icons.chat_rounded,
-    title: 'AI Study Assistant',
-    description:
-        'Get instant help with admissions questions, application guidance, and academic planning from our AI chatbot.',
-    highlights: [
-      'Available 24/7',
-      'Context-aware answers',
-      'Application deadline reminders',
-    ],
-    color: Color(0xFFF59E0B),
-  ),
-  _TourSlide(
-    icon: Icons.people_rounded,
-    title: 'Connected Ecosystem',
-    description:
-        'Students, parents, counselors, and institutions collaborate seamlessly on one platform.',
-    highlights: [
-      'Real-time notifications',
-      'Shared progress tracking',
-      'Secure messaging',
-    ],
-    color: Color(0xFFEC4899),
-  ),
-];
+List<_TourSlide> _buildSlides(BuildContext context) => [
+      _TourSlide(
+        icon: Icons.school_rounded,
+        title: context.l10n.tourSlide1Title,
+        description: context.l10n.tourSlide1Desc,
+        highlights: [
+          context.l10n.tourSlide1H1,
+          context.l10n.tourSlide1H2,
+          context.l10n.tourSlide1H3,
+        ],
+        color: Color(0xFF6366F1),
+      ),
+      _TourSlide(
+        icon: Icons.route_rounded,
+        title: context.l10n.tourSlide2Title,
+        description: context.l10n.tourSlide2Desc,
+        highlights: [
+          context.l10n.tourSlide2H1,
+          context.l10n.tourSlide2H2,
+          context.l10n.tourSlide2H3,
+        ],
+        color: Color(0xFF0EA5E9),
+      ),
+      _TourSlide(
+        icon: Icons.dashboard_rounded,
+        title: context.l10n.tourSlide3Title,
+        description: context.l10n.tourSlide3Desc,
+        highlights: [
+          context.l10n.tourSlide3H1,
+          context.l10n.tourSlide3H2,
+          context.l10n.tourSlide3H3,
+        ],
+        color: Color(0xFF10B981),
+      ),
+      _TourSlide(
+        icon: Icons.chat_rounded,
+        title: context.l10n.tourSlide4Title,
+        description: context.l10n.tourSlide4Desc,
+        highlights: [
+          context.l10n.tourSlide4H1,
+          context.l10n.tourSlide4H2,
+          context.l10n.tourSlide4H3,
+        ],
+        color: Color(0xFFF59E0B),
+      ),
+      _TourSlide(
+        icon: Icons.people_rounded,
+        title: context.l10n.tourSlide5Title,
+        description: context.l10n.tourSlide5Desc,
+        highlights: [
+          context.l10n.tourSlide5H1,
+          context.l10n.tourSlide5H2,
+          context.l10n.tourSlide5H3,
+        ],
+        color: Color(0xFFEC4899),
+      ),
+    ];
 
 /// A dialog that displays a guided feature tour for the Flow platform.
 class DemoVideoDialog extends StatefulWidget {
@@ -93,6 +90,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
   int _currentIndex = 0;
   late final PageController _pageController;
   late final AnimationController _progressController;
+  late List<_TourSlide> _currentSlides;
 
   @override
   void initState() {
@@ -112,7 +110,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
   }
 
   void _goTo(int index) {
-    if (index < 0 || index >= _slides.length) return;
+    if (index < 0 || index >= _currentSlides.length) return;
     _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 350),
@@ -128,6 +126,8 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
     final screenSize = MediaQuery.of(context).size;
     final isDesktop = screenSize.width > 800;
     final dialogWidth = isDesktop ? 720.0 : screenSize.width * 0.95;
+    final slides = _buildSlides(context);
+    _currentSlides = slides;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -171,13 +171,13 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'See Flow in Action',
+                          context.l10n.tourTitle,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          'A guided tour of the platform',
+                          context.l10n.tourSubtitle,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -194,7 +194,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      '${_currentIndex + 1} / ${_slides.length}',
+                      '${_currentIndex + 1} / ${slides.length}',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.w600,
@@ -205,7 +205,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
                     icon: const Icon(Icons.close),
-                    tooltip: 'Close',
+                    tooltip: context.l10n.tourClose,
                   ),
                 ],
               ),
@@ -215,7 +215,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Row(
-                children: List.generate(_slides.length, (i) {
+                children: List.generate(slides.length, (i) {
                   final isActive = i == _currentIndex;
                   final isPast = i < _currentIndex;
                   return Expanded(
@@ -227,9 +227,9 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(2),
                           color: isActive
-                              ? _slides[_currentIndex].color
+                              ? slides[_currentIndex].color
                               : isPast
-                                  ? _slides[i].color.withValues(alpha: 0.5)
+                                  ? slides[i].color.withValues(alpha: 0.5)
                                   : theme.colorScheme.outlineVariant,
                         ),
                       ),
@@ -245,13 +245,13 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
             Flexible(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: _slides.length,
+                itemCount: slides.length,
                 onPageChanged: (i) {
                   _progressController.forward(from: 0);
                   setState(() => _currentIndex = i);
                 },
                 itemBuilder: (context, index) {
-                  final slide = _slides[index];
+                  final slide = slides[index];
                   return _SlideContent(
                     slide: slide,
                     animation: _progressController,
@@ -270,7 +270,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                     TextButton.icon(
                       onPressed: () => _goTo(_currentIndex - 1),
                       icon: const Icon(Icons.arrow_back_rounded, size: 18),
-                      label: const Text('Back'),
+                      label: Text(context.l10n.tourBack),
                     )
                   else
                     const SizedBox(width: 80),
@@ -280,7 +280,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                   // Dot indicators (compact)
                   Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: List.generate(_slides.length, (i) {
+                    children: List.generate(slides.length, (i) {
                       return AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         width: i == _currentIndex ? 20 : 6,
@@ -289,7 +289,7 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(3),
                           color: i == _currentIndex
-                              ? _slides[_currentIndex].color
+                              ? slides[_currentIndex].color
                               : theme.colorScheme.outlineVariant,
                         ),
                       );
@@ -299,13 +299,13 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                   const Spacer(),
 
                   // Next / Get Started button
-                  if (_currentIndex < _slides.length - 1)
+                  if (_currentIndex < slides.length - 1)
                     FilledButton.icon(
                       onPressed: () => _goTo(_currentIndex + 1),
-                      icon: const Text('Next'),
+                      icon: Text(context.l10n.tourNext),
                       label: const Icon(Icons.arrow_forward_rounded, size: 18),
                       style: FilledButton.styleFrom(
-                        backgroundColor: _slides[_currentIndex].color,
+                        backgroundColor: slides[_currentIndex].color,
                       ),
                     )
                   else
@@ -313,10 +313,10 @@ class _DemoVideoDialogState extends State<DemoVideoDialog>
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: const Text('Get Started'),
+                      icon: Text(context.l10n.tourGetStarted),
                       label: const Icon(Icons.arrow_forward_rounded, size: 18),
                       style: FilledButton.styleFrom(
-                        backgroundColor: _slides[_currentIndex].color,
+                        backgroundColor: slides[_currentIndex].color,
                       ),
                     ),
                 ],

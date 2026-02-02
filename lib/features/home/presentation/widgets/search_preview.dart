@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// A university search preview widget for the home page.
 ///
@@ -83,7 +84,7 @@ class _SearchPreviewState extends State<SearchPreview> {
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    hintText: 'Search universities by name, country, or program...',
+                    hintText: context.l10n.searchHint,
                     hintStyle: theme.textTheme.bodyLarge?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
                     ),
@@ -211,7 +212,7 @@ class _SearchPreviewState extends State<SearchPreview> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Search 18,000+ Universities',
+                          context.l10n.searchUniversitiesCount,
                           style: theme.textTheme.labelLarge?.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.w600,
@@ -297,7 +298,7 @@ class _SearchBarButtonState extends State<SearchBarButton> {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Search universities...',
+                  context.l10n.searchPlaceholder,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
                   ),
@@ -313,7 +314,7 @@ class _SearchBarButtonState extends State<SearchBarButton> {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Text(
-                  '18K+',
+                  context.l10n.searchBadge,
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.bold,
@@ -337,15 +338,27 @@ class SearchFilterChips extends StatelessWidget {
     this.onFilterTap,
   });
 
+  static const _filterIcons = <String, IconData>{
+    'engineering': Icons.engineering_outlined,
+    'business': Icons.business_center_outlined,
+    'medicine': Icons.local_hospital_outlined,
+    'arts': Icons.palette_outlined,
+    'science': Icons.science_outlined,
+  };
+
+  List<_FilterEntry> _buildFilters(BuildContext context) {
+    return [
+      _FilterEntry(key: 'engineering', label: context.l10n.filterEngineering),
+      _FilterEntry(key: 'business', label: context.l10n.filterBusiness),
+      _FilterEntry(key: 'medicine', label: context.l10n.filterMedicine),
+      _FilterEntry(key: 'arts', label: context.l10n.filterArts),
+      _FilterEntry(key: 'science', label: context.l10n.filterScience),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final filters = [
-      'Engineering',
-      'Business',
-      'Medicine',
-      'Arts',
-      'Science',
-    ];
+    final filters = _buildFilters(context);
 
     return Wrap(
       spacing: 8,
@@ -353,34 +366,24 @@ class SearchFilterChips extends StatelessWidget {
       alignment: WrapAlignment.center,
       children: filters.map((filter) {
         return ActionChip(
-          label: Text(filter),
+          label: Text(filter.label),
           onPressed: () {
-            onFilterTap?.call(filter);
-            context.go('/universities?q=$filter');
+            onFilterTap?.call(filter.key);
+            context.go('/universities?q=${filter.key}');
           },
           avatar: Icon(
-            _getFilterIcon(filter),
+            _filterIcons[filter.key] ?? Icons.school_outlined,
             size: 16,
           ),
         );
       }).toList(),
     );
   }
+}
 
-  IconData _getFilterIcon(String filter) {
-    switch (filter.toLowerCase()) {
-      case 'engineering':
-        return Icons.engineering_outlined;
-      case 'business':
-        return Icons.business_center_outlined;
-      case 'medicine':
-        return Icons.local_hospital_outlined;
-      case 'arts':
-        return Icons.palette_outlined;
-      case 'science':
-        return Icons.science_outlined;
-      default:
-        return Icons.school_outlined;
-    }
-  }
+class _FilterEntry {
+  final String key;
+  final String label;
+
+  const _FilterEntry({required this.key, required this.label});
 }

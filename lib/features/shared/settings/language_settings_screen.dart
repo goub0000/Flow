@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/providers/locale_provider.dart';
 import '../widgets/settings_widgets.dart';
 
 /// Language & Localization Settings Screen
@@ -19,20 +21,26 @@ import '../widgets/settings_widgets.dart';
 /// - Sync with SharedPreferences
 /// - Load user's saved preferences
 
-class LanguageSettingsScreen extends StatefulWidget {
+class LanguageSettingsScreen extends ConsumerStatefulWidget {
   const LanguageSettingsScreen({super.key});
 
   @override
-  State<LanguageSettingsScreen> createState() => _LanguageSettingsScreenState();
+  ConsumerState<LanguageSettingsScreen> createState() => _LanguageSettingsScreenState();
 }
 
-class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
-  String _selectedLanguage = 'en';
+class _LanguageSettingsScreenState extends ConsumerState<LanguageSettingsScreen> {
+  late String _selectedLanguage;
   String _dateFormat = 'default';
   String _timeFormat = '12h';
   String _numberFormat = 'default';
   bool _autoTranslate = false;
   bool _showOriginalText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLanguage = ref.read(localeProvider).languageCode;
+  }
 
   // Available languages with their display names and flags
   final List<LanguageOption> _languages = [
@@ -108,7 +116,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
                         setState(() {
                           _selectedLanguage = language.code;
                         });
-                        // TODO: Apply language change
+                        ref.read(localeProvider.notifier).setLocale(Locale(language.code));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Language changed to ${language.name}'),

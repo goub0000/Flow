@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Forgot Password Screen
 ///
@@ -148,7 +149,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
           // Title
           Text(
-            'Forgot Password?',
+            context.l10n.forgotPasswordTitle,
             style: theme.textTheme.displaySmall?.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.bold,
@@ -159,7 +160,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
           // Description
           Text(
-            'Enter your email address and we\'ll send you instructions to reset your password.',
+            context.l10n.forgotPasswordDescription,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -171,10 +172,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              labelText: 'Email Address',
-              hintText: 'Enter your email',
-              prefixIcon: Icon(Icons.email_outlined),
+            decoration: InputDecoration(
+              labelText: context.l10n.forgotPasswordEmailLabel,
+              hintText: context.l10n.forgotPasswordEmailHint,
+              prefixIcon: const Icon(Icons.email_outlined),
             ),
             validator: Validators.email,
             enabled: !_isLoading,
@@ -196,9 +197,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : const Text(
-                      'Send Reset Link',
-                      style: TextStyle(fontSize: 16),
+                  : Text(
+                      context.l10n.forgotPasswordSendButton,
+                      style: const TextStyle(fontSize: 16),
                     ),
             ),
           ),
@@ -207,7 +208,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           // Back to Login
           TextButton(
             onPressed: _isLoading ? null : () => context.go('/login'),
-            child: const Text('Back to Login'),
+            child: Text(context.l10n.forgotPasswordBackToLogin),
           ),
         ],
       ),
@@ -249,7 +250,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
         // Success Title
         Text(
-          'Check Your Email',
+          context.l10n.forgotPasswordCheckEmail,
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: AppColors.success,
@@ -260,7 +261,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
         // Success Message
         Text(
-          'We\'ve sent password reset instructions to:',
+          context.l10n.forgotPasswordSentTo,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: AppColors.textSecondary,
           ),
@@ -293,7 +294,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Didn\'t receive the email?',
+                      context.l10n.forgotPasswordDidntReceive,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: AppColors.info,
@@ -304,9 +305,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                '• Check your spam/junk folder\n'
-                '• Make sure the email address is correct\n'
-                '• Wait a few minutes for the email to arrive',
+                '• ${context.l10n.forgotPasswordCheckSpam}\n• ${context.l10n.forgotPasswordCheckCorrect}\n• ${context.l10n.forgotPasswordWait}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -323,14 +322,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             _handleSubmit();
           },
           icon: const Icon(Icons.refresh),
-          label: const Text('Resend Email'),
+          label: Text(context.l10n.forgotPasswordResend),
         ),
         const SizedBox(height: 12),
 
         // Back to Login
         TextButton(
           onPressed: () => context.go('/login'),
-          child: const Text('Back to Login'),
+          child: Text(context.l10n.forgotPasswordBackToLogin),
         ),
       ],
     );

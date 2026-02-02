@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../core/l10n_extension.dart';
 import '../../../core/models/university_model.dart';
 import '../../../core/widgets/skeletons/shimmer_effect.dart';
 import '../providers/university_search_provider.dart';
@@ -28,15 +29,15 @@ class UniversityDetailScreen extends ConsumerWidget {
     return asyncUniversity.when(
       data: (uni) {
         if (uni == null) {
-          return const Center(
-            child: Text('This university could not be found.'),
+          return Center(
+            child: Text(context.l10n.uniDetailNotFound),
           );
         }
         return _UniversityDetailContent(university: uni);
       },
       loading: () => const _UniversityDetailSkeleton(),
       error: (error, _) => Center(
-        child: Text('Error loading university: $error'),
+        child: Text(context.l10n.uniDetailError(error.toString())),
       ),
     );
   }
@@ -106,7 +107,7 @@ class _UniversityDetailContent extends StatelessWidget {
               if (university.website != null)
                 IconButton(
                   icon: const Icon(Icons.language),
-                  tooltip: 'Visit Website',
+                  tooltip: context.l10n.uniDetailVisitWebsite,
                   onPressed: () => _launchUrl(university.website!),
                 ),
             ],
@@ -118,11 +119,11 @@ class _UniversityDetailContent extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 // Location Card
                 _InfoCard(
-                  title: 'Location',
+                  title: context.l10n.uniDetailLocation,
                   icon: Icons.location_on,
                   children: [
                     _InfoRow(
-                      label: 'Address',
+                      label: context.l10n.uniDetailAddress,
                       value: [
                         university.city,
                         university.state,
@@ -130,34 +131,34 @@ class _UniversityDetailContent extends StatelessWidget {
                       ].where((s) => s != null && s.isNotEmpty).join(', '),
                     ),
                     if (university.locationType != null)
-                      _InfoRow(label: 'Setting', value: university.locationType!),
+                      _InfoRow(label: context.l10n.uniDetailSetting, value: university.locationType!),
                   ],
                 ),
                 const SizedBox(height: 16),
 
                 // Key Statistics
                 _InfoCard(
-                  title: 'Key Statistics',
+                  title: context.l10n.uniDetailKeyStats,
                   icon: Icons.analytics,
                   children: [
                     if (university.totalStudents != null)
                       _InfoRow(
-                        label: 'Total Students',
+                        label: context.l10n.uniDetailTotalStudents,
                         value: _formatNumber(university.totalStudents!),
                       ),
                     if (university.acceptanceRate != null)
                       _InfoRow(
-                        label: 'Acceptance Rate',
+                        label: context.l10n.uniDetailAcceptanceRate,
                         value: '${(university.acceptanceRate! * 100).toStringAsFixed(1)}%',
                       ),
                     if (university.graduationRate4year != null)
                       _InfoRow(
-                        label: '4-Year Graduation Rate',
+                        label: context.l10n.uniDetailGradRate,
                         value: '${(university.graduationRate4year! * 100).toStringAsFixed(1)}%',
                       ),
                     if (university.gpaAverage != null)
                       _InfoRow(
-                        label: 'Average GPA',
+                        label: context.l10n.uniDetailAvgGPA,
                         value: university.gpaAverage!.toStringAsFixed(2),
                       ),
                   ],
@@ -166,23 +167,23 @@ class _UniversityDetailContent extends StatelessWidget {
 
                 // Tuition & Costs
                 _InfoCard(
-                  title: 'Tuition & Costs',
+                  title: context.l10n.uniDetailTuitionCosts,
                   icon: Icons.payments,
                   children: [
                     if (university.tuitionOutState != null)
                       _InfoRow(
-                        label: 'Tuition (Out-of-State)',
+                        label: context.l10n.uniDetailTuitionOutState,
                         value: _formatCurrency(university.tuitionOutState!),
                       ),
                     if (university.totalCost != null)
                       _InfoRow(
-                        label: 'Total Cost',
+                        label: context.l10n.uniDetailTotalCost,
                         value: _formatCurrency(university.totalCost!),
                         highlight: true,
                       ),
                     if (university.medianEarnings10year != null)
                       _InfoRow(
-                        label: 'Median Earnings (10 yr)',
+                        label: context.l10n.uniDetailMedianEarnings,
                         value: _formatCurrency(university.medianEarnings10year!),
                       ),
                   ],
@@ -192,22 +193,22 @@ class _UniversityDetailContent extends StatelessWidget {
                 // Admissions - Test Scores
                 if (university.satMath25th != null || university.satEbrw25th != null || university.actComposite25th != null)
                   _InfoCard(
-                    title: 'Test Scores (25th-75th Percentile)',
+                    title: context.l10n.uniDetailTestScores,
                     icon: Icons.school,
                     children: [
                       if (university.satMath25th != null && university.satMath75th != null)
                         _InfoRow(
-                          label: 'SAT Math',
+                          label: context.l10n.uniDetailSATMath,
                           value: '${university.satMath25th} - ${university.satMath75th}',
                         ),
                       if (university.satEbrw25th != null && university.satEbrw75th != null)
                         _InfoRow(
-                          label: 'SAT EBRW',
+                          label: context.l10n.uniDetailSATEBRW,
                           value: '${university.satEbrw25th} - ${university.satEbrw75th}',
                         ),
                       if (university.actComposite25th != null && university.actComposite75th != null)
                         _InfoRow(
-                          label: 'ACT Composite',
+                          label: context.l10n.uniDetailACTComposite,
                           value: '${university.actComposite25th} - ${university.actComposite75th}',
                         ),
                     ],
@@ -218,17 +219,17 @@ class _UniversityDetailContent extends StatelessWidget {
                 // Rankings
                 if (university.globalRank != null || university.nationalRank != null)
                   _InfoCard(
-                    title: 'Rankings',
+                    title: context.l10n.uniDetailRankings,
                     icon: Icons.emoji_events,
                     children: [
                       if (university.globalRank != null)
                         _InfoRow(
-                          label: 'Global Rank',
+                          label: context.l10n.uniDetailGlobalRank,
                           value: '#${university.globalRank}',
                         ),
                       if (university.nationalRank != null)
                         _InfoRow(
-                          label: 'National Rank',
+                          label: context.l10n.uniDetailNationalRank,
                           value: '#${university.nationalRank}',
                         ),
                     ],
@@ -238,14 +239,14 @@ class _UniversityDetailContent extends StatelessWidget {
 
                 // About
                 _InfoCard(
-                  title: 'About',
+                  title: context.l10n.uniDetailAbout,
                   icon: Icons.info,
                   children: [
                     if (university.universityType != null)
-                      _InfoRow(label: 'Type', value: university.universityType!),
+                      _InfoRow(label: context.l10n.uniDetailType, value: university.universityType!),
                     if (university.website != null)
                       _InfoRow(
-                        label: 'Website',
+                        label: context.l10n.uniDetailWebsite,
                         value: university.website!,
                         isLink: true,
                         onTap: () => _launchUrl(university.website!),
@@ -257,7 +258,7 @@ class _UniversityDetailContent extends StatelessWidget {
                 // Description
                 if (university.description != null && university.description!.isNotEmpty)
                   _InfoCard(
-                    title: 'Description',
+                    title: context.l10n.uniDetailDescription,
                     icon: Icons.description,
                     children: [
                       Padding(

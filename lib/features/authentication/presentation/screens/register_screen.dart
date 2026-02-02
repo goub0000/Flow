@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/utils/validators.dart';
@@ -136,7 +138,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 TextButton.icon(
                   onPressed: () => context.go('/login'),
                   icon: const Icon(Icons.login, size: 16),
-                  label: const Text('Login Instead'),
+                  label: Text(context.l10n.registerLoginInstead),
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     minimumSize: Size.zero,
@@ -148,7 +150,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   TextButton.icon(
                     onPressed: () => context.push('/forgot-password'),
                     icon: const Icon(Icons.lock_reset, size: 16),
-                    label: const Text('Reset Password'),
+                    label: Text(context.l10n.registerResetPassword),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       minimumSize: Size.zero,
@@ -172,7 +174,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Create Account'),
+        title: Text(context.l10n.registerAppBarTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -228,7 +230,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 24),
                 // Title
                 Text(
-                  'Join Flow',
+                  context.l10n.registerTitle,
                   style: theme.textTheme.displayMedium?.copyWith(
                     color: AppColors.primary,
                   ),
@@ -236,7 +238,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Start your educational journey',
+                  context.l10n.registerSubtitle,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -250,9 +252,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 // Name Field
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    prefixIcon: Icon(Icons.person_outlined),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.registerFullNameLabel,
+                    prefixIcon: const Icon(Icons.person_outlined),
                   ),
                   validator: Validators.fullName,
                   enabled: !authState.isLoading,
@@ -264,9 +266,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.registerEmailLabel,
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   validator: Validators.email,
                   enabled: !authState.isLoading,
@@ -277,9 +279,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 // Role Selection
                 DropdownButtonFormField<UserRole>(
                   initialValue: UserRole.student,
-                  decoration: const InputDecoration(
-                    labelText: 'I am a...',
-                    prefixIcon: Icon(Icons.badge_outlined),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.registerRoleLabel,
+                    prefixIcon: const Icon(Icons.badge_outlined),
                   ),
                   items: UserRole.values.where((role) => !role.isAdmin).map((role) {
                     return DropdownMenuItem(
@@ -312,7 +314,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   controller: _passwordController,
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: context.l10n.registerPasswordLabel,
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -345,7 +347,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   controller: _confirmPasswordController,
                   obscureText: _obscureConfirmPassword,
                   decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: context.l10n.registerConfirmPasswordLabel,
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -362,10 +364,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
+                      return context.l10n.registerConfirmPasswordEmpty;
                     }
                     if (value != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return context.l10n.registerPasswordsDoNotMatch;
                     }
                     return null;
                   },
@@ -388,7 +390,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                           ),
                         )
-                      : const Text('Create Account'),
+                      : Text(context.l10n.registerButton),
                 ),
                 const SizedBox(height: 16),
 
@@ -397,14 +399,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account? ',
+                      context.l10n.loginAlreadyHaveAccount,
                       style: theme.textTheme.bodyMedium,
                     ),
                     TextButton(
                       onPressed: authState.isLoading
                           ? null
                           : () => context.go('/login'),
-                      child: const Text('Login'),
+                      child: Text(context.l10n.registerLogin),
                     ),
                   ],
                 ),
@@ -428,24 +430,24 @@ class _PasswordStrengthIndicator extends StatelessWidget {
     if (password.isEmpty) return const SizedBox.shrink();
 
     final theme = Theme.of(context);
-    final checks = _checks;
+    final l10n = AppLocalizations.of(context)!;
+    final checks = _getChecks(l10n);
     final passed = checks.where((c) => c.met).length;
     final strength = passed / checks.length; // 0.0 – 1.0
-
     final Color barColor;
     final String label;
     if (strength <= 0.25) {
       barColor = AppColors.error;
-      label = 'Weak';
+      label = l10n.passwordStrengthWeak;
     } else if (strength <= 0.5) {
       barColor = Colors.orange;
-      label = 'Fair';
+      label = l10n.passwordStrengthFair;
     } else if (strength < 1.0) {
       barColor = Colors.amber;
-      label = 'Good';
+      label = l10n.passwordStrengthGood;
     } else {
       barColor = AppColors.success;
-      label = 'Strong';
+      label = l10n.passwordStrengthStrong;
     }
 
     return Column(
@@ -488,11 +490,11 @@ class _PasswordStrengthIndicator extends StatelessWidget {
     );
   }
 
-  List<_Check> get _checks => [
-        _Check('8+ characters', password.length >= 8),
-        _Check('Uppercase', password.contains(RegExp(r'[A-Z]'))),
-        _Check('Lowercase', password.contains(RegExp(r'[a-z]'))),
-        _Check('Number', password.contains(RegExp(r'[0-9]'))),
+  List<_Check> _getChecks(AppLocalizations l10n) => [
+        _Check(l10n.passwordReq8Chars, password.length >= 8),
+        _Check(l10n.passwordReqUppercase, password.contains(RegExp(r'[A-Z]'))),
+        _Check(l10n.passwordReqLowercase, password.contains(RegExp(r'[a-z]'))),
+        _Check(l10n.passwordReqNumber, password.contains(RegExp(r'[0-9]'))),
       ];
 }
 
