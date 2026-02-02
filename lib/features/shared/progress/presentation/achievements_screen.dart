@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../widgets/progress_analytics_widgets.dart';
 import '../../../authentication/providers/auth_provider.dart';
@@ -122,9 +123,9 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen>
               }
             }
           },
-          tooltip: 'Back',
+          tooltip: context.l10n.helpBack,
         ),
-        title: const Text('Achievements'),
+        title: Text(context.l10n.progressAchievementsTitle),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
@@ -179,7 +180,7 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen>
     if (achievements.isEmpty) {
       return Center(
         child: Text(
-          'No achievements yet',
+          context.l10n.progressNoAchievementsYet,
           style: TextStyle(color: AppColors.textSecondary),
         ),
       );
@@ -228,7 +229,7 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.progressClose),
           ),
         ],
       ),

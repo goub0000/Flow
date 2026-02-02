@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/cookie_providers.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import 'cookie_preferences_modal.dart';
 
 class CookieBanner extends ConsumerStatefulWidget {
@@ -88,8 +89,8 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
       // Show success message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Cookie preferences saved'),
+          SnackBar(
+            content: Text(context.l10n.cookiePreferencesSaved),
             duration: Duration(seconds: 2),
           ),
         );
@@ -115,8 +116,8 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
       // Show success message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Essential cookies only'),
+          SnackBar(
+            content: Text(context.l10n.cookieEssentialOnly),
             duration: Duration(seconds: 2),
           ),
         );
@@ -178,7 +179,7 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'We use cookies',
+                      context.l10n.cookieWeUseCookies,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -188,9 +189,7 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
               ),
               const SizedBox(height: 12),
               Text(
-                'We use cookies to enhance your experience, analyze site usage, '
-                'and provide personalized content. By clicking "Accept All", '
-                'you consent to our use of cookies.',
+                context.l10n.cookieBannerDescription,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 16),
@@ -208,7 +207,7 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
                         vertical: 12,
                       ),
                     ),
-                    child: const Text('Accept All'),
+                    child: Text(context.l10n.cookieAcceptAll),
                   ),
                   OutlinedButton(
                     onPressed: _acceptEssential,
@@ -218,18 +217,18 @@ class _CookieBannerState extends ConsumerState<CookieBanner>
                         vertical: 12,
                       ),
                     ),
-                    child: const Text('Essential Only'),
+                    child: Text(context.l10n.cookieEssentialOnly),
                   ),
                   TextButton(
                     onPressed: _showPreferences,
-                    child: const Text('Customize'),
+                    child: Text(context.l10n.cookieCustomize),
                   ),
                   TextButton(
                     onPressed: () {
                       // Navigate to privacy policy
                       // context.push('/privacy-policy');
                     },
-                    child: const Text('Privacy Policy'),
+                    child: Text(context.l10n.cookiePrivacyPolicy),
                   ),
                 ],
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/message_widgets.dart' hide Conversation;
 import '../../../shared/providers/conversations_realtime_provider.dart';
 import '../../../../core/models/conversation_model.dart';
@@ -72,8 +73,8 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
             context.push('/messages/${conversation.id}');
           } else if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to create conversation'),
+              SnackBar(
+                content: Text(context.l10n.msgFailedToCreateConversation),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -116,7 +117,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(_isSearching ? 'Search Messages' : 'Messages'),
+            Text(_isSearching ? context.l10n.msgSearchMessages : context.l10n.msgMessages),
             if (!isConnected) ...[
               const SizedBox(width: 8),
               const Icon(Icons.cloud_off, size: 16, color: AppColors.warning),
@@ -160,7 +161,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                     controller: _searchController,
                     autofocus: true,
                     decoration: InputDecoration(
-                      hintText: 'Search conversations...',
+                      hintText: context.l10n.msgSearchConversations,
                       prefixIcon: const Icon(Icons.search),
                       filled: true,
                       fillColor: AppColors.surface,
@@ -199,7 +200,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                     onPressed: () {
                       ref.read(conversationsRealtimeProvider.notifier).refresh();
                     },
-                    child: const Text('Retry'),
+                    child: Text(context.l10n.msgRetry),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
@@ -210,7 +211,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                         showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            title: const Text('Database Setup Status'),
+                            title: Text(context.l10n.msgDatabaseSetupStatus),
                             content: SingleChildScrollView(
                               child: Text(
                                 result.success
@@ -231,7 +232,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                         );
                       }
                     },
-                    child: const Text('Check Database Setup'),
+                    child: Text(context.l10n.msgCheckDatabaseSetup),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
@@ -242,7 +243,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                         showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            title: const Text('Test Insert Result'),
+                            title: Text(context.l10n.msgTestInsertResult),
                             content: SingleChildScrollView(
                               child: Text(
                                 result.success
@@ -260,7 +261,7 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                         );
                       }
                     },
-                    child: const Text('Test Insert'),
+                    child: Text(context.l10n.msgTestInsert),
                   ),
                 ],
               ),
@@ -268,8 +269,8 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
           : isLoading && conversations.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : conversations.isEmpty
-                  ? const EmptyMessagesState(
-                      message: 'No conversations yet',
+                  ? EmptyMessagesState(
+                      message: context.l10n.msgNoConversationsYet,
                       icon: Icons.chat_bubble_outline,
                     )
                   : Column(
@@ -573,7 +574,7 @@ class _NewConversationSheetState extends ConsumerState<_NewConversationSheet> {
             child: Row(
               children: [
                 Text(
-                  'New Conversation',
+                  context.l10n.msgNewConversation,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -594,7 +595,7 @@ class _NewConversationSheetState extends ConsumerState<_NewConversationSheet> {
               controller: _searchController,
               autofocus: true,
               decoration: InputDecoration(
-                hintText: 'Search by name or email...',
+                hintText: context.l10n.msgSearchByNameOrEmail,
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
                 fillColor: AppColors.surface,
@@ -628,7 +629,7 @@ class _NewConversationSheetState extends ConsumerState<_NewConversationSheet> {
                             const SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: _loadUsers,
-                              child: const Text('Retry'),
+                              child: Text(context.l10n.msgRetry),
                             ),
                           ],
                         ),
@@ -642,8 +643,8 @@ class _NewConversationSheetState extends ConsumerState<_NewConversationSheet> {
                                 const SizedBox(height: 16),
                                 Text(
                                   _searchController.text.isEmpty
-                                      ? 'No users found'
-                                      : 'No users match "${_searchController.text}"',
+                                      ? context.l10n.msgNoUsersFound
+                                      : context.l10n.msgNoUsersMatch(_searchController.text),
                                   style: TextStyle(color: Colors.grey[600]),
                                 ),
                               ],

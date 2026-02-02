@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/progress_analytics_widgets.dart';
 
 /// Study Goals Screen
@@ -63,13 +64,13 @@ class _StudyGoalsScreenState extends State<StudyGoalsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Study Goals'),
+        title: Text(context.l10n.progressStudyGoalsTitle),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            'Your Goals',
+            context.l10n.progressYourGoals,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -81,11 +82,11 @@ class _StudyGoalsScreenState extends State<StudyGoalsScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Create goal coming soon')),
+            SnackBar(content: Text(context.l10n.progressCreateGoalComingSoon)),
           );
         },
         icon: const Icon(Icons.add),
-        label: const Text('New Goal'),
+        label: Text(context.l10n.progressNewGoal),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/applicant_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../providers/institution_applicants_provider.dart';
 
@@ -32,7 +33,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Applicant Details'),
+        title: Text(context.l10n.instApplicantDetails),
         actions: [
           if (_applicant.isPending || _applicant.isUnderReview)
             PopupMenuButton<String>(
@@ -47,33 +48,33 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
               },
               itemBuilder: (context) => [
                 if (_applicant.isPending)
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'mark_reviewing',
                     child: Row(
                       children: [
                         Icon(Icons.rate_review, size: 20),
                         SizedBox(width: 8),
-                        Text('Mark as Under Review'),
+                        Text(context.l10n.instApplicantMarkUnderReview),
                       ],
                     ),
                   ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'accept',
                   child: Row(
                     children: [
                       Icon(Icons.check_circle, size: 20, color: AppColors.success),
                       SizedBox(width: 8),
-                      Text('Accept Application'),
+                      Text(context.l10n.instApplicantAcceptApplication),
                     ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'reject',
                   child: Row(
                     children: [
                       Icon(Icons.cancel, size: 20, color: AppColors.error),
                       SizedBox(width: 8),
-                      Text('Reject Application'),
+                      Text(context.l10n.instApplicantRejectApplication),
                     ],
                   ),
                 ),
@@ -109,7 +110,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Application Status',
+                          context.l10n.instApplicantApplicationStatus,
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.textSecondary,
@@ -134,7 +135,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
 
             // Student Information
             Text(
-              'Student Information',
+              context.l10n.instApplicantStudentInfo,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -143,31 +144,31 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                 children: [
                   _InfoRow(
                     icon: Icons.person,
-                    label: 'Full Name',
+                    label: context.l10n.instApplicantFullName,
                     value: _applicant.studentName,
                   ),
                   const Divider(),
                   _InfoRow(
                     icon: Icons.email,
-                    label: 'Email',
+                    label: context.l10n.instApplicantEmail,
                     value: _applicant.studentEmail,
                   ),
                   const Divider(),
                   _InfoRow(
                     icon: Icons.phone,
-                    label: 'Phone',
+                    label: context.l10n.instApplicantPhone,
                     value: _applicant.studentPhone,
                   ),
                   const Divider(),
                   _InfoRow(
                     icon: Icons.school,
-                    label: 'Previous School',
+                    label: context.l10n.instApplicantPreviousSchool,
                     value: _applicant.previousSchool,
                   ),
                   const Divider(),
                   _InfoRow(
                     icon: Icons.grade,
-                    label: 'GPA',
+                    label: context.l10n.instApplicantGpa,
                     value: _applicant.gpa.toString(),
                     valueColor: _applicant.gpa >= 3.5
                         ? AppColors.success
@@ -182,7 +183,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
 
             // Program Applied For
             Text(
-              'Program Applied',
+              context.l10n.instApplicantProgramApplied,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -208,7 +209,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                   const SizedBox(height: 12),
                   _InfoRow(
                     icon: Icons.calendar_today,
-                    label: 'Submitted',
+                    label: context.l10n.instApplicantSubmitted,
                     value: _formatDate(_applicant.submittedAt),
                   ),
                 ],
@@ -218,7 +219,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
 
             // Statement of Purpose
             Text(
-              'Statement of Purpose',
+              context.l10n.instApplicantStatementOfPurpose,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -236,7 +237,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
 
             // Other Documents
             Text(
-              'Documents',
+              context.l10n.instApplicantDocuments,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -271,8 +272,8 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                               onPressed: () {
                                 // TODO: View document
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Document viewer coming soon'),
+                                  SnackBar(
+                                    content: Text(context.l10n.instApplicantDocViewerComingSoon),
                                   ),
                                 );
                               },
@@ -283,7 +284,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                                 // TODO: Download document
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('Downloading ${doc.name}...'),
+                                    content: Text(context.l10n.instApplicantDownloading(doc.name)),
                                   ),
                                 );
                               },
@@ -303,7 +304,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
             if (_applicant.reviewedAt != null) ...[
               const SizedBox(height: 24),
               Text(
-                'Review Information',
+                context.l10n.instApplicantReviewInfo,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
@@ -313,20 +314,20 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                   children: [
                     _InfoRow(
                       icon: Icons.person,
-                      label: 'Reviewed By',
-                      value: _applicant.reviewedBy ?? 'Unknown',
+                      label: context.l10n.instApplicantReviewedBy,
+                      value: _applicant.reviewedBy ?? context.l10n.instApplicantUnknown,
                     ),
                     const Divider(),
                     _InfoRow(
                       icon: Icons.calendar_today,
-                      label: 'Review Date',
+                      label: context.l10n.instApplicantReviewDate,
                       value: _formatDate(_applicant.reviewedAt!),
                     ),
                     if (_applicant.reviewNotes != null) ...[
                       const Divider(),
                       const SizedBox(height: 8),
                       Text(
-                        'Review Notes',
+                        context.l10n.instApplicantReviewNotes,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -352,7 +353,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                     child: OutlinedButton.icon(
                       onPressed: _isProcessing ? null : () => _showReviewDialog(false),
                       icon: const Icon(Icons.cancel, color: AppColors.error),
-                      label: const Text('Reject'),
+                      label: Text(context.l10n.instApplicantReject),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.error,
                         side: const BorderSide(color: AppColors.error),
@@ -364,7 +365,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                     child: ElevatedButton.icon(
                       onPressed: _isProcessing ? null : () => _showReviewDialog(true),
                       icon: const Icon(Icons.check_circle),
-                      label: const Text('Accept'),
+                      label: Text(context.l10n.instApplicantAccept),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.success,
                       ),
@@ -412,13 +413,13 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
   String _getStatusLabel() {
     switch (_applicant.status) {
       case 'pending':
-        return 'Pending Review';
+        return context.l10n.instApplicantStatusPending;
       case 'under_review':
-        return 'Under Review';
+        return context.l10n.instApplicantStatusUnderReview;
       case 'accepted':
-        return 'Accepted';
+        return context.l10n.instApplicantStatusAccepted;
       case 'rejected':
-        return 'Rejected';
+        return context.l10n.instApplicantStatusRejected;
       default:
         return _applicant.status;
     }
@@ -442,15 +443,15 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
   String _getDocumentTypeLabel(String type) {
     switch (type) {
       case 'transcript':
-        return 'Academic Transcript';
+        return context.l10n.instApplicantDocTranscript;
       case 'id':
-        return 'ID Document';
+        return context.l10n.instApplicantDocId;
       case 'photo':
-        return 'Photo';
+        return context.l10n.instApplicantDocPhoto;
       case 'recommendation':
-        return 'Recommendation Letter';
+        return context.l10n.instApplicantDocRecommendation;
       default:
-        return 'Document';
+        return context.l10n.instApplicantDocGeneric;
     }
   }
 
@@ -466,7 +467,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
         Row(
           children: [
             Text(
-              'Recommendation Letters',
+              context.l10n.instApplicantRecommendationLetters,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(width: 8),
@@ -479,7 +480,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                '${recommendationDocs.length} received',
+                context.l10n.instApplicantReceivedCount(recommendationDocs.length),
                 style: TextStyle(
                   color: recommendationDocs.isEmpty
                       ? AppColors.warning
@@ -507,14 +508,14 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'No Recommendation Letters Yet',
+                        context.l10n.instApplicantNoRecommendations,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'The applicant has not submitted any recommendation letters with this application.',
+                        context.l10n.instApplicantNoRecommendationsDesc,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -567,14 +568,14 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _RecommendationDetailRow(
-                label: 'Type',
-                value: 'Recommendation Letter',
+                label: context.l10n.instApplicantType,
+                value: context.l10n.instApplicantDocRecommendation,
               ),
               _RecommendationDetailRow(
-                label: 'Submitted',
+                label: context.l10n.instApplicantSubmitted,
                 value: doc.uploadedAt != null
                     ? _formatDate(doc.uploadedAt)
-                    : 'Unknown',
+                    : context.l10n.instApplicantUnknown,
               ),
               const SizedBox(height: 16),
               const Divider(),
@@ -594,7 +595,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                         Icon(Icons.article, size: 20, color: AppColors.textSecondary),
                         const SizedBox(width: 8),
                         Text(
-                          'Letter Preview',
+                          context.l10n.instApplicantLetterPreview,
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 color: AppColors.textSecondary,
                               ),
@@ -604,12 +605,12 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                     const SizedBox(height: 12),
                     if (doc.url != null && doc.url.isNotEmpty)
                       Text(
-                        'Click "View Full" to open the complete recommendation letter.',
+                        context.l10n.instApplicantClickViewFull,
                         style: Theme.of(context).textTheme.bodyMedium,
                       )
                     else
                       Text(
-                        'Letter content preview not available.',
+                        context.l10n.instApplicantLetterPreviewUnavailable,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: AppColors.textSecondary,
                               fontStyle: FontStyle.italic,
@@ -624,7 +625,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.instApplicantClose),
           ),
           if (doc.url != null && doc.url.isNotEmpty)
             ElevatedButton.icon(
@@ -633,7 +634,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
                 _openLetterUrl(doc.url);
               },
               icon: const Icon(Icons.open_in_new),
-              label: const Text('View Full'),
+              label: Text(context.l10n.instApplicantViewFull),
             ),
         ],
       ),
@@ -644,15 +645,15 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
     if (doc.url != null && doc.url.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Downloading ${doc.name}...'),
+          content: Text(context.l10n.instApplicantDownloading(doc.name)),
           backgroundColor: AppColors.info,
         ),
       );
       // TODO: Implement actual download
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Download not available'),
+        SnackBar(
+          content: Text(context.l10n.instApplicantDownloadNotAvailable),
           backgroundColor: AppColors.error,
         ),
       );
@@ -663,7 +664,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
     // TODO: Implement URL launcher or in-app viewer
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Opening letter: $url'),
+        content: Text(context.l10n.instApplicantOpeningLetter(url)),
         backgroundColor: AppColors.info,
       ),
     );
@@ -693,16 +694,16 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Marked as Under Review'),
+          SnackBar(
+            content: Text(context.l10n.instApplicantMarkedUnderReview),
             backgroundColor: AppColors.success,
           ),
         );
       } else if (mounted) {
         setState(() => _isProcessing = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to update status'),
+          SnackBar(
+            content: Text(context.l10n.instApplicantFailedUpdateStatus),
             backgroundColor: AppColors.error,
           ),
         );
@@ -712,7 +713,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
         setState(() => _isProcessing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error updating status: $e'),
+            content: Text(context.l10n.instApplicantErrorUpdatingStatus(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -726,22 +727,22 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(isAccept ? 'Accept Application' : 'Reject Application'),
+        title: Text(isAccept ? context.l10n.instApplicantAcceptApplication : context.l10n.instApplicantRejectApplication),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               isAccept
-                  ? 'Are you sure you want to accept this application?'
-                  : 'Are you sure you want to reject this application?',
+                  ? context.l10n.instApplicantConfirmAccept
+                  : context.l10n.instApplicantConfirmReject,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: notesController,
               decoration: InputDecoration(
-                labelText: 'Review Notes ${isAccept ? '(Optional)' : '(Required)'}',
-                hintText: 'Add comments about your decision...',
+                labelText: isAccept ? context.l10n.instApplicantReviewNotesOptional : context.l10n.instApplicantReviewNotesRequired,
+                hintText: context.l10n.instApplicantAddComments,
                 border: const OutlineInputBorder(),
               ),
               maxLines: 4,
@@ -751,14 +752,14 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.instApplicantCancel),
           ),
           ElevatedButton(
             onPressed: () {
               if (!isAccept && notesController.text.trim().isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Review notes are required for rejection'),
+                  SnackBar(
+                    content: Text(context.l10n.instApplicantNotesRequiredRejection),
                   ),
                 );
                 return;
@@ -770,7 +771,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: isAccept ? AppColors.success : AppColors.error,
             ),
-            child: Text(isAccept ? 'Accept' : 'Reject'),
+            child: Text(isAccept ? context.l10n.instApplicantAccept : context.l10n.instApplicantReject),
           ),
         ],
       ),
@@ -805,8 +806,8 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
           SnackBar(
             content: Text(
               isAccept
-                  ? 'Application accepted successfully'
-                  : 'Application rejected',
+                  ? context.l10n.instApplicantAcceptedSuccess
+                  : context.l10n.instApplicantRejectedSuccess,
             ),
             backgroundColor: isAccept ? AppColors.success : AppColors.error,
           ),
@@ -819,7 +820,7 @@ class _ApplicantDetailScreenState extends ConsumerState<ApplicantDetailScreen> {
         setState(() => _isProcessing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error processing review: $e'),
+            content: Text(context.l10n.instApplicantErrorProcessingReview(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -917,9 +918,9 @@ class _RecommendationLetterTile extends StatelessWidget {
                   color: AppColors.success.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
-                  'RECEIVED',
-                  style: TextStyle(
+                child: Text(
+                  context.l10n.instApplicantReceived,
+                  style: const TextStyle(
                     color: AppColors.success,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -928,7 +929,7 @@ class _RecommendationLetterTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'Recommendation Letter',
+                context.l10n.instApplicantDocRecommendation,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
@@ -944,12 +945,12 @@ class _RecommendationLetterTile extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.visibility),
             onPressed: onView,
-            tooltip: 'View Letter',
+            tooltip: context.l10n.instApplicantViewLetter,
           ),
           IconButton(
             icon: const Icon(Icons.download),
             onPressed: onDownload,
-            tooltip: 'Download',
+            tooltip: context.l10n.instApplicantDownload,
           ),
         ],
       ),

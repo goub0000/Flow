@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Resources Screen for students
@@ -165,15 +166,15 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Resources'),
+        title: Text(context.l10n.studentResourcesTitle),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           indicatorColor: Colors.white,
-          tabs: const [
-            Tab(text: 'All Resources'),
-            Tab(text: 'Favorites'),
+          tabs: [
+            Tab(text: context.l10n.studentResourcesAllResources),
+            Tab(text: context.l10n.studentResourcesFavorites),
           ],
         ),
       ),
@@ -205,7 +206,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
           // Search bar
           TextField(
             decoration: InputDecoration(
-              hintText: 'Search resources...',
+              hintText: context.l10n.studentResourcesSearchHint,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -229,7 +230,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildCategoryChip(null, 'All'),
+                _buildCategoryChip(null, context.l10n.studentResourcesAll),
                 ...ResourceCategory.values.map((cat) {
                   return _buildCategoryChip(cat, cat.label);
                 }),
@@ -274,7 +275,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'No resources found',
+              context.l10n.studentResourcesNoResults,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -283,7 +284,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
             ),
             const SizedBox(height: 8),
             Text(
-              'Try adjusting your search or filters',
+              context.l10n.studentResourcesTryAdjusting,
               style: TextStyle(
                 color: Colors.grey[500],
               ),
@@ -470,8 +471,8 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
       SnackBar(
         content: Text(
           resource.isFavorite
-              ? 'Removed from favorites'
-              : 'Added to favorites',
+              ? context.l10n.studentResourcesRemovedFavorite
+              : context.l10n.studentResourcesAddedFavorite,
         ),
         duration: const Duration(seconds: 1),
       ),
@@ -619,7 +620,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
                       : Icons.download,
                 ),
                 label: Text(
-                  resource.type == ResourceType.link ? 'Open Link' : 'Download',
+                  resource.type == ResourceType.link ? context.l10n.studentResourcesOpenLink : context.l10n.studentResourcesDownload,
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,

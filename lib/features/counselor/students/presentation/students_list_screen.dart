@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/counseling_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -45,7 +46,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
               onPressed: () {
                 ref.read(counselorStudentsProvider.notifier).fetchStudents();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.counselorStudentRetry),
             ),
           ],
         ),
@@ -53,7 +54,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading students...');
+      return LoadingIndicator(message: context.l10n.counselorStudentLoadingStudents);
     }
 
     return Column(
@@ -63,7 +64,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
           padding: const EdgeInsets.all(16),
           child: TextField(
             decoration: InputDecoration(
-              hintText: 'Search students...',
+              hintText: context.l10n.counselorStudentSearchStudents,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -89,10 +90,10 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     if (students.isEmpty) {
       return EmptyState(
         icon: Icons.people_outline,
-        title: 'No Students Found',
+        title: context.l10n.counselorStudentNoStudentsFound,
         message: _searchQuery.isNotEmpty
-            ? 'Try adjusting your search'
-            : 'No students assigned yet',
+            ? context.l10n.counselorStudentTryAdjustingSearch
+            : context.l10n.counselorStudentNoStudentsAssigned,
       );
     }
 
@@ -159,7 +160,7 @@ class _StudentCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${student.grade} • GPA: ${student.gpa}',
+                      context.l10n.counselorStudentGradeAndGpa(student.grade, '${student.gpa}'),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -204,7 +205,7 @@ class _StudentCard extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      'GPA',
+                      context.l10n.counselorStudentGpa,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: _getGPAColor(),
                             fontSize: 10,
@@ -221,13 +222,13 @@ class _StudentCard extends StatelessWidget {
             children: [
               _StatChip(
                 icon: Icons.event,
-                label: '${student.totalSessions} sessions',
+                label: context.l10n.counselorStudentSessionsCount('${student.totalSessions}'),
                 color: AppColors.info,
               ),
               const SizedBox(width: 8),
               _StatChip(
                 icon: Icons.access_time,
-                label: _getLastSessionText(),
+                label: _getLastSessionText(context),
                 color: AppColors.textSecondary,
               ),
             ],
@@ -271,19 +272,19 @@ class _StudentCard extends StatelessWidget {
     return AppColors.error;
   }
 
-  String _getLastSessionText() {
+  String _getLastSessionText(BuildContext context) {
     if (student.lastSessionDate == null) {
-      return 'No sessions yet';
+      return context.l10n.counselorStudentNoSessionsYet;
     }
     final difference = DateTime.now().difference(student.lastSessionDate!);
     if (difference.inDays == 0) {
-      return 'Today';
+      return context.l10n.counselorStudentToday;
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return context.l10n.counselorStudentYesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return context.l10n.counselorStudentDaysAgo('${difference.inDays}');
     } else {
-      return '${(difference.inDays / 7).floor()}w ago';
+      return context.l10n.counselorStudentWeeksAgo('${(difference.inDays / 7).floor()}');
     }
   }
 }

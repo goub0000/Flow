@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/applicant_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
@@ -89,7 +90,7 @@ class _ApplicantsListScreenState extends ConsumerState<ApplicantsListScreen>
               onPressed: () {
                 ref.read(institutionApplicantsProvider.notifier).fetchApplicants();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.instApplicantRetry),
             ),
           ],
         ),
@@ -110,7 +111,7 @@ class _ApplicantsListScreenState extends ConsumerState<ApplicantsListScreen>
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Search applicants...',
+                    hintText: context.l10n.instApplicantSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -132,11 +133,11 @@ class _ApplicantsListScreenState extends ConsumerState<ApplicantsListScreen>
                 unselectedLabelColor: Colors.white70,
                 onTap: (_) => setState(() {}),
                 tabs: [
-                  Tab(text: 'All (${allApplicants.length})'),
-                  Tab(text: 'Pending (${_getStatusCount('pending')})'),
-                  Tab(text: 'Under Review (${_getStatusCount('under_review')})'),
-                  Tab(text: 'Accepted (${_getStatusCount('accepted')})'),
-                  Tab(text: 'Rejected (${_getStatusCount('rejected')})'),
+                  Tab(text: context.l10n.instApplicantTabAll(allApplicants.length)),
+                  Tab(text: context.l10n.instApplicantTabPending(_getStatusCount('pending'))),
+                  Tab(text: context.l10n.instApplicantTabUnderReview(_getStatusCount('under_review'))),
+                  Tab(text: context.l10n.instApplicantTabAccepted(_getStatusCount('accepted'))),
+                  Tab(text: context.l10n.instApplicantTabRejected(_getStatusCount('rejected'))),
                 ],
               ),
             ],
@@ -146,7 +147,7 @@ class _ApplicantsListScreenState extends ConsumerState<ApplicantsListScreen>
         // Body
         Expanded(
           child: isLoading
-          ? const LoadingIndicator(message: 'Loading applicants...')
+          ? LoadingIndicator(message: context.l10n.instApplicantLoading)
           : _buildApplicantsList(),
         ),
       ],
@@ -159,10 +160,10 @@ class _ApplicantsListScreenState extends ConsumerState<ApplicantsListScreen>
     if (applicants.isEmpty) {
       return EmptyState(
         icon: Icons.person_search,
-        title: 'No Applicants Found',
+        title: context.l10n.instApplicantNoApplicantsFound,
         message: _searchQuery.isNotEmpty
-            ? 'Try adjusting your search'
-            : 'No applications in this category',
+            ? context.l10n.instApplicantTryAdjustingSearch
+            : context.l10n.instApplicantNoAppsInCategory,
       );
     }
 
@@ -268,7 +269,7 @@ class _ApplicantCard extends StatelessWidget {
               Icon(Icons.school, size: 16, color: AppColors.textSecondary),
               const SizedBox(width: 4),
               Text(
-                'GPA: ${applicant.gpa}',
+                context.l10n.instApplicantGpaValue(applicant.gpa.toString()),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -282,7 +283,7 @@ class _ApplicantCard extends StatelessWidget {
                   size: 16, color: AppColors.textSecondary),
               const SizedBox(width: 4),
               Text(
-                'Submitted: ${_formatDate(applicant.submittedAt)}',
+                context.l10n.instApplicantSubmittedDate(_formatDate(applicant.submittedAt)),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
@@ -311,22 +312,22 @@ class _StatusChip extends StatelessWidget {
     switch (status) {
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending';
+        label = context.l10n.instApplicantChipPending;
         icon = Icons.pending;
         break;
       case 'under_review':
         color = AppColors.info;
-        label = 'Reviewing';
+        label = context.l10n.instApplicantChipReviewing;
         icon = Icons.rate_review;
         break;
       case 'accepted':
         color = AppColors.success;
-        label = 'Accepted';
+        label = context.l10n.instApplicantStatusAccepted;
         icon = Icons.check_circle;
         break;
       case 'rejected':
         color = AppColors.error;
-        label = 'Rejected';
+        label = context.l10n.instApplicantStatusRejected;
         icon = Icons.cancel;
         break;
       default:

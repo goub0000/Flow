@@ -6,6 +6,7 @@ import '../../../../core/models/program_model.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/institution_programs_provider.dart';
 
 class ProgramsListScreen extends ConsumerStatefulWidget {
@@ -65,7 +66,7 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
 
     if (error != null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Programs')),
+        appBar: AppBar(title: Text(context.l10n.instProgramPrograms)),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +77,7 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
                 onPressed: () {
                   ref.read(institutionProgramsProvider.notifier).fetchPrograms();
                 },
-                child: const Text('Retry'),
+                child: Text(context.l10n.instProgramRetry),
               ),
             ],
           ),
@@ -85,8 +86,8 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
     }
 
     return isLoading
-          ? const Scaffold(
-              body: LoadingIndicator(message: 'Loading programs...'),
+          ? Scaffold(
+              body: LoadingIndicator(message: context.l10n.instProgramLoading),
             )
           : Column(
               children: [
@@ -97,7 +98,7 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FilterChip(
-                        label: Text(_showActiveOnly ? 'Active Only' : 'Show All'),
+                        label: Text(_showActiveOnly ? context.l10n.instProgramActiveOnly : context.l10n.instProgramShowAll),
                         selected: _showActiveOnly,
                         onSelected: (selected) {
                           setState(() => _showActiveOnly = !_showActiveOnly);
@@ -117,7 +118,7 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
                     children: [
                       TextField(
                         decoration: InputDecoration(
-                          hintText: 'Search programs...',
+                          hintText: context.l10n.instProgramSearchHint,
                           prefixIcon: const Icon(Icons.search),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -169,7 +170,7 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
           _loadPrograms();
         },
         icon: const Icon(Icons.add),
-        label: const Text('New Program'),
+        label: Text(context.l10n.instProgramNewProgram),
     );
   }
 
@@ -179,11 +180,11 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
     if (programs.isEmpty) {
       return EmptyState(
         icon: Icons.school_outlined,
-        title: 'No Programs Found',
+        title: context.l10n.instProgramNoProgramsFound,
         message: _searchQuery.isNotEmpty
-            ? 'Try adjusting your search'
-            : 'Create your first program',
-        actionLabel: 'Create Program',
+            ? context.l10n.instProgramTryAdjustingSearch
+            : context.l10n.instProgramCreateFirstProgram,
+        actionLabel: context.l10n.instProgramCreateProgram,
         onAction: () async {
           await context.push('/institution/programs/create');
           _loadPrograms();
@@ -265,8 +266,8 @@ class _ProgramCard extends StatelessWidget {
                     color: AppColors.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    'INACTIVE',
+                  child: Text(
+                    context.l10n.instProgramInactive,
                     style: TextStyle(
                       color: AppColors.error,
                       fontSize: 11,
@@ -321,7 +322,7 @@ class _ProgramCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Enrollment',
+                    context.l10n.instProgramEnrollment,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -353,8 +354,8 @@ class _ProgramCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 fillPercentage >= 100
-                    ? 'Full'
-                    : '${program.availableSlots} slots available',
+                    ? context.l10n.instProgramFull
+                    : context.l10n.instProgramSlotsAvailable(program.availableSlots),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: fillPercentage >= 90
                           ? AppColors.error

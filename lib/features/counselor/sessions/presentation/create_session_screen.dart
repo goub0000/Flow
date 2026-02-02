@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/counseling_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -88,8 +89,8 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
     if (_formKey.currentState!.validate()) {
       if (_selectedStudent == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select a student'),
+          SnackBar(
+            content: Text(context.l10n.counselorSessionPleaseSelectStudent),
             backgroundColor: AppColors.error,
           ),
         );
@@ -120,8 +121,8 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Session scheduled successfully!'),
+            SnackBar(
+              content: Text(context.l10n.counselorSessionScheduledSuccessfully),
               backgroundColor: AppColors.success,
             ),
           );
@@ -132,7 +133,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
           setState(() => _isSubmitting = false);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error scheduling session: $e'),
+              content: Text(context.l10n.counselorSessionErrorScheduling('$e')),
               backgroundColor: AppColors.error,
             ),
           );
@@ -147,7 +148,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schedule Session'),
+        title: Text(context.l10n.counselorSessionScheduleSession),
         actions: [
           TextButton(
             onPressed: _isSubmitting ? null : _saveSession,
@@ -160,9 +161,9 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(AppColors.textOnPrimary),
                     ),
                   )
-                : const Text(
-                    'SAVE',
-                    style: TextStyle(
+                : Text(
+                    context.l10n.counselorSessionSave,
+                    style: const TextStyle(
                       color: AppColors.textOnPrimary,
                       fontWeight: FontWeight.bold,
                     ),
@@ -177,7 +178,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
           children: [
             // Student Selection
             Text(
-              'Student',
+              context.l10n.counselorSessionStudent,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -190,8 +191,8 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                       final students = ref.read(counselorStudentsListProvider);
                       if (students.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No students found. Please add students first.'),
+                          SnackBar(
+                            content: Text(context.l10n.counselorSessionNoStudentsFound),
                             backgroundColor: AppColors.warning,
                           ),
                         );
@@ -234,7 +235,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${_selectedStudent!.grade} • GPA: ${_selectedStudent!.gpa}',
+                            context.l10n.counselorSessionGradeAndGpa(_selectedStudent!.grade, '${_selectedStudent!.gpa}'),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -249,7 +250,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'Select a student',
+                      context.l10n.counselorSessionSelectStudent,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -263,7 +264,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
             // Session Title
             Text(
-              'Session Title',
+              context.l10n.counselorSessionTitle,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -271,13 +272,13 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
             const SizedBox(height: 8),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                hintText: 'e.g., Career Planning Discussion',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: context.l10n.counselorSessionTitleHint,
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a session title';
+                  return context.l10n.counselorSessionPleaseEnterTitle;
                 }
                 return null;
               },
@@ -286,7 +287,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
             // Session Type
             Text(
-              'Session Type',
+              context.l10n.counselorSessionType,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -323,7 +324,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Date',
+                        context.l10n.counselorSessionDate,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -352,7 +353,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Time',
+                        context.l10n.counselorSessionTime,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -381,7 +382,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
             // Duration
             Text(
-              'Duration',
+              context.l10n.counselorSessionDuration,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -393,7 +394,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
               children: _durations.map((dur) {
                 final isSelected = _duration == dur;
                 return ChoiceChip(
-                  label: Text('$dur min'),
+                  label: Text(context.l10n.counselorSessionDurationMin('$dur')),
                   selected: isSelected,
                   onSelected: (selected) {
                     setState(() => _duration = dur);
@@ -412,7 +413,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
             // Location
             Text(
-              'Location',
+              context.l10n.counselorSessionLocation,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -443,7 +444,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
 
             // Notes
             Text(
-              'Notes (Optional)',
+              context.l10n.counselorSessionNotesOptional,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -451,9 +452,9 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
             const SizedBox(height: 8),
             TextFormField(
               controller: _notesController,
-              decoration: const InputDecoration(
-                hintText: 'Add any additional notes or agenda items...',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: context.l10n.counselorSessionNotesHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 4,
             ),
@@ -465,14 +466,14 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => context.pop(),
-                    child: const Text('Cancel'),
+                    child: Text(context.l10n.counselorSessionCancel),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _saveSession,
-                    child: const Text('Schedule Session'),
+                    child: Text(context.l10n.counselorSessionScheduleSession),
                   ),
                 ),
               ],
@@ -518,7 +519,7 @@ class _StudentPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Select Student'),
+      title: Text(context.l10n.counselorSessionSelectStudentDialog),
       content: SizedBox(
         width: double.maxFinite,
         child: ListView.builder(
@@ -538,7 +539,7 @@ class _StudentPickerDialog extends StatelessWidget {
                 ),
               ),
               title: Text(student.name),
-              subtitle: Text('${student.grade} • GPA: ${student.gpa}'),
+              subtitle: Text(context.l10n.counselorSessionGradeAndGpa(student.grade, '${student.gpa}')),
               onTap: () => Navigator.of(context).pop(student),
             );
           },
@@ -547,7 +548,7 @@ class _StudentPickerDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.counselorSessionCancel),
         ),
       ],
     );

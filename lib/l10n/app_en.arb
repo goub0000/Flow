@@ -1,10 +1,8 @@
 {
   "@@locale": "en",
-
   "appTitle": "Flow - African EdTech Platform",
   "loading": "Loading...",
   "backToTop": "Back to Top",
-
   "navHome": "Home",
   "navUniversities": "Universities",
   "navAbout": "About",
@@ -12,7 +10,6 @@
   "navDashboard": "Dashboard",
   "navSignIn": "Sign In",
   "navGetStarted": "Get Started",
-
   "loginTitle": "Flow",
   "loginSubtitle": "African EdTech Platform",
   "loginEmailLabel": "Email",
@@ -25,7 +22,6 @@
   "loginCreateAccount": "Create Account",
   "loginResetPassword": "Reset Password",
   "loginAlreadyHaveAccount": "Already have an account? ",
-
   "registerTitle": "Join Flow",
   "registerSubtitle": "Start your educational journey",
   "registerAppBarTitle": "Create Account",
@@ -40,7 +36,6 @@
   "registerLoginInstead": "Login Instead",
   "registerResetPassword": "Reset Password",
   "registerLogin": "Login",
-
   "passwordStrengthWeak": "Weak",
   "passwordStrengthFair": "Fair",
   "passwordStrengthGood": "Good",
@@ -49,7 +44,6 @@
   "passwordReqUppercase": "Uppercase",
   "passwordReqLowercase": "Lowercase",
   "passwordReqNumber": "Number",
-
   "forgotPasswordTitle": "Forgot Password?",
   "forgotPasswordDescription": "Enter your email address and we'll send you instructions to reset your password.",
   "forgotPasswordEmailLabel": "Email Address",
@@ -63,7 +57,6 @@
   "forgotPasswordCheckCorrect": "Make sure the email address is correct",
   "forgotPasswordWait": "Wait a few minutes for the email to arrive",
   "forgotPasswordResend": "Resend Email",
-
   "emailVerifyTitle": "Verify Your Email",
   "emailVerifyAppBarTitle": "Verify Email",
   "emailVerifySentTo": "We've sent a verification link to:",
@@ -77,21 +70,27 @@
   "emailVerifyResendIn": "Resend in {seconds}s",
   "@emailVerifyResendIn": {
     "placeholders": {
-      "seconds": { "type": "int" }
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "emailVerifyNotYet": "Email not verified yet. Please check your inbox.",
   "emailVerifyCheckError": "Error checking verification: {error}",
   "@emailVerifyCheckError": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "emailVerifySent": "Verification email sent! Check your inbox.",
   "emailVerifySendFailed": "Failed to send email: {error}",
   "@emailVerifySendFailed": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "emailVerifySuccess": "Email Verified!",
@@ -101,7 +100,6 @@
   "emailVerifyCorrectTip": "Make sure the email is correct",
   "emailVerifyWaitTip": "Wait a few minutes and try resending",
   "emailVerifyAutoCheck": "Auto-checking every 5 seconds",
-
   "onboardingWelcomeTitle": "Welcome to Flow",
   "onboardingWelcomeDesc": "Your comprehensive platform for educational opportunities across Africa",
   "onboardingCoursesTitle": "Discover Courses",
@@ -120,7 +118,6 @@
   "onboardingFeatureProgress": "Real-time progress tracking",
   "onboardingFeatureAnalytics": "Performance analytics",
   "onboardingFeatureAchievements": "Achievement system",
-
   "heroTrustBadge": "Trusted by 200+ Universities",
   "heroHeadline": "Find Your Perfect\nUniversity Match",
   "heroSubheadline": "Discover, compare, and apply to 18,000+ universities\nwith personalized recommendations powered by AI",
@@ -129,27 +126,22 @@
   "heroStatActiveUsers": "Active Users",
   "heroStatUniversities": "Universities",
   "heroStatCountries": "Countries",
-
   "whyChooseTitle": "Why Choose Flow?",
   "whyChooseSubtitle": "Built for Africa, designed for everyone",
   "valueOfflineTitle": "Offline-First",
-  "valueOfflineDesc": "Access your content anytime, anywhere\u2014even without internet connectivity",
+  "valueOfflineDesc": "Access your content anytime, anywhere—even without internet connectivity",
   "valueMobileMoneyTitle": "Mobile Money",
   "valueMobileMoneyDesc": "Pay with M-Pesa, MTN Money, and other local payment methods you trust",
   "valueMultiLangTitle": "Multi-Language",
   "valueMultiLangDesc": "Platform available in multiple African languages for your convenience",
-
   "socialProofTitle": "Trusted by Leading Institutions Across Africa",
-
   "testimonialsTitle": "What Our Users Say",
   "testimonialsSubtitle": "Success stories from students, institutions, and educators",
-
   "quizBadge": "Find Your Path",
   "quizTitle": "Not Sure Where\nto Start?",
   "quizDescription": "Take our quick quiz to discover universities and programs that match your interests, goals, and academic profile.",
   "quizDuration": "2 minutes",
   "quizAIPowered": "AI-Powered",
-
   "featuresTitle": "Everything you need",
   "featuresSubtitle": "A complete educational ecosystem designed for modern Africa",
   "featureLearningTitle": "Comprehensive Learning",
@@ -159,7 +151,6 @@
   "featureSecurityTitle": "Enterprise-Grade Security",
   "featureSecurityDesc": "Bank-level encryption and GDPR-compliant data protection",
   "featuresWorksOnAllDevices": "Works on all devices",
-
   "builtForEveryoneTitle": "Built for Everyone",
   "builtForEveryoneSubtitle": "Choose your role and get started with a personalized experience",
   "roleStudents": "Students",
@@ -173,16 +164,16 @@
   "getStartedAs": "Get Started as {role}",
   "@getStartedAs": {
     "placeholders": {
-      "role": { "type": "String" }
+      "role": {
+        "type": "String"
+      }
     }
   },
-
   "ctaTitle": "Ready to Transform\nYour Educational Journey?",
   "ctaSubtitle": "Join 50,000+ students, institutions, and educators who trust Flow",
   "ctaButton": "Start Your Free Trial",
   "ctaNoCreditCard": "No credit card required",
   "cta14DayTrial": "14-day free trial",
-
   "footerTagline": "Africa's Leading EdTech Platform\nEmpowering education without boundaries.",
   "footerProducts": "Products",
   "footerStudentPortal": "Student Portal",
@@ -208,21 +199,27 @@
   "footerCookiePolicy": "Cookie Policy",
   "footerDataProtection": "Data Protection",
   "footerCompliance": "Compliance",
-  "footerCopyright": "\u00a9 2025 Flow EdTech. All rights reserved.",
+  "footerCopyright": "© 2025 Flow EdTech. All rights reserved.",
   "footerSoc2": "SOC 2 Certified",
   "footerIso27001": "ISO 27001",
   "footerGdpr": "GDPR Compliant",
-
   "searchHint": "Search universities by name, country, or program...",
   "searchUniversitiesCount": "Search 18,000+ Universities",
   "searchPlaceholder": "Search universities...",
   "searchBadge": "18K+",
+  "searchSuggestionGhana": "University of Ghana",
+  "searchSuggestionGhanaLocation": "Accra, Ghana",
+  "searchSuggestionCapeTown": "University of Cape Town",
+  "searchSuggestionCapeTownLocation": "Cape Town, South Africa",
+  "searchSuggestionAshesi": "Ashesi University",
+  "searchSuggestionAshesiLocation": "Berekuso, Ghana",
+  "searchSuggestionPublicUniversity": "Public University",
+  "searchSuggestionPrivateUniversity": "Private University",
   "filterEngineering": "Engineering",
   "filterBusiness": "Business",
   "filterMedicine": "Medicine",
   "filterArts": "Arts",
   "filterScience": "Science",
-
   "quizFindYourPath": "Find Your Path",
   "quizQuickPreview": "Quick Preview",
   "quizFieldQuestion": "What field interests you most?",
@@ -237,7 +234,6 @@
   "quizLocationAnywhereAfrica": "Anywhere in Africa",
   "quizGetRecommendations": "Get Your Recommendations",
   "quizTakeTheQuiz": "Take the quiz",
-
   "tourTitle": "See Flow in Action",
   "tourSubtitle": "A guided tour of the platform",
   "tourClose": "Close",
@@ -255,7 +251,7 @@
   "tourSlide2H2": "Personality & interest matching",
   "tourSlide2H3": "Tailored program suggestions",
   "tourSlide3Title": "Role-Based Dashboards",
-  "tourSlide3Desc": "Purpose-built dashboards for students, parents, counselors, and institutions \u2014 each with the tools they need.",
+  "tourSlide3Desc": "Purpose-built dashboards for students, parents, counselors, and institutions — each with the tools they need.",
   "tourSlide3H1": "Track applications & progress",
   "tourSlide3H2": "Monitor student performance",
   "tourSlide3H3": "Manage institutional data",
@@ -269,7 +265,6 @@
   "tourSlide5H1": "Real-time notifications",
   "tourSlide5H2": "Shared progress tracking",
   "tourSlide5H3": "Secure messaging",
-
   "uniSearchTitle": "Search Universities",
   "uniSearchClearAll": "Clear all",
   "uniSearchHint": "Search by university name...",
@@ -277,7 +272,9 @@
   "uniSearchResultCount": "{count} universities found",
   "@uniSearchResultCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "uniSearchNoMatchFilters": "No universities match your filters",
@@ -305,21 +302,26 @@
   "uniSearchAcceptance": "{rate}% acceptance",
   "@uniSearchAcceptance": {
     "placeholders": {
-      "rate": { "type": "String" }
+      "rate": {
+        "type": "String"
+      }
     }
   },
   "uniSearchStudents": "{count} students",
   "@uniSearchStudents": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
-
   "uniDetailNotFound": "This university could not be found.",
   "uniDetailError": "Error loading university: {error}",
   "@uniDetailError": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "uniDetailVisitWebsite": "Visit Website",
@@ -346,7 +348,6 @@
   "uniDetailType": "Type",
   "uniDetailWebsite": "Website",
   "uniDetailDescription": "Description",
-
   "dashCommonBack": "Back",
   "dashCommonHome": "Home",
   "dashCommonProfile": "Profile",
@@ -379,17 +380,20 @@
   "dashCommonDays": "{count} days",
   "@dashCommonDays": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashCommonMin": "{count} min",
   "@dashCommonMin": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashCommonNoDataAvailable": "No data available",
-
   "dashStudentTitle": "Student Dashboard",
   "dashStudentMyApplications": "My Applications",
   "dashStudentMyCourses": "My Courses",
@@ -417,7 +421,6 @@
   "dashStudentPaymentHistory": "Payment History",
   "dashStudentPaymentHistoryMsg": "View detailed payment history and transaction records.",
   "dashStudentFailedRecommendations": "Failed to load recommendations",
-
   "dashParentTitle": "Parent Dashboard",
   "dashParentMyChildren": "My Children",
   "dashParentAlerts": "Alerts",
@@ -430,7 +433,9 @@
   "dashParentViewMoreMeetings": "View {count} more meetings",
   "@dashParentViewMoreMeetings": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashParentChildrenOverview": "Children Overview",
@@ -439,13 +444,17 @@
   "dashParentCourseCount": "{count} courses",
   "@dashParentCourseCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashParentAppCount": "{count} apps",
   "@dashParentAppCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashParentViewAllReports": "View All Reports",
@@ -463,7 +472,6 @@
   "dashParentStatusDeclined": "DECLINED",
   "dashParentStatusCancelled": "CANCELLED",
   "dashParentStatusCompleted": "COMPLETED",
-
   "dashCounselorTitle": "Counselor Dashboard",
   "dashCounselorMyStudents": "My Students",
   "dashCounselorSessions": "Sessions",
@@ -475,13 +483,17 @@
   "dashCounselorPendingApproval": "{count} pending approval",
   "@dashCounselorPendingApproval": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashCounselorViewMoreRequests": "View {count} more requests",
   "@dashCounselorViewMoreRequests": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashCounselorTodaySessions": "Today's Sessions",
@@ -491,7 +503,9 @@
   "dashCounselorDraftRecommendations": "You have {count} draft recommendations",
   "@dashCounselorDraftRecommendations": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashCounselorSessionIndividual": "Individual",
@@ -500,13 +514,14 @@
   "dashCounselorSessionAcademic": "Academic",
   "dashCounselorSessionPersonal": "Personal",
   "dashCounselorStatusPending": "PENDING",
-
   "dashAdminNotAuthenticated": "Not authenticated",
   "dashAdminDashboard": "Dashboard",
   "dashAdminWelcomeBack": "Welcome back, {name}",
   "@dashAdminWelcomeBack": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "dashAdminQuickAction": "Quick Action",
@@ -521,44 +536,58 @@
   "dashAdminCountStudents": "{count} students",
   "@dashAdminCountStudents": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminCountParents": "{count} parents",
   "@dashAdminCountParents": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminCountCounselors": "{count} counselors",
   "@dashAdminCountCounselors": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminCountAdmins": "{count} admins",
   "@dashAdminCountAdmins": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminJustNow": "Just now",
   "dashAdminMinutesAgo": "{count}m ago",
   "@dashAdminMinutesAgo": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminHoursAgo": "{count}h ago",
   "@dashAdminHoursAgo": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminDaysAgo": "{count}d ago",
   "@dashAdminDaysAgo": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashAdminRefresh": "Refresh",
@@ -570,7 +599,6 @@
   "dashAdminUserGrowthDesc": "New user registrations over the past 6 months",
   "dashAdminUserDistribution": "User Distribution",
   "dashAdminByUserType": "By user type",
-
   "dashInstTitle": "Institution Dashboard",
   "dashInstDebugPanel": "Debug Panel",
   "dashInstApplicants": "Applicants",
@@ -587,20 +615,26 @@
   "dashInstApplicationsWaiting": "{count} applications waiting",
   "@dashInstApplicationsWaiting": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashInstApplicationsInProgress": "{count} applications in progress",
   "@dashInstApplicationsInProgress": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashInstAcceptedApplicants": "Accepted Applicants",
   "dashInstApplicationsApproved": "{count} applications approved",
   "@dashInstApplicationsApproved": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashInstCreateNewProgram": "Create New Program",
@@ -614,14 +648,18 @@
   "dashInstConversionRate": "Overall Conversion Rate: {rate}%",
   "@dashInstConversionRate": {
     "placeholders": {
-      "rate": { "type": "String" }
+      "rate": {
+        "type": "String"
+      }
     }
   },
   "dashInstApplicantDemographics": "Applicant Demographics",
   "dashInstTotalApplicantsCount": "Total Applicants: {count}",
   "@dashInstTotalApplicantsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashInstByLocation": "By Location",
@@ -632,7 +670,9 @@
   "dashInstAppsCount": "{count} apps",
   "@dashInstAppsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashInstProcessingTime": "Application Processing Time",
@@ -640,10 +680,11 @@
   "dashInstDaysValue": "{count} days",
   "@dashInstDaysValue": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
-
   "dashRecTitle": "Recommender Dashboard",
   "dashRecRecommendations": "Recommendations",
   "dashRecTotal": "Total",
@@ -652,7 +693,9 @@
   "dashRecPendingCount": "You have {count} pending recommendation{count, plural, =1{} other{s}}",
   "@dashRecPendingCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dashRecUnknownStudent": "Unknown Student",
@@ -664,7 +707,6 @@
   "dashRecTip1": "Write specific examples of student achievements",
   "dashRecTip2": "Submit recommendations at least 2 weeks before deadline",
   "dashRecTip3": "Personalize each recommendation for the institution",
-
   "chatViewDetails": "View Details",
   "chatApply": "Apply",
   "chatLearnMore": "Learn More",
@@ -673,19 +715,25 @@
   "chatRankLabel": "Rank: #{rank}",
   "@chatRankLabel": {
     "placeholders": {
-      "rank": { "type": "int" }
+      "rank": {
+        "type": "int"
+      }
     }
   },
   "chatAcceptanceLabel": "Acceptance: {rate}%",
   "@chatAcceptanceLabel": {
     "placeholders": {
-      "rate": { "type": "String" }
+      "rate": {
+        "type": "String"
+      }
     }
   },
   "chatDeadlineLabel": "Deadline: {deadline}",
   "@chatDeadlineLabel": {
     "placeholders": {
-      "deadline": { "type": "String" }
+      "deadline": {
+        "type": "String"
+      }
     }
   },
   "chatRecommendedUniversities": "Recommended Universities",
@@ -694,10 +742,12 @@
   "chatAcceptanceRateLabel": "{rate}% acceptance",
   "@chatAcceptanceRateLabel": {
     "placeholders": {
-      "rate": { "type": "String" }
+      "rate": {
+        "type": "String"
+      }
     }
   },
-  "chatHiNeedHelp": "Hi! Need help? \uD83D\uDC4B",
+  "chatHiNeedHelp": "Hi! Need help? 👋",
   "chatTalkToHuman": "Talk to a Human",
   "chatConnectWithAgent": "Would you like to connect with a support agent?",
   "chatAgentWillJoin": "A member of our team will join this conversation to assist you.",
@@ -724,7 +774,9 @@
   "chatLessonsCount": "{count} lessons",
   "@chatLessonsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "chatProgress": "Progress",
@@ -733,8 +785,12 @@
   "chatImageCounter": "{current} / {total}",
   "@chatImageCounter": {
     "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "chatTypeYourMessage": "Type your message...",
@@ -776,24 +832,29 @@
   "chatCompleteProfile": "Complete Profile ({completeness}%)",
   "@chatCompleteProfile": {
     "placeholders": {
-      "completeness": { "type": "int" }
+      "completeness": {
+        "type": "int"
+      }
     }
   },
   "chatWhyCompleteProfile": "Why Complete Profile?",
   "chatViewSchools": "View {count} Schools",
   "@chatViewSchools": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "chatMyFavorites": "My Favorites ({count})",
   "@chatMyFavorites": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "chatStartApplying": "Start Applying",
-
   "fypTitle": "Find Your Path",
   "fypHeroTitle": "Find Your Perfect University",
   "fypHeroSubtitle": "Get personalized university recommendations based on your academic profile, preferences, and goals",
@@ -818,8 +879,12 @@
   "fypStepOf": "Step {current} of {total}",
   "@fypStepOf": {
     "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "fypStepBackgroundInfo": "Background Information",
@@ -893,13 +958,17 @@
   "fypErrorSavingProfile": "Error saving profile: {error}",
   "@fypErrorSavingProfile": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "fypErrorGeneratingRecs": "Error generating recommendations: {error}",
   "@fypErrorGeneratingRecs": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "fypRetry": "Retry",
@@ -908,7 +977,9 @@
   "fypUnexpectedError": "Unexpected error: {error}",
   "@fypUnexpectedError": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "fypGeneratingRecommendations": "Generating Recommendations",
@@ -928,32 +999,42 @@
   "fypFilterAll": "All ({count})",
   "@fypFilterAll": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "fypFilterSafety": "Safety ({count})",
   "@fypFilterSafety": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "fypFilterMatch": "Match ({count})",
   "@fypFilterMatch": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "fypFilterReach": "Reach ({count})",
   "@fypFilterReach": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "fypNoFilterMatch": "No universities match the selected filter",
   "fypPercentMatch": "{score}% Match",
   "@fypPercentMatch": {
     "placeholders": {
-      "score": { "type": "String" }
+      "score": {
+        "type": "String"
+      }
     }
   },
   "fypLoadingDetails": "Loading university details...",
@@ -972,7 +1053,9 @@
   "fypKStudents": "{count}k Students",
   "@fypKStudents": {
     "placeholders": {
-      "count": { "type": "String" }
+      "count": {
+        "type": "String"
+      }
     }
   },
   "fypNationalRank": "National Rank",
@@ -991,30 +1074,37 @@
   "fypFinancialAidNote": "Financial aid may be available. Contact the university for details.",
   "fypGraduationRate": "4-Year Graduation Rate",
   "fypMedianEarnings": "Median Earnings (10 years)",
-
   "appListTitle": "My Applications",
   "appTabAll": "All ({count})",
   "@appTabAll": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "appTabPending": "Pending ({count})",
   "@appTabPending": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "appTabUnderReview": "Under Review ({count})",
   "@appTabUnderReview": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "appTabAccepted": "Accepted ({count})",
   "@appTabAccepted": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "appLoadingMessage": "Loading applications...",
@@ -1028,7 +1118,9 @@
   "appDaysAgo": "{days} days ago",
   "@appDaysAgo": {
     "placeholders": {
-      "days": { "type": "int" }
+      "days": {
+        "type": "int"
+      }
     }
   },
   "appFeePaid": "Fee Paid",
@@ -1036,7 +1128,9 @@
   "appReviewedDaysAgo": "Reviewed {days} days ago",
   "@appReviewedDaysAgo": {
     "placeholders": {
-      "days": { "type": "int" }
+      "days": {
+        "type": "int"
+      }
     }
   },
   "appDetailTitle": "Application Details",
@@ -1062,7 +1156,9 @@
   "appPaymentDialogContent": "Pay application fee of ${fee}?",
   "@appPaymentDialogContent": {
     "placeholders": {
-      "fee": { "type": "String" }
+      "fee": {
+        "type": "String"
+      }
     }
   },
   "appCancel": "Cancel",
@@ -1072,7 +1168,9 @@
   "appErrorPayment": "Error processing payment: {error}",
   "@appErrorPayment": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "appDetailReviewNotes": "Review Notes",
@@ -1090,7 +1188,9 @@
   "appErrorWithdraw": "Error withdrawing application: {error}",
   "@appErrorWithdraw": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "appCreateTitle": "New Application",
@@ -1102,7 +1202,9 @@
   "appProgramsAvailable": "{count} programs available",
   "@appProgramsAvailable": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "appStepPersonalInfo": "Personal Information",
@@ -1131,7 +1233,6 @@
   "appSubmit": "Submit",
   "appContinue": "Continue",
   "appBack": "Back",
-
   "courseListTitle": "Courses",
   "courseFiltersTooltip": "Filters",
   "courseBrowseAll": "Browse All",
@@ -1147,20 +1248,26 @@
   "courseLessonsLabel": "{count} lessons",
   "@courseLessonsLabel": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "coursePercentComplete": "{percent}% complete",
   "@coursePercentComplete": {
     "placeholders": {
-      "percent": { "type": "int" }
+      "percent": {
+        "type": "int"
+      }
     }
   },
   "courseNoRatingsYet": "No ratings yet",
   "courseEnrolledCount": "{count} enrolled",
   "@courseEnrolledCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "courseFiltersTitle": "Filters",
@@ -1186,7 +1293,9 @@
   "courseRequestEnrollmentContent": "Request permission to enroll in \"{title}\"?",
   "@courseRequestEnrollmentContent": {
     "placeholders": {
-      "title": { "type": "String" }
+      "title": {
+        "type": "String"
+      }
     }
   },
   "courseInstitutionReview": "The institution will review your request.",
@@ -1198,7 +1307,9 @@
   "courseFailedRequestPermission": "Failed to request permission: {error}",
   "@courseFailedRequestPermission": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "courseEnrolledSuccess": "Successfully enrolled in course!",
@@ -1206,15 +1317,21 @@
   "courseContinueLearning": "Continue Learning ({progress}%)",
   "@courseContinueLearning": {
     "placeholders": {
-      "progress": { "type": "String" }
+      "progress": {
+        "type": "String"
+      }
     }
   },
   "courseStartLearning": "Start Learning",
   "courseLessonsCompleted": "{completed}/{total} lessons completed",
   "@courseLessonsCompleted": {
     "placeholders": {
-      "completed": { "type": "int" },
-      "total": { "type": "int" }
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "courseCollapseSidebar": "Collapse sidebar",
@@ -1222,7 +1339,9 @@
   "courseErrorLoadingModules": "Error loading modules:\n{error}",
   "@courseErrorLoadingModules": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "courseNoContentYet": "No content available yet",
@@ -1230,14 +1349,20 @@
   "courseLessonsCount": "{completed}/{total} lessons",
   "@courseLessonsCount": {
     "placeholders": {
-      "completed": { "type": "int" },
-      "total": { "type": "int" }
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "courseWelcomeTo": "Welcome to {title}",
   "@courseWelcomeTo": {
     "placeholders": {
-      "title": { "type": "String" }
+      "title": {
+        "type": "String"
+      }
     }
   },
   "courseCompleted": "Completed",
@@ -1249,13 +1374,17 @@
   "courseTabAssigned": "Assigned ({count})",
   "@courseTabAssigned": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "courseTabEnrolled": "Enrolled ({count})",
   "@courseTabEnrolled": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "courseNoAssigned": "No assigned courses",
@@ -1265,7 +1394,9 @@
   "courseDuePrefix": "Due: {date}",
   "@courseDuePrefix": {
     "placeholders": {
-      "date": { "type": "String" }
+      "date": {
+        "type": "String"
+      }
     }
   },
   "courseStatusCompleted": "Completed",
@@ -1277,7 +1408,9 @@
   "courseDueDays": "{days} days",
   "@courseDueDays": {
     "placeholders": {
-      "days": { "type": "int" }
+      "days": {
+        "type": "int"
+      }
     }
   },
   "courseNoEnrolled": "No enrolled courses",
@@ -1286,5 +1419,2071 @@
   "courseFilterAll": "All",
   "courseStatusActive": "Active",
   "courseStatusDropped": "Dropped",
-  "courseStatusSuspended": "Suspended"
+  "courseStatusSuspended": "Suspended",
+  "homeNewFeature": "NEW FEATURE",
+  "homeFindYourPathTitle": "Find Your Path",
+  "homeFindYourPathDesc": "Discover universities that match your goals, budget, and aspirations.\nLet our intelligent recommendation system guide you to the perfect fit.",
+  "homePersonalizedRecs": "Personalized Recommendations",
+  "homeTopUniversities": "12+ Top Universities",
+  "homeSmartMatching": "Smart Matching Algorithm",
+  "homeStartYourJourney": "Start Your Journey",
+  "homeNoAccountRequired": "No account required - get started instantly",
+  "homeSearchUniversitiesDesc": "Explore 18,000+ universities from around the world.\nFilter by country, tuition, acceptance rate, and more.",
+  "homeFilters": "Filters",
+  "homeBrowseUniversities": "Browse Universities",
+  "helpBack": "Back",
+  "helpContactSupport": "Contact Support",
+  "helpWeAreHereToHelp": "We're here to help!",
+  "helpSupportResponseTime": "Our support team typically responds within 24 hours",
+  "helpSubject": "Subject",
+  "helpSubjectHint": "Brief description of your issue",
+  "helpSubjectRequired": "Please enter a subject",
+  "helpSubjectMinLength": "Subject must be at least 5 characters",
+  "helpCategory": "Category",
+  "helpCategoryGeneral": "General Inquiry",
+  "helpCategoryTechnical": "Technical Issue",
+  "helpCategoryBilling": "Billing & Payments",
+  "helpCategoryAccount": "Account Management",
+  "helpCategoryCourse": "Course Content",
+  "helpCategoryOther": "Other",
+  "helpPriority": "Priority",
+  "helpPriorityLow": "Low",
+  "helpPriorityMedium": "Medium",
+  "helpPriorityHigh": "High",
+  "helpPriorityUrgent": "Urgent",
+  "helpDescription": "Description",
+  "helpDescriptionHint": "Please provide detailed information about your issue...",
+  "helpDescriptionRequired": "Please describe your issue",
+  "helpDescriptionMinLength": "Description must be at least 20 characters",
+  "helpAttachments": "Attachments",
+  "helpNoFilesAttached": "No files attached",
+  "helpAddAttachment": "Add Attachment",
+  "helpAttachmentTypes": "Images, PDFs, documents (max 10MB each)",
+  "helpPreferredContactMethod": "Preferred Contact Method",
+  "helpEmail": "Email",
+  "helpRespondViaEmail": "We'll respond via email",
+  "helpPhone": "Phone",
+  "helpCallYouBack": "We'll call you back",
+  "helpSubmitting": "Submitting...",
+  "helpSubmitRequest": "Submit Request",
+  "helpOtherWaysToReachUs": "Other Ways to Reach Us",
+  "helpEmailCopied": "Email copied to clipboard",
+  "helpPhoneCopied": "Phone number copied to clipboard",
+  "helpBusinessHours": "Business Hours",
+  "helpBusinessHoursDetails": "Monday - Friday\n9:00 AM - 6:00 PM EST",
+  "helpAverageResponseTime": "Average Response Time",
+  "helpTypicallyRespond24h": "We typically respond within 24 hours",
+  "helpRequestSubmitted": "Request Submitted",
+  "helpRequestSubmittedSuccess": "Your support request has been submitted successfully!",
+  "helpTrackRequestInfo": "We'll respond to your email within 24 hours. You can track your request in the Support Tickets section.",
+  "helpOk": "OK",
+  "helpViewTicketInSupport": "View your ticket in Support Tickets",
+  "helpViewTickets": "View Tickets",
+  "helpFaqTitle": "Frequently Asked Questions",
+  "helpFaqAll": "All",
+  "helpFaqGettingStarted": "Getting Started",
+  "helpFaqAccount": "Account",
+  "helpFaqCourses": "Courses",
+  "helpFaqPayments": "Payments",
+  "helpFaqTechnical": "Technical",
+  "helpSearchFaqs": "Search FAQs...",
+  "helpNoFaqsFound": "No FAQs found",
+  "helpTryDifferentSearch": "Try a different search term",
+  "helpThanksForFeedback": "Thanks for your feedback!",
+  "helpCenterTitle": "Help Center",
+  "helpHowCanWeHelp": "How can we help you?",
+  "helpSearchOrBrowse": "Search for answers or browse help topics",
+  "helpSearchForHelp": "Search for help...",
+  "helpQuickHelp": "Quick Help",
+  "helpBrowseFaqs": "Browse FAQs",
+  "helpBrowseFaqsDesc": "Quick answers to common questions",
+  "helpContactSupportDesc": "Get help from our support team",
+  "helpMySupportTickets": "My Support Tickets",
+  "helpMySupportTicketsDesc": "View your open and closed tickets",
+  "helpBrowseByTopic": "Browse by Topic",
+  "helpViewAll": "View All",
+  "helpPopularArticles": "Popular Articles",
+  "helpRemovedFromBookmarks": "Removed from bookmarks",
+  "helpAddedToBookmarks": "Added to bookmarks",
+  "helpStillNeedHelp": "Still need help?",
+  "helpSupportTeamHere": "Our support team is here to help you",
+  "helpWasArticleHelpful": "Was this article helpful?",
+  "helpYes": "Yes",
+  "helpNo": "No",
+  "helpThanksWeWillImprove": "Thanks! We'll improve this article.",
+  "helpSupportTickets": "Support Tickets",
+  "helpTicketActive": "Active",
+  "helpTicketWaiting": "Waiting",
+  "helpTicketResolved": "Resolved",
+  "helpNewTicket": "New Ticket",
+  "helpNoTickets": "No tickets",
+  "helpCreateTicketToGetSupport": "Create a ticket to get support",
+  "helpTypeYourMessage": "Type your message...",
+  "helpMessageSent": "Message sent!",
+  "helpCreateSupportTicket": "Create Support Ticket",
+  "helpDescribeIssueDetail": "Describe your issue in detail...",
+  "helpCancel": "Cancel",
+  "helpSubmit": "Submit",
+  "helpTicketCreatedSuccess": "Support ticket created successfully!",
+  "cookiePreferencesSaved": "Cookie preferences saved",
+  "cookieEssentialOnly": "Essential Only",
+  "cookieWeUseCookies": "We use cookies",
+  "cookieBannerDescription": "We use cookies to enhance your experience, analyze site usage, and provide personalized content. By clicking \"Accept All\", you consent to our use of cookies.",
+  "cookieAcceptAll": "Accept All",
+  "cookieCustomize": "Customize",
+  "cookiePrivacyPolicy": "Privacy Policy",
+  "cookiePreferencesTitle": "Cookie Preferences",
+  "cookieCustomizeDescription": "Customize your cookie preferences. Essential cookies are always enabled.",
+  "cookiePreferencesSavedSuccess": "Cookie preferences saved successfully",
+  "cookieFailedToSave": "Failed to save preferences. Please try again.",
+  "cookieRejectAll": "Reject All",
+  "cookieSavePreferences": "Save Preferences",
+  "cookieAlwaysActive": "Always Active",
+  "cookieSettingsTitle": "Cookie Settings",
+  "cookieNoConsentData": "No consent data available",
+  "cookieSetPreferences": "Set Preferences",
+  "cookieConsentActive": "Consent Active",
+  "cookieNoConsentGiven": "No Consent Given",
+  "cookieCurrentPreferences": "Current Preferences",
+  "cookieChangePreferences": "Change Preferences",
+  "cookieExportMyData": "Export My Data",
+  "cookieDeleteMyData": "Delete My Data",
+  "cookieAboutCookies": "About Cookies",
+  "cookieAboutDescription": "Cookies help us provide you with a better experience. You can change your preferences at any time. Essential cookies are always active for security and functionality.",
+  "cookieReadPrivacyPolicy": "Read Privacy Policy",
+  "cookieExportData": "Export Data",
+  "cookieExportDataDescription": "This will create a file with all your cookie and consent data. The file will be saved to your downloads folder.",
+  "cookieCancel": "Cancel",
+  "cookieExport": "Export",
+  "cookieDeleteData": "Delete Data",
+  "cookieDeleteDataDescription": "This will permanently delete all your cookie data. Essential cookies required for the app to function will remain. This action cannot be undone.",
+  "cookieDelete": "Delete",
+  "cookieDataDeletedSuccess": "Data deleted successfully",
+  "careerCounselingTitle": "Career Counseling",
+  "careerFindCounselor": "Find Counselor",
+  "careerUpcoming": "Upcoming",
+  "careerPastSessions": "Past Sessions",
+  "careerSearchCounselors": "Search by name, specialization, or expertise...",
+  "careerAvailableNow": "Available Now",
+  "careerHighestRated": "Highest Rated",
+  "careerMostExperienced": "Most Experienced",
+  "careerNoCounselorsFound": "No counselors found",
+  "careerTryAdjustingSearch": "Try adjusting your search",
+  "careerReschedule": "Reschedule",
+  "careerJoinSession": "Join Session",
+  "careerNoPastSessions": "No past sessions",
+  "careerCompletedSessionsAppearHere": "Your completed sessions will appear here",
+  "careerAbout": "About",
+  "careerAreasOfExpertise": "Areas of Expertise",
+  "careerBookSession": "Book Session",
+  "careerCurrentlyUnavailable": "Currently Unavailable",
+  "careerBookCounselingSession": "Book Counseling Session",
+  "careerSessionType": "Session Type",
+  "careerPreferredDate": "Preferred Date",
+  "careerSelectDate": "Select Date",
+  "careerSessionNotesOptional": "Session Notes (Optional)",
+  "careerWhatToDiscuss": "What would you like to discuss?",
+  "careerCancel": "Cancel",
+  "careerConfirmBooking": "Confirm Booking",
+  "careerSessionBookedSuccess": "Session booked successfully!",
+  "careerResourcesTitle": "Career Resources",
+  "careerAll": "All",
+  "careerArticles": "Articles",
+  "careerVideos": "Videos",
+  "careerCourses": "Courses",
+  "careerSearchResources": "Search resources...",
+  "careerRemovedFromBookmarks": "Removed from bookmarks",
+  "careerAddedToBookmarks": "Added to bookmarks",
+  "careerCategories": "Categories",
+  "careerNoResourcesFound": "No resources found",
+  "careerWhatYoullLearn": "What You'll Learn",
+  "careerSaved": "Saved",
+  "careerSave": "Save",
+  "careerOpeningResource": "Opening resource...",
+  "careerStartLearning": "Start Learning",
+  "careerBrowseCategories": "Browse Categories",
+  "jobDetailsTitle": "Job Details",
+  "jobSavedSuccessfully": "Job saved successfully",
+  "jobRemovedFromSaved": "Job removed from saved",
+  "jobShareComingSoon": "Share functionality coming soon",
+  "jobApplyNow": "Apply Now",
+  "jobSalaryRange": "Salary Range",
+  "jobLocation": "Location",
+  "jobApplicationDeadline": "Application Deadline",
+  "jobDescription": "Job Description",
+  "jobRequirements": "Requirements",
+  "jobResponsibilities": "Responsibilities",
+  "jobBenefits": "Benefits",
+  "jobRequiredSkills": "Required Skills",
+  "jobAboutTheCompany": "About the Company",
+  "jobCompanyProfileComingSoon": "Company profile coming soon",
+  "jobViewCompanyProfile": "View Company Profile",
+  "jobSimilarJobs": "Similar Jobs",
+  "jobApplyForThisJob": "Apply for this Job",
+  "jobYouAreApplyingFor": "You are applying for:",
+  "jobCoverLetter": "Cover Letter",
+  "jobCoverLetterHint": "Tell us why you're a great fit...",
+  "jobUploadResume": "Upload Resume",
+  "jobCancel": "Cancel",
+  "jobSubmitApplication": "Submit Application",
+  "jobApplicationSubmittedSuccess": "Application submitted successfully!",
+  "jobOpportunitiesTitle": "Job Opportunities",
+  "jobAllJobs": "All Jobs",
+  "jobSaved": "Saved",
+  "jobApplied": "Applied",
+  "jobSearchHint": "Search jobs, companies, or skills...",
+  "jobRemoteOnly": "Remote Only",
+  "jobNoApplicationsYet": "No applications yet",
+  "jobStartApplyingToSee": "Start applying to jobs to see them here",
+  "jobNoJobsFound": "No jobs found",
+  "jobTryAdjustingFilters": "Try adjusting your filters",
+  "jobDetailComingSoon": "Job detail screen coming soon",
+  "jobFilterJobs": "Filter Jobs",
+  "jobClearAll": "Clear All",
+  "jobJobType": "Job Type",
+  "jobExperienceLevel": "Experience Level",
+  "jobApplyFilters": "Apply Filters",
+  "jobSortBy": "Sort By",
+  "jobRelevance": "Relevance",
+  "jobNewestFirst": "Newest First",
+  "jobHighestSalary": "Highest Salary",
+  "msgFailedToSendMessage": "Failed to send message",
+  "msgPhotoFromGallery": "Photo from Gallery",
+  "msgTakePhoto": "Take Photo",
+  "msgOpensCameraOnMobile": "Opens camera on mobile devices",
+  "msgDocument": "Document",
+  "msgCameraNotAvailable": "Camera not available in browser. Use \"Photo from Gallery\" to select an image.",
+  "msgNoMessagesYet": "No messages yet",
+  "msgSendMessageToStart": "Send a message to start the conversation",
+  "msgConversation": "Conversation",
+  "msgOnline": "Online",
+  "msgConnecting": "Connecting...",
+  "msgTypeAMessage": "Type a message...",
+  "msgMessages": "Messages",
+  "msgSearchMessages": "Search Messages",
+  "msgSearchConversations": "Search conversations...",
+  "msgRetry": "Retry",
+  "msgCheckDatabaseSetup": "Check Database Setup",
+  "msgDatabaseSetupStatus": "Database Setup Status",
+  "msgTestInsertResult": "Test Insert Result",
+  "msgTestInsert": "Test Insert",
+  "msgNoConversationsYet": "No conversations yet",
+  "msgFailedToCreateConversation": "Failed to create conversation",
+  "msgNewConversation": "New Conversation",
+  "msgSearchByNameOrEmail": "Search by name or email...",
+  "msgNoUsersFound": "No users found",
+  "msgNoUsersMatch": "No users match \"{query}\"",
+  "@msgNoUsersMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "progressAchievementsTitle": "Achievements",
+  "progressNoAchievementsYet": "No achievements yet",
+  "progressClose": "Close",
+  "progressMyProgress": "My Progress",
+  "progressKeepUpGreatWork": "Keep up the great work!",
+  "progressMakingExcellentProgress": "You're making excellent progress",
+  "progressCoursesCompleted": "Courses Completed",
+  "progressStudyTime": "Study Time",
+  "progressTotalLearningTime": "Total learning time",
+  "progressAverageScore": "Average Score",
+  "progressCertificates": "Certificates",
+  "progressLearningActivity": "Learning Activity",
+  "progressStudyTimeMinutes": "Study Time (minutes)",
+  "progressCourseProgress": "Course Progress",
+  "progressViewAll": "View All",
+  "progressStudyGoalsTitle": "Study Goals",
+  "progressYourGoals": "Your Goals",
+  "progressCreateGoalComingSoon": "Create goal coming soon",
+  "progressNewGoal": "New Goal",
+  "instApplicantDetails": "Applicant Details",
+  "instApplicantMarkUnderReview": "Mark as Under Review",
+  "instApplicantAcceptApplication": "Accept Application",
+  "instApplicantRejectApplication": "Reject Application",
+  "instApplicantApplicationStatus": "Application Status",
+  "instApplicantStudentInfo": "Student Information",
+  "instApplicantFullName": "Full Name",
+  "instApplicantEmail": "Email",
+  "instApplicantPhone": "Phone",
+  "instApplicantPreviousSchool": "Previous School",
+  "instApplicantGpa": "GPA",
+  "instApplicantProgramApplied": "Program Applied",
+  "instApplicantSubmitted": "Submitted",
+  "instApplicantStatementOfPurpose": "Statement of Purpose",
+  "instApplicantDocuments": "Documents",
+  "instApplicantDocViewerComingSoon": "Document viewer coming soon",
+  "instApplicantDownloading": "Downloading {name}...",
+  "@instApplicantDownloading": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instApplicantReviewInfo": "Review Information",
+  "instApplicantReviewedBy": "Reviewed By",
+  "instApplicantUnknown": "Unknown",
+  "instApplicantReviewDate": "Review Date",
+  "instApplicantReviewNotes": "Review Notes",
+  "instApplicantReject": "Reject",
+  "instApplicantAccept": "Accept",
+  "instApplicantStatusPending": "Pending Review",
+  "instApplicantStatusUnderReview": "Under Review",
+  "instApplicantStatusAccepted": "Accepted",
+  "instApplicantStatusRejected": "Rejected",
+  "instApplicantDocTranscript": "Academic Transcript",
+  "instApplicantDocId": "ID Document",
+  "instApplicantDocPhoto": "Photo",
+  "instApplicantDocRecommendation": "Recommendation Letter",
+  "instApplicantDocGeneric": "Document",
+  "instApplicantRecommendationLetters": "Recommendation Letters",
+  "instApplicantReceivedCount": "{count} received",
+  "@instApplicantReceivedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instApplicantNoRecommendations": "No Recommendation Letters Yet",
+  "instApplicantNoRecommendationsDesc": "The applicant has not submitted any recommendation letters with this application.",
+  "instApplicantType": "Type",
+  "instApplicantLetterPreview": "Letter Preview",
+  "instApplicantClickViewFull": "Click \"View Full\" to open the complete recommendation letter.",
+  "instApplicantLetterPreviewUnavailable": "Letter content preview not available.",
+  "instApplicantClose": "Close",
+  "instApplicantViewFull": "View Full",
+  "instApplicantDownloadNotAvailable": "Download not available",
+  "instApplicantOpeningLetter": "Opening letter: {url}",
+  "@instApplicantOpeningLetter": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "instApplicantMarkedUnderReview": "Marked as Under Review",
+  "instApplicantFailedUpdateStatus": "Failed to update status",
+  "instApplicantErrorUpdatingStatus": "Error updating status: {error}",
+  "@instApplicantErrorUpdatingStatus": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instApplicantConfirmAccept": "Are you sure you want to accept this application?",
+  "instApplicantConfirmReject": "Are you sure you want to reject this application?",
+  "instApplicantReviewNotesOptional": "Review Notes (Optional)",
+  "instApplicantReviewNotesRequired": "Review Notes (Required)",
+  "instApplicantAddComments": "Add comments about your decision...",
+  "instApplicantCancel": "Cancel",
+  "instApplicantNotesRequiredRejection": "Review notes are required for rejection",
+  "instApplicantAcceptedSuccess": "Application accepted successfully",
+  "instApplicantRejectedSuccess": "Application rejected",
+  "instApplicantErrorProcessingReview": "Error processing review: {error}",
+  "@instApplicantErrorProcessingReview": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instApplicantReceived": "RECEIVED",
+  "instApplicantViewLetter": "View Letter",
+  "instApplicantDownload": "Download",
+  "instApplicantRetry": "Retry",
+  "instApplicantSearchHint": "Search applicants...",
+  "instApplicantTabAll": "All ({count})",
+  "@instApplicantTabAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instApplicantTabPending": "Pending ({count})",
+  "@instApplicantTabPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instApplicantTabUnderReview": "Under Review ({count})",
+  "@instApplicantTabUnderReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instApplicantTabAccepted": "Accepted ({count})",
+  "@instApplicantTabAccepted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instApplicantTabRejected": "Rejected ({count})",
+  "@instApplicantTabRejected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instApplicantLoading": "Loading applicants...",
+  "instApplicantNoApplicantsFound": "No Applicants Found",
+  "instApplicantTryAdjustingSearch": "Try adjusting your search",
+  "instApplicantNoAppsInCategory": "No applications in this category",
+  "instApplicantGpaValue": "GPA: {gpa}",
+  "@instApplicantGpaValue": {
+    "placeholders": {
+      "gpa": {
+        "type": "String"
+      }
+    }
+  },
+  "instApplicantSubmittedDate": "Submitted: {date}",
+  "@instApplicantSubmittedDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "instApplicantChipPending": "Pending",
+  "instApplicantChipReviewing": "Reviewing",
+  "instCourseEditCourse": "Edit Course",
+  "instCourseCreateCourse": "Create Course",
+  "instCourseBasicInfo": "Basic Information",
+  "instCourseTitleLabel": "Course Title *",
+  "instCourseTitleHint": "e.g., Introduction to Programming",
+  "instCourseTitleRequired": "Title is required",
+  "instCourseTitleMinLength": "Title must be at least 3 characters",
+  "instCourseTitleMaxLength": "Title must be less than 200 characters",
+  "instCourseDescriptionLabel": "Description *",
+  "instCourseDescriptionHint": "Describe what students will learn...",
+  "instCourseDescriptionRequired": "Description is required",
+  "instCourseDescriptionMinLength": "Description must be at least 10 characters",
+  "instCourseCourseDetails": "Course Details",
+  "instCourseCourseType": "Course Type *",
+  "instCourseDifficultyLevel": "Difficulty Level *",
+  "instCourseDurationHours": "Duration (hours)",
+  "instCourseCategory": "Category",
+  "instCourseCategoryHint": "Computer Science",
+  "instCoursePricing": "Pricing",
+  "instCoursePriceLabel": "Price *",
+  "instCoursePriceRequired": "Price is required",
+  "instCourseInvalidPrice": "Invalid price",
+  "instCourseCurrency": "Currency",
+  "instCourseMaxStudents": "Max Students (optional)",
+  "instCourseMaxStudentsHint": "Leave empty for unlimited",
+  "instCourseMedia": "Media",
+  "instCourseThumbnailUrl": "Thumbnail URL (optional)",
+  "instCourseTags": "Tags",
+  "instCourseAddTagHint": "Add tag (e.g., programming, python)",
+  "instCourseLearningOutcomes": "Learning Outcomes",
+  "instCourseOutcomeHint": "What will students learn?",
+  "instCoursePrerequisites": "Prerequisites",
+  "instCoursePrerequisiteHint": "What do students need to know?",
+  "instCourseUpdateCourse": "Update Course",
+  "instCourseCreatedSuccess": "Course created successfully!",
+  "instCourseUpdatedSuccess": "Course updated successfully!",
+  "instCourseFailedToSave": "Failed to save course. Please try again.",
+  "instCourseCourseRoster": "Course Roster",
+  "instCourseRefresh": "Refresh",
+  "instCourseRetry": "Retry",
+  "instCourseNoEnrolledStudents": "No enrolled students yet",
+  "instCourseApprovedStudentsAppearHere": "Students with approved permissions will appear here",
+  "instCourseEnrolledStudents": "Enrolled Students",
+  "instCourseMaxCapacity": "Max Capacity",
+  "instCourseEnrolledDate": "Enrolled: {date}",
+  "@instCourseEnrolledDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseEnrollmentPermissions": "Enrollment Permissions",
+  "instCoursePendingRequests": "Pending Requests",
+  "instCourseApproved": "Approved",
+  "instCourseAllStudents": "All Students",
+  "instCourseGrantPermission": "Grant Permission",
+  "instCourseSelectAtLeastOne": "Please select at least one student",
+  "instCourseGrantedPermission": "Granted permission to {count} student(s)",
+  "@instCourseGrantedPermission": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instCourseFailedGrantPermission": "Failed to grant permission to {count} student(s)",
+  "@instCourseFailedGrantPermission": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instCourseGrantEnrollmentPermission": "Grant Enrollment Permission",
+  "instCourseSelectStudentsGrant": "Select students to grant access to this course",
+  "instCourseSearchStudents": "Search students...",
+  "instCourseSelectedCount": "{count} selected",
+  "@instCourseSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instCourseClear": "Clear",
+  "instCourseCancel": "Cancel",
+  "instCourseSelectStudents": "Select Students",
+  "instCourseGrantToStudents": "Grant to {count} Student(s)",
+  "@instCourseGrantToStudents": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instCourseNoStudentsAvailable": "No students available",
+  "instCourseAllStudentsHavePermissions": "All admitted students already have permissions",
+  "instCourseNoMatchingStudents": "No matching students",
+  "instCourseNoPendingRequests": "No pending requests",
+  "instCourseStudentsCanRequest": "Students can request enrollment permission",
+  "instCourseMessage": "Message:",
+  "instCourseRequested": "Requested: {date}",
+  "@instCourseRequested": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseDeny": "Deny",
+  "instCourseApprove": "Approve",
+  "instCourseApprovedStudent": "Approved {name}",
+  "@instCourseApprovedStudent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseFailedToApprove": "Failed to approve",
+  "instCourseDenyPermissionRequest": "Deny Permission Request",
+  "instCourseDenyStudent": "Deny {name}?",
+  "@instCourseDenyStudent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseReasonForDenial": "Reason for denial",
+  "instCourseEnterReason": "Enter reason...",
+  "instCoursePleaseProvideReason": "Please provide a reason",
+  "instCourseDeniedStudent": "Denied {name}",
+  "@instCourseDeniedStudent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseNoApprovedPermissions": "No approved permissions yet",
+  "instCourseGrantToAllowEnroll": "Grant permissions to allow students to enroll",
+  "instCourseRevokePermission": "Revoke Permission",
+  "instCourseRevokePermissionFor": "Revoke permission for {name}?",
+  "@instCourseRevokePermissionFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseReasonOptional": "Reason (optional)",
+  "instCourseRevoke": "Revoke",
+  "instCourseRevokedPermissionFor": "Revoked permission for {name}",
+  "@instCourseRevokedPermissionFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseNoAdmittedStudents": "No admitted students",
+  "instCourseAcceptedStudentsAppearHere": "Students with accepted applications will appear here",
+  "instCourseRequestPending": "Request Pending",
+  "instCourseAccessGranted": "Access Granted",
+  "instCourseDenied": "Denied",
+  "instCourseRevoked": "Revoked",
+  "instCourseGrantAccess": "Grant Access",
+  "instCourseGrantStudentPermission": "Grant {name} permission to enroll in this course?",
+  "@instCourseGrantStudentPermission": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseNotesOptional": "Notes (optional)",
+  "instCourseAddNotes": "Add any notes...",
+  "instCourseGrant": "Grant",
+  "instCourseGrantedPermissionTo": "Granted permission to {name}",
+  "@instCourseGrantedPermissionTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseFailedToGrantPermission": "Failed to grant permission",
+  "instCourseRequestApproved": "Request approved",
+  "instCourseFailedToApproveRequest": "Failed to approve request",
+  "instCourseContentBuilder": "Course Content Builder",
+  "instCoursePreviewCourse": "Preview Course",
+  "instCourseAddModule": "Add Module",
+  "instCourseCourseTitle": "Course Title",
+  "instCourseEditInfo": "Edit Info",
+  "instCourseCourseModules": "Course Modules",
+  "instCourseNoModulesYet": "No modules yet",
+  "instCourseStartBuildingModules": "Start building your course by adding modules",
+  "instCourseModuleIndex": "Module {index}",
+  "@instCourseModuleIndex": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "instCourseLessonsCount": "{count} lessons",
+  "@instCourseLessonsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instCourseEditModule": "Edit Module",
+  "instCourseDeleteModule": "Delete Module",
+  "instCourseLearningObjectives": "Learning Objectives:",
+  "instCourseLessons": "Lessons",
+  "instCourseAddLesson": "Add Lesson",
+  "instCourseNoLessonsInModule": "No lessons in this module",
+  "instCourseEditLesson": "Edit Lesson",
+  "instCourseDeleteLesson": "Delete Lesson",
+  "instCourseError": "Error",
+  "instCourseModuleCreatedSuccess": "Module \"{title}\" created successfully",
+  "@instCourseModuleCreatedSuccess": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseModuleUpdatedSuccess": "Module \"{title}\" updated successfully",
+  "@instCourseModuleUpdatedSuccess": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "instCourseAddNewLesson": "Add New Lesson",
+  "instCourseLessonType": "Lesson Type",
+  "instCourseLessonTitle": "Lesson Title",
+  "instCoursePleaseEnterTitle": "Please enter a title",
+  "instCourseDescription": "Description",
+  "instCourseLessonCreatedSuccess": "Lesson created successfully",
+  "instCourseCreate": "Create",
+  "instCourseDeleteModuleConfirm": "Are you sure you want to delete this module? This will also delete all lessons in the module.",
+  "instCourseDelete": "Delete",
+  "instCourseModuleDeletedSuccess": "Module deleted successfully",
+  "instCourseDeleteLessonConfirm": "Are you sure you want to delete this lesson?",
+  "instCourseLessonDeletedSuccess": "Lesson deleted successfully",
+  "instCourseEditCourseInfo": "Edit Course Info",
+  "instCourseEnterTitle": "Enter course title",
+  "instCourseEnterDescription": "Enter course description",
+  "instCourseLevel": "Level",
+  "instCourseInfoUpdatedSuccess": "Course info updated successfully",
+  "instCourseSaving": "Saving...",
+  "instCourseSaveChanges": "Save Changes",
+  "instProgramCreateProgram": "Create Program",
+  "instProgramNameLabel": "Program Name *",
+  "instProgramNameHint": "e.g., Bachelor of Computer Science",
+  "instProgramDescriptionLabel": "Description *",
+  "instProgramDescriptionHint": "Describe the program...",
+  "instProgramCategoryLabel": "Category *",
+  "instProgramLevelLabel": "Level *",
+  "instProgramDuration": "Duration",
+  "instProgramFeeLabel": "Program Fee (USD) *",
+  "instProgramMaxStudentsLabel": "Maximum Students *",
+  "instProgramMaxStudentsHint": "e.g., 100",
+  "instProgramStartDate": "Start Date",
+  "instProgramApplicationDeadline": "Application Deadline",
+  "instProgramRequirements": "Requirements",
+  "instProgramAddRequirementHint": "Add a requirement...",
+  "instProgramAddAtLeastOneRequirement": "Please add at least one requirement",
+  "instProgramDeadlineBeforeStart": "Application deadline must be before start date",
+  "instProgramCreatedSuccess": "Program created successfully!",
+  "instProgramFailedToCreate": "Failed to create program",
+  "instProgramErrorCreating": "Error creating program: {error}",
+  "@instProgramErrorCreating": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instProgramDetails": "Program Details",
+  "instProgramBack": "Back",
+  "instProgramEditComingSoon": "Edit feature coming soon",
+  "instProgramEditProgram": "Edit Program",
+  "instProgramDeactivate": "Deactivate",
+  "instProgramActivate": "Activate",
+  "instProgramDeleteProgram": "Delete Program",
+  "instProgramInactiveMessage": "This program is currently inactive and not accepting applications",
+  "instProgramEnrolled": "Enrolled",
+  "instProgramAvailable": "Available",
+  "instProgramFee": "Fee",
+  "instProgramDescription": "Description",
+  "instProgramProgramDetails": "Program Details",
+  "instProgramCategory": "Category",
+  "instProgramInstitution": "Institution",
+  "instProgramMaxStudents": "Maximum Students",
+  "instProgramEnrollmentStatus": "Enrollment Status",
+  "instProgramFillRate": "Fill Rate",
+  "instProgramIsFull": "Program is full",
+  "instProgramSlotsRemaining": "{count} slots remaining",
+  "@instProgramSlotsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instProgramDeactivateQuestion": "Deactivate Program?",
+  "instProgramActivateQuestion": "Activate Program?",
+  "instProgramStopAccepting": "This program will stop accepting new applications.",
+  "instProgramStartAccepting": "This program will start accepting new applications.",
+  "instProgramCancel": "Cancel",
+  "instProgramConfirm": "Confirm",
+  "instProgramActivated": "Program activated",
+  "instProgramDeactivated": "Program deactivated",
+  "instProgramErrorUpdatingStatus": "Error updating program status: {error}",
+  "@instProgramErrorUpdatingStatus": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instProgramDeleteProgramQuestion": "Delete Program?",
+  "instProgramDeleteConfirm": "This action cannot be undone. All data associated with this program will be permanently deleted.",
+  "instProgramDelete": "Delete",
+  "instProgramDeletedSuccess": "Program deleted successfully",
+  "instProgramFailedToDelete": "Failed to delete program",
+  "instProgramErrorDeleting": "Error deleting program: {error}",
+  "@instProgramErrorDeleting": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instProgramPrograms": "Programs",
+  "instProgramRetry": "Retry",
+  "instProgramLoading": "Loading programs...",
+  "instProgramActiveOnly": "Active Only",
+  "instProgramShowAll": "Show All",
+  "instProgramSearchHint": "Search programs...",
+  "instProgramNewProgram": "New Program",
+  "instProgramNoProgramsFound": "No Programs Found",
+  "instProgramTryAdjustingSearch": "Try adjusting your search",
+  "instProgramCreateFirstProgram": "Create your first program",
+  "instProgramInactive": "INACTIVE",
+  "instProgramEnrollment": "Enrollment",
+  "instProgramFull": "Full",
+  "instProgramSlotsAvailable": "{count} slots available",
+  "@instProgramSlotsAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "instCounselorSearchHint": "Search counselors...",
+  "instCounselorRetry": "Retry",
+  "instCounselorNoCounselorsFound": "No Counselors Found",
+  "instCounselorNoMatchSearch": "No counselors match your search",
+  "instCounselorAddToInstitution": "Add counselors to your institution",
+  "instCounselorPageOf": "Page {current} of {total}",
+  "@instCounselorPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "instCounselorCounselingOverview": "Counseling Overview",
+  "instCounselorCounselors": "Counselors",
+  "instCounselorStudents": "Students",
+  "instCounselorSessions": "Sessions",
+  "instCounselorCompleted": "Completed",
+  "instCounselorUpcoming": "Upcoming",
+  "instCounselorAvgRating": "Avg Rating",
+  "instCounselorStudentAssigned": "Student assigned successfully",
+  "instCounselorAssign": "Assign",
+  "instCounselorTotalSessions": "Total Sessions",
+  "instCounselorAssignStudents": "Assign Students",
+  "instCounselorAssignStudentTo": "Assign Student to {name}",
+  "@instCounselorAssignStudentTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "instCounselorSearchStudents": "Search students...",
+  "instCounselorNoStudentsFound": "No students found",
+  "instCounselorCancel": "Cancel",
+  "studentCounselingBookSession": "Book Session",
+  "studentCounselingSelectDate": "Select Date",
+  "studentCounselingSelectTime": "Select Time",
+  "studentCounselingSessionType": "Session Type",
+  "studentCounselingTopicOptional": "Topic (Optional)",
+  "studentCounselingTopicHint": "What would you like to discuss?",
+  "studentCounselingDetailsOptional": "Additional Details (Optional)",
+  "studentCounselingDetailsHint": "Any additional information for your counselor...",
+  "studentCounselingSessionSummary": "Session Summary",
+  "studentCounselingCounselor": "Counselor",
+  "studentCounselingDate": "Date",
+  "studentCounselingTime": "Time",
+  "studentCounselingType": "Type",
+  "studentCounselingTopic": "Topic",
+  "studentCounselingBookedSuccess": "Session booked successfully!",
+  "studentCounselingBookFailed": "Failed to book session",
+  "studentCounselingUpcomingTab": "Upcoming ({count})",
+  "@studentCounselingUpcomingTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentCounselingPastTab": "Past ({count})",
+  "@studentCounselingPastTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentCounselingContactAdmin": "Please contact your institution administrator for counselor assignment.",
+  "studentCounselingTotal": "Total",
+  "studentCounselingCompleted": "Completed",
+  "studentCounselingUpcoming": "Upcoming",
+  "studentCounselingRating": "Rating",
+  "studentCounselingNoUpcoming": "No upcoming sessions scheduled",
+  "studentCounselingNoPast": "No past sessions yet",
+  "studentCounselingCancelSession": "Cancel Session",
+  "studentCounselingCancelConfirm": "Are you sure you want to cancel this session? This action cannot be undone.",
+  "studentCounselingKeepIt": "No, Keep It",
+  "studentCounselingSessionCancelled": "Session cancelled",
+  "studentCounselingYesCancel": "Yes, Cancel",
+  "studentCounselingRateSession": "Rate Your Session",
+  "studentCounselingHowWasSession": "How was your counseling session?",
+  "studentCounselingCommentsOptional": "Comments (optional)",
+  "studentCounselingCancel": "Cancel",
+  "studentCounselingFeedbackThanks": "Thank you for your feedback!",
+  "studentCounselingSubmit": "Submit",
+  "studentCounselingSessions": "Sessions",
+  "studentCounselingAvailability": "Availability",
+  "studentCounselingBookASession": "Book a Session",
+  "studentCounselingDuration": "Duration",
+  "studentCounselingMinutes": "{count} minutes",
+  "@studentCounselingMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentCounselingNotes": "Notes",
+  "studentCounselingYourFeedback": "Your Feedback",
+  "studentCounselingLeaveFeedback": "Leave Feedback",
+  "studentHelpTitle": "Help & Support",
+  "studentHelpSearchHint": "Search for help...",
+  "studentHelpQuickHelp": "Quick Help",
+  "studentHelpLiveChat": "Live Chat",
+  "studentHelpChatWithSupport": "Chat with support",
+  "studentHelpEmailUs": "Email Us",
+  "studentHelpEmailAddress": "support@flow.edu",
+  "studentHelpTutorials": "Tutorials",
+  "studentHelpVideoGuides": "Video guides",
+  "studentHelpUserGuide": "User Guide",
+  "studentHelpFullDocumentation": "Full documentation",
+  "studentHelpFaq": "Frequently Asked Questions",
+  "studentHelpSearchResults": "Search Results",
+  "studentHelpNoResults": "No results found",
+  "studentHelpTryDifferentKeywords": "Try different keywords or contact support",
+  "studentHelpContactSupport": "Contact Support",
+  "studentHelpQuestionsCount": "{count} questions",
+  "@studentHelpQuestionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentHelpComingSoon": "{feature} coming soon!",
+  "@studentHelpComingSoon": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "studentHelpReachOut": "Need help? Reach out to us through any of these channels:",
+  "studentHelpEmail": "Email",
+  "studentHelpPhone": "Phone",
+  "studentHelpHours": "Hours",
+  "studentHelpBusinessHours": "Mon-Fri, 9 AM - 6 PM EST",
+  "studentHelpClose": "Close",
+  "studentHelpOpeningEmail": "Opening email client...",
+  "studentHelpSendEmail": "Send Email",
+  "parentLinkTitle": "Parent Linking",
+  "parentLinkLinkedTab": "Linked",
+  "parentLinkRequestsTab": "Requests",
+  "parentLinkInviteCodesTab": "Invite Codes",
+  "parentLinkLoadingLinked": "Loading linked parents...",
+  "parentLinkNoLinkedParents": "No Linked Parents",
+  "parentLinkNoLinkedMessage": "When a parent links their account to yours, they will appear here.",
+  "parentLinkRefresh": "Refresh",
+  "parentLinkManagePermissionsFor": "Manage Permissions for {name}",
+  "@parentLinkManagePermissionsFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkControlPermissions": "Control what this parent can see:",
+  "parentLinkViewGrades": "View Grades",
+  "parentLinkAllowViewGrades": "Allow viewing your academic grades",
+  "parentLinkViewActivity": "View Activity",
+  "parentLinkAllowViewActivity": "Allow viewing your app activity",
+  "parentLinkViewMessages": "View Messages",
+  "parentLinkAllowViewMessages": "Allow viewing your messages (private)",
+  "parentLinkReceiveAlerts": "Receive Alerts",
+  "parentLinkSendAlerts": "Send alerts about important updates",
+  "parentLinkCancel": "Cancel",
+  "parentLinkSave": "Save",
+  "parentLinkPermissionsUpdated": "Permissions updated",
+  "parentLinkUnlinkParent": "Unlink Parent",
+  "parentLinkUnlinkConfirm": "Are you sure you want to unlink {name}? They will no longer be able to view your information.",
+  "@parentLinkUnlinkConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkUnlink": "Unlink",
+  "parentLinkUnlinked": "{name} has been unlinked",
+  "@parentLinkUnlinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkLinked": "Linked",
+  "parentLinkPermissions": "Permissions:",
+  "parentLinkManage": "Manage",
+  "parentLinkLoadingRequests": "Loading requests...",
+  "parentLinkNoPendingRequests": "No Pending Requests",
+  "parentLinkNoPendingMessage": "You don't have any parent link requests to review.",
+  "parentLinkApproved": "{name} has been linked to your account",
+  "@parentLinkApproved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkDeclineRequest": "Decline Request",
+  "parentLinkDeclineConfirm": "Are you sure you want to decline the link request from {name}?",
+  "@parentLinkDeclineConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkDecline": "Decline",
+  "parentLinkRequestDeclined": "Request declined",
+  "parentLinkRequestedPermissions": "Requested Permissions:",
+  "parentLinkApprove": "Approve",
+  "parentLinkGenerateNewCode": "Generate New Invite Code",
+  "parentLinkShareCodeInfo": "Share your invite code with your parent so they can link their account to yours.",
+  "parentLinkNoInviteCodes": "No Invite Codes",
+  "parentLinkNoCodesMessage": "Generate an invite code to share with your parent.",
+  "parentLinkGenerateInviteCode": "Generate Invite Code",
+  "parentLinkConfigureCode": "Configure your invite code settings:",
+  "parentLinkGenerate": "Generate",
+  "parentLinkCodeGenerated": "Code Generated!",
+  "parentLinkShareCode": "Share this code with your parent:",
+  "parentLinkCodeCopied": "Code copied to clipboard",
+  "parentLinkDone": "Done",
+  "parentLinkDeleteCode": "Delete Invite Code",
+  "parentLinkDeleteCodeConfirm": "Are you sure you want to delete this invite code?",
+  "parentLinkDelete": "Delete",
+  "studentProgressLoading": "Loading progress...",
+  "studentProgressTitle": "My Progress",
+  "studentProgressError": "Error Loading Progress",
+  "studentProgressRetry": "Retry",
+  "studentProgressNoData": "No Progress Data",
+  "studentProgressEnrollMessage": "Enroll in courses to start tracking your progress.",
+  "studentProgressOverview": "Overview",
+  "studentProgressCourses": "Courses",
+  "studentProgressAvgGrade": "Average Grade",
+  "studentProgressCompletion": "Completion",
+  "studentProgressAssignments": "Assignments",
+  "studentProgressGradeTrend": "Grade Trend",
+  "studentProgressStudyTime": "Study Time (Hours)",
+  "studentProgressCourseCompletion": "Course Completion",
+  "studentProgressCompleted": "Completed",
+  "studentProgressInProgress": "In Progress",
+  "studentProgressProgress": "Progress",
+  "studentProgressAppSuccessRate": "Application Success Rate",
+  "studentProgressNoAppData": "No application data available",
+  "studentProgressNoAppsYet": "No applications yet",
+  "studentProgressAcceptanceRate": "Acceptance Rate",
+  "studentProgressGpaTrend": "GPA Trend",
+  "studentProgressNoGpaData": "No GPA data available",
+  "studentProgressCurrentGpa": "Current GPA",
+  "studentProgressGoalGpa": "Goal GPA",
+  "studentProgressTrend": "Trend",
+  "studentProgressHistoricalGpa": "Historical GPA data will appear here as you progress through semesters",
+  "studentProgressCurrentGrade": "Current Grade",
+  "studentProgressTimeSpent": "Time Spent",
+  "studentProgressModules": "Modules",
+  "studentProgressRecentGrades": "Recent Grades",
+  "studentProgressFeedback": "Feedback",
+  "studentRecTitle": "Recommendation Letters",
+  "studentRecAllTab": "All ({count})",
+  "@studentRecAllTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentRecPendingTab": "Pending ({count})",
+  "@studentRecPendingTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentRecInProgressTab": "In Progress ({count})",
+  "@studentRecInProgressTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentRecCompletedTab": "Completed ({count})",
+  "@studentRecCompletedTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentRecRetry": "Retry",
+  "studentRecLoadingRequests": "Loading requests...",
+  "studentRecRequestLetter": "Request Letter",
+  "studentRecNoPending": "No pending recommendation requests",
+  "studentRecNoInProgress": "No letters being written",
+  "studentRecNoCompleted": "No completed recommendation letters yet",
+  "studentRecNoRequests": "No recommendation requests yet.\nTap + to request a letter.",
+  "studentRecNoRequestsTitle": "No Requests",
+  "studentRecRequestSent": "Recommendation request sent! The recommender will receive an email invitation.",
+  "studentRecFailedToSend": "Failed to send request",
+  "studentRecStatus": "Status",
+  "studentRecType": "Type",
+  "studentRecPurpose": "Purpose",
+  "studentRecInstitution": "Institution",
+  "studentRecDeadline": "Deadline",
+  "studentRecRequested": "Requested",
+  "studentRecDeclineReason": "Decline Reason",
+  "studentRecClose": "Close",
+  "studentRecCancelRequest": "Cancel Request",
+  "studentRecSendReminder": "Send Reminder",
+  "studentRecCancelRequestTitle": "Cancel Request?",
+  "studentRecCancelRequestConfirm": "Are you sure you want to cancel this recommendation request?",
+  "studentRecNo": "No",
+  "studentRecYesCancel": "Yes, Cancel",
+  "studentRecRequestCancelled": "Request cancelled",
+  "studentRecFailedToCancel": "Failed to cancel request",
+  "studentRecReminderSent": "Reminder sent!",
+  "studentRecFailedReminder": "Failed to send reminder",
+  "studentRecCompleted": "Completed",
+  "studentRecOverdue": "Overdue!",
+  "studentRecDueToday": "Due today",
+  "studentRecDaysLeft": "{count} days left",
+  "@studentRecDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentRecEdit": "Edit",
+  "studentRecCancel": "Cancel",
+  "studentRecRemind": "Remind",
+  "studentRecRequestRecLetter": "Request Recommendation Letter",
+  "studentRecRecommenderEmail": "Recommender Email *",
+  "studentRecEmailHelperText": "They will receive an invitation to submit the recommendation",
+  "studentRecEnterEmail": "Please enter recommender email",
+  "studentRecValidEmail": "Please enter a valid email address",
+  "studentRecRecommenderName": "Recommender Name *",
+  "studentRecNameHint": "Dr. John Smith",
+  "studentRecEnterName": "Please enter recommender name",
+  "studentRecTypeRequired": "Type *",
+  "studentRecAcademic": "Academic",
+  "studentRecProfessional": "Professional",
+  "studentRecCharacter": "Character",
+  "studentRecScholarship": "Scholarship",
+  "studentRecPurposeRequired": "Purpose *",
+  "studentRecPurposeHint": "e.g., Graduate school application, Job application",
+  "studentRecPurposeValidation": "Please describe the purpose (min 10 characters)",
+  "studentRecTargetInstitutions": "Target Institutions *",
+  "studentRecNoAppsWarning": "You have no applications yet. Please submit applications first to request recommendations.",
+  "studentRecSelectInstitutions": "Select institutions ({count} selected)",
+  "@studentRecSelectInstitutions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studentRecSelectAtLeastOne": "Please select at least one institution",
+  "studentRecDeadlineRequired": "Deadline *",
+  "studentRecPriority": "Priority",
+  "studentRecLow": "Low",
+  "studentRecNormal": "Normal",
+  "studentRecHigh": "High",
+  "studentRecUrgent": "Urgent",
+  "studentRecMessageToRecommender": "Message to Recommender",
+  "studentRecMessageHint": "Any specific points you'd like them to highlight?",
+  "studentRecYourAchievements": "Your Achievements",
+  "studentRecAchievementsHint": "List relevant achievements to help the recommender",
+  "studentRecYourGoals": "Your Goals",
+  "studentRecGoalsHint": "What are your career/academic goals?",
+  "studentRecSendRequest": "Send Request",
+  "studentRecEditRequest": "Edit Request",
+  "studentRecTargetInstitution": "Target Institution",
+  "studentRecInstitutionHint": "Institution name",
+  "studentRecSaveChanges": "Save Changes",
+  "studentRecRequestUpdated": "Request updated successfully!",
+  "studentRecFailedToUpdate": "Failed to update request",
+  "studentResourcesTitle": "Resources",
+  "studentResourcesAllResources": "All Resources",
+  "studentResourcesFavorites": "Favorites",
+  "studentResourcesSearchHint": "Search resources...",
+  "studentResourcesAll": "All",
+  "studentResourcesNoResults": "No resources found",
+  "studentResourcesTryAdjusting": "Try adjusting your search or filters",
+  "studentResourcesRemovedFavorite": "Removed from favorites",
+  "studentResourcesAddedFavorite": "Added to favorites",
+  "studentResourcesOpenLink": "Open Link",
+  "studentResourcesDownload": "Download",
+  "studentScheduleTitle": "My Schedule",
+  "studentScheduleGoToToday": "Go to today",
+  "studentScheduleAddEventSoon": "Add event feature coming soon!",
+  "studentScheduleAddEvent": "Add Event",
+  "studentScheduleEnjoyFreeTime": "Enjoy your free time!",
+  "studentScheduleDate": "Date",
+  "studentScheduleTime": "Time",
+  "studentScheduleLocation": "Location",
+  "studentScheduleEditSoon": "Edit feature coming soon!",
+  "studentScheduleEdit": "Edit",
+  "studentScheduleReminderSet": "Reminder set!",
+  "studentScheduleRemindMe": "Remind Me",
+  "parentChildAddChild": "Add Child",
+  "parentChildByEmail": "By Email",
+  "parentChildByCode": "By Code",
+  "parentChildEmailDescription": "Enter your child's email address to send them a link request.",
+  "parentChildStudentEmail": "Student Email",
+  "parentChildStudentEmailHint": "student@example.com",
+  "parentChildEnterEmail": "Please enter an email address",
+  "parentChildValidEmail": "Please enter a valid email address",
+  "parentChildSendLinkRequest": "Send Link Request",
+  "parentChildApprovalNotice": "Your child will receive a notification to approve this request.",
+  "parentChildCodeDescription": "Enter the invite code your child shared with you.",
+  "parentChildInviteCode": "Invite Code",
+  "parentChildInviteCodeHint": "ABCD1234",
+  "parentChildEnterInviteCode": "Please enter the invite code",
+  "parentChildCodeMinLength": "Code must be at least 6 characters",
+  "parentChildUseInviteCode": "Use Invite Code",
+  "parentChildInviteCodeInfo": "Ask your child to generate an invite code from their app settings.",
+  "parentChildRelationship": "Relationship",
+  "parentChildBack": "Back",
+  "parentChildOverview": "Overview",
+  "parentChildCourses": "Courses",
+  "parentChildApplications": "Applications",
+  "parentChildCounseling": "Counseling",
+  "parentChildAcademicPerformance": "Academic Performance",
+  "parentChildAverageGrade": "Average Grade",
+  "parentChildActiveCourses": "Active Courses",
+  "parentChildSchool": "School",
+  "parentChildNotSet": "Not Set",
+  "parentChildRecentActivity": "Recent Activity",
+  "parentChildCompletedAssignment": "Completed Assignment",
+  "parentChildMathChapter5": "Mathematics - Chapter 5 Test",
+  "parentChildHoursAgo": "{count} hours ago",
+  "@parentChildHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildSubmittedProject": "Submitted Project",
+  "parentChildCsFinalProject": "Computer Science - Final Project",
+  "parentChildDaysAgo": "{count} days ago",
+  "@parentChildDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildReceivedGrade": "Received Grade",
+  "parentChildPhysicsLabReport": "Physics - Lab Report (92/100)",
+  "parentChildRetry": "Retry",
+  "parentChildLoadingCourses": "Loading courses...",
+  "parentChildNoCourseData": "No Course Data",
+  "parentChildNoCourseProgress": "No course progress data available",
+  "parentChildCourseProgress": "Course Progress",
+  "parentChildAssignments": "Assignments: {completed}/{total}",
+  "@parentChildAssignments": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildNoApplications": "No Applications",
+  "parentChildNoApplicationsYet": "Your child hasn't submitted any applications yet",
+  "parentChildSubmitted": "Submitted: {date}",
+  "@parentChildSubmitted": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildStatusPending": "Pending",
+  "parentChildStatusUnderReview": "Under Review",
+  "parentChildStatusAccepted": "Accepted",
+  "parentChildStatusRejected": "Rejected",
+  "parentChildLoadingChildren": "Loading children...",
+  "parentChildNoChildren": "No Children",
+  "parentChildAddToMonitor": "Add your children to monitor their progress",
+  "parentChildAvg": "AVG",
+  "parentChildLastActive": "Last Active",
+  "parentChildPendingLinkRequests": "Pending Link Requests",
+  "parentChildWaitingApproval": "Waiting for student approval",
+  "parentChildAwaitingApproval": "Awaiting approval",
+  "parentChildNoCounselor": "No Counselor Assigned",
+  "parentChildNoCounselorDescription": "{childName} doesn't have a counselor assigned yet.",
+  "@parentChildNoCounselorDescription": {
+    "placeholders": {
+      "childName": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildChildCounselor": "{childName}'s Counselor",
+  "@parentChildChildCounselor": {
+    "placeholders": {
+      "childName": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildAssigned": "Assigned: {date}",
+  "@parentChildAssigned": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "parentChildTotal": "Total",
+  "parentChildUpcoming": "Upcoming",
+  "parentChildCompleted": "Completed",
+  "parentChildUpcomingSessions": "Upcoming Sessions",
+  "parentChildNoUpcomingSessions": "No upcoming sessions",
+  "parentChildPastSessions": "Past Sessions",
+  "parentChildNoPastSessions": "No past sessions",
+  "parentChildMinutes": "{count} min",
+  "@parentChildMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "parentReportBack": "Back",
+  "parentReportAcademicReports": "Academic Reports",
+  "parentReportProgress": "Progress",
+  "parentReportGrades": "Grades",
+  "parentReportAttendance": "Attendance",
+  "parentReportStudentProgressReports": "Student Progress Reports",
+  "parentReportTrackProgress": "Track academic progress and course completion",
+  "parentReportNoProgressData": "No Progress Data",
+  "parentReportAddChildrenProgress": "Add children to view their progress reports",
+  "parentReportCoursesEnrolled": "Courses Enrolled",
+  "parentReportApplications": "Applications",
+  "parentReportOverallProgress": "Overall Progress",
+  "parentReportGradeReports": "Grade Reports",
+  "parentReportGradeBreakdown": "Detailed breakdown of grades by subject",
+  "parentReportNoGradeData": "No Grade Data",
+  "parentReportAddChildrenGrades": "Add children to view their grade reports",
+  "parentReportAttendanceReports": "Attendance Reports",
+  "parentReportTrackAttendance": "Track attendance and participation",
+  "parentReportNoAttendanceData": "No Attendance Data",
+  "parentReportAddChildrenAttendance": "Add children to view their attendance reports",
+  "parentReportPresent": "Present",
+  "parentReportLate": "Late",
+  "parentReportAbsent": "Absent",
+  "parentReportThisMonth": "This Month: {present} of {total} days present",
+  "@parentReportThisMonth": {
+    "placeholders": {
+      "present": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "parentReportMathematics": "Mathematics",
+  "parentReportEnglish": "English",
+  "parentReportScience": "Science",
+  "parentReportHistory": "History",
+  "parentMeetingBack": "Back",
+  "parentMeetingScheduleCounselor": "Schedule Counselor Meeting",
+  "parentMeetingScheduleTeacher": "Schedule Teacher Meeting",
+  "parentMeetingCounselorMeeting": "Counselor Meeting",
+  "parentMeetingParentTeacherConference": "Parent-Teacher Conference",
+  "parentMeetingCounselorDescription": "Discuss guidance and academic planning",
+  "parentMeetingTeacherDescription": "Discuss student progress and performance",
+  "parentMeetingSelectStudent": "Select Student",
+  "parentMeetingNoChildren": "No children added. Please add children to schedule meetings.",
+  "parentMeetingSelectCounselor": "Select Counselor",
+  "parentMeetingSelectTeacher": "Select Teacher",
+  "parentMeetingNoCounselors": "No counselors available at this time.",
+  "parentMeetingNoTeachers": "No teachers available at this time.",
+  "parentMeetingCounselor": "Counselor",
+  "parentMeetingTeacher": "Teacher",
+  "parentMeetingSelectDateTime": "Select Date & Time",
+  "parentMeetingDate": "Date",
+  "parentMeetingSelectDate": "Select date",
+  "parentMeetingTime": "Time",
+  "parentMeetingSelectTime": "Select time",
+  "parentMeetingMode": "Meeting Mode",
+  "parentMeetingVideoCall": "Video Call",
+  "parentMeetingInPerson": "In Person",
+  "parentMeetingPhone": "Phone",
+  "parentMeetingDuration": "Duration",
+  "parentMeetingDurationLabel": "Meeting duration",
+  "parentMeeting15Min": "15 minutes",
+  "parentMeeting30Min": "30 minutes",
+  "parentMeeting45Min": "45 minutes",
+  "parentMeeting1Hour": "1 hour",
+  "parentMeeting1Point5Hours": "1.5 hours",
+  "parentMeeting2Hours": "2 hours",
+  "parentMeetingSubject": "Meeting Subject",
+  "parentMeetingSubjectLabel": "Subject",
+  "parentMeetingSubjectHint": "e.g., Math progress discussion",
+  "parentMeetingAdditionalNotes": "Additional Notes (Optional)",
+  "parentMeetingNotesLabel": "Notes",
+  "parentMeetingNotesHint": "Any additional information...",
+  "parentMeetingRequesting": "Requesting...",
+  "parentMeetingRequestMeeting": "Request Meeting",
+  "parentMeetingRequestSent": "Meeting Request Sent",
+  "parentMeetingRequestSentDescription": "Your meeting request has been sent to {staffName}. You will be notified once they respond.",
+  "@parentMeetingRequestSentDescription": {
+    "placeholders": {
+      "staffName": {
+        "type": "String"
+      }
+    }
+  },
+  "parentMeetingOk": "OK",
+  "parentMeetingRequestFailed": "Failed to request meeting. Please try again.",
+  "parentMeetingError": "Error",
+  "counselorMeetingBack": "Back",
+  "counselorMeetingRefresh": "Refresh",
+  "counselorMeetingManageAvailability": "Manage Availability",
+  "counselorMeetingWeeklyAvailability": "Weekly Availability",
+  "counselorMeetingSetAvailableHours": "Set your available hours for parent meetings",
+  "counselorMeetingAddAvailabilitySlot": "Add Availability Slot",
+  "counselorMeetingAddNewAvailability": "Add New Availability",
+  "counselorMeetingDayOfWeek": "Day of Week",
+  "counselorMeetingStartTime": "Start Time",
+  "counselorMeetingEndTime": "End Time",
+  "counselorMeetingStartWithTime": "Start: {time}",
+  "@counselorMeetingStartWithTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingEndWithTime": "End: {time}",
+  "@counselorMeetingEndWithTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingCancel": "Cancel",
+  "counselorMeetingSave": "Save",
+  "counselorMeetingNotAvailable": "Not available",
+  "counselorMeetingInactive": "Inactive",
+  "counselorMeetingDeactivate": "Deactivate",
+  "counselorMeetingActivate": "Activate",
+  "counselorMeetingDelete": "Delete",
+  "counselorMeetingAvailabilityAdded": "Availability added successfully",
+  "counselorMeetingFailedToAddAvailability": "Failed to add availability",
+  "counselorMeetingSlotDeactivated": "Slot deactivated",
+  "counselorMeetingSlotActivated": "Slot activated",
+  "counselorMeetingFailedToUpdateAvailability": "Failed to update availability",
+  "counselorMeetingDeleteAvailability": "Delete Availability",
+  "counselorMeetingConfirmDeleteSlot": "Are you sure you want to delete the {dayName} slot?",
+  "@counselorMeetingConfirmDeleteSlot": {
+    "placeholders": {
+      "dayName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingAvailabilityDeleted": "Availability deleted successfully",
+  "counselorMeetingFailedToDeleteAvailability": "Failed to delete availability",
+  "counselorMeetingSunday": "Sunday",
+  "counselorMeetingMonday": "Monday",
+  "counselorMeetingTuesday": "Tuesday",
+  "counselorMeetingWednesday": "Wednesday",
+  "counselorMeetingThursday": "Thursday",
+  "counselorMeetingFriday": "Friday",
+  "counselorMeetingSaturday": "Saturday",
+  "counselorMeetingRequests": "Meeting Requests",
+  "counselorMeetingPending": "Pending",
+  "counselorMeetingToday": "Today",
+  "counselorMeetingUpcoming": "Upcoming",
+  "counselorMeetingNoPendingRequests": "No Pending Requests",
+  "counselorMeetingNoPendingRequestsMessage": "You have no meeting requests at this time.",
+  "counselorMeetingNoMeetingsToday": "No Meetings Today",
+  "counselorMeetingNoMeetingsTodayMessage": "You have no scheduled meetings for today.",
+  "counselorMeetingNoUpcomingMeetings": "No Upcoming Meetings",
+  "counselorMeetingNoUpcomingMeetingsMessage": "You have no scheduled meetings.",
+  "counselorMeetingParent": "Parent",
+  "counselorMeetingUnknown": "Unknown",
+  "counselorMeetingStudentLabel": "Student: {name}",
+  "@counselorMeetingStudentLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingPendingBadge": "PENDING",
+  "counselorMeetingRequested": "Requested: {dateTime}",
+  "@counselorMeetingRequested": {
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingMinutes": "{count} minutes",
+  "@counselorMeetingMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingDecline": "Decline",
+  "counselorMeetingApprove": "Approve",
+  "counselorMeetingSoon": "Soon",
+  "counselorMeetingCancelMeeting": "Cancel Meeting",
+  "counselorMeetingTimeWithDuration": "{time} ({minutes} min)",
+  "@counselorMeetingTimeWithDuration": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingApproveMeeting": "Approve Meeting",
+  "counselorMeetingApproveWith": "Approve meeting with {parentName}",
+  "@counselorMeetingApproveWith": {
+    "placeholders": {
+      "parentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingSelectDate": "Select Date",
+  "counselorMeetingSelectTime": "Select Time",
+  "counselorMeetingDuration": "Duration",
+  "counselorMeeting1Hour": "1 hour",
+  "counselorMeeting1Point5Hours": "1.5 hours",
+  "counselorMeeting2Hours": "2 hours",
+  "counselorMeetingMeetingLink": "Meeting Link",
+  "counselorMeetingLocation": "Location",
+  "counselorMeetingLocationHint": "Room 101, Main Building",
+  "counselorMeetingNotesOptional": "Notes (Optional)",
+  "counselorMeetingApprovedSuccessfully": "Meeting approved successfully",
+  "counselorMeetingFailedToApprove": "Failed to approve meeting",
+  "counselorMeetingDeclineMeeting": "Decline Meeting",
+  "counselorMeetingDeclineFrom": "Decline meeting request from {parentName}?",
+  "@counselorMeetingDeclineFrom": {
+    "placeholders": {
+      "parentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingReasonForDeclining": "Reason for declining",
+  "counselorMeetingProvideReason": "Please provide a reason...",
+  "counselorMeetingPleaseProvideReason": "Please provide a reason for declining",
+  "counselorMeetingDeclined": "Meeting declined",
+  "counselorMeetingFailedToDecline": "Failed to decline meeting",
+  "counselorMeetingCancelWith": "Cancel this meeting with {parentName}?",
+  "@counselorMeetingCancelWith": {
+    "placeholders": {
+      "parentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorMeetingCancellationReasonOptional": "Cancellation reason (Optional)",
+  "counselorMeetingBackButton": "Back",
+  "counselorMeetingCancelled": "Meeting cancelled",
+  "counselorMeetingFailedToCancel": "Failed to cancel meeting",
+  "counselorSessionPleaseSelectStudent": "Please select a student",
+  "counselorSessionScheduledSuccessfully": "Session scheduled successfully!",
+  "counselorSessionErrorScheduling": "Error scheduling session: {error}",
+  "@counselorSessionErrorScheduling": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionScheduleSession": "Schedule Session",
+  "counselorSessionSave": "SAVE",
+  "counselorSessionStudent": "Student",
+  "counselorSessionNoStudentsFound": "No students found. Please add students first.",
+  "counselorSessionSelectStudent": "Select a student",
+  "counselorSessionTitle": "Session Title",
+  "counselorSessionTitleHint": "e.g., Career Planning Discussion",
+  "counselorSessionPleaseEnterTitle": "Please enter a session title",
+  "counselorSessionType": "Session Type",
+  "counselorSessionDate": "Date",
+  "counselorSessionTime": "Time",
+  "counselorSessionDuration": "Duration",
+  "counselorSessionDurationMin": "{count} min",
+  "@counselorSessionDurationMin": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionLocation": "Location",
+  "counselorSessionNotesOptional": "Notes (Optional)",
+  "counselorSessionNotesHint": "Add any additional notes or agenda items...",
+  "counselorSessionCancel": "Cancel",
+  "counselorSessionSelectStudentDialog": "Select Student",
+  "counselorSessionGradeAndGpa": "{grade} • GPA: {gpa}",
+  "@counselorSessionGradeAndGpa": {
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      },
+      "gpa": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionRetry": "Retry",
+  "counselorSessionLoadingSessions": "Loading sessions...",
+  "counselorSessionTodayTab": "Today ({count})",
+  "@counselorSessionTodayTab": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionUpcomingTab": "Upcoming ({count})",
+  "@counselorSessionUpcomingTab": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionCompletedTab": "Completed ({count})",
+  "@counselorSessionCompletedTab": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionNoSessionsTitle": "No Sessions",
+  "counselorSessionNoSessionsToday": "No sessions scheduled for today",
+  "counselorSessionNoUpcomingSessions": "No upcoming sessions",
+  "counselorSessionNoCompletedSessions": "No completed sessions yet",
+  "counselorSessionNoSessions": "No sessions",
+  "counselorSessionStudentLabel": "Student",
+  "counselorSessionDateTime": "Date & Time",
+  "counselorSessionDurationLabel": "Duration",
+  "counselorSessionMinutesValue": "{count} minutes",
+  "@counselorSessionMinutesValue": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionStatusLabel": "Status",
+  "counselorSessionNotes": "Notes",
+  "counselorSessionSummary": "Summary",
+  "counselorSessionActionItems": "Action Items",
+  "counselorSessionStartSession": "Start Session",
+  "counselorSessionCancelSession": "Cancel Session",
+  "counselorSessionIndividualCounseling": "Individual Counseling",
+  "counselorSessionGroupSession": "Group Session",
+  "counselorSessionCareerCounseling": "Career Counseling",
+  "counselorSessionAcademicAdvising": "Academic Advising",
+  "counselorSessionPersonalCounseling": "Personal Counseling",
+  "counselorSessionStartSessionWith": "Start counseling session with {studentName}?",
+  "@counselorSessionStartSessionWith": {
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionStart": "Start",
+  "counselorSessionStarted": "Session with {studentName} started",
+  "@counselorSessionStarted": {
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionCancelSessionWith": "Cancel session with {studentName}?",
+  "@counselorSessionCancelSessionWith": {
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionReasonForCancellation": "Reason for cancellation:",
+  "counselorSessionStudentUnavailable": "Student unavailable",
+  "counselorSessionCounselorUnavailable": "Counselor unavailable",
+  "counselorSessionRescheduled": "Rescheduled",
+  "counselorSessionOther": "Other",
+  "counselorSessionBack": "Back",
+  "counselorSessionCancelled": "Session with {studentName} cancelled",
+  "@counselorSessionCancelled": {
+    "placeholders": {
+      "studentName": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorSessionTodayBadge": "TODAY",
+  "counselorSessionIndividual": "Individual",
+  "counselorSessionGroup": "Group",
+  "counselorSessionCareer": "Career",
+  "counselorSessionAcademic": "Academic",
+  "counselorSessionPersonal": "Personal",
+  "counselorSessionScheduled": "Scheduled",
+  "counselorSessionCompleted": "Completed",
+  "counselorSessionCancelledStatus": "Cancelled",
+  "counselorSessionNoShow": "No Show",
+  "counselorStudentBack": "Back",
+  "counselorStudentAddNotesComingSoon": "Add notes feature coming soon",
+  "counselorStudentOverview": "Overview",
+  "counselorStudentSessions": "Sessions",
+  "counselorStudentNotes": "Notes",
+  "counselorStudentScheduleSession": "Schedule Session",
+  "counselorStudentAcademicPerformance": "Academic Performance",
+  "counselorStudentGpa": "GPA",
+  "counselorStudentInterests": "Interests",
+  "counselorStudentStrengths": "Strengths",
+  "counselorStudentAreasForGrowth": "Areas for Growth",
+  "counselorStudentNoSessionsYet": "No Sessions Yet",
+  "counselorStudentScheduleSessionPrompt": "Schedule a session with this student",
+  "counselorStudentNoNotesYet": "No Notes Yet",
+  "counselorStudentAddPrivateNotes": "Add private notes about this student",
+  "counselorStudentAddNote": "Add Note",
+  "counselorStudentIndividualCounseling": "Individual Counseling",
+  "counselorStudentGroupSession": "Group Session",
+  "counselorStudentCareerCounseling": "Career Counseling",
+  "counselorStudentAcademicAdvising": "Academic Advising",
+  "counselorStudentPersonalCounseling": "Personal Counseling",
+  "counselorStudentScheduleFeatureComingSoon": "Session scheduling feature will be implemented with calendar integration.",
+  "counselorStudentClose": "Close",
+  "counselorStudentScheduled": "Scheduled",
+  "counselorStudentCompleted": "Completed",
+  "counselorStudentCancelled": "Cancelled",
+  "counselorStudentNoShow": "No Show",
+  "counselorStudentRetry": "Retry",
+  "counselorStudentLoadingStudents": "Loading students...",
+  "counselorStudentSearchStudents": "Search students...",
+  "counselorStudentNoStudentsFound": "No Students Found",
+  "counselorStudentTryAdjustingSearch": "Try adjusting your search",
+  "counselorStudentNoStudentsAssigned": "No students assigned yet",
+  "counselorStudentGradeAndGpa": "{grade} • GPA: {gpa}",
+  "@counselorStudentGradeAndGpa": {
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      },
+      "gpa": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorStudentSessionsCount": "{count} sessions",
+  "@counselorStudentSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorStudentToday": "Today",
+  "counselorStudentYesterday": "Yesterday",
+  "counselorStudentDaysAgo": "{count}d ago",
+  "@counselorStudentDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "counselorStudentWeeksAgo": "{count}w ago",
+  "@counselorStudentWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "recRetry": "Retry",
+  "recLoadingRequests": "Loading requests...",
+  "recTabAll": "All ({count})",
+  "@recTabAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recTabPending": "Pending ({count})",
+  "@recTabPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recTabInProgress": "In Progress ({count})",
+  "@recTabInProgress": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recTabCompleted": "Completed ({count})",
+  "@recTabCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recNoPendingRequests": "No pending recommendation requests",
+  "recNoLettersInProgress": "No letters in progress",
+  "recNoCompletedRecommendations": "No completed recommendations yet",
+  "recNoRecommendationRequests": "No recommendation requests",
+  "recNoRequests": "No Requests",
+  "recStudent": "Student",
+  "recInstitution": "Institution",
+  "recOverdue": "Overdue!",
+  "recDueToday": "Due today",
+  "recDaysLeft": "{count} days left",
+  "@recDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recUrgent": "URGENT",
+  "recStatusOverdue": "OVERDUE",
+  "recStatusPending": "PENDING",
+  "recStatusAccepted": "ACCEPTED",
+  "recStatusInProgress": "IN PROGRESS",
+  "recStatusCompleted": "COMPLETED",
+  "recStatusDeclined": "DECLINED",
+  "recStatusCancelled": "CANCELLED",
+  "recRecommendationLetter": "Recommendation Letter",
+  "recSaveDraft": "Save Draft",
+  "recApplyingTo": "Applying to {institution}",
+  "@recApplyingTo": {
+    "placeholders": {
+      "institution": {
+        "type": "String"
+      }
+    }
+  },
+  "recPurpose": "Purpose",
+  "recType": "Type",
+  "recDeadline": "Deadline",
+  "recStatus": "Status",
+  "recMessageFromStudent": "Message from Student",
+  "recAchievements": "Achievements",
+  "recDecline": "Decline",
+  "recAccept": "Accept",
+  "recQuickStartTemplates": "Quick Start Templates",
+  "recProfessionalTemplate": "Professional Template",
+  "recProfessionalTemplateDesc": "Formal business-style recommendation",
+  "recAcademicTemplate": "Academic Template",
+  "recAcademicTemplateDesc": "Focus on academic achievements",
+  "recPersonalTemplate": "Personal Template",
+  "recPersonalTemplateDesc": "Emphasize personal qualities",
+  "recWriteHint": "Write your recommendation here or use a template above...",
+  "recPleaseWriteRecommendation": "Please write a recommendation",
+  "recMinCharacters": "Recommendation should be at least 100 characters",
+  "recSubmitRecommendation": "Submit Recommendation",
+  "recTheStudent": "the student",
+  "recYourInstitution": "your institution",
+  "recRequestAccepted": "Request accepted! You can now write the letter.",
+  "recFailedToAcceptRequest": "Failed to accept request",
+  "recErrorAcceptingRequest": "Error accepting request: {error}",
+  "@recErrorAcceptingRequest": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "recDeclineRequest": "Decline Request",
+  "recDeclineReason": "Please provide a reason for declining this request.",
+  "recReasonLabel": "Reason",
+  "recReasonHint": "Enter at least 10 characters",
+  "recCancel": "Cancel",
+  "recReasonMinCharacters": "Reason must be at least 10 characters",
+  "recRequestDeclined": "Request declined",
+  "recFailedToDeclineRequest": "Failed to decline request",
+  "recErrorDecliningRequest": "Error declining request: {error}",
+  "@recErrorDecliningRequest": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "recLetterMinCharacters": "Letter content must be at least 100 characters",
+  "recDraftSaved": "Draft saved successfully",
+  "recErrorSavingDraft": "Error saving draft: {error}",
+  "@recErrorSavingDraft": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "recSubmitConfirmTitle": "Submit Recommendation?",
+  "recSubmitConfirmMessage": "Once submitted, you will not be able to edit this recommendation. Are you sure you want to submit?",
+  "recSubmit": "Submit",
+  "recSubmittedSuccessfully": "Recommendation submitted successfully!",
+  "recFailedToSubmit": "Failed to submit recommendation",
+  "recErrorSubmitting": "Error submitting recommendation: {error}",
+  "@recErrorSubmitting": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrefTitle": "Notification Preferences",
+  "notifPrefDefaultCreated": "Default notification preferences created successfully!",
+  "notifPrefErrorCreating": "Error creating preferences: {error}",
+  "@notifPrefErrorCreating": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrefNotFound": "No notification preferences found",
+  "notifPrefCreateDefaults": "Create Default Preferences",
+  "notifPrefWaitingAuth": "Waiting for authentication...",
+  "notifPrefSettings": "Notification Settings",
+  "notifPrefDescription": "Control which notifications you want to receive. Changes are saved automatically.",
+  "notifPrefCollegeApplications": "College Applications",
+  "notifPrefAcademic": "Academic",
+  "notifPrefCommunication": "Communication",
+  "notifPrefMeetingsEvents": "Meetings & Events",
+  "notifPrefAchievements": "Achievements",
+  "notifPrefSystem": "System",
+  "notifPrefErrorLoading": "Error loading preferences: {error}",
+  "@notifPrefErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrefRetry": "Retry",
+  "notifPrefEmail": "Email",
+  "notifPrefPush": "Push",
+  "notifPrefSoon": "(soon)",
+  "notifPrefDescApplicationStatus": "Get notified when your application status changes",
+  "notifPrefDescGradePosted": "Receive notifications when new grades are posted",
+  "notifPrefDescMessageReceived": "Get notified about new messages",
+  "notifPrefDescMeetingScheduled": "Receive notifications for scheduled meetings",
+  "notifPrefDescMeetingReminder": "Get reminders before your meetings",
+  "notifPrefDescAchievementEarned": "Celebrate when you earn new achievements",
+  "notifPrefDescDeadlineReminder": "Get reminded about upcoming deadlines",
+  "notifPrefDescRecommendationReady": "Receive notifications for new recommendations",
+  "notifPrefDescSystemAnnouncement": "Stay updated with system announcements",
+  "notifPrefDescCommentReceived": "Get notified when someone comments on your posts",
+  "notifPrefDescMention": "Receive notifications when you are mentioned",
+  "notifPrefDescEventReminder": "Get reminders about upcoming events",
+  "notifPrefDescApprovalNew": "Get notified about new approval requests",
+  "notifPrefDescApprovalActionNeeded": "Receive reminders about pending approval actions",
+  "notifPrefDescApprovalStatusChanged": "Get notified when your request status changes",
+  "notifPrefDescApprovalEscalated": "Receive notifications when requests are escalated to you",
+  "notifPrefDescApprovalExpiring": "Get reminders about expiring approval requests",
+  "notifPrefDescApprovalComment": "Get notified about new comments on requests",
+  "notifPrefUpdated": "Preferences updated",
+  "notifPrefErrorUpdating": "Error updating preferences: {error}",
+  "@notifPrefErrorUpdating": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricSetupTitle": "Setup Biometric",
+  "biometricSettingsTitle": "Biometric Settings",
+  "biometricErrorChecking": "Error checking biometrics: {error}",
+  "@biometricErrorChecking": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricEnabledSuccess": "Biometric authentication enabled successfully",
+  "biometricAuthFailed": "Authentication failed. Please try again.",
+  "biometricError": "Error: {error}",
+  "@biometricError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricDisabledSuccess": "Biometric authentication disabled",
+  "biometricEnableLogin": "Enable Biometric Login",
+  "biometricAuthentication": "Biometric Authentication",
+  "biometricUseType": "Use {type}",
+  "@biometricUseType": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricEnabled": "Enabled",
+  "biometricDisabled": "Disabled",
+  "biometricWhyUse": "Why use biometric?",
+  "biometricBenefitFaster": "Faster login experience",
+  "biometricBenefitSecure": "More secure than passwords",
+  "biometricBenefitUnique": "Unique to you - cannot be copied",
+  "biometricSecurityNote": "Security Note",
+  "biometricSecurityNoteDesc": "Your biometric data stays on your device and is never shared with Flow or third parties.",
+  "biometricSkipForNow": "Skip for now",
+  "biometricNotSupported": "Not Supported",
+  "biometricNotSupportedDesc": "Your device does not support biometric authentication.",
+  "biometricGoBack": "Go Back",
+  "biometricNotEnrolled": "No Biometrics Enrolled",
+  "biometricNotEnrolledDesc": "Please enroll your fingerprint or face ID in your device settings first.",
+  "biometricOpenSettingsHint": "Please open Settings > Security > Biometrics",
+  "biometricOpenSettings": "Open Settings",
+  "biometricTypeFace": "Face ID",
+  "biometricTypeFingerprint": "Fingerprint",
+  "biometricTypeIris": "Iris Recognition",
+  "biometricTypeGeneric": "Biometric",
+  "biometricDescEnabled": "Your {type} is currently being used to secure your account. You can sign in quickly and securely.",
+  "@biometricDescEnabled": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricDescDisabled": "Use your {type} to sign in quickly and securely without entering your password.",
+  "@biometricDescDisabled": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  }
 }

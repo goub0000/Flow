@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/meeting_models.dart';
 import '../../../../core/providers/meetings_provider.dart';
@@ -44,14 +45,14 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.counselorMeetingBack,
         ),
-        title: const Text('Meeting Requests'),
+        title: Text(context.l10n.counselorMeetingRequests),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => meetingsNotifier.fetchMeetings(),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.counselorMeetingRefresh,
           ),
         ],
         bottom: TabBar(
@@ -63,7 +64,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 isLabelVisible: pendingRequests.isNotEmpty,
                 child: const Icon(Icons.pending_actions),
               ),
-              text: 'Pending',
+              text: context.l10n.counselorMeetingPending,
             ),
             Tab(
               icon: Badge(
@@ -71,7 +72,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 isLabelVisible: todayMeetings.isNotEmpty,
                 child: const Icon(Icons.today),
               ),
-              text: 'Today',
+              text: context.l10n.counselorMeetingToday,
             ),
             Tab(
               icon: Badge(
@@ -79,7 +80,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 isLabelVisible: upcomingMeetings.isNotEmpty,
                 child: const Icon(Icons.event),
               ),
-              text: 'Upcoming',
+              text: context.l10n.counselorMeetingUpcoming,
             ),
           ],
         ),
@@ -104,8 +105,8 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
     if (meetings.isEmpty) {
       return _buildEmptyState(
         icon: Icons.inbox,
-        title: 'No Pending Requests',
-        message: 'You have no meeting requests at this time.',
+        title: context.l10n.counselorMeetingNoPendingRequests,
+        message: context.l10n.counselorMeetingNoPendingRequestsMessage,
       );
     }
 
@@ -129,8 +130,8 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
     if (meetings.isEmpty) {
       return _buildEmptyState(
         icon: Icons.event_busy,
-        title: 'No Meetings Today',
-        message: 'You have no scheduled meetings for today.',
+        title: context.l10n.counselorMeetingNoMeetingsToday,
+        message: context.l10n.counselorMeetingNoMeetingsTodayMessage,
       );
     }
 
@@ -154,8 +155,8 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
     if (meetings.isEmpty) {
       return _buildEmptyState(
         icon: Icons.event_available,
-        title: 'No Upcoming Meetings',
-        message: 'You have no scheduled meetings.',
+        title: context.l10n.counselorMeetingNoUpcomingMeetings,
+        message: context.l10n.counselorMeetingNoUpcomingMeetingsMessage,
       );
     }
 
@@ -231,14 +232,14 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      meeting.parentName ?? 'Parent',
+                      meeting.parentName ?? context.l10n.counselorMeetingParent,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      'Student: ${meeting.studentName ?? 'Unknown'}',
+                      context.l10n.counselorMeetingStudentLabel(meeting.studentName ?? context.l10n.counselorMeetingUnknown),
                       style: TextStyle(
                         fontSize: 13,
                         color: AppColors.textSecondary,
@@ -254,7 +255,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  'PENDING',
+                  context.l10n.counselorMeetingPendingBadge,
                   style: TextStyle(
                     color: AppColors.warning,
                     fontSize: 11,
@@ -284,7 +285,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
           // Meeting Details
           _buildDetailRow(
             Icons.schedule,
-            '${meeting.durationMinutes} minutes',
+            context.l10n.counselorMeetingMinutes('${meeting.durationMinutes}'),
           ),
           _buildDetailRow(
             _getMeetingModeIcon(meeting.meetingMode),
@@ -293,7 +294,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
           if (meeting.scheduledDate != null)
             _buildDetailRow(
               Icons.calendar_today,
-              'Requested: ${DateFormat('MMM d, y - h:mm a').format(meeting.scheduledDate!)}',
+              context.l10n.counselorMeetingRequested(DateFormat('MMM d, y - h:mm a').format(meeting.scheduledDate!)),
             ),
           if (meeting.parentNotes != null && meeting.parentNotes!.isNotEmpty) ...[
             const SizedBox(height: 8),
@@ -330,7 +331,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 child: OutlinedButton.icon(
                   onPressed: () => _showDeclineDialog(meeting, notifier),
                   icon: const Icon(Icons.close, size: 18),
-                  label: const Text('Decline'),
+                  label: Text(context.l10n.counselorMeetingDecline),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.error,
                   ),
@@ -341,7 +342,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 child: ElevatedButton.icon(
                   onPressed: () => _showApproveDialog(meeting, notifier),
                   icon: const Icon(Icons.check, size: 18),
-                  label: const Text('Approve'),
+                  label: Text(context.l10n.counselorMeetingApprove),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.success,
                     foregroundColor: AppColors.textOnPrimary,
@@ -384,13 +385,13 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      meeting.parentName ?? 'Parent',
+                      meeting.parentName ?? context.l10n.counselorMeetingParent,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'Student: ${meeting.studentName ?? 'Unknown'}',
+                      context.l10n.counselorMeetingStudentLabel(meeting.studentName ?? context.l10n.counselorMeetingUnknown),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -412,7 +413,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                       Icon(Icons.warning_amber, size: 12, color: AppColors.warning),
                       const SizedBox(width: 4),
                       Text(
-                        'Soon',
+                        context.l10n.counselorMeetingSoon,
                         style: TextStyle(
                           color: AppColors.warning,
                           fontSize: 10,
@@ -444,7 +445,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
             ),
             _buildDetailRow(
               Icons.access_time,
-              '${DateFormat('h:mm a').format(meeting.scheduledDate!)} (${meeting.durationMinutes} min)',
+              context.l10n.counselorMeetingTimeWithDuration(DateFormat('h:mm a').format(meeting.scheduledDate!), '${meeting.durationMinutes}'),
             ),
           ],
           _buildDetailRow(
@@ -468,7 +469,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
           OutlinedButton.icon(
             onPressed: () => _showCancelDialog(meeting, notifier),
             icon: const Icon(Icons.cancel_outlined, size: 16),
-            label: const Text('Cancel Meeting'),
+            label: Text(context.l10n.counselorMeetingCancelMeeting),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.error,
             ),
@@ -525,13 +526,13 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: const Text('Approve Meeting'),
+          title: Text(context.l10n.counselorMeetingApproveMeeting),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Approve meeting with ${meeting.parentName}'),
+                Text(context.l10n.counselorMeetingApproveWith(meeting.parentName ?? '')),
                 const SizedBox(height: 16),
 
                 // Date & Time
@@ -551,7 +552,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                   label: Text(
                     selectedDate != null
                         ? DateFormat('MMM d, y').format(selectedDate!)
-                        : 'Select Date',
+                        : context.l10n.counselorMeetingSelectDate,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -569,7 +570,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                   label: Text(
                     selectedTime != null
                         ? selectedTime!.format(context)
-                        : 'Select Time',
+                        : context.l10n.counselorMeetingSelectTime,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -577,17 +578,17 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 // Duration
                 DropdownButtonFormField<int>(
                   value: duration,
-                  decoration: const InputDecoration(
-                    labelText: 'Duration',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.counselorMeetingDuration,
+                    border: const OutlineInputBorder(),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 15, child: Text('15 minutes')),
-                    DropdownMenuItem(value: 30, child: Text('30 minutes')),
-                    DropdownMenuItem(value: 45, child: Text('45 minutes')),
-                    DropdownMenuItem(value: 60, child: Text('1 hour')),
-                    DropdownMenuItem(value: 90, child: Text('1.5 hours')),
-                    DropdownMenuItem(value: 120, child: Text('2 hours')),
+                  items: [
+                    DropdownMenuItem(value: 15, child: Text(context.l10n.counselorMeetingMinutes('15'))),
+                    DropdownMenuItem(value: 30, child: Text(context.l10n.counselorMeetingMinutes('30'))),
+                    DropdownMenuItem(value: 45, child: Text(context.l10n.counselorMeetingMinutes('45'))),
+                    DropdownMenuItem(value: 60, child: Text(context.l10n.counselorMeeting1Hour)),
+                    DropdownMenuItem(value: 90, child: Text(context.l10n.counselorMeeting1Point5Hours)),
+                    DropdownMenuItem(value: 120, child: Text(context.l10n.counselorMeeting2Hours)),
                   ],
                   onChanged: (value) {
                     if (value != null) setState(() => duration = value);
@@ -599,10 +600,10 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 if (meeting.meetingMode == MeetingMode.videoCall)
                   TextField(
                     controller: linkController,
-                    decoration: const InputDecoration(
-                      labelText: 'Meeting Link',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.counselorMeetingMeetingLink,
                       hintText: 'https://meet.google.com/...',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                   ),
 
@@ -611,10 +612,10 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                   const SizedBox(height: 12),
                   TextField(
                     controller: locationController,
-                    decoration: const InputDecoration(
-                      labelText: 'Location',
-                      hintText: 'Room 101, Main Building',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.counselorMeetingLocation,
+                      hintText: context.l10n.counselorMeetingLocationHint,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                 ],
@@ -623,9 +624,9 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 // Notes
                 TextField(
                   controller: notesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Notes (Optional)',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.counselorMeetingNotesOptional,
+                    border: const OutlineInputBorder(),
                   ),
                   maxLines: 2,
                 ),
@@ -635,7 +636,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.counselorMeetingCancel),
             ),
             ElevatedButton(
               onPressed: selectedDate != null && selectedTime != null
@@ -673,8 +674,8 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                           SnackBar(
                             content: Text(
                               success
-                                  ? 'Meeting approved successfully'
-                                  : 'Failed to approve meeting',
+                                  ? context.l10n.counselorMeetingApprovedSuccessfully
+                                  : context.l10n.counselorMeetingFailedToApprove,
                             ),
                             backgroundColor:
                                 success ? AppColors.success : AppColors.error,
@@ -687,7 +688,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 backgroundColor: AppColors.success,
                 foregroundColor: AppColors.textOnPrimary,
               ),
-              child: const Text('Approve'),
+              child: Text(context.l10n.counselorMeetingApprove),
             ),
           ],
         ),
@@ -701,19 +702,19 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Decline Meeting'),
+        title: Text(context.l10n.counselorMeetingDeclineMeeting),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Decline meeting request from ${meeting.parentName}?'),
+            Text(context.l10n.counselorMeetingDeclineFrom(meeting.parentName ?? '')),
             const SizedBox(height: 16),
             TextField(
               controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason for declining',
-                hintText: 'Please provide a reason...',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.counselorMeetingReasonForDeclining,
+                hintText: context.l10n.counselorMeetingProvideReason,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -722,14 +723,14 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.counselorMeetingCancel),
           ),
           ElevatedButton(
             onPressed: () async {
               if (reasonController.text.trim().isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please provide a reason for declining'),
+                  SnackBar(
+                    content: Text(context.l10n.counselorMeetingPleaseProvideReason),
                     backgroundColor: AppColors.error,
                   ),
                 );
@@ -750,7 +751,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      success ? 'Meeting declined' : 'Failed to decline meeting',
+                      success ? context.l10n.counselorMeetingDeclined : context.l10n.counselorMeetingFailedToDecline,
                     ),
                     backgroundColor: success ? AppColors.success : AppColors.error,
                   ),
@@ -761,7 +762,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
               backgroundColor: AppColors.error,
               foregroundColor: AppColors.textOnPrimary,
             ),
-            child: const Text('Decline'),
+            child: Text(context.l10n.counselorMeetingDecline),
           ),
         ],
       ),
@@ -774,18 +775,18 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cancel Meeting'),
+        title: Text(context.l10n.counselorMeetingCancelMeeting),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Cancel this meeting with ${meeting.parentName}?'),
+            Text(context.l10n.counselorMeetingCancelWith(meeting.parentName ?? '')),
             const SizedBox(height: 16),
             TextField(
               controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Cancellation reason (Optional)',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.counselorMeetingCancellationReasonOptional,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 2,
             ),
@@ -794,7 +795,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Back'),
+            child: Text(context.l10n.counselorMeetingBackButton),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -810,7 +811,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      success ? 'Meeting cancelled' : 'Failed to cancel meeting',
+                      success ? context.l10n.counselorMeetingCancelled : context.l10n.counselorMeetingFailedToCancel,
                     ),
                     backgroundColor: success ? AppColors.success : AppColors.error,
                   ),
@@ -821,7 +822,7 @@ class _MeetingRequestsScreenState extends ConsumerState<MeetingRequestsScreen>
               backgroundColor: AppColors.error,
               foregroundColor: AppColors.textOnPrimary,
             ),
-            child: const Text('Cancel Meeting'),
+            child: Text(context.l10n.counselorMeetingCancelMeeting),
           ),
         ],
       ),

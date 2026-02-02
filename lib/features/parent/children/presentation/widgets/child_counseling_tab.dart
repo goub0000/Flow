@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../../../../core/l10n_extension.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../shared/counseling/models/counseling_models.dart';
 import '../../../../shared/counseling/widgets/counseling_widgets.dart';
@@ -52,7 +53,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
               onPressed: () => ref
                   .read(childCounselingProvider.notifier)
                   .loadChildCounseling(widget.childId),
-              child: const Text('Retry'),
+              child: Text(context.l10n.parentChildRetry),
             ),
           ],
         ),
@@ -93,14 +94,14 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
               ),
               const SizedBox(height: 16),
               Text(
-                'No Counselor Assigned',
+                context.l10n.parentChildNoCounselor,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: Colors.grey[700],
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                '${widget.childName} doesn\'t have a counselor assigned yet.',
+                context.l10n.parentChildNoCounselorDescription(widget.childName),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey[600]),
               ),
@@ -119,7 +120,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${widget.childName}\'s Counselor',
+              context.l10n.parentChildChildCounselor(widget.childName),
               style: theme.textTheme.titleSmall?.copyWith(
                 color: Colors.grey[600],
               ),
@@ -170,7 +171,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
                   Icon(Icons.calendar_today, size: 14, color: Colors.grey[500]),
                   const SizedBox(width: 4),
                   Text(
-                    'Assigned: ${DateFormat('MMM d, y').format(counselor.assignedAt!)}',
+                    context.l10n.parentChildAssigned(DateFormat('MMM d, y').format(counselor.assignedAt!)),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[600],
@@ -197,7 +198,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
           children: [
             Expanded(
               child: _buildStatCard(
-                'Total',
+                context.l10n.parentChildTotal,
                 '${state.sessions.length}',
                 Icons.calendar_month,
                 Colors.blue,
@@ -206,7 +207,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
             const SizedBox(width: 12),
             Expanded(
               child: _buildStatCard(
-                'Upcoming',
+                context.l10n.parentChildUpcoming,
                 '${upcomingSessions.length}',
                 Icons.schedule,
                 Colors.orange,
@@ -215,7 +216,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
             const SizedBox(width: 12),
             Expanded(
               child: _buildStatCard(
-                'Completed',
+                context.l10n.parentChildCompleted,
                 '${pastSessions.where((s) => s.status == SessionStatus.completed).length}',
                 Icons.check_circle,
                 Colors.green,
@@ -227,7 +228,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
 
         // Upcoming sessions
         Text(
-          'Upcoming Sessions',
+          context.l10n.parentChildUpcomingSessions,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -239,7 +240,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
               padding: const EdgeInsets.all(24),
               child: Center(
                 child: Text(
-                  'No upcoming sessions',
+                  context.l10n.parentChildNoUpcomingSessions,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ),
@@ -255,7 +256,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
 
         // Past sessions
         Text(
-          'Past Sessions',
+          context.l10n.parentChildPastSessions,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -267,7 +268,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
               padding: const EdgeInsets.all(24),
               child: Center(
                 child: Text(
-                  'No past sessions',
+                  context.l10n.parentChildNoPastSessions,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ),
@@ -376,7 +377,7 @@ class _ChildCounselingTabState extends ConsumerState<ChildCounselingTab> {
                 Icon(Icons.access_time, size: 14, color: Colors.grey[500]),
                 const SizedBox(width: 4),
                 Text(
-                  '${session.durationMinutes} min',
+                  context.l10n.parentChildMinutes(session.durationMinutes.toString()),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: Colors.grey[600],
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/progress_model.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -49,19 +50,19 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
     final courseProgressList = ref.watch(courseProgressListProvider);
 
     if (isLoading) {
-      return const Scaffold(
-        body: LoadingIndicator(message: 'Loading progress...'),
+      return Scaffold(
+        body: LoadingIndicator(message: context.l10n.studentProgressLoading),
       );
     }
 
     if (error != null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('My Progress')),
+        appBar: AppBar(title: Text(context.l10n.studentProgressTitle)),
         body: EmptyState(
           icon: Icons.error_outline,
-          title: 'Error Loading Progress',
+          title: context.l10n.studentProgressError,
           message: error,
-          actionLabel: 'Retry',
+          actionLabel: context.l10n.studentProgressRetry,
           onAction: () => ref.read(progressProvider.notifier).fetchProgress(),
         ),
       );
@@ -69,23 +70,23 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
 
     if (courseProgressList.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('My Progress')),
-        body: const EmptyState(
+        appBar: AppBar(title: Text(context.l10n.studentProgressTitle)),
+        body: EmptyState(
           icon: Icons.assessment_outlined,
-          title: 'No Progress Data',
-          message: 'Enroll in courses to start tracking your progress.',
+          title: context.l10n.studentProgressNoData,
+          message: context.l10n.studentProgressEnrollMessage,
         ),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Progress'),
+        title: Text(context.l10n.studentProgressTitle),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Overview'),
-            Tab(text: 'Courses'),
+          tabs: [
+            Tab(text: context.l10n.studentProgressOverview),
+            Tab(text: context.l10n.studentProgressCourses),
           ],
         ),
       ),
@@ -120,7 +121,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
               Expanded(
                 child: _SummaryCard(
                   icon: Icons.show_chart,
-                  label: 'Average Grade',
+                  label: context.l10n.studentProgressAvgGrade,
                   value: '${averageGrade.toStringAsFixed(1)}%',
                   color: AppColors.primary,
                 ),
@@ -129,7 +130,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
               Expanded(
                 child: _SummaryCard(
                   icon: Icons.trending_up,
-                  label: 'Completion',
+                  label: context.l10n.studentProgressCompletion,
                   value: '${overallCompletion.toStringAsFixed(0)}%',
                   color: AppColors.success,
                 ),
@@ -142,7 +143,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
               Expanded(
                 child: _SummaryCard(
                   icon: Icons.school,
-                  label: 'Courses',
+                  label: context.l10n.studentProgressCourses,
                   value:
                       '$completedCoursesCount/${courseProgressList.length}',
                   color: AppColors.info,
@@ -152,7 +153,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
               Expanded(
                 child: _SummaryCard(
                   icon: Icons.assignment,
-                  label: 'Assignments',
+                  label: context.l10n.studentProgressAssignments,
                   value: '$totalAssignments',
                   color: AppColors.warning,
                 ),
@@ -172,7 +173,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
           // Grade Trend Chart
           if (monthlyProgress.isNotEmpty) ...[
             Text(
-              'Grade Trend',
+              context.l10n.studentProgressGradeTrend,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -194,7 +195,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
 
             // Study Time Chart
             Text(
-              'Study Time (Hours)',
+              context.l10n.studentProgressStudyTime,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -217,7 +218,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
 
           // Course Completion Chart
           Text(
-            'Course Completion',
+            context.l10n.studentProgressCourseCompletion,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -240,13 +241,13 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
                     children: [
                       _LegendItem(
                         color: AppColors.success,
-                        label: 'Completed',
+                        label: context.l10n.studentProgressCompleted,
                         value: '$completedCoursesCount',
                       ),
                       const SizedBox(height: 8),
                       _LegendItem(
                         color: AppColors.warning,
-                        label: 'In Progress',
+                        label: context.l10n.studentProgressInProgress,
                         value: '${courseProgressList.length - completedCoursesCount}',
                       ),
                     ],
@@ -340,7 +341,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Progress',
+                          context.l10n.studentProgressProgress,
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.textSecondary,
@@ -802,18 +803,18 @@ class CourseProgressDetailScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _DetailStat(
-                        label: 'Current Grade',
+                        label: context.l10n.studentProgressCurrentGrade,
                         value: '${progress.currentGrade.toStringAsFixed(0)}%',
                         color: _getGradeColor(progress.currentGrade),
                       ),
                       _DetailStat(
-                        label: 'Completion',
+                        label: context.l10n.studentProgressCompletion,
                         value:
                             '${progress.completionPercentage.toStringAsFixed(0)}%',
                         color: AppColors.success,
                       ),
                       _DetailStat(
-                        label: 'Time Spent',
+                        label: context.l10n.studentProgressTimeSpent,
                         value: progress.formattedTimeSpent,
                         color: AppColors.info,
                       ),
@@ -826,7 +827,7 @@ class CourseProgressDetailScreen extends ConsumerWidget {
 
             // Modules
             Text(
-              'Modules',
+              context.l10n.studentProgressModules,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -871,7 +872,7 @@ class CourseProgressDetailScreen extends ConsumerWidget {
 
             // Grades
             Text(
-              'Recent Grades',
+              context.l10n.studentProgressRecentGrades,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -932,7 +933,7 @@ class CourseProgressDetailScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Feedback',
+                                context.l10n.studentProgressFeedback,
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.textSecondary,
@@ -1029,7 +1030,7 @@ class _ApplicationSuccessChart extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Application Success Rate',
+          context.l10n.studentProgressAppSuccessRate,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -1042,28 +1043,28 @@ class _ApplicationSuccessChart extends ConsumerWidget {
                   child: Center(child: CircularProgressIndicator()),
                 )
               : applicationSuccessData == null
-                  ? const SizedBox(
+                  ? SizedBox(
                       height: 200,
                       child: Center(
-                        child: Text('No application data available'),
+                        child: Text(context.l10n.studentProgressNoAppData),
                       ),
                     )
-                  : _buildApplicationSuccessContent(applicationSuccessData, theme),
+                  : _buildApplicationSuccessContent(context, applicationSuccessData, theme),
         ),
       ],
     );
   }
 
-  Widget _buildApplicationSuccessContent(Map<String, dynamic> data, ThemeData theme) {
+  Widget _buildApplicationSuccessContent(BuildContext context, Map<String, dynamic> data, ThemeData theme) {
     final totalApplications = data['total_applications'] as int;
     final acceptanceRate = (data['acceptance_rate'] as num).toDouble();
     final distributions = data['distributions'] as List<dynamic>;
 
     if (totalApplications == 0) {
-      return const SizedBox(
+      return SizedBox(
         height: 200,
         child: Center(
-          child: Text('No applications yet'),
+          child: Text(context.l10n.studentProgressNoAppsYet),
         ),
       );
     }
@@ -1124,7 +1125,7 @@ class _ApplicationSuccessChart extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Acceptance Rate',
+                      context.l10n.studentProgressAcceptanceRate,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -1183,7 +1184,7 @@ class _GpaTrendChart extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'GPA Trend',
+          context.l10n.studentProgressGpaTrend,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -1196,19 +1197,19 @@ class _GpaTrendChart extends ConsumerWidget {
                   child: Center(child: CircularProgressIndicator()),
                 )
               : gpaTrendData == null
-                  ? const SizedBox(
+                  ? SizedBox(
                       height: 200,
                       child: Center(
-                        child: Text('No GPA data available'),
+                        child: Text(context.l10n.studentProgressNoGpaData),
                       ),
                     )
-                  : _buildGpaTrendContent(gpaTrendData, theme),
+                  : _buildGpaTrendContent(context, gpaTrendData, theme),
         ),
       ],
     );
   }
 
-  Widget _buildGpaTrendContent(Map<String, dynamic> data, ThemeData theme) {
+  Widget _buildGpaTrendContent(BuildContext context, Map<String, dynamic> data, ThemeData theme) {
     final currentGpa = (data['current_gpa'] as num).toDouble();
     final goalGpa = (data['goal_gpa'] as num).toDouble();
     final trend = data['trend'] as String;
@@ -1243,7 +1244,7 @@ class _GpaTrendChart extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Current GPA',
+                  context.l10n.studentProgressCurrentGpa,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -1261,7 +1262,7 @@ class _GpaTrendChart extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Goal GPA',
+                  context.l10n.studentProgressGoalGpa,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -1285,7 +1286,7 @@ class _GpaTrendChart extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Trend',
+                  context.l10n.studentProgressTrend,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -1309,7 +1310,7 @@ class _GpaTrendChart extends ConsumerWidget {
             height: 100,
             alignment: Alignment.center,
             child: Text(
-              'Historical GPA data will appear here as you progress through semesters',
+              context.l10n.studentProgressHistoricalGpa,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),

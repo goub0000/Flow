@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/counseling_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -51,7 +52,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
               onPressed: () {
                 ref.read(counselorSessionsProvider.notifier).fetchSessions();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.counselorSessionRetry),
             ),
           ],
         ),
@@ -59,7 +60,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading sessions...');
+      return LoadingIndicator(message: context.l10n.counselorSessionLoadingSessions);
     }
 
     return Column(
@@ -69,9 +70,9 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           tabs: [
-            Tab(text: 'Today (${todaySessions.length})'),
-            Tab(text: 'Upcoming (${upcomingSessions.length})'),
-            Tab(text: 'Completed (${completedSessions.length})'),
+            Tab(text: context.l10n.counselorSessionTodayTab('${todaySessions.length}')),
+            Tab(text: context.l10n.counselorSessionUpcomingTab('${upcomingSessions.length}')),
+            Tab(text: context.l10n.counselorSessionCompletedTab('${completedSessions.length}')),
           ],
         ),
         Expanded(
@@ -93,21 +94,21 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
       String message;
       switch (type) {
         case 'today':
-          message = 'No sessions scheduled for today';
+          message = context.l10n.counselorSessionNoSessionsToday;
           break;
         case 'upcoming':
-          message = 'No upcoming sessions';
+          message = context.l10n.counselorSessionNoUpcomingSessions;
           break;
         case 'completed':
-          message = 'No completed sessions yet';
+          message = context.l10n.counselorSessionNoCompletedSessions;
           break;
         default:
-          message = 'No sessions';
+          message = context.l10n.counselorSessionNoSessions;
       }
 
       return EmptyState(
         icon: Icons.event_outlined,
-        title: 'No Sessions',
+        title: context.l10n.counselorSessionNoSessionsTitle,
         message: message,
       );
     }
@@ -170,31 +171,31 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
                 const SizedBox(height: 16),
                 _DetailRow(
                   icon: Icons.person,
-                  label: 'Student',
+                  label: context.l10n.counselorSessionStudentLabel,
                   value: session.studentName,
                 ),
                 const SizedBox(height: 12),
                 _DetailRow(
                   icon: Icons.calendar_today,
-                  label: 'Date & Time',
+                  label: context.l10n.counselorSessionDateTime,
                   value: _formatDateTime(session.scheduledDate),
                 ),
                 const SizedBox(height: 12),
                 _DetailRow(
                   icon: Icons.timer,
-                  label: 'Duration',
-                  value: '${session.duration.inMinutes} minutes',
+                  label: context.l10n.counselorSessionDurationLabel,
+                  value: context.l10n.counselorSessionMinutesValue('${session.duration.inMinutes}'),
                 ),
                 const SizedBox(height: 12),
                 _DetailRow(
                   icon: Icons.label,
-                  label: 'Status',
+                  label: context.l10n.counselorSessionStatusLabel,
                   value: session.status.toUpperCase(),
                 ),
                 if (session.notes != null) ...[
                   const SizedBox(height: 24),
                   Text(
-                    'Notes',
+                    context.l10n.counselorSessionNotes,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -205,7 +206,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
                 if (session.summary != null) ...[
                   const SizedBox(height: 24),
                   Text(
-                    'Summary',
+                    context.l10n.counselorSessionSummary,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -216,7 +217,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
                 if (session.actionItems != null && session.actionItems!.isNotEmpty) ...[
                   const SizedBox(height: 24),
                   Text(
-                    'Action Items',
+                    context.l10n.counselorSessionActionItems,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -247,7 +248,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
                         _startSession(session);
                       },
                       icon: const Icon(Icons.play_arrow),
-                      label: const Text('Start Session'),
+                      label: Text(context.l10n.counselorSessionStartSession),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -259,7 +260,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
                         _cancelSession(session);
                       },
                       icon: const Icon(Icons.cancel, color: AppColors.error),
-                      label: const Text('Cancel Session'),
+                      label: Text(context.l10n.counselorSessionCancelSession),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.error,
                       ),
@@ -277,15 +278,15 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
   String _formatSessionType(String type) {
     switch (type) {
       case 'individual':
-        return 'Individual Counseling';
+        return context.l10n.counselorSessionIndividualCounseling;
       case 'group':
-        return 'Group Session';
+        return context.l10n.counselorSessionGroupSession;
       case 'career':
-        return 'Career Counseling';
+        return context.l10n.counselorSessionCareerCounseling;
       case 'academic':
-        return 'Academic Advising';
+        return context.l10n.counselorSessionAcademicAdvising;
       case 'personal':
-        return 'Personal Counseling';
+        return context.l10n.counselorSessionPersonalCounseling;
       default:
         return type;
     }
@@ -299,18 +300,18 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Start Session'),
+        title: Text(context.l10n.counselorSessionStartSession),
         content: Text(
-          'Start counseling session with ${session.studentName}?',
+          context.l10n.counselorSessionStartSessionWith(session.studentName),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.counselorSessionCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Start'),
+            child: Text(context.l10n.counselorSessionStart),
           ),
         ],
       ),
@@ -325,7 +326,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Session with ${session.studentName} started'),
+            content: Text(context.l10n.counselorSessionStarted(session.studentName)),
             backgroundColor: AppColors.success,
           ),
         );
@@ -339,40 +340,40 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
       builder: (context) {
         String? selectedReason;
         return AlertDialog(
-          title: const Text('Cancel Session'),
+          title: Text(context.l10n.counselorSessionCancelSession),
           content: StatefulBuilder(
             builder: (context, setState) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Cancel session with ${session.studentName}?'),
+                  Text(context.l10n.counselorSessionCancelSessionWith(session.studentName)),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Reason for cancellation:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Text(
+                    context.l10n.counselorSessionReasonForCancellation,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   RadioListTile<String>(
-                    title: const Text('Student unavailable'),
+                    title: Text(context.l10n.counselorSessionStudentUnavailable),
                     value: 'student_unavailable',
                     groupValue: selectedReason,
                     onChanged: (value) => setState(() => selectedReason = value),
                   ),
                   RadioListTile<String>(
-                    title: const Text('Counselor unavailable'),
+                    title: Text(context.l10n.counselorSessionCounselorUnavailable),
                     value: 'counselor_unavailable',
                     groupValue: selectedReason,
                     onChanged: (value) => setState(() => selectedReason = value),
                   ),
                   RadioListTile<String>(
-                    title: const Text('Rescheduled'),
+                    title: Text(context.l10n.counselorSessionRescheduled),
                     value: 'rescheduled',
                     groupValue: selectedReason,
                     onChanged: (value) => setState(() => selectedReason = value),
                   ),
                   RadioListTile<String>(
-                    title: const Text('Other'),
+                    title: Text(context.l10n.counselorSessionOther),
                     value: 'other',
                     groupValue: selectedReason,
                     onChanged: (value) => setState(() => selectedReason = value),
@@ -384,7 +385,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Back'),
+              child: Text(context.l10n.counselorSessionBack),
             ),
             ElevatedButton(
               onPressed: selectedReason != null
@@ -394,7 +395,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
                 backgroundColor: AppColors.error,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Cancel Session'),
+              child: Text(context.l10n.counselorSessionCancelSession),
             ),
           ],
         );
@@ -410,7 +411,7 @@ class _SessionsListScreenState extends ConsumerState<SessionsListScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Session with ${session.studentName} cancelled'),
+            content: Text(context.l10n.counselorSessionCancelled(session.studentName)),
             backgroundColor: AppColors.error,
           ),
         );
@@ -463,7 +464,7 @@ class _SessionCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _formatSessionType(session.type),
+                      _formatSessionType(context, session.type),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -478,9 +479,9 @@ class _SessionCard extends StatelessWidget {
                     color: AppColors.warning.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    'TODAY',
-                    style: TextStyle(
+                  child: Text(
+                    context.l10n.counselorSessionTodayBadge,
+                    style: const TextStyle(
                       color: AppColors.warning,
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
@@ -502,7 +503,7 @@ class _SessionCard extends StatelessWidget {
               const Icon(Icons.timer, size: 16, color: AppColors.textSecondary),
               const SizedBox(width: 4),
               Text(
-                '${session.duration.inMinutes} min',
+                context.l10n.counselorSessionDurationMin('${session.duration.inMinutes}'),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
@@ -527,18 +528,18 @@ class _SessionCard extends StatelessWidget {
     }
   }
 
-  String _formatSessionType(String type) {
+  String _formatSessionType(BuildContext context, String type) {
     switch (type) {
       case 'individual':
-        return 'Individual';
+        return context.l10n.counselorSessionIndividual;
       case 'group':
-        return 'Group';
+        return context.l10n.counselorSessionGroup;
       case 'career':
-        return 'Career';
+        return context.l10n.counselorSessionCareer;
       case 'academic':
-        return 'Academic';
+        return context.l10n.counselorSessionAcademic;
       case 'personal':
-        return 'Personal';
+        return context.l10n.counselorSessionPersonal;
       default:
         return type;
     }

@@ -1264,22 +1264,22 @@ class _KeyFeaturesSection extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 40),
-        const _FeatureItem(
+        _FeatureItem(
           icon: Icons.auto_stories,
-          title: 'Comprehensive Learning',
-          description: 'Access courses, track progress, and manage applications all in one place',
+          title: context.l10n.featureLearningTitle,
+          description: context.l10n.featureLearningDesc,
         ),
         const SizedBox(height: 24),
-        const _FeatureItem(
+        _FeatureItem(
           icon: Icons.people_rounded,
-          title: 'Built for Collaboration',
-          description: 'Connect students, parents, counselors, and institutions seamlessly',
+          title: context.l10n.featureCollabTitle,
+          description: context.l10n.featureCollabDesc,
         ),
         const SizedBox(height: 24),
-        const _FeatureItem(
+        _FeatureItem(
           icon: Icons.security_rounded,
-          title: 'Enterprise-Grade Security',
-          description: 'Bank-level encryption and GDPR-compliant data protection',
+          title: context.l10n.featureSecurityTitle,
+          description: context.l10n.featureSecurityDesc,
         ),
       ],
     );
@@ -2123,7 +2123,7 @@ class _FindYourPathSection extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'NEW FEATURE',
+                          context.l10n.homeNewFeature,
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -2152,7 +2152,7 @@ class _FindYourPathSection extends StatelessWidget {
 
                   // Title
                   Text(
-                    'Find Your Path',
+                    context.l10n.homeFindYourPathTitle,
                     style: theme.textTheme.displayMedium?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -2165,7 +2165,7 @@ class _FindYourPathSection extends StatelessWidget {
 
                   // Description
                   Text(
-                    'Discover universities that match your goals, budget, and aspirations.\nLet our intelligent recommendation system guide you to the perfect fit.',
+                    context.l10n.homeFindYourPathDesc,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.95),
                       height: 1.6,
@@ -2183,15 +2183,15 @@ class _FindYourPathSection extends StatelessWidget {
                     children: [
                       _FindYourPathBenefit(
                         icon: Icons.lightbulb_outline,
-                        text: 'Personalized Recommendations',
+                        text: context.l10n.homePersonalizedRecs,
                       ),
                       _FindYourPathBenefit(
                         icon: Icons.school_outlined,
-                        text: '12+ Top Universities',
+                        text: context.l10n.homeTopUniversities,
                       ),
                       _FindYourPathBenefit(
                         icon: Icons.analytics_outlined,
-                        text: 'Smart Matching Algorithm',
+                        text: context.l10n.homeSmartMatching,
                       ),
                     ],
                   ),
@@ -2201,9 +2201,9 @@ class _FindYourPathSection extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () => context.go('/find-your-path'),
                     icon: const Icon(Icons.arrow_forward, size: 24),
-                    label: const Text(
-                      'Start Your Journey',
-                      style: TextStyle(
+                    label: Text(
+                      context.l10n.homeStartYourJourney,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -2227,7 +2227,7 @@ class _FindYourPathSection extends StatelessWidget {
 
                   // Subtext
                   Text(
-                    'No account required - get started instantly',
+                    context.l10n.homeNoAccountRequired,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 14,
@@ -2342,7 +2342,7 @@ class _UniversitySearchSection extends StatelessWidget {
 
                   // Title
                   Text(
-                    'Search Universities',
+                    context.l10n.uniSearchTitle,
                     style: theme.textTheme.displaySmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -2355,7 +2355,7 @@ class _UniversitySearchSection extends StatelessWidget {
 
                   // Description
                   Text(
-                    'Explore 18,000+ universities from around the world.\nFilter by country, tuition, acceptance rate, and more.',
+                    context.l10n.homeSearchUniversitiesDesc,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: Colors.white.withValues(alpha:0.95),
                       height: 1.6,
@@ -2374,17 +2374,17 @@ class _UniversitySearchSection extends StatelessWidget {
                       _UniversityStatChip(
                         icon: Icons.public,
                         value: '100+',
-                        label: 'Countries',
+                        label: context.l10n.heroStatCountries,
                       ),
                       _UniversityStatChip(
                         icon: Icons.account_balance,
                         value: '18K+',
-                        label: 'Universities',
+                        label: context.l10n.heroStatUniversities,
                       ),
                       _UniversityStatChip(
                         icon: Icons.filter_list,
                         value: '10+',
-                        label: 'Filters',
+                        label: context.l10n.homeFilters,
                       ),
                     ],
                   ),
@@ -2394,9 +2394,9 @@ class _UniversitySearchSection extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () => context.go('/universities'),
                     icon: const Icon(Icons.search, size: 22),
-                    label: const Text(
-                      'Browse Universities',
-                      style: TextStyle(
+                    label: Text(
+                      context.l10n.homeBrowseUniversities,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),

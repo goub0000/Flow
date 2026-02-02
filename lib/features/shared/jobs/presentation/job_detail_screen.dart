@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/job_career_widgets.dart';
 
 /// Job Detail Screen
@@ -46,7 +47,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Job Details'),
+        title: Text(context.l10n.jobDetailsTitle),
         actions: [
           IconButton(
             icon: Icon(
@@ -61,8 +62,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 SnackBar(
                   content: Text(
                     _isSaved
-                        ? 'Job saved successfully'
-                        : 'Job removed from saved',
+                        ? context.l10n.jobSavedSuccessfully
+                        : context.l10n.jobRemovedFromSaved,
                   ),
                   duration: const Duration(seconds: 2),
                 ),
@@ -74,8 +75,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             onPressed: () {
               // TODO: Implement sharing
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Share functionality coming soon'),
+                SnackBar(
+                  content: Text(context.l10n.jobShareComingSoon),
                 ),
               );
             },
@@ -121,7 +122,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 _buildSectionCard(
                   icon: Icons.payments,
                   iconColor: AppColors.success,
-                  title: 'Salary Range',
+                  title: context.l10n.jobSalaryRange,
                   child: Text(
                     widget.job.salary,
                     style: theme.textTheme.titleMedium?.copyWith(
@@ -136,7 +137,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 _buildSectionCard(
                   icon: Icons.location_on,
                   iconColor: AppColors.error,
-                  title: 'Location',
+                  title: context.l10n.jobLocation,
                   child: Text(
                     widget.job.isRemote ? 'Remote' : widget.job.location,
                     style: theme.textTheme.bodyLarge,
@@ -149,7 +150,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                   _buildSectionCard(
                     icon: Icons.calendar_today,
                     iconColor: AppColors.warning,
-                    title: 'Application Deadline',
+                    title: context.l10n.jobApplicationDeadline,
                     child: Text(
                       _formatDeadline(widget.job.applicationDeadline!),
                       style: theme.textTheme.bodyLarge?.copyWith(
@@ -163,7 +164,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
                 // Job Description
                 _buildSection(
-                  title: 'Job Description',
+                  title: context.l10n.jobDescription,
                   icon: Icons.description,
                   content: widget.job.description,
                 ),
@@ -172,7 +173,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 // Requirements
                 if (widget.job.requirements.isNotEmpty)
                   _buildListSection(
-                    title: 'Requirements',
+                    title: context.l10n.jobRequirements,
                     icon: Icons.checklist,
                     items: widget.job.requirements,
                   ),
@@ -182,7 +183,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 // Responsibilities
                 if (widget.job.responsibilities.isNotEmpty)
                   _buildListSection(
-                    title: 'Responsibilities',
+                    title: context.l10n.jobResponsibilities,
                     icon: Icons.assignment,
                     items: widget.job.responsibilities,
                   ),
@@ -197,7 +198,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 // Benefits
                 if (widget.job.benefits.isNotEmpty)
                   _buildListSection(
-                    title: 'Benefits',
+                    title: context.l10n.jobBenefits,
                     icon: Icons.card_giftcard,
                     items: widget.job.benefits,
                     iconColor: AppColors.success,
@@ -233,7 +234,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               child: ElevatedButton.icon(
                 onPressed: () => _showApplicationDialog(),
                 icon: const Icon(Icons.send),
-                label: const Text('Apply Now'),
+                label: Text(context.l10n.jobApplyNow),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
@@ -452,9 +453,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
           children: [
             const Icon(Icons.extension, size: 20, color: AppColors.primary),
             const SizedBox(width: 8),
-            const Text(
-              'Required Skills',
-              style: TextStyle(
+            Text(
+              context.l10n.jobRequiredSkills,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -507,9 +508,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             children: [
               const Icon(Icons.business, size: 20, color: AppColors.primary),
               const SizedBox(width: 8),
-              const Text(
-                'About the Company',
-                style: TextStyle(
+              Text(
+                context.l10n.jobAboutTheCompany,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -536,13 +537,13 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             onPressed: () {
               // TODO: View company profile
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Company profile coming soon'),
+                SnackBar(
+                  content: Text(context.l10n.jobCompanyProfileComingSoon),
                 ),
               );
             },
             icon: const Icon(Icons.arrow_forward),
-            label: const Text('View Company Profile'),
+            label: Text(context.l10n.jobViewCompanyProfile),
           ),
         ],
       ),
@@ -557,9 +558,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
           children: [
             const Icon(Icons.work_outline, size: 20, color: AppColors.primary),
             const SizedBox(width: 8),
-            const Text(
-              'Similar Jobs',
-              style: TextStyle(
+            Text(
+              context.l10n.jobSimilarJobs,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -640,14 +641,14 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apply for this Job'),
+        title: Text(context.l10n.jobApplyForThisJob),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'You are applying for:',
+                context.l10n.jobYouAreApplyingFor,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                 ),
@@ -667,12 +668,12 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              const TextField(
+              TextField(
                 maxLines: 5,
                 decoration: InputDecoration(
-                  labelText: 'Cover Letter',
-                  hintText: 'Tell us why you\'re a great fit...',
-                  border: OutlineInputBorder(),
+                  labelText: context.l10n.jobCoverLetter,
+                  hintText: context.l10n.jobCoverLetterHint,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 12),
@@ -681,7 +682,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                   // TODO: Upload resume
                 },
                 icon: const Icon(Icons.upload_file),
-                label: const Text('Upload Resume'),
+                label: Text(context.l10n.jobUploadResume),
               ),
             ],
           ),
@@ -689,19 +690,19 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.jobCancel),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Application submitted successfully!'),
+                SnackBar(
+                  content: Text(context.l10n.jobApplicationSubmittedSuccess),
                   backgroundColor: AppColors.success,
                 ),
               );
             },
-            child: const Text('Submit Application'),
+            child: Text(context.l10n.jobSubmitApplication),
           ),
         ],
       ),

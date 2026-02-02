@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/meeting_models.dart';
 import '../../../../core/providers/meetings_provider.dart';
@@ -21,14 +22,14 @@ class _AvailabilityManagementScreenState
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
 
-  final List<String> _daysOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+  List<String> _daysOfWeek(BuildContext context) => [
+    context.l10n.counselorMeetingSunday,
+    context.l10n.counselorMeetingMonday,
+    context.l10n.counselorMeetingTuesday,
+    context.l10n.counselorMeetingWednesday,
+    context.l10n.counselorMeetingThursday,
+    context.l10n.counselorMeetingFriday,
+    context.l10n.counselorMeetingSaturday,
   ];
 
   @override
@@ -52,14 +53,14 @@ class _AvailabilityManagementScreenState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.counselorMeetingBack,
         ),
-        title: const Text('Manage Availability'),
+        title: Text(context.l10n.counselorMeetingManageAvailability),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => availabilityNotifier.fetchAvailability(),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.counselorMeetingRefresh,
           ),
         ],
       ),
@@ -91,7 +92,7 @@ class _AvailabilityManagementScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Weekly Availability',
+                              context.l10n.counselorMeetingWeeklyAvailability,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -101,7 +102,7 @@ class _AvailabilityManagementScreenState
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Set your available hours for parent meetings',
+                              context.l10n.counselorMeetingSetAvailableHours,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -145,7 +146,7 @@ class _AvailabilityManagementScreenState
                   _buildDaySection(
                     context,
                     day,
-                    _daysOfWeek[day],
+                    _daysOfWeek(context)[day],
                     availabilityByDay[day] ?? [],
                     availabilityNotifier,
                   ),
@@ -164,7 +165,7 @@ class _AvailabilityManagementScreenState
                       });
                     },
                     icon: const Icon(Icons.add),
-                    label: const Text('Add Availability Slot'),
+                    label: Text(context.l10n.counselorMeetingAddAvailabilitySlot),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(16),
                       backgroundColor: AppColors.primary,
@@ -182,7 +183,7 @@ class _AvailabilityManagementScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Add New Availability',
+                            context.l10n.counselorMeetingAddNewAvailability,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -193,16 +194,16 @@ class _AvailabilityManagementScreenState
                           const SizedBox(height: 16),
                           DropdownButtonFormField<int>(
                             value: _selectedDay,
-                            decoration: const InputDecoration(
-                              labelText: 'Day of Week',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.calendar_today),
+                            decoration: InputDecoration(
+                              labelText: context.l10n.counselorMeetingDayOfWeek,
+                              border: const OutlineInputBorder(),
+                              prefixIcon: const Icon(Icons.calendar_today),
                             ),
                             items: List.generate(
                               7,
                               (index) => DropdownMenuItem(
                                 value: index,
-                                child: Text(_daysOfWeek[index]),
+                                child: Text(_daysOfWeek(context)[index]),
                               ),
                             ),
                             onChanged: (value) {
@@ -230,8 +231,8 @@ class _AvailabilityManagementScreenState
                                   icon: const Icon(Icons.access_time),
                                   label: Text(
                                     _startTime != null
-                                        ? 'Start: ${_startTime!.format(context)}'
-                                        : 'Start Time',
+                                        ? context.l10n.counselorMeetingStartWithTime(_startTime!.format(context))
+                                        : context.l10n.counselorMeetingStartTime,
                                   ),
                                 ),
                               ),
@@ -252,8 +253,8 @@ class _AvailabilityManagementScreenState
                                   icon: const Icon(Icons.access_time),
                                   label: Text(
                                     _endTime != null
-                                        ? 'End: ${_endTime!.format(context)}'
-                                        : 'End Time',
+                                        ? context.l10n.counselorMeetingEndWithTime(_endTime!.format(context))
+                                        : context.l10n.counselorMeetingEndTime,
                                   ),
                                 ),
                               ),
@@ -272,7 +273,7 @@ class _AvailabilityManagementScreenState
                                       _endTime = null;
                                     });
                                   },
-                                  child: const Text('Cancel'),
+                                  child: Text(context.l10n.counselorMeetingCancel),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -285,7 +286,7 @@ class _AvailabilityManagementScreenState
                                     backgroundColor: AppColors.success,
                                     foregroundColor: AppColors.textOnPrimary,
                                   ),
-                                  child: const Text('Save'),
+                                  child: Text(context.l10n.counselorMeetingSave),
                                 ),
                               ),
                             ],
@@ -332,7 +333,7 @@ class _AvailabilityManagementScreenState
                 if (slots.isEmpty) ...[
                   const SizedBox(width: 12),
                   Text(
-                    'Not available',
+                    context.l10n.counselorMeetingNotAvailable,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 12,
@@ -389,7 +390,7 @@ class _AvailabilityManagementScreenState
                 ),
                 if (!slot.isActive)
                   Text(
-                    'Inactive',
+                    context.l10n.counselorMeetingInactive,
                     style: TextStyle(
                       fontSize: 11,
                       color: AppColors.textSecondary,
@@ -405,7 +406,7 @@ class _AvailabilityManagementScreenState
               size: 20,
             ),
             onPressed: () => _toggleSlotStatus(slot, notifier),
-            tooltip: slot.isActive ? 'Deactivate' : 'Activate',
+            tooltip: slot.isActive ? context.l10n.counselorMeetingDeactivate : context.l10n.counselorMeetingActivate,
           ),
           IconButton(
             icon: const Icon(
@@ -414,7 +415,7 @@ class _AvailabilityManagementScreenState
               size: 20,
             ),
             onPressed: () => _deleteSlot(slot, notifier),
-            tooltip: 'Delete',
+            tooltip: context.l10n.counselorMeetingDelete,
           ),
         ],
       ),
@@ -447,15 +448,15 @@ class _AvailabilityManagementScreenState
         _endTime = null;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Availability added successfully'),
+        SnackBar(
+          content: Text(context.l10n.counselorMeetingAvailabilityAdded),
           backgroundColor: AppColors.success,
         ),
       );
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(ref.read(staffAvailabilityProvider).error ?? 'Failed to add availability'),
+          content: Text(ref.read(staffAvailabilityProvider).error ?? context.l10n.counselorMeetingFailedToAddAvailability),
           backgroundColor: AppColors.error,
         ),
       );
@@ -474,14 +475,14 @@ class _AvailabilityManagementScreenState
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(slot.isActive ? 'Slot deactivated' : 'Slot activated'),
+          content: Text(slot.isActive ? context.l10n.counselorMeetingSlotDeactivated : context.l10n.counselorMeetingSlotActivated),
           backgroundColor: AppColors.success,
         ),
       );
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to update availability'),
+        SnackBar(
+          content: Text(context.l10n.counselorMeetingFailedToUpdateAvailability),
           backgroundColor: AppColors.error,
         ),
       );
@@ -495,17 +496,17 @@ class _AvailabilityManagementScreenState
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Availability'),
-        content: Text('Are you sure you want to delete the ${slot.dayName} slot?'),
+        title: Text(context.l10n.counselorMeetingDeleteAvailability),
+        content: Text(context.l10n.counselorMeetingConfirmDeleteSlot(slot.dayName)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.counselorMeetingCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(context.l10n.counselorMeetingDelete),
           ),
         ],
       ),
@@ -517,15 +518,15 @@ class _AvailabilityManagementScreenState
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Availability deleted successfully'),
+        SnackBar(
+          content: Text(context.l10n.counselorMeetingAvailabilityDeleted),
           backgroundColor: AppColors.success,
         ),
       );
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to delete availability'),
+        SnackBar(
+          content: Text(context.l10n.counselorMeetingFailedToDeleteAvailability),
           backgroundColor: AppColors.error,
         ),
       );

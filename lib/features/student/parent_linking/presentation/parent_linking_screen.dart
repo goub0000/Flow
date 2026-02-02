@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
@@ -17,7 +18,7 @@ class ParentLinkingScreen extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Parent Linking'),
+          title: Text(context.l10n.parentLinkTitle),
           bottom: TabBar(
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textSecondary,
@@ -29,7 +30,7 @@ class ParentLinkingScreen extends ConsumerWidget {
                   label: Text('${ref.watch(linkedParentsCountProvider)}'),
                   child: const Icon(Icons.family_restroom),
                 ),
-                text: 'Linked',
+                text: context.l10n.parentLinkLinkedTab,
               ),
               Tab(
                 icon: Badge(
@@ -37,11 +38,11 @@ class ParentLinkingScreen extends ConsumerWidget {
                   label: Text('${ref.watch(pendingLinksCountProvider)}'),
                   child: const Icon(Icons.notifications_outlined),
                 ),
-                text: 'Requests',
+                text: context.l10n.parentLinkRequestsTab,
               ),
-              const Tab(
-                icon: Icon(Icons.vpn_key_outlined),
-                text: 'Invite Codes',
+              Tab(
+                icon: const Icon(Icons.vpn_key_outlined),
+                text: context.l10n.parentLinkInviteCodesTab,
               ),
             ],
           ),
@@ -68,16 +69,16 @@ class _LinkedParentsTab extends ConsumerWidget {
     final state = ref.watch(studentParentLinkingProvider);
 
     if (state.isLoading) {
-      return const LoadingIndicator(message: 'Loading linked parents...');
+      return LoadingIndicator(message: context.l10n.parentLinkLoadingLinked);
     }
 
     if (linkedParents.isEmpty) {
       return EmptyState(
         icon: Icons.family_restroom,
-        title: 'No Linked Parents',
-        message: 'When a parent links their account to yours, they will appear here.',
+        title: context.l10n.parentLinkNoLinkedParents,
+        message: context.l10n.parentLinkNoLinkedMessage,
         onAction: () => ref.read(studentParentLinkingProvider.notifier).fetchLinkedParents(),
-        actionLabel: 'Refresh',
+        actionLabel: context.l10n.parentLinkRefresh,
       );
     }
 
@@ -122,39 +123,39 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: Text('Manage Permissions for ${parent.parentName}'),
+          title: Text(context.l10n.parentLinkManagePermissionsFor(parent.parentName)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Control what this parent can see:',
-                style: TextStyle(color: AppColors.textSecondary),
+              Text(
+                context.l10n.parentLinkControlPermissions,
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
               const SizedBox(height: 16),
               SwitchListTile(
-                title: const Text('View Grades'),
-                subtitle: const Text('Allow viewing your academic grades'),
+                title: Text(context.l10n.parentLinkViewGrades),
+                subtitle: Text(context.l10n.parentLinkAllowViewGrades),
                 value: canViewGrades,
                 onChanged: (v) => setState(() => canViewGrades = v),
                 activeColor: AppColors.primary,
               ),
               SwitchListTile(
-                title: const Text('View Activity'),
-                subtitle: const Text('Allow viewing your app activity'),
+                title: Text(context.l10n.parentLinkViewActivity),
+                subtitle: Text(context.l10n.parentLinkAllowViewActivity),
                 value: canViewActivity,
                 onChanged: (v) => setState(() => canViewActivity = v),
                 activeColor: AppColors.primary,
               ),
               SwitchListTile(
-                title: const Text('View Messages'),
-                subtitle: const Text('Allow viewing your messages (private)'),
+                title: Text(context.l10n.parentLinkViewMessages),
+                subtitle: Text(context.l10n.parentLinkAllowViewMessages),
                 value: canViewMessages,
                 onChanged: (v) => setState(() => canViewMessages = v),
                 activeColor: AppColors.warning,
               ),
               SwitchListTile(
-                title: const Text('Receive Alerts'),
-                subtitle: const Text('Send alerts about important updates'),
+                title: Text(context.l10n.parentLinkReceiveAlerts),
+                subtitle: Text(context.l10n.parentLinkSendAlerts),
                 value: canReceiveAlerts,
                 onChanged: (v) => setState(() => canReceiveAlerts = v),
                 activeColor: AppColors.primary,
@@ -164,7 +165,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.parentLinkCancel),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop({
@@ -177,7 +178,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Save'),
+              child: Text(context.l10n.parentLinkSave),
             ),
           ],
         ),
@@ -193,8 +194,8 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
         setState(() => _isProcessing = false);
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Permissions updated'),
+            SnackBar(
+              content: Text(context.l10n.parentLinkPermissionsUpdated),
               backgroundColor: AppColors.success,
             ),
           );
@@ -208,20 +209,19 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Unlink Parent'),
+        title: Text(context.l10n.parentLinkUnlinkParent),
         content: Text(
-          'Are you sure you want to unlink ${parent.parentName}? '
-          'They will no longer be able to view your information.',
+          context.l10n.parentLinkUnlinkConfirm(parent.parentName),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.parentLinkCancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Unlink'),
+            child: Text(context.l10n.parentLinkUnlink),
           ),
         ],
       ),
@@ -237,7 +237,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${parent.parentName} has been unlinked'),
+              content: Text(context.l10n.parentLinkUnlinked(parent.parentName)),
               backgroundColor: AppColors.info,
             ),
           );
@@ -293,7 +293,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
                     Icon(Icons.check_circle, size: 14, color: AppColors.success),
                     const SizedBox(width: 4),
                     Text(
-                      'Linked',
+                      context.l10n.parentLinkLinked,
                       style: TextStyle(
                         color: AppColors.success,
                         fontSize: 12,
@@ -309,7 +309,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
 
           // Permissions
           Text(
-            'Permissions:',
+            context.l10n.parentLinkPermissions,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -320,13 +320,13 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
             runSpacing: 8,
             children: [
               if (permissions['can_view_grades'] == true)
-                _PermissionChip(label: 'View Grades', icon: Icons.grade),
+                _PermissionChip(label: context.l10n.parentLinkViewGrades, icon: Icons.grade),
               if (permissions['can_view_activity'] == true)
-                _PermissionChip(label: 'View Activity', icon: Icons.timeline),
+                _PermissionChip(label: context.l10n.parentLinkViewActivity, icon: Icons.timeline),
               if (permissions['can_view_messages'] == true)
-                _PermissionChip(label: 'View Messages', icon: Icons.message, isPrivate: true),
+                _PermissionChip(label: context.l10n.parentLinkViewMessages, icon: Icons.message, isPrivate: true),
               if (permissions['can_receive_alerts'] == true)
-                _PermissionChip(label: 'Receive Alerts', icon: Icons.notifications),
+                _PermissionChip(label: context.l10n.parentLinkReceiveAlerts, icon: Icons.notifications),
             ],
           ),
           const SizedBox(height: 12),
@@ -359,7 +359,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
                 child: OutlinedButton.icon(
                   onPressed: _isProcessing ? null : _showManagePermissionsDialog,
                   icon: const Icon(Icons.settings, size: 18),
-                  label: const Text('Manage'),
+                  label: Text(context.l10n.parentLinkManage),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primary,
                   ),
@@ -370,7 +370,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
                 child: OutlinedButton.icon(
                   onPressed: _isProcessing ? null : _showUnlinkDialog,
                   icon: const Icon(Icons.link_off, size: 18),
-                  label: const Text('Unlink'),
+                  label: Text(context.l10n.parentLinkUnlink),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.error,
                     side: BorderSide(color: AppColors.error),
@@ -409,16 +409,16 @@ class _PendingLinksTab extends ConsumerWidget {
     final state = ref.watch(studentParentLinkingProvider);
 
     if (state.isLoading) {
-      return const LoadingIndicator(message: 'Loading requests...');
+      return LoadingIndicator(message: context.l10n.parentLinkLoadingRequests);
     }
 
     if (state.pendingLinks.isEmpty) {
       return EmptyState(
         icon: Icons.check_circle_outline,
-        title: 'No Pending Requests',
-        message: 'You don\'t have any parent link requests to review.',
+        title: context.l10n.parentLinkNoPendingRequests,
+        message: context.l10n.parentLinkNoPendingMessage,
         onAction: () => ref.read(studentParentLinkingProvider.notifier).fetchPendingLinks(),
-        actionLabel: 'Refresh',
+        actionLabel: context.l10n.parentLinkRefresh,
       );
     }
 
@@ -465,7 +465,7 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${widget.link.parentName} has been linked to your account'),
+            content: Text(context.l10n.parentLinkApproved(widget.link.parentName)),
             backgroundColor: AppColors.success,
           ),
         );
@@ -477,17 +477,17 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Decline Request'),
-        content: Text('Are you sure you want to decline the link request from ${widget.link.parentName}?'),
+        title: Text(context.l10n.parentLinkDeclineRequest),
+        content: Text(context.l10n.parentLinkDeclineConfirm(widget.link.parentName)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.parentLinkCancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Decline'),
+            child: Text(context.l10n.parentLinkDecline),
           ),
         ],
       ),
@@ -506,8 +506,8 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
 
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Request declined'),
+          SnackBar(
+            content: Text(context.l10n.parentLinkRequestDeclined),
             backgroundColor: AppColors.info,
           ),
         );
@@ -571,7 +571,7 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
 
           // Requested Permissions
           Text(
-            'Requested Permissions:',
+            context.l10n.parentLinkRequestedPermissions,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -582,13 +582,13 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
             runSpacing: 8,
             children: [
               if (permissions['can_view_grades'] == true)
-                _PermissionChip(label: 'View Grades', icon: Icons.grade),
+                _PermissionChip(label: context.l10n.parentLinkViewGrades, icon: Icons.grade),
               if (permissions['can_view_activity'] == true)
-                _PermissionChip(label: 'View Activity', icon: Icons.timeline),
+                _PermissionChip(label: context.l10n.parentLinkViewActivity, icon: Icons.timeline),
               if (permissions['can_view_messages'] == true)
-                _PermissionChip(label: 'View Messages', icon: Icons.message, isPrivate: true),
+                _PermissionChip(label: context.l10n.parentLinkViewMessages, icon: Icons.message, isPrivate: true),
               if (permissions['can_receive_alerts'] == true)
-                _PermissionChip(label: 'Receive Alerts', icon: Icons.notifications),
+                _PermissionChip(label: context.l10n.parentLinkReceiveAlerts, icon: Icons.notifications),
             ],
           ),
           const SizedBox(height: 16),
@@ -612,7 +612,7 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
                     foregroundColor: AppColors.error,
                     side: BorderSide(color: AppColors.error),
                   ),
-                  child: const Text('Decline'),
+                  child: Text(context.l10n.parentLinkDecline),
                 ),
               ),
               const SizedBox(width: 12),
@@ -632,7 +632,7 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : const Text('Approve'),
+                      : Text(context.l10n.parentLinkApprove),
                 ),
               ),
             ],
@@ -723,7 +723,7 @@ class _InviteCodesTab extends ConsumerWidget {
             child: ElevatedButton.icon(
               onPressed: () => _showGenerateCodeDialog(context, ref),
               icon: const Icon(Icons.add),
-              label: const Text('Generate New Invite Code'),
+              label: Text(context.l10n.parentLinkGenerateNewCode),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -746,10 +746,10 @@ class _InviteCodesTab extends ConsumerWidget {
               children: [
                 Icon(Icons.info_outline, color: AppColors.info, size: 20),
                 const SizedBox(width: 8),
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Share your invite code with your parent so they can link their account to yours.',
-                    style: TextStyle(fontSize: 12),
+                    context.l10n.parentLinkShareCodeInfo,
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ),
               ],
@@ -762,10 +762,10 @@ class _InviteCodesTab extends ConsumerWidget {
         // Codes list
         Expanded(
           child: state.inviteCodes.isEmpty
-              ? const EmptyState(
+              ? EmptyState(
                   icon: Icons.vpn_key_outlined,
-                  title: 'No Invite Codes',
-                  message: 'Generate an invite code to share with your parent.',
+                  title: context.l10n.parentLinkNoInviteCodes,
+                  message: context.l10n.parentLinkNoCodesMessage,
                 )
               : ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -791,12 +791,12 @@ class _InviteCodesTab extends ConsumerWidget {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: const Text('Generate Invite Code'),
+          title: Text(context.l10n.parentLinkGenerateInviteCode),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Configure your invite code settings:'),
+              Text(context.l10n.parentLinkConfigureCode),
               const SizedBox(height: 16),
 
               // Expires in days
@@ -833,7 +833,7 @@ class _InviteCodesTab extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.parentLinkCancel),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -841,7 +841,7 @@ class _InviteCodesTab extends ConsumerWidget {
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Generate'),
+              child: Text(context.l10n.parentLinkGenerate),
             ),
           ],
         ),
@@ -868,13 +868,13 @@ class _InviteCodesTab extends ConsumerWidget {
           children: [
             Icon(Icons.check_circle, color: AppColors.success),
             const SizedBox(width: 8),
-            const Text('Code Generated!'),
+            Text(context.l10n.parentLinkCodeGenerated),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Share this code with your parent:'),
+            Text(context.l10n.parentLinkShareCode),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(16),
@@ -900,7 +900,7 @@ class _InviteCodesTab extends ConsumerWidget {
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: code.code));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Code copied to clipboard')),
+                        SnackBar(content: Text(context.l10n.parentLinkCodeCopied)),
                       );
                     },
                   ),
@@ -912,7 +912,7 @@ class _InviteCodesTab extends ConsumerWidget {
         actions: [
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Done'),
+            child: Text(context.l10n.parentLinkDone),
           ),
         ],
       ),
@@ -953,7 +953,7 @@ class _InviteCodeCard extends ConsumerWidget {
                     ? () {
                         Clipboard.setData(ClipboardData(text: code.code));
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Code copied to clipboard')),
+                          SnackBar(content: Text(context.l10n.parentLinkCodeCopied)),
                         );
                       }
                     : null,
@@ -996,17 +996,17 @@ class _InviteCodeCard extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Invite Code'),
-        content: const Text('Are you sure you want to delete this invite code?'),
+        title: Text(context.l10n.parentLinkDeleteCode),
+        content: Text(context.l10n.parentLinkDeleteCodeConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.parentLinkCancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(context.l10n.parentLinkDelete),
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/counseling/models/counseling_models.dart';
 import '../../../shared/counseling/widgets/counseling_widgets.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/institution_counselors_provider.dart';
 
 /// Screen for managing counselors in institution dashboard
@@ -54,7 +55,7 @@ class _CounselorsManagementScreenState
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search counselors...',
+                  hintText: context.l10n.instCounselorSearchHint,
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -99,7 +100,7 @@ class _CounselorsManagementScreenState
                       onPressed: () => ref
                           .read(institutionCounselorsProvider.notifier)
                           .refresh(),
-                      child: const Text('Retry'),
+                      child: Text(context.l10n.instCounselorRetry),
                     ),
                   ],
                 ),
@@ -114,7 +115,7 @@ class _CounselorsManagementScreenState
                     Icon(Icons.people_outline, size: 64, color: Colors.grey[400]),
                     const SizedBox(height: 16),
                     Text(
-                      'No Counselors Found',
+                      context.l10n.instCounselorNoCounselorsFound,
                       style: theme.textTheme.titleLarge?.copyWith(
                         color: Colors.grey[700],
                       ),
@@ -122,8 +123,8 @@ class _CounselorsManagementScreenState
                     const SizedBox(height: 8),
                     Text(
                       state.searchQuery.isNotEmpty
-                          ? 'No counselors match your search'
-                          : 'Add counselors to your institution',
+                          ? context.l10n.instCounselorNoMatchSearch
+                          : context.l10n.instCounselorAddToInstitution,
                       style: TextStyle(color: Colors.grey[600]),
                     ),
                   ],
@@ -162,7 +163,7 @@ class _CounselorsManagementScreenState
                       icon: const Icon(Icons.chevron_left),
                     ),
                     Text(
-                      'Page ${state.currentPage} of ${state.totalPages}',
+                      context.l10n.instCounselorPageOf(state.currentPage, state.totalPages),
                       style: theme.textTheme.bodyMedium,
                     ),
                     IconButton(
@@ -194,7 +195,7 @@ class _CounselorsManagementScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Counseling Overview',
+            context.l10n.instCounselorCounselingOverview,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -203,21 +204,21 @@ class _CounselorsManagementScreenState
           Row(
             children: [
               _buildStatCard(
-                'Counselors',
+                context.l10n.instCounselorCounselors,
                 '${stats['total_counselors'] ?? 0}',
                 Icons.people,
                 AppColors.primary,
               ),
               const SizedBox(width: 12),
               _buildStatCard(
-                'Students',
+                context.l10n.instCounselorStudents,
                 '${stats['total_students_assigned'] ?? 0}',
                 Icons.school,
                 Colors.blue,
               ),
               const SizedBox(width: 12),
               _buildStatCard(
-                'Sessions',
+                context.l10n.instCounselorSessions,
                 '${stats['total_sessions'] ?? 0}',
                 Icons.calendar_month,
                 Colors.orange,
@@ -228,21 +229,21 @@ class _CounselorsManagementScreenState
           Row(
             children: [
               _buildStatCard(
-                'Completed',
+                context.l10n.instCounselorCompleted,
                 '${stats['completed_sessions'] ?? 0}',
                 Icons.check_circle,
                 Colors.green,
               ),
               const SizedBox(width: 12),
               _buildStatCard(
-                'Upcoming',
+                context.l10n.instCounselorUpcoming,
                 '${stats['upcoming_sessions'] ?? 0}',
                 Icons.schedule,
                 Colors.purple,
               ),
               const SizedBox(width: 12),
               _buildStatCard(
-                'Avg Rating',
+                context.l10n.instCounselorAvgRating,
                 stats['average_rating'] != null
                     ? (stats['average_rating'] as num).toStringAsFixed(1)
                     : '-',
@@ -328,7 +329,7 @@ class _CounselorsManagementScreenState
           if (success && mounted) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Student assigned successfully')),
+              SnackBar(content: Text(context.l10n.instCounselorStudentAssigned)),
             );
           }
         },
@@ -407,16 +408,16 @@ class _CounselorCard extends StatelessWidget {
               const Divider(height: 20),
               Row(
                 children: [
-                  _buildMetric(Icons.people, '${counselor.assignedStudents}', 'Students'),
+                  _buildMetric(Icons.people, '${counselor.assignedStudents}', context.l10n.instCounselorStudents),
                   const SizedBox(width: 24),
-                  _buildMetric(Icons.calendar_month, '${counselor.totalSessions}', 'Sessions'),
+                  _buildMetric(Icons.calendar_month, '${counselor.totalSessions}', context.l10n.instCounselorSessions),
                   const SizedBox(width: 24),
-                  _buildMetric(Icons.check_circle, '${counselor.completedSessions}', 'Completed'),
+                  _buildMetric(Icons.check_circle, '${counselor.completedSessions}', context.l10n.instCounselorCompleted),
                   const Spacer(),
                   TextButton.icon(
                     onPressed: onAssignStudents,
                     icon: const Icon(Icons.person_add, size: 18),
-                    label: const Text('Assign'),
+                    label: Text(context.l10n.instCounselorAssign),
                   ),
                 ],
               ),
@@ -516,9 +517,9 @@ class _CounselorDetailsSheet extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildStat('Students', '${counselor.assignedStudents}'),
-            _buildStat('Total Sessions', '${counselor.totalSessions}'),
-            _buildStat('Completed', '${counselor.completedSessions}'),
+            _buildStat(context.l10n.instCounselorStudents, '${counselor.assignedStudents}'),
+            _buildStat(context.l10n.instCounselorTotalSessions, '${counselor.totalSessions}'),
+            _buildStat(context.l10n.instCounselorCompleted, '${counselor.completedSessions}'),
           ],
         ),
         const SizedBox(height: 24),
@@ -529,7 +530,7 @@ class _CounselorDetailsSheet extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: onAssignStudents,
             icon: const Icon(Icons.person_add),
-            label: const Text('Assign Students'),
+            label: Text(context.l10n.instCounselorAssignStudents),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(16),
             ),
@@ -592,7 +593,7 @@ class _AssignStudentDialogState extends ConsumerState<_AssignStudentDialog> {
     );
 
     return AlertDialog(
-      title: Text('Assign Student to ${widget.counselor.name}'),
+      title: Text(context.l10n.instCounselorAssignStudentTo(widget.counselor.name)),
       content: SizedBox(
         width: double.maxFinite,
         height: 400,
@@ -600,10 +601,10 @@ class _AssignStudentDialogState extends ConsumerState<_AssignStudentDialog> {
           children: [
             TextField(
               controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search students...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: context.l10n.instCounselorSearchStudents,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
               ),
               onChanged: (value) => setState(() {}),
             ),
@@ -612,8 +613,8 @@ class _AssignStudentDialogState extends ConsumerState<_AssignStudentDialog> {
               child: studentsAsync.when(
                 data: (students) {
                   if (students.isEmpty) {
-                    return const Center(
-                      child: Text('No students found'),
+                    return Center(
+                      child: Text(context.l10n.instCounselorNoStudentsFound),
                     );
                   }
                   return ListView.builder(
@@ -652,13 +653,13 @@ class _AssignStudentDialogState extends ConsumerState<_AssignStudentDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.instCounselorCancel),
         ),
         ElevatedButton(
           onPressed: _selectedStudentId != null
               ? () => widget.onAssign(_selectedStudentId!)
               : null,
-          child: const Text('Assign'),
+          child: Text(context.l10n.instCounselorAssign),
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Schedule Screen for students
@@ -86,7 +87,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Schedule'),
+        title: Text(context.l10n.studentScheduleTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.today),
@@ -96,7 +97,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                 _currentMonth = DateTime.now();
               });
             },
-            tooltip: 'Go to today',
+            tooltip: context.l10n.studentScheduleGoToToday,
           ),
         ],
       ),
@@ -114,11 +115,11 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Add event feature coming soon!')),
+            SnackBar(content: Text(context.l10n.studentScheduleAddEventSoon)),
           );
         },
         icon: const Icon(Icons.add),
-        label: const Text('Add Event'),
+        label: Text(context.l10n.studentScheduleAddEvent),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
@@ -312,7 +313,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Enjoy your free time!',
+              context.l10n.studentScheduleEnjoyFreeTime,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.grey[500],
               ),
@@ -507,17 +508,17 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               ),
             ],
             const SizedBox(height: 24),
-            _buildDetailRow(Icons.calendar_today, 'Date',
+            _buildDetailRow(Icons.calendar_today, context.l10n.studentScheduleDate,
                 DateFormat('EEEE, MMMM d, y').format(event.startTime)),
             _buildDetailRow(
               Icons.access_time,
-              'Time',
+              context.l10n.studentScheduleTime,
               event.type == EventType.deadline
                   ? 'Due by ${DateFormat('h:mm a').format(event.endTime)}'
                   : '${DateFormat('h:mm a').format(event.startTime)} - ${DateFormat('h:mm a').format(event.endTime)}',
             ),
             if (event.location != null)
-              _buildDetailRow(Icons.location_on, 'Location', event.location!),
+              _buildDetailRow(Icons.location_on, context.l10n.studentScheduleLocation, event.location!),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -526,11 +527,11 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Edit feature coming soon!')),
+                        SnackBar(content: Text(context.l10n.studentScheduleEditSoon)),
                       );
                     },
                     icon: const Icon(Icons.edit),
-                    label: const Text('Edit'),
+                    label: Text(context.l10n.studentScheduleEdit),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -539,11 +540,11 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Reminder set!')),
+                        SnackBar(content: Text(context.l10n.studentScheduleReminderSet)),
                       );
                     },
                     icon: const Icon(Icons.notifications),
-                    label: const Text('Remind Me'),
+                    label: Text(context.l10n.studentScheduleRemindMe),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,

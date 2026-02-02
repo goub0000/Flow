@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/recommendation_letter_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -57,7 +58,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recommendation Letter'),
+        title: Text(context.l10n.recRecommendationLetter),
         actions: [
           if (!isReadOnly)
             IconButton(
@@ -72,7 +73,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                     )
                   : const Icon(Icons.save),
               onPressed: _isSaving ? null : _saveDraft,
-              tooltip: 'Save Draft',
+              tooltip: context.l10n.recSaveDraft,
             ),
         ],
       ),
@@ -108,7 +109,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.request.studentName ?? 'Student',
+                                widget.request.studentName ?? context.l10n.recStudent,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge
@@ -118,7 +119,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Applying to ${widget.request.institutionName ?? 'Institution'}',
+                                context.l10n.recApplyingTo(widget.request.institutionName ?? context.l10n.recInstitution),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -136,19 +137,19 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                     const SizedBox(height: 12),
                     _InfoRow(
                       icon: Icons.description,
-                      label: 'Purpose',
+                      label: context.l10n.recPurpose,
                       value: widget.request.purpose,
                     ),
                     const SizedBox(height: 12),
                     _InfoRow(
                       icon: Icons.category,
-                      label: 'Type',
+                      label: context.l10n.recType,
                       value: widget.request.requestType.name.toUpperCase(),
                     ),
                     const SizedBox(height: 12),
                     _InfoRow(
                       icon: Icons.calendar_today,
-                      label: 'Deadline',
+                      label: context.l10n.recDeadline,
                       value: _formatDate(widget.request.deadline),
                       valueColor: widget.request.isOverdue
                           ? AppColors.error
@@ -157,7 +158,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                     const SizedBox(height: 12),
                     _InfoRow(
                       icon: Icons.label,
-                      label: 'Status',
+                      label: context.l10n.recStatus,
                       value: _getStatusLabel(widget.request.status),
                       valueColor: _getStatusColor(widget.request.status),
                     ),
@@ -166,7 +167,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                       const Divider(),
                       const SizedBox(height: 12),
                       Text(
-                        'Message from Student',
+                        context.l10n.recMessageFromStudent,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -182,7 +183,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                     if (widget.request.achievements != null) ...[
                       const SizedBox(height: 12),
                       Text(
-                        'Achievements',
+                        context.l10n.recAchievements,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -206,7 +207,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                       child: OutlinedButton.icon(
                         onPressed: () => _showDeclineDialog(),
                         icon: const Icon(Icons.close, color: AppColors.error),
-                        label: const Text('Decline'),
+                        label: Text(context.l10n.recDecline),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.error,
                           side: const BorderSide(color: AppColors.error),
@@ -218,7 +219,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                       child: ElevatedButton.icon(
                         onPressed: () => _acceptRequest(),
                         icon: const Icon(Icons.check),
-                        label: const Text('Accept'),
+                        label: Text(context.l10n.recAccept),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.success,
                         ),
@@ -234,7 +235,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                   !isReadOnly &&
                   _contentController.text.isEmpty) ...[
                 Text(
-                  'Quick Start Templates',
+                  context.l10n.recQuickStartTemplates,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 12),
@@ -244,24 +245,24 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                     children: [
                       ListTile(
                         leading: const Icon(Icons.business, color: AppColors.primary),
-                        title: const Text('Professional Template'),
-                        subtitle: const Text('Formal business-style recommendation'),
+                        title: Text(context.l10n.recProfessionalTemplate),
+                        subtitle: Text(context.l10n.recProfessionalTemplateDesc),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () => _useTemplate(_professionalTemplate),
                       ),
                       const Divider(height: 1),
                       ListTile(
                         leading: const Icon(Icons.school, color: AppColors.info),
-                        title: const Text('Academic Template'),
-                        subtitle: const Text('Focus on academic achievements'),
+                        title: Text(context.l10n.recAcademicTemplate),
+                        subtitle: Text(context.l10n.recAcademicTemplateDesc),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () => _useTemplate(_academicTemplate),
                       ),
                       const Divider(height: 1),
                       ListTile(
                         leading: const Icon(Icons.person, color: AppColors.success),
-                        title: const Text('Personal Template'),
-                        subtitle: const Text('Emphasize personal qualities'),
+                        title: Text(context.l10n.recPersonalTemplate),
+                        subtitle: Text(context.l10n.recPersonalTemplateDesc),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () => _useTemplate(_personalTemplate),
                       ),
@@ -274,7 +275,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
               // Recommendation Content (only show if accepted)
               if (widget.request.isAccepted || widget.request.isInProgress || widget.request.isCompleted) ...[
                 Text(
-                  'Recommendation Letter',
+                  context.l10n.recRecommendationLetter,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 12),
@@ -283,7 +284,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                   decoration: InputDecoration(
                     hintText: isReadOnly
                         ? ''
-                        : 'Write your recommendation here or use a template above...',
+                        : context.l10n.recWriteHint,
                     border: const OutlineInputBorder(),
                     alignLabelWithHint: true,
                   ),
@@ -291,10 +292,10 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                   readOnly: isReadOnly,
                   validator: (value) {
                     if (!isReadOnly && (value == null || value.trim().isEmpty)) {
-                      return 'Please write a recommendation';
+                      return context.l10n.recPleaseWriteRecommendation;
                     }
                     if (value != null && value.trim().length < 100) {
-                      return 'Recommendation should be at least 100 characters';
+                      return context.l10n.recMinCharacters;
                     }
                     return null;
                   },
@@ -319,7 +320,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                               ),
                             )
                           : const Icon(Icons.send),
-                      label: const Text('Submit Recommendation'),
+                      label: Text(context.l10n.recSubmitRecommendation),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.success,
                       ),
@@ -332,7 +333,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
                     child: OutlinedButton.icon(
                       onPressed: _isSubmitting || _isSaving ? null : _saveDraft,
                       icon: const Icon(Icons.save),
-                      label: const Text('Save Draft'),
+                      label: Text(context.l10n.recSaveDraft),
                     ),
                   ),
                 ],
@@ -348,10 +349,10 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
     setState(() {
       _contentController.text = template.replaceAll(
         '[Student Name]',
-        widget.request.studentName ?? 'the student',
+        widget.request.studentName ?? context.l10n.recTheStudent,
       ).replaceAll(
         '[Institution Name]',
-        widget.request.institutionName ?? 'your institution',
+        widget.request.institutionName ?? context.l10n.recYourInstitution,
       ).replaceAll(
         '[Purpose]',
         widget.request.purpose,
@@ -370,8 +371,8 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSubmitting = false);
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Request accepted! You can now write the letter.'),
+            SnackBar(
+              content: Text(context.l10n.recRequestAccepted),
               backgroundColor: AppColors.success,
             ),
           );
@@ -379,8 +380,8 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
           ref.read(recommenderRequestsProvider.notifier).refresh();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to accept request'),
+            SnackBar(
+              content: Text(context.l10n.recFailedToAcceptRequest),
               backgroundColor: AppColors.error,
             ),
           );
@@ -391,7 +392,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error accepting request: $e'),
+            content: Text(context.l10n.recErrorAcceptingRequest(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -405,18 +406,18 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Decline Request'),
+        title: Text(context.l10n.recDeclineRequest),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Please provide a reason for declining this request.'),
+            Text(context.l10n.recDeclineReason),
             const SizedBox(height: 16),
             TextField(
               controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason',
-                hintText: 'Enter at least 10 characters',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.recReasonLabel,
+                hintText: context.l10n.recReasonHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -425,14 +426,14 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.recCancel),
           ),
           ElevatedButton(
             onPressed: () async {
               if (reasonController.text.length < 10) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Reason must be at least 10 characters'),
+                  SnackBar(
+                    content: Text(context.l10n.recReasonMinCharacters),
                     backgroundColor: AppColors.error,
                   ),
                 );
@@ -444,7 +445,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Decline'),
+            child: Text(context.l10n.recDecline),
           ),
         ],
       ),
@@ -462,16 +463,16 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSubmitting = false);
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Request declined'),
+            SnackBar(
+              content: Text(context.l10n.recRequestDeclined),
               backgroundColor: AppColors.warning,
             ),
           );
           context.pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to decline request'),
+            SnackBar(
+              content: Text(context.l10n.recFailedToDeclineRequest),
               backgroundColor: AppColors.error,
             ),
           );
@@ -482,7 +483,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error declining request: $e'),
+            content: Text(context.l10n.recErrorDecliningRequest(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -493,8 +494,8 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
   Future<void> _saveDraft() async {
     if (_contentController.text.length < 100) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Letter content must be at least 100 characters'),
+        SnackBar(
+          content: Text(context.l10n.recLetterMinCharacters),
           backgroundColor: AppColors.error,
         ),
       );
@@ -526,8 +527,8 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
       if (mounted) {
         setState(() => _isSaving = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Draft saved successfully'),
+          SnackBar(
+            content: Text(context.l10n.recDraftSaved),
             backgroundColor: AppColors.success,
           ),
         );
@@ -537,7 +538,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSaving = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error saving draft: $e'),
+            content: Text(context.l10n.recErrorSavingDraft(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -553,14 +554,14 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Submit Recommendation?'),
-        content: const Text(
-          'Once submitted, you will not be able to edit this recommendation. Are you sure you want to submit?',
+        title: Text(context.l10n.recSubmitConfirmTitle),
+        content: Text(
+          context.l10n.recSubmitConfirmMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.recCancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -570,7 +571,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.success,
             ),
-            child: const Text('Submit'),
+            child: Text(context.l10n.recSubmit),
           ),
         ],
       ),
@@ -608,16 +609,16 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSubmitting = false);
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Recommendation submitted successfully!'),
+            SnackBar(
+              content: Text(context.l10n.recSubmittedSuccessfully),
               backgroundColor: AppColors.success,
             ),
           );
           context.pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to submit recommendation'),
+            SnackBar(
+              content: Text(context.l10n.recFailedToSubmit),
               backgroundColor: AppColors.error,
             ),
           );
@@ -628,7 +629,7 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error submitting recommendation: $e'),
+            content: Text(context.l10n.recErrorSubmitting(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -643,17 +644,17 @@ class _WriteRecommendationScreenState extends ConsumerState<WriteRecommendationS
   String _getStatusLabel(RecommendationRequestStatus status) {
     switch (status) {
       case RecommendationRequestStatus.pending:
-        return 'PENDING';
+        return context.l10n.recStatusPending;
       case RecommendationRequestStatus.accepted:
-        return 'ACCEPTED';
+        return context.l10n.recStatusAccepted;
       case RecommendationRequestStatus.inProgress:
-        return 'IN PROGRESS';
+        return context.l10n.recStatusInProgress;
       case RecommendationRequestStatus.completed:
-        return 'COMPLETED';
+        return context.l10n.recStatusCompleted;
       case RecommendationRequestStatus.declined:
-        return 'DECLINED';
+        return context.l10n.recStatusDeclined;
       case RecommendationRequestStatus.cancelled:
-        return 'CANCELLED';
+        return context.l10n.recStatusCancelled;
     }
   }
 

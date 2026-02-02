@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/job_career_widgets.dart';
 
 /// Career Counseling Screen
@@ -154,13 +155,13 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Career Counseling'),
+        title: Text(context.l10n.careerCounselingTitle),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Find Counselor'),
-            Tab(text: 'Upcoming'),
-            Tab(text: 'Past Sessions'),
+          tabs: [
+            Tab(text: context.l10n.careerFindCounselor),
+            Tab(text: context.l10n.careerUpcoming),
+            Tab(text: context.l10n.careerPastSessions),
           ],
         ),
       ),
@@ -192,7 +193,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
               TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search by name, specialization, or expertise...',
+                  hintText: context.l10n.careerSearchCounselors,
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
@@ -219,7 +220,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                 child: Row(
                   children: [
                     FilterChip(
-                      label: const Text('Available Now'),
+                      label: Text(context.l10n.careerAvailableNow),
                       selected: false,
                       onSelected: (value) {
                         // TODO: Filter by availability
@@ -227,7 +228,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                     ),
                     const SizedBox(width: 8),
                     FilterChip(
-                      label: const Text('Highest Rated'),
+                      label: Text(context.l10n.careerHighestRated),
                       selected: false,
                       onSelected: (value) {
                         // TODO: Sort by rating
@@ -235,7 +236,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                     ),
                     const SizedBox(width: 8),
                     FilterChip(
-                      label: const Text('Most Experienced'),
+                      label: Text(context.l10n.careerMostExperienced),
                       selected: false,
                       onSelected: (value) {
                         // TODO: Sort by experience
@@ -281,14 +282,14 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'No counselors found',
+              context.l10n.careerNoCounselorsFound,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Try adjusting your search',
+              context.l10n.careerTryAdjustingSearch,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -386,7 +387,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                         onPressed: () {
                           // TODO: Reschedule
                         },
-                        child: const Text('Reschedule'),
+                        child: Text(context.l10n.careerReschedule),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -395,7 +396,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                         onPressed: () {
                           // TODO: Join session
                         },
-                        child: const Text('Join Session'),
+                        child: Text(context.l10n.careerJoinSession),
                       ),
                     ),
                   ],
@@ -420,14 +421,14 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
           ),
           const SizedBox(height: 16),
           Text(
-            'No past sessions',
+            context.l10n.careerNoPastSessions,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Your completed sessions will appear here',
+            context.l10n.careerCompletedSessionsAppearHere,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -539,9 +540,9 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                   const SizedBox(height: 24),
 
                   // Bio
-                  const Text(
-                    'About',
-                    style: TextStyle(
+                  Text(
+                    context.l10n.careerAbout,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -558,9 +559,9 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                   const SizedBox(height: 24),
 
                   // Expertise
-                  const Text(
-                    'Areas of Expertise',
-                    style: TextStyle(
+                  Text(
+                    context.l10n.careerAreasOfExpertise,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -617,8 +618,8 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
                   icon: const Icon(Icons.calendar_today),
                   label: Text(
                     counselor.isAvailable
-                        ? 'Book Session'
-                        : 'Currently Unavailable',
+                        ? context.l10n.careerBookSession
+                        : context.l10n.careerCurrentlyUnavailable,
                   ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -636,7 +637,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Book Counseling Session'),
+        title: Text(context.l10n.careerBookCounselingSession),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -649,7 +650,7 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
               const SizedBox(height: 16),
 
               // Session Type
-              const Text('Session Type'),
+              Text(context.l10n.careerSessionType),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
@@ -670,24 +671,24 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
               const SizedBox(height: 16),
 
               // Date Selection
-              const Text('Preferred Date'),
+              Text(context.l10n.careerPreferredDate),
               const SizedBox(height: 8),
               OutlinedButton.icon(
                 onPressed: () {
                   // TODO: Show date picker
                 },
                 icon: const Icon(Icons.calendar_today),
-                label: const Text('Select Date'),
+                label: Text(context.l10n.careerSelectDate),
               ),
               const SizedBox(height: 16),
 
               // Notes
-              const TextField(
+              TextField(
                 maxLines: 3,
                 decoration: InputDecoration(
-                  labelText: 'Session Notes (Optional)',
-                  hintText: 'What would you like to discuss?',
-                  border: OutlineInputBorder(),
+                  labelText: context.l10n.careerSessionNotesOptional,
+                  hintText: context.l10n.careerWhatToDiscuss,
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ],
@@ -696,19 +697,19 @@ class _CareerCounselingScreenState extends State<CareerCounselingScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.careerCancel),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Session booked successfully!'),
+                SnackBar(
+                  content: Text(context.l10n.careerSessionBookedSuccess),
                   backgroundColor: AppColors.success,
                 ),
               );
             },
-            child: const Text('Confirm Booking'),
+            child: Text(context.l10n.careerConfirmBooking),
           ),
         ],
       ),

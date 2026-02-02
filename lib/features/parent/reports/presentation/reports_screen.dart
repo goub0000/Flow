@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../providers/parent_children_provider.dart';
@@ -35,15 +36,15 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.parentReportBack,
         ),
-        title: const Text('Academic Reports'),
+        title: Text(context.l10n.parentReportAcademicReports),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Progress'),
-            Tab(text: 'Grades'),
-            Tab(text: 'Attendance'),
+          tabs: [
+            Tab(text: context.l10n.parentReportProgress),
+            Tab(text: context.l10n.parentReportGrades),
+            Tab(text: context.l10n.parentReportAttendance),
           ],
         ),
       ),
@@ -65,14 +66,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
       padding: const EdgeInsets.all(16),
       children: [
         Text(
-          'Student Progress Reports',
+          context.l10n.parentReportStudentProgressReports,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Track academic progress and course completion',
+          context.l10n.parentReportTrackProgress,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -91,14 +92,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No Progress Data',
+                    context.l10n.parentReportNoProgressData,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Add children to view their progress reports',
+                    context.l10n.parentReportAddChildrenProgress,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -179,19 +180,19 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                     const Divider(),
                     const SizedBox(height: 16),
                     _ProgressMetric(
-                      label: 'Courses Enrolled',
+                      label: context.l10n.parentReportCoursesEnrolled,
                       value: child.enrolledCourses.length.toString(),
                       icon: Icons.book_outlined,
                     ),
                     const SizedBox(height: 12),
                     _ProgressMetric(
-                      label: 'Applications',
+                      label: context.l10n.parentReportApplications,
                       value: child.applications.length.toString(),
                       icon: Icons.description_outlined,
                     ),
                     const SizedBox(height: 12),
                     _ProgressMetric(
-                      label: 'Overall Progress',
+                      label: context.l10n.parentReportOverallProgress,
                       value: '${(child.averageGrade * 0.85).toStringAsFixed(0)}%',
                       icon: Icons.trending_up,
                     ),
@@ -211,14 +212,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
       padding: const EdgeInsets.all(16),
       children: [
         Text(
-          'Grade Reports',
+          context.l10n.parentReportGradeReports,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Detailed breakdown of grades by subject',
+          context.l10n.parentReportGradeBreakdown,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -237,14 +238,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No Grade Data',
+                    context.l10n.parentReportNoGradeData,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Add children to view their grade reports',
+                    context.l10n.parentReportAddChildrenGrades,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -305,10 +306,10 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
 
   List<Widget> _buildMockGrades(child) {
     final mockSubjects = [
-      {'subject': 'Mathematics', 'grade': 92.0},
-      {'subject': 'English', 'grade': 88.0},
-      {'subject': 'Science', 'grade': 90.0},
-      {'subject': 'History', 'grade': 85.0},
+      {'subject': context.l10n.parentReportMathematics, 'grade': 92.0},
+      {'subject': context.l10n.parentReportEnglish, 'grade': 88.0},
+      {'subject': context.l10n.parentReportScience, 'grade': 90.0},
+      {'subject': context.l10n.parentReportHistory, 'grade': 85.0},
     ];
 
     return mockSubjects.map((data) {
@@ -354,14 +355,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
       padding: const EdgeInsets.all(16),
       children: [
         Text(
-          'Attendance Reports',
+          context.l10n.parentReportAttendanceReports,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Track attendance and participation',
+          context.l10n.parentReportTrackAttendance,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -380,14 +381,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No Attendance Data',
+                    context.l10n.parentReportNoAttendanceData,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Add children to view their attendance reports',
+                    context.l10n.parentReportAddChildrenAttendance,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -440,7 +441,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                       children: [
                         Expanded(
                           child: _AttendanceMetric(
-                            label: 'Present',
+                            label: context.l10n.parentReportPresent,
                             value: '95%',
                             color: AppColors.success,
                           ),
@@ -448,7 +449,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                         const SizedBox(width: 12),
                         Expanded(
                           child: _AttendanceMetric(
-                            label: 'Late',
+                            label: context.l10n.parentReportLate,
                             value: '3%',
                             color: AppColors.warning,
                           ),
@@ -456,7 +457,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                         const SizedBox(width: 12),
                         Expanded(
                           child: _AttendanceMetric(
-                            label: 'Absent',
+                            label: context.l10n.parentReportAbsent,
                             value: '2%',
                             color: AppColors.error,
                           ),
@@ -465,7 +466,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen>
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'This Month: 20 of 21 days present',
+                      context.l10n.parentReportThisMonth('20', '21'),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),

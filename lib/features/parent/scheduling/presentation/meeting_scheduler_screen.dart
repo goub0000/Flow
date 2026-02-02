@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/meeting_models.dart' as models;
 import '../../../../core/providers/meetings_provider.dart';
@@ -57,10 +58,10 @@ class _MeetingSchedulerScreenState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.parentMeetingBack,
         ),
         title: Text(
-          isCounselor ? 'Schedule Counselor Meeting' : 'Schedule Teacher Meeting',
+          isCounselor ? context.l10n.parentMeetingScheduleCounselor : context.l10n.parentMeetingScheduleTeacher,
         ),
       ),
       body: ListView(
@@ -94,8 +95,8 @@ class _MeetingSchedulerScreenState
                     children: [
                       Text(
                         isCounselor
-                            ? 'Counselor Meeting'
-                            : 'Parent-Teacher Conference',
+                            ? context.l10n.parentMeetingCounselorMeeting
+                            : context.l10n.parentMeetingParentTeacherConference,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -103,8 +104,8 @@ class _MeetingSchedulerScreenState
                       const SizedBox(height: 4),
                       Text(
                         isCounselor
-                            ? 'Discuss guidance and academic planning'
-                            : 'Discuss student progress and performance',
+                            ? context.l10n.parentMeetingCounselorDescription
+                            : context.l10n.parentMeetingTeacherDescription,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -119,7 +120,7 @@ class _MeetingSchedulerScreenState
 
           // Select Child
           Text(
-            'Select Student',
+            context.l10n.parentMeetingSelectStudent,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -138,7 +139,7 @@ class _MeetingSchedulerScreenState
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'No children added. Please add children to schedule meetings.',
+                        context.l10n.parentMeetingNoChildren,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
@@ -215,7 +216,7 @@ class _MeetingSchedulerScreenState
 
           // Select Staff Member
           Text(
-            isCounselor ? 'Select Counselor' : 'Select Teacher',
+            isCounselor ? context.l10n.parentMeetingSelectCounselor : context.l10n.parentMeetingSelectTeacher,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -241,7 +242,7 @@ class _MeetingSchedulerScreenState
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'No ${isCounselor ? 'counselors' : 'teachers'} available at this time.',
+                        isCounselor ? context.l10n.parentMeetingNoCounselors : context.l10n.parentMeetingNoTeachers,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
@@ -254,7 +255,7 @@ class _MeetingSchedulerScreenState
               child: DropdownButtonFormField<models.StaffMember>(
                 value: _selectedStaff,
                 decoration: InputDecoration(
-                  labelText: isCounselor ? 'Counselor' : 'Teacher',
+                  labelText: isCounselor ? context.l10n.parentMeetingCounselor : context.l10n.parentMeetingTeacher,
                   prefixIcon: Icon(
                     isCounselor ? Icons.psychology : Icons.person,
                   ),
@@ -320,7 +321,7 @@ class _MeetingSchedulerScreenState
 
           // Select Date
           Text(
-            'Select Date & Time',
+            context.l10n.parentMeetingSelectDateTime,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -345,7 +346,7 @@ class _MeetingSchedulerScreenState
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Date',
+                              context.l10n.parentMeetingDate,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -358,7 +359,7 @@ class _MeetingSchedulerScreenState
                         const SizedBox(height: 8),
                         Text(
                           _selectedDate == null
-                              ? 'Select date'
+                              ? context.l10n.parentMeetingSelectDate
                               : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -387,7 +388,7 @@ class _MeetingSchedulerScreenState
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Time',
+                              context.l10n.parentMeetingTime,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -400,7 +401,7 @@ class _MeetingSchedulerScreenState
                         const SizedBox(height: 8),
                         Text(
                           _selectedTime == null
-                              ? 'Select time'
+                              ? context.l10n.parentMeetingSelectTime
                               : _selectedTime!.format(context),
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -417,7 +418,7 @@ class _MeetingSchedulerScreenState
 
           // Meeting Mode
           Text(
-            'Meeting Mode',
+            context.l10n.parentMeetingMode,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -430,7 +431,7 @@ class _MeetingSchedulerScreenState
                   mode: models.MeetingMode.videoCall,
                   selectedMode: _meetingMode,
                   icon: Icons.videocam,
-                  label: 'Video Call',
+                  label: context.l10n.parentMeetingVideoCall,
                   onTap: () => setState(() => _meetingMode = models.MeetingMode.videoCall),
                 ),
               ),
@@ -440,7 +441,7 @@ class _MeetingSchedulerScreenState
                   mode: models.MeetingMode.inPerson,
                   selectedMode: _meetingMode,
                   icon: Icons.meeting_room,
-                  label: 'In Person',
+                  label: context.l10n.parentMeetingInPerson,
                   onTap: () => setState(() => _meetingMode = models.MeetingMode.inPerson),
                 ),
               ),
@@ -450,7 +451,7 @@ class _MeetingSchedulerScreenState
                   mode: models.MeetingMode.phoneCall,
                   selectedMode: _meetingMode,
                   icon: Icons.phone,
-                  label: 'Phone',
+                  label: context.l10n.parentMeetingPhone,
                   onTap: () => setState(() => _meetingMode = models.MeetingMode.phoneCall),
                 ),
               ),
@@ -460,7 +461,7 @@ class _MeetingSchedulerScreenState
 
           // Duration
           Text(
-            'Duration',
+            context.l10n.parentMeetingDuration,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -469,18 +470,18 @@ class _MeetingSchedulerScreenState
           CustomCard(
             child: DropdownButtonFormField<int>(
               value: _durationMinutes,
-              decoration: const InputDecoration(
-                labelText: 'Meeting duration',
-                prefixIcon: Icon(Icons.schedule),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.parentMeetingDurationLabel,
+                prefixIcon: const Icon(Icons.schedule),
+                border: const OutlineInputBorder(),
               ),
-              items: const [
-                DropdownMenuItem(value: 15, child: Text('15 minutes')),
-                DropdownMenuItem(value: 30, child: Text('30 minutes')),
-                DropdownMenuItem(value: 45, child: Text('45 minutes')),
-                DropdownMenuItem(value: 60, child: Text('1 hour')),
-                DropdownMenuItem(value: 90, child: Text('1.5 hours')),
-                DropdownMenuItem(value: 120, child: Text('2 hours')),
+              items: [
+                DropdownMenuItem(value: 15, child: Text(context.l10n.parentMeeting15Min)),
+                DropdownMenuItem(value: 30, child: Text(context.l10n.parentMeeting30Min)),
+                DropdownMenuItem(value: 45, child: Text(context.l10n.parentMeeting45Min)),
+                DropdownMenuItem(value: 60, child: Text(context.l10n.parentMeeting1Hour)),
+                DropdownMenuItem(value: 90, child: Text(context.l10n.parentMeeting1Point5Hours)),
+                DropdownMenuItem(value: 120, child: Text(context.l10n.parentMeeting2Hours)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -493,7 +494,7 @@ class _MeetingSchedulerScreenState
 
           // Meeting Subject
           Text(
-            'Meeting Subject',
+            context.l10n.parentMeetingSubject,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -502,11 +503,11 @@ class _MeetingSchedulerScreenState
           CustomCard(
             child: TextFormField(
               controller: _subjectController,
-              decoration: const InputDecoration(
-                labelText: 'Subject',
-                hintText: 'e.g., Math progress discussion',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.subject),
+              decoration: InputDecoration(
+                labelText: context.l10n.parentMeetingSubjectLabel,
+                hintText: context.l10n.parentMeetingSubjectHint,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.subject),
               ),
             ),
           ),
@@ -514,7 +515,7 @@ class _MeetingSchedulerScreenState
 
           // Additional Notes
           Text(
-            'Additional Notes (Optional)',
+            context.l10n.parentMeetingAdditionalNotes,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -523,11 +524,11 @@ class _MeetingSchedulerScreenState
           CustomCard(
             child: TextFormField(
               controller: _notesController,
-              decoration: const InputDecoration(
-                labelText: 'Notes',
-                hintText: 'Any additional information...',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.notes),
+              decoration: InputDecoration(
+                labelText: context.l10n.parentMeetingNotesLabel,
+                hintText: context.l10n.parentMeetingNotesHint,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.notes),
               ),
               maxLines: 4,
             ),
@@ -547,7 +548,7 @@ class _MeetingSchedulerScreenState
                     ),
                   )
                 : const Icon(Icons.event_available),
-            label: Text(_isSubmitting ? 'Requesting...' : 'Request Meeting'),
+            label: Text(_isSubmitting ? context.l10n.parentMeetingRequesting : context.l10n.parentMeetingRequestMeeting),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(16),
               backgroundColor: AppColors.primary,
@@ -643,12 +644,11 @@ class _MeetingSchedulerScreenState
                   color: AppColors.success,
                 ),
                 const SizedBox(width: 12),
-                const Text('Meeting Request Sent'),
+                Text(context.l10n.parentMeetingRequestSent),
               ],
             ),
             content: Text(
-              'Your meeting request has been sent to ${_selectedStaff!.displayName}. '
-              'You will be notified once they respond.',
+              context.l10n.parentMeetingRequestSentDescription(_selectedStaff!.displayName),
             ),
             actions: [
               TextButton(
@@ -656,7 +656,7 @@ class _MeetingSchedulerScreenState
                   Navigator.pop(context);
                   context.pop();
                 },
-                child: const Text('OK'),
+                child: Text(context.l10n.parentMeetingOk),
               ),
             ],
           ),
@@ -664,7 +664,7 @@ class _MeetingSchedulerScreenState
       } else {
         // Show error from provider
         final error = ref.read(parentMeetingsProvider).error;
-        _showErrorDialog(error ?? 'Failed to request meeting. Please try again.');
+        _showErrorDialog(error ?? context.l10n.parentMeetingRequestFailed);
       }
     } catch (e) {
       if (!mounted) return;
@@ -689,14 +689,14 @@ class _MeetingSchedulerScreenState
               color: AppColors.error,
             ),
             const SizedBox(width: 12),
-            const Text('Error'),
+            Text(context.l10n.parentMeetingError),
           ],
         ),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(context.l10n.parentMeetingOk),
           ),
         ],
       ),

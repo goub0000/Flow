@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/help_support_widgets.dart';
 
 /// FAQ Screen
@@ -179,17 +180,17 @@ class _FAQScreenState extends State<FAQScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Frequently Asked Questions'),
+        title: Text(context.l10n.helpFaqTitle),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'Getting Started'),
-            Tab(text: 'Account'),
-            Tab(text: 'Courses'),
-            Tab(text: 'Payments'),
-            Tab(text: 'Technical'),
+          tabs: [
+            Tab(text: context.l10n.helpFaqAll),
+            Tab(text: context.l10n.helpFaqGettingStarted),
+            Tab(text: context.l10n.helpFaqAccount),
+            Tab(text: context.l10n.helpFaqCourses),
+            Tab(text: context.l10n.helpFaqPayments),
+            Tab(text: context.l10n.helpFaqTechnical),
           ],
         ),
       ),
@@ -202,7 +203,7 @@ class _FAQScreenState extends State<FAQScreen>
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search FAQs...',
+                hintText: context.l10n.helpSearchFaqs,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -260,14 +261,14 @@ class _FAQScreenState extends State<FAQScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'No FAQs found',
+              context.l10n.helpNoFaqsFound,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Try a different search term',
+              context.l10n.helpTryDifferentSearch,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -302,8 +303,8 @@ class _FAQScreenState extends State<FAQScreen>
               }
             });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Thanks for your feedback!'),
+              SnackBar(
+                content: Text(context.l10n.helpThanksForFeedback),
                 duration: Duration(seconds: 2),
               ),
             );

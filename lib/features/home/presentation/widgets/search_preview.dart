@@ -22,23 +22,25 @@ class _SearchPreviewState extends State<SearchPreview> {
   bool _isFocused = false;
   final TextEditingController _controller = TextEditingController();
 
-  final List<_SearchSuggestion> _suggestions = const [
-    _SearchSuggestion(
-      name: 'University of Ghana',
-      location: 'Accra, Ghana',
-      type: 'Public University',
-    ),
-    _SearchSuggestion(
-      name: 'University of Cape Town',
-      location: 'Cape Town, South Africa',
-      type: 'Public University',
-    ),
-    _SearchSuggestion(
-      name: 'Ashesi University',
-      location: 'Berekuso, Ghana',
-      type: 'Private University',
-    ),
-  ];
+  List<_SearchSuggestion> _buildSuggestions(BuildContext context) {
+    return [
+      _SearchSuggestion(
+        name: context.l10n.searchSuggestionGhana,
+        location: context.l10n.searchSuggestionGhanaLocation,
+        type: context.l10n.searchSuggestionPublicUniversity,
+      ),
+      _SearchSuggestion(
+        name: context.l10n.searchSuggestionCapeTown,
+        location: context.l10n.searchSuggestionCapeTownLocation,
+        type: context.l10n.searchSuggestionPublicUniversity,
+      ),
+      _SearchSuggestion(
+        name: context.l10n.searchSuggestionAshesi,
+        location: context.l10n.searchSuggestionAshesiLocation,
+        type: context.l10n.searchSuggestionPrivateUniversity,
+      ),
+    ];
+  }
 
   @override
   void dispose() {
@@ -49,6 +51,7 @@ class _SearchPreviewState extends State<SearchPreview> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final suggestions = _buildSuggestions(context);
 
     return Column(
       children: [
@@ -129,9 +132,9 @@ class _SearchPreviewState extends State<SearchPreview> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _suggestions.length,
+                  itemCount: suggestions.length,
                   itemBuilder: (context, index) {
-                    final suggestion = _suggestions[index];
+                    final suggestion = suggestions[index];
                     return InkWell(
                       onTap: () {
                         widget.onSearchTap?.call();

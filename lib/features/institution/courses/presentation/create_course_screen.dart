@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/institution_courses_provider.dart';
 
 /// Create/Edit Course Screen for Institutions
@@ -92,7 +93,7 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(isEditMode ? 'Edit Course' : 'Create Course'),
+        title: Text(isEditMode ? context.l10n.instCourseEditCourse : context.l10n.instCourseCreateCourse),
         backgroundColor: AppColors.surface,
       ),
       body: Form(
@@ -122,25 +123,25 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
               ),
 
             // Basic Information Section
-            _buildSectionTitle('Basic Information'),
+            _buildSectionTitle(context.l10n.instCourseBasicInfo),
             const SizedBox(height: 12),
 
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Course Title *',
-                hintText: 'e.g., Introduction to Programming',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.instCourseTitleLabel,
+                hintText: context.l10n.instCourseTitleHint,
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Title is required';
+                  return context.l10n.instCourseTitleRequired;
                 }
                 if (value.length < 3) {
-                  return 'Title must be at least 3 characters';
+                  return context.l10n.instCourseTitleMinLength;
                 }
                 if (value.length > 200) {
-                  return 'Title must be less than 200 characters';
+                  return context.l10n.instCourseTitleMaxLength;
                 }
                 return null;
               },
@@ -149,19 +150,19 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
 
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description *',
-                hintText: 'Describe what students will learn...',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.instCourseDescriptionLabel,
+                hintText: context.l10n.instCourseDescriptionHint,
+                border: const OutlineInputBorder(),
                 alignLabelWithHint: true,
               ),
               maxLines: 5,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Description is required';
+                  return context.l10n.instCourseDescriptionRequired;
                 }
                 if (value.length < 10) {
-                  return 'Description must be at least 10 characters';
+                  return context.l10n.instCourseDescriptionMinLength;
                 }
                 return null;
               },
@@ -169,7 +170,7 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
             const SizedBox(height: 24),
 
             // Course Type and Level
-            _buildSectionTitle('Course Details'),
+            _buildSectionTitle(context.l10n.instCourseCourseDetails),
             const SizedBox(height: 12),
 
             Row(
@@ -177,9 +178,9 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                 Expanded(
                   child: DropdownButtonFormField<CourseType>(
                     value: _selectedType,
-                    decoration: const InputDecoration(
-                      labelText: 'Course Type *',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseCourseType,
+                      border: const OutlineInputBorder(),
                     ),
                     items: CourseType.values.map((type) {
                       return DropdownMenuItem(
@@ -198,9 +199,9 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                 Expanded(
                   child: DropdownButtonFormField<CourseLevel>(
                     value: _selectedLevel,
-                    decoration: const InputDecoration(
-                      labelText: 'Difficulty Level *',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseDifficultyLevel,
+                      border: const OutlineInputBorder(),
                     ),
                     items: CourseLevel.values.map((level) {
                       return DropdownMenuItem(
@@ -224,10 +225,10 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                 Expanded(
                   child: TextFormField(
                     controller: _durationController,
-                    decoration: const InputDecoration(
-                      labelText: 'Duration (hours)',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseDurationHours,
                       hintText: '10',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
@@ -237,10 +238,10 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                 Expanded(
                   child: TextFormField(
                     controller: _categoryController,
-                    decoration: const InputDecoration(
-                      labelText: 'Category',
-                      hintText: 'Computer Science',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseCategory,
+                      hintText: context.l10n.instCourseCategoryHint,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -249,7 +250,7 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
             const SizedBox(height: 24),
 
             // Pricing Section
-            _buildSectionTitle('Pricing'),
+            _buildSectionTitle(context.l10n.instCoursePricing),
             const SizedBox(height: 12),
 
             Row(
@@ -258,18 +259,18 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                   flex: 2,
                   child: TextFormField(
                     controller: _priceController,
-                    decoration: const InputDecoration(
-                      labelText: 'Price *',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCoursePriceLabel,
                       hintText: '0',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       prefixText: '\$ ',
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Price is required';
+                      if (value == null || value.isEmpty) return context.l10n.instCoursePriceRequired;
                       final price = double.tryParse(value);
-                      if (price == null || price < 0) return 'Invalid price';
+                      if (price == null || price < 0) return context.l10n.instCourseInvalidPrice;
                       return null;
                     },
                   ),
@@ -278,9 +279,9 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _selectedCurrency,
-                    decoration: const InputDecoration(
-                      labelText: 'Currency',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseCurrency,
+                      border: const OutlineInputBorder(),
                     ),
                     items: ['USD', 'EUR', 'GBP', 'KES', 'NGN', 'ZAR']
                         .map((curr) => DropdownMenuItem(value: curr, child: Text(curr)))
@@ -296,10 +297,10 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
 
             TextFormField(
               controller: _maxStudentsController,
-              decoration: const InputDecoration(
-                labelText: 'Max Students (optional)',
-                hintText: 'Leave empty for unlimited',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.instCourseMaxStudents,
+                hintText: context.l10n.instCourseMaxStudentsHint,
+                border: const OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -307,26 +308,26 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
             const SizedBox(height: 24),
 
             // Media Section
-            _buildSectionTitle('Media'),
+            _buildSectionTitle(context.l10n.instCourseMedia),
             const SizedBox(height: 12),
 
             TextFormField(
               controller: _thumbnailUrlController,
-              decoration: const InputDecoration(
-                labelText: 'Thumbnail URL (optional)',
+              decoration: InputDecoration(
+                labelText: context.l10n.instCourseThumbnailUrl,
                 hintText: 'https://example.com/image.jpg',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 24),
 
             // Tags
-            _buildSectionTitle('Tags'),
+            _buildSectionTitle(context.l10n.instCourseTags),
             const SizedBox(height: 12),
             _buildListSection(
               items: _tags,
               controller: _tagController,
-              hintText: 'Add tag (e.g., programming, python)',
+              hintText: context.l10n.instCourseAddTagHint,
               onAdd: () {
                 if (_tagController.text.trim().isNotEmpty) {
                   setState(() => _tags.add(_tagController.text.trim()));
@@ -337,12 +338,12 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
             const SizedBox(height: 24),
 
             // Learning Outcomes
-            _buildSectionTitle('Learning Outcomes'),
+            _buildSectionTitle(context.l10n.instCourseLearningOutcomes),
             const SizedBox(height: 12),
             _buildListSection(
               items: _learningOutcomes,
               controller: _outcomeController,
-              hintText: 'What will students learn?',
+              hintText: context.l10n.instCourseOutcomeHint,
               onAdd: () {
                 if (_outcomeController.text.trim().isNotEmpty) {
                   setState(() => _learningOutcomes.add(_outcomeController.text.trim()));
@@ -353,12 +354,12 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
             const SizedBox(height: 24),
 
             // Prerequisites
-            _buildSectionTitle('Prerequisites'),
+            _buildSectionTitle(context.l10n.instCoursePrerequisites),
             const SizedBox(height: 12),
             _buildListSection(
               items: _prerequisites,
               controller: _prerequisiteController,
-              hintText: 'What do students need to know?',
+              hintText: context.l10n.instCoursePrerequisiteHint,
               onAdd: () {
                 if (_prerequisiteController.text.trim().isNotEmpty) {
                   setState(() => _prerequisites.add(_prerequisiteController.text.trim()));
@@ -380,7 +381,7 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : Text(isEditMode ? 'Update Course' : 'Create Course'),
+                  : Text(isEditMode ? context.l10n.instCourseUpdateCourse : context.l10n.instCourseCreateCourse),
             ),
             const SizedBox(height: 32),
           ],
@@ -494,14 +495,14 @@ class _CreateCourseScreenState extends ConsumerState<CreateCourseScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(widget.course == null
-                ? 'Course created successfully!'
-                : 'Course updated successfully!'),
+                ? context.l10n.instCourseCreatedSuccess
+                : context.l10n.instCourseUpdatedSuccess),
             backgroundColor: Colors.green,
           ),
         );
         context.pop(); // Go back to courses list
       } else {
-        setState(() => _error = 'Failed to save course. Please try again.');
+        setState(() => _error = context.l10n.instCourseFailedToSave);
       }
     } catch (e) {
       setState(() => _error = e.toString());

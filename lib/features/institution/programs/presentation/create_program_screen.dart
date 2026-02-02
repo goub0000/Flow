@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/program_model.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/institution_programs_provider.dart';
 import '../../../authentication/providers/auth_provider.dart';
 
@@ -67,7 +68,7 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Program'),
+        title: Text(context.l10n.instProgramCreateProgram),
       ),
       body: Form(
         key: _formKey,
@@ -77,9 +78,9 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             // Program Name
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Program Name *',
-                hintText: 'e.g., Bachelor of Computer Science',
+              decoration: InputDecoration(
+                labelText: context.l10n.instProgramNameLabel,
+                hintText: context.l10n.instProgramNameHint,
                 prefixIcon: Icon(Icons.school),
                 border: OutlineInputBorder(),
               ),
@@ -94,9 +95,9 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             // Description
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description *',
-                hintText: 'Describe the program...',
+              decoration: InputDecoration(
+                labelText: context.l10n.instProgramDescriptionLabel,
+                hintText: context.l10n.instProgramDescriptionHint,
                 prefixIcon: Icon(Icons.description),
                 border: OutlineInputBorder(),
               ),
@@ -112,8 +113,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             // Category Dropdown
             DropdownButtonFormField<String>(
               initialValue: 'Technology',
-              decoration: const InputDecoration(
-                labelText: 'Category *',
+              decoration: InputDecoration(
+                labelText: context.l10n.instProgramCategoryLabel,
                 prefixIcon: Icon(Icons.category),
                 border: OutlineInputBorder(),
               ),
@@ -133,8 +134,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             // Level Dropdown
             DropdownButtonFormField<String>(
               initialValue: 'undergraduate',
-              decoration: const InputDecoration(
-                labelText: 'Level *',
+              decoration: InputDecoration(
+                labelText: context.l10n.instProgramLevelLabel,
                 prefixIcon: Icon(Icons.trending_up),
                 border: OutlineInputBorder(),
               ),
@@ -161,8 +162,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Duration',
+                        Text(
+                          context.l10n.instProgramDuration,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -197,8 +198,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             // Fee
             TextFormField(
               controller: _feeController,
-              decoration: const InputDecoration(
-                labelText: 'Program Fee (USD) *',
+              decoration: InputDecoration(
+                labelText: context.l10n.instProgramFeeLabel,
                 hintText: '0.00',
                 prefixIcon: Icon(Icons.attach_money),
                 border: OutlineInputBorder(),
@@ -217,9 +218,9 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             // Max Students
             TextFormField(
               controller: _maxStudentsController,
-              decoration: const InputDecoration(
-                labelText: 'Maximum Students *',
-                hintText: 'e.g., 100',
+              decoration: InputDecoration(
+                labelText: context.l10n.instProgramMaxStudentsLabel,
+                hintText: context.l10n.instProgramMaxStudentsHint,
                 prefixIcon: Icon(Icons.people),
                 border: OutlineInputBorder(),
               ),
@@ -237,7 +238,7 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             Card(
               child: ListTile(
                 leading: const Icon(Icons.calendar_today),
-                title: const Text('Start Date'),
+                title: Text(context.l10n.instProgramStartDate),
                 subtitle: Text(_formatDate(_startDate)),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () async {
@@ -259,7 +260,7 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
             Card(
               child: ListTile(
                 leading: const Icon(Icons.event),
-                title: const Text('Application Deadline'),
+                title: Text(context.l10n.instProgramApplicationDeadline),
                 subtitle: Text(_formatDate(_applicationDeadline)),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () async {
@@ -279,7 +280,7 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
 
             // Requirements Section
             Text(
-              'Requirements',
+              context.l10n.instProgramRequirements,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -293,8 +294,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
                         Expanded(
                           child: TextField(
                             controller: _requirementController,
-                            decoration: const InputDecoration(
-                              hintText: 'Add a requirement...',
+                            decoration: InputDecoration(
+                              hintText: context.l10n.instProgramAddRequirementHint,
                               border: OutlineInputBorder(),
                             ),
                             onSubmitted: (_) => _addRequirement(),
@@ -352,7 +353,7 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Create Program'),
+                    : Text(context.l10n.instProgramCreateProgram),
               ),
             ),
             const SizedBox(height: 24),
@@ -399,8 +400,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
 
     if (_requirements.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please add at least one requirement'),
+        SnackBar(
+          content: Text(context.l10n.instProgramAddAtLeastOneRequirement),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -409,8 +410,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
 
     if (_applicationDeadline.isAfter(_startDate)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Application deadline must be before start date'),
+        SnackBar(
+          content: Text(context.l10n.instProgramDeadlineBeforeStart),
           backgroundColor: AppColors.error,
         ),
       );
@@ -451,8 +452,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
 
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Program created successfully!'),
+          SnackBar(
+            content: Text(context.l10n.instProgramCreatedSuccess),
             backgroundColor: AppColors.success,
           ),
         );
@@ -460,8 +461,8 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
       } else if (mounted) {
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to create program'),
+          SnackBar(
+            content: Text(context.l10n.instProgramFailedToCreate),
             backgroundColor: AppColors.error,
           ),
         );
@@ -471,7 +472,7 @@ class _CreateProgramScreenState extends ConsumerState<CreateProgramScreen> {
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error creating program: $e'),
+            content: Text(context.l10n.instProgramErrorCreating(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

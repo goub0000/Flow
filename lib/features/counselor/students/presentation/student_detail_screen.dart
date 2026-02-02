@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/counseling_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -41,7 +42,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.counselorStudentBack,
         ),
         title: Text(widget.student.name),
         actions: [
@@ -50,17 +51,17 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
             onPressed: () {
               // TODO: Add notes
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Add notes feature coming soon')),
+                SnackBar(content: Text(context.l10n.counselorStudentAddNotesComingSoon)),
               );
             },
           ),
         ],
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Overview'),
-            Tab(text: 'Sessions'),
-            Tab(text: 'Notes'),
+          tabs: [
+            Tab(text: context.l10n.counselorStudentOverview),
+            Tab(text: context.l10n.counselorStudentSessions),
+            Tab(text: context.l10n.counselorStudentNotes),
           ],
         ),
       ),
@@ -78,7 +79,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
           _showScheduleDialog();
         },
         icon: const Icon(Icons.add),
-        label: const Text('Schedule Session'),
+        label: Text(context.l10n.counselorStudentScheduleSession),
       ),
     );
   }
@@ -141,7 +142,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
 
           // Academic Performance
           Text(
-            'Academic Performance',
+            context.l10n.counselorStudentAcademicPerformance,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -150,7 +151,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
               Expanded(
                 child: _MetricCard(
                   icon: Icons.school,
-                  label: 'GPA',
+                  label: context.l10n.counselorStudentGpa,
                   value: widget.student.gpa.toStringAsFixed(2),
                   color: _getGPAColor(widget.student.gpa),
                 ),
@@ -159,7 +160,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
               Expanded(
                 child: _MetricCard(
                   icon: Icons.event,
-                  label: 'Sessions',
+                  label: context.l10n.counselorStudentSessions,
                   value: '${widget.student.totalSessions}',
                   color: AppColors.info,
                 ),
@@ -170,7 +171,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
 
           // Interests
           Text(
-            'Interests',
+            context.l10n.counselorStudentInterests,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -191,7 +192,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
 
           // Strengths
           Text(
-            'Strengths',
+            context.l10n.counselorStudentStrengths,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -225,7 +226,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
 
           // Challenges
           Text(
-            'Areas for Growth',
+            context.l10n.counselorStudentAreasForGrowth,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -278,16 +279,16 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
                 color: AppColors.textSecondary,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'No Sessions Yet',
-                style: TextStyle(
+              Text(
+                context.l10n.counselorStudentNoSessionsYet,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Schedule a session with this student',
+                context.l10n.counselorStudentScheduleSessionPrompt,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.textSecondary),
               ),
@@ -393,16 +394,16 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
               color: AppColors.textSecondary,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'No Notes Yet',
-              style: TextStyle(
+            Text(
+              context.l10n.counselorStudentNoNotesYet,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Add private notes about this student',
+              context.l10n.counselorStudentAddPrivateNotes,
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textSecondary),
             ),
@@ -411,11 +412,11 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
               onPressed: () {
                 // TODO: Add note
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add notes feature coming soon')),
+                  SnackBar(content: Text(context.l10n.counselorStudentAddNotesComingSoon)),
                 );
               },
               icon: const Icon(Icons.add),
-              label: const Text('Add Note'),
+              label: Text(context.l10n.counselorStudentAddNote),
             ),
           ],
         ),
@@ -433,15 +434,15 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
   String _formatSessionType(String type) {
     switch (type) {
       case 'individual':
-        return 'Individual Counseling';
+        return context.l10n.counselorStudentIndividualCounseling;
       case 'group':
-        return 'Group Session';
+        return context.l10n.counselorStudentGroupSession;
       case 'career':
-        return 'Career Counseling';
+        return context.l10n.counselorStudentCareerCounseling;
       case 'academic':
-        return 'Academic Advising';
+        return context.l10n.counselorStudentAcademicAdvising;
       case 'personal':
-        return 'Personal Counseling';
+        return context.l10n.counselorStudentPersonalCounseling;
       default:
         return type;
     }
@@ -455,14 +456,14 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Schedule Session'),
-        content: const Text(
-          'Session scheduling feature will be implemented with calendar integration.',
+        title: Text(context.l10n.counselorStudentScheduleSession),
+        content: Text(
+          context.l10n.counselorStudentScheduleFeatureComingSoon,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.counselorStudentClose),
           ),
         ],
       ),
@@ -524,19 +525,19 @@ class _StatusChip extends StatelessWidget {
     switch (status) {
       case 'scheduled':
         color = AppColors.info;
-        label = 'Scheduled';
+        label = context.l10n.counselorStudentScheduled;
         break;
       case 'completed':
         color = AppColors.success;
-        label = 'Completed';
+        label = context.l10n.counselorStudentCompleted;
         break;
       case 'cancelled':
         color = AppColors.error;
-        label = 'Cancelled';
+        label = context.l10n.counselorStudentCancelled;
         break;
       case 'no_show':
         color = AppColors.warning;
-        label = 'No Show';
+        label = context.l10n.counselorStudentNoShow;
         break;
       default:
         color = AppColors.textSecondary;

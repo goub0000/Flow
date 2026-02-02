@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/help_support_widgets.dart';
 import 'faq_screen.dart';
 import 'contact_support_screen.dart';
@@ -169,23 +170,23 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.helpBack,
         ),
-        title: const Text('Help Center'),
+        title: Text(context.l10n.helpCenterTitle),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           // Welcome Header
           Text(
-            'How can we help you?',
+            context.l10n.helpHowCanWeHelp,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Search for answers or browse help topics',
+            context.l10n.helpSearchOrBrowse,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -196,7 +197,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Search for help...',
+              hintText: context.l10n.helpSearchForHelp,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -228,7 +229,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           Row(
             children: [
               Text(
-                'Quick Help',
+                context.l10n.helpQuickHelp,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -238,8 +239,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           const SizedBox(height: 12),
           QuickHelpCard(
             icon: Icons.question_answer,
-            title: 'Browse FAQs',
-            description: 'Quick answers to common questions',
+            title: context.l10n.helpBrowseFaqs,
+            description: context.l10n.helpBrowseFaqsDesc,
             color: AppColors.primary,
             onTap: () {
               Navigator.push(
@@ -253,8 +254,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           const SizedBox(height: 8),
           QuickHelpCard(
             icon: Icons.support_agent,
-            title: 'Contact Support',
-            description: 'Get help from our support team',
+            title: context.l10n.helpContactSupport,
+            description: context.l10n.helpContactSupportDesc,
             color: AppColors.success,
             onTap: () {
               Navigator.push(
@@ -268,8 +269,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           const SizedBox(height: 8),
           QuickHelpCard(
             icon: Icons.confirmation_number,
-            title: 'My Support Tickets',
-            description: 'View your open and closed tickets',
+            title: context.l10n.helpMySupportTickets,
+            description: context.l10n.helpMySupportTicketsDesc,
             color: AppColors.info,
             onTap: () {
               Navigator.push(
@@ -287,7 +288,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Browse by Topic',
+                context.l10n.helpBrowseByTopic,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -296,7 +297,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 onPressed: () {
                   // TODO: View all categories
                 },
-                child: const Text('View All'),
+                child: Text(context.l10n.helpViewAll),
               ),
             ],
           ),
@@ -328,7 +329,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Popular Articles',
+                context.l10n.helpPopularArticles,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -337,7 +338,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 onPressed: () {
                   // TODO: View all articles
                 },
-                child: const Text('View All'),
+                child: Text(context.l10n.helpViewAll),
               ),
             ],
           ),
@@ -362,8 +363,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   SnackBar(
                     content: Text(
                       article.isBookmarked
-                          ? 'Removed from bookmarks'
-                          : 'Added to bookmarks',
+                          ? context.l10n.helpRemovedFromBookmarks
+                          : context.l10n.helpAddedToBookmarks,
                     ),
                     duration: const Duration(seconds: 2),
                   ),
@@ -397,14 +398,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Still need help?',
+                  context.l10n.helpStillNeedHelp,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Our support team is here to help you',
+                  context.l10n.helpSupportTeamHere,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -423,7 +424,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       );
                     },
                     icon: const Icon(Icons.support_agent),
-                    label: const Text('Contact Support'),
+                    label: Text(context.l10n.helpContactSupport),
                   ),
                 ),
               ],
@@ -667,7 +668,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                     child: Column(
                       children: [
                         Text(
-                          'Was this article helpful?',
+                          context.l10n.helpWasArticleHelpful,
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
@@ -682,25 +683,25 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             OutlinedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                       content:
-                                          Text('Thanks for your feedback!')),
+                                          Text(context.l10n.helpThanksForFeedback)),
                                 );
                               },
                               icon: const Icon(Icons.thumb_up),
-                              label: const Text('Yes'),
+                              label: Text(context.l10n.helpYes),
                             ),
                             const SizedBox(width: 12),
                             OutlinedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                       content: Text(
-                                          'Thanks! We\'ll improve this article.')),
+                                          context.l10n.helpThanksWeWillImprove)),
                                 );
                               },
                               icon: const Icon(Icons.thumb_down),
-                              label: const Text('No'),
+                              label: Text(context.l10n.helpNo),
                             ),
                           ],
                         ),

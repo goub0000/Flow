@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/child_model.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -47,17 +48,17 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.parentChildBack,
         ),
         title: Text(widget.child.name),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          tabs: const [
-            Tab(text: 'Overview'),
-            Tab(text: 'Courses'),
-            Tab(text: 'Applications'),
-            Tab(text: 'Counseling'),
+          tabs: [
+            Tab(text: context.l10n.parentChildOverview),
+            Tab(text: context.l10n.parentChildCourses),
+            Tab(text: context.l10n.parentChildApplications),
+            Tab(text: context.l10n.parentChildCounseling),
           ],
         ),
       ),
@@ -134,7 +135,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
 
           // Academic Performance
           Text(
-            'Academic Performance',
+            context.l10n.parentChildAcademicPerformance,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -143,7 +144,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
               Expanded(
                 child: _MetricCard(
                   icon: Icons.star,
-                  label: 'Average Grade',
+                  label: context.l10n.parentChildAverageGrade,
                   value: widget.child.averageGrade.toStringAsFixed(1),
                   color: _getGradeColor(widget.child.averageGrade),
                 ),
@@ -152,7 +153,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
               Expanded(
                 child: _MetricCard(
                   icon: Icons.book,
-                  label: 'Active Courses',
+                  label: context.l10n.parentChildActiveCourses,
                   value: '${widget.child.enrolledCourses.length}',
                   color: AppColors.info,
                 ),
@@ -165,7 +166,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
               Expanded(
                 child: _MetricCard(
                   icon: Icons.description,
-                  label: 'Applications',
+                  label: context.l10n.parentChildApplications,
                   value: '${widget.child.applications.length}',
                   color: AppColors.warning,
                 ),
@@ -174,8 +175,8 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
               Expanded(
                 child: _MetricCard(
                   icon: Icons.school,
-                  label: 'School',
-                  value: widget.child.schoolName ?? 'Not Set',
+                  label: context.l10n.parentChildSchool,
+                  value: widget.child.schoolName ?? context.l10n.parentChildNotSet,
                   color: AppColors.primary,
                   isText: true,
                 ),
@@ -186,7 +187,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
 
           // Recent Activity
           Text(
-            'Recent Activity',
+            context.l10n.parentChildRecentActivity,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -195,25 +196,25 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
               children: [
                 _ActivityItem(
                   icon: Icons.check_circle,
-                  title: 'Completed Assignment',
-                  subtitle: 'Mathematics - Chapter 5 Test',
-                  time: '2 hours ago',
+                  title: context.l10n.parentChildCompletedAssignment,
+                  subtitle: context.l10n.parentChildMathChapter5,
+                  time: context.l10n.parentChildHoursAgo('2'),
                   color: AppColors.success,
                 ),
                 const Divider(),
                 _ActivityItem(
                   icon: Icons.upload_file,
-                  title: 'Submitted Project',
-                  subtitle: 'Computer Science - Final Project',
-                  time: '1 day ago',
+                  title: context.l10n.parentChildSubmittedProject,
+                  subtitle: context.l10n.parentChildCsFinalProject,
+                  time: context.l10n.parentChildDaysAgo('1'),
                   color: AppColors.info,
                 ),
                 const Divider(),
                 _ActivityItem(
                   icon: Icons.rate_review,
-                  title: 'Received Grade',
-                  subtitle: 'Physics - Lab Report (92/100)',
-                  time: '3 days ago',
+                  title: context.l10n.parentChildReceivedGrade,
+                  subtitle: context.l10n.parentChildPhysicsLabReport,
+                  time: context.l10n.parentChildDaysAgo('3'),
                   color: AppColors.primary,
                 ),
               ],
@@ -242,7 +243,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
               onPressed: () {
                 ref.read(monitoring.childMonitoringProvider.notifier).selectChild(widget.child.id);
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.parentChildRetry),
             ),
           ],
         ),
@@ -250,30 +251,30 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading courses...');
+      return LoadingIndicator(message: context.l10n.parentChildLoadingCourses);
     }
 
     if (courseProgress.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.book_outlined, size: 64, color: AppColors.textSecondary),
-              SizedBox(height: 16),
+              const Icon(Icons.book_outlined, size: 64, color: AppColors.textSecondary),
+              const SizedBox(height: 16),
               Text(
-                'No Course Data',
-                style: TextStyle(
+                context.l10n.parentChildNoCourseData,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                'No course progress data available',
+                context.l10n.parentChildNoCourseProgress,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textSecondary),
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
             ],
           ),
@@ -337,7 +338,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Course Progress',
+                          context.l10n.parentChildCourseProgress,
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppColors.textSecondary,
@@ -373,7 +374,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
                     const Icon(Icons.assignment, size: 16, color: AppColors.textSecondary),
                     const SizedBox(width: 8),
                     Text(
-                      'Assignments: ${progress.assignmentsCompleted}/${progress.totalAssignments}',
+                      context.l10n.parentChildAssignments(progress.assignmentsCompleted.toString(), progress.totalAssignments.toString()),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const Spacer(),
@@ -396,26 +397,26 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
 
   Widget _buildApplicationsTab() {
     if (widget.child.applications.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.description_outlined, size: 64, color: AppColors.textSecondary),
-              SizedBox(height: 16),
+              const Icon(Icons.description_outlined, size: 64, color: AppColors.textSecondary),
+              const SizedBox(height: 16),
               Text(
-                'No Applications',
-                style: TextStyle(
+                context.l10n.parentChildNoApplications,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                'Your child hasn\'t submitted any applications yet',
+                context.l10n.parentChildNoApplicationsYet,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textSecondary),
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
             ],
           ),
@@ -472,7 +473,7 @@ class _ChildDetailScreenState extends ConsumerState<ChildDetailScreen>
                         size: 16, color: AppColors.textSecondary),
                     const SizedBox(width: 4),
                     Text(
-                      'Submitted: ${_formatDate(application.submittedAt)}',
+                      context.l10n.parentChildSubmitted(_formatDate(application.submittedAt)),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -635,19 +636,19 @@ class _StatusChip extends StatelessWidget {
     switch (status) {
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending';
+        label = context.l10n.parentChildStatusPending;
         break;
       case 'under_review':
         color = AppColors.info;
-        label = 'Under Review';
+        label = context.l10n.parentChildStatusUnderReview;
         break;
       case 'accepted':
         color = AppColors.success;
-        label = 'Accepted';
+        label = context.l10n.parentChildStatusAccepted;
         break;
       case 'rejected':
         color = AppColors.error;
-        label = 'Rejected';
+        label = context.l10n.parentChildStatusRejected;
         break;
       default:
         color = AppColors.textSecondary;

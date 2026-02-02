@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Contact Support Screen
 ///
@@ -54,9 +55,9 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.helpBack,
         ),
-        title: const Text('Contact Support'),
+        title: Text(context.l10n.helpContactSupport),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -86,14 +87,14 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'We\'re here to help!',
+                          context.l10n.helpWeAreHereToHelp,
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Our support team typically responds within 24 hours',
+                          context.l10n.helpSupportResponseTime,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -115,7 +116,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
               children: [
                 // Subject
                 Text(
-                  'Subject',
+                  context.l10n.helpSubject,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -123,17 +124,17 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _subjectController,
-                  decoration: const InputDecoration(
-                    hintText: 'Brief description of your issue',
-                    prefixIcon: Icon(Icons.subject),
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    hintText: context.l10n.helpSubjectHint,
+                    prefixIcon: const Icon(Icons.subject),
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a subject';
+                      return context.l10n.helpSubjectRequired;
                     }
                     if (value.length < 5) {
-                      return 'Subject must be at least 5 characters';
+                      return context.l10n.helpSubjectMinLength;
                     }
                     return null;
                   },
@@ -142,7 +143,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Category
                 Text(
-                  'Category',
+                  context.l10n.helpCategory,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -154,30 +155,30 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                     prefixIcon: Icon(Icons.category),
                     border: OutlineInputBorder(),
                   ),
-                  items: const [
+                  items: [
                     DropdownMenuItem(
                       value: 'general',
-                      child: Text('General Inquiry'),
+                      child: Text(context.l10n.helpCategoryGeneral),
                     ),
                     DropdownMenuItem(
                       value: 'technical',
-                      child: Text('Technical Issue'),
+                      child: Text(context.l10n.helpCategoryTechnical),
                     ),
                     DropdownMenuItem(
                       value: 'billing',
-                      child: Text('Billing & Payments'),
+                      child: Text(context.l10n.helpCategoryBilling),
                     ),
                     DropdownMenuItem(
                       value: 'account',
-                      child: Text('Account Management'),
+                      child: Text(context.l10n.helpCategoryAccount),
                     ),
                     DropdownMenuItem(
                       value: 'course',
-                      child: Text('Course Content'),
+                      child: Text(context.l10n.helpCategoryCourse),
                     ),
                     DropdownMenuItem(
                       value: 'other',
-                      child: Text('Other'),
+                      child: Text(context.l10n.helpCategoryOther),
                     ),
                   ],
                   onChanged: (value) {
@@ -188,33 +189,33 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Priority
                 Text(
-                  'Priority',
+                  context.l10n.helpPriority,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 SegmentedButton<String>(
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: 'low',
-                      label: Text('Low'),
-                      icon: Icon(Icons.arrow_downward, size: 16),
+                      label: Text(context.l10n.helpPriorityLow),
+                      icon: const Icon(Icons.arrow_downward, size: 16),
                     ),
                     ButtonSegment(
                       value: 'medium',
-                      label: Text('Medium'),
-                      icon: Icon(Icons.remove, size: 16),
+                      label: Text(context.l10n.helpPriorityMedium),
+                      icon: const Icon(Icons.remove, size: 16),
                     ),
                     ButtonSegment(
                       value: 'high',
-                      label: Text('High'),
-                      icon: Icon(Icons.arrow_upward, size: 16),
+                      label: Text(context.l10n.helpPriorityHigh),
+                      icon: const Icon(Icons.arrow_upward, size: 16),
                     ),
                     ButtonSegment(
                       value: 'urgent',
-                      label: Text('Urgent'),
-                      icon: Icon(Icons.priority_high, size: 16),
+                      label: Text(context.l10n.helpPriorityUrgent),
+                      icon: const Icon(Icons.priority_high, size: 16),
                     ),
                   ],
                   selected: {_priority},
@@ -226,7 +227,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Description
                 Text(
-                  'Description',
+                  context.l10n.helpDescription,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -234,18 +235,18 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    hintText: 'Please provide detailed information about your issue...',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    hintText: context.l10n.helpDescriptionHint,
+                    border: const OutlineInputBorder(),
                     alignLabelWithHint: true,
                   ),
                   maxLines: 8,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please describe your issue';
+                      return context.l10n.helpDescriptionRequired;
                     }
                     if (value.length < 20) {
-                      return 'Description must be at least 20 characters';
+                      return context.l10n.helpDescriptionMinLength;
                     }
                     return null;
                   },
@@ -254,7 +255,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Attachments
                 Text(
-                  'Attachments',
+                  context.l10n.helpAttachments,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -275,7 +276,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'No files attached',
+                                context.l10n.helpNoFilesAttached,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: AppColors.textSecondary,
                                 ),
@@ -310,8 +311,8 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       const Divider(height: 1),
                       ListTile(
                         leading: const Icon(Icons.add, color: AppColors.primary),
-                        title: const Text('Add Attachment'),
-                        subtitle: const Text('Images, PDFs, documents (max 10MB each)'),
+                        title: Text(context.l10n.helpAddAttachment),
+                        subtitle: Text(context.l10n.helpAttachmentTypes),
                         onTap: _pickFile,
                       ),
                     ],
@@ -321,7 +322,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Preferred Contact Method
                 Text(
-                  'Preferred Contact Method',
+                  context.l10n.helpPreferredContactMethod,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -331,8 +332,8 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                   child: Column(
                     children: [
                       RadioListTile<String>(
-                        title: const Text('Email'),
-                        subtitle: const Text('We\'ll respond via email'),
+                        title: Text(context.l10n.helpEmail),
+                        subtitle: Text(context.l10n.helpRespondViaEmail),
                         value: 'email',
                         groupValue: _contactMethod,
                         onChanged: (value) {
@@ -341,8 +342,8 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       ),
                       const Divider(height: 1),
                       RadioListTile<String>(
-                        title: const Text('Phone'),
-                        subtitle: const Text('We\'ll call you back'),
+                        title: Text(context.l10n.helpPhone),
+                        subtitle: Text(context.l10n.helpCallYouBack),
                         value: 'phone',
                         groupValue: _contactMethod,
                         onChanged: (value) {
@@ -369,7 +370,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                             ),
                           )
                         : const Icon(Icons.send),
-                    label: Text(_isSubmitting ? 'Submitting...' : 'Submit Request'),
+                    label: Text(_isSubmitting ? context.l10n.helpSubmitting : context.l10n.helpSubmitRequest),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: AppColors.primary,
@@ -384,7 +385,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
           // Contact Information
           Text(
-            'Other Ways to Reach Us',
+            context.l10n.helpOtherWaysToReachUs,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -402,12 +403,12 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 ),
                 child: const Icon(Icons.email, color: AppColors.primary),
               ),
-              title: const Text('Email'),
+              title: Text(context.l10n.helpEmail),
               subtitle: const Text('support@flow-edu.com'),
               trailing: const Icon(Icons.content_copy, size: 20),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Email copied to clipboard')),
+                  SnackBar(content: Text(context.l10n.helpEmailCopied)),
                 );
               },
             ),
@@ -425,12 +426,12 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 ),
                 child: const Icon(Icons.phone, color: AppColors.success),
               ),
-              title: const Text('Phone'),
+              title: Text(context.l10n.helpPhone),
               subtitle: const Text('+1 (555) 123-4567'),
               trailing: const Icon(Icons.content_copy, size: 20),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Phone number copied to clipboard')),
+                  SnackBar(content: Text(context.l10n.helpPhoneCopied)),
                 );
               },
             ),
@@ -448,8 +449,8 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 ),
                 child: const Icon(Icons.access_time, color: AppColors.info),
               ),
-              title: const Text('Business Hours'),
-              subtitle: const Text('Monday - Friday\n9:00 AM - 6:00 PM EST'),
+              title: Text(context.l10n.helpBusinessHours),
+              subtitle: Text(context.l10n.helpBusinessHoursDetails),
               isThreeLine: true,
             ),
           ),
@@ -469,14 +470,14 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Average Response Time',
+                          context.l10n.helpAverageResponseTime,
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'We typically respond within 24 hours',
+                          context.l10n.helpTypicallyRespond24h,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -597,15 +598,15 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 child: const Icon(Icons.check_circle, color: AppColors.success),
               ),
               const SizedBox(width: 12),
-              const Text('Request Submitted'),
+              Text(context.l10n.helpRequestSubmitted),
             ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Your support request has been submitted successfully!',
+              Text(
+                context.l10n.helpRequestSubmittedSuccess,
               ),
               const SizedBox(height: 16),
               Container(
@@ -625,9 +626,9 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'We\'ll respond to your email within 24 hours. You can track your request in the Support Tickets section.',
-                      style: TextStyle(fontSize: 13),
+                    Text(
+                      context.l10n.helpTrackRequestInfo,
+                      style: const TextStyle(fontSize: 13),
                     ),
                   ],
                 ),
@@ -640,7 +641,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 Navigator.pop(context); // Close dialog
                 context.pop(); // Go back to previous screen
               },
-              child: const Text('OK'),
+              child: Text(context.l10n.helpOk),
             ),
             FilledButton(
               onPressed: () {
@@ -648,12 +649,12 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 context.pop(); // Go back
                 // TODO: Navigate to support tickets screen
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('View your ticket in Support Tickets'),
+                  SnackBar(
+                    content: Text(context.l10n.helpViewTicketInSupport),
                   ),
                 );
               },
-              child: const Text('View Tickets'),
+              child: Text(context.l10n.helpViewTickets),
             ),
           ],
         ),

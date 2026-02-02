@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../../core/services/enrollment_permissions_api_service.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../authentication/providers/auth_provider.dart';
 
 /// Course Enrollments/Roster Screen
@@ -75,7 +76,7 @@ class _CourseEnrollmentsScreenState
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Course Roster'),
+            Text(context.l10n.instCourseCourseRoster),
             Text(
               widget.course.title,
               style:
@@ -88,7 +89,7 @@ class _CourseEnrollmentsScreenState
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _fetchEnrolledStudents,
-            tooltip: 'Refresh',
+            tooltip: context.l10n.instCourseRefresh,
           ),
         ],
       ),
@@ -114,7 +115,7 @@ class _CourseEnrollmentsScreenState
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _fetchEnrolledStudents,
-              child: const Text('Retry'),
+              child: Text(context.l10n.instCourseRetry),
             ),
           ],
         ),
@@ -128,13 +129,13 @@ class _CourseEnrollmentsScreenState
           children: [
             Icon(Icons.people_outline, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            const Text(
-              'No enrolled students yet',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+            Text(
+              context.l10n.instCourseNoEnrolledStudents,
+              style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Students with approved permissions will appear here',
+            Text(
+              context.l10n.instCourseApprovedStudentsAppearHere,
               style: TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
@@ -166,7 +167,7 @@ class _CourseEnrollmentsScreenState
                         ),
                       ),
                       Text(
-                        'Enrolled Students',
+                        context.l10n.instCourseEnrolledStudents,
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
@@ -184,7 +185,7 @@ class _CourseEnrollmentsScreenState
                           ),
                         ),
                         Text(
-                          'Max Capacity',
+                          context.l10n.instCourseMaxCapacity,
                           style: TextStyle(color: Colors.grey[600]),
                         ),
                       ],
@@ -242,7 +243,7 @@ class _CourseEnrollmentsScreenState
             Text(student['email'] ?? ''),
             if (grantedAt != null)
               Text(
-                'Enrolled: ${_formatDate(grantedAt)}',
+                context.l10n.instCourseEnrolledDate(_formatDate(grantedAt)),
                 style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               ),
           ],

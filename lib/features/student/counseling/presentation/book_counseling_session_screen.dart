@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/counseling/models/counseling_models.dart';
 import '../../../shared/counseling/widgets/counseling_widgets.dart';
@@ -62,7 +63,7 @@ class _BookCounselingSessionScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Book Session'),
+        title: Text(context.l10n.studentCounselingBookSession),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -79,7 +80,7 @@ class _BookCounselingSessionScreenState
 
             // Date picker
             Text(
-              'Select Date',
+              context.l10n.studentCounselingSelectDate,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -90,7 +91,7 @@ class _BookCounselingSessionScreenState
 
             // Time slots
             Text(
-              'Select Time',
+              context.l10n.studentCounselingSelectTime,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -111,7 +112,7 @@ class _BookCounselingSessionScreenState
 
             // Session type
             Text(
-              'Session Type',
+              context.l10n.studentCounselingSessionType,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -134,7 +135,7 @@ class _BookCounselingSessionScreenState
 
             // Topic
             Text(
-              'Topic (Optional)',
+              context.l10n.studentCounselingTopicOptional,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -142,16 +143,16 @@ class _BookCounselingSessionScreenState
             const SizedBox(height: 12),
             TextField(
               controller: _topicController,
-              decoration: const InputDecoration(
-                hintText: 'What would you like to discuss?',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: context.l10n.studentCounselingTopicHint,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 24),
 
             // Description
             Text(
-              'Additional Details (Optional)',
+              context.l10n.studentCounselingDetailsOptional,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -159,9 +160,9 @@ class _BookCounselingSessionScreenState
             const SizedBox(height: 12),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                hintText: 'Any additional information for your counselor...',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: context.l10n.studentCounselingDetailsHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -188,7 +189,7 @@ class _BookCounselingSessionScreenState
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Book Session'),
+                    : Text(context.l10n.studentCounselingBookSession),
               ),
             ),
             const SizedBox(height: 16),
@@ -432,31 +433,31 @@ class _BookCounselingSessionScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Session Summary',
+            context.l10n.studentCounselingSessionSummary,
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 12),
           _buildSummaryRow(
-            'Counselor',
+            context.l10n.studentCounselingCounselor,
             widget.counselor.name,
           ),
           _buildSummaryRow(
-            'Date',
+            context.l10n.studentCounselingDate,
             DateFormat('EEEE, MMMM d, y').format(_selectedSlot!.start),
           ),
           _buildSummaryRow(
-            'Time',
+            context.l10n.studentCounselingTime,
             '${DateFormat('h:mm a').format(_selectedSlot!.start)} - ${DateFormat('h:mm a').format(_selectedSlot!.end)}',
           ),
           _buildSummaryRow(
-            'Type',
+            context.l10n.studentCounselingType,
             _selectedType.displayName,
           ),
           if (_topicController.text.isNotEmpty)
             _buildSummaryRow(
-              'Topic',
+              context.l10n.studentCounselingTopic,
               _topicController.text,
             ),
         ],
@@ -511,8 +512,8 @@ class _BookCounselingSessionScreenState
 
     if (session != null && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Session booked successfully!'),
+        SnackBar(
+          content: Text(context.l10n.studentCounselingBookedSuccess),
           backgroundColor: Colors.green,
         ),
       );
@@ -521,7 +522,7 @@ class _BookCounselingSessionScreenState
       final error = ref.read(studentCounselingProvider).error;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(error ?? 'Failed to book session'),
+          content: Text(error ?? context.l10n.studentCounselingBookFailed),
           backgroundColor: Colors.red,
         ),
       );

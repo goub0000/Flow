@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/recommendation_letter_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -53,7 +54,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
               onPressed: () {
                 ref.read(recommenderRequestsProvider.notifier).refresh();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.recRetry),
             ),
           ],
         ),
@@ -61,7 +62,7 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading requests...');
+      return LoadingIndicator(message: context.l10n.recLoadingRequests);
     }
 
     return Column(
@@ -72,10 +73,10 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
           unselectedLabelColor: Colors.white70,
           isScrollable: true,
           tabs: [
-            Tab(text: 'All (${allRequests.length})'),
-            Tab(text: 'Pending (${pendingRequests.length})'),
-            Tab(text: 'In Progress (${inProgressRequests.length})'),
-            Tab(text: 'Completed (${completedRequests.length})'),
+            Tab(text: context.l10n.recTabAll(allRequests.length)),
+            Tab(text: context.l10n.recTabPending(pendingRequests.length)),
+            Tab(text: context.l10n.recTabInProgress(inProgressRequests.length)),
+            Tab(text: context.l10n.recTabCompleted(completedRequests.length)),
           ],
         ),
         Expanded(
@@ -98,21 +99,21 @@ class _RequestsListScreenState extends ConsumerState<RequestsListScreen>
       String message;
       switch (type) {
         case 'pending':
-          message = 'No pending recommendation requests';
+          message = context.l10n.recNoPendingRequests;
           break;
         case 'in_progress':
-          message = 'No letters in progress';
+          message = context.l10n.recNoLettersInProgress;
           break;
         case 'completed':
-          message = 'No completed recommendations yet';
+          message = context.l10n.recNoCompletedRecommendations;
           break;
         default:
-          message = 'No recommendation requests';
+          message = context.l10n.recNoRecommendationRequests;
       }
 
       return EmptyState(
         icon: Icons.description_outlined,
-        title: 'No Requests',
+        title: context.l10n.recNoRequests,
         message: message,
       );
     }
@@ -189,14 +190,14 @@ class _RequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      request.studentName ?? 'Student',
+                      request.studentName ?? context.l10n.recStudent,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      request.institutionName ?? 'Institution',
+                      request.institutionName ?? context.l10n.recInstitution,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -231,10 +232,10 @@ class _RequestCard extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 isOverdue
-                    ? 'Overdue!'
+                    ? context.l10n.recOverdue
                     : daysLeft <= 0
-                        ? 'Due today'
-                        : '$daysLeft days left',
+                        ? context.l10n.recDueToday
+                        : context.l10n.recDaysLeft(daysLeft),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: isOverdue ? AppColors.error : AppColors.textSecondary,
                       fontWeight: isOverdue ? FontWeight.bold : FontWeight.normal,
@@ -248,8 +249,8 @@ class _RequestCard extends StatelessWidget {
                     color: AppColors.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: const Text(
-                    'URGENT',
+                  child: Text(
+                    context.l10n.recUrgent,
                     style: TextStyle(
                       color: AppColors.error,
                       fontSize: 10,
@@ -292,32 +293,32 @@ class _StatusChip extends StatelessWidget {
 
     if (isOverdue && status != RecommendationRequestStatus.completed) {
       color = AppColors.error;
-      label = 'OVERDUE';
+      label = context.l10n.recStatusOverdue;
     } else {
       switch (status) {
         case RecommendationRequestStatus.pending:
           color = AppColors.info;
-          label = 'PENDING';
+          label = context.l10n.recStatusPending;
           break;
         case RecommendationRequestStatus.accepted:
           color = AppColors.success;
-          label = 'ACCEPTED';
+          label = context.l10n.recStatusAccepted;
           break;
         case RecommendationRequestStatus.inProgress:
           color = AppColors.warning;
-          label = 'IN PROGRESS';
+          label = context.l10n.recStatusInProgress;
           break;
         case RecommendationRequestStatus.completed:
           color = AppColors.success;
-          label = 'COMPLETED';
+          label = context.l10n.recStatusCompleted;
           break;
         case RecommendationRequestStatus.declined:
           color = AppColors.error;
-          label = 'DECLINED';
+          label = context.l10n.recStatusDeclined;
           break;
         case RecommendationRequestStatus.cancelled:
           color = AppColors.textSecondary;
-          label = 'CANCELLED';
+          label = context.l10n.recStatusCancelled;
           break;
       }
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/course_content_models.dart';
 import '../../../../core/models/course_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../institution/providers/course_content_provider.dart';
 import 'lesson_editor_screen.dart';
 import '../widgets/advanced_module_editor.dart';
@@ -46,14 +47,14 @@ class _CourseContentBuilderScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.course?.title ?? 'Course Content Builder'),
+        title: Text(widget.course?.title ?? context.l10n.instCourseContentBuilder),
         actions: [
           IconButton(
             icon: const Icon(Icons.preview),
             onPressed: () {
               // TODO: Navigate to preview
             },
-            tooltip: 'Preview Course',
+            tooltip: context.l10n.instCoursePreviewCourse,
           ),
           const SizedBox(width: 8),
         ],
@@ -84,7 +85,7 @@ class _CourseContentBuilderScreenState
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddModuleDialog,
         icon: const Icon(Icons.add),
-        label: const Text('Add Module'),
+        label: Text(context.l10n.instCourseAddModule),
       ),
     );
   }
@@ -103,7 +104,7 @@ class _CourseContentBuilderScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.course?.title ?? 'Course Title',
+                        widget.course?.title ?? context.l10n.instCourseCourseTitle,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 8),
@@ -119,7 +120,7 @@ class _CourseContentBuilderScreenState
                 TextButton.icon(
                   onPressed: () => _showEditCourseInfoDialog(),
                   icon: const Icon(Icons.edit),
-                  label: const Text('Edit Info'),
+                  label: Text(context.l10n.instCourseEditInfo),
                 ),
               ],
             ),
@@ -134,7 +135,7 @@ class _CourseContentBuilderScreenState
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Course Modules',
+          context.l10n.instCourseCourseModules,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -142,7 +143,7 @@ class _CourseContentBuilderScreenState
         ElevatedButton.icon(
           onPressed: _showAddModuleDialog,
           icon: const Icon(Icons.add),
-          label: const Text('Add Module'),
+          label: Text(context.l10n.instCourseAddModule),
         ),
       ],
     );
@@ -161,14 +162,14 @@ class _CourseContentBuilderScreenState
             ),
             const SizedBox(height: 16),
             Text(
-              'No modules yet',
+              context.l10n.instCourseNoModulesYet,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.grey[600],
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Start building your course by adding modules',
+              context.l10n.instCourseStartBuildingModules,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[500],
                   ),
@@ -208,7 +209,7 @@ class _CourseContentBuilderScreenState
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      'Module ${module.orderIndex}',
+                      context.l10n.instCourseModuleIndex(module.orderIndex),
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
@@ -244,7 +245,7 @@ class _CourseContentBuilderScreenState
                   ),
                   const SizedBox(width: 12),
                   Chip(
-                    label: Text('${module.lessonCount} lessons'),
+                    label: Text(context.l10n.instCourseLessonsCount(module.lessonCount)),
                     avatar: const Icon(Icons.playlist_play, size: 18),
                   ),
                   const SizedBox(width: 8),
@@ -263,24 +264,24 @@ class _CourseContentBuilderScreenState
                       }
                     },
                     itemBuilder: (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'edit',
                         child: Row(
                           children: [
-                            Icon(Icons.edit, size: 20),
-                            SizedBox(width: 8),
-                            Text('Edit Module'),
+                            const Icon(Icons.edit, size: 20),
+                            const SizedBox(width: 8),
+                            Text(context.l10n.instCourseEditModule),
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete, size: 20, color: Colors.red),
-                            SizedBox(width: 8),
-                            Text('Delete Module',
-                                style: TextStyle(color: Colors.red)),
+                            const Icon(Icons.delete, size: 20, color: Colors.red),
+                            const SizedBox(width: 8),
+                            Text(context.l10n.instCourseDeleteModule,
+                                style: const TextStyle(color: Colors.red)),
                           ],
                         ),
                       ),
@@ -298,8 +299,8 @@ class _CourseContentBuilderScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (module.learningObjectives.isNotEmpty) ...[
-                    const Text(
-                      'Learning Objectives:',
+                    Text(
+                      context.l10n.instCourseLearningObjectives,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -321,8 +322,8 @@ class _CourseContentBuilderScreenState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Lessons',
+                      Text(
+                        context.l10n.instCourseLessons,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -331,7 +332,7 @@ class _CourseContentBuilderScreenState
                       ElevatedButton.icon(
                         onPressed: () => _showAddLessonDialog(module.id),
                         icon: const Icon(Icons.add, size: 18),
-                        label: const Text('Add Lesson'),
+                        label: Text(context.l10n.instCourseAddLesson),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
@@ -368,7 +369,7 @@ class _CourseContentBuilderScreenState
             Icon(Icons.playlist_add, size: 48, color: Colors.grey[400]),
             const SizedBox(height: 8),
             Text(
-              'No lessons in this module',
+              context.l10n.instCourseNoLessonsInModule,
               style: TextStyle(color: Colors.grey[600]),
             ),
           ],
@@ -418,23 +419,23 @@ class _CourseContentBuilderScreenState
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'edit',
                   child: Row(
                     children: [
-                      Icon(Icons.edit, size: 20),
-                      SizedBox(width: 8),
-                      Text('Edit Lesson'),
+                      const Icon(Icons.edit, size: 20),
+                      const SizedBox(width: 8),
+                      Text(context.l10n.instCourseEditLesson),
                     ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete, size: 20, color: Colors.red),
-                      SizedBox(width: 8),
-                      Text('Delete Lesson', style: TextStyle(color: Colors.red)),
+                      const Icon(Icons.delete, size: 20, color: Colors.red),
+                      const SizedBox(width: 8),
+                      Text(context.l10n.instCourseDeleteLesson, style: const TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),
@@ -456,7 +457,7 @@ class _CourseContentBuilderScreenState
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
             Text(
-              'Error',
+              context.l10n.instCourseError,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -471,7 +472,7 @@ class _CourseContentBuilderScreenState
                 ref.read(courseModulesProvider(widget.courseId).notifier).refresh();
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(context.l10n.instCourseRetry),
             ),
           ],
         ),
@@ -532,7 +533,7 @@ class _CourseContentBuilderScreenState
           if (result != null && mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Module "${request.title}" created successfully'),
+                content: Text(context.l10n.instCourseModuleCreatedSuccess(request.title)),
                 backgroundColor: Colors.green,
               ),
             );
@@ -567,7 +568,7 @@ class _CourseContentBuilderScreenState
           if (result != null && mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Module "${request.title}" updated successfully'),
+                content: Text(context.l10n.instCourseModuleUpdatedSuccess(request.title)),
                 backgroundColor: Colors.green,
               ),
             );
@@ -586,7 +587,7 @@ class _CourseContentBuilderScreenState
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: const Text('Add New Lesson'),
+          title: Text(context.l10n.instCourseAddNewLesson),
           content: Form(
             key: _lessonFormKey,
             child: Column(
@@ -594,8 +595,8 @@ class _CourseContentBuilderScreenState
               children: [
                 DropdownButtonFormField<LessonType>(
                   value: selectedType,
-                  decoration: const InputDecoration(
-                    labelText: 'Lesson Type',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.instCourseLessonType,
                     border: OutlineInputBorder(),
                   ),
                   items: LessonType.values
@@ -617,13 +618,13 @@ class _CourseContentBuilderScreenState
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _lessonTitleController,
-                  decoration: const InputDecoration(
-                    labelText: 'Lesson Title',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.instCourseLessonTitle,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a title';
+                      return context.l10n.instCoursePleaseEnterTitle;
                     }
                     return null;
                   },
@@ -631,9 +632,9 @@ class _CourseContentBuilderScreenState
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _lessonDescriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.instCourseDescription,
+                    border: const OutlineInputBorder(),
                   ),
                   maxLines: 3,
                 ),
@@ -643,7 +644,7 @@ class _CourseContentBuilderScreenState
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.instCourseCancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -664,12 +665,12 @@ class _CourseContentBuilderScreenState
                   if (result != null && context.mounted) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Lesson created successfully')),
+                      SnackBar(content: Text(context.l10n.instCourseLessonCreatedSuccess)),
                     );
                   }
                 }
               },
-              child: const Text('Create'),
+              child: Text(context.l10n.instCourseCreate),
             ),
           ],
         ),
@@ -700,19 +701,19 @@ class _CourseContentBuilderScreenState
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Module'),
-        content: const Text(
-          'Are you sure you want to delete this module? This will also delete all lessons in the module.',
+        title: Text(context.l10n.instCourseDeleteModule),
+        content: Text(
+          context.l10n.instCourseDeleteModuleConfirm,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.instCourseCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Delete'),
+            child: Text(context.l10n.instCourseDelete),
           ),
         ],
       ),
@@ -725,7 +726,7 @@ class _CourseContentBuilderScreenState
 
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Module deleted successfully')),
+          SnackBar(content: Text(context.l10n.instCourseModuleDeletedSuccess)),
         );
       }
     }
@@ -735,17 +736,17 @@ class _CourseContentBuilderScreenState
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Lesson'),
-        content: const Text('Are you sure you want to delete this lesson?'),
+        title: Text(context.l10n.instCourseDeleteLesson),
+        content: Text(context.l10n.instCourseDeleteLessonConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.instCourseCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Delete'),
+            child: Text(context.l10n.instCourseDelete),
           ),
         ],
       ),
@@ -758,7 +759,7 @@ class _CourseContentBuilderScreenState
 
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Lesson deleted successfully')),
+          SnackBar(content: Text(context.l10n.instCourseLessonDeletedSuccess)),
         );
       }
     }
@@ -775,11 +776,11 @@ class _CourseContentBuilderScreenState
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.edit, color: Colors.blue),
-              SizedBox(width: 12),
-              Text('Edit Course Info'),
+              const Icon(Icons.edit, color: Colors.blue),
+              const SizedBox(width: 12),
+              Text(context.l10n.instCourseEditCourseInfo),
             ],
           ),
           content: SizedBox(
@@ -791,9 +792,9 @@ class _CourseContentBuilderScreenState
                 children: [
                   TextField(
                     controller: titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Course Title *',
-                      hintText: 'Enter course title',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseTitleLabel,
+                      hintText: context.l10n.instCourseEnterTitle,
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -801,9 +802,9 @@ class _CourseContentBuilderScreenState
                   TextField(
                     controller: descriptionController,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
-                      hintText: 'Enter course description',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.instCourseDescription,
+                      hintText: context.l10n.instCourseEnterDescription,
                       border: OutlineInputBorder(),
                       alignLabelWithHint: true,
                     ),
@@ -814,8 +815,8 @@ class _CourseContentBuilderScreenState
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           value: selectedType,
-                          decoration: const InputDecoration(
-                            labelText: 'Type',
+                          decoration: InputDecoration(
+                            labelText: context.l10n.instApplicantType,
                             border: OutlineInputBorder(),
                           ),
                           items: const [
@@ -836,8 +837,8 @@ class _CourseContentBuilderScreenState
                       Expanded(
                         child: DropdownButtonFormField<String>(
                           value: selectedLevel,
-                          decoration: const InputDecoration(
-                            labelText: 'Level',
+                          decoration: InputDecoration(
+                            labelText: context.l10n.instCourseLevel,
                             border: OutlineInputBorder(),
                           ),
                           items: const [
@@ -862,7 +863,7 @@ class _CourseContentBuilderScreenState
           actions: [
             TextButton(
               onPressed: isSaving ? null : () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.instCourseCancel),
             ),
             ElevatedButton.icon(
               onPressed: isSaving
@@ -870,7 +871,7 @@ class _CourseContentBuilderScreenState
                   : () async {
                       if (titleController.text.trim().isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Title is required')),
+                          SnackBar(content: Text(context.l10n.instCourseTitleRequired)),
                         );
                         return;
                       }
@@ -884,8 +885,8 @@ class _CourseContentBuilderScreenState
                       if (mounted) {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Course info updated successfully'),
+                          SnackBar(
+                            content: Text(context.l10n.instCourseInfoUpdatedSuccess),
                             backgroundColor: Colors.green,
                           ),
                         );
@@ -898,7 +899,7 @@ class _CourseContentBuilderScreenState
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
                   : const Icon(Icons.save),
-              label: Text(isSaving ? 'Saving...' : 'Save Changes'),
+              label: Text(isSaving ? context.l10n.instCourseSaving : context.l10n.instCourseSaveChanges),
             ),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../providers/parent_children_provider.dart';
 
@@ -129,10 +130,10 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
                 children: [
                   const Icon(Icons.person_add, color: Colors.white),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Add Child',
-                      style: TextStyle(
+                      context.l10n.parentChildAddChild,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -153,14 +154,14 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
               labelColor: AppColors.primary,
               unselectedLabelColor: AppColors.textSecondary,
               indicatorColor: AppColors.primary,
-              tabs: const [
+              tabs: [
                 Tab(
-                  icon: Icon(Icons.email_outlined),
-                  text: 'By Email',
+                  icon: const Icon(Icons.email_outlined),
+                  text: context.l10n.parentChildByEmail,
                 ),
                 Tab(
-                  icon: Icon(Icons.qr_code),
-                  text: 'By Code',
+                  icon: const Icon(Icons.qr_code),
+                  text: context.l10n.parentChildByCode,
                 ),
               ],
             ),
@@ -213,27 +214,27 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Enter your child\'s email address to send them a link request.',
-              style: TextStyle(color: AppColors.textSecondary),
+            Text(
+              context.l10n.parentChildEmailDescription,
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 16),
 
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Student Email',
-                hintText: 'student@example.com',
-                prefixIcon: Icon(Icons.email_outlined),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.parentChildStudentEmail,
+                hintText: context.l10n.parentChildStudentEmailHint,
+                prefixIcon: const Icon(Icons.email_outlined),
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter an email address';
+                  return context.l10n.parentChildEnterEmail;
                 }
                 if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                  return 'Please enter a valid email address';
+                  return context.l10n.parentChildValidEmail;
                 }
                 return null;
               },
@@ -261,14 +262,14 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : const Text('Send Link Request'),
+                    : Text(context.l10n.parentChildSendLinkRequest),
               ),
             ),
 
             const SizedBox(height: 12),
-            const Text(
-              'Your child will receive a notification to approve this request.',
-              style: TextStyle(
+            Text(
+              context.l10n.parentChildApprovalNotice,
+              style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 12,
               ),
@@ -288,20 +289,20 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Enter the invite code your child shared with you.',
-              style: TextStyle(color: AppColors.textSecondary),
+            Text(
+              context.l10n.parentChildCodeDescription,
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 16),
 
             TextFormField(
               controller: _codeController,
               textCapitalization: TextCapitalization.characters,
-              decoration: const InputDecoration(
-                labelText: 'Invite Code',
-                hintText: 'ABCD1234',
-                prefixIcon: Icon(Icons.vpn_key_outlined),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.parentChildInviteCode,
+                hintText: context.l10n.parentChildInviteCodeHint,
+                prefixIcon: const Icon(Icons.vpn_key_outlined),
+                border: const OutlineInputBorder(),
               ),
               style: const TextStyle(
                 letterSpacing: 2,
@@ -309,10 +310,10 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter the invite code';
+                  return context.l10n.parentChildEnterInviteCode;
                 }
                 if (value.length < 6) {
-                  return 'Code must be at least 6 characters';
+                  return context.l10n.parentChildCodeMinLength;
                 }
                 return null;
               },
@@ -340,7 +341,7 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : const Text('Use Invite Code'),
+                    : Text(context.l10n.parentChildUseInviteCode),
               ),
             ),
 
@@ -355,10 +356,10 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
                 children: [
                   Icon(Icons.info_outline, color: AppColors.info, size: 20),
                   const SizedBox(width: 8),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Ask your child to generate an invite code from their app settings.',
-                      style: TextStyle(fontSize: 12),
+                      context.l10n.parentChildInviteCodeInfo,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ),
                 ],
@@ -373,10 +374,10 @@ class _AddChildDialogState extends ConsumerState<AddChildDialog>
   Widget _buildRelationshipDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectedRelationship,
-      decoration: const InputDecoration(
-        labelText: 'Relationship',
-        prefixIcon: Icon(Icons.family_restroom),
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        labelText: context.l10n.parentChildRelationship,
+        prefixIcon: const Icon(Icons.family_restroom),
+        border: const OutlineInputBorder(),
       ),
       items: _relationships.map((relationship) {
         return DropdownMenuItem(

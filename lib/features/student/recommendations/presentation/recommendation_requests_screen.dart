@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/recommendation_letter_models.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -45,15 +46,15 @@ class _RecommendationRequestsScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recommendation Letters'),
+        title: Text(context.l10n.studentRecTitle),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
           tabs: [
-            Tab(text: 'All (${allRequests.length})'),
-            Tab(text: 'Pending (${pendingRequests.length})'),
-            Tab(text: 'In Progress (${inProgressRequests.length})'),
-            Tab(text: 'Completed (${completedRequests.length})'),
+            Tab(text: context.l10n.studentRecAllTab(allRequests.length)),
+            Tab(text: context.l10n.studentRecPendingTab(pendingRequests.length)),
+            Tab(text: context.l10n.studentRecInProgressTab(inProgressRequests.length)),
+            Tab(text: context.l10n.studentRecCompletedTab(completedRequests.length)),
           ],
         ),
       ),
@@ -70,13 +71,13 @@ class _RecommendationRequestsScreenState
                     onPressed: () {
                       ref.read(studentRecommendationRequestsProvider.notifier).refresh();
                     },
-                    child: const Text('Retry'),
+                    child: Text(context.l10n.studentRecRetry),
                   ),
                 ],
               ),
             )
           : isLoading
-              ? const LoadingIndicator(message: 'Loading requests...')
+              ? LoadingIndicator(message: context.l10n.studentRecLoadingRequests)
               : TabBarView(
                   controller: _tabController,
                   children: [
@@ -89,7 +90,7 @@ class _RecommendationRequestsScreenState
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showCreateRequestDialog(context),
         icon: const Icon(Icons.add),
-        label: const Text('Request Letter'),
+        label: Text(context.l10n.studentRecRequestLetter),
       ),
     );
   }
@@ -99,21 +100,21 @@ class _RecommendationRequestsScreenState
       String message;
       switch (type) {
         case 'pending':
-          message = 'No pending recommendation requests';
+          message = context.l10n.studentRecNoPending;
           break;
         case 'in_progress':
-          message = 'No letters being written';
+          message = context.l10n.studentRecNoInProgress;
           break;
         case 'completed':
-          message = 'No completed recommendation letters yet';
+          message = context.l10n.studentRecNoCompleted;
           break;
         default:
-          message = 'No recommendation requests yet.\nTap + to request a letter.';
+          message = context.l10n.studentRecNoRequests;
       }
 
       return EmptyState(
         icon: Icons.mail_outline,
-        title: 'No Requests',
+        title: context.l10n.studentRecNoRequestsTitle,
         message: message,
       );
     }
@@ -171,15 +172,15 @@ class _RecommendationRequestsScreenState
           if (success && mounted) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Recommendation request sent! The recommender will receive an email invitation.'),
+              SnackBar(
+                content: Text(context.l10n.studentRecRequestSent),
                 backgroundColor: AppColors.success,
               ),
             );
           } else if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to send request'),
+              SnackBar(
+                content: Text(context.l10n.studentRecFailedToSend),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -199,17 +200,17 @@ class _RecommendationRequestsScreenState
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _DetailRow(label: 'Status', value: _getStatusLabel(request.status)),
-              _DetailRow(label: 'Type', value: request.requestType.name.toUpperCase()),
-              _DetailRow(label: 'Purpose', value: request.purpose),
+              _DetailRow(label: context.l10n.studentRecStatus, value: _getStatusLabel(request.status)),
+              _DetailRow(label: context.l10n.studentRecType, value: request.requestType.name.toUpperCase()),
+              _DetailRow(label: context.l10n.studentRecPurpose, value: request.purpose),
               if (request.institutionName != null)
-                _DetailRow(label: 'Institution', value: request.institutionName!),
+                _DetailRow(label: context.l10n.studentRecInstitution, value: request.institutionName!),
               _DetailRow(
-                label: 'Deadline',
+                label: context.l10n.studentRecDeadline,
                 value: '${request.deadline.day}/${request.deadline.month}/${request.deadline.year}',
               ),
               _DetailRow(
-                label: 'Requested',
+                label: context.l10n.studentRecRequested,
                 value: '${request.requestedAt.day}/${request.requestedAt.month}/${request.requestedAt.year}',
               ),
               if (request.isDeclined && request.declineReason != null) ...[
@@ -217,7 +218,7 @@ class _RecommendationRequestsScreenState
                 const Divider(),
                 const SizedBox(height: 8),
                 Text(
-                  'Decline Reason',
+                  context.l10n.studentRecDeclineReason,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.error,
@@ -232,7 +233,7 @@ class _RecommendationRequestsScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.studentRecClose),
           ),
           if (request.isPending)
             TextButton(
@@ -241,7 +242,7 @@ class _RecommendationRequestsScreenState
                 _cancelRequest(request.id);
               },
               style: TextButton.styleFrom(foregroundColor: AppColors.error),
-              child: const Text('Cancel Request'),
+              child: Text(context.l10n.studentRecCancelRequest),
             ),
           if (request.isAccepted || request.isInProgress)
             ElevatedButton(
@@ -249,7 +250,7 @@ class _RecommendationRequestsScreenState
                 Navigator.pop(context);
                 _sendReminder(request.id);
               },
-              child: const Text('Send Reminder'),
+              child: Text(context.l10n.studentRecSendReminder),
             ),
         ],
       ),
@@ -260,17 +261,17 @@ class _RecommendationRequestsScreenState
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cancel Request?'),
-        content: const Text('Are you sure you want to cancel this recommendation request?'),
+        title: Text(context.l10n.studentRecCancelRequestTitle),
+        content: Text(context.l10n.studentRecCancelRequestConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('No'),
+            child: Text(context.l10n.studentRecNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Yes, Cancel'),
+            child: Text(context.l10n.studentRecYesCancel),
           ),
         ],
       ),
@@ -283,7 +284,7 @@ class _RecommendationRequestsScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(success ? 'Request cancelled' : 'Failed to cancel request'),
+            content: Text(success ? context.l10n.studentRecRequestCancelled : context.l10n.studentRecFailedToCancel),
             backgroundColor: success ? AppColors.success : AppColors.error,
           ),
         );
@@ -298,7 +299,7 @@ class _RecommendationRequestsScreenState
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(success ? 'Reminder sent!' : 'Failed to send reminder'),
+          content: Text(success ? context.l10n.studentRecReminderSent : context.l10n.studentRecFailedReminder),
           backgroundColor: success ? AppColors.success : AppColors.error,
         ),
       );
@@ -344,15 +345,15 @@ class _RecommendationRequestsScreenState
           if (success && mounted) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Request updated successfully!'),
+              SnackBar(
+                content: Text(context.l10n.studentRecRequestUpdated),
                 backgroundColor: AppColors.success,
               ),
             );
           } else if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to update request'),
+              SnackBar(
+                content: Text(context.l10n.studentRecFailedToUpdate),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -457,12 +458,12 @@ class _RequestCard extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 request.isCompleted
-                    ? 'Completed'
+                    ? context.l10n.studentRecCompleted
                     : isOverdue
-                        ? 'Overdue!'
+                        ? context.l10n.studentRecOverdue
                         : daysLeft == 0
-                            ? 'Due today'
-                            : '$daysLeft days left',
+                            ? context.l10n.studentRecDueToday
+                            : context.l10n.studentRecDaysLeft(daysLeft),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: isOverdue && !request.isCompleted
                           ? AppColors.error
@@ -480,7 +481,7 @@ class _RequestCard extends StatelessWidget {
                     foregroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                   ),
-                  child: const Text('Edit'),
+                  child: Text(context.l10n.studentRecEdit),
                 ),
               if (onCancel != null)
                 TextButton(
@@ -489,7 +490,7 @@ class _RequestCard extends StatelessWidget {
                     foregroundColor: AppColors.error,
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                   ),
-                  child: const Text('Cancel'),
+                  child: Text(context.l10n.studentRecCancel),
                 ),
               if (onRemind != null)
                 TextButton(
@@ -497,7 +498,7 @@ class _RequestCard extends StatelessWidget {
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                   ),
-                  child: const Text('Remind'),
+                  child: Text(context.l10n.studentRecRemind),
                 ),
             ],
           ),
@@ -704,7 +705,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
             child: Row(
               children: [
                 Text(
-                  'Request Recommendation Letter',
+                  context.l10n.studentRecRequestRecLetter,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Spacer(),
@@ -727,25 +728,25 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                   children: [
                     // Recommender Email
                     Text(
-                      'Recommender Email *',
+                      context.l10n.studentRecRecommenderEmail,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _recommenderEmailController,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'professor@university.edu',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.email),
-                        helperText: 'They will receive an invitation to submit the recommendation',
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.email),
+                        helperText: context.l10n.studentRecEmailHelperText,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter recommender email';
+                          return context.l10n.studentRecEnterEmail;
                         }
                         if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                          return 'Please enter a valid email address';
+                          return context.l10n.studentRecValidEmail;
                         }
                         return null;
                       },
@@ -754,20 +755,20 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Recommender Name
                     Text(
-                      'Recommender Name *',
+                      context.l10n.studentRecRecommenderName,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _recommenderNameController,
-                      decoration: const InputDecoration(
-                        hintText: 'Dr. John Smith',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.person),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecNameHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.person),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter recommender name';
+                          return context.l10n.studentRecEnterName;
                         }
                         return null;
                       },
@@ -776,7 +777,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Type
                     Text(
-                      'Type *',
+                      context.l10n.studentRecTypeRequired,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -785,11 +786,11 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'academic', child: Text('Academic')),
-                        DropdownMenuItem(value: 'professional', child: Text('Professional')),
-                        DropdownMenuItem(value: 'character', child: Text('Character')),
-                        DropdownMenuItem(value: 'scholarship', child: Text('Scholarship')),
+                      items: [
+                        DropdownMenuItem(value: 'academic', child: Text(context.l10n.studentRecAcademic)),
+                        DropdownMenuItem(value: 'professional', child: Text(context.l10n.studentRecProfessional)),
+                        DropdownMenuItem(value: 'character', child: Text(context.l10n.studentRecCharacter)),
+                        DropdownMenuItem(value: 'scholarship', child: Text(context.l10n.studentRecScholarship)),
                       ],
                       onChanged: (value) {
                         setState(() => _selectedType = value!);
@@ -799,19 +800,19 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Purpose
                     Text(
-                      'Purpose *',
+                      context.l10n.studentRecPurposeRequired,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _purposeController,
-                      decoration: const InputDecoration(
-                        hintText: 'e.g., Graduate school application, Job application',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecPurposeHint,
+                        border: const OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().length < 10) {
-                          return 'Please describe the purpose (min 10 characters)';
+                          return context.l10n.studentRecPurposeValidation;
                         }
                         return null;
                       },
@@ -820,7 +821,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Target Institutions (Multi-select from applications)
                     Text(
-                      'Target Institutions *',
+                      context.l10n.studentRecTargetInstitutions,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -832,13 +833,13 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: AppColors.warning),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Icon(Icons.info_outline, color: AppColors.warning),
-                            SizedBox(width: 12),
+                            const Icon(Icons.info_outline, color: AppColors.warning),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                'You have no applications yet. Please submit applications first to request recommendations.',
+                                context.l10n.studentRecNoAppsWarning,
                                 style: TextStyle(color: AppColors.warning),
                               ),
                             ),
@@ -865,7 +866,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                                   const Icon(Icons.school, size: 20),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Select institutions (${_selectedInstitutions.length} selected)',
+                                    context.l10n.studentRecSelectInstitutions(_selectedInstitutions.length),
                                     style: Theme.of(context).textTheme.bodyMedium,
                                   ),
                                 ],
@@ -902,18 +903,18 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                         ),
                       ),
                     if (_selectedInstitutions.isEmpty && institutionNames.isNotEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(top: 4),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
                         child: Text(
-                          'Please select at least one institution',
-                          style: TextStyle(color: Colors.red, fontSize: 12),
+                          context.l10n.studentRecSelectAtLeastOne,
+                          style: const TextStyle(color: Colors.red, fontSize: 12),
                         ),
                       ),
                     const SizedBox(height: 16),
 
                     // Deadline
                     Text(
-                      'Deadline *',
+                      context.l10n.studentRecDeadlineRequired,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -948,7 +949,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Priority
                     Text(
-                      'Priority',
+                      context.l10n.studentRecPriority,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -957,11 +958,11 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'low', child: Text('Low')),
-                        DropdownMenuItem(value: 'normal', child: Text('Normal')),
-                        DropdownMenuItem(value: 'high', child: Text('High')),
-                        DropdownMenuItem(value: 'urgent', child: Text('Urgent')),
+                      items: [
+                        DropdownMenuItem(value: 'low', child: Text(context.l10n.studentRecLow)),
+                        DropdownMenuItem(value: 'normal', child: Text(context.l10n.studentRecNormal)),
+                        DropdownMenuItem(value: 'high', child: Text(context.l10n.studentRecHigh)),
+                        DropdownMenuItem(value: 'urgent', child: Text(context.l10n.studentRecUrgent)),
                       ],
                       onChanged: (value) {
                         setState(() => _selectedPriority = value!);
@@ -971,15 +972,15 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Message to recommender
                     Text(
-                      'Message to Recommender',
+                      context.l10n.studentRecMessageToRecommender,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _messageController,
-                      decoration: const InputDecoration(
-                        hintText: 'Any specific points you\'d like them to highlight?',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecMessageHint,
+                        border: const OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
@@ -987,15 +988,15 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Achievements
                     Text(
-                      'Your Achievements',
+                      context.l10n.studentRecYourAchievements,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _achievementsController,
-                      decoration: const InputDecoration(
-                        hintText: 'List relevant achievements to help the recommender',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecAchievementsHint,
+                        border: const OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
@@ -1003,15 +1004,15 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
 
                     // Goals
                     Text(
-                      'Your Goals',
+                      context.l10n.studentRecYourGoals,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _goalsController,
-                      decoration: const InputDecoration(
-                        hintText: 'What are your career/academic goals?',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecGoalsHint,
+                        border: const OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
@@ -1025,7 +1026,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
                         onPressed: _isSubmitting ? null : _submitRequest,
                         child: _isSubmitting
                             ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text('Send Request'),
+                            : Text(context.l10n.studentRecSendRequest),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -1047,8 +1048,8 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
     // Validate institution selection
     if (_selectedInstitutions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select at least one institution'),
+        SnackBar(
+          content: Text(context.l10n.studentRecSelectAtLeastOne),
           backgroundColor: Colors.red,
         ),
       );
@@ -1147,7 +1148,7 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
             child: Row(
               children: [
                 Text(
-                  'Edit Request',
+                  context.l10n.studentRecEditRequest,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Spacer(),
@@ -1206,19 +1207,19 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
 
                     // Purpose
                     Text(
-                      'Purpose *',
+                      context.l10n.studentRecPurposeRequired,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _purposeController,
-                      decoration: const InputDecoration(
-                        hintText: 'e.g., Graduate school application, Job application',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecPurposeHint,
+                        border: const OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().length < 10) {
-                          return 'Please describe the purpose (min 10 characters)';
+                          return context.l10n.studentRecPurposeValidation;
                         }
                         return null;
                       },
@@ -1227,22 +1228,22 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
 
                     // Institution
                     Text(
-                      'Target Institution',
+                      context.l10n.studentRecTargetInstitution,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _institutionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Institution name',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecInstitutionHint,
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     const SizedBox(height: 16),
 
                     // Deadline
                     Text(
-                      'Deadline *',
+                      context.l10n.studentRecDeadlineRequired,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -1277,7 +1278,7 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
 
                     // Priority
                     Text(
-                      'Priority',
+                      context.l10n.studentRecPriority,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -1286,11 +1287,11 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'low', child: Text('Low')),
-                        DropdownMenuItem(value: 'normal', child: Text('Normal')),
-                        DropdownMenuItem(value: 'high', child: Text('High')),
-                        DropdownMenuItem(value: 'urgent', child: Text('Urgent')),
+                      items: [
+                        DropdownMenuItem(value: 'low', child: Text(context.l10n.studentRecLow)),
+                        DropdownMenuItem(value: 'normal', child: Text(context.l10n.studentRecNormal)),
+                        DropdownMenuItem(value: 'high', child: Text(context.l10n.studentRecHigh)),
+                        DropdownMenuItem(value: 'urgent', child: Text(context.l10n.studentRecUrgent)),
                       ],
                       onChanged: (value) {
                         setState(() => _selectedPriority = value!);
@@ -1300,15 +1301,15 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
 
                     // Message to recommender
                     Text(
-                      'Message to Recommender',
+                      context.l10n.studentRecMessageToRecommender,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _messageController,
-                      decoration: const InputDecoration(
-                        hintText: 'Any specific points you\'d like them to highlight?',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecMessageHint,
+                        border: const OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
@@ -1316,15 +1317,15 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
 
                     // Achievements
                     Text(
-                      'Your Achievements',
+                      context.l10n.studentRecYourAchievements,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _achievementsController,
-                      decoration: const InputDecoration(
-                        hintText: 'List relevant achievements to help the recommender',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecAchievementsHint,
+                        border: const OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
@@ -1332,15 +1333,15 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
 
                     // Goals
                     Text(
-                      'Your Goals',
+                      context.l10n.studentRecYourGoals,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _goalsController,
-                      decoration: const InputDecoration(
-                        hintText: 'What are your career/academic goals?',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: context.l10n.studentRecGoalsHint,
+                        border: const OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
@@ -1354,7 +1355,7 @@ class _EditRequestSheetState extends State<_EditRequestSheet> {
                         onPressed: _isSubmitting ? null : _submitUpdate,
                         child: _isSubmitting
                             ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text('Save Changes'),
+                            : Text(context.l10n.studentRecSaveChanges),
                       ),
                     ),
                     const SizedBox(height: 32),

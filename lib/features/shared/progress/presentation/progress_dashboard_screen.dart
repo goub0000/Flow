@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/progress_analytics_widgets.dart';
 
 /// Progress Dashboard Screen
@@ -90,7 +91,7 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Progress'),
+        title: Text(context.l10n.progressMyProgress),
         actions: [
           IconButton(
             icon: const Icon(Icons.calendar_today),
@@ -105,14 +106,14 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
         children: [
           // Welcome Header
           Text(
-            'Keep up the great work!',
+            context.l10n.progressKeepUpGreatWork,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'You\'re making excellent progress',
+            context.l10n.progressMakingExcellentProgress,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -137,27 +138,27 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
             children: [
               StatisticsCard(
                 icon: Icons.school,
-                label: 'Courses Completed',
+                label: context.l10n.progressCoursesCompleted,
                 value: '${_statistics.totalCoursesCompleted}',
                 color: AppColors.success,
                 subtitle: 'of ${_statistics.totalCoursesEnrolled} enrolled',
               ),
               StatisticsCard(
                 icon: Icons.timer,
-                label: 'Study Time',
+                label: context.l10n.progressStudyTime,
                 value: '${_statistics.totalTimeSpent.inHours}h',
                 color: AppColors.primary,
-                subtitle: 'Total learning time',
+                subtitle: context.l10n.progressTotalLearningTime,
               ),
               StatisticsCard(
                 icon: Icons.grade,
-                label: 'Average Score',
+                label: context.l10n.progressAverageScore,
                 value: '${_statistics.averageScore.toInt()}%',
                 color: Colors.amber,
               ),
               StatisticsCard(
                 icon: Icons.workspace_premium,
-                label: 'Certificates',
+                label: context.l10n.progressCertificates,
                 value: '${_statistics.certificatesEarned}',
                 color: Colors.purple,
               ),
@@ -170,7 +171,7 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Learning Activity',
+                context.l10n.progressLearningActivity,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -199,7 +200,7 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
               'Sat': 75,
               'Sun': 40,
             },
-            title: 'Study Time (minutes)',
+            title: context.l10n.progressStudyTimeMinutes,
             color: AppColors.primary,
           ),
           const SizedBox(height: 24),
@@ -209,7 +210,7 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Course Progress',
+                context.l10n.progressCourseProgress,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -218,7 +219,7 @@ class _ProgressDashboardScreenState extends State<ProgressDashboardScreen> {
                 onPressed: () {
                   // TODO: View all courses
                 },
-                child: const Text('View All'),
+                child: Text(context.l10n.progressViewAll),
               ),
             ],
           ),

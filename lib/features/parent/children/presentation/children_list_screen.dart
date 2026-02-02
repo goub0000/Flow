@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/child_model.dart';
 import '../../../shared/widgets/custom_card.dart';
@@ -32,7 +33,7 @@ class ChildrenListScreen extends ConsumerWidget {
               onPressed: () {
                 ref.read(parentChildrenProvider.notifier).fetchChildren();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.parentChildRetry),
             ),
           ],
         ),
@@ -40,15 +41,15 @@ class ChildrenListScreen extends ConsumerWidget {
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading children...');
+      return LoadingIndicator(message: context.l10n.parentChildLoadingChildren);
     }
 
     if (children.isEmpty) {
       return EmptyState(
         icon: Icons.people_outline,
-        title: 'No Children',
-        message: 'Add your children to monitor their progress',
-        actionLabel: 'Add Child',
+        title: context.l10n.parentChildNoChildren,
+        message: context.l10n.parentChildAddToMonitor,
+        actionLabel: context.l10n.parentChildAddChild,
         onAction: () async {
           final result = await showAddChildDialog(context);
           if (result == true) {
@@ -99,7 +100,7 @@ class ChildrenListScreen extends ConsumerWidget {
               }
             },
             icon: const Icon(Icons.person_add),
-            label: const Text('Add Child'),
+            label: Text(context.l10n.parentChildAddChild),
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
           ),
@@ -195,7 +196,7 @@ class _ChildCard extends StatelessWidget {
                               ),
                     ),
                     Text(
-                      'AVG',
+                      context.l10n.parentChildAvg,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: _getGradeColor(),
                             fontSize: 10,
@@ -213,7 +214,7 @@ class _ChildCard extends StatelessWidget {
               Expanded(
                 child: _StatItem(
                   icon: Icons.book_outlined,
-                  label: 'Courses',
+                  label: context.l10n.parentChildCourses,
                   value: '${child.enrolledCourses.length}',
                 ),
               ),
@@ -225,7 +226,7 @@ class _ChildCard extends StatelessWidget {
               Expanded(
                 child: _StatItem(
                   icon: Icons.description_outlined,
-                  label: 'Applications',
+                  label: context.l10n.parentChildApplications,
                   value: '${child.applications.length}',
                 ),
               ),
@@ -237,7 +238,7 @@ class _ChildCard extends StatelessWidget {
               Expanded(
                 child: _StatItem(
                   icon: Icons.access_time,
-                  label: 'Last Active',
+                  label: context.l10n.parentChildLastActive,
                   value: _getLastActiveText(),
                 ),
               ),
@@ -318,7 +319,7 @@ class _PendingLinksSection extends StatelessWidget {
             Icon(Icons.hourglass_empty, color: AppColors.warning, size: 20),
             const SizedBox(width: 8),
             Text(
-              'Pending Link Requests',
+              context.l10n.parentChildPendingLinkRequests,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -343,7 +344,7 @@ class _PendingLinksSection extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Waiting for student approval',
+          context.l10n.parentChildWaitingApproval,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -392,7 +393,7 @@ class _PendingLinkCard extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  link.studentEmail.isNotEmpty ? link.studentEmail : 'Awaiting approval',
+                  link.studentEmail.isNotEmpty ? link.studentEmail : context.l10n.parentChildAwaitingApproval,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -407,7 +408,7 @@ class _PendingLinkCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              'Pending',
+              context.l10n.parentChildStatusPending,
               style: TextStyle(
                 color: AppColors.warning,
                 fontSize: 12,

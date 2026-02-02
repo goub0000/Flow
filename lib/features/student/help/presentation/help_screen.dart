@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Help Screen for students
@@ -176,7 +177,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Help & Support'),
+        title: Text(context.l10n.studentHelpTitle),
       ),
       body: Column(
         children: [
@@ -186,7 +187,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
             padding: const EdgeInsets.all(16),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search for help...',
+                hintText: context.l10n.studentHelpSearchHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -216,7 +217,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                   // Quick help cards
                   if (_searchQuery.isEmpty) ...[
                     Text(
-                      'Quick Help',
+                      context.l10n.studentHelpQuickHelp,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -227,8 +228,8 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                         Expanded(
                           child: _buildQuickHelpCard(
                             icon: Icons.chat_bubble_outline,
-                            title: 'Live Chat',
-                            subtitle: 'Chat with support',
+                            title: context.l10n.studentHelpLiveChat,
+                            subtitle: context.l10n.studentHelpChatWithSupport,
                             color: AppColors.primary,
                             onTap: () => _showComingSoon('Live Chat'),
                           ),
@@ -237,8 +238,8 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                         Expanded(
                           child: _buildQuickHelpCard(
                             icon: Icons.email_outlined,
-                            title: 'Email Us',
-                            subtitle: 'support@flow.edu',
+                            title: context.l10n.studentHelpEmailUs,
+                            subtitle: context.l10n.studentHelpEmailAddress,
                             color: Colors.green,
                             onTap: () => _showContactDialog(),
                           ),
@@ -251,8 +252,8 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                         Expanded(
                           child: _buildQuickHelpCard(
                             icon: Icons.video_library_outlined,
-                            title: 'Tutorials',
-                            subtitle: 'Video guides',
+                            title: context.l10n.studentHelpTutorials,
+                            subtitle: context.l10n.studentHelpVideoGuides,
                             color: Colors.red,
                             onTap: () => _showComingSoon('Video Tutorials'),
                           ),
@@ -261,8 +262,8 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                         Expanded(
                           child: _buildQuickHelpCard(
                             icon: Icons.school_outlined,
-                            title: 'User Guide',
-                            subtitle: 'Full documentation',
+                            title: context.l10n.studentHelpUserGuide,
+                            subtitle: context.l10n.studentHelpFullDocumentation,
                             color: Colors.orange,
                             onTap: () => _showComingSoon('User Guide'),
                           ),
@@ -275,8 +276,8 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                   // FAQ sections
                   Text(
                     _searchQuery.isEmpty
-                        ? 'Frequently Asked Questions'
-                        : 'Search Results',
+                        ? context.l10n.studentHelpFaq
+                        : context.l10n.studentHelpSearchResults,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -296,7 +297,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'No results found',
+                              context.l10n.studentHelpNoResults,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -305,7 +306,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Try different keywords or contact support',
+                              context.l10n.studentHelpTryDifferentKeywords,
                               style: TextStyle(
                                 color: Colors.grey[500],
                               ),
@@ -327,7 +328,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                     child: ElevatedButton.icon(
                       onPressed: _showContactDialog,
                       icon: const Icon(Icons.support_agent),
-                      label: const Text('Contact Support'),
+                      label: Text(context.l10n.studentHelpContactSupport),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
@@ -456,7 +457,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                           ),
                         ),
                         Text(
-                          '${category.questions.length} questions',
+                          context.l10n.studentHelpQuestionsCount(category.questions.length),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -517,7 +518,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
   void _showComingSoon(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$feature coming soon!'),
+        content: Text(context.l10n.studentHelpComingSoon(feature)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -527,51 +528,51 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.support_agent, color: AppColors.primary),
-            SizedBox(width: 8),
-            Text('Contact Support'),
+            const Icon(Icons.support_agent, color: AppColors.primary),
+            const SizedBox(width: 8),
+            Text(context.l10n.studentHelpContactSupport),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Need help? Reach out to us through any of these channels:',
+            Text(
+              context.l10n.studentHelpReachOut,
             ),
             const SizedBox(height: 16),
             _buildContactOption(
               Icons.email,
-              'Email',
+              context.l10n.studentHelpEmail,
               'support@flow.edu',
             ),
             const SizedBox(height: 12),
             _buildContactOption(
               Icons.phone,
-              'Phone',
+              context.l10n.studentHelpPhone,
               '+1 (800) FLOW-APP',
             ),
             const SizedBox(height: 12),
             _buildContactOption(
               Icons.access_time,
-              'Hours',
-              'Mon-Fri, 9 AM - 6 PM EST',
+              context.l10n.studentHelpHours,
+              context.l10n.studentHelpBusinessHours,
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text(context.l10n.studentHelpClose),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Opening email client...'),
+                SnackBar(
+                  content: Text(context.l10n.studentHelpOpeningEmail),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -580,7 +581,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Send Email'),
+            child: Text(context.l10n.studentHelpSendEmail),
           ),
         ],
       ),

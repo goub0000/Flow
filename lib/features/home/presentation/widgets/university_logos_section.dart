@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../data/testimonials_data.dart';
 
 /// Accent colors assigned to each partner for visual variety.
@@ -20,12 +21,12 @@ const _partnerColors = <Color>[
 /// comparable to actual logos without needing trademarked assets.
 class UniversityLogosSection extends StatelessWidget {
   final List<UniversityPartner>? partners;
-  final String title;
+  final String? title;
 
   const UniversityLogosSection({
     super.key,
     this.partners,
-    this.title = 'Trusted by Leading Institutions',
+    this.title,
   });
 
   @override
@@ -36,7 +37,7 @@ class UniversityLogosSection extends StatelessWidget {
     return Column(
       children: [
         Text(
-          title,
+          title ?? context.l10n.socialProofTitle,
           style: theme.textTheme.titleMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,

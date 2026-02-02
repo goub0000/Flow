@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/cookie_providers.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 
 class CookiePreferencesModal extends ConsumerStatefulWidget {
   final String userId;
@@ -69,17 +70,17 @@ class _CookiePreferencesModalState
         Navigator.of(context).pop(true);
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Cookie preferences saved successfully'),
+          SnackBar(
+            content: Text(context.l10n.cookiePreferencesSavedSuccess),
             backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       } else {
         setState(() => _isSaving = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to save preferences. Please try again.'),
+          SnackBar(
+            content: Text(context.l10n.cookieFailedToSave),
             backgroundColor: Colors.red,
           ),
         );
@@ -120,7 +121,7 @@ class _CookiePreferencesModalState
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Cookie Preferences',
+                    context.l10n.cookiePreferencesTitle,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -150,7 +151,7 @@ class _CookiePreferencesModalState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Customize your cookie preferences. Essential cookies are always enabled.',
+                      context.l10n.cookieCustomizeDescription,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 24),
@@ -190,7 +191,7 @@ class _CookiePreferencesModalState
                                           false;
                                     });
                                   },
-                            child: const Text('Reject All'),
+                            child: Text(context.l10n.cookieRejectAll),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -210,7 +211,7 @@ class _CookiePreferencesModalState
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Text('Save Preferences'),
+                                : Text(context.l10n.cookieSavePreferences),
                           ),
                         ),
                       ],
@@ -274,9 +275,9 @@ class _CategoryCard extends StatelessWidget {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: const Text(
-                      'Always Active',
-                      style: TextStyle(fontSize: 12),
+                    child: Text(
+                      context.l10n.cookieAlwaysActive,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   )
                 else

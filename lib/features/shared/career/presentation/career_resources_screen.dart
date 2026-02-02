@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/job_career_widgets.dart';
 
 /// Career Resources Screen
@@ -173,8 +174,8 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
       SnackBar(
         content: Text(
           resource.isBookmarked
-              ? 'Removed from bookmarks'
-              : 'Added to bookmarks',
+              ? context.l10n.careerRemovedFromBookmarks
+              : context.l10n.careerAddedToBookmarks,
         ),
         duration: const Duration(seconds: 2),
       ),
@@ -188,19 +189,19 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.helpBack,
         ),
-        title: const Text('Career Resources'),
+        title: Text(context.l10n.careerResourcesTitle),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
-          tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'Articles'),
-            Tab(text: 'Videos'),
-            Tab(text: 'Courses'),
+          tabs: [
+            Tab(text: context.l10n.careerAll),
+            Tab(text: context.l10n.careerArticles),
+            Tab(text: context.l10n.careerVideos),
+            Tab(text: context.l10n.careerCourses),
           ],
         ),
       ),
@@ -213,7 +214,7 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search resources...',
+                hintText: context.l10n.careerSearchResources,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -293,7 +294,7 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
           _showCategoriesSheet();
         },
         icon: const Icon(Icons.category),
-        label: const Text('Categories'),
+        label: Text(context.l10n.careerCategories),
       ),
     );
   }
@@ -311,14 +312,14 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'No resources found',
+              context.l10n.careerNoResourcesFound,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Try adjusting your search',
+              context.l10n.careerTryAdjustingSearch,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -442,9 +443,9 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
                   const SizedBox(height: 24),
 
                   // What You'll Learn (mock)
-                  const Text(
-                    'What You\'ll Learn',
-                    style: TextStyle(
+                  Text(
+                    context.l10n.careerWhatYoullLearn,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -512,7 +513,7 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
                             : Icons.bookmark_border,
                       ),
                       label: Text(
-                        resource.isBookmarked ? 'Saved' : 'Save',
+                        resource.isBookmarked ? context.l10n.careerSaved : context.l10n.careerSave,
                       ),
                     ),
                   ),
@@ -523,13 +524,13 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
                       onPressed: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Opening resource...'),
+                          SnackBar(
+                            content: Text(context.l10n.careerOpeningResource),
                           ),
                         );
                       },
                       icon: const Icon(Icons.play_arrow),
-                      label: const Text('Start Learning'),
+                      label: Text(context.l10n.careerStartLearning),
                     ),
                   ),
                 ],
@@ -561,9 +562,9 @@ class _CareerResourcesScreenState extends State<CareerResourcesScreen>
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                const Text(
-                  'Browse Categories',
-                  style: TextStyle(
+                Text(
+                  context.l10n.careerBrowseCategories,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

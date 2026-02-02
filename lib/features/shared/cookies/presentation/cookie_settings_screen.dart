@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/cookie_providers.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
+import '../../../../core/l10n_extension.dart';
 import 'cookie_preferences_modal.dart';
 
 class CookieSettingsScreen extends ConsumerWidget {
@@ -22,7 +23,7 @@ class CookieSettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cookie Settings'),
+        title: Text(context.l10n.cookieSettingsTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -48,7 +49,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                 children: [
                   const Icon(Icons.cookie, size: 64, color: Colors.grey),
                   const SizedBox(height: 16),
-                  const Text('No consent data available'),
+                  Text(context.l10n.cookieNoConsentData),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
@@ -63,7 +64,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                         ref.invalidate(userConsentProvider(userId));
                       });
                     },
-                    child: const Text('Set Preferences'),
+                    child: Text(context.l10n.cookieSetPreferences),
                   ),
                 ],
               ),
@@ -96,8 +97,8 @@ class CookieSettingsScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 consent.status != ConsentStatus.notAsked
-                                    ? 'Consent Active'
-                                    : 'No Consent Given',
+                                    ? context.l10n.cookieConsentActive
+                                    : context.l10n.cookieNoConsentGiven,
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -133,7 +134,7 @@ class CookieSettingsScreen extends ConsumerWidget {
 
                 // Current preferences
                 Text(
-                  'Current Preferences',
+                  context.l10n.cookieCurrentPreferences,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -181,7 +182,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                       });
                     },
                     icon: const Icon(Icons.tune),
-                    label: const Text('Change Preferences'),
+                    label: Text(context.l10n.cookieChangePreferences),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
@@ -197,7 +198,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                   child: OutlinedButton.icon(
                     onPressed: () => _exportData(context, ref),
                     icon: const Icon(Icons.download),
-                    label: const Text('Export My Data'),
+                    label: Text(context.l10n.cookieExportMyData),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.all(16),
                     ),
@@ -211,7 +212,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                   child: OutlinedButton.icon(
                     onPressed: () => _deleteData(context, ref),
                     icon: const Icon(Icons.delete),
-                    label: const Text('Delete My Data'),
+                    label: Text(context.l10n.cookieDeleteMyData),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.red,
                       padding: const EdgeInsets.all(16),
@@ -232,9 +233,9 @@ class CookieSettingsScreen extends ConsumerWidget {
                           children: [
                             Icon(Icons.info_outline, color: AppColors.primary),
                             const SizedBox(width: 12),
-                            const Text(
-                              'About Cookies',
-                              style: TextStyle(
+                            Text(
+                              context.l10n.cookieAboutCookies,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -243,9 +244,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Cookies help us provide you with a better experience. '
-                          'You can change your preferences at any time. '
-                          'Essential cookies are always active for security and functionality.',
+                          context.l10n.cookieAboutDescription,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -257,7 +256,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                             // Navigate to privacy policy
                             context.push('/privacy-policy');
                           },
-                          child: const Text('Read Privacy Policy'),
+                          child: Text(context.l10n.cookieReadPrivacyPolicy),
                         ),
                       ],
                     ),
@@ -279,19 +278,18 @@ class CookieSettingsScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Export Data'),
-        content: const Text(
-          'This will create a file with all your cookie and consent data. '
-          'The file will be saved to your downloads folder.',
+        title: Text(context.l10n.cookieExportData),
+        content: Text(
+          context.l10n.cookieExportDataDescription,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cookieCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Export'),
+            child: Text(context.l10n.cookieExport),
           ),
         ],
       ),
@@ -318,16 +316,14 @@ class CookieSettingsScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Data'),
-        content: const Text(
-          'This will permanently delete all your cookie data. '
-          'Essential cookies required for the app to function will remain. '
-          'This action cannot be undone.',
+        title: Text(context.l10n.cookieDeleteData),
+        content: Text(
+          context.l10n.cookieDeleteDataDescription,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cookieCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -335,7 +331,7 @@ class CookieSettingsScreen extends ConsumerWidget {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.cookieDelete),
           ),
         ],
       ),
@@ -360,8 +356,8 @@ class CookieSettingsScreen extends ConsumerWidget {
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Data deleted successfully'),
+          SnackBar(
+            content: Text(context.l10n.cookieDataDeletedSuccess),
             backgroundColor: Colors.green,
           ),
         );

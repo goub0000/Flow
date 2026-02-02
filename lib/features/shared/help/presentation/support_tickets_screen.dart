@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/help_support_widgets.dart';
 
 /// Support Tickets Screen
@@ -145,13 +146,13 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Support Tickets'),
+        title: Text(context.l10n.helpSupportTickets),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Active'),
-            Tab(text: 'Waiting'),
-            Tab(text: 'Resolved'),
+          tabs: [
+            Tab(text: context.l10n.helpTicketActive),
+            Tab(text: context.l10n.helpTicketWaiting),
+            Tab(text: context.l10n.helpTicketResolved),
           ],
         ),
       ),
@@ -171,7 +172,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showCreateTicketDialog,
         icon: const Icon(Icons.add),
-        label: const Text('New Ticket'),
+        label: Text(context.l10n.helpNewTicket),
       ),
     );
   }
@@ -191,14 +192,14 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'No tickets',
+              context.l10n.helpNoTickets,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Create a ticket to get support',
+              context.l10n.helpCreateTicketToGetSupport,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -309,7 +310,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
                         child: TextField(
                           controller: messageController,
                           decoration: InputDecoration(
-                            hintText: 'Type your message...',
+                            hintText: context.l10n.helpTypeYourMessage,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
@@ -326,8 +327,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
                         onPressed: () {
                           if (messageController.text.isNotEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Message sent!')),
+                              SnackBar(
+                                  content: Text(context.l10n.helpMessageSent)),
                             );
                             messageController.clear();
                           }
@@ -358,7 +359,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Create Support Ticket'),
+          title: Text(context.l10n.helpCreateSupportTicket),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -366,27 +367,27 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
               children: [
                 TextField(
                   controller: subjectController,
-                  decoration: const InputDecoration(
-                    labelText: 'Subject',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.helpSubject,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: descriptionController,
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    hintText: 'Describe your issue in detail...',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.helpDescription,
+                    hintText: context.l10n.helpDescribeIssueDetail,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<TicketCategory>(
                   value: selectedCategory,
-                  decoration: const InputDecoration(
-                    labelText: 'Category',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.helpCategory,
+                    border: const OutlineInputBorder(),
                   ),
                   items: TicketCategory.values.map((category) {
                     return DropdownMenuItem(
@@ -411,9 +412,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
                 const SizedBox(height: 16),
                 DropdownButtonFormField<TicketPriority>(
                   value: selectedPriority,
-                  decoration: const InputDecoration(
-                    labelText: 'Priority',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.helpPriority,
+                    border: const OutlineInputBorder(),
                   ),
                   items: TicketPriority.values.map((priority) {
                     return DropdownMenuItem(
@@ -435,7 +436,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.helpCancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -443,14 +444,14 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen>
                     descriptionController.text.isNotEmpty) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Support ticket created successfully!'),
+                    SnackBar(
+                      content: Text(context.l10n.helpTicketCreatedSuccess),
                       backgroundColor: AppColors.success,
                     ),
                   );
                 }
               },
-              child: const Text('Submit'),
+              child: Text(context.l10n.helpSubmit),
             ),
           ],
         ),

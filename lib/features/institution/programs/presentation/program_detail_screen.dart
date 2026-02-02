@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/program_model.dart';
 import '../../../shared/widgets/custom_card.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/institution_programs_provider.dart';
 
 class ProgramDetailScreen extends ConsumerStatefulWidget {
@@ -35,16 +36,16 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.instProgramBack,
         ),
-        title: const Text('Program Details'),
+        title: Text(context.l10n.instProgramDetails),
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'edit') {
                 // TODO: Navigate to edit program
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Edit feature coming soon')),
+                  SnackBar(content: Text(context.l10n.instProgramEditComingSoon)),
                 );
               } else if (value == 'toggle_status') {
                 _toggleProgramStatus();
@@ -53,13 +54,13 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'edit',
                 child: Row(
                   children: [
-                    Icon(Icons.edit, size: 20),
-                    SizedBox(width: 8),
-                    Text('Edit Program'),
+                    const Icon(Icons.edit, size: 20),
+                    const SizedBox(width: 8),
+                    Text(context.l10n.instProgramEditProgram),
                   ],
                 ),
               ),
@@ -72,17 +73,17 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                       size: 20,
                     ),
                     const SizedBox(width: 8),
-                    Text(_program.isActive ? 'Deactivate' : 'Activate'),
+                    Text(_program.isActive ? context.l10n.instProgramDeactivate : context.l10n.instProgramActivate),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'delete',
                 child: Row(
                   children: [
-                    Icon(Icons.delete, size: 20, color: AppColors.error),
-                    SizedBox(width: 8),
-                    Text('Delete Program'),
+                    const Icon(Icons.delete, size: 20, color: AppColors.error),
+                    const SizedBox(width: 8),
+                    Text(context.l10n.instProgramDeleteProgram),
                   ],
                 ),
               ),
@@ -110,9 +111,9 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                   children: [
                     Icon(Icons.warning, color: AppColors.error),
                     const SizedBox(width: 12),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'This program is currently inactive and not accepting applications',
+                        context.l10n.instProgramInactiveMessage,
                         style: TextStyle(color: AppColors.error),
                       ),
                     ),
@@ -161,7 +162,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                 Expanded(
                   child: _StatCard(
                     icon: Icons.people,
-                    label: 'Enrolled',
+                    label: context.l10n.instProgramEnrolled,
                     value: '${_program.enrolledStudents}',
                     color: AppColors.info,
                   ),
@@ -170,7 +171,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                 Expanded(
                   child: _StatCard(
                     icon: Icons.event_seat,
-                    label: 'Available',
+                    label: context.l10n.instProgramAvailable,
                     value: '${_program.availableSlots}',
                     color: AppColors.success,
                   ),
@@ -183,7 +184,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                 Expanded(
                   child: _StatCard(
                     icon: Icons.attach_money,
-                    label: 'Fee',
+                    label: context.l10n.instProgramFee,
                     value: '\$${_program.fee.toStringAsFixed(0)}',
                     color: AppColors.warning,
                   ),
@@ -192,7 +193,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                 Expanded(
                   child: _StatCard(
                     icon: Icons.timer,
-                    label: 'Duration',
+                    label: context.l10n.instProgramDuration,
                     value: _formatDuration(_program.duration),
                     color: AppColors.primary,
                   ),
@@ -203,7 +204,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
 
             // Description
             Text(
-              'Description',
+              context.l10n.instProgramDescription,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -217,7 +218,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
 
             // Program Details
             Text(
-              'Program Details',
+              context.l10n.instProgramProgramDetails,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -226,31 +227,31 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                 children: [
                   _DetailRow(
                     icon: Icons.category,
-                    label: 'Category',
+                    label: context.l10n.instProgramCategory,
                     value: _program.category,
                   ),
                   const Divider(),
                   _DetailRow(
                     icon: Icons.school,
-                    label: 'Institution',
+                    label: context.l10n.instProgramInstitution,
                     value: _program.institutionName,
                   ),
                   const Divider(),
                   _DetailRow(
                     icon: Icons.calendar_today,
-                    label: 'Start Date',
+                    label: context.l10n.instProgramStartDate,
                     value: _formatDate(_program.startDate),
                   ),
                   const Divider(),
                   _DetailRow(
                     icon: Icons.event,
-                    label: 'Application Deadline',
+                    label: context.l10n.instProgramApplicationDeadline,
                     value: _formatDate(_program.applicationDeadline),
                   ),
                   const Divider(),
                   _DetailRow(
                     icon: Icons.group,
-                    label: 'Maximum Students',
+                    label: context.l10n.instProgramMaxStudents,
                     value: '${_program.maxStudents}',
                   ),
                 ],
@@ -260,7 +261,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
 
             // Requirements
             Text(
-              'Requirements',
+              context.l10n.instProgramRequirements,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -299,7 +300,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
 
             // Enrollment Progress
             Text(
-              'Enrollment Status',
+              context.l10n.instProgramEnrollmentStatus,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -310,7 +311,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Fill Rate',
+                        context.l10n.instProgramFillRate,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Text(
@@ -337,8 +338,8 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                   const SizedBox(height: 12),
                   Text(
                     _program.isFull
-                        ? 'Program is full'
-                        : '${_program.availableSlots} slots remaining',
+                        ? context.l10n.instProgramIsFull
+                        : context.l10n.instProgramSlotsRemaining(_program.availableSlots),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -379,16 +380,16 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_program.isActive ? 'Deactivate Program?' : 'Activate Program?'),
+        title: Text(_program.isActive ? context.l10n.instProgramDeactivateQuestion : context.l10n.instProgramActivateQuestion),
         content: Text(
           _program.isActive
-              ? 'This program will stop accepting new applications.'
-              : 'This program will start accepting new applications.',
+              ? context.l10n.instProgramStopAccepting
+              : context.l10n.instProgramStartAccepting,
         ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.instProgramCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -410,8 +411,8 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                     SnackBar(
                       content: Text(
                         _program.isActive
-                            ? 'Program activated'
-                            : 'Program deactivated',
+                            ? context.l10n.instProgramActivated
+                            : context.l10n.instProgramDeactivated,
                       ),
                       backgroundColor: AppColors.success,
                     ),
@@ -422,14 +423,14 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                   setState(() => _isProcessing = false);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error updating program status: $e'),
+                      content: Text(context.l10n.instProgramErrorUpdatingStatus(e.toString())),
                       backgroundColor: AppColors.error,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Confirm'),
+            child: Text(context.l10n.instProgramConfirm),
           ),
         ],
       ),
@@ -440,14 +441,14 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Program?'),
-        content: const Text(
-          'This action cannot be undone. All data associated with this program will be permanently deleted.',
+        title: Text(context.l10n.instProgramDeleteProgramQuestion),
+        content: Text(
+          context.l10n.instProgramDeleteConfirm,
         ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.instProgramCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -460,16 +461,16 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                 if (success && mounted) {
                   context.pop(); // Go back to list
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Program deleted successfully'),
+                    SnackBar(
+                      content: Text(context.l10n.instProgramDeletedSuccess),
                       backgroundColor: AppColors.success,
                     ),
                   );
                 } else if (mounted) {
                   setState(() => _isProcessing = false);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Failed to delete program'),
+                    SnackBar(
+                      content: Text(context.l10n.instProgramFailedToDelete),
                       backgroundColor: AppColors.error,
                     ),
                   );
@@ -479,7 +480,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                   setState(() => _isProcessing = false);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error deleting program: $e'),
+                      content: Text(context.l10n.instProgramErrorDeleting(e.toString())),
                       backgroundColor: AppColors.error,
                     ),
                   );
@@ -489,7 +490,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.instProgramDelete),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../shared/counseling/models/counseling_models.dart';
 import '../../../shared/counseling/widgets/counseling_widgets.dart';
@@ -61,8 +62,8 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
               child: TabBar(
                 controller: _tabController,
                 tabs: [
-                  Tab(text: 'Upcoming (${state.upcomingSessions.length})'),
-                  Tab(text: 'Past (${state.pastSessions.length})'),
+                  Tab(text: context.l10n.studentCounselingUpcomingTab(state.upcomingSessions.length)),
+                  Tab(text: context.l10n.studentCounselingPastTab(state.pastSessions.length)),
                 ],
                 labelColor: AppColors.primary,
                 unselectedLabelColor: Colors.grey,
@@ -99,7 +100,7 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
         onContactAdmin: () {
           // Show a message since help page isn't implemented yet
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please contact your institution administrator for counselor assignment.')),
+            SnackBar(content: Text(context.l10n.studentCounselingContactAdmin)),
           );
         },
       );
@@ -121,21 +122,21 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
       child: Row(
         children: [
           _buildStatCard(
-            'Total',
+            context.l10n.studentCounselingTotal,
             stats.totalSessions.toString(),
             Icons.calendar_month,
             Colors.blue,
           ),
           const SizedBox(width: 12),
           _buildStatCard(
-            'Completed',
+            context.l10n.studentCounselingCompleted,
             stats.completedSessions.toString(),
             Icons.check_circle,
             Colors.green,
           ),
           const SizedBox(width: 12),
           _buildStatCard(
-            'Upcoming',
+            context.l10n.studentCounselingUpcoming,
             stats.upcomingSessions.toString(),
             Icons.schedule,
             Colors.orange,
@@ -143,7 +144,7 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
           if (stats.averageRating != null) ...[
             const SizedBox(width: 12),
             _buildStatCard(
-              'Rating',
+              context.l10n.studentCounselingRating,
               stats.averageRating!.toStringAsFixed(1),
               Icons.star,
               Colors.amber,
@@ -191,8 +192,8 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
     if (sessions.isEmpty) {
       return NoSessions(
         message: isUpcoming
-            ? 'No upcoming sessions scheduled'
-            : 'No past sessions yet',
+            ? context.l10n.studentCounselingNoUpcoming
+            : context.l10n.studentCounselingNoPast,
         onBookSession: isUpcoming && ref.read(studentCounselingProvider).counselor != null
             ? () => _navigateToBookSession(ref.read(studentCounselingProvider).counselor!)
             : null,
@@ -264,14 +265,14 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cancel Session'),
-        content: const Text(
-          'Are you sure you want to cancel this session? This action cannot be undone.',
+        title: Text(context.l10n.studentCounselingCancelSession),
+        content: Text(
+          context.l10n.studentCounselingCancelConfirm,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('No, Keep It'),
+            child: Text(context.l10n.studentCounselingKeepIt),
           ),
           TextButton(
             onPressed: () async {
@@ -281,12 +282,12 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
                   .cancelSession(session.id);
               if (success && mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Session cancelled')),
+                  SnackBar(content: Text(context.l10n.studentCounselingSessionCancelled)),
                 );
               }
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Yes, Cancel'),
+            child: Text(context.l10n.studentCounselingYesCancel),
           ),
         ],
       ),
@@ -301,11 +302,11 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: const Text('Rate Your Session'),
+          title: Text(context.l10n.studentCounselingRateSession),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('How was your counseling session?'),
+              Text(context.l10n.studentCounselingHowWasSession),
               const SizedBox(height: 16),
               RatingInput(
                 value: rating,
@@ -314,9 +315,9 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
               const SizedBox(height: 16),
               TextField(
                 controller: commentController,
-                decoration: const InputDecoration(
-                  labelText: 'Comments (optional)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.studentCounselingCommentsOptional,
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 3,
               ),
@@ -325,7 +326,7 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.studentCounselingCancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -341,11 +342,11 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
                     );
                 if (success && mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Thank you for your feedback!')),
+                    SnackBar(content: Text(context.l10n.studentCounselingFeedbackThanks)),
                   );
                 }
               },
-              child: const Text('Submit'),
+              child: Text(context.l10n.studentCounselingSubmit),
             ),
           ],
         ),
@@ -424,9 +425,9 @@ class _CounselorDetailsSheet extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildStat('Sessions', '${counselor.completedSessions}'),
+            _buildStat(context.l10n.studentCounselingSessions, '${counselor.completedSessions}'),
             _buildStat(
-              'Rating',
+              context.l10n.studentCounselingRating,
               counselor.averageRating?.toStringAsFixed(1) ?? '-',
             ),
           ],
@@ -436,7 +437,7 @@ class _CounselorDetailsSheet extends StatelessWidget {
         // Availability
         if (counselor.availability.isNotEmpty) ...[
           Text(
-            'Availability',
+            context.l10n.studentCounselingAvailability,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -469,7 +470,7 @@ class _CounselorDetailsSheet extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: onBookSession,
             icon: const Icon(Icons.calendar_month),
-            label: const Text('Book a Session'),
+            label: Text(context.l10n.studentCounselingBookASession),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(16),
             ),
@@ -564,19 +565,19 @@ class _SessionDetailsSheet extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Details
-          _buildDetailRow(Icons.calendar_today, 'Date',
+          _buildDetailRow(Icons.calendar_today, context.l10n.studentCounselingDate,
               '${session.scheduledDate.day}/${session.scheduledDate.month}/${session.scheduledDate.year}'),
-          _buildDetailRow(Icons.access_time, 'Time',
+          _buildDetailRow(Icons.access_time, context.l10n.studentCounselingTime,
               '${session.scheduledDate.hour}:${session.scheduledDate.minute.toString().padLeft(2, '0')}'),
           _buildDetailRow(
-              Icons.timer, 'Duration', '${session.durationMinutes} minutes'),
+              Icons.timer, context.l10n.studentCounselingDuration, context.l10n.studentCounselingMinutes(session.durationMinutes)),
           if (session.counselorName != null)
-            _buildDetailRow(Icons.person, 'Counselor', session.counselorName!),
+            _buildDetailRow(Icons.person, context.l10n.studentCounselingCounselor, session.counselorName!),
 
           if (session.notes != null && session.notes!.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text(
-              'Notes',
+              context.l10n.studentCounselingNotes,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -591,7 +592,7 @@ class _SessionDetailsSheet extends StatelessWidget {
           if (session.feedbackRating != null) ...[
             const SizedBox(height: 16),
             Text(
-              'Your Feedback',
+              context.l10n.studentCounselingYourFeedback,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -623,7 +624,7 @@ class _SessionDetailsSheet extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.red,
                     ),
-                    child: const Text('Cancel Session'),
+                    child: Text(context.l10n.studentCounselingCancelSession),
                   ),
                 ),
               if (onCancel != null && onFeedback != null)
@@ -635,7 +636,7 @@ class _SessionDetailsSheet extends StatelessWidget {
                       Navigator.pop(context);
                       onFeedback!();
                     },
-                    child: const Text('Leave Feedback'),
+                    child: Text(context.l10n.studentCounselingLeaveFeedback),
                   ),
                 ),
             ],

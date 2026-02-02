@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../widgets/job_career_widgets.dart';
 
 /// Job Listings Screen
@@ -301,7 +302,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          job.isSaved ? 'Job removed from saved' : 'Job saved successfully',
+          job.isSaved ? context.l10n.jobRemovedFromSaved : context.l10n.jobSavedSuccessfully,
         ),
         duration: const Duration(seconds: 2),
       ),
@@ -315,17 +316,17 @@ class _JobListingsScreenState extends State<JobListingsScreen>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.helpBack,
         ),
-        title: const Text('Job Opportunities'),
+        title: Text(context.l10n.jobOpportunitiesTitle),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
-          tabs: const [
-            Tab(text: 'All Jobs'),
-            Tab(text: 'Saved'),
-            Tab(text: 'Applied'),
+          tabs: [
+            Tab(text: context.l10n.jobAllJobs),
+            Tab(text: context.l10n.jobSaved),
+            Tab(text: context.l10n.jobApplied),
           ],
         ),
       ),
@@ -341,7 +342,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search jobs, companies, or skills...',
+                    hintText: context.l10n.jobSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
@@ -389,7 +390,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
 
                       // Remote Only Toggle
                       FilterChip(
-                        label: const Text('Remote Only'),
+                        label: Text(context.l10n.jobRemoteOnly),
                         selected: _remoteOnly,
                         onSelected: (value) {
                           setState(() {
@@ -442,7 +443,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'No applications yet',
+                        context.l10n.jobNoApplicationsYet,
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
@@ -450,7 +451,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Start applying to jobs to see them here',
+                        context.l10n.jobStartApplyingToSee,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -479,14 +480,14 @@ class _JobListingsScreenState extends State<JobListingsScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'No jobs found',
+              context.l10n.jobNoJobsFound,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Try adjusting your filters',
+              context.l10n.jobTryAdjustingFilters,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -506,8 +507,8 @@ class _JobListingsScreenState extends State<JobListingsScreen>
           onTap: () {
             // TODO: Navigate to job detail screen
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Job detail screen coming soon'),
+              SnackBar(
+                content: Text(context.l10n.jobDetailComingSoon),
               ),
             );
           },
@@ -554,9 +555,9 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                 ),
                 child: Row(
                   children: [
-                    const Text(
-                      'Filter Jobs',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.jobFilterJobs,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -572,7 +573,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                           _filterJobs();
                         });
                       },
-                      child: const Text('Clear All'),
+                      child: Text(context.l10n.jobClearAll),
                     ),
                   ],
                 ),
@@ -585,9 +586,9 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                   padding: const EdgeInsets.all(16),
                   children: [
                     // Job Type
-                    const Text(
-                      'Job Type',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.jobJobType,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -615,9 +616,9 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                     const SizedBox(height: 24),
 
                     // Experience Level
-                    const Text(
-                      'Experience Level',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.jobExperienceLevel,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -663,7 +664,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
                       });
                       Navigator.pop(context);
                     },
-                    child: const Text('Apply Filters'),
+                    child: Text(context.l10n.jobApplyFilters),
                   ),
                 ),
               ),
@@ -685,9 +686,9 @@ class _JobListingsScreenState extends State<JobListingsScreen>
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                const Text(
-                  'Sort By',
-                  style: TextStyle(
+                Text(
+                  context.l10n.jobSortBy,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -703,7 +704,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
 
           // Sort Options
           RadioListTile<String>(
-            title: const Text('Relevance'),
+            title: Text(context.l10n.jobRelevance),
             value: 'relevance',
             groupValue: _sortBy,
             onChanged: (value) {
@@ -715,7 +716,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
             },
           ),
           RadioListTile<String>(
-            title: const Text('Newest First'),
+            title: Text(context.l10n.jobNewestFirst),
             value: 'date',
             groupValue: _sortBy,
             onChanged: (value) {
@@ -727,7 +728,7 @@ class _JobListingsScreenState extends State<JobListingsScreen>
             },
           ),
           RadioListTile<String>(
-            title: const Text('Highest Salary'),
+            title: Text(context.l10n.jobHighestSalary),
             value: 'salary',
             groupValue: _sortBy,
             onChanged: (value) {

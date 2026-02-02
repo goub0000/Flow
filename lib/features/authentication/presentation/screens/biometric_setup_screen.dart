@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Biometric Authentication Setup Screen
@@ -151,7 +152,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error checking biometrics: ${e.toString()}'),
+            content: Text(context.l10n.biometricErrorChecking(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -192,8 +193,8 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Biometric authentication enabled successfully'),
+            SnackBar(
+              content: Text(context.l10n.biometricEnabledSuccess),
               backgroundColor: AppColors.success,
             ),
           );
@@ -211,8 +212,8 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         if (mounted) {
           setState(() => _isLoading = false);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Authentication failed. Please try again.'),
+            SnackBar(
+              content: Text(context.l10n.biometricAuthFailed),
               backgroundColor: AppColors.error,
             ),
           );
@@ -223,7 +224,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(context.l10n.biometricError(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -249,8 +250,8 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Biometric authentication disabled'),
+          SnackBar(
+            content: Text(context.l10n.biometricDisabledSuccess),
             backgroundColor: AppColors.info,
           ),
         );
@@ -260,7 +261,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(context.l10n.biometricError(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -281,7 +282,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(widget.isSetup ? 'Setup Biometric' : 'Biometric Settings'),
+        title: Text(widget.isSetup ? context.l10n.biometricSetupTitle : context.l10n.biometricSettingsTitle),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: widget.isSetup
@@ -350,8 +351,8 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         // Title
         Text(
           widget.isSetup
-              ? 'Enable Biometric Login'
-              : 'Biometric Authentication',
+              ? context.l10n.biometricEnableLogin
+              : context.l10n.biometricAuthentication,
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: AppColors.primary,
@@ -409,14 +410,14 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Use ${_getBiometricTypeName()}',
+                      context.l10n.biometricUseType(_getBiometricTypeName()),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _isBiometricEnabled ? 'Enabled' : 'Disabled',
+                      _isBiometricEnabled ? context.l10n.biometricEnabled : context.l10n.biometricDisabled,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: _isBiometricEnabled
                             ? AppColors.success
@@ -453,7 +454,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
                     const Icon(Icons.security, color: AppColors.info, size: 24),
                     const SizedBox(width: 12),
                     Text(
-                      'Why use biometric?',
+                      context.l10n.biometricWhyUse,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: AppColors.info,
@@ -462,12 +463,12 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildBenefitItem(Icons.speed, 'Faster login experience'),
+                _buildBenefitItem(Icons.speed, context.l10n.biometricBenefitFaster),
                 const SizedBox(height: 12),
-                _buildBenefitItem(Icons.lock, 'More secure than passwords'),
+                _buildBenefitItem(Icons.lock, context.l10n.biometricBenefitSecure),
                 const SizedBox(height: 12),
                 _buildBenefitItem(
-                    Icons.fingerprint, 'Unique to you - cannot be copied'),
+                    Icons.fingerprint, context.l10n.biometricBenefitUnique),
               ],
             ),
           ),
@@ -495,14 +496,14 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Security Note',
+                      context.l10n.biometricSecurityNote,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Your biometric data stays on your device and is never shared with Flow or third parties.',
+                      context.l10n.biometricSecurityNoteDesc,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -521,7 +522,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
             onPressed: _isLoading
                 ? null
                 : () => context.go('/student/dashboard'),
-            child: const Text('Skip for now'),
+            child: Text(context.l10n.biometricSkipForNow),
           ),
         ],
       ],
@@ -549,7 +550,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         ),
         const SizedBox(height: 24),
         Text(
-          'Not Supported',
+          context.l10n.biometricNotSupported,
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: AppColors.error,
@@ -558,7 +559,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         ),
         const SizedBox(height: 12),
         Text(
-          'Your device does not support biometric authentication.',
+          context.l10n.biometricNotSupportedDesc,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: AppColors.textSecondary,
           ),
@@ -573,7 +574,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
               context.go('/login');
             }
           },
-          child: const Text('Go Back'),
+          child: Text(context.l10n.biometricGoBack),
         ),
       ],
     );
@@ -600,7 +601,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         ),
         const SizedBox(height: 24),
         Text(
-          'No Biometrics Enrolled',
+          context.l10n.biometricNotEnrolled,
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: AppColors.warning,
@@ -609,7 +610,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         ),
         const SizedBox(height: 12),
         Text(
-          'Please enroll your fingerprint or face ID in your device settings first.',
+          context.l10n.biometricNotEnrolledDesc,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: AppColors.textSecondary,
           ),
@@ -621,13 +622,13 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
             // TODO: Open device settings
             // OpenSettings.openSecuritySettings();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Please open Settings > Security > Biometrics'),
+              SnackBar(
+                content: Text(context.l10n.biometricOpenSettingsHint),
               ),
             );
           },
           icon: const Icon(Icons.settings),
-          label: const Text('Open Settings'),
+          label: Text(context.l10n.biometricOpenSettings),
         ),
         const SizedBox(height: 12),
         TextButton(
@@ -638,7 +639,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
               context.go('/login');
             }
           },
-          child: const Text('Go Back'),
+          child: Text(context.l10n.biometricGoBack),
         ),
       ],
     );
@@ -678,21 +679,21 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
   String _getBiometricTypeName() {
     switch (_availableBiometricType) {
       case BiometricType.face:
-        return 'Face ID';
+        return context.l10n.biometricTypeFace;
       case BiometricType.fingerprint:
-        return 'Fingerprint';
+        return context.l10n.biometricTypeFingerprint;
       case BiometricType.iris:
-        return 'Iris Recognition';
+        return context.l10n.biometricTypeIris;
       default:
-        return 'Biometric';
+        return context.l10n.biometricTypeGeneric;
     }
   }
 
   String _getBiometricDescription() {
     if (_isBiometricEnabled) {
-      return 'Your ${_getBiometricTypeName().toLowerCase()} is currently being used to secure your account. You can sign in quickly and securely.';
+      return context.l10n.biometricDescEnabled(_getBiometricTypeName().toLowerCase());
     } else {
-      return 'Use your ${_getBiometricTypeName().toLowerCase()} to sign in quickly and securely without entering your password.';
+      return context.l10n.biometricDescDisabled(_getBiometricTypeName().toLowerCase());
     }
   }
 }

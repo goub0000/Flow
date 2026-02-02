@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/models/message_model.dart';
 import '../../../shared/providers/messaging_realtime_provider.dart';
@@ -72,8 +73,8 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to send message'),
+            SnackBar(
+              content: Text(context.l10n.msgFailedToSendMessage),
               backgroundColor: Colors.red,
             ),
           );
@@ -96,7 +97,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
           children: [
             ListTile(
               leading: const Icon(Icons.photo_library, color: AppColors.primary),
-              title: const Text('Photo from Gallery'),
+              title: Text(context.l10n.msgPhotoFromGallery),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -106,7 +107,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
             if (!kIsWeb) ...[
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: AppColors.primary),
-                title: const Text('Take Photo'),
+                title: Text(context.l10n.msgTakePhoto),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.camera);
@@ -115,8 +116,8 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
             ] else ...[
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: AppColors.primary),
-                title: const Text('Take Photo'),
-                subtitle: const Text('Opens camera on mobile devices'),
+                title: Text(context.l10n.msgTakePhoto),
+                subtitle: Text(context.l10n.msgOpensCameraOnMobile),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImageWithCameraFallback();
@@ -125,7 +126,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
             ],
             ListTile(
               leading: const Icon(Icons.attach_file, color: AppColors.primary),
-              title: const Text('Document'),
+              title: Text(context.l10n.msgDocument),
               onTap: () {
                 Navigator.pop(context);
                 _pickFile();
@@ -164,9 +165,9 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
       // On web, camera might not be available - show helpful message
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Camera not available in browser. Use "Photo from Gallery" to select an image.'),
-            duration: Duration(seconds: 3),
+          SnackBar(
+            content: Text(context.l10n.msgCameraNotAvailable),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -361,19 +362,19 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
 
   Widget _buildMessageList(List<Message> messages, String currentUserId) {
     if (messages.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
+            const Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
             Text(
-              'No messages yet',
-              style: TextStyle(color: Colors.grey, fontSize: 16),
+              context.l10n.msgNoMessagesYet,
+              style: const TextStyle(color: Colors.grey, fontSize: 16),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
-              'Send a message to start the conversation',
+              context.l10n.msgSendMessageToStart,
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -528,7 +529,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
     });
 
     // Get other participant's name for the title
-    String title = 'Conversation';
+    String title = context.l10n.msgConversation;
     if (conversation != null && currentUser != null) {
       // For direct conversations, show the other person's name
       // For now, just show a generic title - we'd need to fetch user details
@@ -565,7 +566,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
                     ),
                   ),
                   Text(
-                    conversationState.isConnected ? 'Online' : 'Connecting...',
+                    conversationState.isConnected ? context.l10n.msgOnline : context.l10n.msgConnecting,
                     style: TextStyle(
                       fontSize: 12,
                       color: conversationState.isConnected
@@ -657,7 +658,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: 'Type a message...',
+                        hintText: context.l10n.msgTypeAMessage,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                           borderSide: BorderSide.none,
