@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'card_message.dart';
 
@@ -285,29 +286,30 @@ class _CarouselCard extends StatelessWidget {
 class CarouselMessageFactory {
   /// Create a carousel of universities
   static CarouselMessage universities({
+    required BuildContext context,
     required List<UniversityCarouselData> universities,
     String? title,
     Function(String universityId)? onViewDetails,
     Function(String universityId)? onApply,
   }) {
     return CarouselMessage(
-      title: title ?? 'Recommended Universities',
+      title: title ?? context.l10n.chatRecommendedUniversities,
       items: universities.map((uni) {
         return CarouselItem(
           imageUrl: uni.logoUrl,
           title: uni.name,
           subtitle: uni.location,
           description: [
-            if (uni.rank != null) 'Rank: #${uni.rank}',
-            if (uni.acceptanceRate != null) '${uni.acceptanceRate!.toStringAsFixed(1)}% acceptance',
+            if (uni.rank != null) context.l10n.chatRankLabel(uni.rank!),
+            if (uni.acceptanceRate != null) context.l10n.chatAcceptanceRateLabel(uni.acceptanceRate!.toStringAsFixed(1)),
           ].join(' | '),
           actions: [
             CardAction(
-              label: 'Details',
+              label: context.l10n.chatDetails,
               onPressed: () => onViewDetails?.call(uni.id),
             ),
             CardAction(
-              label: 'Apply',
+              label: context.l10n.chatApply,
               onPressed: () => onApply?.call(uni.id),
               isPrimary: true,
             ),
@@ -319,13 +321,14 @@ class CarouselMessageFactory {
 
   /// Create a carousel of courses
   static CarouselMessage courses({
+    required BuildContext context,
     required List<CourseCarouselData> courses,
     String? title,
     Function(String courseId)? onViewDetails,
     Function(String courseId)? onEnroll,
   }) {
     return CarouselMessage(
-      title: title ?? 'Recommended Courses',
+      title: title ?? context.l10n.chatRecommendedCourses,
       items: courses.map((course) {
         return CarouselItem(
           imageUrl: course.thumbnailUrl,
@@ -337,11 +340,11 @@ class CarouselMessageFactory {
           ].join(' | '),
           actions: [
             CardAction(
-              label: 'Learn More',
+              label: context.l10n.chatLearnMore,
               onPressed: () => onViewDetails?.call(course.id),
             ),
             CardAction(
-              label: 'Enroll',
+              label: context.l10n.chatEnroll,
               onPressed: () => onEnroll?.call(course.id),
               isPrimary: true,
             ),

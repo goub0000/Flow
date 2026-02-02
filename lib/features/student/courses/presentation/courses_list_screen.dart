@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/courses_provider.dart';
 
 /// Student Courses List Screen
@@ -51,13 +52,13 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Courses'),
+        title: Text(context.l10n.courseListTitle),
         backgroundColor: AppColors.surface,
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: () => _showFiltersBottomSheet(context),
-            tooltip: 'Filters',
+            tooltip: context.l10n.courseFiltersTooltip,
           ),
         ],
         bottom: TabBar(
@@ -65,7 +66,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
           tabs: [
             Tab(
               icon: const Icon(Icons.explore),
-              text: 'Browse All',
+              text: context.l10n.courseBrowseAll,
             ),
             Tab(
               icon: Badge(
@@ -73,7 +74,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
                 label: Text('${assignedState.courses.length}'),
                 child: const Icon(Icons.assignment_ind),
               ),
-              text: 'Assigned to Me',
+              text: context.l10n.courseAssignedToMe,
             ),
           ],
           labelColor: AppColors.primary,
@@ -95,7 +96,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'Search courses...',
+                      hintText: context.l10n.courseSearchHint,
                       prefixIcon: const Icon(Icons.search),
                       suffixIcon: _searchController.text.isNotEmpty
                           ? IconButton(
@@ -154,13 +155,13 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
             Icon(Icons.error_outline, size: 64, color: AppColors.error),
             const SizedBox(height: 16),
             Text(
-              'Failed to load assigned courses',
+              context.l10n.courseFailedLoadAssigned,
               style: TextStyle(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () => ref.read(assignedCoursesProvider.notifier).refresh(),
-              child: const Text('Retry'),
+              child: Text(context.l10n.courseRetry),
             ),
           ],
         ),
@@ -175,14 +176,14 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
             Icon(Icons.assignment_outlined, size: 64, color: AppColors.textSecondary),
             const SizedBox(height: 16),
             Text(
-              'No courses assigned yet',
+              context.l10n.courseNoAssignedYet,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Courses assigned by your admin or institution will appear here.',
+              context.l10n.courseAssignedDescription,
               style: TextStyle(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
             ),
@@ -225,7 +226,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
                           Icon(Icons.priority_high, size: 14, color: AppColors.error),
                           const SizedBox(width: 4),
                           Text(
-                            'Required',
+                            context.l10n.courseRequired,
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -277,7 +278,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            '${assignment!['progress']}% complete',
+                            context.l10n.coursePercentComplete(assignment!['progress']),
                             style: TextStyle(
                               fontSize: 12,
                               color: AppColors.primary,
@@ -347,7 +348,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
               ref.read(coursesProvider.notifier).clearFilters();
             },
             icon: const Icon(Icons.clear_all, size: 16),
-            label: const Text('Clear All'),
+            label: Text(context.l10n.courseClearAll),
           ),
         ],
       ),
@@ -374,7 +375,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => ref.read(coursesProvider.notifier).refresh(),
-              child: const Text('Retry'),
+              child: Text(context.l10n.courseRetry),
             ),
           ],
         ),
@@ -388,14 +389,14 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
           children: [
             Icon(Icons.school_outlined, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            const Text(
-              'No courses available',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+            Text(
+              context.l10n.courseNoAvailable,
+              style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Check back later for new courses',
-              style: TextStyle(color: Colors.grey),
+            Text(
+              context.l10n.courseCheckBackLater,
+              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
@@ -507,7 +508,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
                         ),
                       _buildInfoChip(
                         Icons.people,
-                        '${course.enrolledCount} enrolled',
+                        context.l10n.courseEnrolledCount(course.enrolledCount),
                         Colors.green,
                       ),
                     ],
@@ -537,7 +538,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
                           ],
                         )
                       else
-                        const Text('No ratings yet'),
+                        Text(context.l10n.courseNoRatingsYet),
 
                       // Price
                       Text(
@@ -639,9 +640,9 @@ class _FiltersBottomSheet extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Filters',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                context.l10n.courseFiltersTitle,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 icon: const Icon(Icons.close),
@@ -652,7 +653,7 @@ class _FiltersBottomSheet extends ConsumerWidget {
           const SizedBox(height: 20),
 
           // Level Filter
-          const Text('Level', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(context.l10n.courseLevelLabel, style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -660,7 +661,7 @@ class _FiltersBottomSheet extends ConsumerWidget {
               _buildFilterChip(
                 context,
                 ref,
-                'All Levels',
+                context.l10n.courseAllLevels,
                 isSelected: state.filterLevel == null,
                 onTap: () {
                   ref.read(coursesProvider.notifier).filterByLevel(null);
@@ -688,14 +689,14 @@ class _FiltersBottomSheet extends ConsumerWidget {
                     ref.read(coursesProvider.notifier).clearFilters();
                     Navigator.pop(context);
                   },
-                  child: const Text('Clear All'),
+                  child: Text(context.l10n.courseClearAll),
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Apply'),
+                  child: Text(context.l10n.courseApplyFilters),
                 ),
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Rich card message for displaying structured content
@@ -190,6 +191,7 @@ class CardAction {
 class CardMessageFactory {
   /// Create a university card
   static CardMessage university({
+    required BuildContext context,
     required String name,
     required String location,
     String? logoUrl,
@@ -203,18 +205,18 @@ class CardMessageFactory {
       title: name,
       subtitle: location,
       description: [
-        if (rank != null) 'Rank: #$rank',
-        if (acceptanceRate != null) 'Acceptance: ${acceptanceRate.toStringAsFixed(1)}%',
+        if (rank != null) context.l10n.chatRankLabel(rank),
+        if (acceptanceRate != null) context.l10n.chatAcceptanceLabel(acceptanceRate.toStringAsFixed(1)),
       ].join(' | '),
       actions: [
         if (onViewDetails != null)
           CardAction(
-            label: 'View Details',
+            label: context.l10n.chatViewDetails,
             onPressed: onViewDetails,
           ),
         if (onApply != null)
           CardAction(
-            label: 'Apply',
+            label: context.l10n.chatApply,
             onPressed: onApply,
             isPrimary: true,
           ),
@@ -224,6 +226,7 @@ class CardMessageFactory {
 
   /// Create a course card
   static CardMessage course({
+    required BuildContext context,
     required String name,
     required String university,
     String? thumbnailUrl,
@@ -243,12 +246,12 @@ class CardMessageFactory {
       actions: [
         if (onViewDetails != null)
           CardAction(
-            label: 'Learn More',
+            label: context.l10n.chatLearnMore,
             onPressed: onViewDetails,
           ),
         if (onEnroll != null)
           CardAction(
-            label: 'Enroll',
+            label: context.l10n.chatEnroll,
             onPressed: onEnroll,
             isPrimary: true,
           ),
@@ -258,6 +261,7 @@ class CardMessageFactory {
 
   /// Create an application status card
   static CardMessage applicationStatus({
+    required BuildContext context,
     required String universityName,
     required String status,
     String? deadline,
@@ -285,16 +289,16 @@ class CardMessageFactory {
       imageUrl: logoUrl,
       title: universityName,
       subtitle: status.toUpperCase(),
-      description: deadline != null ? 'Deadline: $deadline' : null,
+      description: deadline != null ? context.l10n.chatDeadlineLabel(deadline) : null,
       actions: [
         if (onViewApplication != null)
           CardAction(
-            label: 'View Details',
+            label: context.l10n.chatViewDetails,
             onPressed: onViewApplication,
           ),
         if (onContinue != null && status.toLowerCase() == 'in_progress')
           CardAction(
-            label: 'Continue',
+            label: context.l10n.chatContinue,
             onPressed: onContinue,
             isPrimary: true,
           ),

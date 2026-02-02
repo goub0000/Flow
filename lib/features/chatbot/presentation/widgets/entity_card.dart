@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Base entity card widget
@@ -145,11 +146,11 @@ class UniversityCard extends EntityCard {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   if (rank != null)
-                    _buildStat('Rank', '#$rank'),
+                    _buildStat(context.l10n.chatRankStat, '#$rank'),
                   if (acceptanceRate != null)
-                    _buildStat('Accept', '${acceptanceRate!.toStringAsFixed(0)}%'),
+                    _buildStat(context.l10n.chatAcceptStat, '${acceptanceRate!.toStringAsFixed(0)}%'),
                   if (matchScore != null)
-                    _buildStat('Match', matchScore!),
+                    _buildStat(context.l10n.chatMatchStat, matchScore!),
                 ],
               ),
             ),
@@ -182,7 +183,7 @@ class UniversityCard extends EntityCard {
                       foregroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                     ),
-                    child: const Text('Details'),
+                    child: Text(context.l10n.chatDetails),
                   ),
                 // Apply button
                 if (onApply != null)
@@ -194,7 +195,7 @@ class UniversityCard extends EntityCard {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       minimumSize: const Size(0, 36),
                     ),
-                    child: const Text('Apply'),
+                    child: Text(context.l10n.chatApply),
                   ),
               ],
             ),
@@ -392,7 +393,7 @@ class CourseCard extends EntityCard {
                       if (level != null)
                         _buildMetaChip(Icons.signal_cellular_alt, level!),
                       if (lessonsCount != null)
-                        _buildMetaChip(Icons.play_circle_outline, '$lessonsCount lessons'),
+                        _buildMetaChip(Icons.play_circle_outline, context.l10n.chatLessonsCount(lessonsCount!)),
                     ],
                   ),
                 ],
@@ -441,13 +442,13 @@ class CourseCard extends EntityCard {
                     style: TextButton.styleFrom(
                       foregroundColor: AppColors.primary,
                     ),
-                    child: const Text('Details'),
+                    child: Text(context.l10n.chatDetails),
                   ),
                 if (onContinue != null)
                   ElevatedButton.icon(
                     onPressed: onContinue,
                     icon: const Icon(Icons.play_arrow, size: 18),
-                    label: const Text('Continue'),
+                    label: Text(context.l10n.chatContinue),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
@@ -460,7 +461,7 @@ class CourseCard extends EntityCard {
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text('Enroll'),
+                    child: Text(context.l10n.chatEnroll),
                   ),
               ],
             ),
@@ -579,7 +580,7 @@ class ApplicationCard extends EntityCard {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Progress',
+                        context.l10n.chatProgress,
                         style: TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
@@ -630,7 +631,7 @@ class ApplicationCard extends EntityCard {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Deadline: $deadline',
+                    context.l10n.chatDeadlineLabel(deadline!),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -649,7 +650,7 @@ class ApplicationCard extends EntityCard {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'To Do:',
+                    context.l10n.chatToDo,
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -697,7 +698,7 @@ class ApplicationCard extends EntityCard {
                     style: TextButton.styleFrom(
                       foregroundColor: AppColors.primary,
                     ),
-                    child: const Text('View Details'),
+                    child: Text(context.l10n.chatViewDetails),
                   ),
                 if (onContinue != null &&
                     status.toLowerCase() != 'submitted' &&
@@ -706,7 +707,7 @@ class ApplicationCard extends EntityCard {
                   ElevatedButton.icon(
                     onPressed: onContinue,
                     icon: const Icon(Icons.edit, size: 18),
-                    label: const Text('Continue'),
+                    label: Text(context.l10n.chatContinue),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,

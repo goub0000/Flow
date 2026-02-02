@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../domain/models/student_profile.dart';
@@ -76,7 +77,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('University Questionnaire'),
+        title: Text(context.l10n.fypQuestionnaireTitle),
         backgroundColor: AppColors.surface,
       ),
       body: Column(
@@ -127,7 +128,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
               ),
               const SizedBox(width: 12),
               Text(
-                'Step ${_currentStep + 1} of 6',
+                context.l10n.fypStepOf(_currentStep + 1, 6),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -138,7 +139,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            _getStepTitle(_currentStep),
+            _getStepTitle(context, _currentStep),
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -149,20 +150,20 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     );
   }
 
-  String _getStepTitle(int step) {
+  String _getStepTitle(BuildContext context, int step) {
     switch (step) {
       case 0:
-        return 'Background Information';
+        return context.l10n.fypStepBackgroundInfo;
       case 1:
-        return 'Academic Achievements';
+        return context.l10n.fypStepAcademicAchievements;
       case 2:
-        return 'Academic Interests';
+        return context.l10n.fypStepAcademicInterests;
       case 3:
-        return 'Location Preferences';
+        return context.l10n.fypStepLocationPreferences;
       case 4:
-        return 'University Preferences';
+        return context.l10n.fypStepUniversityPreferences;
       case 5:
-        return 'Financial Information';
+        return context.l10n.fypStepFinancialInfo;
       default:
         return '';
     }
@@ -192,16 +193,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Tell us about yourself',
-          style: TextStyle(
+        Text(
+          context.l10n.fypTellUsAboutYourself,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          'This helps us understand your educational background',
+          context.l10n.fypBackgroundHelper,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -212,11 +213,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Nationality
         DropdownButtonFormField<String>(
           value: _nationality,
-          decoration: const InputDecoration(
-            labelText: 'Nationality *',
-            prefixIcon: Icon(Icons.flag),
-            border: OutlineInputBorder(),
-            helperText: 'Your country of citizenship',
+          decoration: InputDecoration(
+            labelText: context.l10n.fypNationalityLabel,
+            prefixIcon: const Icon(Icons.flag),
+            border: const OutlineInputBorder(),
+            helperText: context.l10n.fypNationalityHelper,
           ),
           items: worldCountries.map((country) {
             return DropdownMenuItem(
@@ -231,7 +232,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           },
           validator: (value) {
             if (value == null) {
-              return 'Please select your nationality';
+              return context.l10n.fypSelectNationality;
             }
             return null;
           },
@@ -241,11 +242,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Current Country
         DropdownButtonFormField<String>(
           value: _currentCountry,
-          decoration: const InputDecoration(
-            labelText: 'Where are you currently studying? *',
-            prefixIcon: Icon(Icons.school),
-            border: OutlineInputBorder(),
-            helperText: 'Your current location (not where you want to study)',
+          decoration: InputDecoration(
+            labelText: context.l10n.fypCurrentStudyingLabel,
+            prefixIcon: const Icon(Icons.school),
+            border: const OutlineInputBorder(),
+            helperText: context.l10n.fypCurrentStudyingHelper,
           ),
           items: worldCountries.map((country) {
             return DropdownMenuItem(
@@ -261,7 +262,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           },
           validator: (value) {
             if (value == null) {
-              return 'Please select your current country';
+              return context.l10n.fypSelectCurrentCountry;
             }
             return null;
           },
@@ -272,11 +273,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         if (_currentCountry != null && _getRegionsForCountry(_currentCountry).isNotEmpty) ...[
           DropdownButtonFormField<String>(
             value: _currentRegion,
-            decoration: const InputDecoration(
-              labelText: 'Current Region/State (Optional)',
-              prefixIcon: Icon(Icons.location_on),
-              border: OutlineInputBorder(),
-              helperText: 'Select your region if available',
+            decoration: InputDecoration(
+              labelText: context.l10n.fypCurrentRegionLabel,
+              prefixIcon: const Icon(Icons.location_on),
+              border: const OutlineInputBorder(),
+              helperText: context.l10n.fypSelectRegionHelper,
             ),
             items: _getRegionsForCountry(_currentCountry).map((region) {
               return DropdownMenuItem(
@@ -302,16 +303,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Your academic achievements',
-          style: TextStyle(
+        Text(
+          context.l10n.fypYourAcademicAchievements,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          'This helps us match you with universities where you\'ll be competitive',
+          context.l10n.fypAcademicMatchHelper,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -322,10 +323,10 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Grading System
         DropdownButtonFormField<GradingSystem>(
           value: _gradingSystem,
-          decoration: const InputDecoration(
-            labelText: 'Your Grading System *',
-            prefixIcon: Icon(Icons.assessment),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: context.l10n.fypGradingSystemLabel,
+            prefixIcon: const Icon(Icons.assessment),
+            border: const OutlineInputBorder(),
           ),
           items: GradingSystem.values.map((system) {
             return DropdownMenuItem(
@@ -341,7 +342,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           },
           validator: (value) {
             if (value == null) {
-              return 'Please select your grading system';
+              return context.l10n.fypSelectGradingSystem;
             }
             return null;
           },
@@ -353,7 +354,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           TextFormField(
             controller: _gradeValueController,
             decoration: InputDecoration(
-              labelText: 'Your Grade *',
+              labelText: context.l10n.fypYourGradeLabel,
               hintText: 'e.g., ${_gradingSystem!.maxScore}',
               helperText: 'Maximum: ${_gradingSystem!.maxScore}',
               prefixIcon: const Icon(Icons.grade),
@@ -362,7 +363,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return 'Please enter your grade';
+                return context.l10n.fypEnterGrade;
               }
               return null;
             },
@@ -373,11 +374,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Standardized Test Type
         DropdownButtonFormField<String>(
           value: _standardizedTestType,
-          decoration: const InputDecoration(
-            labelText: 'Standardized Test (if applicable)',
-            prefixIcon: Icon(Icons.quiz),
-            border: OutlineInputBorder(),
-            helperText: 'Leave blank if you haven\'t taken any',
+          decoration: InputDecoration(
+            labelText: context.l10n.fypStandardizedTestLabel,
+            prefixIcon: const Icon(Icons.quiz),
+            border: const OutlineInputBorder(),
+            helperText: context.l10n.fypStandardizedTestHelper,
           ),
           items: standardizedTests.map((test) {
             return DropdownMenuItem(value: test, child: Text(test));
@@ -394,11 +395,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Test Score Fields (dynamic based on test type)
         if (_standardizedTestType == 'SAT') ...[
           TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'SAT Total Score',
-              hintText: 'e.g., 1400',
-              prefixIcon: Icon(Icons.score),
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.fypSatTotalScoreLabel,
+              hintText: context.l10n.fypSatScoreHint,
+              prefixIcon: const Icon(Icons.score),
+              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -411,7 +412,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
               if (value == null || value.isEmpty) return null;
               final score = int.tryParse(value);
               if (score == null || score < 400 || score > 1600) {
-                return 'SAT must be between 400-1600';
+                return context.l10n.fypSatValidation;
               }
               return null;
             },
@@ -419,11 +420,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           const SizedBox(height: 16),
         ] else if (_standardizedTestType == 'ACT') ...[
           TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'ACT Composite Score',
-              hintText: 'e.g., 28',
-              prefixIcon: Icon(Icons.score),
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.fypActCompositeLabel,
+              hintText: context.l10n.fypActScoreHint,
+              prefixIcon: const Icon(Icons.score),
+              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -436,7 +437,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
               if (value == null || value.isEmpty) return null;
               final score = int.tryParse(value);
               if (score == null || score < 1 || score > 36) {
-                return 'ACT must be between 1-36';
+                return context.l10n.fypActValidation;
               }
               return null;
             },
@@ -444,11 +445,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           const SizedBox(height: 16),
         ] else if (_standardizedTestType == 'IB Diploma') ...[
           TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'IB Predicted/Final Score',
-              hintText: 'e.g., 38',
-              prefixIcon: Icon(Icons.score),
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.fypIbScoreLabel,
+              hintText: context.l10n.fypIbScoreHint,
+              prefixIcon: const Icon(Icons.score),
+              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -461,7 +462,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
               if (value == null || value.isEmpty) return null;
               final score = int.tryParse(value);
               if (score == null || score < 0 || score > 45) {
-                return 'IB score must be between 0-45';
+                return context.l10n.fypIbValidation;
               }
               return null;
             },
@@ -483,7 +484,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Standardized test scores are optional. If you haven\'t taken these tests yet, you can skip them.',
+                  context.l10n.fypTestScoresOptional,
                   style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
                 ),
               ),
@@ -499,16 +500,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'What do you want to study?',
-          style: TextStyle(
+        Text(
+          context.l10n.fypWhatStudy,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Tell us about your academic interests and career goals',
+          context.l10n.fypInterestsHelper,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -519,11 +520,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Intended Major
         DropdownButtonFormField<String>(
           value: _intendedMajor,
-          decoration: const InputDecoration(
-            labelText: 'Intended Major *',
-            hintText: 'Select your intended major',
-            prefixIcon: Icon(Icons.school),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: context.l10n.fypIntendedMajorLabel,
+            hintText: context.l10n.fypIntendedMajorHint,
+            prefixIcon: const Icon(Icons.school),
+            border: const OutlineInputBorder(),
           ),
           items: commonMajors.map((major) {
             return DropdownMenuItem(value: major, child: Text(major));
@@ -535,7 +536,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           },
           validator: (value) {
             if (value == null) {
-              return 'Please select your intended major';
+              return context.l10n.fypSelectIntendedMajor;
             }
             return null;
           },
@@ -545,10 +546,10 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Field of Study
         DropdownButtonFormField<String>(
           value: _fieldOfStudy,
-          decoration: const InputDecoration(
-            labelText: 'Field of Study *',
-            prefixIcon: Icon(Icons.category),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: context.l10n.fypFieldOfStudyLabel,
+            prefixIcon: const Icon(Icons.category),
+            border: const OutlineInputBorder(),
           ),
           items: fieldsOfStudy.map((field) {
             return DropdownMenuItem(value: field, child: Text(field));
@@ -560,7 +561,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           },
           validator: (value) {
             if (value == null) {
-              return 'Please select a field of study';
+              return context.l10n.fypSelectFieldOfStudy;
             }
             return null;
           },
@@ -569,9 +570,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
 
         // Career Focus
         CheckboxListTile(
-          title: const Text('I am career-focused'),
+          title: Text(context.l10n.fypCareerFocused),
           subtitle: Text(
-            'I want to find universities with strong job placement and career services',
+            context.l10n.fypCareerFocusedSubtitle,
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           value: _careerFocused,
@@ -585,9 +586,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
 
         // Research Interest
         CheckboxListTile(
-          title: const Text('Interested in research opportunities'),
+          title: Text(context.l10n.fypResearchInterest),
           subtitle: Text(
-            'I want to participate in research projects during my studies',
+            context.l10n.fypResearchInterestSubtitle,
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           value: _researchInterest,
@@ -607,16 +608,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Where do you want to study?',
-          style: TextStyle(
+        Text(
+          context.l10n.fypWhereStudy,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Select your preferred countries and regions',
+          context.l10n.fypLocationHelper,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -625,16 +626,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         const SizedBox(height: 32),
 
         // Preferred Countries
-        const Text(
-          'Where do you want to study? *',
-          style: TextStyle(
+        Text(
+          context.l10n.fypWhereStudyRequired,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 12),
         Text(
-          'Select countries where you\'d like to attend university (can be different from your current location)',
+          context.l10n.fypSelectCountriesHelper,
           style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 12),
@@ -669,9 +670,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         const SizedBox(height: 24),
 
         // Location Type
-        const Text(
-          'Campus Setting',
-          style: TextStyle(
+        Text(
+          context.l10n.fypCampusSetting,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -698,16 +699,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'University Characteristics',
-          style: TextStyle(
+        Text(
+          context.l10n.fypUniversityCharacteristics,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          'What kind of university environment do you prefer?',
+          context.l10n.fypUniversityEnvironmentHelper,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -718,10 +719,10 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // University Size
         DropdownButtonFormField<String>(
           value: _universitySize,
-          decoration: const InputDecoration(
-            labelText: 'Preferred University Size',
-            prefixIcon: Icon(Icons.people),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: context.l10n.fypPreferredSizeLabel,
+            prefixIcon: const Icon(Icons.people),
+            border: const OutlineInputBorder(),
           ),
           items: universitySizePreferences.map((size) {
             return DropdownMenuItem(value: size, child: Text(size));
@@ -737,10 +738,10 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // University Type
         DropdownButtonFormField<String>(
           value: _universityType,
-          decoration: const InputDecoration(
-            labelText: 'Preferred University Type',
-            prefixIcon: Icon(Icons.account_balance),
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: context.l10n.fypPreferredTypeLabel,
+            prefixIcon: const Icon(Icons.account_balance),
+            border: const OutlineInputBorder(),
           ),
           items: universityTypePreferences.map((type) {
             return DropdownMenuItem(value: type, child: Text(type));
@@ -755,9 +756,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
 
         // Sports Interest
         CheckboxListTile(
-          title: const Text('Interested in athletics/sports'),
+          title: Text(context.l10n.fypSportsInterest),
           subtitle: Text(
-            'I want to participate in or attend collegiate sports',
+            context.l10n.fypSportsInterestSubtitle,
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           value: _interestedInSports,
@@ -771,9 +772,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         const SizedBox(height: 20),
 
         // Desired Features
-        const Text(
-          'Desired Campus Features (optional)',
-          style: TextStyle(
+        Text(
+          context.l10n.fypDesiredFeatures,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -810,16 +811,16 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Financial Considerations',
-          style: TextStyle(
+        Text(
+          context.l10n.fypFinancialConsiderations,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Help us recommend universities within your budget',
+          context.l10n.fypFinancialHelper,
           style: TextStyle(
             fontSize: 14,
             color: AppColors.textSecondary,
@@ -830,11 +831,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         // Budget Range
         DropdownButtonFormField<String>(
           value: _budgetRange,
-          decoration: const InputDecoration(
-            labelText: 'Annual Budget Range (USD)',
-            prefixIcon: Icon(Icons.attach_money),
-            border: OutlineInputBorder(),
-            helperText: 'Approximate annual tuition budget',
+          decoration: InputDecoration(
+            labelText: context.l10n.fypBudgetRangeLabel,
+            prefixIcon: const Icon(Icons.attach_money),
+            border: const OutlineInputBorder(),
+            helperText: context.l10n.fypBudgetRangeHelper,
           ),
           items: budgetRanges.map((range) {
             return DropdownMenuItem(value: range, child: Text(range));
@@ -849,9 +850,9 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
 
         // Financial Aid Need
         CheckboxListTile(
-          title: const Text('I will need financial aid'),
+          title: Text(context.l10n.fypNeedFinancialAid),
           subtitle: Text(
-            'We\'ll prioritize universities with strong financial aid programs',
+            context.l10n.fypFinancialAidSubtitle,
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           value: _needFinancialAid,
@@ -868,13 +869,13 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         if (_preferredCountries.contains('US')) ...[
           DropdownButtonFormField<String>(
             value: _inStateEligible,
-            decoration: const InputDecoration(
-              labelText: 'Eligible for In-State Tuition? (US)',
-              prefixIcon: Icon(Icons.location_city),
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.fypInStateTuitionLabel,
+              prefixIcon: const Icon(Icons.location_city),
+              border: const OutlineInputBorder(),
             ),
             items: [
-              const DropdownMenuItem(value: null, child: Text('Not applicable')),
+              DropdownMenuItem(value: null, child: Text(context.l10n.fypNotApplicable)),
               ...usStates.map((state) {
                 return DropdownMenuItem(value: state, child: Text(state));
               }).toList(),
@@ -915,7 +916,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text('Back'),
+                child: Text(context.l10n.fypBack),
               ),
             ),
           if (_currentStep > 0) const SizedBox(width: 16),
@@ -937,7 +938,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : Text(_currentStep == 5 ? 'Get Recommendations' : 'Next'),
+                  : Text(_currentStep == 5 ? context.l10n.fypGetRecommendations : context.l10n.fypNext),
             ),
           ),
         ],
@@ -1018,7 +1019,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
           Navigator.of(context).pop(); // Close loading dialog
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error saving profile: ${profileState.error}'),
+              content: Text(context.l10n.fypErrorSavingProfile(profileState.error!)),
               backgroundColor: AppColors.error,
               duration: const Duration(seconds: 5),
             ),
@@ -1042,11 +1043,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error generating recommendations: ${recsState.error}'),
+              content: Text(context.l10n.fypErrorGeneratingRecs(recsState.error!)),
               backgroundColor: AppColors.error,
               duration: const Duration(seconds: 5),
               action: SnackBarAction(
-                label: 'Retry',
+                label: context.l10n.fypRetry,
                 textColor: Colors.white,
                 onPressed: () => _submitProfile(),
               ),
@@ -1066,11 +1067,11 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('Sign up to save your recommendations!'),
+                  content: Text(context.l10n.fypSignUpToSave),
                   backgroundColor: AppColors.primary,
                   duration: const Duration(seconds: 5),
                   action: SnackBarAction(
-                    label: 'Sign Up',
+                    label: context.l10n.fypSignUp,
                     textColor: Colors.white,
                     onPressed: () => context.go('/register'),
                   ),
@@ -1085,7 +1086,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
         Navigator.of(context).pop(); // Close loading dialog
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Unexpected error: $e'),
+            content: Text(context.l10n.fypUnexpectedError(e.toString())),
             backgroundColor: AppColors.error,
             duration: const Duration(seconds: 5),
           ),
@@ -1134,9 +1135,9 @@ class _LoadingDialog extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               // Loading message
-              const Text(
-                'Generating Recommendations',
-                style: TextStyle(
+              Text(
+                context.l10n.fypGeneratingRecommendations,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -1145,7 +1146,7 @@ class _LoadingDialog extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Please wait while we analyze universities\nand create personalized matches for you...',
+                context.l10n.fypGeneratingPleaseWait,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[600],

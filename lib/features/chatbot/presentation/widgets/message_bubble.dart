@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/models/chat_message.dart';
 
@@ -57,7 +58,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text(
-                      isAgent ? 'Support Agent' : 'System',
+                      isAgent ? context.l10n.chatSupportAgent : context.l10n.chatSystem,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
@@ -103,7 +104,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                     // Show confidence indicator for bot messages
                     if (isBot && widget.message.confidence != null) ...[
                       const SizedBox(width: 8),
-                      _buildConfidenceIndicator(widget.message.confidence!),
+                      _buildConfidenceIndicator(context, widget.message.confidence!),
                     ],
                     // Show AI provider badge
                     if (isBot && widget.message.aiProvider != null) ...[
@@ -303,19 +304,19 @@ class _MessageBubbleState extends State<MessageBubble> {
     );
   }
 
-  Widget _buildConfidenceIndicator(double confidence) {
+  Widget _buildConfidenceIndicator(BuildContext context, double confidence) {
     Color color;
     String label;
 
     if (confidence >= 0.7) {
       color = Colors.green;
-      label = 'High';
+      label = context.l10n.chatConfidenceHigh;
     } else if (confidence >= 0.4) {
       color = Colors.orange;
-      label = 'Medium';
+      label = context.l10n.chatConfidenceMedium;
     } else {
       color = Colors.red;
-      label = 'Low';
+      label = context.l10n.chatConfidenceLow;
     }
 
     return Container(
@@ -394,8 +395,8 @@ class _MessageBubbleState extends State<MessageBubble> {
           const SizedBox(width: 4),
           Text(
             _localFeedback == MessageFeedback.helpful
-                ? 'Helpful'
-                : 'Not helpful',
+                ? context.l10n.chatHelpful
+                : context.l10n.chatNotHelpful,
             style: TextStyle(
               fontSize: 11,
               color: _localFeedback == MessageFeedback.helpful
@@ -413,7 +414,7 @@ class _MessageBubbleState extends State<MessageBubble> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Was this helpful?',
+            context.l10n.chatWasThisHelpful,
             style: TextStyle(
               fontSize: 11,
               color: Colors.grey[600],
@@ -448,7 +449,7 @@ class _MessageBubbleState extends State<MessageBubble> {
           ),
           const SizedBox(width: 4),
           Text(
-            'Rate this response',
+            context.l10n.chatRateThisResponse,
             style: TextStyle(
               fontSize: 11,
               color: Colors.grey[400],
@@ -597,7 +598,7 @@ class _CopyButtonState extends State<_CopyButton> {
             ),
             const SizedBox(width: 4),
             Text(
-              _copied ? 'Copied!' : 'Copy',
+              _copied ? context.l10n.chatCopied : context.l10n.chatCopy,
               style: TextStyle(
                 fontSize: 11,
                 color: _copied ? Colors.green : Colors.grey[600],

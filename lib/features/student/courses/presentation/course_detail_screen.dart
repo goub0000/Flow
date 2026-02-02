@@ -5,6 +5,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../../core/models/enrollment_permission_model.dart';
 import '../../../../core/services/enrollment_permissions_api_service.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/enrollments_provider.dart';
 import '../../../authentication/providers/auth_provider.dart';
 
@@ -117,14 +118,14 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
                   const SizedBox(height: 16),
 
                   // Description
-                  const Text('Description', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(context.l10n.courseDescription, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   Text(course.description, style: const TextStyle(height: 1.6)),
                   const SizedBox(height: 24),
 
                   // Learning Outcomes
                   if (course.learningOutcomes.isNotEmpty) ...[
-                    const Text('What You\'ll Learn', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(context.l10n.courseWhatYoullLearn, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     ...course.learningOutcomes.map((outcome) => Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -141,7 +142,7 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
 
                   // Prerequisites
                   if (course.prerequisites.isNotEmpty) ...[
-                    const Text('Prerequisites', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(context.l10n.coursePrerequisites, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     ...course.prerequisites.map((prereq) => Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -206,9 +207,9 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
                               children: [
                                 Text(
                                   _permission!.isPending
-                                      ? 'Permission Requested'
+                                      ? context.l10n.coursePermissionPending
                                       : (_permission!.isDenied
-                                          ? 'Permission Denied'
+                                          ? context.l10n.coursePermissionDenied
                                           : 'Permission ${_permission!.status.displayName}'),
                                   style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -233,7 +234,7 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Price', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                            Text(context.l10n.coursePrice, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
                             Text(
                               course.formattedPrice,
                               style: TextStyle(
@@ -257,7 +258,7 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
                                       ? Colors.green
                                       : (_permission?.isPending == true ? Colors.orange : null),
                                 ),
-                                child: Text(_getButtonText(isEnrolled, enrollment)),
+                                child: Text(_getButtonText(context, isEnrolled, enrollment)),
                               ),
                       ),
                     ],
@@ -293,34 +294,34 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
     return null;
   }
 
-  String _getButtonText(bool isEnrolled, dynamic enrollment) {
+  String _getButtonText(BuildContext context, bool isEnrolled, dynamic enrollment) {
     if (isEnrolled) {
       final progress = enrollment?.progressPercentage ?? 0;
       if (progress > 0) {
-        return 'Continue Learning (${progress.toStringAsFixed(0)}%)';
+        return context.l10n.courseContinueLearning(progress.toStringAsFixed(0));
       }
-      return 'Start Learning';
+      return context.l10n.courseStartLearning;
     }
 
-    if (widget.course.isFull) return 'Course Full';
+    if (widget.course.isFull) return context.l10n.courseCourseFull;
 
     if (_permission == null) {
-      return 'Request Permission';
+      return context.l10n.courseRequestPermission;
     }
 
     if (_permission!.isPending) {
-      return 'Permission Pending';
+      return context.l10n.coursePermissionPending;
     }
 
     if (_permission!.isDenied || _permission!.isRevoked) {
-      return 'Request Permission Again';
+      return context.l10n.courseRequestPermissionAgain;
     }
 
     if (_permission!.isApproved) {
-      return 'Enroll Now';
+      return context.l10n.courseEnrollNow;
     }
 
-    return 'Request Permission';
+    return context.l10n.courseRequestPermission;
   }
 
   Future<void> _requestPermission() async {
@@ -328,25 +329,25 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Request Enrollment Permission'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.courseRequestEnrollmentTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Request permission to enroll in "${widget.course.title}"?'),
+            Text(context.l10n.courseRequestEnrollmentContent(widget.course.title)),
             const SizedBox(height: 8),
-            const Text(
-              'The institution will review your request.',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+            Text(
+              context.l10n.courseInstitutionReview,
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: notesController,
-              decoration: const InputDecoration(
-                labelText: 'Message to institution (optional)',
-                hintText: 'Why do you want to take this course?',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.courseMessageToInstitution,
+                hintText: context.l10n.courseMessageHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -354,12 +355,12 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(context.l10n.courseCancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Request'),
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: Text(context.l10n.courseRequest),
           ),
         ],
       ),
@@ -379,8 +380,8 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Permission request sent!'),
+            SnackBar(
+              content: Text(context.l10n.coursePermissionRequestSent),
               backgroundColor: Colors.green,
             ),
           );
@@ -392,7 +393,7 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to request permission: ${e.toString()}'),
+              content: Text(context.l10n.courseFailedRequestPermission(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -417,15 +418,15 @@ class _CourseDetailScreenState extends ConsumerState<CourseDetailScreen> {
 
       if (enrollment != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Successfully enrolled in course!'),
+          SnackBar(
+            content: Text(context.l10n.courseEnrolledSuccess),
             backgroundColor: Colors.green,
           ),
         );
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(ref.read(enrollmentsProvider).error ?? 'Failed to enroll'),
+            content: Text(ref.read(enrollmentsProvider).error ?? context.l10n.courseFailedEnroll),
             backgroundColor: Colors.red,
           ),
         );

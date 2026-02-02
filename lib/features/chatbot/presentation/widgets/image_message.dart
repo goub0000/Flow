@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Image message widget for displaying images in chat
@@ -81,7 +82,7 @@ class ImageMessage extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Failed to load image',
+                        context.l10n.chatFailedToLoadImage,
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
@@ -377,7 +378,7 @@ class _ImageGalleryViewerState extends State<_ImageGalleryViewer> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  '${_currentIndex + 1} / ${widget.imageUrls.length}',
+                  context.l10n.chatImageCounter(_currentIndex + 1, widget.imageUrls.length),
                   style: const TextStyle(color: Colors.white),
                 ),
               ),

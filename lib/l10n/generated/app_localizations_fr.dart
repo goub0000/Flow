@@ -1568,4 +1568,1347 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get dashRecTip3 =>
       'Personnalisez chaque recommandation pour l\'institution';
+
+  @override
+  String get chatViewDetails => 'Voir les détails';
+
+  @override
+  String get chatApply => 'Postuler';
+
+  @override
+  String get chatLearnMore => 'En savoir plus';
+
+  @override
+  String get chatEnroll => 'S\'inscrire';
+
+  @override
+  String get chatContinue => 'Continuer';
+
+  @override
+  String chatRankLabel(int rank) {
+    return 'Classement : #$rank';
+  }
+
+  @override
+  String chatAcceptanceLabel(String rate) {
+    return 'Acceptation : $rate%';
+  }
+
+  @override
+  String chatDeadlineLabel(String deadline) {
+    return 'Date limite : $deadline';
+  }
+
+  @override
+  String get chatRecommendedUniversities => 'Universités recommandées';
+
+  @override
+  String get chatRecommendedCourses => 'Cours recommandés';
+
+  @override
+  String get chatDetails => 'Détails';
+
+  @override
+  String chatAcceptanceRateLabel(String rate) {
+    return '$rate% d\'acceptation';
+  }
+
+  @override
+  String get chatHiNeedHelp => 'Bonjour ! Besoin d\'aide ? 👋';
+
+  @override
+  String get chatTalkToHuman => 'Parler à un humain';
+
+  @override
+  String get chatConnectWithAgent =>
+      'Souhaitez-vous être mis en relation avec un agent de support ?';
+
+  @override
+  String get chatAgentWillJoin =>
+      'Un membre de notre équipe rejoindra cette conversation pour vous aider.';
+
+  @override
+  String get chatCancel => 'Annuler';
+
+  @override
+  String get chatConnect => 'Se connecter';
+
+  @override
+  String get chatYourAccount => 'Votre compte';
+
+  @override
+  String get chatSignIn => 'Se connecter';
+
+  @override
+  String get chatSignedInAs => 'Connecté en tant que :';
+
+  @override
+  String get chatDefaultUserName => 'Utilisateur';
+
+  @override
+  String get chatConversationsSynced =>
+      'Vos conversations sont synchronisées avec votre compte.';
+
+  @override
+  String get chatSignInDescription =>
+      'Connectez-vous pour synchroniser vos conversations sur tous vos appareils et obtenir une assistance personnalisée.';
+
+  @override
+  String get chatHistorySaved =>
+      'Votre historique de conversation sera sauvegardé dans votre compte.';
+
+  @override
+  String get chatClose => 'Fermer';
+
+  @override
+  String get chatViewProfile => 'Voir le profil';
+
+  @override
+  String get chatHumanSupport => 'Support humain';
+
+  @override
+  String get chatFlowAssistant => 'Assistant Flow';
+
+  @override
+  String get chatWaitingForAgent => 'En attente d\'un agent...';
+
+  @override
+  String get chatOnline => 'En ligne';
+
+  @override
+  String get chatStartConversation => 'Démarrer une conversation';
+
+  @override
+  String get chatUserRequestedHumanSupport =>
+      'L\'utilisateur a demandé un support humain';
+
+  @override
+  String get chatRankStat => 'Classement';
+
+  @override
+  String get chatAcceptStat => 'Acceptation';
+
+  @override
+  String get chatMatchStat => 'Compatibilité';
+
+  @override
+  String chatLessonsCount(int count) {
+    return '$count leçons';
+  }
+
+  @override
+  String get chatProgress => 'Progression';
+
+  @override
+  String get chatToDo => 'À faire :';
+
+  @override
+  String get chatFailedToLoadImage => 'Échec du chargement de l\'image';
+
+  @override
+  String chatImageCounter(int current, int total) {
+    return '$current / $total';
+  }
+
+  @override
+  String get chatTypeYourMessage => 'Tapez votre message...';
+
+  @override
+  String get chatSupportAgent => 'Agent de support';
+
+  @override
+  String get chatSystem => 'Système';
+
+  @override
+  String get chatConfidenceHigh => 'Élevée';
+
+  @override
+  String get chatConfidenceMedium => 'Moyenne';
+
+  @override
+  String get chatConfidenceLow => 'Faible';
+
+  @override
+  String get chatHelpful => 'Utile';
+
+  @override
+  String get chatNotHelpful => 'Pas utile';
+
+  @override
+  String get chatWasThisHelpful => 'Cela vous a-t-il été utile ?';
+
+  @override
+  String get chatRateThisResponse => 'Évaluer cette réponse';
+
+  @override
+  String get chatCopied => 'Copié !';
+
+  @override
+  String get chatCopy => 'Copier';
+
+  @override
+  String get chatViewRecommendations => 'Voir les recommandations';
+
+  @override
+  String get chatUpdateProfile => 'Mettre à jour le profil';
+
+  @override
+  String get chatMyApplications => 'Mes candidatures';
+
+  @override
+  String get chatCompareSchools => 'Comparer les écoles';
+
+  @override
+  String get chatFilterResults => 'Filtrer les résultats';
+
+  @override
+  String get chatWhyTheseSchools => 'Pourquoi ces écoles ?';
+
+  @override
+  String get chatViewDeadlines => 'Voir les dates limites';
+
+  @override
+  String get chatEssayTips => 'Conseils pour les essais';
+
+  @override
+  String get chatApplicationChecklist => 'Liste de contrôle de candidature';
+
+  @override
+  String get chatHelpWithQuestions => 'Aide pour les questions';
+
+  @override
+  String get chatCanISkipSections => 'Puis-je sauter des sections ?';
+
+  @override
+  String get chatStartApplication => 'Démarrer la candidature';
+
+  @override
+  String get chatSaveToFavorites => 'Ajouter aux favoris';
+
+  @override
+  String get chatSimilarSchools => 'Écoles similaires';
+
+  @override
+  String get chatEssayWritingHelp => 'Aide à la rédaction d\'essais';
+
+  @override
+  String get chatSetDeadlineReminder => 'Définir un rappel de date limite';
+
+  @override
+  String get chatLetterRequestTips =>
+      'Conseils pour les lettres de recommandation';
+
+  @override
+  String get chatTranscriptGuide => 'Guide des relevés de notes';
+
+  @override
+  String get chatStartQuestionnaire => 'Démarrer le questionnaire';
+
+  @override
+  String get chatHowItWorks => 'Comment ça marche';
+
+  @override
+  String get chatBrowseUniversities => 'Parcourir les universités';
+
+  @override
+  String get chatHowCanYouHelp => 'Comment pouvez-vous m\'aider ?';
+
+  @override
+  String get chatGetRecommendations => 'Obtenir des recommandations';
+
+  @override
+  String get chatContactSupport => 'Contacter le support';
+
+  @override
+  String chatCompleteProfile(int completeness) {
+    return 'Compléter le profil ($completeness%)';
+  }
+
+  @override
+  String get chatWhyCompleteProfile => 'Pourquoi compléter le profil ?';
+
+  @override
+  String chatViewSchools(int count) {
+    return 'Voir $count écoles';
+  }
+
+  @override
+  String chatMyFavorites(int count) {
+    return 'Mes favoris ($count)';
+  }
+
+  @override
+  String get chatStartApplying => 'Commencer à postuler';
+
+  @override
+  String get fypTitle => 'Trouve ta voie';
+
+  @override
+  String get fypHeroTitle => 'Trouvez votre université idéale';
+
+  @override
+  String get fypHeroSubtitle =>
+      'Obtenez des recommandations universitaires personnalisées basées sur votre profil académique, vos préférences et vos objectifs';
+
+  @override
+  String get fypHowItWorks => 'Comment ça marche';
+
+  @override
+  String get fypStep1Title => 'Répondez aux questions';
+
+  @override
+  String get fypStep1Description =>
+      'Parlez-nous de votre profil académique, de votre filière souhaitée et de vos préférences';
+
+  @override
+  String get fypStep2Title => 'Obtenez des correspondances';
+
+  @override
+  String get fypStep2Description =>
+      'Notre algorithme analyse votre profil par rapport à des centaines d\'universités';
+
+  @override
+  String get fypStep3Title => 'Consultez les résultats';
+
+  @override
+  String get fypStep3Description =>
+      'Découvrez vos recommandations personnalisées classées en écoles de sécurité, de correspondance et d\'ambition';
+
+  @override
+  String get fypWhatYoullGet => 'Ce que vous obtiendrez';
+
+  @override
+  String get fypFeatureMatchScore => 'Score de correspondance';
+
+  @override
+  String get fypFeatureSafetyMatchReach => 'Sécurité/Correspondance/Ambition';
+
+  @override
+  String get fypFeatureCostAnalysis => 'Analyse des coûts';
+
+  @override
+  String get fypFeatureDetailedInsights => 'Informations détaillées';
+
+  @override
+  String get fypFeatureSaveFavorites => 'Enregistrer les favoris';
+
+  @override
+  String get fypFeatureCompareOptions => 'Comparer les options';
+
+  @override
+  String get fypGetStarted => 'Commencer';
+
+  @override
+  String get fypViewMyRecommendations => 'Voir mes recommandations';
+
+  @override
+  String get fypDisclaimer =>
+      'Les recommandations sont basées sur votre profil et vos préférences. Faites toujours des recherches approfondies sur les universités et consultez des conseillers d\'orientation avant de prendre des décisions définitives.';
+
+  @override
+  String get fypQuestionnaireTitle => 'Questionnaire universitaire';
+
+  @override
+  String fypStepOf(int current, int total) {
+    return 'Étape $current sur $total';
+  }
+
+  @override
+  String get fypStepBackgroundInfo => 'Informations générales';
+
+  @override
+  String get fypStepAcademicAchievements => 'Résultats académiques';
+
+  @override
+  String get fypStepAcademicInterests => 'Intérêts académiques';
+
+  @override
+  String get fypStepLocationPreferences => 'Préférences de lieu';
+
+  @override
+  String get fypStepUniversityPreferences => 'Préférences universitaires';
+
+  @override
+  String get fypStepFinancialInfo => 'Informations financières';
+
+  @override
+  String get fypTellUsAboutYourself => 'Parlez-nous de vous';
+
+  @override
+  String get fypBackgroundHelper =>
+      'Cela nous aide à comprendre votre parcours éducatif';
+
+  @override
+  String get fypNationalityLabel => 'Nationalité *';
+
+  @override
+  String get fypNationalityHelper => 'Votre pays de citoyenneté';
+
+  @override
+  String get fypSelectNationality => 'Veuillez sélectionner votre nationalité';
+
+  @override
+  String get fypCurrentStudyingLabel => 'Où étudiez-vous actuellement ? *';
+
+  @override
+  String get fypCurrentStudyingHelper =>
+      'Votre emplacement actuel (pas celui où vous souhaitez étudier)';
+
+  @override
+  String get fypSelectCurrentCountry =>
+      'Veuillez sélectionner votre pays actuel';
+
+  @override
+  String get fypCurrentRegionLabel => 'Région/État actuel (Facultatif)';
+
+  @override
+  String get fypSelectRegionHelper => 'Sélectionnez votre région si disponible';
+
+  @override
+  String get fypYourAcademicAchievements => 'Vos résultats académiques';
+
+  @override
+  String get fypAcademicMatchHelper =>
+      'Cela nous aide à vous associer à des universités où vous serez compétitif';
+
+  @override
+  String get fypGradingSystemLabel => 'Votre système de notation *';
+
+  @override
+  String get fypSelectGradingSystem =>
+      'Veuillez sélectionner votre système de notation';
+
+  @override
+  String get fypYourGradeLabel => 'Votre note *';
+
+  @override
+  String get fypEnterGrade => 'Veuillez entrer votre note';
+
+  @override
+  String get fypStandardizedTestLabel => 'Test standardisé (le cas échéant)';
+
+  @override
+  String get fypStandardizedTestHelper =>
+      'Laissez vide si vous n\'en avez passé aucun';
+
+  @override
+  String get fypSatTotalScoreLabel => 'Score total SAT';
+
+  @override
+  String get fypSatScoreHint => 'ex. : 1400';
+
+  @override
+  String get fypSatValidation => 'Le SAT doit être entre 400 et 1600';
+
+  @override
+  String get fypActCompositeLabel => 'Score composite ACT';
+
+  @override
+  String get fypActScoreHint => 'ex. : 28';
+
+  @override
+  String get fypActValidation => 'L\'ACT doit être entre 1 et 36';
+
+  @override
+  String get fypIbScoreLabel => 'Score IB prévu/final';
+
+  @override
+  String get fypIbScoreHint => 'ex. : 38';
+
+  @override
+  String get fypIbValidation => 'Le score IB doit être entre 0 et 45';
+
+  @override
+  String get fypTestScoresOptional =>
+      'Les scores aux tests standardisés sont facultatifs. Si vous n\'avez pas encore passé ces tests, vous pouvez les ignorer.';
+
+  @override
+  String get fypWhatStudy => 'Que voulez-vous étudier ?';
+
+  @override
+  String get fypInterestsHelper =>
+      'Parlez-nous de vos intérêts académiques et de vos objectifs de carrière';
+
+  @override
+  String get fypIntendedMajorLabel => 'Filière souhaitée *';
+
+  @override
+  String get fypIntendedMajorHint => 'Sélectionnez votre filière souhaitée';
+
+  @override
+  String get fypSelectIntendedMajor =>
+      'Veuillez sélectionner votre filière souhaitée';
+
+  @override
+  String get fypFieldOfStudyLabel => 'Domaine d\'étude *';
+
+  @override
+  String get fypSelectFieldOfStudy =>
+      'Veuillez sélectionner un domaine d\'étude';
+
+  @override
+  String get fypCareerFocused => 'Je suis orienté carrière';
+
+  @override
+  String get fypCareerFocusedSubtitle =>
+      'Je veux trouver des universités avec un fort placement professionnel et des services de carrière';
+
+  @override
+  String get fypResearchInterest =>
+      'Intéressé par les opportunités de recherche';
+
+  @override
+  String get fypResearchInterestSubtitle =>
+      'Je veux participer à des projets de recherche pendant mes études';
+
+  @override
+  String get fypWhereStudy => 'Où voulez-vous étudier ?';
+
+  @override
+  String get fypLocationHelper => 'Sélectionnez vos pays et régions préférés';
+
+  @override
+  String get fypWhereStudyRequired => 'Où voulez-vous étudier ? *';
+
+  @override
+  String get fypSelectCountriesHelper =>
+      'Sélectionnez les pays où vous souhaitez fréquenter l\'université';
+
+  @override
+  String get fypCampusSetting => 'Cadre du campus';
+
+  @override
+  String get fypUniversityCharacteristics =>
+      'Caractéristiques de l\'université';
+
+  @override
+  String get fypUniversityEnvironmentHelper =>
+      'Quel type d\'environnement universitaire préférez-vous ?';
+
+  @override
+  String get fypPreferredSizeLabel => 'Taille d\'université préférée';
+
+  @override
+  String get fypPreferredTypeLabel => 'Type d\'université préféré';
+
+  @override
+  String get fypSportsInterest => 'Intéressé par l\'athlétisme/le sport';
+
+  @override
+  String get fypSportsInterestSubtitle =>
+      'Je veux participer ou assister à des sports universitaires';
+
+  @override
+  String get fypDesiredFeatures =>
+      'Caractéristiques du campus souhaitées (facultatif)';
+
+  @override
+  String get fypFinancialConsiderations => 'Considérations financières';
+
+  @override
+  String get fypFinancialHelper =>
+      'Aidez-nous à recommander des universités dans votre budget';
+
+  @override
+  String get fypBudgetRangeLabel => 'Budget annuel (USD)';
+
+  @override
+  String get fypBudgetRangeHelper =>
+      'Budget annuel approximatif pour les frais de scolarité';
+
+  @override
+  String get fypNeedFinancialAid => 'J\'aurai besoin d\'une aide financière';
+
+  @override
+  String get fypFinancialAidSubtitle =>
+      'Nous donnerons la priorité aux universités offrant de solides programmes d\'aide financière';
+
+  @override
+  String get fypInStateTuitionLabel =>
+      'Éligible aux frais de scolarité résidentiels ? (US)';
+
+  @override
+  String get fypNotApplicable => 'Non applicable';
+
+  @override
+  String get fypBack => 'Retour';
+
+  @override
+  String get fypNext => 'Suivant';
+
+  @override
+  String get fypGetRecommendations => 'Obtenir des recommandations';
+
+  @override
+  String fypErrorSavingProfile(String error) {
+    return 'Erreur lors de l\'enregistrement du profil : $error';
+  }
+
+  @override
+  String fypErrorGeneratingRecs(String error) {
+    return 'Erreur lors de la génération des recommandations : $error';
+  }
+
+  @override
+  String get fypRetry => 'Réessayer';
+
+  @override
+  String get fypSignUpToSave =>
+      'Inscrivez-vous pour sauvegarder vos recommandations !';
+
+  @override
+  String get fypSignUp => 'S\'inscrire';
+
+  @override
+  String fypUnexpectedError(String error) {
+    return 'Erreur inattendue : $error';
+  }
+
+  @override
+  String get fypGeneratingRecommendations => 'Génération des recommandations';
+
+  @override
+  String get fypGeneratingPleaseWait =>
+      'Veuillez patienter pendant que nous analysons les universités\net créons des correspondances personnalisées pour vous...';
+
+  @override
+  String get fypYourRecommendations => 'Vos recommandations';
+
+  @override
+  String get fypRefresh => 'Actualiser';
+
+  @override
+  String get fypErrorLoadingRecs =>
+      'Erreur lors du chargement des recommandations';
+
+  @override
+  String get fypTryAgain => 'Réessayer';
+
+  @override
+  String get fypNoRecsYet => 'Aucune recommandation pour l\'instant';
+
+  @override
+  String get fypCompleteQuestionnaire =>
+      'Complétez le questionnaire pour obtenir des recommandations personnalisées';
+
+  @override
+  String get fypStartQuestionnaire => 'Commencer le questionnaire';
+
+  @override
+  String get fypFoundPerfectMatches =>
+      'Nous avons trouvé vos correspondances idéales !';
+
+  @override
+  String get fypStatTotal => 'Total';
+
+  @override
+  String get fypStatSafety => 'Sécurité';
+
+  @override
+  String get fypStatMatch => 'Correspondance';
+
+  @override
+  String get fypStatReach => 'Ambition';
+
+  @override
+  String fypFilterAll(int count) {
+    return 'Tous ($count)';
+  }
+
+  @override
+  String fypFilterSafety(int count) {
+    return 'Sécurité ($count)';
+  }
+
+  @override
+  String fypFilterMatch(int count) {
+    return 'Correspondance ($count)';
+  }
+
+  @override
+  String fypFilterReach(int count) {
+    return 'Ambition ($count)';
+  }
+
+  @override
+  String get fypNoFilterMatch =>
+      'Aucune université ne correspond au filtre sélectionné';
+
+  @override
+  String fypPercentMatch(String score) {
+    return '$score% de correspondance';
+  }
+
+  @override
+  String get fypLoadingDetails => 'Chargement des détails de l\'université...';
+
+  @override
+  String get fypLocationNotAvailable => 'Emplacement non disponible';
+
+  @override
+  String get fypStatAcceptance => 'Acceptation';
+
+  @override
+  String get fypStatTuition => 'Frais de scolarité';
+
+  @override
+  String get fypStatStudents => 'Étudiants';
+
+  @override
+  String get fypStatRank => 'Classement';
+
+  @override
+  String get fypWhyGoodMatch => 'Pourquoi c\'est une bonne correspondance :';
+
+  @override
+  String get fypViewDetails => 'Voir les détails';
+
+  @override
+  String get fypUniversityDetails => 'Détails de l\'université';
+
+  @override
+  String get fypVisitWebsite => 'Visiter le site web';
+
+  @override
+  String get fypUniversityNotFound => 'Université non trouvée';
+
+  @override
+  String get fypErrorLoadingUniversity =>
+      'Erreur lors du chargement de l\'université';
+
+  @override
+  String get fypUnknownError => 'Erreur inconnue';
+
+  @override
+  String fypKStudents(String count) {
+    return '${count}k étudiants';
+  }
+
+  @override
+  String get fypNationalRank => 'Classement national';
+
+  @override
+  String get fypAcceptanceRate => 'Taux d\'acceptation';
+
+  @override
+  String get fypAbout => 'À propos';
+
+  @override
+  String get fypAdmissions => 'Admissions';
+
+  @override
+  String get fypCostsFinancialAid => 'Coûts et aide financière';
+
+  @override
+  String get fypStudentOutcomes => 'Résultats des étudiants';
+
+  @override
+  String get fypProgramsOffered => 'Programmes offerts';
+
+  @override
+  String get fypAverageGPA => 'Moyenne générale';
+
+  @override
+  String get fypSatMathRange => 'Fourchette SAT Math';
+
+  @override
+  String get fypSatEbrwRange => 'Fourchette SAT EBRW';
+
+  @override
+  String get fypActRange => 'Fourchette ACT';
+
+  @override
+  String get fypOutOfStateTuition => 'Frais de scolarité hors état';
+
+  @override
+  String get fypTotalCostEst => 'Coût total (est.)';
+
+  @override
+  String get fypFinancialAidNote =>
+      'Une aide financière peut être disponible. Contactez l\'université pour plus de détails.';
+
+  @override
+  String get fypGraduationRate => 'Taux de diplomation en 4 ans';
+
+  @override
+  String get fypMedianEarnings => 'Revenus médians (10 ans)';
+
+  @override
+  String get appListTitle => 'Mes candidatures';
+
+  @override
+  String appTabAll(int count) {
+    return 'Toutes ($count)';
+  }
+
+  @override
+  String appTabPending(int count) {
+    return 'En attente ($count)';
+  }
+
+  @override
+  String appTabUnderReview(int count) {
+    return 'En cours d\'examen ($count)';
+  }
+
+  @override
+  String appTabAccepted(int count) {
+    return 'Acceptées ($count)';
+  }
+
+  @override
+  String get appLoadingMessage => 'Chargement des candidatures...';
+
+  @override
+  String get appRetry => 'Réessayer';
+
+  @override
+  String get appNewApplication => 'Nouvelle candidature';
+
+  @override
+  String get appEmptyTitle => 'Aucune candidature';
+
+  @override
+  String get appEmptyMessage =>
+      'Vous n\'avez soumis aucune candidature pour l\'instant.';
+
+  @override
+  String get appCreateApplication => 'Créer une candidature';
+
+  @override
+  String get appToday => 'Aujourd\'hui';
+
+  @override
+  String get appYesterday => 'Hier';
+
+  @override
+  String appDaysAgo(int days) {
+    return 'Il y a $days jours';
+  }
+
+  @override
+  String get appFeePaid => 'Frais payés';
+
+  @override
+  String get appPaymentPending => 'Paiement en attente';
+
+  @override
+  String appReviewedDaysAgo(int days) {
+    return 'Examiné il y a $days jours';
+  }
+
+  @override
+  String get appDetailTitle => 'Détails de la candidature';
+
+  @override
+  String get appDetailShare => 'Partager';
+
+  @override
+  String get appDetailStatus => 'Statut de la candidature';
+
+  @override
+  String get appStatusPendingReview => 'En attente d\'examen';
+
+  @override
+  String get appStatusUnderReview => 'En cours d\'examen';
+
+  @override
+  String get appStatusAccepted => 'Acceptée';
+
+  @override
+  String get appStatusRejected => 'Rejetée';
+
+  @override
+  String get appStatusUnknown => 'Inconnu';
+
+  @override
+  String get appDetailInfo => 'Informations sur la candidature';
+
+  @override
+  String get appDetailInstitution => 'Établissement';
+
+  @override
+  String get appDetailProgram => 'Programme';
+
+  @override
+  String get appDetailSubmitted => 'Soumise';
+
+  @override
+  String get appDetailReviewed => 'Examinée';
+
+  @override
+  String get appDetailPaymentInfo => 'Informations de paiement';
+
+  @override
+  String get appDetailApplicationFee => 'Frais de candidature';
+
+  @override
+  String get appDetailPaymentStatus => 'Statut du paiement';
+
+  @override
+  String get appDetailPaid => 'Payé';
+
+  @override
+  String get appDetailPendingPayment => 'En attente';
+
+  @override
+  String get appDetailPayFee => 'Payer les frais de candidature';
+
+  @override
+  String get appPaymentDialogTitle => 'Paiement';
+
+  @override
+  String appPaymentDialogContent(String fee) {
+    return 'Payer les frais de candidature de $fee \$ ?';
+  }
+
+  @override
+  String get appCancel => 'Annuler';
+
+  @override
+  String get appPayNow => 'Payer maintenant';
+
+  @override
+  String get appPaymentSuccess => 'Paiement effectué avec succès !';
+
+  @override
+  String get appPaymentFailed => 'Échec du paiement. Veuillez réessayer.';
+
+  @override
+  String appErrorPayment(String error) {
+    return 'Erreur lors du traitement du paiement : $error';
+  }
+
+  @override
+  String get appDetailReviewNotes => 'Notes d\'examen';
+
+  @override
+  String get appDetailDocuments => 'Documents';
+
+  @override
+  String get appDetailTranscript => 'Relevé de notes';
+
+  @override
+  String get appDetailUploaded => 'Téléversé';
+
+  @override
+  String get appDetailIdDocument => 'Pièce d\'identité';
+
+  @override
+  String get appDetailPersonalStatement => 'Lettre de motivation';
+
+  @override
+  String get appDetailWithdraw => 'Retirer';
+
+  @override
+  String get appDetailEdit => 'Modifier';
+
+  @override
+  String get appWithdrawTitle => 'Retirer la candidature';
+
+  @override
+  String get appWithdrawConfirmation =>
+      'Êtes-vous sûr de vouloir retirer cette candidature ? Cette action est irréversible.';
+
+  @override
+  String get appWithdrawSuccess => 'Candidature retirée avec succès';
+
+  @override
+  String get appWithdrawFailed => 'Échec du retrait de la candidature';
+
+  @override
+  String appErrorWithdraw(String error) {
+    return 'Erreur lors du retrait de la candidature : $error';
+  }
+
+  @override
+  String get appCreateTitle => 'Nouvelle candidature';
+
+  @override
+  String get appStepProgramSelection => 'Sélection du programme';
+
+  @override
+  String get appSelectUniversity => 'Sélectionner une université';
+
+  @override
+  String get appBrowseInstitutions => 'Parcourir les établissements';
+
+  @override
+  String get appNoProgramsYet =>
+      'Cet établissement n\'a pas encore de programmes actifs. Veuillez en sélectionner un autre.';
+
+  @override
+  String get appSelectProgramLabel => 'Sélectionner un programme *';
+
+  @override
+  String appProgramsAvailable(int count) {
+    return '$count programmes disponibles';
+  }
+
+  @override
+  String get appStepPersonalInfo => 'Informations personnelles';
+
+  @override
+  String get appFullNameLabel => 'Nom complet';
+
+  @override
+  String get appEmailLabel => 'Adresse e-mail';
+
+  @override
+  String get appPhoneLabel => 'Numéro de téléphone';
+
+  @override
+  String get appStreetAddressLabel => 'Adresse *';
+
+  @override
+  String get appCityLabel => 'Ville *';
+
+  @override
+  String get appCountryLabel => 'Pays *';
+
+  @override
+  String get appStateLabel => 'État/Province *';
+
+  @override
+  String get appSelectCountryFirst => 'Sélectionnez d\'abord un pays';
+
+  @override
+  String get appStepAcademicInfo => 'Informations académiques';
+
+  @override
+  String get appPreviousSchoolLabel => 'École/Établissement précédent';
+
+  @override
+  String get appGpaLabel => 'Moyenne générale / GPA';
+
+  @override
+  String get appPersonalStatementLabel => 'Lettre de motivation';
+
+  @override
+  String get appPersonalStatementHint =>
+      'Pourquoi êtes-vous intéressé par ce programme ?';
+
+  @override
+  String get appStepDocuments => 'Documents (obligatoires)';
+
+  @override
+  String get appUploadRequiredDocs => 'Téléversez les documents requis';
+
+  @override
+  String get appDocTranscriptTitle => 'Relevé de notes académique';
+
+  @override
+  String get appDocTranscriptSubtitle =>
+      'Relevé de notes officiel de votre école précédente (format PDF, DOC ou DOCX, max 5 Mo)';
+
+  @override
+  String get appDocIdTitle => 'Pièce d\'identité';
+
+  @override
+  String get appDocIdSubtitle =>
+      'Pièce d\'identité officielle : passeport, carte d\'identité nationale ou permis de conduire (PDF, JPG ou PNG)';
+
+  @override
+  String get appDocPhotoTitle => 'Photo d\'identité';
+
+  @override
+  String get appDocPhotoSubtitle =>
+      'Photo d\'identité récente sur fond uni (format JPG ou PNG)';
+
+  @override
+  String get appDocRequiredWarning =>
+      'Les trois documents sont obligatoires. Veuillez télécharger le relevé de notes, la pièce d\'identité et la photo d\'identité avant de soumettre.';
+
+  @override
+  String get appSubmit => 'Soumettre';
+
+  @override
+  String get appContinue => 'Continuer';
+
+  @override
+  String get appBack => 'Retour';
+
+  @override
+  String get courseListTitle => 'Cours';
+
+  @override
+  String get courseFiltersTooltip => 'Filtres';
+
+  @override
+  String get courseBrowseAll => 'Parcourir tout';
+
+  @override
+  String get courseAssignedToMe => 'Qui me sont attribués';
+
+  @override
+  String get courseSearchHint => 'Rechercher des cours...';
+
+  @override
+  String get courseNoAvailable => 'Aucun cours disponible';
+
+  @override
+  String get courseCheckBackLater => 'Revenez plus tard pour de nouveaux cours';
+
+  @override
+  String get courseRetry => 'Réessayer';
+
+  @override
+  String get courseFailedLoadAssigned =>
+      'Échec du chargement des cours attribués';
+
+  @override
+  String get courseNoAssignedYet => 'Aucun cours attribué pour l\'instant';
+
+  @override
+  String get courseAssignedDescription =>
+      'Les cours attribués par votre administrateur ou établissement apparaîtront ici.';
+
+  @override
+  String get courseRequired => 'Obligatoire';
+
+  @override
+  String courseLessonsLabel(int count) {
+    return '$count leçons';
+  }
+
+  @override
+  String coursePercentComplete(int percent) {
+    return '$percent% terminé';
+  }
+
+  @override
+  String get courseNoRatingsYet => 'Pas encore de notes';
+
+  @override
+  String courseEnrolledCount(int count) {
+    return '$count inscrits';
+  }
+
+  @override
+  String get courseFiltersTitle => 'Filtres';
+
+  @override
+  String get courseLevelLabel => 'Niveau';
+
+  @override
+  String get courseAllLevels => 'Tous les niveaux';
+
+  @override
+  String get courseLevelBeginner => 'Débutant';
+
+  @override
+  String get courseLevelIntermediate => 'Intermédiaire';
+
+  @override
+  String get courseLevelAdvanced => 'Avancé';
+
+  @override
+  String get courseLevelExpert => 'Expert';
+
+  @override
+  String get courseClearAll => 'Tout effacer';
+
+  @override
+  String get courseApplyFilters => 'Appliquer';
+
+  @override
+  String get courseDescription => 'Description';
+
+  @override
+  String get courseWhatYoullLearn => 'Ce que vous apprendrez';
+
+  @override
+  String get coursePrerequisites => 'Prérequis';
+
+  @override
+  String get coursePrice => 'Prix';
+
+  @override
+  String get courseCourseFull => 'Cours complet';
+
+  @override
+  String get courseRequestPermission => 'Demander la permission';
+
+  @override
+  String get coursePermissionPending => 'Permission en attente';
+
+  @override
+  String get coursePermissionDenied => 'Permission refusée';
+
+  @override
+  String get courseRequestPermissionAgain => 'Redemander la permission';
+
+  @override
+  String get courseEnrollNow => 'S\'inscrire maintenant';
+
+  @override
+  String get courseRequestEnrollmentTitle =>
+      'Demander la permission d\'inscription';
+
+  @override
+  String courseRequestEnrollmentContent(String title) {
+    return 'Demander la permission de s\'inscrire au cours \"$title\" ?';
+  }
+
+  @override
+  String get courseInstitutionReview =>
+      'L\'établissement examinera votre demande.';
+
+  @override
+  String get courseMessageToInstitution =>
+      'Message à l\'établissement (facultatif)';
+
+  @override
+  String get courseMessageHint => 'Pourquoi voulez-vous suivre ce cours ?';
+
+  @override
+  String get courseCancel => 'Annuler';
+
+  @override
+  String get courseRequest => 'Demander';
+
+  @override
+  String get coursePermissionRequestSent => 'Demande de permission envoyée !';
+
+  @override
+  String courseFailedRequestPermission(String error) {
+    return 'Échec de la demande de permission : $error';
+  }
+
+  @override
+  String get courseEnrolledSuccess => 'Inscription au cours réussie !';
+
+  @override
+  String get courseFailedEnroll => 'Échec de l\'inscription';
+
+  @override
+  String courseContinueLearning(String progress) {
+    return 'Continuer l\'apprentissage ($progress%)';
+  }
+
+  @override
+  String get courseStartLearning => 'Commencer l\'apprentissage';
+
+  @override
+  String courseLessonsCompleted(int completed, int total) {
+    return '$completed/$total leçons terminées';
+  }
+
+  @override
+  String get courseCollapseSidebar => 'Réduire la barre latérale';
+
+  @override
+  String get courseExpandSidebar => 'Développer la barre latérale';
+
+  @override
+  String courseErrorLoadingModules(String error) {
+    return 'Erreur lors du chargement des modules :\n$error';
+  }
+
+  @override
+  String get courseNoContentYet => 'Aucun contenu disponible pour l\'instant';
+
+  @override
+  String get courseNoLessonsAdded =>
+      'L\'instructeur n\'a pas encore ajouté de leçons';
+
+  @override
+  String courseLessonsCount(int completed, int total) {
+    return '$completed/$total leçons';
+  }
+
+  @override
+  String courseWelcomeTo(String title) {
+    return 'Bienvenue dans $title';
+  }
+
+  @override
+  String get courseCompleted => 'Terminé';
+
+  @override
+  String get coursePrevious => 'Précédent';
+
+  @override
+  String get courseMarkAsComplete => 'Marquer comme terminé';
+
+  @override
+  String get courseNext => 'Suivant';
+
+  @override
+  String get courseMyCourses => 'Mes cours';
+
+  @override
+  String get courseFilterByStatus => 'Filtrer par statut';
+
+  @override
+  String courseTabAssigned(int count) {
+    return 'Attribués ($count)';
+  }
+
+  @override
+  String courseTabEnrolled(int count) {
+    return 'Inscrits ($count)';
+  }
+
+  @override
+  String get courseNoAssigned => 'Aucun cours attribué';
+
+  @override
+  String get courseAssignedByInstitution =>
+      'Les cours qui vous sont attribués par votre établissement apparaîtront ici';
+
+  @override
+  String get courseREQUIRED => 'OBLIGATOIRE';
+
+  @override
+  String get courseProgress => 'Progression';
+
+  @override
+  String courseDuePrefix(String date) {
+    return 'Échéance : $date';
+  }
+
+  @override
+  String get courseStatusCompleted => 'Terminé';
+
+  @override
+  String get courseStatusInProgress => 'En cours';
+
+  @override
+  String get courseStatusOverdue => 'En retard';
+
+  @override
+  String get courseStatusAssigned => 'Attribué';
+
+  @override
+  String get courseDueToday => 'Aujourd\'hui';
+
+  @override
+  String get courseDueTomorrow => 'Demain';
+
+  @override
+  String courseDueDays(int days) {
+    return '$days jours';
+  }
+
+  @override
+  String get courseNoEnrolled => 'Aucun cours inscrit';
+
+  @override
+  String get courseBrowseToStart => 'Parcourez les cours pour commencer';
+
+  @override
+  String get courseBrowseCourses => 'Parcourir les cours';
+
+  @override
+  String get courseFilterAll => 'Tous';
+
+  @override
+  String get courseStatusActive => 'Actif';
+
+  @override
+  String get courseStatusDropped => 'Abandonné';
+
+  @override
+  String get courseStatusSuspended => 'Suspendu';
 }

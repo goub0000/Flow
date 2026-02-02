@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/application_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/status_badge.dart';
 import '../../providers/student_applications_provider.dart';
@@ -24,9 +25,9 @@ class ApplicationDetailScreen extends ConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.appBack,
         ),
-        title: const Text('Application Details'),
+        title: Text(context.l10n.appDetailTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
@@ -57,14 +58,14 @@ class ApplicationDetailScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Application Status',
+                          context.l10n.appDetailStatus,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          _getStatusText(),
+                          _getStatusText(context),
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: _getStatusColor(),
                             fontWeight: FontWeight.bold,
@@ -81,7 +82,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
 
             // Institution & Program Info
             Text(
-              'Application Information',
+              context.l10n.appDetailInfo,
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -90,24 +91,24 @@ class ApplicationDetailScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _DetailRow(
-                    label: 'Institution',
+                    label: context.l10n.appDetailInstitution,
                     value: application.institutionName,
                   ),
                   const Divider(),
                   _DetailRow(
-                    label: 'Program',
+                    label: context.l10n.appDetailProgram,
                     value: application.programName,
                   ),
                   const Divider(),
                   _DetailRow(
-                    label: 'Submitted',
+                    label: context.l10n.appDetailSubmitted,
                     value:
                         '${application.submittedAt.day}/${application.submittedAt.month}/${application.submittedAt.year}',
                   ),
                   if (application.reviewedAt != null) ...[
                     const Divider(),
                     _DetailRow(
-                      label: 'Reviewed',
+                      label: context.l10n.appDetailReviewed,
                       value:
                           '${application.reviewedAt!.day}/${application.reviewedAt!.month}/${application.reviewedAt!.year}',
                     ),
@@ -120,7 +121,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
             // Payment Info
             if (application.applicationFee != null) ...[
               Text(
-                'Payment Information',
+                context.l10n.appDetailPaymentInfo,
                 style: theme.textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
@@ -128,13 +129,13 @@ class ApplicationDetailScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     _DetailRow(
-                      label: 'Application Fee',
+                      label: context.l10n.appDetailApplicationFee,
                       value: '\$${application.applicationFee!.toStringAsFixed(2)}',
                     ),
                     const Divider(),
                     _DetailRow(
-                      label: 'Payment Status',
-                      value: application.feePaid ? 'Paid' : 'Pending',
+                      label: context.l10n.appDetailPaymentStatus,
+                      value: application.feePaid ? context.l10n.appDetailPaid : context.l10n.appDetailPendingPayment,
                       valueColor:
                           application.feePaid ? AppColors.success : AppColors.warning,
                     ),
@@ -148,7 +149,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
                     _showPaymentDialog(context, ref);
                   },
                   icon: const Icon(Icons.payment),
-                  label: const Text('Pay Application Fee'),
+                  label: Text(context.l10n.appDetailPayFee),
                 ),
               ],
               const SizedBox(height: 24),
@@ -158,7 +159,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
             if (application.reviewNotes != null &&
                 application.reviewNotes!.isNotEmpty) ...[
               Text(
-                'Review Notes',
+                context.l10n.appDetailReviewNotes,
                 style: theme.textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
@@ -174,7 +175,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
 
             // Documents
             Text(
-              'Documents',
+              context.l10n.appDetailDocuments,
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
@@ -182,20 +183,20 @@ class ApplicationDetailScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   _DocumentItem(
-                    name: 'Transcript',
-                    status: 'Uploaded',
+                    name: context.l10n.appDetailTranscript,
+                    status: context.l10n.appDetailUploaded,
                     icon: Icons.description,
                   ),
                   const Divider(),
                   _DocumentItem(
-                    name: 'ID Document',
-                    status: 'Uploaded',
+                    name: context.l10n.appDetailIdDocument,
+                    status: context.l10n.appDetailUploaded,
                     icon: Icons.badge,
                   ),
                   const Divider(),
                   _DocumentItem(
-                    name: 'Personal Statement',
-                    status: 'Uploaded',
+                    name: context.l10n.appDetailPersonalStatement,
+                    status: context.l10n.appDetailUploaded,
                     icon: Icons.article,
                   ),
                 ],
@@ -213,7 +214,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
                         _showWithdrawDialog(context, ref);
                       },
                       icon: const Icon(Icons.cancel),
-                      label: const Text('Withdraw'),
+                      label: Text(context.l10n.appDetailWithdraw),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.error,
                         side: const BorderSide(color: AppColors.error),
@@ -227,7 +228,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
                         // TODO: Navigate to edit
                       },
                       icon: const Icon(Icons.edit),
-                      label: const Text('Edit'),
+                      label: Text(context.l10n.appDetailEdit),
                     ),
                   ),
                 ],
@@ -284,18 +285,18 @@ class ApplicationDetailScreen extends ConsumerWidget {
     }
   }
 
-  String _getStatusText() {
+  String _getStatusText(BuildContext context) {
     switch (application.status) {
       case 'pending':
-        return 'Pending Review';
+        return context.l10n.appStatusPendingReview;
       case 'under_review':
-        return 'Under Review';
+        return context.l10n.appStatusUnderReview;
       case 'accepted':
-        return 'Accepted';
+        return context.l10n.appStatusAccepted;
       case 'rejected':
-        return 'Rejected';
+        return context.l10n.appStatusRejected;
       default:
-        return 'Unknown';
+        return context.l10n.appStatusUnknown;
     }
   }
 
@@ -303,14 +304,14 @@ class ApplicationDetailScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Payment'),
+        title: Text(context.l10n.appPaymentDialogTitle),
         content: Text(
-          'Pay application fee of \$${application.applicationFee!.toStringAsFixed(2)}?',
+          context.l10n.appPaymentDialogContent(application.applicationFee!.toStringAsFixed(2)),
         ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.appCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -328,8 +329,8 @@ class ApplicationDetailScreen extends ConsumerWidget {
                     SnackBar(
                       content: Text(
                         success
-                            ? 'Payment successful!'
-                            : 'Payment failed. Please try again.',
+                            ? context.l10n.appPaymentSuccess
+                            : context.l10n.appPaymentFailed,
                       ),
                       backgroundColor: success ? AppColors.success : AppColors.error,
                     ),
@@ -339,14 +340,14 @@ class ApplicationDetailScreen extends ConsumerWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error processing payment: $e'),
+                      content: Text(context.l10n.appErrorPayment(e.toString())),
                       backgroundColor: AppColors.error,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Pay Now'),
+            child: Text(context.l10n.appPayNow),
           ),
         ],
       ),
@@ -357,14 +358,14 @@ class ApplicationDetailScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Withdraw Application'),
-        content: const Text(
-          'Are you sure you want to withdraw this application? This action cannot be undone.',
+        title: Text(context.l10n.appWithdrawTitle),
+        content: Text(
+          context.l10n.appWithdrawConfirmation,
         ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.appCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -378,16 +379,16 @@ class ApplicationDetailScreen extends ConsumerWidget {
 
                 if (success && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Application withdrawn successfully'),
+                    SnackBar(
+                      content: Text(context.l10n.appWithdrawSuccess),
                       backgroundColor: AppColors.success,
                     ),
                   );
                   context.pop(); // Navigate back to applications list
                 } else if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Failed to withdraw application'),
+                    SnackBar(
+                      content: Text(context.l10n.appWithdrawFailed),
                       backgroundColor: AppColors.error,
                     ),
                   );
@@ -396,7 +397,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error withdrawing application: $e'),
+                      content: Text(context.l10n.appErrorWithdraw(e.toString())),
                       backgroundColor: AppColors.error,
                     ),
                   );
@@ -406,7 +407,7 @@ class ApplicationDetailScreen extends ConsumerWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Withdraw'),
+            child: Text(context.l10n.appDetailWithdraw),
           ),
         ],
       ),

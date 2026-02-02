@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../application/providers/find_your_path_provider.dart';
@@ -17,7 +18,7 @@ class FindYourPathLandingScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Find Your Path'),
+        title: Text(context.l10n.fypTitle),
         backgroundColor: AppColors.surface,
       ),
       body: SingleChildScrollView(
@@ -50,9 +51,9 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                         color: Colors.white,
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        'Find Your Perfect University',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.fypHeroTitle,
+                        style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -60,9 +61,9 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        'Get personalized university recommendations based on your academic profile, preferences, and goals',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.fypHeroSubtitle,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                           height: 1.5,
@@ -76,9 +77,9 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                 const SizedBox(height: 40),
 
                 // How It Works Section
-                const Text(
-                  'How It Works',
-                  style: TextStyle(
+                Text(
+                  context.l10n.fypHowItWorks,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -87,9 +88,8 @@ class FindYourPathLandingScreen extends ConsumerWidget {
 
                 _buildStep(
                   number: '1',
-                  title: 'Answer Questions',
-                  description:
-                      'Tell us about your academic profile, intended major, and preferences',
+                  title: context.l10n.fypStep1Title,
+                  description: context.l10n.fypStep1Description,
                   icon: Icons.edit_note,
                   color: AppColors.primary,
                 ),
@@ -97,9 +97,8 @@ class FindYourPathLandingScreen extends ConsumerWidget {
 
                 _buildStep(
                   number: '2',
-                  title: 'Get Matched',
-                  description:
-                      'Our algorithm analyzes your profile against hundreds of universities',
+                  title: context.l10n.fypStep2Title,
+                  description: context.l10n.fypStep2Description,
                   icon: Icons.auto_awesome,
                   color: AppColors.success,
                 ),
@@ -107,9 +106,8 @@ class FindYourPathLandingScreen extends ConsumerWidget {
 
                 _buildStep(
                   number: '3',
-                  title: 'Review Results',
-                  description:
-                      'See your personalized recommendations categorized as Safety, Match, and Reach schools',
+                  title: context.l10n.fypStep3Title,
+                  description: context.l10n.fypStep3Description,
                   icon: Icons.check_circle,
                   color: AppColors.info,
                 ),
@@ -117,9 +115,9 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                 const SizedBox(height: 40),
 
                 // Features Section
-                const Text(
-                  'What You\'ll Get',
-                  style: TextStyle(
+                Text(
+                  context.l10n.fypWhatYoullGet,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -132,32 +130,32 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                   children: [
                     _buildFeatureChip(
                       icon: Icons.analytics,
-                      label: 'Match Score',
+                      label: context.l10n.fypFeatureMatchScore,
                       color: AppColors.primary,
                     ),
                     _buildFeatureChip(
                       icon: Icons.category,
-                      label: 'Safety/Match/Reach',
+                      label: context.l10n.fypFeatureSafetyMatchReach,
                       color: AppColors.success,
                     ),
                     _buildFeatureChip(
                       icon: Icons.attach_money,
-                      label: 'Cost Analysis',
+                      label: context.l10n.fypFeatureCostAnalysis,
                       color: AppColors.warning,
                     ),
                     _buildFeatureChip(
                       icon: Icons.psychology,
-                      label: 'Detailed Insights',
+                      label: context.l10n.fypFeatureDetailedInsights,
                       color: AppColors.info,
                     ),
                     _buildFeatureChip(
                       icon: Icons.favorite,
-                      label: 'Save Favorites',
+                      label: context.l10n.fypFeatureSaveFavorites,
                       color: AppColors.error,
                     ),
                     _buildFeatureChip(
                       icon: Icons.compare,
-                      label: 'Compare Options',
+                      label: context.l10n.fypFeatureCompareOptions,
                       color: AppColors.primary,
                     ),
                   ],
@@ -179,18 +177,18 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                     ),
                     elevation: 2,
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Get Started',
-                        style: TextStyle(
+                        context.l10n.fypGetStarted,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward),
                     ],
                   ),
                 ),
@@ -216,9 +214,9 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'View My Recommendations',
-                          style: TextStyle(
+                        child: Text(
+                          context.l10n.fypViewMyRecommendations,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -250,7 +248,7 @@ class FindYourPathLandingScreen extends ConsumerWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Recommendations are based on your profile and preferences. Always research universities thoroughly and consult with guidance counselors before making final decisions.',
+                          context.l10n.fypDisclaimer,
                           style: TextStyle(
                             fontSize: 13,
                             color: AppColors.textSecondary,

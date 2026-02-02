@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../../core/models/course_content_models.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../institution/providers/course_content_provider.dart';
 import '../widgets/video_lesson_player.dart';
 import '../widgets/text_lesson_reader.dart';
@@ -58,7 +59,10 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             Text(widget.course.title, style: const TextStyle(fontSize: 18)),
             if (progressState.progress != null)
               Text(
-                '${progressState.progress!.completedLessons}/${progressState.progress!.totalLessons} lessons completed',
+                context.l10n.courseLessonsCompleted(
+                  progressState.progress!.completedLessons,
+                  progressState.progress!.totalLessons,
+                ),
                 style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
               ),
           ],
@@ -85,7 +89,9 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                   _isSidebarExpanded = !_isSidebarExpanded;
                 });
               },
-              tooltip: _isSidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar',
+              tooltip: _isSidebarExpanded
+                  ? context.l10n.courseCollapseSidebar
+                  : context.l10n.courseExpandSidebar,
             ),
         ],
       ),
@@ -127,7 +133,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
               const Icon(Icons.error_outline, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text(
-                'Error loading modules:\n${modulesState.error}',
+                context.l10n.courseErrorLoadingModules(modulesState.error!),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.red),
               ),
@@ -137,7 +143,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                   ref.read(courseModulesProvider(widget.course.id).notifier).fetchModules();
                 },
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(context.l10n.courseRetry),
               ),
             ],
           ),
@@ -146,23 +152,23 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
     }
 
     if (modulesState.modules.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.school_outlined, size: 64, color: Colors.grey),
-              SizedBox(height: 16),
+              const Icon(Icons.school_outlined, size: 64, color: Colors.grey),
+              const SizedBox(height: 16),
               Text(
-                'No content available yet',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
+                context.l10n.courseNoContentYet,
+                style: const TextStyle(color: Colors.grey, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                'The instructor hasn\'t added any lessons',
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                context.l10n.courseNoLessonsAdded,
+                style: const TextStyle(color: Colors.grey, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -225,7 +231,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
               module.title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text('${completedLessons}/${lessons.length} lessons'),
+            subtitle: Text(context.l10n.courseLessonsCount(completedLessons, lessons.length)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -373,11 +379,11 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                     ),
                   ),
                   if (isCompleted)
-                    const Chip(
-                      label: Text('Completed'),
+                    Chip(
+                      label: Text(context.l10n.courseCompleted),
                       backgroundColor: Colors.green,
-                      labelStyle: TextStyle(color: Colors.white),
-                      avatar: Icon(Icons.check, color: Colors.white, size: 16),
+                      labelStyle: const TextStyle(color: Colors.white),
+                      avatar: const Icon(Icons.check, color: Colors.white, size: 16),
                     ),
                 ],
               ),
@@ -413,7 +419,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
             Icon(Icons.play_circle_outline, size: 100, color: AppColors.primary),
             const SizedBox(height: 24),
             Text(
-              'Welcome to ${widget.course.title}',
+              context.l10n.courseWelcomeTo(widget.course.title),
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -442,7 +448,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                 }
               },
               icon: const Icon(Icons.play_arrow),
-              label: const Text('Start Learning'),
+              label: Text(context.l10n.courseStartLearning),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 textStyle: const TextStyle(fontSize: 18),
@@ -505,7 +511,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                 });
               },
               icon: const Icon(Icons.arrow_back),
-              label: const Text('Previous'),
+              label: Text(context.l10n.coursePrevious),
             )
           else
             const SizedBox.shrink(),
@@ -519,7 +525,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                     .markLessonComplete(currentLesson.id, widget.course.id);
               },
               icon: const Icon(Icons.check),
-              label: const Text('Mark as Complete'),
+              label: Text(context.l10n.courseMarkAsComplete),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
               ),
@@ -534,7 +540,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
                 });
               },
               icon: const Icon(Icons.arrow_forward),
-              label: const Text('Next'),
+              label: Text(context.l10n.courseNext),
             )
           else
             const SizedBox.shrink(),

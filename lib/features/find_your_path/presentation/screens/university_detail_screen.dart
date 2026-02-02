@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/services/find_your_path_service.dart';
 import '../../domain/models/university.dart';
@@ -57,7 +58,7 @@ class _UniversityDetailScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('University Details'),
+        title: Text(context.l10n.fypUniversityDetails),
         backgroundColor: AppColors.surface,
         actions: [
           if (_university?.website != null)
@@ -69,7 +70,7 @@ class _UniversityDetailScreenState
                   SnackBar(content: Text('Website: ${_university!.website}')),
                 );
               },
-              tooltip: 'Visit Website',
+              tooltip: context.l10n.fypVisitWebsite,
             ),
         ],
       ),
@@ -78,7 +79,7 @@ class _UniversityDetailScreenState
           : _error != null
               ? _buildErrorState()
               : _university == null
-                  ? const Center(child: Text('University not found'))
+                  ? Center(child: Text(context.l10n.fypUniversityNotFound))
                   : _buildContent(),
     );
   }
@@ -90,13 +91,13 @@ class _UniversityDetailScreenState
         children: [
           Icon(Icons.error_outline, size: 64, color: AppColors.error),
           const SizedBox(height: 16),
-          const Text(
-            'Error loading university',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            context.l10n.fypErrorLoadingUniversity,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            _error ?? 'Unknown error',
+            _error ?? context.l10n.fypUnknownError,
             style: TextStyle(color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
@@ -104,7 +105,7 @@ class _UniversityDetailScreenState
           ElevatedButton.icon(
             onPressed: _loadUniversity,
             icon: const Icon(Icons.refresh),
-            label: const Text('Try Again'),
+            label: Text(context.l10n.fypTryAgain),
           ),
         ],
       ),
@@ -133,7 +134,7 @@ class _UniversityDetailScreenState
               // Description
               if (university.description != null) ...[
                 _buildSection(
-                  'About',
+                  context.l10n.fypAbout,
                   Text(
                     university.description!,
                     style: TextStyle(
@@ -148,21 +149,21 @@ class _UniversityDetailScreenState
 
               // Admissions
               _buildSection(
-                'Admissions',
+                context.l10n.fypAdmissions,
                 _buildAdmissionsInfo(university),
               ),
               const SizedBox(height: 32),
 
               // Costs & Financial Aid
               _buildSection(
-                'Costs & Financial Aid',
+                context.l10n.fypCostsFinancialAid,
                 _buildCostsInfo(university),
               ),
               const SizedBox(height: 32),
 
               // Student Outcomes
               _buildSection(
-                'Student Outcomes',
+                context.l10n.fypStudentOutcomes,
                 _buildOutcomesInfo(university),
               ),
               const SizedBox(height: 32),
@@ -171,7 +172,7 @@ class _UniversityDetailScreenState
               if (university.programs != null &&
                   university.programs!.isNotEmpty) ...[
                 _buildSection(
-                  'Programs Offered',
+                  context.l10n.fypProgramsOffered,
                   _buildProgramsList(university.programs!),
                 ),
               ],
@@ -251,7 +252,7 @@ class _UniversityDetailScreenState
                 _buildInfoChip(university.locationType!, Colors.white),
               if (university.totalStudents != null)
                 _buildInfoChip(
-                  '${(university.totalStudents! / 1000).toStringAsFixed(1)}k Students',
+                  context.l10n.fypKStudents((university.totalStudents! / 1000).toStringAsFixed(1)),
                   Colors.white,
                 ),
             ],
@@ -287,7 +288,7 @@ class _UniversityDetailScreenState
           Expanded(
             child: _buildStatCard(
               icon: Icons.emoji_events,
-              label: 'National Rank',
+              label: context.l10n.fypNationalRank,
               value: '#${university.nationalRank}',
               color: AppColors.warning,
             ),
@@ -297,7 +298,7 @@ class _UniversityDetailScreenState
           Expanded(
             child: _buildStatCard(
               icon: Icons.percent,
-              label: 'Acceptance Rate',
+              label: context.l10n.fypAcceptanceRate,
               value: university.formattedAcceptanceRate!,
               color: AppColors.success,
             ),
@@ -307,7 +308,7 @@ class _UniversityDetailScreenState
           Expanded(
             child: _buildStatCard(
               icon: Icons.attach_money,
-              label: 'Tuition',
+              label: context.l10n.fypStatTuition,
               value: university.formattedTuition!,
               color: AppColors.error,
             ),
@@ -385,19 +386,19 @@ class _UniversityDetailScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (university.acceptanceRate != null)
-          _buildInfoRow('Acceptance Rate', university.formattedAcceptanceRate!),
+          _buildInfoRow(context.l10n.fypAcceptanceRate, university.formattedAcceptanceRate!),
         if (university.gpaAverage != null)
           _buildInfoRow(
-              'Average GPA', university.gpaAverage!.toStringAsFixed(2)),
+              context.l10n.fypAverageGPA, university.gpaAverage!.toStringAsFixed(2)),
         if (university.satMath25th != null && university.satMath75th != null)
-          _buildInfoRow('SAT Math Range',
+          _buildInfoRow(context.l10n.fypSatMathRange,
               '${university.satMath25th}-${university.satMath75th}'),
         if (university.satEbrw25th != null && university.satEbrw75th != null)
-          _buildInfoRow('SAT EBRW Range',
+          _buildInfoRow(context.l10n.fypSatEbrwRange,
               '${university.satEbrw25th}-${university.satEbrw75th}'),
         if (university.actComposite25th != null &&
             university.actComposite75th != null)
-          _buildInfoRow('ACT Range',
+          _buildInfoRow(context.l10n.fypActRange,
               '${university.actComposite25th}-${university.actComposite75th}'),
       ],
     );
@@ -408,10 +409,10 @@ class _UniversityDetailScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (university.tuitionOutState != null)
-          _buildInfoRow('Out-of-State Tuition', university.formattedTuition!),
+          _buildInfoRow(context.l10n.fypOutOfStateTuition, university.formattedTuition!),
         if (university.totalCost != null)
           _buildInfoRow(
-            'Total Cost (est.)',
+            context.l10n.fypTotalCostEst,
             '\$${university.totalCost!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (match) => '${match[1]},')}',
           ),
         const SizedBox(height: 12),
@@ -427,7 +428,7 @@ class _UniversityDetailScreenState
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Financial aid may be available. Contact the university for details.',
+                  context.l10n.fypFinancialAidNote,
                   style: TextStyle(
                     fontSize: 13,
                     color: AppColors.textSecondary,
@@ -446,11 +447,11 @@ class _UniversityDetailScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (university.graduationRate != null)
-          _buildInfoRow('4-Year Graduation Rate',
+          _buildInfoRow(context.l10n.fypGraduationRate,
               '${university.graduationRate!.toStringAsFixed(1)}%'),
         if (university.medianEarnings != null)
           _buildInfoRow(
-            'Median Earnings (10 years)',
+            context.l10n.fypMedianEarnings,
             '\$${university.medianEarnings!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (match) => '${match[1]},')}',
           ),
       ],

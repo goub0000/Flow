@@ -663,5 +663,628 @@
   "dashRecQuickTips": "Quick Tips",
   "dashRecTip1": "Write specific examples of student achievements",
   "dashRecTip2": "Submit recommendations at least 2 weeks before deadline",
-  "dashRecTip3": "Personalize each recommendation for the institution"
+  "dashRecTip3": "Personalize each recommendation for the institution",
+
+  "chatViewDetails": "View Details",
+  "chatApply": "Apply",
+  "chatLearnMore": "Learn More",
+  "chatEnroll": "Enroll",
+  "chatContinue": "Continue",
+  "chatRankLabel": "Rank: #{rank}",
+  "@chatRankLabel": {
+    "placeholders": {
+      "rank": { "type": "int" }
+    }
+  },
+  "chatAcceptanceLabel": "Acceptance: {rate}%",
+  "@chatAcceptanceLabel": {
+    "placeholders": {
+      "rate": { "type": "String" }
+    }
+  },
+  "chatDeadlineLabel": "Deadline: {deadline}",
+  "@chatDeadlineLabel": {
+    "placeholders": {
+      "deadline": { "type": "String" }
+    }
+  },
+  "chatRecommendedUniversities": "Recommended Universities",
+  "chatRecommendedCourses": "Recommended Courses",
+  "chatDetails": "Details",
+  "chatAcceptanceRateLabel": "{rate}% acceptance",
+  "@chatAcceptanceRateLabel": {
+    "placeholders": {
+      "rate": { "type": "String" }
+    }
+  },
+  "chatHiNeedHelp": "Hi! Need help? \uD83D\uDC4B",
+  "chatTalkToHuman": "Talk to a Human",
+  "chatConnectWithAgent": "Would you like to connect with a support agent?",
+  "chatAgentWillJoin": "A member of our team will join this conversation to assist you.",
+  "chatCancel": "Cancel",
+  "chatConnect": "Connect",
+  "chatYourAccount": "Your Account",
+  "chatSignIn": "Sign In",
+  "chatSignedInAs": "Signed in as:",
+  "chatDefaultUserName": "User",
+  "chatConversationsSynced": "Your conversations are being synced to your account.",
+  "chatSignInDescription": "Sign in to sync your conversations across devices and get personalized assistance.",
+  "chatHistorySaved": "Your chat history will be saved to your account.",
+  "chatClose": "Close",
+  "chatViewProfile": "View Profile",
+  "chatHumanSupport": "Human Support",
+  "chatFlowAssistant": "Flow Assistant",
+  "chatWaitingForAgent": "Waiting for agent...",
+  "chatOnline": "Online",
+  "chatStartConversation": "Start a conversation",
+  "chatUserRequestedHumanSupport": "User requested human support",
+  "chatRankStat": "Rank",
+  "chatAcceptStat": "Accept",
+  "chatMatchStat": "Match",
+  "chatLessonsCount": "{count} lessons",
+  "@chatLessonsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatProgress": "Progress",
+  "chatToDo": "To Do:",
+  "chatFailedToLoadImage": "Failed to load image",
+  "chatImageCounter": "{current} / {total}",
+  "@chatImageCounter": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "chatTypeYourMessage": "Type your message...",
+  "chatSupportAgent": "Support Agent",
+  "chatSystem": "System",
+  "chatConfidenceHigh": "High",
+  "chatConfidenceMedium": "Medium",
+  "chatConfidenceLow": "Low",
+  "chatHelpful": "Helpful",
+  "chatNotHelpful": "Not helpful",
+  "chatWasThisHelpful": "Was this helpful?",
+  "chatRateThisResponse": "Rate this response",
+  "chatCopied": "Copied!",
+  "chatCopy": "Copy",
+  "chatViewRecommendations": "View Recommendations",
+  "chatUpdateProfile": "Update Profile",
+  "chatMyApplications": "My Applications",
+  "chatCompareSchools": "Compare Schools",
+  "chatFilterResults": "Filter Results",
+  "chatWhyTheseSchools": "Why These Schools?",
+  "chatViewDeadlines": "View Deadlines",
+  "chatEssayTips": "Essay Tips",
+  "chatApplicationChecklist": "Application Checklist",
+  "chatHelpWithQuestions": "Help with Questions",
+  "chatCanISkipSections": "Can I Skip Sections?",
+  "chatStartApplication": "Start Application",
+  "chatSaveToFavorites": "Save to Favorites",
+  "chatSimilarSchools": "Similar Schools",
+  "chatEssayWritingHelp": "Essay Writing Help",
+  "chatSetDeadlineReminder": "Set Deadline Reminder",
+  "chatLetterRequestTips": "Letter Request Tips",
+  "chatTranscriptGuide": "Transcript Guide",
+  "chatStartQuestionnaire": "Start Questionnaire",
+  "chatHowItWorks": "How It Works",
+  "chatBrowseUniversities": "Browse Universities",
+  "chatHowCanYouHelp": "How can you help?",
+  "chatGetRecommendations": "Get Recommendations",
+  "chatContactSupport": "Contact Support",
+  "chatCompleteProfile": "Complete Profile ({completeness}%)",
+  "@chatCompleteProfile": {
+    "placeholders": {
+      "completeness": { "type": "int" }
+    }
+  },
+  "chatWhyCompleteProfile": "Why Complete Profile?",
+  "chatViewSchools": "View {count} Schools",
+  "@chatViewSchools": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatMyFavorites": "My Favorites ({count})",
+  "@chatMyFavorites": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatStartApplying": "Start Applying",
+
+  "fypTitle": "Find Your Path",
+  "fypHeroTitle": "Find Your Perfect University",
+  "fypHeroSubtitle": "Get personalized university recommendations based on your academic profile, preferences, and goals",
+  "fypHowItWorks": "How It Works",
+  "fypStep1Title": "Answer Questions",
+  "fypStep1Description": "Tell us about your academic profile, intended major, and preferences",
+  "fypStep2Title": "Get Matched",
+  "fypStep2Description": "Our algorithm analyzes your profile against hundreds of universities",
+  "fypStep3Title": "Review Results",
+  "fypStep3Description": "See your personalized recommendations ranked as safety, match, and reach schools",
+  "fypWhatYoullGet": "What You'll Get",
+  "fypFeatureMatchScore": "Match Score",
+  "fypFeatureSafetyMatchReach": "Safety/Match/Reach",
+  "fypFeatureCostAnalysis": "Cost Analysis",
+  "fypFeatureDetailedInsights": "Detailed Insights",
+  "fypFeatureSaveFavorites": "Save Favorites",
+  "fypFeatureCompareOptions": "Compare Options",
+  "fypGetStarted": "Get Started",
+  "fypViewMyRecommendations": "View My Recommendations",
+  "fypDisclaimer": "Recommendations are based on your profile and preferences. Always do thorough research on universities and consult with guidance counselors before making final decisions.",
+  "fypQuestionnaireTitle": "University Questionnaire",
+  "fypStepOf": "Step {current} of {total}",
+  "@fypStepOf": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "fypStepBackgroundInfo": "Background Information",
+  "fypStepAcademicAchievements": "Academic Achievements",
+  "fypStepAcademicInterests": "Academic Interests",
+  "fypStepLocationPreferences": "Location Preferences",
+  "fypStepUniversityPreferences": "University Preferences",
+  "fypStepFinancialInfo": "Financial Information",
+  "fypTellUsAboutYourself": "Tell us about yourself",
+  "fypBackgroundHelper": "This helps us understand your educational background",
+  "fypNationalityLabel": "Nationality *",
+  "fypNationalityHelper": "Your country of citizenship",
+  "fypSelectNationality": "Please select your nationality",
+  "fypCurrentStudyingLabel": "Where are you currently studying? *",
+  "fypCurrentStudyingHelper": "Your current location (not where you want to study)",
+  "fypSelectCurrentCountry": "Please select your current country",
+  "fypCurrentRegionLabel": "Current Region/State (Optional)",
+  "fypSelectRegionHelper": "Select your region if available",
+  "fypYourAcademicAchievements": "Your academic achievements",
+  "fypAcademicMatchHelper": "This helps us match you with universities where you'll be competitive",
+  "fypGradingSystemLabel": "Your Grading System *",
+  "fypSelectGradingSystem": "Please select your grading system",
+  "fypYourGradeLabel": "Your Grade *",
+  "fypEnterGrade": "Please enter your grade",
+  "fypStandardizedTestLabel": "Standardized Test (if applicable)",
+  "fypStandardizedTestHelper": "Leave blank if you haven't taken any",
+  "fypSatTotalScoreLabel": "SAT Total Score",
+  "fypSatScoreHint": "e.g. 1400",
+  "fypSatValidation": "SAT must be between 400-1600",
+  "fypActCompositeLabel": "ACT Composite Score",
+  "fypActScoreHint": "e.g. 28",
+  "fypActValidation": "ACT must be between 1-36",
+  "fypIbScoreLabel": "IB Predicted/Final Score",
+  "fypIbScoreHint": "e.g. 38",
+  "fypIbValidation": "IB score must be between 0-45",
+  "fypTestScoresOptional": "Standardized test scores are optional. If you haven't taken these tests yet, you can skip this section.",
+  "fypWhatStudy": "What do you want to study?",
+  "fypInterestsHelper": "Tell us about your academic interests and career goals",
+  "fypIntendedMajorLabel": "Intended Major *",
+  "fypIntendedMajorHint": "Select your intended major",
+  "fypSelectIntendedMajor": "Please select your intended major",
+  "fypFieldOfStudyLabel": "Field of Study *",
+  "fypSelectFieldOfStudy": "Please select a field of study",
+  "fypCareerFocused": "I am career-focused",
+  "fypCareerFocusedSubtitle": "I want to find universities with strong job placement and career services",
+  "fypResearchInterest": "Interested in research opportunities",
+  "fypResearchInterestSubtitle": "I want to participate in research projects during my studies",
+  "fypWhereStudy": "Where do you want to study?",
+  "fypLocationHelper": "Select your preferred countries and regions",
+  "fypWhereStudyRequired": "Where do you want to study? *",
+  "fypSelectCountriesHelper": "Select the countries where you'd like to attend university (can be different from your current location)",
+  "fypCampusSetting": "Campus Setting",
+  "fypUniversityCharacteristics": "University characteristics",
+  "fypUniversityEnvironmentHelper": "What type of university environment do you prefer?",
+  "fypPreferredSizeLabel": "Preferred University Size",
+  "fypPreferredTypeLabel": "Preferred University Type",
+  "fypSportsInterest": "Interested in athletics/sports",
+  "fypSportsInterestSubtitle": "I want to participate in or attend university sports",
+  "fypDesiredFeatures": "Desired Campus Features (optional)",
+  "fypFinancialConsiderations": "Financial Considerations",
+  "fypFinancialHelper": "Help us recommend universities within your budget",
+  "fypBudgetRangeLabel": "Annual Budget Range (USD)",
+  "fypBudgetRangeHelper": "Approximate annual tuition budget",
+  "fypNeedFinancialAid": "I will need financial aid",
+  "fypFinancialAidSubtitle": "We'll prioritize universities with strong financial aid programs",
+  "fypInStateTuitionLabel": "Eligible for In-State Tuition? (US)",
+  "fypNotApplicable": "Not Applicable",
+  "fypBack": "Back",
+  "fypNext": "Next",
+  "fypGetRecommendations": "Get Recommendations",
+  "fypErrorSavingProfile": "Error saving profile: {error}",
+  "@fypErrorSavingProfile": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "fypErrorGeneratingRecs": "Error generating recommendations: {error}",
+  "@fypErrorGeneratingRecs": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "fypRetry": "Retry",
+  "fypSignUpToSave": "Sign up to save your recommendations!",
+  "fypSignUp": "Sign Up",
+  "fypUnexpectedError": "Unexpected error: {error}",
+  "@fypUnexpectedError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "fypGeneratingRecommendations": "Generating Recommendations",
+  "fypGeneratingPleaseWait": "Please wait while we analyze universities\nand create personalized matches for you...",
+  "fypYourRecommendations": "Your Recommendations",
+  "fypRefresh": "Refresh",
+  "fypErrorLoadingRecs": "Error loading recommendations",
+  "fypTryAgain": "Try Again",
+  "fypNoRecsYet": "No recommendations yet",
+  "fypCompleteQuestionnaire": "Complete the questionnaire to get personalized recommendations",
+  "fypStartQuestionnaire": "Start Questionnaire",
+  "fypFoundPerfectMatches": "We found your perfect matches!",
+  "fypStatTotal": "Total",
+  "fypStatSafety": "Safety",
+  "fypStatMatch": "Match",
+  "fypStatReach": "Reach",
+  "fypFilterAll": "All ({count})",
+  "@fypFilterAll": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "fypFilterSafety": "Safety ({count})",
+  "@fypFilterSafety": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "fypFilterMatch": "Match ({count})",
+  "@fypFilterMatch": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "fypFilterReach": "Reach ({count})",
+  "@fypFilterReach": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "fypNoFilterMatch": "No universities match the selected filter",
+  "fypPercentMatch": "{score}% Match",
+  "@fypPercentMatch": {
+    "placeholders": {
+      "score": { "type": "String" }
+    }
+  },
+  "fypLoadingDetails": "Loading university details...",
+  "fypLocationNotAvailable": "Location not available",
+  "fypStatAcceptance": "Acceptance",
+  "fypStatTuition": "Tuition",
+  "fypStatStudents": "Students",
+  "fypStatRank": "Rank",
+  "fypWhyGoodMatch": "Why it's a good match:",
+  "fypViewDetails": "View Details",
+  "fypUniversityDetails": "University Details",
+  "fypVisitWebsite": "Visit Website",
+  "fypUniversityNotFound": "University not found",
+  "fypErrorLoadingUniversity": "Error loading university",
+  "fypUnknownError": "Unknown error",
+  "fypKStudents": "{count}k Students",
+  "@fypKStudents": {
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+  "fypNationalRank": "National Rank",
+  "fypAcceptanceRate": "Acceptance Rate",
+  "fypAbout": "About",
+  "fypAdmissions": "Admissions",
+  "fypCostsFinancialAid": "Costs & Financial Aid",
+  "fypStudentOutcomes": "Student Outcomes",
+  "fypProgramsOffered": "Programs Offered",
+  "fypAverageGPA": "Average GPA",
+  "fypSatMathRange": "SAT Math Range",
+  "fypSatEbrwRange": "SAT EBRW Range",
+  "fypActRange": "ACT Range",
+  "fypOutOfStateTuition": "Out-of-State Tuition",
+  "fypTotalCostEst": "Total Cost (est.)",
+  "fypFinancialAidNote": "Financial aid may be available. Contact the university for details.",
+  "fypGraduationRate": "4-Year Graduation Rate",
+  "fypMedianEarnings": "Median Earnings (10 years)",
+
+  "appListTitle": "My Applications",
+  "appTabAll": "All ({count})",
+  "@appTabAll": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "appTabPending": "Pending ({count})",
+  "@appTabPending": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "appTabUnderReview": "Under Review ({count})",
+  "@appTabUnderReview": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "appTabAccepted": "Accepted ({count})",
+  "@appTabAccepted": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "appLoadingMessage": "Loading applications...",
+  "appRetry": "Retry",
+  "appNewApplication": "New Application",
+  "appEmptyTitle": "No Applications",
+  "appEmptyMessage": "You haven't submitted any applications yet.",
+  "appCreateApplication": "Create Application",
+  "appToday": "Today",
+  "appYesterday": "Yesterday",
+  "appDaysAgo": "{days} days ago",
+  "@appDaysAgo": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "appFeePaid": "Fee Paid",
+  "appPaymentPending": "Payment Pending",
+  "appReviewedDaysAgo": "Reviewed {days} days ago",
+  "@appReviewedDaysAgo": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "appDetailTitle": "Application Details",
+  "appDetailShare": "Share",
+  "appDetailStatus": "Application Status",
+  "appStatusPendingReview": "Pending Review",
+  "appStatusUnderReview": "Under Review",
+  "appStatusAccepted": "Accepted",
+  "appStatusRejected": "Rejected",
+  "appStatusUnknown": "Unknown",
+  "appDetailInfo": "Application Information",
+  "appDetailInstitution": "Institution",
+  "appDetailProgram": "Program",
+  "appDetailSubmitted": "Submitted",
+  "appDetailReviewed": "Reviewed",
+  "appDetailPaymentInfo": "Payment Information",
+  "appDetailApplicationFee": "Application Fee",
+  "appDetailPaymentStatus": "Payment Status",
+  "appDetailPaid": "Paid",
+  "appDetailPendingPayment": "Pending",
+  "appDetailPayFee": "Pay Application Fee",
+  "appPaymentDialogTitle": "Payment",
+  "appPaymentDialogContent": "Pay application fee of ${fee}?",
+  "@appPaymentDialogContent": {
+    "placeholders": {
+      "fee": { "type": "String" }
+    }
+  },
+  "appCancel": "Cancel",
+  "appPayNow": "Pay Now",
+  "appPaymentSuccess": "Payment successful!",
+  "appPaymentFailed": "Payment failed. Please try again.",
+  "appErrorPayment": "Error processing payment: {error}",
+  "@appErrorPayment": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "appDetailReviewNotes": "Review Notes",
+  "appDetailDocuments": "Documents",
+  "appDetailTranscript": "Transcript",
+  "appDetailUploaded": "Uploaded",
+  "appDetailIdDocument": "ID Document",
+  "appDetailPersonalStatement": "Personal Statement",
+  "appDetailWithdraw": "Withdraw",
+  "appDetailEdit": "Edit",
+  "appWithdrawTitle": "Withdraw Application",
+  "appWithdrawConfirmation": "Are you sure you want to withdraw this application? This action cannot be undone.",
+  "appWithdrawSuccess": "Application withdrawn successfully",
+  "appWithdrawFailed": "Failed to withdraw application",
+  "appErrorWithdraw": "Error withdrawing application: {error}",
+  "@appErrorWithdraw": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "appCreateTitle": "New Application",
+  "appStepProgramSelection": "Program Selection",
+  "appSelectUniversity": "Select University",
+  "appBrowseInstitutions": "Browse Institutions",
+  "appNoProgramsYet": "This institution has no active programs yet. Please select another institution.",
+  "appSelectProgramLabel": "Select a Program *",
+  "appProgramsAvailable": "{count} programs available",
+  "@appProgramsAvailable": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "appStepPersonalInfo": "Personal Information",
+  "appFullNameLabel": "Full Name",
+  "appEmailLabel": "Email Address",
+  "appPhoneLabel": "Phone Number",
+  "appStreetAddressLabel": "Street Address *",
+  "appCityLabel": "City/Town *",
+  "appCountryLabel": "Country *",
+  "appStateLabel": "State/Province *",
+  "appSelectCountryFirst": "Select a country first",
+  "appStepAcademicInfo": "Academic Information",
+  "appPreviousSchoolLabel": "Previous School/Institution",
+  "appGpaLabel": "GPA / Grade Average",
+  "appPersonalStatementLabel": "Personal Statement",
+  "appPersonalStatementHint": "Why are you interested in this program?",
+  "appStepDocuments": "Documents (Required)",
+  "appUploadRequiredDocs": "Upload Required Documents",
+  "appDocTranscriptTitle": "Academic Transcript",
+  "appDocTranscriptSubtitle": "Official transcript from your previous school (PDF, DOC, or DOCX format, max 5MB)",
+  "appDocIdTitle": "ID Document",
+  "appDocIdSubtitle": "Valid government-issued ID: passport, national ID card, or driver's license (PDF, JPG, or PNG)",
+  "appDocPhotoTitle": "Passport Photo",
+  "appDocPhotoSubtitle": "Recent passport-sized photo with a plain background (JPG or PNG format)",
+  "appDocRequiredWarning": "All three documents are required. Please upload the transcript, ID document, and passport photo before submitting.",
+  "appSubmit": "Submit",
+  "appContinue": "Continue",
+  "appBack": "Back",
+
+  "courseListTitle": "Courses",
+  "courseFiltersTooltip": "Filters",
+  "courseBrowseAll": "Browse All",
+  "courseAssignedToMe": "Assigned to Me",
+  "courseSearchHint": "Search courses...",
+  "courseNoAvailable": "No courses available",
+  "courseCheckBackLater": "Check back later for new courses",
+  "courseRetry": "Retry",
+  "courseFailedLoadAssigned": "Failed to load assigned courses",
+  "courseNoAssignedYet": "No courses assigned yet",
+  "courseAssignedDescription": "Courses assigned by your admin or institution will appear here.",
+  "courseRequired": "Required",
+  "courseLessonsLabel": "{count} lessons",
+  "@courseLessonsLabel": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "coursePercentComplete": "{percent}% complete",
+  "@coursePercentComplete": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "courseNoRatingsYet": "No ratings yet",
+  "courseEnrolledCount": "{count} enrolled",
+  "@courseEnrolledCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "courseFiltersTitle": "Filters",
+  "courseLevelLabel": "Level",
+  "courseAllLevels": "All Levels",
+  "courseLevelBeginner": "Beginner",
+  "courseLevelIntermediate": "Intermediate",
+  "courseLevelAdvanced": "Advanced",
+  "courseLevelExpert": "Expert",
+  "courseClearAll": "Clear All",
+  "courseApplyFilters": "Apply",
+  "courseDescription": "Description",
+  "courseWhatYoullLearn": "What You'll Learn",
+  "coursePrerequisites": "Prerequisites",
+  "coursePrice": "Price",
+  "courseCourseFull": "Course Full",
+  "courseRequestPermission": "Request Permission",
+  "coursePermissionPending": "Permission Pending",
+  "coursePermissionDenied": "Permission Denied",
+  "courseRequestPermissionAgain": "Request Permission Again",
+  "courseEnrollNow": "Enroll Now",
+  "courseRequestEnrollmentTitle": "Request Enrollment Permission",
+  "courseRequestEnrollmentContent": "Request permission to enroll in \"{title}\"?",
+  "@courseRequestEnrollmentContent": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "courseInstitutionReview": "The institution will review your request.",
+  "courseMessageToInstitution": "Message to institution (optional)",
+  "courseMessageHint": "Why do you want to take this course?",
+  "courseCancel": "Cancel",
+  "courseRequest": "Request",
+  "coursePermissionRequestSent": "Permission request sent!",
+  "courseFailedRequestPermission": "Failed to request permission: {error}",
+  "@courseFailedRequestPermission": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "courseEnrolledSuccess": "Successfully enrolled in course!",
+  "courseFailedEnroll": "Failed to enroll",
+  "courseContinueLearning": "Continue Learning ({progress}%)",
+  "@courseContinueLearning": {
+    "placeholders": {
+      "progress": { "type": "String" }
+    }
+  },
+  "courseStartLearning": "Start Learning",
+  "courseLessonsCompleted": "{completed}/{total} lessons completed",
+  "@courseLessonsCompleted": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "courseCollapseSidebar": "Collapse sidebar",
+  "courseExpandSidebar": "Expand sidebar",
+  "courseErrorLoadingModules": "Error loading modules:\n{error}",
+  "@courseErrorLoadingModules": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "courseNoContentYet": "No content available yet",
+  "courseNoLessonsAdded": "The instructor hasn't added any lessons",
+  "courseLessonsCount": "{completed}/{total} lessons",
+  "@courseLessonsCount": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "courseWelcomeTo": "Welcome to {title}",
+  "@courseWelcomeTo": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "courseCompleted": "Completed",
+  "coursePrevious": "Previous",
+  "courseMarkAsComplete": "Mark as Complete",
+  "courseNext": "Next",
+  "courseMyCourses": "My Courses",
+  "courseFilterByStatus": "Filter by status",
+  "courseTabAssigned": "Assigned ({count})",
+  "@courseTabAssigned": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "courseTabEnrolled": "Enrolled ({count})",
+  "@courseTabEnrolled": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "courseNoAssigned": "No assigned courses",
+  "courseAssignedByInstitution": "Courses assigned to you by your institution will appear here",
+  "courseREQUIRED": "REQUIRED",
+  "courseProgress": "Progress",
+  "courseDuePrefix": "Due: {date}",
+  "@courseDuePrefix": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "courseStatusCompleted": "Completed",
+  "courseStatusInProgress": "In Progress",
+  "courseStatusOverdue": "Overdue",
+  "courseStatusAssigned": "Assigned",
+  "courseDueToday": "Today",
+  "courseDueTomorrow": "Tomorrow",
+  "courseDueDays": "{days} days",
+  "@courseDueDays": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "courseNoEnrolled": "No enrolled courses",
+  "courseBrowseToStart": "Browse courses to get started",
+  "courseBrowseCourses": "Browse Courses",
+  "courseFilterAll": "All",
+  "courseStatusActive": "Active",
+  "courseStatusDropped": "Dropped",
+  "courseStatusSuspended": "Suspended"
 }

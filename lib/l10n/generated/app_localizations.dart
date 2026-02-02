@@ -2947,6 +2947,2406 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Personalize each recommendation for the institution'**
   String get dashRecTip3;
+
+  /// No description provided for @chatViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get chatViewDetails;
+
+  /// No description provided for @chatApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get chatApply;
+
+  /// No description provided for @chatLearnMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn More'**
+  String get chatLearnMore;
+
+  /// No description provided for @chatEnroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll'**
+  String get chatEnroll;
+
+  /// No description provided for @chatContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get chatContinue;
+
+  /// No description provided for @chatRankLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank: #{rank}'**
+  String chatRankLabel(int rank);
+
+  /// No description provided for @chatAcceptanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance: {rate}%'**
+  String chatAcceptanceLabel(String rate);
+
+  /// No description provided for @chatDeadlineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline: {deadline}'**
+  String chatDeadlineLabel(String deadline);
+
+  /// No description provided for @chatRecommendedUniversities.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended Universities'**
+  String get chatRecommendedUniversities;
+
+  /// No description provided for @chatRecommendedCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended Courses'**
+  String get chatRecommendedCourses;
+
+  /// No description provided for @chatDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get chatDetails;
+
+  /// No description provided for @chatAcceptanceRateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate}% acceptance'**
+  String chatAcceptanceRateLabel(String rate);
+
+  /// No description provided for @chatHiNeedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi! Need help? 👋'**
+  String get chatHiNeedHelp;
+
+  /// No description provided for @chatTalkToHuman.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to a Human'**
+  String get chatTalkToHuman;
+
+  /// No description provided for @chatConnectWithAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to connect with a support agent?'**
+  String get chatConnectWithAgent;
+
+  /// No description provided for @chatAgentWillJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'A member of our team will join this conversation to assist you.'**
+  String get chatAgentWillJoin;
+
+  /// No description provided for @chatCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get chatCancel;
+
+  /// No description provided for @chatConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get chatConnect;
+
+  /// No description provided for @chatYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Account'**
+  String get chatYourAccount;
+
+  /// No description provided for @chatSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get chatSignIn;
+
+  /// No description provided for @chatSignedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as:'**
+  String get chatSignedInAs;
+
+  /// No description provided for @chatDefaultUserName.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get chatDefaultUserName;
+
+  /// No description provided for @chatConversationsSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Your conversations are being synced to your account.'**
+  String get chatConversationsSynced;
+
+  /// No description provided for @chatSignInDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync your conversations across devices and get personalized assistance.'**
+  String get chatSignInDescription;
+
+  /// No description provided for @chatHistorySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Your chat history will be saved to your account.'**
+  String get chatHistorySaved;
+
+  /// No description provided for @chatClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get chatClose;
+
+  /// No description provided for @chatViewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View Profile'**
+  String get chatViewProfile;
+
+  /// No description provided for @chatHumanSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Human Support'**
+  String get chatHumanSupport;
+
+  /// No description provided for @chatFlowAssistant.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow Assistant'**
+  String get chatFlowAssistant;
+
+  /// No description provided for @chatWaitingForAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for agent...'**
+  String get chatWaitingForAgent;
+
+  /// No description provided for @chatOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get chatOnline;
+
+  /// No description provided for @chatStartConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a conversation'**
+  String get chatStartConversation;
+
+  /// No description provided for @chatUserRequestedHumanSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'User requested human support'**
+  String get chatUserRequestedHumanSupport;
+
+  /// No description provided for @chatRankStat.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get chatRankStat;
+
+  /// No description provided for @chatAcceptStat.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get chatAcceptStat;
+
+  /// No description provided for @chatMatchStat.
+  ///
+  /// In en, this message translates to:
+  /// **'Match'**
+  String get chatMatchStat;
+
+  /// No description provided for @chatLessonsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} lessons'**
+  String chatLessonsCount(int count);
+
+  /// No description provided for @chatProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get chatProgress;
+
+  /// No description provided for @chatToDo.
+  ///
+  /// In en, this message translates to:
+  /// **'To Do:'**
+  String get chatToDo;
+
+  /// No description provided for @chatFailedToLoadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image'**
+  String get chatFailedToLoadImage;
+
+  /// No description provided for @chatImageCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {total}'**
+  String chatImageCounter(int current, int total);
+
+  /// No description provided for @chatTypeYourMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your message...'**
+  String get chatTypeYourMessage;
+
+  /// No description provided for @chatSupportAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Agent'**
+  String get chatSupportAgent;
+
+  /// No description provided for @chatSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get chatSystem;
+
+  /// No description provided for @chatConfidenceHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get chatConfidenceHigh;
+
+  /// No description provided for @chatConfidenceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get chatConfidenceMedium;
+
+  /// No description provided for @chatConfidenceLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get chatConfidenceLow;
+
+  /// No description provided for @chatHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get chatHelpful;
+
+  /// No description provided for @chatNotHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Not helpful'**
+  String get chatNotHelpful;
+
+  /// No description provided for @chatWasThisHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Was this helpful?'**
+  String get chatWasThisHelpful;
+
+  /// No description provided for @chatRateThisResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate this response'**
+  String get chatRateThisResponse;
+
+  /// No description provided for @chatCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied!'**
+  String get chatCopied;
+
+  /// No description provided for @chatCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get chatCopy;
+
+  /// No description provided for @chatViewRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'View Recommendations'**
+  String get chatViewRecommendations;
+
+  /// No description provided for @chatUpdateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Profile'**
+  String get chatUpdateProfile;
+
+  /// No description provided for @chatMyApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'My Applications'**
+  String get chatMyApplications;
+
+  /// No description provided for @chatCompareSchools.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Schools'**
+  String get chatCompareSchools;
+
+  /// No description provided for @chatFilterResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Results'**
+  String get chatFilterResults;
+
+  /// No description provided for @chatWhyTheseSchools.
+  ///
+  /// In en, this message translates to:
+  /// **'Why These Schools?'**
+  String get chatWhyTheseSchools;
+
+  /// No description provided for @chatViewDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'View Deadlines'**
+  String get chatViewDeadlines;
+
+  /// No description provided for @chatEssayTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Essay Tips'**
+  String get chatEssayTips;
+
+  /// No description provided for @chatApplicationChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Checklist'**
+  String get chatApplicationChecklist;
+
+  /// No description provided for @chatHelpWithQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Help with Questions'**
+  String get chatHelpWithQuestions;
+
+  /// No description provided for @chatCanISkipSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I Skip Sections?'**
+  String get chatCanISkipSections;
+
+  /// No description provided for @chatStartApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Application'**
+  String get chatStartApplication;
+
+  /// No description provided for @chatSaveToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Favorites'**
+  String get chatSaveToFavorites;
+
+  /// No description provided for @chatSimilarSchools.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar Schools'**
+  String get chatSimilarSchools;
+
+  /// No description provided for @chatEssayWritingHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Essay Writing Help'**
+  String get chatEssayWritingHelp;
+
+  /// No description provided for @chatSetDeadlineReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Deadline Reminder'**
+  String get chatSetDeadlineReminder;
+
+  /// No description provided for @chatLetterRequestTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter Request Tips'**
+  String get chatLetterRequestTips;
+
+  /// No description provided for @chatTranscriptGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcript Guide'**
+  String get chatTranscriptGuide;
+
+  /// No description provided for @chatStartQuestionnaire.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Questionnaire'**
+  String get chatStartQuestionnaire;
+
+  /// No description provided for @chatHowItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How It Works'**
+  String get chatHowItWorks;
+
+  /// No description provided for @chatBrowseUniversities.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Universities'**
+  String get chatBrowseUniversities;
+
+  /// No description provided for @chatHowCanYouHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'How can you help?'**
+  String get chatHowCanYouHelp;
+
+  /// No description provided for @chatGetRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Recommendations'**
+  String get chatGetRecommendations;
+
+  /// No description provided for @chatContactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get chatContactSupport;
+
+  /// No description provided for @chatCompleteProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Profile ({completeness}%)'**
+  String chatCompleteProfile(int completeness);
+
+  /// No description provided for @chatWhyCompleteProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Why Complete Profile?'**
+  String get chatWhyCompleteProfile;
+
+  /// No description provided for @chatViewSchools.
+  ///
+  /// In en, this message translates to:
+  /// **'View {count} Schools'**
+  String chatViewSchools(int count);
+
+  /// No description provided for @chatMyFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'My Favorites ({count})'**
+  String chatMyFavorites(int count);
+
+  /// No description provided for @chatStartApplying.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Applying'**
+  String get chatStartApplying;
+
+  /// No description provided for @fypTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Your Path'**
+  String get fypTitle;
+
+  /// No description provided for @fypHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Your Perfect University'**
+  String get fypHeroTitle;
+
+  /// No description provided for @fypHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get personalized university recommendations based on your academic profile, preferences, and goals'**
+  String get fypHeroSubtitle;
+
+  /// No description provided for @fypHowItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How It Works'**
+  String get fypHowItWorks;
+
+  /// No description provided for @fypStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer Questions'**
+  String get fypStep1Title;
+
+  /// No description provided for @fypStep1Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your academic profile, intended major, and preferences'**
+  String get fypStep1Description;
+
+  /// No description provided for @fypStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Matched'**
+  String get fypStep2Title;
+
+  /// No description provided for @fypStep2Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Our algorithm analyzes your profile against hundreds of universities'**
+  String get fypStep2Description;
+
+  /// No description provided for @fypStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Results'**
+  String get fypStep3Title;
+
+  /// No description provided for @fypStep3Description.
+  ///
+  /// In en, this message translates to:
+  /// **'See your personalized recommendations ranked as safety, match, and reach schools'**
+  String get fypStep3Description;
+
+  /// No description provided for @fypWhatYoullGet.
+  ///
+  /// In en, this message translates to:
+  /// **'What You\'ll Get'**
+  String get fypWhatYoullGet;
+
+  /// No description provided for @fypFeatureMatchScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Match Score'**
+  String get fypFeatureMatchScore;
+
+  /// No description provided for @fypFeatureSafetyMatchReach.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety/Match/Reach'**
+  String get fypFeatureSafetyMatchReach;
+
+  /// No description provided for @fypFeatureCostAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost Analysis'**
+  String get fypFeatureCostAnalysis;
+
+  /// No description provided for @fypFeatureDetailedInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed Insights'**
+  String get fypFeatureDetailedInsights;
+
+  /// No description provided for @fypFeatureSaveFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Favorites'**
+  String get fypFeatureSaveFavorites;
+
+  /// No description provided for @fypFeatureCompareOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Options'**
+  String get fypFeatureCompareOptions;
+
+  /// No description provided for @fypGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get fypGetStarted;
+
+  /// No description provided for @fypViewMyRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'View My Recommendations'**
+  String get fypViewMyRecommendations;
+
+  /// No description provided for @fypDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations are based on your profile and preferences. Always do thorough research on universities and consult with guidance counselors before making final decisions.'**
+  String get fypDisclaimer;
+
+  /// No description provided for @fypQuestionnaireTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'University Questionnaire'**
+  String get fypQuestionnaireTitle;
+
+  /// No description provided for @fypStepOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String fypStepOf(int current, int total);
+
+  /// No description provided for @fypStepBackgroundInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Background Information'**
+  String get fypStepBackgroundInfo;
+
+  /// No description provided for @fypStepAcademicAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic Achievements'**
+  String get fypStepAcademicAchievements;
+
+  /// No description provided for @fypStepAcademicInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic Interests'**
+  String get fypStepAcademicInterests;
+
+  /// No description provided for @fypStepLocationPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Preferences'**
+  String get fypStepLocationPreferences;
+
+  /// No description provided for @fypStepUniversityPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'University Preferences'**
+  String get fypStepUniversityPreferences;
+
+  /// No description provided for @fypStepFinancialInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Information'**
+  String get fypStepFinancialInfo;
+
+  /// No description provided for @fypTellUsAboutYourself.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about yourself'**
+  String get fypTellUsAboutYourself;
+
+  /// No description provided for @fypBackgroundHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us understand your educational background'**
+  String get fypBackgroundHelper;
+
+  /// No description provided for @fypNationalityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality *'**
+  String get fypNationalityLabel;
+
+  /// No description provided for @fypNationalityHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Your country of citizenship'**
+  String get fypNationalityHelper;
+
+  /// No description provided for @fypSelectNationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your nationality'**
+  String get fypSelectNationality;
+
+  /// No description provided for @fypCurrentStudyingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you currently studying? *'**
+  String get fypCurrentStudyingLabel;
+
+  /// No description provided for @fypCurrentStudyingHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current location (not where you want to study)'**
+  String get fypCurrentStudyingHelper;
+
+  /// No description provided for @fypSelectCurrentCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your current country'**
+  String get fypSelectCurrentCountry;
+
+  /// No description provided for @fypCurrentRegionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Region/State (Optional)'**
+  String get fypCurrentRegionLabel;
+
+  /// No description provided for @fypSelectRegionHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your region if available'**
+  String get fypSelectRegionHelper;
+
+  /// No description provided for @fypYourAcademicAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Your academic achievements'**
+  String get fypYourAcademicAchievements;
+
+  /// No description provided for @fypAcademicMatchHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us match you with universities where you\'ll be competitive'**
+  String get fypAcademicMatchHelper;
+
+  /// No description provided for @fypGradingSystemLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Grading System *'**
+  String get fypGradingSystemLabel;
+
+  /// No description provided for @fypSelectGradingSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your grading system'**
+  String get fypSelectGradingSystem;
+
+  /// No description provided for @fypYourGradeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Grade *'**
+  String get fypYourGradeLabel;
+
+  /// No description provided for @fypEnterGrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your grade'**
+  String get fypEnterGrade;
+
+  /// No description provided for @fypStandardizedTestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Standardized Test (if applicable)'**
+  String get fypStandardizedTestLabel;
+
+  /// No description provided for @fypStandardizedTestHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave blank if you haven\'t taken any'**
+  String get fypStandardizedTestHelper;
+
+  /// No description provided for @fypSatTotalScoreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SAT Total Score'**
+  String get fypSatTotalScoreLabel;
+
+  /// No description provided for @fypSatScoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 1400'**
+  String get fypSatScoreHint;
+
+  /// No description provided for @fypSatValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'SAT must be between 400-1600'**
+  String get fypSatValidation;
+
+  /// No description provided for @fypActCompositeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ACT Composite Score'**
+  String get fypActCompositeLabel;
+
+  /// No description provided for @fypActScoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 28'**
+  String get fypActScoreHint;
+
+  /// No description provided for @fypActValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'ACT must be between 1-36'**
+  String get fypActValidation;
+
+  /// No description provided for @fypIbScoreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'IB Predicted/Final Score'**
+  String get fypIbScoreLabel;
+
+  /// No description provided for @fypIbScoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 38'**
+  String get fypIbScoreHint;
+
+  /// No description provided for @fypIbValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'IB score must be between 0-45'**
+  String get fypIbValidation;
+
+  /// No description provided for @fypTestScoresOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Standardized test scores are optional. If you haven\'t taken these tests yet, you can skip this section.'**
+  String get fypTestScoresOptional;
+
+  /// No description provided for @fypWhatStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you want to study?'**
+  String get fypWhatStudy;
+
+  /// No description provided for @fypInterestsHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your academic interests and career goals'**
+  String get fypInterestsHelper;
+
+  /// No description provided for @fypIntendedMajorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Intended Major *'**
+  String get fypIntendedMajorLabel;
+
+  /// No description provided for @fypIntendedMajorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your intended major'**
+  String get fypIntendedMajorHint;
+
+  /// No description provided for @fypSelectIntendedMajor.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your intended major'**
+  String get fypSelectIntendedMajor;
+
+  /// No description provided for @fypFieldOfStudyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Field of Study *'**
+  String get fypFieldOfStudyLabel;
+
+  /// No description provided for @fypSelectFieldOfStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a field of study'**
+  String get fypSelectFieldOfStudy;
+
+  /// No description provided for @fypCareerFocused.
+  ///
+  /// In en, this message translates to:
+  /// **'I am career-focused'**
+  String get fypCareerFocused;
+
+  /// No description provided for @fypCareerFocusedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I want to find universities with strong job placement and career services'**
+  String get fypCareerFocusedSubtitle;
+
+  /// No description provided for @fypResearchInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Interested in research opportunities'**
+  String get fypResearchInterest;
+
+  /// No description provided for @fypResearchInterestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I want to participate in research projects during my studies'**
+  String get fypResearchInterestSubtitle;
+
+  /// No description provided for @fypWhereStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Where do you want to study?'**
+  String get fypWhereStudy;
+
+  /// No description provided for @fypLocationHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred countries and regions'**
+  String get fypLocationHelper;
+
+  /// No description provided for @fypWhereStudyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Where do you want to study? *'**
+  String get fypWhereStudyRequired;
+
+  /// No description provided for @fypSelectCountriesHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the countries where you\'d like to attend university (can be different from your current location)'**
+  String get fypSelectCountriesHelper;
+
+  /// No description provided for @fypCampusSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Campus Setting'**
+  String get fypCampusSetting;
+
+  /// No description provided for @fypUniversityCharacteristics.
+  ///
+  /// In en, this message translates to:
+  /// **'University characteristics'**
+  String get fypUniversityCharacteristics;
+
+  /// No description provided for @fypUniversityEnvironmentHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'What type of university environment do you prefer?'**
+  String get fypUniversityEnvironmentHelper;
+
+  /// No description provided for @fypPreferredSizeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred University Size'**
+  String get fypPreferredSizeLabel;
+
+  /// No description provided for @fypPreferredTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred University Type'**
+  String get fypPreferredTypeLabel;
+
+  /// No description provided for @fypSportsInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Interested in athletics/sports'**
+  String get fypSportsInterest;
+
+  /// No description provided for @fypSportsInterestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I want to participate in or attend university sports'**
+  String get fypSportsInterestSubtitle;
+
+  /// No description provided for @fypDesiredFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Desired Campus Features (optional)'**
+  String get fypDesiredFeatures;
+
+  /// No description provided for @fypFinancialConsiderations.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Considerations'**
+  String get fypFinancialConsiderations;
+
+  /// No description provided for @fypFinancialHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us recommend universities within your budget'**
+  String get fypFinancialHelper;
+
+  /// No description provided for @fypBudgetRangeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Budget Range (USD)'**
+  String get fypBudgetRangeLabel;
+
+  /// No description provided for @fypBudgetRangeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate annual tuition budget'**
+  String get fypBudgetRangeHelper;
+
+  /// No description provided for @fypNeedFinancialAid.
+  ///
+  /// In en, this message translates to:
+  /// **'I will need financial aid'**
+  String get fypNeedFinancialAid;
+
+  /// No description provided for @fypFinancialAidSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll prioritize universities with strong financial aid programs'**
+  String get fypFinancialAidSubtitle;
+
+  /// No description provided for @fypInStateTuitionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Eligible for In-State Tuition? (US)'**
+  String get fypInStateTuitionLabel;
+
+  /// No description provided for @fypNotApplicable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Applicable'**
+  String get fypNotApplicable;
+
+  /// No description provided for @fypBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get fypBack;
+
+  /// No description provided for @fypNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get fypNext;
+
+  /// No description provided for @fypGetRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Recommendations'**
+  String get fypGetRecommendations;
+
+  /// No description provided for @fypErrorSavingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving profile: {error}'**
+  String fypErrorSavingProfile(String error);
+
+  /// No description provided for @fypErrorGeneratingRecs.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating recommendations: {error}'**
+  String fypErrorGeneratingRecs(String error);
+
+  /// No description provided for @fypRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get fypRetry;
+
+  /// No description provided for @fypSignUpToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up to save your recommendations!'**
+  String get fypSignUpToSave;
+
+  /// No description provided for @fypSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get fypSignUp;
+
+  /// No description provided for @fypUnexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected error: {error}'**
+  String fypUnexpectedError(String error);
+
+  /// No description provided for @fypGeneratingRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating Recommendations'**
+  String get fypGeneratingRecommendations;
+
+  /// No description provided for @fypGeneratingPleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while we analyze universities\nand create personalized matches for you...'**
+  String get fypGeneratingPleaseWait;
+
+  /// No description provided for @fypYourRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Recommendations'**
+  String get fypYourRecommendations;
+
+  /// No description provided for @fypRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get fypRefresh;
+
+  /// No description provided for @fypErrorLoadingRecs.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading recommendations'**
+  String get fypErrorLoadingRecs;
+
+  /// No description provided for @fypTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get fypTryAgain;
+
+  /// No description provided for @fypNoRecsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No recommendations yet'**
+  String get fypNoRecsYet;
+
+  /// No description provided for @fypCompleteQuestionnaire.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the questionnaire to get personalized recommendations'**
+  String get fypCompleteQuestionnaire;
+
+  /// No description provided for @fypStartQuestionnaire.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Questionnaire'**
+  String get fypStartQuestionnaire;
+
+  /// No description provided for @fypFoundPerfectMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'We found your perfect matches!'**
+  String get fypFoundPerfectMatches;
+
+  /// No description provided for @fypStatTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get fypStatTotal;
+
+  /// No description provided for @fypStatSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety'**
+  String get fypStatSafety;
+
+  /// No description provided for @fypStatMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Match'**
+  String get fypStatMatch;
+
+  /// No description provided for @fypStatReach.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach'**
+  String get fypStatReach;
+
+  /// No description provided for @fypFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All ({count})'**
+  String fypFilterAll(int count);
+
+  /// No description provided for @fypFilterSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety ({count})'**
+  String fypFilterSafety(int count);
+
+  /// No description provided for @fypFilterMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Match ({count})'**
+  String fypFilterMatch(int count);
+
+  /// No description provided for @fypFilterReach.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach ({count})'**
+  String fypFilterReach(int count);
+
+  /// No description provided for @fypNoFilterMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No universities match the selected filter'**
+  String get fypNoFilterMatch;
+
+  /// No description provided for @fypPercentMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'{score}% Match'**
+  String fypPercentMatch(String score);
+
+  /// No description provided for @fypLoadingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading university details...'**
+  String get fypLoadingDetails;
+
+  /// No description provided for @fypLocationNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location not available'**
+  String get fypLocationNotAvailable;
+
+  /// No description provided for @fypStatAcceptance.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance'**
+  String get fypStatAcceptance;
+
+  /// No description provided for @fypStatTuition.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuition'**
+  String get fypStatTuition;
+
+  /// No description provided for @fypStatStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get fypStatStudents;
+
+  /// No description provided for @fypStatRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get fypStatRank;
+
+  /// No description provided for @fypWhyGoodMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Why it\'s a good match:'**
+  String get fypWhyGoodMatch;
+
+  /// No description provided for @fypViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get fypViewDetails;
+
+  /// No description provided for @fypUniversityDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'University Details'**
+  String get fypUniversityDetails;
+
+  /// No description provided for @fypVisitWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Website'**
+  String get fypVisitWebsite;
+
+  /// No description provided for @fypUniversityNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'University not found'**
+  String get fypUniversityNotFound;
+
+  /// No description provided for @fypErrorLoadingUniversity.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading university'**
+  String get fypErrorLoadingUniversity;
+
+  /// No description provided for @fypUnknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get fypUnknownError;
+
+  /// No description provided for @fypKStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}k Students'**
+  String fypKStudents(String count);
+
+  /// No description provided for @fypNationalRank.
+  ///
+  /// In en, this message translates to:
+  /// **'National Rank'**
+  String get fypNationalRank;
+
+  /// No description provided for @fypAcceptanceRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance Rate'**
+  String get fypAcceptanceRate;
+
+  /// No description provided for @fypAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get fypAbout;
+
+  /// No description provided for @fypAdmissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Admissions'**
+  String get fypAdmissions;
+
+  /// No description provided for @fypCostsFinancialAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Costs & Financial Aid'**
+  String get fypCostsFinancialAid;
+
+  /// No description provided for @fypStudentOutcomes.
+  ///
+  /// In en, this message translates to:
+  /// **'Student Outcomes'**
+  String get fypStudentOutcomes;
+
+  /// No description provided for @fypProgramsOffered.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs Offered'**
+  String get fypProgramsOffered;
+
+  /// No description provided for @fypAverageGPA.
+  ///
+  /// In en, this message translates to:
+  /// **'Average GPA'**
+  String get fypAverageGPA;
+
+  /// No description provided for @fypSatMathRange.
+  ///
+  /// In en, this message translates to:
+  /// **'SAT Math Range'**
+  String get fypSatMathRange;
+
+  /// No description provided for @fypSatEbrwRange.
+  ///
+  /// In en, this message translates to:
+  /// **'SAT EBRW Range'**
+  String get fypSatEbrwRange;
+
+  /// No description provided for @fypActRange.
+  ///
+  /// In en, this message translates to:
+  /// **'ACT Range'**
+  String get fypActRange;
+
+  /// No description provided for @fypOutOfStateTuition.
+  ///
+  /// In en, this message translates to:
+  /// **'Out-of-State Tuition'**
+  String get fypOutOfStateTuition;
+
+  /// No description provided for @fypTotalCostEst.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Cost (est.)'**
+  String get fypTotalCostEst;
+
+  /// No description provided for @fypFinancialAidNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial aid may be available. Contact the university for details.'**
+  String get fypFinancialAidNote;
+
+  /// No description provided for @fypGraduationRate.
+  ///
+  /// In en, this message translates to:
+  /// **'4-Year Graduation Rate'**
+  String get fypGraduationRate;
+
+  /// No description provided for @fypMedianEarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Median Earnings (10 years)'**
+  String get fypMedianEarnings;
+
+  /// No description provided for @appListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Applications'**
+  String get appListTitle;
+
+  /// No description provided for @appTabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All ({count})'**
+  String appTabAll(int count);
+
+  /// No description provided for @appTabPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending ({count})'**
+  String appTabPending(int count);
+
+  /// No description provided for @appTabUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review ({count})'**
+  String appTabUnderReview(int count);
+
+  /// No description provided for @appTabAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted ({count})'**
+  String appTabAccepted(int count);
+
+  /// No description provided for @appLoadingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading applications...'**
+  String get appLoadingMessage;
+
+  /// No description provided for @appRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get appRetry;
+
+  /// No description provided for @appNewApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'New Application'**
+  String get appNewApplication;
+
+  /// No description provided for @appEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Applications'**
+  String get appEmptyTitle;
+
+  /// No description provided for @appEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t submitted any applications yet.'**
+  String get appEmptyMessage;
+
+  /// No description provided for @appCreateApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Application'**
+  String get appCreateApplication;
+
+  /// No description provided for @appToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get appToday;
+
+  /// No description provided for @appYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get appYesterday;
+
+  /// No description provided for @appDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days ago'**
+  String appDaysAgo(int days);
+
+  /// No description provided for @appFeePaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee Paid'**
+  String get appFeePaid;
+
+  /// No description provided for @appPaymentPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Pending'**
+  String get appPaymentPending;
+
+  /// No description provided for @appReviewedDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewed {days} days ago'**
+  String appReviewedDaysAgo(int days);
+
+  /// No description provided for @appDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Details'**
+  String get appDetailTitle;
+
+  /// No description provided for @appDetailShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get appDetailShare;
+
+  /// No description provided for @appDetailStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Status'**
+  String get appDetailStatus;
+
+  /// No description provided for @appStatusPendingReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Review'**
+  String get appStatusPendingReview;
+
+  /// No description provided for @appStatusUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review'**
+  String get appStatusUnderReview;
+
+  /// No description provided for @appStatusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get appStatusAccepted;
+
+  /// No description provided for @appStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get appStatusRejected;
+
+  /// No description provided for @appStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get appStatusUnknown;
+
+  /// No description provided for @appDetailInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Information'**
+  String get appDetailInfo;
+
+  /// No description provided for @appDetailInstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution'**
+  String get appDetailInstitution;
+
+  /// No description provided for @appDetailProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get appDetailProgram;
+
+  /// No description provided for @appDetailSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get appDetailSubmitted;
+
+  /// No description provided for @appDetailReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewed'**
+  String get appDetailReviewed;
+
+  /// No description provided for @appDetailPaymentInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Information'**
+  String get appDetailPaymentInfo;
+
+  /// No description provided for @appDetailApplicationFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Fee'**
+  String get appDetailApplicationFee;
+
+  /// No description provided for @appDetailPaymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Status'**
+  String get appDetailPaymentStatus;
+
+  /// No description provided for @appDetailPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get appDetailPaid;
+
+  /// No description provided for @appDetailPendingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get appDetailPendingPayment;
+
+  /// No description provided for @appDetailPayFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Application Fee'**
+  String get appDetailPayFee;
+
+  /// No description provided for @appPaymentDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get appPaymentDialogTitle;
+
+  /// No description provided for @appPaymentDialogContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay application fee of \${fee}?'**
+  String appPaymentDialogContent(String fee);
+
+  /// No description provided for @appCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get appCancel;
+
+  /// No description provided for @appPayNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get appPayNow;
+
+  /// No description provided for @appPaymentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful!'**
+  String get appPaymentSuccess;
+
+  /// No description provided for @appPaymentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed. Please try again.'**
+  String get appPaymentFailed;
+
+  /// No description provided for @appErrorPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Error processing payment: {error}'**
+  String appErrorPayment(String error);
+
+  /// No description provided for @appDetailReviewNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Notes'**
+  String get appDetailReviewNotes;
+
+  /// No description provided for @appDetailDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get appDetailDocuments;
+
+  /// No description provided for @appDetailTranscript.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcript'**
+  String get appDetailTranscript;
+
+  /// No description provided for @appDetailUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded'**
+  String get appDetailUploaded;
+
+  /// No description provided for @appDetailIdDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Document'**
+  String get appDetailIdDocument;
+
+  /// No description provided for @appDetailPersonalStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Statement'**
+  String get appDetailPersonalStatement;
+
+  /// No description provided for @appDetailWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get appDetailWithdraw;
+
+  /// No description provided for @appDetailEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get appDetailEdit;
+
+  /// No description provided for @appWithdrawTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw Application'**
+  String get appWithdrawTitle;
+
+  /// No description provided for @appWithdrawConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to withdraw this application? This action cannot be undone.'**
+  String get appWithdrawConfirmation;
+
+  /// No description provided for @appWithdrawSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Application withdrawn successfully'**
+  String get appWithdrawSuccess;
+
+  /// No description provided for @appWithdrawFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to withdraw application'**
+  String get appWithdrawFailed;
+
+  /// No description provided for @appErrorWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Error withdrawing application: {error}'**
+  String appErrorWithdraw(String error);
+
+  /// No description provided for @appCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Application'**
+  String get appCreateTitle;
+
+  /// No description provided for @appStepProgramSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Selection'**
+  String get appStepProgramSelection;
+
+  /// No description provided for @appSelectUniversity.
+  ///
+  /// In en, this message translates to:
+  /// **'Select University'**
+  String get appSelectUniversity;
+
+  /// No description provided for @appBrowseInstitutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Institutions'**
+  String get appBrowseInstitutions;
+
+  /// No description provided for @appNoProgramsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This institution has no active programs yet. Please select another institution.'**
+  String get appNoProgramsYet;
+
+  /// No description provided for @appSelectProgramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Program *'**
+  String get appSelectProgramLabel;
+
+  /// No description provided for @appProgramsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} programs available'**
+  String appProgramsAvailable(int count);
+
+  /// No description provided for @appStepPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get appStepPersonalInfo;
+
+  /// No description provided for @appFullNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get appFullNameLabel;
+
+  /// No description provided for @appEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get appEmailLabel;
+
+  /// No description provided for @appPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get appPhoneLabel;
+
+  /// No description provided for @appStreetAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Street Address *'**
+  String get appStreetAddressLabel;
+
+  /// No description provided for @appCityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'City/Town *'**
+  String get appCityLabel;
+
+  /// No description provided for @appCountryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country *'**
+  String get appCountryLabel;
+
+  /// No description provided for @appStateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'State/Province *'**
+  String get appStateLabel;
+
+  /// No description provided for @appSelectCountryFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a country first'**
+  String get appSelectCountryFirst;
+
+  /// No description provided for @appStepAcademicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic Information'**
+  String get appStepAcademicInfo;
+
+  /// No description provided for @appPreviousSchoolLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous School/Institution'**
+  String get appPreviousSchoolLabel;
+
+  /// No description provided for @appGpaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'GPA / Grade Average'**
+  String get appGpaLabel;
+
+  /// No description provided for @appPersonalStatementLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Statement'**
+  String get appPersonalStatementLabel;
+
+  /// No description provided for @appPersonalStatementHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you interested in this program?'**
+  String get appPersonalStatementHint;
+
+  /// No description provided for @appStepDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents (Required)'**
+  String get appStepDocuments;
+
+  /// No description provided for @appUploadRequiredDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Required Documents'**
+  String get appUploadRequiredDocs;
+
+  /// No description provided for @appDocTranscriptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic Transcript'**
+  String get appDocTranscriptTitle;
+
+  /// No description provided for @appDocTranscriptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Official transcript from your previous school (PDF, DOC, or DOCX format, max 5MB)'**
+  String get appDocTranscriptSubtitle;
+
+  /// No description provided for @appDocIdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Document'**
+  String get appDocIdTitle;
+
+  /// No description provided for @appDocIdSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid government-issued ID: passport, national ID card, or driver\'s license (PDF, JPG, or PNG)'**
+  String get appDocIdSubtitle;
+
+  /// No description provided for @appDocPhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport Photo'**
+  String get appDocPhotoTitle;
+
+  /// No description provided for @appDocPhotoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent passport-sized photo with a plain background (JPG or PNG format)'**
+  String get appDocPhotoSubtitle;
+
+  /// No description provided for @appDocRequiredWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'All three documents are required. Please upload the transcript, ID document, and passport photo before submitting.'**
+  String get appDocRequiredWarning;
+
+  /// No description provided for @appSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get appSubmit;
+
+  /// No description provided for @appContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get appContinue;
+
+  /// No description provided for @appBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get appBack;
+
+  /// No description provided for @courseListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get courseListTitle;
+
+  /// No description provided for @courseFiltersTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get courseFiltersTooltip;
+
+  /// No description provided for @courseBrowseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse All'**
+  String get courseBrowseAll;
+
+  /// No description provided for @courseAssignedToMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to Me'**
+  String get courseAssignedToMe;
+
+  /// No description provided for @courseSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search courses...'**
+  String get courseSearchHint;
+
+  /// No description provided for @courseNoAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses available'**
+  String get courseNoAvailable;
+
+  /// No description provided for @courseCheckBackLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Check back later for new courses'**
+  String get courseCheckBackLater;
+
+  /// No description provided for @courseRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get courseRetry;
+
+  /// No description provided for @courseFailedLoadAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load assigned courses'**
+  String get courseFailedLoadAssigned;
+
+  /// No description provided for @courseNoAssignedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses assigned yet'**
+  String get courseNoAssignedYet;
+
+  /// No description provided for @courseAssignedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses assigned by your admin or institution will appear here.'**
+  String get courseAssignedDescription;
+
+  /// No description provided for @courseRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get courseRequired;
+
+  /// No description provided for @courseLessonsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} lessons'**
+  String courseLessonsLabel(int count);
+
+  /// No description provided for @coursePercentComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% complete'**
+  String coursePercentComplete(int percent);
+
+  /// No description provided for @courseNoRatingsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No ratings yet'**
+  String get courseNoRatingsYet;
+
+  /// No description provided for @courseEnrolledCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} enrolled'**
+  String courseEnrolledCount(int count);
+
+  /// No description provided for @courseFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get courseFiltersTitle;
+
+  /// No description provided for @courseLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get courseLevelLabel;
+
+  /// No description provided for @courseAllLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'All Levels'**
+  String get courseAllLevels;
+
+  /// No description provided for @courseLevelBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get courseLevelBeginner;
+
+  /// No description provided for @courseLevelIntermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get courseLevelIntermediate;
+
+  /// No description provided for @courseLevelAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get courseLevelAdvanced;
+
+  /// No description provided for @courseLevelExpert.
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get courseLevelExpert;
+
+  /// No description provided for @courseClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get courseClearAll;
+
+  /// No description provided for @courseApplyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get courseApplyFilters;
+
+  /// No description provided for @courseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get courseDescription;
+
+  /// No description provided for @courseWhatYoullLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'What You\'ll Learn'**
+  String get courseWhatYoullLearn;
+
+  /// No description provided for @coursePrerequisites.
+  ///
+  /// In en, this message translates to:
+  /// **'Prerequisites'**
+  String get coursePrerequisites;
+
+  /// No description provided for @coursePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get coursePrice;
+
+  /// No description provided for @courseCourseFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Full'**
+  String get courseCourseFull;
+
+  /// No description provided for @courseRequestPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Permission'**
+  String get courseRequestPermission;
+
+  /// No description provided for @coursePermissionPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Pending'**
+  String get coursePermissionPending;
+
+  /// No description provided for @coursePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Denied'**
+  String get coursePermissionDenied;
+
+  /// No description provided for @courseRequestPermissionAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Permission Again'**
+  String get courseRequestPermissionAgain;
+
+  /// No description provided for @courseEnrollNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll Now'**
+  String get courseEnrollNow;
+
+  /// No description provided for @courseRequestEnrollmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Enrollment Permission'**
+  String get courseRequestEnrollmentTitle;
+
+  /// No description provided for @courseRequestEnrollmentContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request permission to enroll in \"{title}\"?'**
+  String courseRequestEnrollmentContent(String title);
+
+  /// No description provided for @courseInstitutionReview.
+  ///
+  /// In en, this message translates to:
+  /// **'The institution will review your request.'**
+  String get courseInstitutionReview;
+
+  /// No description provided for @courseMessageToInstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Message to institution (optional)'**
+  String get courseMessageToInstitution;
+
+  /// No description provided for @courseMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Why do you want to take this course?'**
+  String get courseMessageHint;
+
+  /// No description provided for @courseCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get courseCancel;
+
+  /// No description provided for @courseRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get courseRequest;
+
+  /// No description provided for @coursePermissionRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission request sent!'**
+  String get coursePermissionRequestSent;
+
+  /// No description provided for @courseFailedRequestPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to request permission: {error}'**
+  String courseFailedRequestPermission(String error);
+
+  /// No description provided for @courseEnrolledSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully enrolled in course!'**
+  String get courseEnrolledSuccess;
+
+  /// No description provided for @courseFailedEnroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to enroll'**
+  String get courseFailedEnroll;
+
+  /// No description provided for @courseContinueLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Learning ({progress}%)'**
+  String courseContinueLearning(String progress);
+
+  /// No description provided for @courseStartLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Learning'**
+  String get courseStartLearning;
+
+  /// No description provided for @courseLessonsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} lessons completed'**
+  String courseLessonsCompleted(int completed, int total);
+
+  /// No description provided for @courseCollapseSidebar.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse sidebar'**
+  String get courseCollapseSidebar;
+
+  /// No description provided for @courseExpandSidebar.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand sidebar'**
+  String get courseExpandSidebar;
+
+  /// No description provided for @courseErrorLoadingModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading modules:\n{error}'**
+  String courseErrorLoadingModules(String error);
+
+  /// No description provided for @courseNoContentYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No content available yet'**
+  String get courseNoContentYet;
+
+  /// No description provided for @courseNoLessonsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'The instructor hasn\'t added any lessons'**
+  String get courseNoLessonsAdded;
+
+  /// No description provided for @courseLessonsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} lessons'**
+  String courseLessonsCount(int completed, int total);
+
+  /// No description provided for @courseWelcomeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to {title}'**
+  String courseWelcomeTo(String title);
+
+  /// No description provided for @courseCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get courseCompleted;
+
+  /// No description provided for @coursePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get coursePrevious;
+
+  /// No description provided for @courseMarkAsComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Complete'**
+  String get courseMarkAsComplete;
+
+  /// No description provided for @courseNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get courseNext;
+
+  /// No description provided for @courseMyCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'My Courses'**
+  String get courseMyCourses;
+
+  /// No description provided for @courseFilterByStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by status'**
+  String get courseFilterByStatus;
+
+  /// No description provided for @courseTabAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned ({count})'**
+  String courseTabAssigned(int count);
+
+  /// No description provided for @courseTabEnrolled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrolled ({count})'**
+  String courseTabEnrolled(int count);
+
+  /// No description provided for @courseNoAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'No assigned courses'**
+  String get courseNoAssigned;
+
+  /// No description provided for @courseAssignedByInstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses assigned to you by your institution will appear here'**
+  String get courseAssignedByInstitution;
+
+  /// No description provided for @courseREQUIRED.
+  ///
+  /// In en, this message translates to:
+  /// **'REQUIRED'**
+  String get courseREQUIRED;
+
+  /// No description provided for @courseProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get courseProgress;
+
+  /// No description provided for @courseDuePrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Due: {date}'**
+  String courseDuePrefix(String date);
+
+  /// No description provided for @courseStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get courseStatusCompleted;
+
+  /// No description provided for @courseStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get courseStatusInProgress;
+
+  /// No description provided for @courseStatusOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get courseStatusOverdue;
+
+  /// No description provided for @courseStatusAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get courseStatusAssigned;
+
+  /// No description provided for @courseDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get courseDueToday;
+
+  /// No description provided for @courseDueTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get courseDueTomorrow;
+
+  /// No description provided for @courseDueDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String courseDueDays(int days);
+
+  /// No description provided for @courseNoEnrolled.
+  ///
+  /// In en, this message translates to:
+  /// **'No enrolled courses'**
+  String get courseNoEnrolled;
+
+  /// No description provided for @courseBrowseToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse courses to get started'**
+  String get courseBrowseToStart;
+
+  /// No description provided for @courseBrowseCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Courses'**
+  String get courseBrowseCourses;
+
+  /// No description provided for @courseFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get courseFilterAll;
+
+  /// No description provided for @courseStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get courseStatusActive;
+
+  /// No description provided for @courseStatusDropped.
+  ///
+  /// In en, this message translates to:
+  /// **'Dropped'**
+  String get courseStatusDropped;
+
+  /// No description provided for @courseStatusSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get courseStatusSuspended;
 }
 
 class _AppLocalizationsDelegate

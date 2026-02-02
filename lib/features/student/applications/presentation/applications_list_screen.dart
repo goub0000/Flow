@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/application_model.dart';
 import '../../../../core/providers/service_providers.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_indicator.dart';
@@ -94,9 +95,9 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
               context.go('/student/dashboard');
             }
           },
-          tooltip: 'Back',
+          tooltip: context.l10n.appBack,
         ),
-        title: const Text('My Applications'),
+        title: Text(context.l10n.appListTitle),
         actions: [
           if (applications.isNotEmpty)
             ExportButton(
@@ -123,15 +124,15 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           tabs: [
-            Tab(text: 'All (${applications.length})'),
-            Tab(text: 'Pending ($pendingCount)'),
-            Tab(text: 'Under Review ($underReviewCount)'),
-            Tab(text: 'Accepted ($acceptedCount)'),
+            Tab(text: context.l10n.appTabAll(applications.length)),
+            Tab(text: context.l10n.appTabPending(pendingCount)),
+            Tab(text: context.l10n.appTabUnderReview(underReviewCount)),
+            Tab(text: context.l10n.appTabAccepted(acceptedCount)),
           ],
         ),
       ),
       body: isLoading
-          ? const LoadingIndicator(message: 'Loading applications...')
+          ? LoadingIndicator(message: context.l10n.appLoadingMessage)
           : error != null
               ? Center(
                   child: Column(
@@ -144,7 +145,7 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
                       ElevatedButton.icon(
                         onPressed: _refreshApplications,
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                        label: Text(context.l10n.appRetry),
                       ),
                     ],
                   ),
@@ -164,17 +165,17 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
           // No need to manually refresh - the provider already refreshes after submission
         },
         icon: const Icon(Icons.add),
-        label: const Text('New Application'),
+        label: Text(context.l10n.appNewApplication),
       ),
     );
   }
 
   Widget _buildApplicationsList(List<Application> applications) {
     if (applications.isEmpty) {
-      return const EmptyState(
+      return EmptyState(
         icon: Icons.description_outlined,
-        title: 'No Applications',
-        message: 'You haven\'t submitted any applications yet.',
+        title: context.l10n.appEmptyTitle,
+        message: context.l10n.appEmptyMessage,
       );
     }
 
@@ -195,9 +196,9 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
     if (applications.isEmpty) {
       return EmptyState(
         icon: Icons.description_outlined,
-        title: 'No Applications',
-        message: 'You haven\'t submitted any applications yet',
-        actionLabel: 'Create Application',
+        title: context.l10n.appEmptyTitle,
+        message: context.l10n.appEmptyMessage,
+        actionLabel: context.l10n.appCreateApplication,
         onAction: () {
           context.push('/student/applications/create');
         },
@@ -285,10 +286,10 @@ class _ApplicationCard extends StatelessWidget {
               _InfoItem(
                 icon: Icons.calendar_today,
                 label: daysAgo == 0
-                    ? 'Today'
+                    ? context.l10n.appToday
                     : daysAgo == 1
-                        ? 'Yesterday'
-                        : '$daysAgo days ago',
+                        ? context.l10n.appYesterday
+                        : context.l10n.appDaysAgo(daysAgo),
               ),
               if (application.applicationFee != null)
                 _InfoItem(
@@ -296,8 +297,8 @@ class _ApplicationCard extends StatelessWidget {
                       ? Icons.check_circle
                       : Icons.warning,
                   label: application.feePaid
-                      ? 'Fee Paid'
-                      : 'Payment Pending',
+                      ? context.l10n.appFeePaid
+                      : context.l10n.appPaymentPending,
                   color: application.feePaid
                       ? AppColors.success
                       : AppColors.warning,
@@ -307,7 +308,7 @@ class _ApplicationCard extends StatelessWidget {
           if (application.reviewedAt != null) ...[
             const SizedBox(height: 8),
             Text(
-              'Reviewed ${DateTime.now().difference(application.reviewedAt!).inDays} days ago',
+              context.l10n.appReviewedDaysAgo(DateTime.now().difference(application.reviewedAt!).inDays),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
                 fontStyle: FontStyle.italic,

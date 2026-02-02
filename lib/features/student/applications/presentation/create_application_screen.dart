@@ -12,6 +12,7 @@ import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/services/storage_service.dart';
 import '../../../../core/providers/service_providers.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../authentication/providers/auth_provider.dart' hide currentUserProvider;
 import '../../providers/student_applications_provider.dart';
@@ -365,9 +366,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.appBack,
         ),
-        title: const Text('New Application'),
+        title: Text(context.l10n.appCreateTitle),
       ),
       body: Form(
         key: _formKey,
@@ -490,12 +491,12 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                             height: 20,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : Text(_currentStep == 3 ? 'Submit' : 'Continue'),
+                        : Text(_currentStep == 3 ? context.l10n.appSubmit : context.l10n.appContinue),
                   ),
                   const SizedBox(width: 12),
                   TextButton(
                     onPressed: isSubmitting ? null : details.onStepCancel,
-                    child: Text(_currentStep == 0 ? 'Cancel' : 'Back'),
+                    child: Text(_currentStep == 0 ? context.l10n.appCancel : context.l10n.appBack),
                   ),
                 ],
               ),
@@ -504,7 +505,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
           steps: [
             // Step 1: Institution & Program
             Step(
-              title: const Text('Program Selection'),
+              title: Text(context.l10n.appStepProgramSelection),
               isActive: _currentStep >= 0,
               state: _currentStep > 0 ? StepState.complete : StepState.indexed,
               content: Column(
@@ -512,7 +513,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                 children: [
                   // University selection
                   Text(
-                    'Select University',
+                    context.l10n.appSelectUniversity,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -537,7 +538,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                         }
                       },
                       icon: const Icon(Icons.search),
-                      label: const Text('Browse Institutions'),
+                      label: Text(context.l10n.appBrowseInstitutions),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.all(16),
                         minimumSize: const Size(double.infinity, 50),
@@ -613,7 +614,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
                   // Program Selection Dropdown
                   Text(
-                    'Select Program *',
+                    context.l10n.appSelectProgramLabel,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
@@ -664,9 +665,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                           children: [
                             const Icon(Icons.info_outline, color: AppColors.warning),
                             const SizedBox(width: 12),
-                            const Expanded(
+                            Expanded(
                               child: Text(
-                                'This institution has no active programs yet. Please select another institution.',
+                                context.l10n.appNoProgramsYet,
                                 style: TextStyle(color: AppColors.warning),
                               ),
                             ),
@@ -678,10 +679,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                     DropdownButtonFormField<Program>(
                       value: _selectedProgram,
                       decoration: InputDecoration(
-                        labelText: 'Select a Program *',
+                        labelText: context.l10n.appSelectProgramLabel,
                         prefixIcon: const Icon(Icons.school),
                         border: const OutlineInputBorder(),
-                        helperText: '${_availablePrograms.length} programs available',
+                        helperText: context.l10n.appProgramsAvailable(_availablePrograms.length),
                       ),
                       items: _availablePrograms.map((program) {
                         return DropdownMenuItem<Program>(
@@ -722,7 +723,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(
-                        'Please select an institution first to view available programs',
+                        context.l10n.appSelectCountryFirst,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.info,
                             ),
@@ -734,16 +735,16 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
             // Step 2: Personal Information
             Step(
-              title: const Text('Personal Information'),
+              title: Text(context.l10n.appStepPersonalInfo),
               isActive: _currentStep >= 1,
               state: _currentStep > 1 ? StepState.complete : StepState.indexed,
               content: Column(
                 children: [
                   TextFormField(
                     controller: _fullNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      prefixIcon: Icon(Icons.person),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appFullNameLabel,
+                      prefixIcon: const Icon(Icons.person),
                     ),
                     validator: Validators.fullName,
                   ),
@@ -751,9 +752,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email Address',
-                      prefixIcon: Icon(Icons.email),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appEmailLabel,
+                      prefixIcon: const Icon(Icons.email),
                     ),
                     validator: Validators.email,
                   ),
@@ -761,18 +762,18 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   TextFormField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appPhoneLabel,
+                      prefixIcon: const Icon(Icons.phone),
                     ),
                     validator: Validators.phoneNumber,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _streetAddressController,
-                    decoration: const InputDecoration(
-                      labelText: 'Street Address *',
-                      prefixIcon: Icon(Icons.home),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appStreetAddressLabel,
+                      prefixIcon: const Icon(Icons.home),
                       hintText: 'e.g., 123 Main Street',
                     ),
                     validator: Validators.required('Please enter your street address'),
@@ -780,9 +781,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _cityController,
-                    decoration: const InputDecoration(
-                      labelText: 'City/Town *',
-                      prefixIcon: Icon(Icons.location_city),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appCityLabel,
+                      prefixIcon: const Icon(Icons.location_city),
                       hintText: 'e.g., Norman',
                     ),
                     validator: Validators.required('Please enter your city'),
@@ -790,10 +791,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     value: _selectedCountry,
-                    decoration: const InputDecoration(
-                      labelText: 'Country *',
-                      prefixIcon: Icon(Icons.public),
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appCountryLabel,
+                      prefixIcon: const Icon(Icons.public),
+                      border: const OutlineInputBorder(),
                     ),
                     items: _countriesWithStates.keys.map((country) {
                       return DropdownMenuItem<String>(
@@ -817,10 +818,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     value: _selectedState,
-                    decoration: const InputDecoration(
-                      labelText: 'State/Province *',
-                      prefixIcon: Icon(Icons.map),
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appStateLabel,
+                      prefixIcon: const Icon(Icons.map),
+                      border: const OutlineInputBorder(),
                     ),
                     items: _selectedCountry != null
                         ? _countriesWithStates[_selectedCountry]!.map((state) {
@@ -843,7 +844,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                       }
                       return null;
                     },
-                    disabledHint: const Text('Select a country first'),
+                    disabledHint: Text(context.l10n.appSelectCountryFirst),
                   ),
                 ],
               ),
@@ -851,16 +852,16 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
             // Step 3: Academic Information
             Step(
-              title: const Text('Academic Information'),
+              title: Text(context.l10n.appStepAcademicInfo),
               isActive: _currentStep >= 2,
               state: _currentStep > 2 ? StepState.complete : StepState.indexed,
               content: Column(
                 children: [
                   TextFormField(
                     controller: _previousSchoolController,
-                    decoration: const InputDecoration(
-                      labelText: 'Previous School/Institution',
-                      prefixIcon: Icon(Icons.school_outlined),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appPreviousSchoolLabel,
+                      prefixIcon: const Icon(Icons.school_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -873,9 +874,9 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   TextFormField(
                     controller: _gpaController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'GPA / Grade Average',
-                      prefixIcon: Icon(Icons.grade),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appGpaLabel,
+                      prefixIcon: const Icon(Icons.grade),
                       hintText: 'e.g., 3.8',
                     ),
                     validator: Validators.gpa,
@@ -884,10 +885,10 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                   TextFormField(
                     controller: _personalStatementController,
                     maxLines: 5,
-                    decoration: const InputDecoration(
-                      labelText: 'Personal Statement',
-                      prefixIcon: Icon(Icons.article),
-                      hintText: 'Why are you interested in this program?',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.appPersonalStatementLabel,
+                      prefixIcon: const Icon(Icons.article),
+                      hintText: context.l10n.appPersonalStatementHint,
                     ),
                     validator: Validators.compose([
                       Validators.required('Please write a personal statement'),
@@ -901,36 +902,36 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
             // Step 4: Documents (Required)
             Step(
-              title: const Text('Documents (Required)'),
+              title: Text(context.l10n.appStepDocuments),
               isActive: _currentStep >= 3,
               state: StepState.indexed,
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Upload Required Documents',
+                    context.l10n.appUploadRequiredDocs,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 16),
                   _DocumentUploadCard(
-                    title: 'Academic Transcript',
-                    subtitle: 'Official transcript from your previous school (PDF, DOC, or DOCX format, max 5MB)',
+                    title: context.l10n.appDocTranscriptTitle,
+                    subtitle: context.l10n.appDocTranscriptSubtitle,
                     icon: Icons.description,
                     onUpload: () => _pickDocument('transcript'),
                     uploadedFile: _uploadedDocuments['transcript'],
                   ),
                   const SizedBox(height: 12),
                   _DocumentUploadCard(
-                    title: 'ID Document',
-                    subtitle: 'Valid government-issued ID: Passport, National ID Card, or Driver\'s License (PDF, JPG, or PNG)',
+                    title: context.l10n.appDocIdTitle,
+                    subtitle: context.l10n.appDocIdSubtitle,
                     icon: Icons.badge,
                     onUpload: () => _pickDocument('id'),
                     uploadedFile: _uploadedDocuments['id'],
                   ),
                   const SizedBox(height: 12),
                   _DocumentUploadCard(
-                    title: 'Passport Photo',
-                    subtitle: 'Recent passport-sized photo with plain background (JPG or PNG format)',
+                    title: context.l10n.appDocPhotoTitle,
+                    subtitle: context.l10n.appDocPhotoSubtitle,
                     icon: Icons.photo_camera,
                     onUpload: () => _pickDocument('statement'),
                     uploadedFile: _uploadedDocuments['statement'],
@@ -944,7 +945,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'All three documents are required. Please upload Academic Transcript, ID Document, and Passport Photo before submitting.',
+                            context.l10n.appDocRequiredWarning,
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: AppColors.error,

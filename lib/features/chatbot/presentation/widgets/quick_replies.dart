@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/models/chat_message.dart';
 
@@ -134,28 +135,28 @@ class _ActionColors {
 /// Generates context-aware quick actions based on user state
 class SmartQuickActions {
   /// Generate quick actions based on current page
-  static List<QuickAction> getPageActions(String? currentPage) {
-    if (currentPage == null) return getDefaultActions();
+  static List<QuickAction> getPageActions(BuildContext context, String? currentPage) {
+    if (currentPage == null) return getDefaultActions(context);
 
     final page = currentPage.toLowerCase();
 
     if (page.contains('dashboard')) {
       return [
-        const QuickAction(
+        QuickAction(
           id: 'recommendations',
-          label: 'View Recommendations',
+          label: context.l10n.chatViewRecommendations,
           action: 'navigate_recommendations',
           icon: Icons.school,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'questionnaire',
-          label: 'Update Profile',
+          label: context.l10n.chatUpdateProfile,
           action: 'navigate_questionnaire',
           icon: Icons.person,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'applications',
-          label: 'My Applications',
+          label: context.l10n.chatMyApplications,
           action: 'navigate_applications',
           icon: Icons.description,
         ),
@@ -164,21 +165,21 @@ class SmartQuickActions {
 
     if (page.contains('recommendation')) {
       return [
-        const QuickAction(
+        QuickAction(
           id: 'compare',
-          label: 'Compare Schools',
+          label: context.l10n.chatCompareSchools,
           action: 'action_compare_schools',
           icon: Icons.compare_arrows,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'filter',
-          label: 'Filter Results',
+          label: context.l10n.chatFilterResults,
           action: 'action_filter_recommendations',
           icon: Icons.filter_list,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'explain',
-          label: 'Why These Schools?',
+          label: context.l10n.chatWhyTheseSchools,
           action: 'info_explain_recommendations',
           icon: Icons.help_outline,
         ),
@@ -187,21 +188,21 @@ class SmartQuickActions {
 
     if (page.contains('application')) {
       return [
-        const QuickAction(
+        QuickAction(
           id: 'deadlines',
-          label: 'View Deadlines',
+          label: context.l10n.chatViewDeadlines,
           action: 'action_view_deadlines',
           icon: Icons.calendar_today,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'essay_tips',
-          label: 'Essay Tips',
+          label: context.l10n.chatEssayTips,
           action: 'info_essay_tips',
           icon: Icons.edit_note,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'checklist',
-          label: 'Application Checklist',
+          label: context.l10n.chatApplicationChecklist,
           action: 'info_application_checklist',
           icon: Icons.checklist,
         ),
@@ -210,15 +211,15 @@ class SmartQuickActions {
 
     if (page.contains('questionnaire') || page.contains('profile')) {
       return [
-        const QuickAction(
+        QuickAction(
           id: 'help',
-          label: 'Help with Questions',
+          label: context.l10n.chatHelpWithQuestions,
           action: 'info_questionnaire_help',
           icon: Icons.help,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'skip_tip',
-          label: 'Can I Skip Sections?',
+          label: context.l10n.chatCanISkipSections,
           action: 'info_skip_sections',
           icon: Icons.skip_next,
         ),
@@ -227,62 +228,62 @@ class SmartQuickActions {
 
     if (page.contains('university')) {
       return [
-        const QuickAction(
+        QuickAction(
           id: 'apply',
-          label: 'Start Application',
+          label: context.l10n.chatStartApplication,
           action: 'action_start_application',
           icon: Icons.send,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'save',
-          label: 'Save to Favorites',
+          label: context.l10n.chatSaveToFavorites,
           action: 'action_save_favorite',
           icon: Icons.favorite_border,
         ),
-        const QuickAction(
+        QuickAction(
           id: 'similar',
-          label: 'Similar Schools',
+          label: context.l10n.chatSimilarSchools,
           action: 'action_find_similar',
           icon: Icons.search,
         ),
       ];
     }
 
-    return getDefaultActions();
+    return getDefaultActions(context);
   }
 
   /// Generate quick actions based on user's pending tasks
-  static List<QuickAction> getTaskActions(List<String> pendingTasks) {
+  static List<QuickAction> getTaskActions(BuildContext context, List<String> pendingTasks) {
     final actions = <QuickAction>[];
 
     for (final task in pendingTasks.take(3)) {
       final taskLower = task.toLowerCase();
 
       if (taskLower.contains('essay')) {
-        actions.add(const QuickAction(
+        actions.add(QuickAction(
           id: 'essay_help',
-          label: 'Essay Writing Help',
+          label: context.l10n.chatEssayWritingHelp,
           action: 'info_essay_writing',
           icon: Icons.create,
         ));
       } else if (taskLower.contains('deadline')) {
-        actions.add(const QuickAction(
+        actions.add(QuickAction(
           id: 'deadline_reminder',
-          label: 'Set Deadline Reminder',
+          label: context.l10n.chatSetDeadlineReminder,
           action: 'action_set_reminder',
           icon: Icons.alarm,
         ));
       } else if (taskLower.contains('letter') || taskLower.contains('recommendation')) {
-        actions.add(const QuickAction(
+        actions.add(QuickAction(
           id: 'letter_tips',
-          label: 'Letter Request Tips',
+          label: context.l10n.chatLetterRequestTips,
           action: 'info_recommendation_letters',
           icon: Icons.mail,
         ));
       } else if (taskLower.contains('transcript')) {
-        actions.add(const QuickAction(
+        actions.add(QuickAction(
           id: 'transcript_help',
-          label: 'Transcript Guide',
+          label: context.l10n.chatTranscriptGuide,
           action: 'info_transcript_submission',
           icon: Icons.article,
         ));
@@ -293,23 +294,23 @@ class SmartQuickActions {
   }
 
   /// Generate quick actions for new users
-  static List<QuickAction> getOnboardingActions() {
+  static List<QuickAction> getOnboardingActions(BuildContext context) {
     return [
-      const QuickAction(
+      QuickAction(
         id: 'start_questionnaire',
-        label: 'Start Questionnaire',
+        label: context.l10n.chatStartQuestionnaire,
         action: 'navigate_questionnaire',
         icon: Icons.play_arrow,
       ),
-      const QuickAction(
+      QuickAction(
         id: 'how_it_works',
-        label: 'How It Works',
+        label: context.l10n.chatHowItWorks,
         action: 'info_how_it_works',
         icon: Icons.info,
       ),
-      const QuickAction(
+      QuickAction(
         id: 'browse_universities',
-        label: 'Browse Universities',
+        label: context.l10n.chatBrowseUniversities,
         action: 'navigate_explore',
         icon: Icons.explore,
       ),
@@ -317,23 +318,23 @@ class SmartQuickActions {
   }
 
   /// Get default quick actions
-  static List<QuickAction> getDefaultActions() {
+  static List<QuickAction> getDefaultActions(BuildContext context) {
     return [
-      const QuickAction(
+      QuickAction(
         id: 'help',
-        label: 'How can you help?',
+        label: context.l10n.chatHowCanYouHelp,
         action: 'info_help',
         icon: Icons.help_outline,
       ),
-      const QuickAction(
+      QuickAction(
         id: 'recommendations',
-        label: 'Get Recommendations',
+        label: context.l10n.chatGetRecommendations,
         action: 'navigate_recommendations',
         icon: Icons.school,
       ),
-      const QuickAction(
+      QuickAction(
         id: 'contact',
-        label: 'Contact Support',
+        label: context.l10n.chatContactSupport,
         action: 'urgent_escalate',
         icon: Icons.support_agent,
       ),
@@ -341,17 +342,17 @@ class SmartQuickActions {
   }
 
   /// Generate actions for incomplete profile
-  static List<QuickAction> getIncompleteProfileActions(int completeness) {
+  static List<QuickAction> getIncompleteProfileActions(BuildContext context, int completeness) {
     return [
       QuickAction(
         id: 'complete_profile',
-        label: 'Complete Profile ($completeness%)',
+        label: context.l10n.chatCompleteProfile(completeness),
         action: 'navigate_questionnaire',
         icon: Icons.person_add,
       ),
-      const QuickAction(
+      QuickAction(
         id: 'why_complete',
-        label: 'Why Complete Profile?',
+        label: context.l10n.chatWhyCompleteProfile,
         action: 'info_profile_benefits',
         icon: Icons.lightbulb,
       ),
@@ -359,14 +360,15 @@ class SmartQuickActions {
   }
 
   /// Generate actions for users with recommendations
-  static List<QuickAction> getRecommendationActions({
+  static List<QuickAction> getRecommendationActions(
+    BuildContext context, {
     required int totalCount,
     required int favoritedCount,
   }) {
     final actions = <QuickAction>[
       QuickAction(
         id: 'view_recommendations',
-        label: 'View $totalCount Schools',
+        label: context.l10n.chatViewSchools(totalCount),
         action: 'navigate_recommendations',
         icon: Icons.list,
       ),
@@ -375,15 +377,15 @@ class SmartQuickActions {
     if (favoritedCount > 0) {
       actions.add(QuickAction(
         id: 'view_favorites',
-        label: 'My Favorites ($favoritedCount)',
+        label: context.l10n.chatMyFavorites(favoritedCount),
         action: 'navigate_favorites',
         icon: Icons.favorite,
       ));
     }
 
-    actions.add(const QuickAction(
+    actions.add(QuickAction(
       id: 'start_applying',
-      label: 'Start Applying',
+      label: context.l10n.chatStartApplying,
       action: 'action_start_applications',
       icon: Icons.send,
     ));

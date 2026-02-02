@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../application/providers/chatbot_provider.dart';
 import 'chat_window.dart';
@@ -83,9 +84,9 @@ class _ChatbotFABState extends ConsumerState<ChatbotFAB>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Hi! Need help? 👋',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.chatHiNeedHelp,
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),

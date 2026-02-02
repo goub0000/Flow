@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../routing/app_router.dart';
 import '../../../authentication/providers/auth_provider.dart';
@@ -116,7 +117,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
 
   void _escalateToHuman() {
     ref.read(chatbotProvider.notifier).escalateToHuman(
-      reason: 'User requested human support',
+      reason: context.l10n.chatUserRequestedHumanSupport,
     );
     _scrollToBottom();
   }
@@ -223,28 +224,28 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               children: [
                 Icon(Icons.support_agent, color: AppColors.primary),
                 const SizedBox(width: 12),
-                const Text('Talk to a Human'),
+                Text(context.l10n.chatTalkToHuman),
               ],
             ),
-            content: const Column(
+            content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Would you like to connect with a support agent?',
-                  style: TextStyle(fontSize: 14),
+                  context.l10n.chatConnectWithAgent,
+                  style: const TextStyle(fontSize: 14),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
-                  'A member of our team will join this conversation to assist you.',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  context.l10n.chatAgentWillJoin,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
             actions: [
               TextButton(
                 onPressed: () => setState(() => _showEscalationDialogInline = false),
-                child: const Text('Cancel'),
+                child: Text(context.l10n.chatCancel),
               ),
               ElevatedButton.icon(
                 onPressed: () {
@@ -252,7 +253,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                   _escalateToHuman();
                 },
                 icon: const Icon(Icons.person, size: 18),
-                label: const Text('Connect'),
+                label: Text(context.l10n.chatConnect),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -271,7 +272,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                   color: AppColors.primary,
                 ),
                 const SizedBox(width: 12),
-                Text(isLoggedIn ? 'Your Account' : 'Sign In'),
+                Text(isLoggedIn ? context.l10n.chatYourAccount : context.l10n.chatSignIn),
               ],
             ),
             content: Column(
@@ -280,31 +281,31 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               children: [
                 if (isLoggedIn) ...[
                   Text(
-                    'Signed in as:',
+                    context.l10n.chatSignedInAs,
                     style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    user?.displayName ?? 'User',
+                    user?.displayName ?? context.l10n.chatDefaultUserName,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Your conversations are being synced to your account.',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  Text(
+                    context.l10n.chatConversationsSynced,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ] else ...[
-                  const Text(
-                    'Sign in to sync your conversations across devices and get personalized assistance.',
-                    style: TextStyle(fontSize: 14),
+                  Text(
+                    context.l10n.chatSignInDescription,
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Your chat history will be saved to your account.',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  Text(
+                    context.l10n.chatHistorySaved,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ],
@@ -312,7 +313,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
             actions: [
               TextButton(
                 onPressed: () => setState(() => _showUserMenuInline = false),
-                child: const Text('Close'),
+                child: Text(context.l10n.chatClose),
               ),
               if (!isLoggedIn)
                 ElevatedButton.icon(
@@ -326,7 +327,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                     ref.read(routerProvider).go('/login');
                   },
                   icon: const Icon(Icons.login, size: 18),
-                  label: const Text('Sign In'),
+                  label: Text(context.l10n.chatSignIn),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
@@ -343,7 +344,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                     ref.read(routerProvider).go('/profile');
                   },
                   icon: const Icon(Icons.person, size: 18),
-                  label: const Text('View Profile'),
+                  label: Text(context.l10n.chatViewProfile),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
@@ -448,7 +449,7 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isEscalated ? 'Human Support' : 'Flow Assistant',
+                  isEscalated ? context.l10n.chatHumanSupport : context.l10n.chatFlowAssistant,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -467,17 +468,17 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const Text(
-                        'Waiting for agent...',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.chatWaitingForAgent,
+                        style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 12,
                         ),
                       ),
                     ] else
-                      const Text(
-                        'Online',
-                        style: TextStyle(
+                      Text(
+                        context.l10n.chatOnline,
+                        style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 12,
                         ),
@@ -515,19 +516,19 @@ class _ChatWindowState extends ConsumerState<ChatWindow>
   }
 
   Widget _buildEmptyState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.chat_bubble_outline,
             size: 64,
             color: Colors.grey,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
-            'Start a conversation',
-            style: TextStyle(
+            context.l10n.chatStartConversation,
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../authentication/providers/auth_provider.dart';
 import '../../application/providers/find_your_path_provider.dart';
@@ -46,13 +47,13 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Your Recommendations'),
+        title: Text(context.l10n.fypYourRecommendations),
         backgroundColor: AppColors.surface,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadRecommendations,
-            tooltip: 'Refresh',
+            tooltip: context.l10n.fypRefresh,
           ),
         ],
       ),
@@ -78,7 +79,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Error loading recommendations',
+            context.l10n.fypErrorLoadingRecs,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -98,7 +99,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
           ElevatedButton.icon(
             onPressed: _loadRecommendations,
             icon: const Icon(Icons.refresh),
-            label: const Text('Try Again'),
+            label: Text(context.l10n.fypTryAgain),
           ),
         ],
       ),
@@ -117,7 +118,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No recommendations yet',
+            context.l10n.fypNoRecsYet,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -126,7 +127,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Complete the questionnaire to get personalized recommendations',
+            context.l10n.fypCompleteQuestionnaire,
             style: TextStyle(
               fontSize: 14,
               color: AppColors.textSecondary,
@@ -139,7 +140,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
               context.push('/find-your-path/questionnaire');
             },
             icon: const Icon(Icons.edit_note),
-            label: const Text('Start Questionnaire'),
+            label: Text(context.l10n.fypStartQuestionnaire),
           ),
         ],
       ),
@@ -168,7 +169,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
           child: recommendations.isEmpty
               ? Center(
                   child: Text(
-                    'No universities match the selected filter',
+                    context.l10n.fypNoFilterMatch,
                     style: TextStyle(color: AppColors.textSecondary),
                   ),
                 )
@@ -196,9 +197,9 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
       ),
       child: Column(
         children: [
-          const Text(
-            'We found your perfect matches!',
-            style: TextStyle(
+          Text(
+            context.l10n.fypFoundPerfectMatches,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -208,25 +209,25 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildStatCard(
-                'Total',
+                context.l10n.fypStatTotal,
                 response.totalCount.toString(),
                 AppColors.primary,
                 Icons.school,
               ),
               _buildStatCard(
-                'Safety',
+                context.l10n.fypStatSafety,
                 response.safetyCount.toString(),
                 AppColors.success,
                 Icons.check_circle,
               ),
               _buildStatCard(
-                'Match',
+                context.l10n.fypStatMatch,
                 response.matchCount.toString(),
                 AppColors.info,
                 Icons.favorite,
               ),
               _buildStatCard(
-                'Reach',
+                context.l10n.fypStatReach,
                 response.reachCount.toString(),
                 AppColors.warning,
                 Icons.star,
@@ -278,7 +279,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
         child: Row(
           children: [
             FilterChip(
-              label: Text('All (${response.totalCount})'),
+              label: Text(context.l10n.fypFilterAll(response.totalCount)),
               selected: _filterCategory == null,
               onSelected: (selected) {
                 setState(() {
@@ -288,7 +289,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
             ),
             const SizedBox(width: 8),
             FilterChip(
-              label: Text('Safety (${response.safetyCount})'),
+              label: Text(context.l10n.fypFilterSafety(response.safetyCount)),
               selected: _filterCategory == 'Safety',
               onSelected: (selected) {
                 setState(() {
@@ -299,7 +300,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
             ),
             const SizedBox(width: 8),
             FilterChip(
-              label: Text('Match (${response.matchCount})'),
+              label: Text(context.l10n.fypFilterMatch(response.matchCount)),
               selected: _filterCategory == 'Match',
               onSelected: (selected) {
                 setState(() {
@@ -310,7 +311,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
             ),
             const SizedBox(width: 8),
             FilterChip(
-              label: Text('Reach (${response.reachCount})'),
+              label: Text(context.l10n.fypFilterReach(response.reachCount)),
               selected: _filterCategory == 'Reach',
               onSelected: (selected) {
                 setState(() {
@@ -372,7 +373,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          university?.name ?? 'Loading university details...',
+                          university?.name ?? context.l10n.fypLoadingDetails,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -380,7 +381,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          university?.location ?? 'Location not available',
+                          university?.location ?? context.l10n.fypLocationNotAvailable,
                           style: TextStyle(
                             fontSize: 14,
                             color: AppColors.textSecondary,
@@ -426,25 +427,25 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
                     if (university.acceptanceRate != null)
                       _buildStat(
                         Icons.percent,
-                        'Acceptance',
+                        context.l10n.fypStatAcceptance,
                         university.formattedAcceptanceRate!,
                       ),
                     if (university.tuitionOutState != null)
                       _buildStat(
                         Icons.attach_money,
-                        'Tuition',
+                        context.l10n.fypStatTuition,
                         university.formattedTuition!,
                       ),
                     if (university.totalStudents != null)
                       _buildStat(
                         Icons.people,
-                        'Students',
+                        context.l10n.fypStatStudents,
                         '${(university.totalStudents! / 1000).toStringAsFixed(1)}k',
                       ),
                     if (university.nationalRank != null)
                       _buildStat(
                         Icons.emoji_events,
-                        'Rank',
+                        context.l10n.fypStatRank,
                         '#${university.nationalRank}',
                       ),
                   ],
@@ -453,9 +454,9 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
               // Strengths
               if (rec.strengths.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                const Text(
-                  'Why it\'s a good match:',
-                  style: TextStyle(
+                Text(
+                  context.l10n.fypWhyGoodMatch,
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
@@ -499,7 +500,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
                         }
                       : null,
                   icon: const Icon(Icons.arrow_forward),
-                  label: const Text('View Details'),
+                  label: Text(context.l10n.fypViewDetails),
                 ),
               ),
             ],
@@ -557,7 +558,7 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
           ),
           const SizedBox(width: 4),
           Text(
-            '${score.toStringAsFixed(0)}% Match',
+            context.l10n.fypPercentMatch(score.toStringAsFixed(0)),
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/enrollment_model.dart';
 import '../../../../core/models/course_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../providers/enrollments_provider.dart';
 import '../../providers/courses_provider.dart';
 
@@ -55,7 +56,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('My Courses'),
+        title: Text(context.l10n.courseMyCourses),
         backgroundColor: AppColors.surface,
         bottom: TabBar(
           controller: _tabController,
@@ -65,11 +66,11 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
           tabs: [
             Tab(
               icon: const Icon(Icons.assignment),
-              text: 'Assigned (${assignedState.courses.length})',
+              text: context.l10n.courseTabAssigned(assignedState.courses.length),
             ),
             Tab(
               icon: const Icon(Icons.school),
-              text: 'Enrolled (${enrollmentsState.enrollments.length})',
+              text: context.l10n.courseTabEnrolled(enrollmentsState.enrollments.length),
             ),
           ],
         ),
@@ -77,7 +78,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: () => _showFiltersBottomSheet(context),
-            tooltip: 'Filter by status',
+            tooltip: context.l10n.courseFilterByStatus,
           ),
         ],
       ),
@@ -129,7 +130,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => ref.read(assignedCoursesProvider.notifier).refresh(),
-              child: const Text('Retry'),
+              child: Text(context.l10n.courseRetry),
             ),
           ],
         ),
@@ -143,14 +144,14 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
           children: [
             Icon(Icons.assignment_outlined, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            const Text(
-              'No assigned courses',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+            Text(
+              context.l10n.courseNoAssigned,
+              style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Courses assigned to you by your institution will appear here',
-              style: TextStyle(color: Colors.grey),
+            Text(
+              context.l10n.courseAssignedByInstitution,
+              style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ],
@@ -227,9 +228,9 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: const Text(
-                            'REQUIRED',
-                            style: TextStyle(
+                          child: Text(
+                            context.l10n.courseREQUIRED,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
@@ -298,7 +299,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Progress',
+                        context.l10n.courseProgress,
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                       Text(
@@ -327,13 +328,13 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                   // Due date and status
                   Row(
                     children: [
-                      _buildAssignmentStatusBadge(status),
+                      _buildAssignmentStatusBadge(context, status),
                       const Spacer(),
                       if (dueDate != null) ...[
                         Icon(Icons.calendar_today, size: 14, color: Colors.grey[600]),
                         const SizedBox(width: 4),
                         Text(
-                          'Due: ${_formatDueDate(dueDate)}',
+                          context.l10n.courseDuePrefix(_formatDueDate(context, dueDate)),
                           style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         ),
                       ],
@@ -348,7 +349,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
     );
   }
 
-  Widget _buildAssignmentStatusBadge(String status) {
+  Widget _buildAssignmentStatusBadge(BuildContext context, String status) {
     Color backgroundColor;
     Color textColor;
     IconData icon;
@@ -359,26 +360,26 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
         backgroundColor = Colors.green[50]!;
         textColor = Colors.green[700]!;
         icon = Icons.check_circle_outline;
-        label = 'Completed';
+        label = context.l10n.courseStatusCompleted;
         break;
       case 'in_progress':
         backgroundColor = Colors.blue[50]!;
         textColor = Colors.blue[700]!;
         icon = Icons.play_circle_outline;
-        label = 'In Progress';
+        label = context.l10n.courseStatusInProgress;
         break;
       case 'overdue':
         backgroundColor = Colors.red[50]!;
         textColor = Colors.red[700]!;
         icon = Icons.warning_outlined;
-        label = 'Overdue';
+        label = context.l10n.courseStatusOverdue;
         break;
       case 'assigned':
       default:
         backgroundColor = Colors.orange[50]!;
         textColor = Colors.orange[700]!;
         icon = Icons.assignment_outlined;
-        label = 'Assigned';
+        label = context.l10n.courseStatusAssigned;
         break;
     }
 
@@ -406,20 +407,20 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
     );
   }
 
-  String _formatDueDate(String dueDateStr) {
+  String _formatDueDate(BuildContext context, String dueDateStr) {
     try {
       final dueDate = DateTime.parse(dueDateStr);
       final now = DateTime.now();
       final difference = dueDate.difference(now);
 
       if (difference.isNegative) {
-        return 'Overdue';
+        return context.l10n.courseStatusOverdue;
       } else if (difference.inDays == 0) {
-        return 'Today';
+        return context.l10n.courseDueToday;
       } else if (difference.inDays == 1) {
-        return 'Tomorrow';
+        return context.l10n.courseDueTomorrow;
       } else if (difference.inDays < 7) {
-        return '${difference.inDays} days';
+        return context.l10n.courseDueDays(difference.inDays);
       } else {
         return '${dueDate.day}/${dueDate.month}/${dueDate.year}';
       }
@@ -446,7 +447,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
               ref.read(enrollmentsProvider.notifier).filterByStatus(null);
             },
             icon: const Icon(Icons.clear_all, size: 16),
-            label: const Text('Clear Filter'),
+            label: Text(context.l10n.courseClearAll),
           ),
         ],
       ),
@@ -473,7 +474,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => ref.read(enrollmentsProvider.notifier).refresh(),
-              child: const Text('Retry'),
+              child: Text(context.l10n.courseRetry),
             ),
           ],
         ),
@@ -487,14 +488,14 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
           children: [
             Icon(Icons.school_outlined, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            const Text(
-              'No enrolled courses',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+            Text(
+              context.l10n.courseNoEnrolled,
+              style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Browse courses to get started',
-              style: TextStyle(color: Colors.grey),
+            Text(
+              context.l10n.courseBrowseToStart,
+              style: const TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
@@ -502,7 +503,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                 context.go('/student/courses');
               },
               icon: const Icon(Icons.explore),
-              label: const Text('Browse Courses'),
+              label: Text(context.l10n.courseBrowseCourses),
             ),
           ],
         ),
@@ -615,7 +616,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Progress',
+                          context.l10n.courseProgress,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -836,9 +837,9 @@ class _StatusFilterBottomSheet extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Filter by Status',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                context.l10n.courseFilterByStatus,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 icon: const Icon(Icons.close),
@@ -856,7 +857,7 @@ class _StatusFilterBottomSheet extends ConsumerWidget {
               _buildFilterChip(
                 context,
                 ref,
-                'All',
+                context.l10n.courseFilterAll,
                 icon: Icons.all_inclusive,
                 isSelected: state.filterStatus == null,
                 onTap: () {
