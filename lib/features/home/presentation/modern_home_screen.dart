@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:ui' as ui;
 import '../../../core/l10n_extension.dart';
+import '../../../core/providers/locale_provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/home_constants.dart';
 import '../../../core/constants/user_roles.dart';
@@ -116,6 +117,8 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                   ],
                 ),
                 actions: [
+                  const _LanguageToggle(),
+                  const SizedBox(width: 8),
                   if (authState.isAuthenticated) ...[
                     FilledButton.icon(
                       onPressed: () => context.go(
@@ -2468,6 +2471,72 @@ class _UniversityStatChip extends StatelessWidget {
             style: TextStyle(
               color: Colors.white.withValues(alpha:0.85),
               fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageToggle extends ConsumerWidget {
+  const _LanguageToggle();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = ref.watch(localeProvider);
+    final isEnglish = locale.languageCode == 'en';
+    final theme = Theme.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () => ref.read(localeProvider.notifier).setLocale(const Locale('en')),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: isEnglish ? theme.colorScheme.primary : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                'EN',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: isEnglish
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => ref.read(localeProvider.notifier).setLocale(const Locale('fr')),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: !isEnglish ? theme.colorScheme.primary : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                'FR',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: !isEnglish
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
             ),
           ),
         ],
