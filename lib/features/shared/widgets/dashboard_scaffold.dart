@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/user_roles.dart';
 import '../../../features/authentication/providers/auth_provider.dart';
+import '../../../core/l10n_extension.dart';
 import 'logo_avatar.dart';
 
 class DashboardScaffold extends ConsumerWidget {
@@ -36,7 +37,7 @@ class DashboardScaffold extends ConsumerWidget {
       leadingWidget = IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () => context.pop(),
-        tooltip: 'Back',
+        tooltip: context.l10n.dashCommonBack,
       );
     } else {
       // Show clickable logo when at root level
@@ -55,7 +56,7 @@ class DashboardScaffold extends ConsumerWidget {
           ),
         ),
         onPressed: () => context.go('/'),
-        tooltip: 'Home',
+        tooltip: context.l10n.dashCommonHome,
       );
     }
 
@@ -74,7 +75,7 @@ class DashboardScaffold extends ConsumerWidget {
           if (user != null && user.hasMultipleRoles)
             PopupMenuButton<UserRole>(
               icon: const Icon(Icons.swap_horiz),
-              tooltip: 'Switch Role',
+              tooltip: context.l10n.dashCommonSwitchRole,
               onSelected: (role) {
                 ref.read(authProvider.notifier).switchRole(role);
               },
@@ -161,7 +162,7 @@ class DashboardScaffold extends ConsumerWidget {
                   children: [
                     const Icon(Icons.person_outlined),
                     const SizedBox(width: 12),
-                    const Text('Profile'),
+                    Text(context.l10n.dashCommonProfile),
                   ],
                 ),
               ),
@@ -171,7 +172,7 @@ class DashboardScaffold extends ConsumerWidget {
                   children: [
                     const Icon(Icons.settings_outlined),
                     const SizedBox(width: 12),
-                    const Text('Settings'),
+                    Text(context.l10n.dashCommonSettings),
                   ],
                 ),
               ),
@@ -183,7 +184,7 @@ class DashboardScaffold extends ConsumerWidget {
                     const Icon(Icons.logout, color: AppColors.error),
                     const SizedBox(width: 12),
                     Text(
-                      'Logout',
+                      context.l10n.dashCommonLogout,
                       style: TextStyle(color: AppColors.error),
                     ),
                   ],

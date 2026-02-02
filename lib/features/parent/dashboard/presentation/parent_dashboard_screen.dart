@@ -7,6 +7,7 @@ import '../../children/presentation/children_list_screen.dart';
 import '../../../shared/notifications/notifications_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
+import '../../../../core/l10n_extension.dart';
 
 class ParentDashboardScreen extends ConsumerStatefulWidget {
   final int initialTab;
@@ -44,34 +45,34 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
     return Stack(
       children: [
         DashboardScaffold(
-          title: _getTitle(),
+          title: _getTitle(context),
           currentIndex: _currentIndex,
           onNavigationTap: (index) => setState(() => _currentIndex = index),
-          navigationItems: const [
+          navigationItems: [
             DashboardNavigationItem(
               icon: Icons.home_outlined,
               activeIcon: Icons.home,
-              label: 'Home',
+              label: context.l10n.dashCommonHome,
             ),
             DashboardNavigationItem(
               icon: Icons.child_care_outlined,
               activeIcon: Icons.child_care,
-              label: 'Children',
+              label: context.l10n.dashParentChildren,
             ),
             DashboardNavigationItem(
               icon: Icons.notifications_outlined,
               activeIcon: Icons.notifications,
-              label: 'Alerts',
+              label: context.l10n.dashParentAlerts,
             ),
             DashboardNavigationItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
-              label: 'Profile',
+              label: context.l10n.dashCommonProfile,
             ),
             DashboardNavigationItem(
               icon: Icons.settings_outlined,
               activeIcon: Icons.settings,
-              label: 'Settings',
+              label: context.l10n.dashCommonSettings,
             ),
           ],
           body: _screens[_currentIndex],
@@ -87,20 +88,20 @@ class _ParentDashboardScreenState extends ConsumerState<ParentDashboardScreen> {
     );
   }
 
-  String _getTitle() {
+  String _getTitle(BuildContext context) {
     switch (_currentIndex) {
       case 0:
-        return 'Parent Dashboard';
+        return context.l10n.dashParentTitle;
       case 1:
-        return 'My Children';
+        return context.l10n.dashParentMyChildren;
       case 2:
-        return 'Alerts';
+        return context.l10n.dashParentAlerts;
       case 3:
-        return 'Profile';
+        return context.l10n.dashCommonProfile;
       case 4:
-        return 'Settings';
+        return context.l10n.dashCommonSettings;
       default:
-        return 'Parent Dashboard';
+        return context.l10n.dashParentTitle;
     }
   }
 }

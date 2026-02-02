@@ -8,6 +8,7 @@ import '../../../../shared/widgets/loading_indicator.dart';
 import '../../../../shared/widgets/refresh_utilities.dart';
 import '../../../providers/recommender_dashboard_provider.dart';
 import '../../../providers/recommender_requests_provider.dart';
+import '../../../../../core/l10n_extension.dart';
 
 class RecommenderOverviewTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToRequests;
@@ -72,7 +73,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               onPressed: () {
                 ref.read(recommenderDashboardProvider.notifier).loadDashboardData();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.dashCommonRetry),
             ),
           ],
         ),
@@ -80,7 +81,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading overview...');
+      return LoadingIndicator(message: context.l10n.dashCommonLoadingOverview);
     }
 
     final theme = Theme.of(context);
@@ -121,7 +122,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome Back!',
+                        context.l10n.dashCommonWelcomeBack,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColors.recommenderRole,
@@ -129,7 +130,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'You have $pending pending recommendation${pending == 1 ? '' : 's'}',
+                        context.l10n.dashRecPendingCount(pending),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -148,7 +149,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               Expanded(
                 child: _StatCard(
                   icon: Icons.assignment,
-                  label: 'Total',
+                  label: context.l10n.dashRecTotal,
                   value: '$total',
                   color: AppColors.recommenderRole,
                 ),
@@ -157,7 +158,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               Expanded(
                 child: _StatCard(
                   icon: Icons.edit,
-                  label: 'Pending',
+                  label: context.l10n.dashCommonPending,
                   value: '$pending',
                   color: AppColors.warning,
                 ),
@@ -170,7 +171,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               Expanded(
                 child: _StatCard(
                   icon: Icons.check_circle,
-                  label: 'Submitted',
+                  label: context.l10n.dashCommonSubmitted,
                   value: '$submitted',
                   color: AppColors.success,
                 ),
@@ -179,7 +180,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               Expanded(
                 child: _StatCard(
                   icon: Icons.warning,
-                  label: 'Urgent',
+                  label: context.l10n.dashRecUrgent,
                   value: '$urgent',
                   color: AppColors.error,
                 ),
@@ -194,7 +195,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Urgent Recommendations',
+                  context.l10n.dashRecUrgentRecommendations,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -253,14 +254,14 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  rec.studentName ?? 'Unknown Student',
+                                  rec.studentName ?? context.l10n.dashRecUnknownStudent,
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  rec.institutionName ?? 'Institution not specified',
+                                  rec.institutionName ?? context.l10n.dashRecInstitutionNotSpecified,
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
@@ -287,7 +288,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  '$daysLeft days',
+                                  context.l10n.dashCommonDays(daysLeft),
                                   style: const TextStyle(
                                     color: AppColors.error,
                                     fontSize: 12,
@@ -325,7 +326,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Recent Requests',
+                context.l10n.dashRecRecentRequests,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -333,7 +334,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
               if (recommendations.isNotEmpty)
                 TextButton(
                   onPressed: widget.onNavigateToRequests,
-                  child: const Text('View All'),
+                  child: Text(context.l10n.dashCommonViewAll),
                 ),
             ],
           ),
@@ -351,14 +352,14 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No Recommendation Requests',
+                      context.l10n.dashRecNoRequests,
                       style: theme.textTheme.titleMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Requests will appear here when students request recommendations',
+                      context.l10n.dashRecNoRequestsHint,
                       style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -407,14 +408,14 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  rec.studentName ?? 'Unknown Student',
+                                  rec.studentName ?? context.l10n.dashRecUnknownStudent,
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  rec.institutionName ?? 'Institution not specified',
+                                  rec.institutionName ?? context.l10n.dashRecInstitutionNotSpecified,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
@@ -435,7 +436,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                '$daysLeft days',
+                                context.l10n.dashCommonDays(daysLeft),
                                 style: TextStyle(
                                   color:
                                       daysLeft < 7 ? AppColors.error : AppColors.warning,
@@ -460,7 +461,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            isDraft ? 'Draft' : 'Submitted',
+                            isDraft ? context.l10n.dashCommonDraft : context.l10n.dashCommonSubmitted,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: isDraft
                                   ? AppColors.warning
@@ -488,7 +489,7 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                     const Icon(Icons.lightbulb, color: AppColors.info),
                     const SizedBox(width: 12),
                     Text(
-                      'Quick Tips',
+                      context.l10n.dashRecQuickTips,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.info,
@@ -498,15 +499,15 @@ class _RecommenderOverviewTabState extends ConsumerState<RecommenderOverviewTab>
                 ),
                 const SizedBox(height: 12),
                 _TipItem(
-                  text: 'Write specific examples of student achievements',
+                  text: context.l10n.dashRecTip1,
                 ),
                 const SizedBox(height: 8),
                 _TipItem(
-                  text: 'Submit recommendations at least 2 weeks before deadline',
+                  text: context.l10n.dashRecTip2,
                 ),
                 const SizedBox(height: 8),
                 _TipItem(
-                  text: 'Personalize each recommendation for the institution',
+                  text: context.l10n.dashRecTip3,
                 ),
               ],
             ),

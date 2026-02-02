@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/activity_models.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/dashboard_scaffold.dart';
 import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
@@ -73,20 +74,20 @@ class _StudentDashboardScreenState
 
   // Add this to prevent unnecessary navigation conflicts
   // NOTE: Consolidated to 5 tabs - Settings removed from bottom nav
-  String _getTitleForIndex(int index) {
+  String _getTitleForIndex(int index, BuildContext context) {
     switch (index) {
       case 0:
-        return 'Student Dashboard';
+        return context.l10n.dashStudentTitle;
       case 1:
-        return 'My Applications';
+        return context.l10n.dashStudentMyApplications;
       case 2:
-        return 'My Courses';
+        return context.l10n.dashStudentMyCourses;
       case 3:
-        return 'Progress';
+        return context.l10n.dashStudentProgress;
       case 4:
-        return 'Profile';
+        return context.l10n.dashCommonProfile;
       default:
-        return 'Student Dashboard';
+        return context.l10n.dashStudentTitle;
     }
   }
 
@@ -101,20 +102,20 @@ class _StudentDashboardScreenState
     return Stack(
       children: [
         DashboardScaffold(
-          title: _getTitleForIndex(_currentIndex),
+          title: _getTitleForIndex(_currentIndex, context),
           currentIndex: _currentIndex,
           actions: [
             // Notification badge - always visible
             DashboardAction(
               icon: Icons.notifications,
               onPressed: () => context.push('/notifications'),
-              tooltip: 'Notifications',
+              tooltip: context.l10n.dashCommonNotifications,
             ),
             // Message badge - always visible
             DashboardAction(
               icon: Icons.message,
               onPressed: () => context.push('/messages'),
-              tooltip: 'Messages',
+              tooltip: context.l10n.dashCommonMessages,
             ),
             // Edit button - only on Profile tab
             if (_currentIndex == 4 && user != null)
@@ -123,7 +124,7 @@ class _StudentDashboardScreenState
                 onPressed: () {
                   context.push('/profile/edit');
                 },
-                tooltip: 'Edit Profile',
+                tooltip: context.l10n.dashStudentEditProfile,
               ),
           ],
           onNavigationTap: (index) {
@@ -135,31 +136,31 @@ class _StudentDashboardScreenState
           },
           // NOTE: Consolidated to 5 items per Material Design guidelines
           // Settings is accessible via profile menu in app bar
-          navigationItems: const [
+          navigationItems: [
             DashboardNavigationItem(
               icon: Icons.home_outlined,
               activeIcon: Icons.home,
-              label: 'Home',
+              label: context.l10n.dashCommonHome,
             ),
             DashboardNavigationItem(
               icon: Icons.description_outlined,
               activeIcon: Icons.description,
-              label: 'Applications',
+              label: context.l10n.dashCommonApplications,
             ),
             DashboardNavigationItem(
               icon: Icons.menu_book_outlined,
               activeIcon: Icons.menu_book,
-              label: 'Courses',
+              label: context.l10n.dashStudentCourses,
             ),
             DashboardNavigationItem(
               icon: Icons.analytics_outlined,
               activeIcon: Icons.analytics,
-              label: 'Progress',
+              label: context.l10n.dashStudentProgress,
             ),
             DashboardNavigationItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
-              label: 'Profile',
+              label: context.l10n.dashCommonProfile,
             ),
           ],
           body: Builder(
@@ -284,7 +285,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome Back!',
+                  context.l10n.dashCommonWelcomeBack,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -292,7 +293,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Continue your learning journey',
+                  context.l10n.dashStudentContinueJourney,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: Colors.white.withOpacity(0.9),
                   ),
@@ -305,7 +306,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Application Success Rate',
+                            context.l10n.dashStudentSuccessRate,
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.9),
                               fontSize: 12,
@@ -342,7 +343,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
 
           // Quick Actions
           SectionHeader(
-            title: 'Quick Actions',
+            title: context.l10n.dashCommonQuickActions,
             onViewAll: null,
           ),
           const SizedBox(height: 12),
@@ -350,7 +351,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
             crossAxisCount: 4,
             actions: [
               QuickAction(
-                label: 'My Courses',
+                label: context.l10n.dashStudentMyCourses,
                 icon: Icons.menu_book,
                 color: AppColors.primary,
                 onTap: () {
@@ -359,7 +360,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Applications',
+                label: context.l10n.dashCommonApplications,
                 icon: Icons.description,
                 color: AppColors.info,
                 badgeCount: pendingApplicationsCount,
@@ -370,7 +371,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Letters',
+                label: context.l10n.dashStudentLetters,
                 icon: Icons.recommend,
                 color: AppColors.success,
                 onTap: () {
@@ -379,7 +380,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Parent Link',
+                label: context.l10n.dashStudentParentLink,
                 icon: Icons.family_restroom,
                 color: AppColors.parentRole,
                 badgeCount: ref.watch(pendingLinksCountProvider),
@@ -396,7 +397,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
             crossAxisCount: 4,
             actions: [
               QuickAction(
-                label: 'Counseling',
+                label: context.l10n.dashStudentCounseling,
                 icon: Icons.psychology,
                 color: Colors.teal,
                 badgeCount: ref.watch(studentCounselingProvider).upcomingSessions.length,
@@ -406,7 +407,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Schedule',
+                label: context.l10n.dashStudentSchedule,
                 icon: Icons.calendar_month,
                 color: Colors.orange,
                 onTap: () {
@@ -415,7 +416,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Resources',
+                label: context.l10n.dashStudentResources,
                 icon: Icons.library_books,
                 color: Colors.purple,
                 onTap: () {
@@ -424,7 +425,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 },
               ),
               QuickAction(
-                label: 'Help',
+                label: context.l10n.dashStudentHelp,
                 icon: Icons.help_outline,
                 color: Colors.grey,
                 onTap: () {
@@ -438,7 +439,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
 
           // Stats Grid
           SectionHeader(
-            title: 'Overview',
+            title: context.l10n.dashCommonOverview,
             onViewAll: null,
           ),
           const SizedBox(height: 12),
@@ -525,9 +526,9 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                       children: [
                         Row(
                           children: [
-                            const Text(
-                              'Find Your Path',
-                              style: TextStyle(
+                            Text(
+                              context.l10n.dashStudentFindYourPath,
+                              style: const TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -543,9 +544,9 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                                 color: AppColors.warning,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Text(
-                                'NEW',
-                                style: TextStyle(
+                              child: Text(
+                                context.l10n.dashStudentNew,
+                                style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -556,7 +557,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Discover universities that match your profile, goals, and preferences with AI-powered recommendations',
+                          context.l10n.dashStudentFindYourPathDesc,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.white.withValues(alpha: 0.95),
@@ -573,8 +574,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Start Your Journey',
-                              style: TextStyle(
+                              context.l10n.dashStudentStartJourney,
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -602,7 +603,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                   const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                   const SizedBox(height: 16),
                   Text(
-                    'Failed to load activities',
+                    context.l10n.dashStudentFailedActivities,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
@@ -615,7 +616,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                   ElevatedButton.icon(
                     onPressed: () => ref.read(studentActivitiesProvider.notifier).refresh(),
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
+                    label: Text(context.l10n.dashCommonRetry),
                   ),
                 ],
               ),
@@ -657,8 +658,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 // Show coming soon dialog for full activity log
                 ComingSoonDialog.show(
                   context,
-                  featureName: 'Activity History',
-                  customMessage: 'A comprehensive activity history view with filters and search capabilities is coming soon.',
+                  featureName: context.l10n.dashStudentActivityHistory,
+                  customMessage: context.l10n.dashStudentActivityHistoryMsg,
                 );
               },
               onActivityTap: (activity) {
@@ -682,12 +683,12 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                   // Show achievement details in a dialog
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
+                    builder: (dialogContext) => AlertDialog(
                       title: Row(
                         children: [
                           const Icon(Icons.emoji_events, color: AppColors.warning),
                           const SizedBox(width: 8),
-                          const Text('Achievement'),
+                          Text(context.l10n.dashStudentAchievement),
                         ],
                       ),
                       content: Column(
@@ -696,7 +697,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                         children: [
                           Text(
                             activity.title,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(dialogContext).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 8),
                           Text(activity.description),
@@ -704,8 +705,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                       ),
                       actions: [
                         TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('Close'),
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          child: Text(context.l10n.dashCommonClose),
                         ),
                       ],
                     ),
@@ -714,8 +715,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                   // Navigate to payment history if available
                   ComingSoonDialog.show(
                     context,
-                    featureName: 'Payment History',
-                    customMessage: 'View detailed payment history and transaction records.',
+                    featureName: context.l10n.dashStudentPaymentHistory,
+                    customMessage: context.l10n.dashStudentPaymentHistoryMsg,
                   );
                 } else if (activity.type == ActivityType.message) {
                   // Navigate to messages
@@ -772,11 +773,11 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 children: [
                   const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                   const SizedBox(height: 8),
-                  Text('Failed to load recommendations', style: theme.textTheme.bodyLarge),
+                  Text(context.l10n.dashStudentFailedRecommendations, style: theme.textTheme.bodyLarge),
                   const SizedBox(height: 8),
                   ElevatedButton(
                     onPressed: () => ref.refresh(recommendationsProvider),
-                    child: const Text('Retry'),
+                    child: Text(context.l10n.dashCommonRetry),
                   ),
                 ],
               ),

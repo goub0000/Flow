@@ -13,6 +13,7 @@ import '../../counselors/presentation/counselors_management_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
 import '../../debug/institution_debug_screen.dart';
+import '../../../../core/l10n_extension.dart';
 
 class InstitutionDashboardScreen extends ConsumerStatefulWidget {
   const InstitutionDashboardScreen({super.key});
@@ -42,7 +43,7 @@ class _InstitutionDashboardScreenState
       children: [
         Scaffold(
           body: DashboardScaffold(
-            title: _getTitle(),
+            title: _getTitle(context),
             currentIndex: _currentIndex,
             onNavigationTap: (index) => setState(() => _currentIndex = index),
             actions: [
@@ -50,18 +51,18 @@ class _InstitutionDashboardScreenState
               DashboardAction(
                 icon: Icons.notifications,
                 onPressed: () => context.push('/notifications'),
-                tooltip: 'Notifications',
+                tooltip: context.l10n.dashCommonNotifications,
               ),
               // Message badge - always visible
               DashboardAction(
                 icon: Icons.message,
                 onPressed: () => context.push('/messages'),
-                tooltip: 'Messages',
+                tooltip: context.l10n.dashCommonMessages,
               ),
               // Debug button for troubleshooting
               DashboardAction(
                 icon: Icons.bug_report,
-                tooltip: 'Debug Panel',
+                tooltip: context.l10n.dashInstDebugPanel,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -71,41 +72,41 @@ class _InstitutionDashboardScreenState
                 },
               ),
             ],
-            navigationItems: const [
+            navigationItems: [
             DashboardNavigationItem(
               icon: Icons.dashboard_outlined,
               activeIcon: Icons.dashboard,
-              label: 'Overview',
+              label: context.l10n.dashCommonOverview,
             ),
             DashboardNavigationItem(
               icon: Icons.people_outlined,
               activeIcon: Icons.people,
-              label: 'Applicants',
+              label: context.l10n.dashInstApplicants,
             ),
             DashboardNavigationItem(
               icon: Icons.school_outlined,
               activeIcon: Icons.school,
-              label: 'Programs',
+              label: context.l10n.dashInstPrograms,
             ),
             DashboardNavigationItem(
               icon: Icons.menu_book_outlined,
               activeIcon: Icons.menu_book,
-              label: 'Courses',
+              label: context.l10n.dashInstCourses,
             ),
             DashboardNavigationItem(
               icon: Icons.psychology_outlined,
               activeIcon: Icons.psychology,
-              label: 'Counselors',
+              label: context.l10n.dashInstCounselors,
             ),
             DashboardNavigationItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
-              label: 'Profile',
+              label: context.l10n.dashCommonProfile,
             ),
             DashboardNavigationItem(
               icon: Icons.settings_outlined,
               activeIcon: Icons.settings,
-              label: 'Settings',
+              label: context.l10n.dashCommonSettings,
             ),
           ],
           body: _screens[_currentIndex],
@@ -116,7 +117,7 @@ class _InstitutionDashboardScreenState
                     await context.push('/institution/programs/create');
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('New Program'),
+                  label: Text(context.l10n.dashInstNewProgram),
                 )
               : _currentIndex == 3
                   ? FloatingActionButton.extended(
@@ -124,7 +125,7 @@ class _InstitutionDashboardScreenState
                         await context.push('/institution/courses/create');
                       },
                       icon: const Icon(Icons.add),
-                      label: const Text('New Course'),
+                      label: Text(context.l10n.dashInstNewCourse),
                     )
                   : null,
         ),
@@ -139,8 +140,8 @@ class _InstitutionDashboardScreenState
     );
   }
 
-  String _getTitle() {
+  String _getTitle(BuildContext context) {
     // Always show "Institution Dashboard" to avoid redundancy with bottom nav labels
-    return 'Institution Dashboard';
+    return context.l10n.dashInstTitle;
   }
 }

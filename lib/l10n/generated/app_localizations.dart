@@ -1801,6 +1801,1152 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Description'**
   String get uniDetailDescription;
+
+  /// No description provided for @dashCommonBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get dashCommonBack;
+
+  /// No description provided for @dashCommonHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get dashCommonHome;
+
+  /// No description provided for @dashCommonProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get dashCommonProfile;
+
+  /// No description provided for @dashCommonSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get dashCommonSettings;
+
+  /// No description provided for @dashCommonOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get dashCommonOverview;
+
+  /// No description provided for @dashCommonRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get dashCommonRetry;
+
+  /// No description provided for @dashCommonViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get dashCommonViewAll;
+
+  /// No description provided for @dashCommonClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get dashCommonClose;
+
+  /// No description provided for @dashCommonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get dashCommonCancel;
+
+  /// No description provided for @dashCommonPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get dashCommonPending;
+
+  /// No description provided for @dashCommonLoadingOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading overview...'**
+  String get dashCommonLoadingOverview;
+
+  /// No description provided for @dashCommonNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get dashCommonNotifications;
+
+  /// No description provided for @dashCommonMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get dashCommonMessages;
+
+  /// No description provided for @dashCommonQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get dashCommonQuickActions;
+
+  /// No description provided for @dashCommonWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back!'**
+  String get dashCommonWelcomeBack;
+
+  /// No description provided for @dashCommonRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Activity'**
+  String get dashCommonRecentActivity;
+
+  /// No description provided for @dashCommonNoRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent activity'**
+  String get dashCommonNoRecentActivity;
+
+  /// No description provided for @dashCommonSwitchRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Role'**
+  String get dashCommonSwitchRole;
+
+  /// No description provided for @dashCommonLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get dashCommonLogout;
+
+  /// No description provided for @dashCommonRecommendedForYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended for You'**
+  String get dashCommonRecommendedForYou;
+
+  /// No description provided for @dashCommonApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get dashCommonApplications;
+
+  /// No description provided for @dashCommonAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get dashCommonAccepted;
+
+  /// No description provided for @dashCommonRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get dashCommonRejected;
+
+  /// No description provided for @dashCommonUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review'**
+  String get dashCommonUnderReview;
+
+  /// No description provided for @dashCommonRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get dashCommonRequests;
+
+  /// No description provided for @dashCommonUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get dashCommonUpcoming;
+
+  /// No description provided for @dashCommonMeetings.
+  ///
+  /// In en, this message translates to:
+  /// **'Meetings'**
+  String get dashCommonMeetings;
+
+  /// No description provided for @dashCommonSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get dashCommonSubmitted;
+
+  /// No description provided for @dashCommonDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get dashCommonDraft;
+
+  /// No description provided for @dashCommonDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String dashCommonDays(int count);
+
+  /// No description provided for @dashCommonMin.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String dashCommonMin(int count);
+
+  /// No description provided for @dashCommonNoDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get dashCommonNoDataAvailable;
+
+  /// No description provided for @dashStudentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Student Dashboard'**
+  String get dashStudentTitle;
+
+  /// No description provided for @dashStudentMyApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'My Applications'**
+  String get dashStudentMyApplications;
+
+  /// No description provided for @dashStudentMyCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'My Courses'**
+  String get dashStudentMyCourses;
+
+  /// No description provided for @dashStudentProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get dashStudentProgress;
+
+  /// No description provided for @dashStudentEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get dashStudentEditProfile;
+
+  /// No description provided for @dashStudentCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get dashStudentCourses;
+
+  /// No description provided for @dashStudentContinueJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue your learning journey'**
+  String get dashStudentContinueJourney;
+
+  /// No description provided for @dashStudentSuccessRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Success Rate'**
+  String get dashStudentSuccessRate;
+
+  /// No description provided for @dashStudentLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Letters'**
+  String get dashStudentLetters;
+
+  /// No description provided for @dashStudentParentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent Link'**
+  String get dashStudentParentLink;
+
+  /// No description provided for @dashStudentCounseling.
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling'**
+  String get dashStudentCounseling;
+
+  /// No description provided for @dashStudentSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get dashStudentSchedule;
+
+  /// No description provided for @dashStudentResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get dashStudentResources;
+
+  /// No description provided for @dashStudentHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get dashStudentHelp;
+
+  /// No description provided for @dashStudentTotalApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Applications'**
+  String get dashStudentTotalApplications;
+
+  /// No description provided for @dashStudentInReview.
+  ///
+  /// In en, this message translates to:
+  /// **'In Review'**
+  String get dashStudentInReview;
+
+  /// No description provided for @dashStudentFindYourPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Your Path'**
+  String get dashStudentFindYourPath;
+
+  /// No description provided for @dashStudentNew.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get dashStudentNew;
+
+  /// No description provided for @dashStudentFindYourPathDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover universities that match your profile, goals, and preferences with AI-powered recommendations'**
+  String get dashStudentFindYourPathDesc;
+
+  /// No description provided for @dashStudentStartJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Your Journey'**
+  String get dashStudentStartJourney;
+
+  /// No description provided for @dashStudentFailedActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load activities'**
+  String get dashStudentFailedActivities;
+
+  /// No description provided for @dashStudentActivityHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity History'**
+  String get dashStudentActivityHistory;
+
+  /// No description provided for @dashStudentActivityHistoryMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'A comprehensive activity history view with filters and search capabilities is coming soon.'**
+  String get dashStudentActivityHistoryMsg;
+
+  /// No description provided for @dashStudentAchievement.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement'**
+  String get dashStudentAchievement;
+
+  /// No description provided for @dashStudentPaymentHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment History'**
+  String get dashStudentPaymentHistory;
+
+  /// No description provided for @dashStudentPaymentHistoryMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'View detailed payment history and transaction records.'**
+  String get dashStudentPaymentHistoryMsg;
+
+  /// No description provided for @dashStudentFailedRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load recommendations'**
+  String get dashStudentFailedRecommendations;
+
+  /// No description provided for @dashParentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent Dashboard'**
+  String get dashParentTitle;
+
+  /// No description provided for @dashParentMyChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'My Children'**
+  String get dashParentMyChildren;
+
+  /// No description provided for @dashParentAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts'**
+  String get dashParentAlerts;
+
+  /// No description provided for @dashParentChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Children'**
+  String get dashParentChildren;
+
+  /// No description provided for @dashParentAvgGrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Grade'**
+  String get dashParentAvgGrade;
+
+  /// No description provided for @dashParentUpcomingMeetings.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Meetings'**
+  String get dashParentUpcomingMeetings;
+
+  /// No description provided for @dashParentNoUpcomingMeetings.
+  ///
+  /// In en, this message translates to:
+  /// **'No Upcoming Meetings'**
+  String get dashParentNoUpcomingMeetings;
+
+  /// No description provided for @dashParentScheduleMeetingsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule meetings with teachers or counselors'**
+  String get dashParentScheduleMeetingsHint;
+
+  /// No description provided for @dashParentScheduleMeeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule Meeting'**
+  String get dashParentScheduleMeeting;
+
+  /// No description provided for @dashParentViewMoreMeetings.
+  ///
+  /// In en, this message translates to:
+  /// **'View {count} more meetings'**
+  String dashParentViewMoreMeetings(int count);
+
+  /// No description provided for @dashParentChildrenOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Children Overview'**
+  String get dashParentChildrenOverview;
+
+  /// No description provided for @dashParentNoChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'No Children Added'**
+  String get dashParentNoChildren;
+
+  /// No description provided for @dashParentNoChildrenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your children to track their progress'**
+  String get dashParentNoChildrenHint;
+
+  /// No description provided for @dashParentCourseCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} courses'**
+  String dashParentCourseCount(int count);
+
+  /// No description provided for @dashParentAppCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} apps'**
+  String dashParentAppCount(int count);
+
+  /// No description provided for @dashParentViewAllReports.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Reports'**
+  String get dashParentViewAllReports;
+
+  /// No description provided for @dashParentAcademicReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic performance reports'**
+  String get dashParentAcademicReports;
+
+  /// No description provided for @dashParentWithTeachersOrCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'With teachers or counselors'**
+  String get dashParentWithTeachersOrCounselors;
+
+  /// No description provided for @dashParentNotificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get dashParentNotificationSettings;
+
+  /// No description provided for @dashParentManageAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage alerts and updates'**
+  String get dashParentManageAlerts;
+
+  /// No description provided for @dashParentMeetWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Who would you like to meet with?'**
+  String get dashParentMeetWith;
+
+  /// No description provided for @dashParentTeacher.
+  ///
+  /// In en, this message translates to:
+  /// **'Teacher'**
+  String get dashParentTeacher;
+
+  /// No description provided for @dashParentTeacherConference.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule a parent-teacher conference'**
+  String get dashParentTeacherConference;
+
+  /// No description provided for @dashParentCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor'**
+  String get dashParentCounselor;
+
+  /// No description provided for @dashParentCounselorMeeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet with a guidance counselor'**
+  String get dashParentCounselorMeeting;
+
+  /// No description provided for @dashParentStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING'**
+  String get dashParentStatusPending;
+
+  /// No description provided for @dashParentStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'APPROVED'**
+  String get dashParentStatusApproved;
+
+  /// No description provided for @dashParentStatusDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'DECLINED'**
+  String get dashParentStatusDeclined;
+
+  /// No description provided for @dashParentStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'CANCELLED'**
+  String get dashParentStatusCancelled;
+
+  /// No description provided for @dashParentStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'COMPLETED'**
+  String get dashParentStatusCompleted;
+
+  /// No description provided for @dashCounselorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor Dashboard'**
+  String get dashCounselorTitle;
+
+  /// No description provided for @dashCounselorMyStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'My Students'**
+  String get dashCounselorMyStudents;
+
+  /// No description provided for @dashCounselorSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get dashCounselorSessions;
+
+  /// No description provided for @dashCounselorStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get dashCounselorStudents;
+
+  /// No description provided for @dashCounselorToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dashCounselorToday;
+
+  /// No description provided for @dashCounselorMeetingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Meeting Requests'**
+  String get dashCounselorMeetingRequests;
+
+  /// No description provided for @dashCounselorManageAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Availability'**
+  String get dashCounselorManageAvailability;
+
+  /// No description provided for @dashCounselorSetMeetingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your meeting hours'**
+  String get dashCounselorSetMeetingHours;
+
+  /// No description provided for @dashCounselorPendingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pending approval'**
+  String dashCounselorPendingApproval(int count);
+
+  /// No description provided for @dashCounselorViewMoreRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'View {count} more requests'**
+  String dashCounselorViewMoreRequests(int count);
+
+  /// No description provided for @dashCounselorTodaySessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Sessions'**
+  String get dashCounselorTodaySessions;
+
+  /// No description provided for @dashCounselorNoStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'No Students Assigned'**
+  String get dashCounselorNoStudents;
+
+  /// No description provided for @dashCounselorNoStudentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your students will appear here when assigned'**
+  String get dashCounselorNoStudentsHint;
+
+  /// No description provided for @dashCounselorPendingRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Recommendations'**
+  String get dashCounselorPendingRecommendations;
+
+  /// No description provided for @dashCounselorDraftRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {count} draft recommendations'**
+  String dashCounselorDraftRecommendations(int count);
+
+  /// No description provided for @dashCounselorSessionIndividual.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual'**
+  String get dashCounselorSessionIndividual;
+
+  /// No description provided for @dashCounselorSessionGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get dashCounselorSessionGroup;
+
+  /// No description provided for @dashCounselorSessionCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Career'**
+  String get dashCounselorSessionCareer;
+
+  /// No description provided for @dashCounselorSessionAcademic.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic'**
+  String get dashCounselorSessionAcademic;
+
+  /// No description provided for @dashCounselorSessionPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get dashCounselorSessionPersonal;
+
+  /// No description provided for @dashCounselorStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING'**
+  String get dashCounselorStatusPending;
+
+  /// No description provided for @dashAdminNotAuthenticated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not authenticated'**
+  String get dashAdminNotAuthenticated;
+
+  /// No description provided for @dashAdminDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashAdminDashboard;
+
+  /// No description provided for @dashAdminWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}'**
+  String dashAdminWelcomeBack(String name);
+
+  /// No description provided for @dashAdminQuickAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Action'**
+  String get dashAdminQuickAction;
+
+  /// No description provided for @dashAdminAddUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Add User'**
+  String get dashAdminAddUser;
+
+  /// No description provided for @dashAdminCreateAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Announcement'**
+  String get dashAdminCreateAnnouncement;
+
+  /// No description provided for @dashAdminGenerateReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Report'**
+  String get dashAdminGenerateReport;
+
+  /// No description provided for @dashAdminBulkActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk Actions'**
+  String get dashAdminBulkActions;
+
+  /// No description provided for @dashAdminTotalUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Users'**
+  String get dashAdminTotalUsers;
+
+  /// No description provided for @dashAdminStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get dashAdminStudents;
+
+  /// No description provided for @dashAdminInstitutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Institutions'**
+  String get dashAdminInstitutions;
+
+  /// No description provided for @dashAdminRecommenders.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommenders'**
+  String get dashAdminRecommenders;
+
+  /// No description provided for @dashAdminCountStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} students'**
+  String dashAdminCountStudents(int count);
+
+  /// No description provided for @dashAdminCountParents.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} parents'**
+  String dashAdminCountParents(int count);
+
+  /// No description provided for @dashAdminCountCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} counselors'**
+  String dashAdminCountCounselors(int count);
+
+  /// No description provided for @dashAdminCountAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} admins'**
+  String dashAdminCountAdmins(int count);
+
+  /// No description provided for @dashAdminJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get dashAdminJustNow;
+
+  /// No description provided for @dashAdminMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String dashAdminMinutesAgo(int count);
+
+  /// No description provided for @dashAdminHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String dashAdminHoursAgo(int count);
+
+  /// No description provided for @dashAdminDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String dashAdminDaysAgo(int count);
+
+  /// No description provided for @dashAdminRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get dashAdminRefresh;
+
+  /// No description provided for @dashAdminQuickStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Stats'**
+  String get dashAdminQuickStats;
+
+  /// No description provided for @dashAdminActive30d.
+  ///
+  /// In en, this message translates to:
+  /// **'Active (30d)'**
+  String get dashAdminActive30d;
+
+  /// No description provided for @dashAdminNewUsers7d.
+  ///
+  /// In en, this message translates to:
+  /// **'New Users (7d)'**
+  String get dashAdminNewUsers7d;
+
+  /// No description provided for @dashAdminApplications7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications (7d)'**
+  String get dashAdminApplications7d;
+
+  /// No description provided for @dashAdminUserGrowth.
+  ///
+  /// In en, this message translates to:
+  /// **'User Growth'**
+  String get dashAdminUserGrowth;
+
+  /// No description provided for @dashAdminUserGrowthDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'New user registrations over the past 6 months'**
+  String get dashAdminUserGrowthDesc;
+
+  /// No description provided for @dashAdminUserDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'User Distribution'**
+  String get dashAdminUserDistribution;
+
+  /// No description provided for @dashAdminByUserType.
+  ///
+  /// In en, this message translates to:
+  /// **'By user type'**
+  String get dashAdminByUserType;
+
+  /// No description provided for @dashInstTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution Dashboard'**
+  String get dashInstTitle;
+
+  /// No description provided for @dashInstDebugPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Debug Panel'**
+  String get dashInstDebugPanel;
+
+  /// No description provided for @dashInstApplicants.
+  ///
+  /// In en, this message translates to:
+  /// **'Applicants'**
+  String get dashInstApplicants;
+
+  /// No description provided for @dashInstPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get dashInstPrograms;
+
+  /// No description provided for @dashInstCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get dashInstCourses;
+
+  /// No description provided for @dashInstCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselors'**
+  String get dashInstCounselors;
+
+  /// No description provided for @dashInstNewProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'New Program'**
+  String get dashInstNewProgram;
+
+  /// No description provided for @dashInstNewCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'New Course'**
+  String get dashInstNewCourse;
+
+  /// No description provided for @dashInstTotalApplicants.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Applicants'**
+  String get dashInstTotalApplicants;
+
+  /// No description provided for @dashInstPendingReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Review'**
+  String get dashInstPendingReview;
+
+  /// No description provided for @dashInstActivePrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Programs'**
+  String get dashInstActivePrograms;
+
+  /// No description provided for @dashInstTotalStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Students'**
+  String get dashInstTotalStudents;
+
+  /// No description provided for @dashInstReviewPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Pending Applications'**
+  String get dashInstReviewPending;
+
+  /// No description provided for @dashInstApplicationsWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} applications waiting'**
+  String dashInstApplicationsWaiting(int count);
+
+  /// No description provided for @dashInstApplicationsInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} applications in progress'**
+  String dashInstApplicationsInProgress(int count);
+
+  /// No description provided for @dashInstAcceptedApplicants.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted Applicants'**
+  String get dashInstAcceptedApplicants;
+
+  /// No description provided for @dashInstApplicationsApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} applications approved'**
+  String dashInstApplicationsApproved(int count);
+
+  /// No description provided for @dashInstCreateNewProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Program'**
+  String get dashInstCreateNewProgram;
+
+  /// No description provided for @dashInstAddProgramHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a new course or program'**
+  String get dashInstAddProgramHint;
+
+  /// No description provided for @dashInstApplicationSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Summary'**
+  String get dashInstApplicationSummary;
+
+  /// No description provided for @dashInstProgramsOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs Overview'**
+  String get dashInstProgramsOverview;
+
+  /// No description provided for @dashInstTotalPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Programs'**
+  String get dashInstTotalPrograms;
+
+  /// No description provided for @dashInstInactivePrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive Programs'**
+  String get dashInstInactivePrograms;
+
+  /// No description provided for @dashInstTotalEnrollments.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Enrollments'**
+  String get dashInstTotalEnrollments;
+
+  /// No description provided for @dashInstApplicationFunnel.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Funnel'**
+  String get dashInstApplicationFunnel;
+
+  /// No description provided for @dashInstConversionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Conversion Rate: {rate}%'**
+  String dashInstConversionRate(String rate);
+
+  /// No description provided for @dashInstApplicantDemographics.
+  ///
+  /// In en, this message translates to:
+  /// **'Applicant Demographics'**
+  String get dashInstApplicantDemographics;
+
+  /// No description provided for @dashInstTotalApplicantsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Applicants: {count}'**
+  String dashInstTotalApplicantsCount(int count);
+
+  /// No description provided for @dashInstByLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'By Location'**
+  String get dashInstByLocation;
+
+  /// No description provided for @dashInstByAgeGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'By Age Group'**
+  String get dashInstByAgeGroup;
+
+  /// No description provided for @dashInstByAcademicBackground.
+  ///
+  /// In en, this message translates to:
+  /// **'By Academic Background'**
+  String get dashInstByAcademicBackground;
+
+  /// No description provided for @dashInstProgramPopularity.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Popularity'**
+  String get dashInstProgramPopularity;
+
+  /// No description provided for @dashInstTopPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Programs by Applications'**
+  String get dashInstTopPrograms;
+
+  /// No description provided for @dashInstAppsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} apps'**
+  String dashInstAppsCount(int count);
+
+  /// No description provided for @dashInstProcessingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Processing Time'**
+  String get dashInstProcessingTime;
+
+  /// No description provided for @dashInstAverageTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Time'**
+  String get dashInstAverageTime;
+
+  /// No description provided for @dashInstDaysValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String dashInstDaysValue(String count);
+
+  /// No description provided for @dashRecTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommender Dashboard'**
+  String get dashRecTitle;
+
+  /// No description provided for @dashRecRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get dashRecRecommendations;
+
+  /// No description provided for @dashRecTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get dashRecTotal;
+
+  /// No description provided for @dashRecUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get dashRecUrgent;
+
+  /// No description provided for @dashRecUrgentRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent Recommendations'**
+  String get dashRecUrgentRecommendations;
+
+  /// No description provided for @dashRecPendingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {count} pending recommendation{count, plural, =1{} other{s}}'**
+  String dashRecPendingCount(int count);
+
+  /// No description provided for @dashRecUnknownStudent.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Student'**
+  String get dashRecUnknownStudent;
+
+  /// No description provided for @dashRecInstitutionNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution not specified'**
+  String get dashRecInstitutionNotSpecified;
+
+  /// No description provided for @dashRecRecentRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Requests'**
+  String get dashRecRecentRequests;
+
+  /// No description provided for @dashRecNoRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No Recommendation Requests'**
+  String get dashRecNoRequests;
+
+  /// No description provided for @dashRecNoRequestsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests will appear here when students request recommendations'**
+  String get dashRecNoRequestsHint;
+
+  /// No description provided for @dashRecQuickTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Tips'**
+  String get dashRecQuickTips;
+
+  /// No description provided for @dashRecTip1.
+  ///
+  /// In en, this message translates to:
+  /// **'Write specific examples of student achievements'**
+  String get dashRecTip1;
+
+  /// No description provided for @dashRecTip2.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit recommendations at least 2 weeks before deadline'**
+  String get dashRecTip2;
+
+  /// No description provided for @dashRecTip3.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalize each recommendation for the institution'**
+  String get dashRecTip3;
 }
 
 class _AppLocalizationsDelegate

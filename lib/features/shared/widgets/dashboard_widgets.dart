@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Dashboard Widgets
 ///
@@ -131,7 +132,7 @@ class ActivityFeed extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Recent Activity',
+                  context.l10n.dashCommonRecentActivity,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -139,7 +140,7 @@ class ActivityFeed extends StatelessWidget {
                 if (onViewAll != null)
                   TextButton(
                     onPressed: onViewAll,
-                    child: const Text('View All'),
+                    child: Text(context.l10n.dashCommonViewAll),
                   ),
               ],
             ),
@@ -148,20 +149,20 @@ class ActivityFeed extends StatelessWidget {
 
           // Activities
           if (activities.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(32),
+            Padding(
+              padding: const EdgeInsets.all(32),
               child: Center(
                 child: Column(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.history,
                       size: 48,
                       color: AppColors.textSecondary,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
-                      'No recent activity',
-                      style: TextStyle(color: AppColors.textSecondary),
+                      context.l10n.dashCommonNoRecentActivity,
+                      style: const TextStyle(color: AppColors.textSecondary),
                     ),
                   ],
                 ),
@@ -666,7 +667,7 @@ class RecommendationsCarousel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Recommended for You',
+            context.l10n.dashCommonRecommendedForYou,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -728,7 +729,7 @@ class SectionHeader extends StatelessWidget {
           if (onViewAll != null)
             TextButton(
               onPressed: onViewAll,
-              child: const Text('View All'),
+              child: Text(context.l10n.dashCommonViewAll),
             ),
         ],
       ),

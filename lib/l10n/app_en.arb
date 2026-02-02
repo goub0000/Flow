@@ -345,5 +345,323 @@
   "uniDetailAbout": "About",
   "uniDetailType": "Type",
   "uniDetailWebsite": "Website",
-  "uniDetailDescription": "Description"
+  "uniDetailDescription": "Description",
+
+  "dashCommonBack": "Back",
+  "dashCommonHome": "Home",
+  "dashCommonProfile": "Profile",
+  "dashCommonSettings": "Settings",
+  "dashCommonOverview": "Overview",
+  "dashCommonRetry": "Retry",
+  "dashCommonViewAll": "View All",
+  "dashCommonClose": "Close",
+  "dashCommonCancel": "Cancel",
+  "dashCommonPending": "Pending",
+  "dashCommonLoadingOverview": "Loading overview...",
+  "dashCommonNotifications": "Notifications",
+  "dashCommonMessages": "Messages",
+  "dashCommonQuickActions": "Quick Actions",
+  "dashCommonWelcomeBack": "Welcome Back!",
+  "dashCommonRecentActivity": "Recent Activity",
+  "dashCommonNoRecentActivity": "No recent activity",
+  "dashCommonSwitchRole": "Switch Role",
+  "dashCommonLogout": "Logout",
+  "dashCommonRecommendedForYou": "Recommended for You",
+  "dashCommonApplications": "Applications",
+  "dashCommonAccepted": "Accepted",
+  "dashCommonRejected": "Rejected",
+  "dashCommonUnderReview": "Under Review",
+  "dashCommonRequests": "Requests",
+  "dashCommonUpcoming": "Upcoming",
+  "dashCommonMeetings": "Meetings",
+  "dashCommonSubmitted": "Submitted",
+  "dashCommonDraft": "Draft",
+  "dashCommonDays": "{count} days",
+  "@dashCommonDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashCommonMin": "{count} min",
+  "@dashCommonMin": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashCommonNoDataAvailable": "No data available",
+
+  "dashStudentTitle": "Student Dashboard",
+  "dashStudentMyApplications": "My Applications",
+  "dashStudentMyCourses": "My Courses",
+  "dashStudentProgress": "Progress",
+  "dashStudentEditProfile": "Edit Profile",
+  "dashStudentCourses": "Courses",
+  "dashStudentContinueJourney": "Continue your learning journey",
+  "dashStudentSuccessRate": "Application Success Rate",
+  "dashStudentLetters": "Letters",
+  "dashStudentParentLink": "Parent Link",
+  "dashStudentCounseling": "Counseling",
+  "dashStudentSchedule": "Schedule",
+  "dashStudentResources": "Resources",
+  "dashStudentHelp": "Help",
+  "dashStudentTotalApplications": "Total Applications",
+  "dashStudentInReview": "In Review",
+  "dashStudentFindYourPath": "Find Your Path",
+  "dashStudentNew": "NEW",
+  "dashStudentFindYourPathDesc": "Discover universities that match your profile, goals, and preferences with AI-powered recommendations",
+  "dashStudentStartJourney": "Start Your Journey",
+  "dashStudentFailedActivities": "Failed to load activities",
+  "dashStudentActivityHistory": "Activity History",
+  "dashStudentActivityHistoryMsg": "A comprehensive activity history view with filters and search capabilities is coming soon.",
+  "dashStudentAchievement": "Achievement",
+  "dashStudentPaymentHistory": "Payment History",
+  "dashStudentPaymentHistoryMsg": "View detailed payment history and transaction records.",
+  "dashStudentFailedRecommendations": "Failed to load recommendations",
+
+  "dashParentTitle": "Parent Dashboard",
+  "dashParentMyChildren": "My Children",
+  "dashParentAlerts": "Alerts",
+  "dashParentChildren": "Children",
+  "dashParentAvgGrade": "Avg Grade",
+  "dashParentUpcomingMeetings": "Upcoming Meetings",
+  "dashParentNoUpcomingMeetings": "No Upcoming Meetings",
+  "dashParentScheduleMeetingsHint": "Schedule meetings with teachers or counselors",
+  "dashParentScheduleMeeting": "Schedule Meeting",
+  "dashParentViewMoreMeetings": "View {count} more meetings",
+  "@dashParentViewMoreMeetings": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashParentChildrenOverview": "Children Overview",
+  "dashParentNoChildren": "No Children Added",
+  "dashParentNoChildrenHint": "Add your children to track their progress",
+  "dashParentCourseCount": "{count} courses",
+  "@dashParentCourseCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashParentAppCount": "{count} apps",
+  "@dashParentAppCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashParentViewAllReports": "View All Reports",
+  "dashParentAcademicReports": "Academic performance reports",
+  "dashParentWithTeachersOrCounselors": "With teachers or counselors",
+  "dashParentNotificationSettings": "Notification Settings",
+  "dashParentManageAlerts": "Manage alerts and updates",
+  "dashParentMeetWith": "Who would you like to meet with?",
+  "dashParentTeacher": "Teacher",
+  "dashParentTeacherConference": "Schedule a parent-teacher conference",
+  "dashParentCounselor": "Counselor",
+  "dashParentCounselorMeeting": "Meet with a guidance counselor",
+  "dashParentStatusPending": "PENDING",
+  "dashParentStatusApproved": "APPROVED",
+  "dashParentStatusDeclined": "DECLINED",
+  "dashParentStatusCancelled": "CANCELLED",
+  "dashParentStatusCompleted": "COMPLETED",
+
+  "dashCounselorTitle": "Counselor Dashboard",
+  "dashCounselorMyStudents": "My Students",
+  "dashCounselorSessions": "Sessions",
+  "dashCounselorStudents": "Students",
+  "dashCounselorToday": "Today",
+  "dashCounselorMeetingRequests": "Meeting Requests",
+  "dashCounselorManageAvailability": "Manage Availability",
+  "dashCounselorSetMeetingHours": "Set your meeting hours",
+  "dashCounselorPendingApproval": "{count} pending approval",
+  "@dashCounselorPendingApproval": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashCounselorViewMoreRequests": "View {count} more requests",
+  "@dashCounselorViewMoreRequests": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashCounselorTodaySessions": "Today's Sessions",
+  "dashCounselorNoStudents": "No Students Assigned",
+  "dashCounselorNoStudentsHint": "Your students will appear here when assigned",
+  "dashCounselorPendingRecommendations": "Pending Recommendations",
+  "dashCounselorDraftRecommendations": "You have {count} draft recommendations",
+  "@dashCounselorDraftRecommendations": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashCounselorSessionIndividual": "Individual",
+  "dashCounselorSessionGroup": "Group",
+  "dashCounselorSessionCareer": "Career",
+  "dashCounselorSessionAcademic": "Academic",
+  "dashCounselorSessionPersonal": "Personal",
+  "dashCounselorStatusPending": "PENDING",
+
+  "dashAdminNotAuthenticated": "Not authenticated",
+  "dashAdminDashboard": "Dashboard",
+  "dashAdminWelcomeBack": "Welcome back, {name}",
+  "@dashAdminWelcomeBack": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "dashAdminQuickAction": "Quick Action",
+  "dashAdminAddUser": "Add User",
+  "dashAdminCreateAnnouncement": "Create Announcement",
+  "dashAdminGenerateReport": "Generate Report",
+  "dashAdminBulkActions": "Bulk Actions",
+  "dashAdminTotalUsers": "Total Users",
+  "dashAdminStudents": "Students",
+  "dashAdminInstitutions": "Institutions",
+  "dashAdminRecommenders": "Recommenders",
+  "dashAdminCountStudents": "{count} students",
+  "@dashAdminCountStudents": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminCountParents": "{count} parents",
+  "@dashAdminCountParents": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminCountCounselors": "{count} counselors",
+  "@dashAdminCountCounselors": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminCountAdmins": "{count} admins",
+  "@dashAdminCountAdmins": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminJustNow": "Just now",
+  "dashAdminMinutesAgo": "{count}m ago",
+  "@dashAdminMinutesAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminHoursAgo": "{count}h ago",
+  "@dashAdminHoursAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminDaysAgo": "{count}d ago",
+  "@dashAdminDaysAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashAdminRefresh": "Refresh",
+  "dashAdminQuickStats": "Quick Stats",
+  "dashAdminActive30d": "Active (30d)",
+  "dashAdminNewUsers7d": "New Users (7d)",
+  "dashAdminApplications7d": "Applications (7d)",
+  "dashAdminUserGrowth": "User Growth",
+  "dashAdminUserGrowthDesc": "New user registrations over the past 6 months",
+  "dashAdminUserDistribution": "User Distribution",
+  "dashAdminByUserType": "By user type",
+
+  "dashInstTitle": "Institution Dashboard",
+  "dashInstDebugPanel": "Debug Panel",
+  "dashInstApplicants": "Applicants",
+  "dashInstPrograms": "Programs",
+  "dashInstCourses": "Courses",
+  "dashInstCounselors": "Counselors",
+  "dashInstNewProgram": "New Program",
+  "dashInstNewCourse": "New Course",
+  "dashInstTotalApplicants": "Total Applicants",
+  "dashInstPendingReview": "Pending Review",
+  "dashInstActivePrograms": "Active Programs",
+  "dashInstTotalStudents": "Total Students",
+  "dashInstReviewPending": "Review Pending Applications",
+  "dashInstApplicationsWaiting": "{count} applications waiting",
+  "@dashInstApplicationsWaiting": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashInstApplicationsInProgress": "{count} applications in progress",
+  "@dashInstApplicationsInProgress": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashInstAcceptedApplicants": "Accepted Applicants",
+  "dashInstApplicationsApproved": "{count} applications approved",
+  "@dashInstApplicationsApproved": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashInstCreateNewProgram": "Create New Program",
+  "dashInstAddProgramHint": "Add a new course or program",
+  "dashInstApplicationSummary": "Application Summary",
+  "dashInstProgramsOverview": "Programs Overview",
+  "dashInstTotalPrograms": "Total Programs",
+  "dashInstInactivePrograms": "Inactive Programs",
+  "dashInstTotalEnrollments": "Total Enrollments",
+  "dashInstApplicationFunnel": "Application Funnel",
+  "dashInstConversionRate": "Overall Conversion Rate: {rate}%",
+  "@dashInstConversionRate": {
+    "placeholders": {
+      "rate": { "type": "String" }
+    }
+  },
+  "dashInstApplicantDemographics": "Applicant Demographics",
+  "dashInstTotalApplicantsCount": "Total Applicants: {count}",
+  "@dashInstTotalApplicantsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashInstByLocation": "By Location",
+  "dashInstByAgeGroup": "By Age Group",
+  "dashInstByAcademicBackground": "By Academic Background",
+  "dashInstProgramPopularity": "Program Popularity",
+  "dashInstTopPrograms": "Top Programs by Applications",
+  "dashInstAppsCount": "{count} apps",
+  "@dashInstAppsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashInstProcessingTime": "Application Processing Time",
+  "dashInstAverageTime": "Average Time",
+  "dashInstDaysValue": "{count} days",
+  "@dashInstDaysValue": {
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+
+  "dashRecTitle": "Recommender Dashboard",
+  "dashRecRecommendations": "Recommendations",
+  "dashRecTotal": "Total",
+  "dashRecUrgent": "Urgent",
+  "dashRecUrgentRecommendations": "Urgent Recommendations",
+  "dashRecPendingCount": "You have {count} pending recommendation{count, plural, =1{} other{s}}",
+  "@dashRecPendingCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashRecUnknownStudent": "Unknown Student",
+  "dashRecInstitutionNotSpecified": "Institution not specified",
+  "dashRecRecentRequests": "Recent Requests",
+  "dashRecNoRequests": "No Recommendation Requests",
+  "dashRecNoRequestsHint": "Requests will appear here when students request recommendations",
+  "dashRecQuickTips": "Quick Tips",
+  "dashRecTip1": "Write specific examples of student achievements",
+  "dashRecTip2": "Submit recommendations at least 2 weeks before deadline",
+  "dashRecTip3": "Personalize each recommendation for the institution"
 }

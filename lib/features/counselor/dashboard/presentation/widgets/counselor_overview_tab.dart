@@ -13,6 +13,7 @@ import '../../../providers/counselor_students_provider.dart';
 import '../../../providers/counselor_sessions_provider.dart';
 import '../../../meetings/presentation/meeting_requests_screen.dart';
 import '../../../meetings/presentation/availability_management_screen.dart';
+import '../../../../../core/l10n_extension.dart';
 
 class CounselorOverviewTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToStudents;
@@ -86,7 +87,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               onPressed: () {
                 ref.read(counselorDashboardProvider.notifier).loadDashboardData();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.dashCommonRetry),
             ),
           ],
         ),
@@ -94,7 +95,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading overview...');
+      return LoadingIndicator(message: context.l10n.dashCommonLoadingOverview);
     }
 
     final totalStudents = statistics['totalStudents'] as int? ?? 0;
@@ -119,7 +120,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               Expanded(
                 child: _StatCard(
                   icon: Icons.people,
-                  label: 'Students',
+                  label: context.l10n.dashCounselorStudents,
                   value: '$totalStudents',
                   color: AppColors.counselorRole,
                 ),
@@ -128,7 +129,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               Expanded(
                 child: _StatCard(
                   icon: Icons.event_available,
-                  label: 'Today',
+                  label: context.l10n.dashCounselorToday,
                   value: '$todaySessions',
                   color: AppColors.warning,
                 ),
@@ -141,7 +142,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               Expanded(
                 child: _StatCard(
                   icon: Icons.event,
-                  label: 'Upcoming',
+                  label: context.l10n.dashCommonUpcoming,
                   value: '$upcomingSessions',
                   color: AppColors.info,
                 ),
@@ -150,7 +151,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               Expanded(
                 child: _StatCard(
                   icon: Icons.edit_note,
-                  label: 'Pending',
+                  label: context.l10n.dashCommonPending,
                   value: '$pendingRecommendations',
                   color: AppColors.primary,
                 ),
@@ -163,7 +164,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               Expanded(
                 child: _StatCard(
                   icon: Icons.pending_actions,
-                  label: 'Requests',
+                  label: context.l10n.dashCommonRequests,
                   value: '${pendingRequests.length}',
                   color: AppColors.error,
                 ),
@@ -172,7 +173,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               Expanded(
                 child: _StatCard(
                   icon: Icons.event_available,
-                  label: 'Meetings',
+                  label: context.l10n.dashCommonMeetings,
                   value: '${todayMeetings.length}',
                   color: AppColors.success,
                 ),
@@ -189,7 +190,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                 Row(
                   children: [
                     Text(
-                      'Meeting Requests',
+                      context.l10n.dashCounselorMeetingRequests,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(width: 8),
@@ -219,7 +220,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                       ),
                     );
                   },
-                  child: const Text('View All'),
+                  child: Text(context.l10n.dashCommonViewAll),
                 ),
               ],
             ),
@@ -250,7 +251,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                     ),
                   );
                 },
-                child: Text('View ${pendingRequests.length - 2} more requests'),
+                child: Text(context.l10n.dashCounselorViewMoreRequests(pendingRequests.length - 2)),
               ),
             const SizedBox(height: 24),
           ],
@@ -269,8 +270,8 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                     ),
                     child: const Icon(Icons.event_available, color: AppColors.counselorRole),
                   ),
-                  title: const Text('Manage Availability'),
-                  subtitle: const Text('Set your meeting hours'),
+                  title: Text(context.l10n.dashCounselorManageAvailability),
+                  subtitle: Text(context.l10n.dashCounselorSetMeetingHours),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     Navigator.push(
@@ -291,8 +292,8 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                     ),
                     child: const Icon(Icons.pending_actions, color: AppColors.warning),
                   ),
-                  title: const Text('Meeting Requests'),
-                  subtitle: Text('${pendingRequests.length} pending approval'),
+                  title: Text(context.l10n.dashCounselorMeetingRequests),
+                  subtitle: Text(context.l10n.dashCounselorPendingApproval(pendingRequests.length)),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -336,12 +337,12 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Today\'s Sessions',
+                  context.l10n.dashCounselorTodaySessions,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 TextButton(
                   onPressed: widget.onNavigateToSessions,
-                  child: const Text('View All'),
+                  child: Text(context.l10n.dashCommonViewAll),
                 ),
               ],
             ),
@@ -376,7 +377,7 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _formatSessionType(session.type),
+                              _formatSessionType(session.type, context),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -425,13 +426,13 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'My Students',
+                context.l10n.dashCounselorMyStudents,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               if (students.isNotEmpty)
                 TextButton(
                   onPressed: widget.onNavigateToStudents,
-                  child: const Text('View All'),
+                  child: Text(context.l10n.dashCommonViewAll),
                 ),
             ],
           ),
@@ -449,14 +450,14 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No Students Assigned',
+                      context.l10n.dashCounselorNoStudents,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Your students will appear here when assigned',
+                      context.l10n.dashCounselorNoStudentsHint,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -556,14 +557,14 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Pending Recommendations',
+                          context.l10n.dashCounselorPendingRecommendations,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'You have $pendingRecommendations draft recommendations',
+                          context.l10n.dashCounselorDraftRecommendations(pendingRecommendations),
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: AppColors.textSecondary,
                               ),
@@ -605,18 +606,18 @@ class _CounselorOverviewTabState extends ConsumerState<CounselorOverviewTab> wit
     return AppColors.error;
   }
 
-  String _formatSessionType(String type) {
+  String _formatSessionType(String type, BuildContext context) {
     switch (type) {
       case 'individual':
-        return 'Individual';
+        return context.l10n.dashCounselorSessionIndividual;
       case 'group':
-        return 'Group';
+        return context.l10n.dashCounselorSessionGroup;
       case 'career':
-        return 'Career';
+        return context.l10n.dashCounselorSessionCareer;
       case 'academic':
-        return 'Academic';
+        return context.l10n.dashCounselorSessionAcademic;
       case 'personal':
-        return 'Personal';
+        return context.l10n.dashCounselorSessionPersonal;
       default:
         return type;
     }
@@ -769,14 +770,14 @@ class _MeetingRequestCard extends StatelessWidget {
               color: AppColors.error.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.pending, size: 14, color: AppColors.error),
-                SizedBox(width: 4),
+                const Icon(Icons.pending, size: 14, color: AppColors.error),
+                const SizedBox(width: 4),
                 Text(
-                  'PENDING',
-                  style: TextStyle(
+                  context.l10n.dashCounselorStatusPending,
+                  style: const TextStyle(
                     color: AppColors.error,
                     fontWeight: FontWeight.bold,
                     fontSize: 10,

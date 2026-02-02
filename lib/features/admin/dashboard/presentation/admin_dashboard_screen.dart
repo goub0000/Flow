@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/refresh_utilities.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../shared/providers/admin_auth_provider.dart';
@@ -120,8 +121,8 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
     final isLoading = ref.watch(adminAnalyticsLoadingProvider);
 
     if (adminUser == null) {
-      return const Center(
-        child: Text('Not authenticated'),
+      return Center(
+        child: Text(context.l10n.dashAdminNotAuthenticated),
       );
     }
 
@@ -141,14 +142,14 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Dashboard',
+                      context.l10n.dashAdminDashboard,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Welcome back, ${adminUser.displayName}',
+                      context.l10n.dashAdminWelcomeBack(adminUser.displayName),
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -161,7 +162,7 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
                 child: ElevatedButton.icon(
                   onPressed: null, // Use PopupMenuButton's onSelected instead
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('Quick Action'),
+                  label: Text(context.l10n.dashAdminQuickAction),
                 ),
                 onSelected: (String value) {
                   switch (value) {
@@ -180,35 +181,35 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
                   }
                 },
                 itemBuilder: (BuildContext context) => [
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'add_user',
                     child: ListTile(
-                      leading: Icon(Icons.person_add),
-                      title: Text('Add User'),
+                      leading: const Icon(Icons.person_add),
+                      title: Text(context.l10n.dashAdminAddUser),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'create_announcement',
                     child: ListTile(
-                      leading: Icon(Icons.campaign),
-                      title: Text('Create Announcement'),
+                      leading: const Icon(Icons.campaign),
+                      title: Text(context.l10n.dashAdminCreateAnnouncement),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'generate_report',
                     child: ListTile(
-                      leading: Icon(Icons.analytics),
-                      title: Text('Generate Report'),
+                      leading: const Icon(Icons.analytics),
+                      title: Text(context.l10n.dashAdminGenerateReport),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'bulk_actions',
                     child: ListTile(
-                      leading: Icon(Icons.checklist),
-                      title: Text('Bulk Actions'),
+                      leading: const Icon(Icons.checklist),
+                      title: Text(context.l10n.dashAdminBulkActions),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -232,35 +233,35 @@ class _DashboardContentState extends ConsumerState<_DashboardContent> with Refre
             childAspectRatio: 1.5,
             children: [
               _KPICard(
-                title: 'Total Users',
+                title: context.l10n.dashAdminTotalUsers,
                 value: _isLoadingRoleData ? '--' : '${_roleDistribution?['total_users'] ?? 0}',
                 icon: Icons.people,
                 color: AppColors.primary,
-                change: _isLoadingRoleData ? '--' : '${_getRoleCount('student')} students',
+                change: _isLoadingRoleData ? '--' : context.l10n.dashAdminCountStudents(_getRoleCount('student')),
                 isPositive: true,
               ),
               _KPICard(
-                title: 'Students',
+                title: context.l10n.dashAdminStudents,
                 value: _isLoadingRoleData ? '--' : '${_getRoleCount('student')}',
                 icon: Icons.school,
                 color: AppColors.success,
-                change: _isLoadingRoleData ? '--' : '${_getRoleCount('parent')} parents',
+                change: _isLoadingRoleData ? '--' : context.l10n.dashAdminCountParents(_getRoleCount('parent')),
                 isPositive: true,
               ),
               _KPICard(
-                title: 'Institutions',
+                title: context.l10n.dashAdminInstitutions,
                 value: _isLoadingRoleData ? '--' : '${_getRoleCount('institution')}',
                 icon: Icons.business,
                 color: AppColors.accent,
-                change: _isLoadingRoleData ? '--' : '${_getRoleCount('counselor')} counselors',
+                change: _isLoadingRoleData ? '--' : context.l10n.dashAdminCountCounselors(_getRoleCount('counselor')),
                 isPositive: true,
               ),
               _KPICard(
-                title: 'Recommenders',
+                title: context.l10n.dashAdminRecommenders,
                 value: _isLoadingRoleData ? '--' : '${_getRoleCount('recommender')}',
                 icon: Icons.rate_review,
                 color: AppColors.info,
-                change: _isLoadingRoleData ? '--' : '${_getRoleCount('superadmin')} admins',
+                change: _isLoadingRoleData ? '--' : context.l10n.dashAdminCountAdmins(_getRoleCount('superadmin')),
                 isPositive: true,
               ),
             ],
@@ -463,14 +464,14 @@ class _ActivityCardState extends ConsumerState<_ActivityCard> {
     }
   }
 
-  String _formatTime(DateTime timestamp) {
+  String _formatTime(DateTime timestamp, BuildContext context) {
     final now = DateTime.now();
     final diff = now.difference(timestamp);
 
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return context.l10n.dashAdminJustNow;
+    if (diff.inMinutes < 60) return context.l10n.dashAdminMinutesAgo(diff.inMinutes);
+    if (diff.inHours < 24) return context.l10n.dashAdminHoursAgo(diff.inHours);
+    if (diff.inDays < 7) return context.l10n.dashAdminDaysAgo(diff.inDays);
     return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
   }
 
@@ -491,9 +492,9 @@ class _ActivityCardState extends ConsumerState<_ActivityCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Recent Activity',
-                style: TextStyle(
+              Text(
+                context.l10n.dashCommonRecentActivity,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -508,7 +509,7 @@ class _ActivityCardState extends ConsumerState<_ActivityCard> {
                 IconButton(
                   icon: const Icon(Icons.refresh, size: 20),
                   onPressed: _loadActivity,
-                  tooltip: 'Refresh',
+                  tooltip: context.l10n.dashAdminRefresh,
                 ),
             ],
           ),
@@ -533,7 +534,7 @@ class _ActivityCardState extends ConsumerState<_ActivityCard> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'No recent activity',
+                      context.l10n.dashCommonNoRecentActivity,
                       style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 14,
@@ -549,7 +550,7 @@ class _ActivityCardState extends ConsumerState<_ActivityCard> {
               color: _getActionColor(activity.actionType),
               title: activity.description,
               subtitle: activity.userName ?? 'System',
-              time: _formatTime(activity.timestamp),
+              time: _formatTime(activity.timestamp, context),
             )),
         ],
       ),
@@ -644,31 +645,31 @@ class _QuickStatsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Quick Stats',
-            style: TextStyle(
+          Text(
+            context.l10n.dashAdminQuickStats,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 16),
           _QuickStatItem(
-            label: 'Total Users',
+            label: context.l10n.dashAdminTotalUsers,
             value: isLoading ? '--' : '${metrics['total_users'] ?? 0}',
             color: AppColors.primary,
           ),
           _QuickStatItem(
-            label: 'Active (30d)',
+            label: context.l10n.dashAdminActive30d,
             value: isLoading ? '--' : '${metrics['active_users_30days'] ?? 0}',
             color: AppColors.success,
           ),
           _QuickStatItem(
-            label: 'New Users (7d)',
+            label: context.l10n.dashAdminNewUsers7d,
             value: isLoading ? '--' : '${metrics['new_registrations_7days'] ?? 0}',
             color: AppColors.accent,
           ),
           _QuickStatItem(
-            label: 'Applications (7d)',
+            label: context.l10n.dashAdminApplications7d,
             value: isLoading ? '--' : '${metrics['applications_7days'] ?? 0}',
             color: AppColors.info,
           ),
@@ -780,16 +781,16 @@ class _UserGrowthChartState extends ConsumerState<_UserGrowthChart> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'User Growth',
-            style: TextStyle(
+          Text(
+            context.l10n.dashAdminUserGrowth,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'New user registrations over the past 6 months',
+            context.l10n.dashAdminUserGrowthDesc,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
@@ -811,12 +812,12 @@ class _UserGrowthChartState extends ConsumerState<_UserGrowthChart> {
 
   Widget _buildChart() {
     if (_growthData == null || _growthData!['data_points'] == null) {
-      return const Center(child: Text('No data available'));
+      return Center(child: Text(context.l10n.dashCommonNoDataAvailable));
     }
 
     final dataPoints = _growthData!['data_points'] as List<dynamic>;
     if (dataPoints.isEmpty) {
-      return const Center(child: Text('No data available'));
+      return Center(child: Text(context.l10n.dashCommonNoDataAvailable));
     }
 
     // Convert API data to FlSpot format
@@ -967,16 +968,16 @@ class _UserDistributionChartState extends ConsumerState<_UserDistributionChart> 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'User Distribution',
-            style: TextStyle(
+          Text(
+            context.l10n.dashAdminUserDistribution,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'By user type',
+            context.l10n.dashAdminByUserType,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
@@ -1000,12 +1001,12 @@ class _UserDistributionChartState extends ConsumerState<_UserDistributionChart> 
 
   Widget _buildPieChart() {
     if (_distributionData == null || _distributionData!['distributions'] == null) {
-      return const Center(child: Text('No data available'));
+      return Center(child: Text(context.l10n.dashCommonNoDataAvailable));
     }
 
     final distributions = _distributionData!['distributions'] as List<dynamic>;
     if (distributions.isEmpty) {
-      return const Center(child: Text('No data available'));
+      return Center(child: Text(context.l10n.dashCommonNoDataAvailable));
     }
 
     final rolePercentages = _distributionData!['role_percentages'] as Map<String, dynamic>;

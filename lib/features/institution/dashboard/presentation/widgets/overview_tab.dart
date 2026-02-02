@@ -11,6 +11,7 @@ import '../../../../shared/providers/profile_provider.dart';
 import '../../../providers/institution_dashboard_provider.dart';
 import '../../../providers/institution_applicants_realtime_provider.dart';
 import '../../../providers/institution_analytics_provider.dart';
+import '../../../../../core/l10n_extension.dart';
 
 class OverviewTab extends ConsumerStatefulWidget {
   final Function(int)? onNavigate;
@@ -95,7 +96,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               onPressed: () {
                 ref.read(institutionDashboardProvider.notifier).loadDashboardData();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.dashCommonRetry),
             ),
           ],
         ),
@@ -103,7 +104,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading overview...');
+      return LoadingIndicator(message: context.l10n.dashCommonLoadingOverview);
     }
 
     final totalApplicants = statistics['totalApplicants'] as int? ?? 0;
@@ -130,7 +131,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               Expanded(
                 child: IconCard(
                   icon: Icons.people_outline,
-                  title: 'Total Applicants',
+                  title: context.l10n.dashInstTotalApplicants,
                   value: '$totalApplicants',
                   iconColor: AppColors.info,
                 ),
@@ -139,7 +140,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               Expanded(
                 child: IconCard(
                   icon: Icons.pending_actions,
-                  title: 'Pending Review',
+                  title: context.l10n.dashInstPendingReview,
                   value: '$pendingApplicants',
                   iconColor: AppColors.warning,
                 ),
@@ -152,7 +153,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               Expanded(
                 child: IconCard(
                   icon: Icons.school_outlined,
-                  title: 'Active Programs',
+                  title: context.l10n.dashInstActivePrograms,
                   value: '$activePrograms',
                   iconColor: AppColors.success,
                 ),
@@ -161,7 +162,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               Expanded(
                 child: IconCard(
                   icon: Icons.group,
-                  title: 'Total Students',
+                  title: context.l10n.dashInstTotalStudents,
                   value: '$totalEnrollments',
                   iconColor: AppColors.primary,
                 ),
@@ -172,7 +173,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
 
           // Quick Actions
           Text(
-            'Quick Actions',
+            context.l10n.dashCommonQuickActions,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -189,8 +190,8 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                     ),
                     child: const Icon(Icons.rate_review, color: AppColors.warning),
                   ),
-                  title: const Text('Review Pending Applications'),
-                  subtitle: Text('$pendingApplicants applications waiting'),
+                  title: Text(context.l10n.dashInstReviewPending),
+                  subtitle: Text(context.l10n.dashInstApplicationsWaiting(pendingApplicants)),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: pendingApplicants > 0 ? () {
                     // Navigate to applicants tab (index 1)
@@ -207,8 +208,8 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                     ),
                     child: const Icon(Icons.visibility, color: AppColors.info),
                   ),
-                  title: const Text('Under Review'),
-                  subtitle: Text('$underReviewApplicants applications in progress'),
+                  title: Text(context.l10n.dashCommonUnderReview),
+                  subtitle: Text(context.l10n.dashInstApplicationsInProgress(underReviewApplicants)),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: underReviewApplicants > 0 ? () {
                     // Navigate to applicants tab (index 1)
@@ -225,8 +226,8 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                     ),
                     child: const Icon(Icons.check_circle, color: AppColors.success),
                   ),
-                  title: const Text('Accepted Applicants'),
-                  subtitle: Text('$acceptedApplicants applications approved'),
+                  title: Text(context.l10n.dashInstAcceptedApplicants),
+                  subtitle: Text(context.l10n.dashInstApplicationsApproved(acceptedApplicants)),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: acceptedApplicants > 0 ? () {
                     // Navigate to applicants tab (index 1)
@@ -243,8 +244,8 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                     ),
                     child: const Icon(Icons.add_circle, color: AppColors.primary),
                   ),
-                  title: const Text('Create New Program'),
-                  subtitle: const Text('Add a new course or program'),
+                  title: Text(context.l10n.dashInstCreateNewProgram),
+                  subtitle: Text(context.l10n.dashInstAddProgramHint),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     // Navigate to programs tab (index 2)
@@ -258,7 +259,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
 
           // Application Summary
           Text(
-            'Application Summary',
+            context.l10n.dashInstApplicationSummary,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -267,28 +268,28 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               children: [
                 _SummaryRow(
                   icon: Icons.pending_actions,
-                  label: 'Pending Review',
+                  label: context.l10n.dashInstPendingReview,
                   value: '$pendingApplicants',
                   color: AppColors.warning,
                 ),
                 const Divider(),
                 _SummaryRow(
                   icon: Icons.rate_review,
-                  label: 'Under Review',
+                  label: context.l10n.dashCommonUnderReview,
                   value: '$underReviewApplicants',
                   color: AppColors.info,
                 ),
                 const Divider(),
                 _SummaryRow(
                   icon: Icons.check_circle,
-                  label: 'Accepted',
+                  label: context.l10n.dashCommonAccepted,
                   value: '$acceptedApplicants',
                   color: AppColors.success,
                 ),
                 const Divider(),
                 _SummaryRow(
                   icon: Icons.cancel,
-                  label: 'Rejected',
+                  label: context.l10n.dashCommonRejected,
                   value: '$rejectedApplicants',
                   color: AppColors.error,
                 ),
@@ -299,7 +300,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
 
           // Programs Summary
           Text(
-            'Programs Overview',
+            context.l10n.dashInstProgramsOverview,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -308,28 +309,28 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               children: [
                 _SummaryRow(
                   icon: Icons.school,
-                  label: 'Total Programs',
+                  label: context.l10n.dashInstTotalPrograms,
                   value: '$totalPrograms',
                   color: AppColors.primary,
                 ),
                 const Divider(),
                 _SummaryRow(
                   icon: Icons.visibility,
-                  label: 'Active Programs',
+                  label: context.l10n.dashInstActivePrograms,
                   value: '$activePrograms',
                   color: AppColors.success,
                 ),
                 const Divider(),
                 _SummaryRow(
                   icon: Icons.visibility_off,
-                  label: 'Inactive Programs',
+                  label: context.l10n.dashInstInactivePrograms,
                   value: '${totalPrograms - activePrograms}',
                   color: AppColors.textSecondary,
                 ),
                 const Divider(),
                 _SummaryRow(
                   icon: Icons.group,
-                  label: 'Total Enrollments',
+                  label: context.l10n.dashInstTotalEnrollments,
                   value: '$totalEnrollments',
                   color: AppColors.info,
                 ),
@@ -373,7 +374,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
         // Application Funnel
         if (funnelData != null) ...[
           Text(
-            'Application Funnel',
+            context.l10n.dashInstApplicationFunnel,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -386,7 +387,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Overall Conversion Rate: ${funnelData.overallConversionRate.toStringAsFixed(1)}%',
+                  context.l10n.dashInstConversionRate(funnelData.overallConversionRate.toStringAsFixed(1)),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.success,
@@ -401,7 +402,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
         // Applicant Demographics
         if (demographicsData != null && demographicsData.totalApplicants > 0) ...[
           Text(
-            'Applicant Demographics',
+            context.l10n.dashInstApplicantDemographics,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -410,12 +411,12 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Total Applicants: ${demographicsData.totalApplicants}',
+                  context.l10n.dashInstTotalApplicantsCount(demographicsData.totalApplicants),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'By Location',
+                  context.l10n.dashInstByLocation,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 12),
@@ -425,7 +426,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'By Age Group',
+                  context.l10n.dashInstByAgeGroup,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 12),
@@ -435,7 +436,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'By Academic Background',
+                  context.l10n.dashInstByAcademicBackground,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 12),
@@ -452,7 +453,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
         // Program Popularity
         if (popularityData != null && popularityData.totalPrograms > 0) ...[
           Text(
-            'Program Popularity',
+            context.l10n.dashInstProgramPopularity,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -461,7 +462,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Top Programs by Applications',
+                  context.l10n.dashInstTopPrograms,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 16),
@@ -480,7 +481,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                             ),
                           ),
                           Text(
-                            '${program.applications} apps',
+                            context.l10n.dashInstAppsCount(program.applications),
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.primary,
@@ -506,7 +507,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
         // Time-to-Decision
         if (decisionData != null) ...[
           Text(
-            'Application Processing Time',
+            context.l10n.dashInstProcessingTime,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -519,14 +520,14 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                       Icon(Icons.timer, color: AppColors.info, size: 32),
                       const SizedBox(height: 8),
                       Text(
-                        '${decisionData.averageDays.toStringAsFixed(1)} days',
+                        context.l10n.dashInstDaysValue(decisionData.averageDays.toStringAsFixed(1)),
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColors.info,
                         ),
                       ),
                       Text(
-                        'Average Time',
+                        context.l10n.dashInstAverageTime,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -548,7 +549,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
                         ),
                       ),
                       Text(
-                        'Pending',
+                        context.l10n.dashCommonPending,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -633,7 +634,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
 
   Widget _buildPieChart(List<DemographicDistribution> data) {
     if (data.isEmpty) {
-      return const Center(child: Text('No data available'));
+      return Center(child: Text(context.l10n.dashCommonNoDataAvailable));
     }
 
     return Row(

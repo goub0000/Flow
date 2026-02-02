@@ -924,4 +924,648 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get uniDetailDescription => 'Description';
+
+  @override
+  String get dashCommonBack => 'Retour';
+
+  @override
+  String get dashCommonHome => 'Accueil';
+
+  @override
+  String get dashCommonProfile => 'Profil';
+
+  @override
+  String get dashCommonSettings => 'Paramètres';
+
+  @override
+  String get dashCommonOverview => 'Aperçu';
+
+  @override
+  String get dashCommonRetry => 'Réessayer';
+
+  @override
+  String get dashCommonViewAll => 'Tout voir';
+
+  @override
+  String get dashCommonClose => 'Fermer';
+
+  @override
+  String get dashCommonCancel => 'Annuler';
+
+  @override
+  String get dashCommonPending => 'En attente';
+
+  @override
+  String get dashCommonLoadingOverview => 'Chargement de l\'aperçu...';
+
+  @override
+  String get dashCommonNotifications => 'Notifications';
+
+  @override
+  String get dashCommonMessages => 'Messages';
+
+  @override
+  String get dashCommonQuickActions => 'Actions rapides';
+
+  @override
+  String get dashCommonWelcomeBack => 'Bon retour !';
+
+  @override
+  String get dashCommonRecentActivity => 'Activité récente';
+
+  @override
+  String get dashCommonNoRecentActivity => 'Aucune activité récente';
+
+  @override
+  String get dashCommonSwitchRole => 'Changer de rôle';
+
+  @override
+  String get dashCommonLogout => 'Déconnexion';
+
+  @override
+  String get dashCommonRecommendedForYou => 'Recommandé pour vous';
+
+  @override
+  String get dashCommonApplications => 'Candidatures';
+
+  @override
+  String get dashCommonAccepted => 'Accepté';
+
+  @override
+  String get dashCommonRejected => 'Refusé';
+
+  @override
+  String get dashCommonUnderReview => 'En cours d\'examen';
+
+  @override
+  String get dashCommonRequests => 'Demandes';
+
+  @override
+  String get dashCommonUpcoming => 'À venir';
+
+  @override
+  String get dashCommonMeetings => 'Réunions';
+
+  @override
+  String get dashCommonSubmitted => 'Soumis';
+
+  @override
+  String get dashCommonDraft => 'Brouillon';
+
+  @override
+  String dashCommonDays(int count) {
+    return '$count jours';
+  }
+
+  @override
+  String dashCommonMin(int count) {
+    return '$count min';
+  }
+
+  @override
+  String get dashCommonNoDataAvailable => 'Aucune donnée disponible';
+
+  @override
+  String get dashStudentTitle => 'Tableau de bord étudiant';
+
+  @override
+  String get dashStudentMyApplications => 'Mes candidatures';
+
+  @override
+  String get dashStudentMyCourses => 'Mes cours';
+
+  @override
+  String get dashStudentProgress => 'Progression';
+
+  @override
+  String get dashStudentEditProfile => 'Modifier le profil';
+
+  @override
+  String get dashStudentCourses => 'Cours';
+
+  @override
+  String get dashStudentContinueJourney =>
+      'Continuez votre parcours d\'apprentissage';
+
+  @override
+  String get dashStudentSuccessRate => 'Taux de réussite des candidatures';
+
+  @override
+  String get dashStudentLetters => 'Lettres';
+
+  @override
+  String get dashStudentParentLink => 'Lien parent';
+
+  @override
+  String get dashStudentCounseling => 'Conseil';
+
+  @override
+  String get dashStudentSchedule => 'Emploi du temps';
+
+  @override
+  String get dashStudentResources => 'Ressources';
+
+  @override
+  String get dashStudentHelp => 'Aide';
+
+  @override
+  String get dashStudentTotalApplications => 'Total des candidatures';
+
+  @override
+  String get dashStudentInReview => 'En examen';
+
+  @override
+  String get dashStudentFindYourPath => 'Trouvez votre voie';
+
+  @override
+  String get dashStudentNew => 'NOUVEAU';
+
+  @override
+  String get dashStudentFindYourPathDesc =>
+      'Découvrez les universités qui correspondent à votre profil, vos objectifs et vos préférences grâce aux recommandations propulsées par l\'IA';
+
+  @override
+  String get dashStudentStartJourney => 'Commencez votre parcours';
+
+  @override
+  String get dashStudentFailedActivities => 'Échec du chargement des activités';
+
+  @override
+  String get dashStudentActivityHistory => 'Historique des activités';
+
+  @override
+  String get dashStudentActivityHistoryMsg =>
+      'Une vue complète de l\'historique des activités avec filtres et recherche sera bientôt disponible.';
+
+  @override
+  String get dashStudentAchievement => 'Réussite';
+
+  @override
+  String get dashStudentPaymentHistory => 'Historique des paiements';
+
+  @override
+  String get dashStudentPaymentHistoryMsg =>
+      'Consultez l\'historique détaillé des paiements et des transactions.';
+
+  @override
+  String get dashStudentFailedRecommendations =>
+      'Échec du chargement des recommandations';
+
+  @override
+  String get dashParentTitle => 'Tableau de bord parent';
+
+  @override
+  String get dashParentMyChildren => 'Mes enfants';
+
+  @override
+  String get dashParentAlerts => 'Alertes';
+
+  @override
+  String get dashParentChildren => 'Enfants';
+
+  @override
+  String get dashParentAvgGrade => 'Moy. notes';
+
+  @override
+  String get dashParentUpcomingMeetings => 'Réunions à venir';
+
+  @override
+  String get dashParentNoUpcomingMeetings => 'Aucune réunion à venir';
+
+  @override
+  String get dashParentScheduleMeetingsHint =>
+      'Planifiez des réunions avec les enseignants ou conseillers';
+
+  @override
+  String get dashParentScheduleMeeting => 'Planifier une réunion';
+
+  @override
+  String dashParentViewMoreMeetings(int count) {
+    return 'Voir $count réunions de plus';
+  }
+
+  @override
+  String get dashParentChildrenOverview => 'Aperçu des enfants';
+
+  @override
+  String get dashParentNoChildren => 'Aucun enfant ajouté';
+
+  @override
+  String get dashParentNoChildrenHint =>
+      'Ajoutez vos enfants pour suivre leur progression';
+
+  @override
+  String dashParentCourseCount(int count) {
+    return '$count cours';
+  }
+
+  @override
+  String dashParentAppCount(int count) {
+    return '$count cand.';
+  }
+
+  @override
+  String get dashParentViewAllReports => 'Voir tous les rapports';
+
+  @override
+  String get dashParentAcademicReports => 'Rapports de performance académique';
+
+  @override
+  String get dashParentWithTeachersOrCounselors =>
+      'Avec enseignants ou conseillers';
+
+  @override
+  String get dashParentNotificationSettings => 'Paramètres de notification';
+
+  @override
+  String get dashParentManageAlerts => 'Gérer les alertes et mises à jour';
+
+  @override
+  String get dashParentMeetWith => 'Avec qui souhaitez-vous vous réunir ?';
+
+  @override
+  String get dashParentTeacher => 'Enseignant';
+
+  @override
+  String get dashParentTeacherConference =>
+      'Planifier une réunion parents-enseignant';
+
+  @override
+  String get dashParentCounselor => 'Conseiller';
+
+  @override
+  String get dashParentCounselorMeeting =>
+      'Rencontrer un conseiller d\'orientation';
+
+  @override
+  String get dashParentStatusPending => 'EN ATTENTE';
+
+  @override
+  String get dashParentStatusApproved => 'APPROUVÉ';
+
+  @override
+  String get dashParentStatusDeclined => 'REFUSÉ';
+
+  @override
+  String get dashParentStatusCancelled => 'ANNULÉ';
+
+  @override
+  String get dashParentStatusCompleted => 'TERMINÉ';
+
+  @override
+  String get dashCounselorTitle => 'Tableau de bord conseiller';
+
+  @override
+  String get dashCounselorMyStudents => 'Mes étudiants';
+
+  @override
+  String get dashCounselorSessions => 'Sessions';
+
+  @override
+  String get dashCounselorStudents => 'Étudiants';
+
+  @override
+  String get dashCounselorToday => 'Aujourd\'hui';
+
+  @override
+  String get dashCounselorMeetingRequests => 'Demandes de réunion';
+
+  @override
+  String get dashCounselorManageAvailability => 'Gérer les disponibilités';
+
+  @override
+  String get dashCounselorSetMeetingHours => 'Définissez vos heures de réunion';
+
+  @override
+  String dashCounselorPendingApproval(int count) {
+    return '$count en attente d\'approbation';
+  }
+
+  @override
+  String dashCounselorViewMoreRequests(int count) {
+    return 'Voir $count demandes de plus';
+  }
+
+  @override
+  String get dashCounselorTodaySessions => 'Sessions du jour';
+
+  @override
+  String get dashCounselorNoStudents => 'Aucun étudiant assigné';
+
+  @override
+  String get dashCounselorNoStudentsHint =>
+      'Vos étudiants apparaîtront ici une fois assignés';
+
+  @override
+  String get dashCounselorPendingRecommendations =>
+      'Recommandations en attente';
+
+  @override
+  String dashCounselorDraftRecommendations(int count) {
+    return 'Vous avez $count brouillons de recommandations';
+  }
+
+  @override
+  String get dashCounselorSessionIndividual => 'Individuel';
+
+  @override
+  String get dashCounselorSessionGroup => 'Groupe';
+
+  @override
+  String get dashCounselorSessionCareer => 'Carrière';
+
+  @override
+  String get dashCounselorSessionAcademic => 'Académique';
+
+  @override
+  String get dashCounselorSessionPersonal => 'Personnel';
+
+  @override
+  String get dashCounselorStatusPending => 'EN ATTENTE';
+
+  @override
+  String get dashAdminNotAuthenticated => 'Non authentifié';
+
+  @override
+  String get dashAdminDashboard => 'Tableau de bord';
+
+  @override
+  String dashAdminWelcomeBack(String name) {
+    return 'Bon retour, $name';
+  }
+
+  @override
+  String get dashAdminQuickAction => 'Action rapide';
+
+  @override
+  String get dashAdminAddUser => 'Ajouter un utilisateur';
+
+  @override
+  String get dashAdminCreateAnnouncement => 'Créer une annonce';
+
+  @override
+  String get dashAdminGenerateReport => 'Générer un rapport';
+
+  @override
+  String get dashAdminBulkActions => 'Actions groupées';
+
+  @override
+  String get dashAdminTotalUsers => 'Total utilisateurs';
+
+  @override
+  String get dashAdminStudents => 'Étudiants';
+
+  @override
+  String get dashAdminInstitutions => 'Institutions';
+
+  @override
+  String get dashAdminRecommenders => 'Recommandeurs';
+
+  @override
+  String dashAdminCountStudents(int count) {
+    return '$count étudiants';
+  }
+
+  @override
+  String dashAdminCountParents(int count) {
+    return '$count parents';
+  }
+
+  @override
+  String dashAdminCountCounselors(int count) {
+    return '$count conseillers';
+  }
+
+  @override
+  String dashAdminCountAdmins(int count) {
+    return '$count admins';
+  }
+
+  @override
+  String get dashAdminJustNow => 'À l\'instant';
+
+  @override
+  String dashAdminMinutesAgo(int count) {
+    return 'il y a $count min';
+  }
+
+  @override
+  String dashAdminHoursAgo(int count) {
+    return 'il y a $count h';
+  }
+
+  @override
+  String dashAdminDaysAgo(int count) {
+    return 'il y a $count j';
+  }
+
+  @override
+  String get dashAdminRefresh => 'Actualiser';
+
+  @override
+  String get dashAdminQuickStats => 'Statistiques rapides';
+
+  @override
+  String get dashAdminActive30d => 'Actifs (30j)';
+
+  @override
+  String get dashAdminNewUsers7d => 'Nouveaux (7j)';
+
+  @override
+  String get dashAdminApplications7d => 'Candidatures (7j)';
+
+  @override
+  String get dashAdminUserGrowth => 'Croissance des utilisateurs';
+
+  @override
+  String get dashAdminUserGrowthDesc =>
+      'Nouvelles inscriptions au cours des 6 derniers mois';
+
+  @override
+  String get dashAdminUserDistribution => 'Répartition des utilisateurs';
+
+  @override
+  String get dashAdminByUserType => 'Par type d\'utilisateur';
+
+  @override
+  String get dashInstTitle => 'Tableau de bord institution';
+
+  @override
+  String get dashInstDebugPanel => 'Panneau de débogage';
+
+  @override
+  String get dashInstApplicants => 'Candidats';
+
+  @override
+  String get dashInstPrograms => 'Programmes';
+
+  @override
+  String get dashInstCourses => 'Cours';
+
+  @override
+  String get dashInstCounselors => 'Conseillers';
+
+  @override
+  String get dashInstNewProgram => 'Nouveau programme';
+
+  @override
+  String get dashInstNewCourse => 'Nouveau cours';
+
+  @override
+  String get dashInstTotalApplicants => 'Total des candidats';
+
+  @override
+  String get dashInstPendingReview => 'En attente d\'examen';
+
+  @override
+  String get dashInstActivePrograms => 'Programmes actifs';
+
+  @override
+  String get dashInstTotalStudents => 'Total des étudiants';
+
+  @override
+  String get dashInstReviewPending => 'Examiner les candidatures en attente';
+
+  @override
+  String dashInstApplicationsWaiting(int count) {
+    return '$count candidatures en attente';
+  }
+
+  @override
+  String dashInstApplicationsInProgress(int count) {
+    return '$count candidatures en cours';
+  }
+
+  @override
+  String get dashInstAcceptedApplicants => 'Candidats acceptés';
+
+  @override
+  String dashInstApplicationsApproved(int count) {
+    return '$count candidatures approuvées';
+  }
+
+  @override
+  String get dashInstCreateNewProgram => 'Créer un nouveau programme';
+
+  @override
+  String get dashInstAddProgramHint => 'Ajouter un nouveau cours ou programme';
+
+  @override
+  String get dashInstApplicationSummary => 'Résumé des candidatures';
+
+  @override
+  String get dashInstProgramsOverview => 'Aperçu des programmes';
+
+  @override
+  String get dashInstTotalPrograms => 'Total des programmes';
+
+  @override
+  String get dashInstInactivePrograms => 'Programmes inactifs';
+
+  @override
+  String get dashInstTotalEnrollments => 'Total des inscriptions';
+
+  @override
+  String get dashInstApplicationFunnel => 'Entonnoir de candidatures';
+
+  @override
+  String dashInstConversionRate(String rate) {
+    return 'Taux de conversion global : $rate%';
+  }
+
+  @override
+  String get dashInstApplicantDemographics => 'Démographie des candidats';
+
+  @override
+  String dashInstTotalApplicantsCount(int count) {
+    return 'Total des candidats : $count';
+  }
+
+  @override
+  String get dashInstByLocation => 'Par localisation';
+
+  @override
+  String get dashInstByAgeGroup => 'Par tranche d\'âge';
+
+  @override
+  String get dashInstByAcademicBackground => 'Par parcours académique';
+
+  @override
+  String get dashInstProgramPopularity => 'Popularité des programmes';
+
+  @override
+  String get dashInstTopPrograms => 'Programmes les plus demandés';
+
+  @override
+  String dashInstAppsCount(int count) {
+    return '$count cand.';
+  }
+
+  @override
+  String get dashInstProcessingTime => 'Temps de traitement des candidatures';
+
+  @override
+  String get dashInstAverageTime => 'Temps moyen';
+
+  @override
+  String dashInstDaysValue(String count) {
+    return '$count jours';
+  }
+
+  @override
+  String get dashRecTitle => 'Tableau de bord recommandeur';
+
+  @override
+  String get dashRecRecommendations => 'Recommandations';
+
+  @override
+  String get dashRecTotal => 'Total';
+
+  @override
+  String get dashRecUrgent => 'Urgent';
+
+  @override
+  String get dashRecUrgentRecommendations => 'Recommandations urgentes';
+
+  @override
+  String dashRecPendingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 's',
+      one: '',
+    );
+    return 'Vous avez $count recommandation$_temp0 en attente';
+  }
+
+  @override
+  String get dashRecUnknownStudent => 'Étudiant inconnu';
+
+  @override
+  String get dashRecInstitutionNotSpecified => 'Institution non spécifiée';
+
+  @override
+  String get dashRecRecentRequests => 'Demandes récentes';
+
+  @override
+  String get dashRecNoRequests => 'Aucune demande de recommandation';
+
+  @override
+  String get dashRecNoRequestsHint =>
+      'Les demandes apparaîtront ici quand les étudiants demanderont des recommandations';
+
+  @override
+  String get dashRecQuickTips => 'Conseils rapides';
+
+  @override
+  String get dashRecTip1 =>
+      'Rédigez des exemples précis des réalisations de l\'étudiant';
+
+  @override
+  String get dashRecTip2 =>
+      'Soumettez les recommandations au moins 2 semaines avant la date limite';
+
+  @override
+  String get dashRecTip3 =>
+      'Personnalisez chaque recommandation pour l\'institution';
 }

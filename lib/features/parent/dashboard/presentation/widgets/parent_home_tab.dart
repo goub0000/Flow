@@ -13,6 +13,7 @@ import '../../../providers/parent_children_provider.dart';
 import '../../../providers/parent_alerts_provider.dart';
 import '../../../reports/presentation/reports_screen.dart';
 import '../../../scheduling/presentation/meeting_scheduler_screen.dart';
+import '../../../../../core/l10n_extension.dart';
 
 class ParentHomeTab extends ConsumerStatefulWidget {
   final VoidCallback onNavigateToChildren;
@@ -86,7 +87,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               onPressed: () {
                 ref.read(parentChildrenProvider.notifier).fetchChildren();
               },
-              child: const Text('Retry'),
+              child: Text(context.l10n.dashCommonRetry),
             ),
           ],
         ),
@@ -94,7 +95,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
     }
 
     if (isLoading) {
-      return const LoadingIndicator(message: 'Loading overview...');
+      return LoadingIndicator(message: context.l10n.dashCommonLoadingOverview);
     }
 
     final totalChildren = statistics['totalChildren'] as int;
@@ -117,7 +118,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               Expanded(
                 child: _StatCard(
                   icon: Icons.child_care,
-                  label: 'Children',
+                  label: context.l10n.dashParentChildren,
                   value: '$totalChildren',
                   color: AppColors.parentRole,
                 ),
@@ -126,7 +127,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               Expanded(
                 child: _StatCard(
                   icon: Icons.star,
-                  label: 'Avg Grade',
+                  label: context.l10n.dashParentAvgGrade,
                   value: averageGrade.toStringAsFixed(1),
                   color: _getGradeColor(averageGrade),
                 ),
@@ -139,7 +140,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               Expanded(
                 child: _StatCard(
                   icon: Icons.description,
-                  label: 'Applications',
+                  label: context.l10n.dashCommonApplications,
                   value: '$totalApplications',
                   color: AppColors.info,
                 ),
@@ -148,7 +149,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               Expanded(
                 child: _StatCard(
                   icon: Icons.pending_actions,
-                  label: 'Pending',
+                  label: context.l10n.dashCommonPending,
                   value: '$pendingApplications',
                   color: AppColors.warning,
                 ),
@@ -161,7 +162,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               Expanded(
                 child: _StatCard(
                   icon: Icons.event_available,
-                  label: 'Upcoming',
+                  label: context.l10n.dashCommonUpcoming,
                   value: '${upcomingMeetings.length}',
                   color: AppColors.success,
                 ),
@@ -170,7 +171,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               Expanded(
                 child: _StatCard(
                   icon: Icons.pending,
-                  label: 'Requests',
+                  label: context.l10n.dashCommonRequests,
                   value: '${pendingMeetings.length}',
                   color: AppColors.counselorRole,
                 ),
@@ -184,13 +185,13 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Upcoming Meetings',
+                context.l10n.dashParentUpcomingMeetings,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               if (upcomingMeetings.isNotEmpty)
                 TextButton(
                   onPressed: () => _scheduleMeeting(context),
-                  child: const Text('View All'),
+                  child: Text(context.l10n.dashCommonViewAll),
                 ),
             ],
           ),
@@ -208,14 +209,14 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No Upcoming Meetings',
+                      context.l10n.dashParentNoUpcomingMeetings,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Schedule meetings with teachers or counselors',
+                      context.l10n.dashParentScheduleMeetingsHint,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -225,7 +226,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                     ElevatedButton.icon(
                       onPressed: () => _scheduleMeeting(context),
                       icon: const Icon(Icons.add),
-                      label: const Text('Schedule Meeting'),
+                      label: Text(context.l10n.dashParentScheduleMeeting),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: AppColors.textOnPrimary,
@@ -247,7 +248,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
               padding: const EdgeInsets.only(bottom: 12),
               child: TextButton(
                 onPressed: () => _scheduleMeeting(context),
-                child: Text('View ${upcomingMeetings.length - 3} more meetings'),
+                child: Text(context.l10n.dashParentViewMoreMeetings(upcomingMeetings.length - 3)),
               ),
             ),
           const SizedBox(height: 24),
@@ -257,13 +258,13 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Children Overview',
+                context.l10n.dashParentChildrenOverview,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               if (children.isNotEmpty)
                 TextButton(
                   onPressed: widget.onNavigateToChildren,
-                  child: const Text('View All'),
+                  child: Text(context.l10n.dashCommonViewAll),
                 ),
             ],
           ),
@@ -281,14 +282,14 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No Children Added',
+                      context.l10n.dashParentNoChildren,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Add your children to track their progress',
+                      context.l10n.dashParentNoChildrenHint,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -375,12 +376,12 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                         children: [
                           _MiniStat(
                             icon: Icons.book_outlined,
-                            value: '${child.enrolledCourses.length} courses',
+                            value: context.l10n.dashParentCourseCount(child.enrolledCourses.length),
                           ),
                           const SizedBox(width: 16),
                           _MiniStat(
                             icon: Icons.description_outlined,
-                            value: '${child.applications.length} apps',
+                            value: context.l10n.dashParentAppCount(child.applications.length),
                           ),
                         ],
                       ),
@@ -393,7 +394,7 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
 
           // Quick Actions
           Text(
-            'Quick Actions',
+            context.l10n.dashCommonQuickActions,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
@@ -410,8 +411,8 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                     ),
                     child: const Icon(Icons.assessment, color: AppColors.info),
                   ),
-                  title: const Text('View All Reports'),
-                  subtitle: const Text('Academic performance reports'),
+                  title: Text(context.l10n.dashParentViewAllReports),
+                  subtitle: Text(context.l10n.dashParentAcademicReports),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => _viewReports(context),
                 ),
@@ -425,8 +426,8 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                     ),
                     child: const Icon(Icons.calendar_month, color: AppColors.warning),
                   ),
-                  title: const Text('Schedule Meeting'),
-                  subtitle: const Text('With teachers or counselors'),
+                  title: Text(context.l10n.dashParentScheduleMeeting),
+                  subtitle: Text(context.l10n.dashParentWithTeachersOrCounselors),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => _scheduleMeeting(context),
                 ),
@@ -440,8 +441,8 @@ class _ParentHomeTabState extends ConsumerState<ParentHomeTab> with RefreshableM
                     ),
                     child: const Icon(Icons.notifications, color: AppColors.success),
                   ),
-                  title: const Text('Notification Settings'),
-                  subtitle: const Text('Manage alerts and updates'),
+                  title: Text(context.l10n.dashParentNotificationSettings),
+                  subtitle: Text(context.l10n.dashParentManageAlerts),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: widget.onNavigateToSettings,
                 ),
@@ -474,12 +475,12 @@ void _scheduleMeeting(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-        title: const Text('Schedule Meeting'),
+        title: Text(context.l10n.dashParentScheduleMeeting),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Who would you like to meet with?'),
+            Text(context.l10n.dashParentMeetWith),
             const SizedBox(height: 16),
             ListTile(
               leading: Container(
@@ -490,8 +491,8 @@ void _scheduleMeeting(BuildContext context) {
                 ),
                 child: const Icon(Icons.school, color: AppColors.info),
               ),
-              title: const Text('Teacher'),
-              subtitle: const Text('Schedule a parent-teacher conference'),
+              title: Text(context.l10n.dashParentTeacher),
+              subtitle: Text(context.l10n.dashParentTeacherConference),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.pop(context);
@@ -515,8 +516,8 @@ void _scheduleMeeting(BuildContext context) {
                 ),
                 child: const Icon(Icons.support_agent, color: AppColors.counselorRole),
               ),
-              title: const Text('Counselor'),
-              subtitle: const Text('Meet with a guidance counselor'),
+              title: Text(context.l10n.dashParentCounselor),
+              subtitle: Text(context.l10n.dashParentCounselorMeeting),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.pop(context);
@@ -535,7 +536,7 @@ void _scheduleMeeting(BuildContext context) {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.dashCommonCancel),
           ),
         ],
       ),
@@ -627,27 +628,27 @@ class _MeetingCard extends StatelessWidget {
       case models.MeetingStatus.pending:
         statusColor = AppColors.warning;
         statusIcon = Icons.pending;
-        statusText = 'PENDING';
+        statusText = context.l10n.dashParentStatusPending;
         break;
       case models.MeetingStatus.approved:
         statusColor = AppColors.success;
         statusIcon = Icons.check_circle;
-        statusText = 'APPROVED';
+        statusText = context.l10n.dashParentStatusApproved;
         break;
       case models.MeetingStatus.declined:
         statusColor = AppColors.error;
         statusIcon = Icons.cancel;
-        statusText = 'DECLINED';
+        statusText = context.l10n.dashParentStatusDeclined;
         break;
       case models.MeetingStatus.cancelled:
         statusColor = AppColors.textSecondary;
         statusIcon = Icons.event_busy;
-        statusText = 'CANCELLED';
+        statusText = context.l10n.dashParentStatusCancelled;
         break;
       case models.MeetingStatus.completed:
         statusColor = AppColors.info;
         statusIcon = Icons.done_all;
-        statusText = 'COMPLETED';
+        statusText = context.l10n.dashParentStatusCompleted;
         break;
     }
 

@@ -7,6 +7,7 @@ import '../../students/presentation/students_list_screen.dart';
 import '../../sessions/presentation/sessions_list_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
+import '../../../../core/l10n_extension.dart';
 
 class CounselorDashboardScreen extends ConsumerStatefulWidget {
   const CounselorDashboardScreen({super.key});
@@ -41,34 +42,34 @@ class _CounselorDashboardScreenState
     return Stack(
       children: [
         DashboardScaffold(
-          title: _getTitle(),
+          title: _getTitle(context),
           currentIndex: _currentIndex,
           onNavigationTap: (index) => setState(() => _currentIndex = index),
-          navigationItems: const [
+          navigationItems: [
             DashboardNavigationItem(
               icon: Icons.dashboard_outlined,
               activeIcon: Icons.dashboard,
-              label: 'Overview',
+              label: context.l10n.dashCommonOverview,
             ),
             DashboardNavigationItem(
               icon: Icons.people_outlined,
               activeIcon: Icons.people,
-              label: 'Students',
+              label: context.l10n.dashCounselorStudents,
             ),
             DashboardNavigationItem(
               icon: Icons.event_outlined,
               activeIcon: Icons.event,
-              label: 'Sessions',
+              label: context.l10n.dashCounselorSessions,
             ),
             DashboardNavigationItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
-              label: 'Profile',
+              label: context.l10n.dashCommonProfile,
             ),
             DashboardNavigationItem(
               icon: Icons.settings_outlined,
               activeIcon: Icons.settings,
-              label: 'Settings',
+              label: context.l10n.dashCommonSettings,
             ),
           ],
           body: _screens[_currentIndex],
@@ -84,20 +85,20 @@ class _CounselorDashboardScreenState
     );
   }
 
-  String _getTitle() {
+  String _getTitle(BuildContext context) {
     switch (_currentIndex) {
       case 0:
-        return 'Counselor Dashboard';
+        return context.l10n.dashCounselorTitle;
       case 1:
-        return 'My Students';
+        return context.l10n.dashCounselorMyStudents;
       case 2:
-        return 'Sessions';
+        return context.l10n.dashCounselorSessions;
       case 3:
-        return 'Profile';
+        return context.l10n.dashCommonProfile;
       case 4:
-        return 'Settings';
+        return context.l10n.dashCommonSettings;
       default:
-        return 'Counselor Dashboard';
+        return context.l10n.dashCounselorTitle;
     }
   }
 }

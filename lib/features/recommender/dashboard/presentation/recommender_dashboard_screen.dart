@@ -6,6 +6,7 @@ import 'widgets/recommender_overview_tab.dart';
 import '../../requests/presentation/requests_list_screen.dart';
 import '../../../shared/profile/profile_screen.dart';
 import '../../../shared/settings/settings_screen.dart';
+import '../../../../core/l10n_extension.dart';
 
 class RecommenderDashboardScreen extends ConsumerStatefulWidget {
   const RecommenderDashboardScreen({super.key});
@@ -38,29 +39,29 @@ class _RecommenderDashboardScreenState
     return Stack(
       children: [
         DashboardScaffold(
-          title: _getTitle(),
+          title: _getTitle(context),
           currentIndex: _currentIndex,
           onNavigationTap: (index) => setState(() => _currentIndex = index),
-          navigationItems: const [
+          navigationItems: [
             DashboardNavigationItem(
               icon: Icons.dashboard_outlined,
               activeIcon: Icons.dashboard,
-              label: 'Overview',
+              label: context.l10n.dashCommonOverview,
             ),
             DashboardNavigationItem(
               icon: Icons.assignment_outlined,
               activeIcon: Icons.assignment,
-              label: 'Requests',
+              label: context.l10n.dashCommonRequests,
             ),
             DashboardNavigationItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
-              label: 'Profile',
+              label: context.l10n.dashCommonProfile,
             ),
             DashboardNavigationItem(
               icon: Icons.settings_outlined,
               activeIcon: Icons.settings,
-              label: 'Settings',
+              label: context.l10n.dashCommonSettings,
             ),
           ],
           body: _screens[_currentIndex],
@@ -76,18 +77,18 @@ class _RecommenderDashboardScreenState
     );
   }
 
-  String _getTitle() {
+  String _getTitle(BuildContext context) {
     switch (_currentIndex) {
       case 0:
-        return 'Recommender Dashboard';
+        return context.l10n.dashRecTitle;
       case 1:
-        return 'Recommendations';
+        return context.l10n.dashRecRecommendations;
       case 2:
-        return 'Profile';
+        return context.l10n.dashCommonProfile;
       case 3:
-        return 'Settings';
+        return context.l10n.dashCommonSettings;
       default:
-        return 'Recommender Dashboard';
+        return context.l10n.dashRecTitle;
     }
   }
 }
