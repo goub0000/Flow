@@ -6,9 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:logging/logging.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'core/theme/app_theme.dart';
 import 'core/providers/appearance_provider.dart';
 import 'core/providers/cookie_providers.dart';
+import 'core/providers/locale_provider.dart';
 import 'core/providers/service_providers.dart' as service_providers;
 import 'core/error/error_handling.dart';
 import 'core/api/api_config.dart';
@@ -192,10 +194,14 @@ class FlowApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final appearance = ref.watch(appearanceProvider);
     final authState = ref.watch(authProvider);
+    final locale = ref.watch(localeProvider);
 
     return MaterialApp.router(
       title: 'Flow - African EdTech Platform',
       debugShowCheckedModeBanner: false,
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.getLightTheme(
         fontSize: appearance.fontSize,
         fontFamily: appearance.fontFamily != 'System Default' ? appearance.fontFamily : null,

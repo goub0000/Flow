@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/l10n_extension.dart';
 import '../../../core/models/university_model.dart';
 import '../../../core/widgets/skeletons/shimmer_effect.dart';
 import '../repositories/university_repository.dart';
@@ -50,7 +51,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
             child: Row(
               children: [
                 Text(
-                  'Search Universities',
+                  context.l10n.uniSearchTitle,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -72,7 +73,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
                       ref.read(universitySearchProvider.notifier).clearFilters();
                     },
                     icon: const Icon(Icons.clear_all, size: 18),
-                    label: const Text('Clear all'),
+                    label: Text(context.l10n.uniSearchClearAll),
                   ),
               ],
             ),
@@ -96,7 +97,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search by university name...',
+                    hintText: context.l10n.uniSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
@@ -124,7 +125,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
                   child: Row(
                     children: [
                       _FilterChip(
-                        label: 'Filters',
+                        label: context.l10n.uniSearchFilters,
                         icon: Icons.tune,
                         isActive: state.filters.hasFilters,
                         onTap: () => _showFilterSheet(context),
@@ -168,7 +169,7 @@ class _UniversitySearchScreenState extends ConsumerState<UniversitySearchScreen>
             child: Row(
               children: [
                 Text(
-                  '${state.totalCount} universities found',
+                  context.l10n.uniSearchResultCount(state.totalCount),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -372,7 +373,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Filters',
+                      context.l10n.uniSearchFilters,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -387,7 +388,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                           _acceptanceRateRange = null;
                         });
                       },
-                      child: const Text('Reset'),
+                      child: Text(context.l10n.uniSearchFilterReset),
                     ),
                   ],
                 ),
@@ -401,17 +402,17 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                   children: [
                     // Country Filter
                     _FilterSection(
-                      title: 'Country',
+                      title: context.l10n.uniSearchFilterCountry,
                       child: DropdownButtonFormField<String>(
                         value: _selectedCountry,
                         decoration: InputDecoration(
-                          hintText: 'Select country',
+                          hintText: context.l10n.uniSearchFilterSelectCountry,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         items: [
-                          const DropdownMenuItem(value: null, child: Text('All Countries')),
+                          DropdownMenuItem(value: null, child: Text(context.l10n.uniSearchFilterAllCountries)),
                           ...state.availableCountries.map(
                             (c) => DropdownMenuItem(value: c, child: Text(c)),
                           ),
@@ -422,17 +423,17 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                     const SizedBox(height: 24),
                     // University Type Filter
                     _FilterSection(
-                      title: 'University Type',
+                      title: context.l10n.uniSearchFilterUniType,
                       child: DropdownButtonFormField<String>(
                         value: _selectedType,
                         decoration: InputDecoration(
-                          hintText: 'Select type',
+                          hintText: context.l10n.uniSearchFilterSelectType,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         items: [
-                          const DropdownMenuItem(value: null, child: Text('All Types')),
+                          DropdownMenuItem(value: null, child: Text(context.l10n.uniSearchFilterAllTypes)),
                           ...state.availableTypes.map(
                             (t) => DropdownMenuItem(value: t, child: Text(t)),
                           ),
@@ -443,17 +444,17 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                     const SizedBox(height: 24),
                     // Location Type Filter
                     _FilterSection(
-                      title: 'Location Type',
+                      title: context.l10n.uniSearchFilterLocationType,
                       child: DropdownButtonFormField<String>(
                         value: _selectedLocationType,
                         decoration: InputDecoration(
-                          hintText: 'Select location type',
+                          hintText: context.l10n.uniSearchFilterSelectLocation,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         items: [
-                          const DropdownMenuItem(value: null, child: Text('All Locations')),
+                          DropdownMenuItem(value: null, child: Text(context.l10n.uniSearchFilterAllLocations)),
                           ...state.availableLocationTypes.map(
                             (l) => DropdownMenuItem(value: l, child: Text(l)),
                           ),
@@ -464,7 +465,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                     const SizedBox(height: 24),
                     // Max Tuition Filter
                     _FilterSection(
-                      title: 'Maximum Tuition (USD/year)',
+                      title: context.l10n.uniSearchFilterMaxTuition,
                       child: Column(
                         children: [
                           Slider(
@@ -474,7 +475,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                             divisions: 100,
                             label: _maxTuition != null
                                 ? '\$${_maxTuition!.toInt().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}'
-                                : 'Any',
+                                : context.l10n.uniSearchFilterAny,
                             onChanged: (value) {
                               setState(() {
                                 _maxTuition = value == 100000 ? null : value;
@@ -487,7 +488,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                               const Text('\$0'),
                               Text(_maxTuition != null
                                   ? 'Up to \$${_maxTuition!.toInt().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}'
-                                  : 'No limit'),
+                                  : context.l10n.uniSearchFilterNoLimit),
                               const Text('\$100,000+'),
                             ],
                           ),
@@ -497,7 +498,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                     const SizedBox(height: 24),
                     // Acceptance Rate Filter
                     _FilterSection(
-                      title: 'Acceptance Rate',
+                      title: context.l10n.uniSearchFilterAcceptanceRate,
                       child: Column(
                         children: [
                           RangeSlider(
@@ -521,7 +522,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                               const Text('0%'),
                               Text(_acceptanceRateRange != null
                                   ? '${(_acceptanceRateRange!.start * 100).toInt()}% - ${(_acceptanceRateRange!.end * 100).toInt()}%'
-                                  : 'Any rate'),
+                                  : context.l10n.uniSearchFilterAnyRate),
                               const Text('100%'),
                             ],
                           ),
@@ -560,7 +561,7 @@ class _FilterSheetState extends ConsumerState<_FilterSheet> {
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: const Text('Apply Filters'),
+                    child: Text(context.l10n.uniSearchFilterApply),
                   ),
                 ),
               ),
@@ -704,7 +705,7 @@ class _UniversityCard extends StatelessWidget {
                   if (university.acceptanceRate != null)
                     _StatChip(
                       icon: Icons.percent,
-                      label: '${(university.acceptanceRate! * 100).toStringAsFixed(0)}% acceptance',
+                      label: context.l10n.uniSearchAcceptance((university.acceptanceRate! * 100).toStringAsFixed(0)),
                     ),
                   if (university.tuitionOutState != null)
                     _StatChip(
@@ -714,7 +715,7 @@ class _UniversityCard extends StatelessWidget {
                   if (university.totalStudents != null)
                     _StatChip(
                       icon: Icons.people,
-                      label: '${_formatNumber(university.totalStudents!)} students',
+                      label: context.l10n.uniSearchStudents(_formatNumber(university.totalStudents!)),
                     ),
                   if (university.universityType != null)
                     _StatChip(
@@ -797,7 +798,7 @@ class _EmptyView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              hasFilters ? 'No universities match your filters' : 'No universities found',
+              hasFilters ? context.l10n.uniSearchNoMatchFilters : context.l10n.uniSearchNoResults,
               style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -806,8 +807,8 @@ class _EmptyView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               hasFilters
-                  ? 'Try adjusting your filters to see more results'
-                  : 'Try searching for a university name',
+                  ? context.l10n.uniSearchAdjustFilters
+                  : context.l10n.uniSearchTrySearching,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -847,7 +848,7 @@ class _ErrorView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Something went wrong',
+              context.l10n.uniSearchError,
               style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.error,
               ),
@@ -864,7 +865,7 @@ class _ErrorView extends StatelessWidget {
             FilledButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(context.l10n.uniSearchRetry),
             ),
           ],
         ),

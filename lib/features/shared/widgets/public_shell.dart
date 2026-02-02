@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/user_roles.dart';
+import '../../../core/l10n_extension.dart';
 import '../../authentication/providers/auth_provider.dart';
 
 /// Persistent navigation shell for public pages (about, universities, etc.).
@@ -69,25 +70,25 @@ class _PublicNavBar extends StatelessWidget {
                 // Nav links (hidden on narrow screens)
                 if (isWide) ...[
                   _NavLink(
-                    label: 'Home',
+                    label: context.l10n.navHome,
                     path: '/',
                     currentPath: currentPath,
                     theme: theme,
                   ),
                   _NavLink(
-                    label: 'Universities',
+                    label: context.l10n.navUniversities,
                     path: '/universities',
                     currentPath: currentPath,
                     theme: theme,
                   ),
                   _NavLink(
-                    label: 'About',
+                    label: context.l10n.navAbout,
                     path: '/about',
                     currentPath: currentPath,
                     theme: theme,
                   ),
                   _NavLink(
-                    label: 'Contact',
+                    label: context.l10n.navContact,
                     path: '/contact',
                     currentPath: currentPath,
                     theme: theme,
@@ -101,7 +102,7 @@ class _PublicNavBar extends StatelessWidget {
                   FilledButton.icon(
                     onPressed: () => context.go(dashboardRoute!),
                     icon: const Icon(Icons.dashboard, size: 18),
-                    label: const Text('Dashboard'),
+                    label: Text(context.l10n.navDashboard),
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -115,13 +116,13 @@ class _PublicNavBar extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: theme.colorScheme.onSurface,
                     ),
-                    child: const Text('Sign In'),
+                    child: Text(context.l10n.navSignIn),
                   ),
                   const SizedBox(width: 8),
                   FilledButton.icon(
                     onPressed: () => context.go('/register'),
                     icon: const Icon(Icons.arrow_forward, size: 18),
-                    label: const Text('Get Started'),
+                    label: Text(context.l10n.navGetStarted),
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -137,16 +138,16 @@ class _PublicNavBar extends StatelessWidget {
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.menu),
                     onSelected: (path) => context.go(path),
-                    itemBuilder: (_) => [
-                      const PopupMenuItem(value: '/', child: Text('Home')),
-                      const PopupMenuItem(
+                    itemBuilder: (ctx) => [
+                      PopupMenuItem(value: '/', child: Text(ctx.l10n.navHome)),
+                      PopupMenuItem(
                         value: '/universities',
-                        child: Text('Universities'),
+                        child: Text(ctx.l10n.navUniversities),
                       ),
-                      const PopupMenuItem(value: '/about', child: Text('About')),
-                      const PopupMenuItem(
+                      PopupMenuItem(value: '/about', child: Text(ctx.l10n.navAbout)),
+                      PopupMenuItem(
                         value: '/contact',
-                        child: Text('Contact'),
+                        child: Text(ctx.l10n.navContact),
                       ),
                     ],
                   ),

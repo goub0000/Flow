@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:ui' as ui;
+import '../../../core/l10n_extension.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/home_constants.dart';
 import '../../../core/constants/user_roles.dart';
@@ -108,9 +109,9 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                     ),
                     if (isWide) ...[
                       const SizedBox(width: 32),
-                      _NavTextButton(label: 'Universities', path: '/universities', theme: theme),
-                      _NavTextButton(label: 'About', path: '/about', theme: theme),
-                      _NavTextButton(label: 'Contact', path: '/contact', theme: theme),
+                      _NavTextButton(label: context.l10n.navUniversities, path: '/universities', theme: theme),
+                      _NavTextButton(label: context.l10n.navAbout, path: '/about', theme: theme),
+                      _NavTextButton(label: context.l10n.navContact, path: '/contact', theme: theme),
                     ],
                   ],
                 ),
@@ -121,7 +122,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                         authState.user?.activeRole.dashboardRoute ?? '/login',
                       ),
                       icon: const Icon(Icons.dashboard, size: 18),
-                      label: const Text('Dashboard'),
+                      label: Text(context.l10n.navDashboard),
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -135,13 +136,13 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                       style: TextButton.styleFrom(
                         foregroundColor: theme.colorScheme.onSurface,
                       ),
-                      child: const Text('Sign In'),
+                      child: Text(context.l10n.navSignIn),
                     ),
                     const SizedBox(width: 8),
                     FilledButton.icon(
                       onPressed: () => context.go('/register'),
                       icon: const Icon(Icons.arrow_forward, size: 18),
-                      label: const Text('Get Started'),
+                      label: Text(context.l10n.navGetStarted),
                       style: FilledButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
                         foregroundColor: theme.colorScheme.onPrimary,
@@ -157,10 +158,10 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                     PopupMenuButton<String>(
                       icon: const Icon(Icons.menu),
                       onSelected: (path) => context.go(path),
-                      itemBuilder: (_) => const [
-                        PopupMenuItem(value: '/universities', child: Text('Universities')),
-                        PopupMenuItem(value: '/about', child: Text('About')),
-                        PopupMenuItem(value: '/contact', child: Text('Contact')),
+                      itemBuilder: (ctx) => [
+                        PopupMenuItem(value: '/universities', child: Text(ctx.l10n.navUniversities)),
+                        PopupMenuItem(value: '/about', child: Text(ctx.l10n.navAbout)),
+                        PopupMenuItem(value: '/contact', child: Text(ctx.l10n.navContact)),
                       ],
                     ),
                   ],
@@ -276,7 +277,7 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen>
                     curve: Curves.easeInOut,
                   );
                 },
-                tooltip: 'Back to Top',
+                tooltip: context.l10n.backToTop,
                 elevation: 4,
                 child: const Icon(Icons.arrow_upward),
               ),
@@ -556,7 +557,7 @@ class _HeroSectionState extends State<_HeroSection>
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                'Trusted by 200+ Universities',
+                                context.l10n.heroTrustBadge,
                                 style: theme.textTheme.labelLarge?.copyWith(
                                   color: theme.colorScheme.onPrimaryContainer,
                                   fontWeight: FontWeight.w600,
@@ -573,7 +574,7 @@ class _HeroSectionState extends State<_HeroSection>
                     _buildAnimatedChild(
                       1,
                       Text(
-                        'Find Your Perfect\nUniversity Match',
+                        context.l10n.heroHeadline,
                         style: theme.textTheme.displayLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                           fontSize: isMobile ? 40 : 56,
@@ -590,7 +591,7 @@ class _HeroSectionState extends State<_HeroSection>
                     _buildAnimatedChild(
                       2,
                       Text(
-                        'Discover, compare, and apply to 18,000+ universities\nwith personalized recommendations powered by AI',
+                        context.l10n.heroSubheadline,
                         style: theme.textTheme.titleLarge?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                           height: 1.6,
@@ -622,7 +623,7 @@ class _HeroSectionState extends State<_HeroSection>
                             child: FilledButton.icon(
                               onPressed: () => context.go('/register'),
                               icon: const Icon(Icons.rocket_launch_rounded),
-                              label: const Text('Start Free Trial'),
+                              label: Text(context.l10n.heroStartFreeTrial),
                               style: FilledButton.styleFrom(
                                 backgroundColor: theme.colorScheme.primary,
                                 foregroundColor: theme.colorScheme.onPrimary,
@@ -644,7 +645,7 @@ class _HeroSectionState extends State<_HeroSection>
                             child: OutlinedButton.icon(
                               onPressed: () => showDemoVideoDialog(context),
                               icon: const Icon(Icons.play_circle_outline),
-                              label: const Text('Take a Tour'),
+                              label: Text(context.l10n.heroTakeATour),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: theme.colorScheme.primary,
                                 side: BorderSide(
@@ -690,24 +691,24 @@ class _HeroSectionState extends State<_HeroSection>
                           ],
                         ),
                         child: AnimatedStatsRow(
-                          stats: const [
+                          stats: [
                             StatItem(
                               icon: Icons.people_rounded,
                               value: 50000,
                               suffix: '+',
-                              label: 'Active Users',
+                              label: context.l10n.heroStatActiveUsers,
                             ),
                             StatItem(
                               icon: Icons.account_balance_rounded,
                               value: 18000,
                               suffix: '+',
-                              label: 'Universities',
+                              label: context.l10n.heroStatUniversities,
                             ),
                             StatItem(
                               icon: Icons.public_rounded,
                               value: 100,
                               suffix: '+',
-                              label: 'Countries',
+                              label: context.l10n.heroStatCountries,
                             ),
                           ],
                           spacing: isMobile ? 32 : 64,
@@ -744,7 +745,7 @@ class _ValuePropositionSection extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Why Choose Flow?',
+                context.l10n.whyChooseTitle,
                 style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
@@ -753,7 +754,7 @@ class _ValuePropositionSection extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Built for Africa, designed for everyone',
+                context.l10n.whyChooseSubtitle,
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -767,23 +768,20 @@ class _ValuePropositionSection extends StatelessWidget {
                 children: [
                   _ValueCard(
                     icon: Icons.offline_bolt_rounded,
-                    title: 'Offline-First',
-                    description:
-                        'Access your content anytime, anywhere—even without internet connectivity',
+                    title: context.l10n.valueOfflineTitle,
+                    description: context.l10n.valueOfflineDesc,
                     color: theme.colorScheme.primary,
                   ),
                   _ValueCard(
                     icon: Icons.payment_rounded,
-                    title: 'Mobile Money',
-                    description:
-                        'Pay with M-Pesa, MTN Money, and other local payment methods you trust',
+                    title: context.l10n.valueMobileMoneyTitle,
+                    description: context.l10n.valueMobileMoneyDesc,
                     color: AppColors.terracotta,
                   ),
                   _ValueCard(
                     icon: Icons.translate_rounded,
-                    title: 'Multi-Language',
-                    description:
-                        'Platform available in multiple African languages for your convenience',
+                    title: context.l10n.valueMultiLangTitle,
+                    description: context.l10n.valueMultiLangDesc,
                     color: AppColors.deepOchre,
                   ),
                 ],
@@ -903,8 +901,8 @@ class _SocialProofSection extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: HomeConstants.maxContentWidth),
-          child: const UniversityLogosSection(
-            title: 'Trusted by Leading Institutions Across Africa',
+          child: UniversityLogosSection(
+            title: context.l10n.socialProofTitle,
           ),
         ),
       ),
@@ -931,7 +929,7 @@ class _TestimonialsSection extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'What Our Users Say',
+                context.l10n.testimonialsTitle,
                 style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
@@ -940,7 +938,7 @@ class _TestimonialsSection extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Success stories from students, institutions, and educators',
+                context.l10n.testimonialsSubtitle,
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -1032,7 +1030,7 @@ class _QuizTeaserSection extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'Find Your Path',
+                context.l10n.quizBadge,
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: AppColors.accentDark,
                   fontWeight: FontWeight.w600,
@@ -1043,7 +1041,7 @@ class _QuizTeaserSection extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Text(
-          'Not Sure Where\nto Start?',
+          context.l10n.quizTitle,
           style: theme.textTheme.displaySmall?.copyWith(
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -1052,8 +1050,7 @@ class _QuizTeaserSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'Take our quick quiz to discover universities and programs '
-          'that match your interests, goals, and academic profile.',
+          context.l10n.quizDescription,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
             height: 1.6,
@@ -1069,7 +1066,7 @@ class _QuizTeaserSection extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              '2 minutes',
+              context.l10n.quizDuration,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w500,
@@ -1083,7 +1080,7 @@ class _QuizTeaserSection extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'AI-Powered',
+              context.l10n.quizAIPowered,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w500,
@@ -1132,7 +1129,7 @@ class _KeyFeaturesSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Everything you need',
+                context.l10n.featuresTitle,
                 style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
@@ -1140,28 +1137,28 @@ class _KeyFeaturesSection extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'A complete educational ecosystem designed for modern Africa',
+                context.l10n.featuresSubtitle,
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 48),
-              const _FeatureItem(
+              _FeatureItem(
                 icon: Icons.auto_stories,
-                title: 'Comprehensive Learning',
-                description: 'Access courses, track progress, and manage applications all in one place',
+                title: context.l10n.featureLearningTitle,
+                description: context.l10n.featureLearningDesc,
               ),
               const SizedBox(height: 28),
-              const _FeatureItem(
+              _FeatureItem(
                 icon: Icons.people_rounded,
-                title: 'Built for Collaboration',
-                description: 'Connect students, parents, counselors, and institutions seamlessly',
+                title: context.l10n.featureCollabTitle,
+                description: context.l10n.featureCollabDesc,
               ),
               const SizedBox(height: 28),
-              const _FeatureItem(
+              _FeatureItem(
                 icon: Icons.security_rounded,
-                title: 'Enterprise-Grade Security',
-                description: 'Bank-level encryption and GDPR-compliant data protection',
+                title: context.l10n.featureSecurityTitle,
+                description: context.l10n.featureSecurityDesc,
               ),
             ],
           ),
@@ -1228,7 +1225,7 @@ class _KeyFeaturesSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Works on all devices',
+                        context.l10n.featuresWorksOnAllDevices,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: theme.colorScheme.onPrimaryContainer.withValues(alpha:0.7),
                         ),
@@ -1248,7 +1245,7 @@ class _KeyFeaturesSection extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Everything you need',
+          context.l10n.featuresTitle,
           style: theme.textTheme.displaySmall?.copyWith(
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -1257,7 +1254,7 @@ class _KeyFeaturesSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'A complete educational ecosystem designed for modern Africa',
+          context.l10n.featuresSubtitle,
           style: theme.textTheme.titleMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
@@ -1353,29 +1350,29 @@ class _UserTypesSection extends StatefulWidget {
 class _UserTypesSectionState extends State<_UserTypesSection> {
   int _selectedIndex = 0;
 
-  final List<_UserType> _userTypes = const [
+  List<_UserType> _buildUserTypes(BuildContext context) => [
     _UserType(
       icon: Icons.person_rounded,
-      name: 'Students',
-      description: 'Track courses, manage applications, and achieve your educational goals',
+      name: context.l10n.roleStudents,
+      description: context.l10n.roleStudentsDesc,
       color: AppColors.studentRole,
     ),
     _UserType(
       icon: Icons.business_rounded,
-      name: 'Institutions',
-      description: 'Streamline admissions, manage programs, and engage with students',
+      name: context.l10n.roleInstitutions,
+      description: context.l10n.roleInstitutionsDesc,
       color: AppColors.institutionRole,
     ),
     _UserType(
       icon: Icons.family_restroom_rounded,
-      name: 'Parents',
-      description: 'Monitor progress, communicate with teachers, and support your children',
+      name: context.l10n.roleParents,
+      description: context.l10n.roleParentsDesc,
       color: AppColors.parentRole,
     ),
     _UserType(
       icon: Icons.psychology_rounded,
-      name: 'Counselors',
-      description: 'Guide students, manage sessions, and track counseling outcomes',
+      name: context.l10n.roleCounselors,
+      description: context.l10n.roleCounselorsDesc,
       color: AppColors.counselorRole,
     ),
   ];
@@ -1383,7 +1380,8 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final selected = _userTypes[_selectedIndex];
+    final userTypes = _buildUserTypes(context);
+    final selected = userTypes[_selectedIndex];
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -1396,7 +1394,7 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
           child: Column(
             children: [
               Text(
-                'Built for Everyone',
+                context.l10n.builtForEveryoneTitle,
                 style: theme.textTheme.displayMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
@@ -1405,7 +1403,7 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Choose your role and get started with a personalized experience',
+                context.l10n.builtForEveryoneSubtitle,
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -1422,7 +1420,7 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(minWidth: constraints.maxWidth),
                       child: SegmentedButton<int>(
-                        segments: _userTypes.asMap().entries.map((entry) {
+                        segments: userTypes.asMap().entries.map((entry) {
                           return ButtonSegment<int>(
                             value: entry.key,
                             icon: showIcons ? Icon(entry.value.icon) : null,
@@ -1497,7 +1495,7 @@ class _UserTypesSectionState extends State<_UserTypesSection> {
                       FilledButton.icon(
                         onPressed: () => context.go('/register'),
                         icon: const Icon(Icons.arrow_forward),
-                        label: Text('Get Started as ${selected.name}'),
+                        label: Text(context.l10n.getStartedAs(selected.name)),
                         style: FilledButton.styleFrom(
                           backgroundColor: selected.color,
                           padding: const EdgeInsets.symmetric(
@@ -1608,7 +1606,7 @@ class _FinalCTASection extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Ready to Transform\nYour Educational Journey?',
+                  context.l10n.ctaTitle,
                   style: theme.textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     letterSpacing: -0.5,
@@ -1619,7 +1617,7 @@ class _FinalCTASection extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Join 50,000+ students, institutions, and educators who trust Flow',
+                  context.l10n.ctaSubtitle,
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: Colors.white.withValues(alpha:0.9),
                     fontSize: isMobile ? 14 : 16,
@@ -1632,7 +1630,7 @@ class _FinalCTASection extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () => context.go('/register'),
                     icon: const Icon(Icons.rocket_launch_rounded),
-                    label: const Text('Start Your Free Trial'),
+                    label: Text(context.l10n.ctaButton),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: theme.colorScheme.primary,
@@ -1662,7 +1660,7 @@ class _FinalCTASection extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'No credit card required',
+                      context.l10n.ctaNoCreditCard,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: Colors.white.withValues(alpha:0.8),
                       ),
@@ -1675,7 +1673,7 @@ class _FinalCTASection extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '14-day free trial',
+                      context.l10n.cta14DayTrial,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: Colors.white.withValues(alpha:0.8),
                       ),
@@ -1748,7 +1746,7 @@ class _MinimalFooter extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Africa\'s Leading EdTech Platform\nEmpowering education without boundaries.',
+                            context.l10n.footerTagline,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: secondaryTextColor,
                               height: 1.6,
@@ -1762,14 +1760,14 @@ class _MinimalFooter extends StatelessWidget {
                     // Products Column
                     Expanded(
                       child: _FooterColumn(
-                        title: 'Products',
+                        title: context.l10n.footerProducts,
                         isDark: true,
                         links: [
-                          _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined, isDark: true),
-                          _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined, isDark: true),
-                          _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined, isDark: true),
-                          _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined, isDark: true),
-                          _FooterLink('Mobile Apps', () => context.go('/mobile-apps'), icon: Icons.phone_iphone_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerStudentPortal, () => context.go('/login'), icon: Icons.school_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerInstitutionDashboard, () => context.go('/login'), icon: Icons.business_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerParentApp, () => context.go('/login'), icon: Icons.family_restroom_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerCounselorTools, () => context.go('/login'), icon: Icons.support_agent_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerMobileApps, () => context.go('/mobile-apps'), icon: Icons.phone_iphone_outlined, isDark: true),
                         ],
                       ),
                     ),
@@ -1778,14 +1776,14 @@ class _MinimalFooter extends StatelessWidget {
                     // Company Column
                     Expanded(
                       child: _FooterColumn(
-                        title: 'Company',
+                        title: context.l10n.footerCompany,
                         isDark: true,
                         links: [
-                          _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline, isDark: true),
-                          _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline, isDark: true),
-                          _FooterLink('Press Kit', () => context.go('/press'), icon: Icons.newspaper_outlined, isDark: true),
-                          _FooterLink('Partners', () => context.go('/partners'), icon: Icons.handshake_outlined, isDark: true),
-                          _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline, isDark: true),
+                          _FooterLink(context.l10n.footerAboutUs, () => context.go('/about'), icon: Icons.info_outline, isDark: true),
+                          _FooterLink(context.l10n.footerCareers, () => context.go('/careers'), icon: Icons.work_outline, isDark: true),
+                          _FooterLink(context.l10n.footerPressKit, () => context.go('/press'), icon: Icons.newspaper_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerPartners, () => context.go('/partners'), icon: Icons.handshake_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerContact, () => context.go('/contact'), icon: Icons.mail_outline, isDark: true),
                         ],
                       ),
                     ),
@@ -1794,14 +1792,14 @@ class _MinimalFooter extends StatelessWidget {
                     // Resources Column
                     Expanded(
                       child: _FooterColumn(
-                        title: 'Resources',
+                        title: context.l10n.footerResources,
                         isDark: true,
                         links: [
-                          _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline, isDark: true),
-                          _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined, isDark: true),
-                          _FooterLink('API Reference', () => context.go('/api-docs'), icon: Icons.code_outlined, isDark: true),
-                          _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined, isDark: true),
-                          _FooterLink('Blog', () => context.go('/blog'), icon: Icons.article_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerHelpCenter, () => context.go('/help'), icon: Icons.help_outline, isDark: true),
+                          _FooterLink(context.l10n.footerDocumentation, () => context.go('/docs'), icon: Icons.description_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerApiReference, () => context.go('/api-docs'), icon: Icons.code_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerCommunity, () => context.go('/community'), icon: Icons.groups_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerBlog, () => context.go('/blog'), icon: Icons.article_outlined, isDark: true),
                         ],
                       ),
                     ),
@@ -1810,14 +1808,14 @@ class _MinimalFooter extends StatelessWidget {
                     // Legal Column
                     Expanded(
                       child: _FooterColumn(
-                        title: 'Legal',
+                        title: context.l10n.footerLegal,
                         isDark: true,
                         links: [
-                          _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined, isDark: true),
-                          _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined, isDark: true),
-                          _FooterLink('Cookie Policy', () => context.go('/cookies'), icon: Icons.cookie_outlined, isDark: true),
-                          _FooterLink('Data Protection', () => context.go('/data-protection'), icon: Icons.security_outlined, isDark: true),
-                          _FooterLink('Compliance', () => context.go('/compliance'), icon: Icons.verified_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerPrivacyPolicy, () => context.go('/privacy'), icon: Icons.privacy_tip_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerTermsOfService, () => context.go('/terms'), icon: Icons.gavel_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerCookiePolicy, () => context.go('/cookies'), icon: Icons.cookie_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerDataProtection, () => context.go('/data-protection'), icon: Icons.security_outlined, isDark: true),
+                          _FooterLink(context.l10n.footerCompliance, () => context.go('/compliance'), icon: Icons.verified_outlined, isDark: true),
                         ],
                       ),
                     ),
@@ -1852,7 +1850,7 @@ class _MinimalFooter extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Africa\'s Leading EdTech Platform\nEmpowering education without boundaries.',
+                      context.l10n.footerTagline,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: secondaryTextColor,
                         height: 1.6,
@@ -1866,39 +1864,39 @@ class _MinimalFooter extends StatelessWidget {
                       runSpacing: 32,
                       children: [
                         _FooterColumn(
-                          title: 'Products',
+                          title: context.l10n.footerProducts,
                           isDark: true,
                           links: [
-                            _FooterLink('Student Portal', () => context.go('/login'), icon: Icons.school_outlined, isDark: true),
-                            _FooterLink('Institution Dashboard', () => context.go('/login'), icon: Icons.business_outlined, isDark: true),
-                            _FooterLink('Parent App', () => context.go('/login'), icon: Icons.family_restroom_outlined, isDark: true),
-                            _FooterLink('Counselor Tools', () => context.go('/login'), icon: Icons.support_agent_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerStudentPortal, () => context.go('/login'), icon: Icons.school_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerInstitutionDashboard, () => context.go('/login'), icon: Icons.business_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerParentApp, () => context.go('/login'), icon: Icons.family_restroom_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerCounselorTools, () => context.go('/login'), icon: Icons.support_agent_outlined, isDark: true),
                           ],
                         ),
                         _FooterColumn(
-                          title: 'Company',
+                          title: context.l10n.footerCompany,
                           isDark: true,
                           links: [
-                            _FooterLink('About Us', () => context.go('/about'), icon: Icons.info_outline, isDark: true),
-                            _FooterLink('Careers', () => context.go('/careers'), icon: Icons.work_outline, isDark: true),
-                            _FooterLink('Contact', () => context.go('/contact'), icon: Icons.mail_outline, isDark: true),
+                            _FooterLink(context.l10n.footerAboutUs, () => context.go('/about'), icon: Icons.info_outline, isDark: true),
+                            _FooterLink(context.l10n.footerCareers, () => context.go('/careers'), icon: Icons.work_outline, isDark: true),
+                            _FooterLink(context.l10n.footerContact, () => context.go('/contact'), icon: Icons.mail_outline, isDark: true),
                           ],
                         ),
                         _FooterColumn(
-                          title: 'Resources',
+                          title: context.l10n.footerResources,
                           isDark: true,
                           links: [
-                            _FooterLink('Help Center', () => context.go('/help'), icon: Icons.help_outline, isDark: true),
-                            _FooterLink('Documentation', () => context.go('/docs'), icon: Icons.description_outlined, isDark: true),
-                            _FooterLink('Community', () => context.go('/community'), icon: Icons.groups_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerHelpCenter, () => context.go('/help'), icon: Icons.help_outline, isDark: true),
+                            _FooterLink(context.l10n.footerDocumentation, () => context.go('/docs'), icon: Icons.description_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerCommunity, () => context.go('/community'), icon: Icons.groups_outlined, isDark: true),
                           ],
                         ),
                         _FooterColumn(
-                          title: 'Legal',
+                          title: context.l10n.footerLegal,
                           isDark: true,
                           links: [
-                            _FooterLink('Privacy Policy', () => context.go('/privacy'), icon: Icons.privacy_tip_outlined, isDark: true),
-                            _FooterLink('Terms of Service', () => context.go('/terms'), icon: Icons.gavel_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerPrivacyPolicy, () => context.go('/privacy'), icon: Icons.privacy_tip_outlined, isDark: true),
+                            _FooterLink(context.l10n.footerTermsOfService, () => context.go('/terms'), icon: Icons.gavel_outlined, isDark: true),
                           ],
                         ),
                       ],
@@ -1922,7 +1920,7 @@ class _MinimalFooter extends StatelessWidget {
                 runSpacing: 16,
                 children: [
                   Text(
-                    '© 2025 Flow EdTech. All rights reserved.',
+                    context.l10n.footerCopyright,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: secondaryTextColor,
                     ),
@@ -1937,7 +1935,7 @@ class _MinimalFooter extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'SOC 2 Certified',
+                        context.l10n.footerSoc2,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: secondaryTextColor,
                         ),
@@ -1950,7 +1948,7 @@ class _MinimalFooter extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'ISO 27001',
+                        context.l10n.footerIso27001,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: secondaryTextColor,
                         ),
@@ -1963,7 +1961,7 @@ class _MinimalFooter extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'GDPR Compliant',
+                        context.l10n.footerGdpr,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: secondaryTextColor,
                         ),

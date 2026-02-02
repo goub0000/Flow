@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Onboarding Screen
@@ -48,40 +49,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<OnboardingPage> _pages = [
-    OnboardingPage(
-      title: 'Welcome to Flow',
-      description:
-          'Your comprehensive platform for educational opportunities across Africa',
-      icon: Icons.waving_hand,
-      color: AppColors.primary,
-      image: 'assets/images/onboarding_1.png', // Add your images
-    ),
-    OnboardingPage(
-      title: 'Discover Courses',
-      description:
-          'Browse and enroll in courses from top institutions across the continent',
-      icon: Icons.explore,
-      color: AppColors.success,
-      image: 'assets/images/onboarding_2.png',
-    ),
-    OnboardingPage(
-      title: 'Track Your Progress',
-      description:
-          'Monitor your academic journey with detailed analytics and insights',
-      icon: Icons.trending_up,
-      color: AppColors.info,
-      image: 'assets/images/onboarding_3.png',
-    ),
-    OnboardingPage(
-      title: 'Connect & Collaborate',
-      description:
-          'Engage with counselors, get recommendations, and manage applications',
-      icon: Icons.people,
-      color: AppColors.warning,
-      image: 'assets/images/onboarding_4.png',
-    ),
-  ];
+  List<OnboardingPage> _buildPages(BuildContext context) {
+    return [
+      OnboardingPage(
+        title: context.l10n.onboardingWelcomeTitle,
+        description: context.l10n.onboardingWelcomeDesc,
+        icon: Icons.waving_hand,
+        color: AppColors.primary,
+        image: 'assets/images/onboarding_1.png', // Add your images
+      ),
+      OnboardingPage(
+        title: context.l10n.onboardingCoursesTitle,
+        description: context.l10n.onboardingCoursesDesc,
+        icon: Icons.explore,
+        color: AppColors.success,
+        image: 'assets/images/onboarding_2.png',
+      ),
+      OnboardingPage(
+        title: context.l10n.onboardingProgressTitle,
+        description: context.l10n.onboardingProgressDesc,
+        icon: Icons.trending_up,
+        color: AppColors.info,
+        image: 'assets/images/onboarding_3.png',
+      ),
+      OnboardingPage(
+        title: context.l10n.onboardingConnectTitle,
+        description: context.l10n.onboardingConnectDesc,
+        icon: Icons.people,
+        color: AppColors.warning,
+        image: 'assets/images/onboarding_4.png',
+      ),
+    ];
+  }
 
   @override
   void dispose() {
@@ -93,8 +92,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     setState(() => _currentPage = page);
   }
 
-  void _nextPage() {
-    if (_currentPage < _pages.length - 1) {
+  void _nextPage(int pageCount) {
+    if (_currentPage < pageCount - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -128,6 +127,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = _buildPages(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -144,16 +145,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     TextButton.icon(
                       onPressed: _previousPage,
                       icon: const Icon(Icons.arrow_back),
-                      label: const Text('Back'),
+                      label: Text(context.l10n.onboardingBack),
                     )
                   else
                     const SizedBox(width: 80),
 
                   // Skip Button (hide on last page)
-                  if (_currentPage < _pages.length - 1)
+                  if (_currentPage < pages.length - 1)
                     TextButton(
                       onPressed: _skipOnboarding,
-                      child: const Text('Skip'),
+                      child: Text(context.l10n.onboardingSkip),
                     )
                   else
                     const SizedBox(width: 80),
@@ -166,9 +167,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
-                itemCount: _pages.length,
+                itemCount: pages.length,
                 itemBuilder: (context, index) {
-                  return _buildPage(_pages[index]);
+                  return _buildPage(pages[index]);
                 },
               ),
             ),
@@ -179,8 +180,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  _pages.length,
-                  (index) => _buildPageIndicator(index),
+                  pages.length,
+                  (index) => _buildPageIndicator(index, pages),
                 ),
               ),
             ),
@@ -192,9 +193,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: _nextPage,
+                  onPressed: () => _nextPage(pages.length),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _pages[_currentPage].color,
+                    backgroundColor: pages[_currentPage].color,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -203,9 +204,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        _currentPage == _pages.length - 1
-                            ? 'Get Started'
-                            : 'Next',
+                        _currentPage == pages.length - 1
+                            ? context.l10n.onboardingGetStarted
+                            : context.l10n.onboardingNext,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -213,7 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       const SizedBox(width: 8),
                       Icon(
-                        _currentPage == _pages.length - 1
+                        _currentPage == pages.length - 1
                             ? Icons.check
                             : Icons.arrow_forward,
                       ),
@@ -318,27 +319,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           // Feature List (for relevant pages)
           if (_currentPage == 1 || _currentPage == 2) ...[
             const SizedBox(height: 32),
-            _buildFeatureList(page),
+            _buildFeatureList(context, page),
           ],
         ],
       ),
     );
   }
 
-  Widget _buildFeatureList(OnboardingPage page) {
+  Widget _buildFeatureList(BuildContext context, OnboardingPage page) {
     List<String> features = [];
 
     if (_currentPage == 1) {
       features = [
-        'Wide selection of courses',
-        'Filter by category and level',
-        'Detailed course information',
+        context.l10n.onboardingFeatureCourseSelection,
+        context.l10n.onboardingFeatureFilter,
+        context.l10n.onboardingFeatureDetails,
       ];
     } else if (_currentPage == 2) {
       features = [
-        'Real-time progress tracking',
-        'Performance analytics',
-        'Achievement system',
+        context.l10n.onboardingFeatureProgress,
+        context.l10n.onboardingFeatureAnalytics,
+        context.l10n.onboardingFeatureAchievements,
       ];
     }
 
@@ -369,7 +370,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildPageIndicator(int index) {
+  Widget _buildPageIndicator(int index, List<OnboardingPage> pages) {
     bool isActive = _currentPage == index;
 
     return AnimatedContainer(
@@ -379,7 +380,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       width: isActive ? 24 : 8,
       decoration: BoxDecoration(
         color: isActive
-            ? _pages[_currentPage].color
+            ? pages[_currentPage].color
             : AppColors.border,
         borderRadius: BorderRadius.circular(4),
       ),
