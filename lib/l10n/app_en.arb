@@ -8482,5 +8482,10 @@
         "type": "String"
       }
     }
-  }
+  },
+  "adminRecommenderDetailChartComingSoon": "Charts coming soon",
+  "adminRecommenderDetailUpload": "Upload",
+  "adminRecommenderDetailView": "View",
+  "adminRecommenderDetailDownload": "Download",
+  "adminRecommenderDetailActivityTimeline": "Activity Timeline"
 }

@@ -18477,4 +18477,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String adminRecommenderDetailToInstitution(String institution) {
     return 'To: $institution';
   }
+
+  @override
+  String get adminRecommenderDetailChartComingSoon => 'Charts coming soon';
+
+  @override
+  String get adminRecommenderDetailUpload => 'Upload';
+
+  @override
+  String get adminRecommenderDetailView => 'View';
+
+  @override
+  String get adminRecommenderDetailDownload => 'Download';
+
+  @override
+  String get adminRecommenderDetailActivityTimeline => 'Activity Timeline';
 }

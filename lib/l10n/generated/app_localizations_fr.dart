@@ -18738,4 +18738,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String adminRecommenderDetailToInstitution(String institution) {
     return 'À : $institution';
   }
+
+  @override
+  String get adminRecommenderDetailChartComingSoon => 'Graphiques à venir';
+
+  @override
+  String get adminRecommenderDetailUpload => 'Téléverser';
+
+  @override
+  String get adminRecommenderDetailView => 'Voir';
+
+  @override
+  String get adminRecommenderDetailDownload => 'Télécharger';
+
+  @override
+  String get adminRecommenderDetailActivityTimeline =>
+      'Chronologie d\'activité';
 }

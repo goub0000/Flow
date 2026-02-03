@@ -6576,5 +6576,10 @@
   "adminRecommenderDetailRequestDeclined": "Refusée",
   "adminRecommenderDetailDueDate": "Échéance : {date}",
   "adminRecommenderDetailForStudent": "Pour : {student}",
-  "adminRecommenderDetailToInstitution": "À : {institution}"
+  "adminRecommenderDetailToInstitution": "À : {institution}",
+  "adminRecommenderDetailChartComingSoon": "Graphiques à venir",
+  "adminRecommenderDetailUpload": "Téléverser",
+  "adminRecommenderDetailView": "Voir",
+  "adminRecommenderDetailDownload": "Télécharger",
+  "adminRecommenderDetailActivityTimeline": "Chronologie d'activité"
 }

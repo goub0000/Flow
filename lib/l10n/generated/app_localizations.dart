@@ -33473,6 +33473,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To: {institution}'**
   String adminRecommenderDetailToInstitution(String institution);
+
+  /// No description provided for @adminRecommenderDetailChartComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Charts coming soon'**
+  String get adminRecommenderDetailChartComingSoon;
+
+  /// No description provided for @adminRecommenderDetailUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get adminRecommenderDetailUpload;
+
+  /// No description provided for @adminRecommenderDetailView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get adminRecommenderDetailView;
+
+  /// No description provided for @adminRecommenderDetailDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get adminRecommenderDetailDownload;
+
+  /// No description provided for @adminRecommenderDetailActivityTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Timeline'**
+  String get adminRecommenderDetailActivityTimeline;
 }
 
 class _AppLocalizationsDelegate
