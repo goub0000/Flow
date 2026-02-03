@@ -21121,6 +21121,3768 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Longest: {count} days'**
   String swProgressLongestStreak(int count);
+
+  /// No description provided for @adminAnalytics30DayActiveChange.
+  ///
+  /// In en, this message translates to:
+  /// **'30-day active change'**
+  String get adminAnalytics30DayActiveChange;
+
+  /// No description provided for @adminAnalyticsActive30d.
+  ///
+  /// In en, this message translates to:
+  /// **'Active (30d)'**
+  String get adminAnalyticsActive30d;
+
+  /// No description provided for @adminAnalyticsActiveApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Applications'**
+  String get adminAnalyticsActiveApplications;
+
+  /// No description provided for @adminAnalyticsActiveChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Change'**
+  String get adminAnalyticsActiveChange;
+
+  /// No description provided for @adminAnalyticsActiveLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Active in last 30 days'**
+  String get adminAnalyticsActiveLast30Days;
+
+  /// No description provided for @adminAnalyticsActiveUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Users'**
+  String get adminAnalyticsActiveUsers;
+
+  /// No description provided for @adminAnalyticsActiveUsers30d.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Users (30d)'**
+  String get adminAnalyticsActiveUsers30d;
+
+  /// No description provided for @adminAnalyticsAllRegisteredUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'All Registered Users'**
+  String get adminAnalyticsAllRegisteredUsers;
+
+  /// No description provided for @adminAnalyticsAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get adminAnalyticsAllTime;
+
+  /// No description provided for @adminAnalyticsApplicationAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Analytics'**
+  String get adminAnalyticsApplicationAnalytics;
+
+  /// No description provided for @adminAnalyticsApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get adminAnalyticsApplications;
+
+  /// No description provided for @adminAnalyticsApplicationSubmissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Submissions'**
+  String get adminAnalyticsApplicationSubmissions;
+
+  /// No description provided for @adminAnalyticsApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get adminAnalyticsApproved;
+
+  /// No description provided for @adminAnalyticsApps7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps (7d)'**
+  String get adminAnalyticsApps7d;
+
+  /// No description provided for @adminAnalyticsAppTrendData.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Trend Data'**
+  String get adminAnalyticsAppTrendData;
+
+  /// No description provided for @adminAnalyticsAverageTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Time'**
+  String get adminAnalyticsAverageTime;
+
+  /// No description provided for @adminAnalyticsAverageValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Value'**
+  String get adminAnalyticsAverageValue;
+
+  /// No description provided for @adminAnalyticsAvgCompletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. Completion'**
+  String get adminAnalyticsAvgCompletion;
+
+  /// No description provided for @adminAnalyticsAvgTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. Transaction'**
+  String get adminAnalyticsAvgTransaction;
+
+  /// No description provided for @adminAnalyticsAwaitingReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting Review'**
+  String get adminAnalyticsAwaitingReview;
+
+  /// No description provided for @adminAnalyticsBounceRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Bounce Rate'**
+  String get adminAnalyticsBounceRate;
+
+  /// No description provided for @adminAnalyticsByUserType.
+  ///
+  /// In en, this message translates to:
+  /// **'By User Type'**
+  String get adminAnalyticsByUserType;
+
+  /// No description provided for @adminAnalyticsClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get adminAnalyticsClose;
+
+  /// No description provided for @adminAnalyticsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get adminAnalyticsContent;
+
+  /// No description provided for @adminAnalyticsContentAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Analytics'**
+  String get adminAnalyticsContentAnalytics;
+
+  /// No description provided for @adminAnalyticsContentCompletionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Completion Rate'**
+  String get adminAnalyticsContentCompletionRate;
+
+  /// No description provided for @adminAnalyticsContentEngagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Engagement'**
+  String get adminAnalyticsContentEngagement;
+
+  /// No description provided for @adminAnalyticsContentEngagementData.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Engagement Data'**
+  String get adminAnalyticsContentEngagementData;
+
+  /// No description provided for @adminAnalyticsCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselors'**
+  String get adminAnalyticsCounselors;
+
+  /// No description provided for @adminAnalyticsCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get adminAnalyticsCourses;
+
+  /// No description provided for @adminAnalyticsCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV'**
+  String get adminAnalyticsCsv;
+
+  /// No description provided for @adminAnalyticsCsvDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Download as CSV spreadsheet'**
+  String get adminAnalyticsCsvDesc;
+
+  /// No description provided for @adminAnalyticsCustomDashboards.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Dashboards'**
+  String get adminAnalyticsCustomDashboards;
+
+  /// No description provided for @adminAnalyticsDailyActiveUserData.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Active User Data'**
+  String get adminAnalyticsDailyActiveUserData;
+
+  /// No description provided for @adminAnalyticsDailyActiveUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Active Users'**
+  String get adminAnalyticsDailyActiveUsers;
+
+  /// No description provided for @adminAnalyticsDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View platform metrics and insights'**
+  String get adminAnalyticsDashboardSubtitle;
+
+  /// No description provided for @adminAnalyticsDataExplorer.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Explorer'**
+  String get adminAnalyticsDataExplorer;
+
+  /// No description provided for @adminAnalyticsDataExplorerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Query and analyze raw data'**
+  String get adminAnalyticsDataExplorerSubtitle;
+
+  /// No description provided for @adminAnalyticsDataExports.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Exports'**
+  String get adminAnalyticsDataExports;
+
+  /// No description provided for @adminAnalyticsDataExportsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download reports and data'**
+  String get adminAnalyticsDataExportsSubtitle;
+
+  /// No description provided for @adminAnalyticsDistributionByRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribution by Role'**
+  String get adminAnalyticsDistributionByRole;
+
+  /// No description provided for @adminAnalyticsEngagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement'**
+  String get adminAnalyticsEngagement;
+
+  /// No description provided for @adminAnalyticsEngagementLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement'**
+  String get adminAnalyticsEngagementLabel;
+
+  /// No description provided for @adminAnalyticsExcel.
+  ///
+  /// In en, this message translates to:
+  /// **'Excel'**
+  String get adminAnalyticsExcel;
+
+  /// No description provided for @adminAnalyticsExcelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Download as Excel workbook'**
+  String get adminAnalyticsExcelDesc;
+
+  /// No description provided for @adminAnalyticsExportReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Report'**
+  String get adminAnalyticsExportReport;
+
+  /// No description provided for @adminAnalyticsExportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Analytics'**
+  String get adminAnalyticsExportTitle;
+
+  /// No description provided for @adminAnalyticsFinancial.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial'**
+  String get adminAnalyticsFinancial;
+
+  /// No description provided for @adminAnalyticsFinancialAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Analytics'**
+  String get adminAnalyticsFinancialAnalytics;
+
+  /// No description provided for @adminAnalyticsInstitutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Institutions'**
+  String get adminAnalyticsInstitutions;
+
+  /// No description provided for @adminAnalyticsKpi.
+  ///
+  /// In en, this message translates to:
+  /// **'KPI'**
+  String get adminAnalyticsKpi;
+
+  /// No description provided for @adminAnalyticsLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days'**
+  String get adminAnalyticsLast30Days;
+
+  /// No description provided for @adminAnalyticsLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get adminAnalyticsLast7Days;
+
+  /// No description provided for @adminAnalyticsLast7DaysShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7d'**
+  String get adminAnalyticsLast7DaysShort;
+
+  /// No description provided for @adminAnalyticsLast90Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 Days'**
+  String get adminAnalyticsLast90Days;
+
+  /// No description provided for @adminAnalyticsMonthToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Month to Date'**
+  String get adminAnalyticsMonthToDate;
+
+  /// No description provided for @adminAnalyticsMostViewedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Viewed Items'**
+  String get adminAnalyticsMostViewedItems;
+
+  /// No description provided for @adminAnalyticsNew7d.
+  ///
+  /// In en, this message translates to:
+  /// **'New (7d)'**
+  String get adminAnalyticsNew7d;
+
+  /// No description provided for @adminAnalyticsNewAppsOverTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Applications Over Time'**
+  String get adminAnalyticsNewAppsOverTime;
+
+  /// No description provided for @adminAnalyticsNewExport.
+  ///
+  /// In en, this message translates to:
+  /// **'New Export'**
+  String get adminAnalyticsNewExport;
+
+  /// No description provided for @adminAnalyticsNewRegOverTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Registrations Over Time'**
+  String get adminAnalyticsNewRegOverTime;
+
+  /// No description provided for @adminAnalyticsNewSignUpsOverTime.
+  ///
+  /// In en, this message translates to:
+  /// **'New Sign-ups Over Time'**
+  String get adminAnalyticsNewSignUpsOverTime;
+
+  /// No description provided for @adminAnalyticsNewUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'New Users'**
+  String get adminAnalyticsNewUsers;
+
+  /// No description provided for @adminAnalyticsNewUsersThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'New Users This Week'**
+  String get adminAnalyticsNewUsersThisWeek;
+
+  /// No description provided for @adminAnalyticsNoDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get adminAnalyticsNoDataAvailable;
+
+  /// No description provided for @adminAnalyticsNoMatchingRows.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching rows found'**
+  String get adminAnalyticsNoMatchingRows;
+
+  /// No description provided for @adminAnalyticsNoRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent activity'**
+  String get adminAnalyticsNoRecentActivity;
+
+  /// No description provided for @adminAnalyticsNoRoleDistData.
+  ///
+  /// In en, this message translates to:
+  /// **'No role distribution data available'**
+  String get adminAnalyticsNoRoleDistData;
+
+  /// No description provided for @adminAnalyticsNoUserGrowthData.
+  ///
+  /// In en, this message translates to:
+  /// **'No user growth data available'**
+  String get adminAnalyticsNoUserGrowthData;
+
+  /// No description provided for @adminAnalyticsNoWidgets.
+  ///
+  /// In en, this message translates to:
+  /// **'No widgets configured'**
+  String get adminAnalyticsNoWidgets;
+
+  /// No description provided for @adminAnalyticsOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get adminAnalyticsOverview;
+
+  /// No description provided for @adminAnalyticsPageViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Page Views'**
+  String get adminAnalyticsPageViews;
+
+  /// No description provided for @adminAnalyticsPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get adminAnalyticsPdf;
+
+  /// No description provided for @adminAnalyticsPdfDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Download as PDF document'**
+  String get adminAnalyticsPdfDesc;
+
+  /// No description provided for @adminAnalyticsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adminAnalyticsPending;
+
+  /// No description provided for @adminAnalyticsPlatformEngagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform Engagement'**
+  String get adminAnalyticsPlatformEngagement;
+
+  /// No description provided for @adminAnalyticsPlatformUptime.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform Uptime'**
+  String get adminAnalyticsPlatformUptime;
+
+  /// No description provided for @adminAnalyticsPopularContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular Content'**
+  String get adminAnalyticsPopularContent;
+
+  /// No description provided for @adminAnalyticsPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get adminAnalyticsPrograms;
+
+  /// No description provided for @adminAnalyticsPublishedItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Published Items'**
+  String get adminAnalyticsPublishedItems;
+
+  /// No description provided for @adminAnalyticsQuickStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Stats'**
+  String get adminAnalyticsQuickStats;
+
+  /// No description provided for @adminAnalyticsRecentApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Applications'**
+  String get adminAnalyticsRecentApplications;
+
+  /// No description provided for @adminAnalyticsRecommenders.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommenders'**
+  String get adminAnalyticsRecommenders;
+
+  /// No description provided for @adminAnalyticsRefreshAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh All'**
+  String get adminAnalyticsRefreshAll;
+
+  /// No description provided for @adminAnalyticsRefreshData.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Data'**
+  String get adminAnalyticsRefreshData;
+
+  /// No description provided for @adminAnalyticsRegionalDataNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional data not available'**
+  String get adminAnalyticsRegionalDataNotAvailable;
+
+  /// No description provided for @adminAnalyticsRegionalDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional Distribution'**
+  String get adminAnalyticsRegionalDistribution;
+
+  /// No description provided for @adminAnalyticsRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get adminAnalyticsRejected;
+
+  /// No description provided for @adminAnalyticsRevenueBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue Breakdown'**
+  String get adminAnalyticsRevenueBreakdown;
+
+  /// No description provided for @adminAnalyticsRevenueMtd.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue MTD'**
+  String get adminAnalyticsRevenueMtd;
+
+  /// No description provided for @adminAnalyticsRevenueTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue Trend'**
+  String get adminAnalyticsRevenueTrend;
+
+  /// No description provided for @adminAnalyticsRevenueTrendData.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue Trend Data'**
+  String get adminAnalyticsRevenueTrendData;
+
+  /// No description provided for @adminAnalyticsSearchColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Search columns...'**
+  String get adminAnalyticsSearchColumns;
+
+  /// No description provided for @adminAnalyticsSelectDataSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Data Source'**
+  String get adminAnalyticsSelectDataSource;
+
+  /// No description provided for @adminAnalyticsSelectFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Format'**
+  String get adminAnalyticsSelectFormat;
+
+  /// No description provided for @adminAnalyticsSessionDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Duration'**
+  String get adminAnalyticsSessionDuration;
+
+  /// No description provided for @adminAnalyticsSinglePageVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Page Visits'**
+  String get adminAnalyticsSinglePageVisits;
+
+  /// No description provided for @adminAnalyticsStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get adminAnalyticsStudents;
+
+  /// No description provided for @adminAnalyticsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform analytics and insights'**
+  String get adminAnalyticsSubtitle;
+
+  /// No description provided for @adminAnalyticsSuccessRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Success Rate'**
+  String get adminAnalyticsSuccessRate;
+
+  /// No description provided for @adminAnalyticsThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get adminAnalyticsThisMonth;
+
+  /// No description provided for @adminAnalyticsThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This Year'**
+  String get adminAnalyticsThisYear;
+
+  /// No description provided for @adminAnalyticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics Dashboard'**
+  String get adminAnalyticsTitle;
+
+  /// No description provided for @adminAnalyticsToggleWidgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle Widgets'**
+  String get adminAnalyticsToggleWidgets;
+
+  /// No description provided for @adminAnalyticsTotalApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Approved'**
+  String get adminAnalyticsTotalApproved;
+
+  /// No description provided for @adminAnalyticsTotalContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Content'**
+  String get adminAnalyticsTotalContent;
+
+  /// No description provided for @adminAnalyticsTotalCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Counselors'**
+  String get adminAnalyticsTotalCounselors;
+
+  /// No description provided for @adminAnalyticsTotalInstitutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Institutions'**
+  String get adminAnalyticsTotalInstitutions;
+
+  /// No description provided for @adminAnalyticsTotalInteractions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Interactions'**
+  String get adminAnalyticsTotalInteractions;
+
+  /// No description provided for @adminAnalyticsTotalRecommenders.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Recommenders'**
+  String get adminAnalyticsTotalRecommenders;
+
+  /// No description provided for @adminAnalyticsTotalRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Rejected'**
+  String get adminAnalyticsTotalRejected;
+
+  /// No description provided for @adminAnalyticsTotalRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Revenue'**
+  String get adminAnalyticsTotalRevenue;
+
+  /// No description provided for @adminAnalyticsTotalStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Students'**
+  String get adminAnalyticsTotalStudents;
+
+  /// No description provided for @adminAnalyticsTotalTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Transactions'**
+  String get adminAnalyticsTotalTransactions;
+
+  /// No description provided for @adminAnalyticsTotalUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Users'**
+  String get adminAnalyticsTotalUsers;
+
+  /// No description provided for @adminAnalyticsTotalViews.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Views'**
+  String get adminAnalyticsTotalViews;
+
+  /// No description provided for @adminAnalyticsTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get adminAnalyticsTransactions;
+
+  /// No description provided for @adminAnalyticsTransactionSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Success'**
+  String get adminAnalyticsTransactionSuccess;
+
+  /// No description provided for @adminAnalyticsTrends.
+  ///
+  /// In en, this message translates to:
+  /// **'Trends'**
+  String get adminAnalyticsTrends;
+
+  /// No description provided for @adminAnalyticsUniversities.
+  ///
+  /// In en, this message translates to:
+  /// **'Universities'**
+  String get adminAnalyticsUniversities;
+
+  /// No description provided for @adminAnalyticsUserActivityOverTime.
+  ///
+  /// In en, this message translates to:
+  /// **'User Activity Over Time'**
+  String get adminAnalyticsUserActivityOverTime;
+
+  /// No description provided for @adminAnalyticsUserAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'User Analytics'**
+  String get adminAnalyticsUserAnalytics;
+
+  /// No description provided for @adminAnalyticsUserDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'User Distribution'**
+  String get adminAnalyticsUserDistribution;
+
+  /// No description provided for @adminAnalyticsUserGrowth.
+  ///
+  /// In en, this message translates to:
+  /// **'User Growth'**
+  String get adminAnalyticsUserGrowth;
+
+  /// No description provided for @adminAnalyticsUserGrowthVsPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'User Growth vs Previous Period'**
+  String get adminAnalyticsUserGrowthVsPrevious;
+
+  /// No description provided for @adminAnalyticsUserInteractionsOverTime.
+  ///
+  /// In en, this message translates to:
+  /// **'User Interactions Over Time'**
+  String get adminAnalyticsUserInteractionsOverTime;
+
+  /// No description provided for @adminAnalyticsUserRegistrations.
+  ///
+  /// In en, this message translates to:
+  /// **'User Registrations'**
+  String get adminAnalyticsUserRegistrations;
+
+  /// No description provided for @adminAnalyticsUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get adminAnalyticsUsers;
+
+  /// No description provided for @adminAnalyticsUsersByRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Users by Region'**
+  String get adminAnalyticsUsersByRegion;
+
+  /// No description provided for @adminAnalyticsUserTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'User Types'**
+  String get adminAnalyticsUserTypes;
+
+  /// No description provided for @adminAnalyticsVsLastPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'vs Last Period'**
+  String get adminAnalyticsVsLastPeriod;
+
+  /// No description provided for @adminAnalyticsWidgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Widgets'**
+  String get adminAnalyticsWidgets;
+
+  /// No description provided for @adminChatArchive.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get adminChatArchive;
+
+  /// No description provided for @adminChatCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminChatCancel;
+
+  /// No description provided for @adminChatCannedClosingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing'**
+  String get adminChatCannedClosingLabel;
+
+  /// No description provided for @adminChatCannedClosingText.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for contacting us. Have a great day!'**
+  String get adminChatCannedClosingText;
+
+  /// No description provided for @adminChatCannedEscalatingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Escalating'**
+  String get adminChatCannedEscalatingLabel;
+
+  /// No description provided for @adminChatCannedEscalatingText.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ll escalate this to a specialist who can better assist you.'**
+  String get adminChatCannedEscalatingText;
+
+  /// No description provided for @adminChatCannedFollowUpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up'**
+  String get adminChatCannedFollowUpLabel;
+
+  /// No description provided for @adminChatCannedFollowUpText.
+  ///
+  /// In en, this message translates to:
+  /// **'Is there anything else I can help you with?'**
+  String get adminChatCannedFollowUpText;
+
+  /// No description provided for @adminChatCannedGreetingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Greeting'**
+  String get adminChatCannedGreetingLabel;
+
+  /// No description provided for @adminChatCannedGreetingText.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello! How can I assist you today?'**
+  String get adminChatCannedGreetingText;
+
+  /// No description provided for @adminChatCannedMoreInfoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'More Info'**
+  String get adminChatCannedMoreInfoLabel;
+
+  /// No description provided for @adminChatCannedMoreInfoText.
+  ///
+  /// In en, this message translates to:
+  /// **'Could you please provide more details about your issue?'**
+  String get adminChatCannedMoreInfoText;
+
+  /// No description provided for @adminChatCannedResolutionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution'**
+  String get adminChatCannedResolutionLabel;
+
+  /// No description provided for @adminChatCannedResolutionText.
+  ///
+  /// In en, this message translates to:
+  /// **'Your issue has been resolved. Please let me know if you need further assistance.'**
+  String get adminChatCannedResolutionText;
+
+  /// No description provided for @adminChatConvDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation Details'**
+  String get adminChatConvDetailsTitle;
+
+  /// No description provided for @adminChatConvHistorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View past conversations and messages'**
+  String get adminChatConvHistorySubtitle;
+
+  /// No description provided for @adminChatConvHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation History'**
+  String get adminChatConvHistoryTitle;
+
+  /// No description provided for @adminChatConvNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation not found'**
+  String get adminChatConvNotFound;
+
+  /// No description provided for @adminChatDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get adminChatDelete;
+
+  /// No description provided for @adminChatDeleteConvConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this conversation? This action cannot be undone.'**
+  String get adminChatDeleteConvConfirm;
+
+  /// No description provided for @adminChatDeleteConvTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Conversation'**
+  String get adminChatDeleteConvTitle;
+
+  /// No description provided for @adminChatFaqActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get adminChatFaqActivate;
+
+  /// No description provided for @adminChatFaqAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add FAQ'**
+  String get adminChatFaqAdd;
+
+  /// No description provided for @adminChatFaqAllCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All Categories'**
+  String get adminChatFaqAllCategories;
+
+  /// No description provided for @adminChatFaqAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get adminChatFaqAnswer;
+
+  /// No description provided for @adminChatFaqAnswerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the answer to this question'**
+  String get adminChatFaqAnswerHint;
+
+  /// No description provided for @adminChatFaqAnswerRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer is required'**
+  String get adminChatFaqAnswerRequired;
+
+  /// No description provided for @adminChatFaqCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get adminChatFaqCategory;
+
+  /// No description provided for @adminChatFaqCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create FAQ'**
+  String get adminChatFaqCreate;
+
+  /// No description provided for @adminChatFaqCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ created successfully'**
+  String get adminChatFaqCreated;
+
+  /// No description provided for @adminChatFaqCreateFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first FAQ entry'**
+  String get adminChatFaqCreateFirst;
+
+  /// No description provided for @adminChatFaqCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create FAQ Entry'**
+  String get adminChatFaqCreateTitle;
+
+  /// No description provided for @adminChatFaqDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get adminChatFaqDeactivate;
+
+  /// No description provided for @adminChatFaqDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ deleted successfully'**
+  String get adminChatFaqDeleted;
+
+  /// No description provided for @adminChatFaqDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete FAQ'**
+  String get adminChatFaqDeleteTitle;
+
+  /// No description provided for @adminChatFaqEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get adminChatFaqEdit;
+
+  /// No description provided for @adminChatFaqEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit FAQ Entry'**
+  String get adminChatFaqEditTitle;
+
+  /// No description provided for @adminChatFaqHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get adminChatFaqHelpful;
+
+  /// No description provided for @adminChatFaqInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get adminChatFaqInactive;
+
+  /// No description provided for @adminChatFaqKeywords.
+  ///
+  /// In en, this message translates to:
+  /// **'Keywords'**
+  String get adminChatFaqKeywords;
+
+  /// No description provided for @adminChatFaqKeywordsHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Keywords help the chatbot find this FAQ'**
+  String get adminChatFaqKeywordsHelper;
+
+  /// No description provided for @adminChatFaqKeywordsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter keywords separated by commas'**
+  String get adminChatFaqKeywordsHint;
+
+  /// No description provided for @adminChatFaqLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More'**
+  String get adminChatFaqLoadMore;
+
+  /// No description provided for @adminChatFaqNoFaqs.
+  ///
+  /// In en, this message translates to:
+  /// **'No FAQs found'**
+  String get adminChatFaqNoFaqs;
+
+  /// No description provided for @adminChatFaqNotHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Helpful'**
+  String get adminChatFaqNotHelpful;
+
+  /// No description provided for @adminChatFaqPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get adminChatFaqPriority;
+
+  /// No description provided for @adminChatFaqQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get adminChatFaqQuestion;
+
+  /// No description provided for @adminChatFaqQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the question'**
+  String get adminChatFaqQuestionHint;
+
+  /// No description provided for @adminChatFaqQuestionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Question is required'**
+  String get adminChatFaqQuestionRequired;
+
+  /// No description provided for @adminChatFaqSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search FAQs...'**
+  String get adminChatFaqSearch;
+
+  /// No description provided for @adminChatFaqShowInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Inactive'**
+  String get adminChatFaqShowInactive;
+
+  /// No description provided for @adminChatFaqSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage FAQ entries for the chatbot'**
+  String get adminChatFaqSubtitle;
+
+  /// No description provided for @adminChatFaqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ Management'**
+  String get adminChatFaqTitle;
+
+  /// No description provided for @adminChatFaqUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update FAQ'**
+  String get adminChatFaqUpdate;
+
+  /// No description provided for @adminChatFaqUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ updated successfully'**
+  String get adminChatFaqUpdated;
+
+  /// No description provided for @adminChatFaqUses.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses'**
+  String get adminChatFaqUses;
+
+  /// No description provided for @adminChatFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get adminChatFilter;
+
+  /// No description provided for @adminChatFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminChatFilterAll;
+
+  /// No description provided for @adminChatFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Flag'**
+  String get adminChatFlag;
+
+  /// No description provided for @adminChatLiveActiveFiveMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Active in last 5 minutes'**
+  String get adminChatLiveActiveFiveMin;
+
+  /// No description provided for @adminChatLiveAutoRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-refresh'**
+  String get adminChatLiveAutoRefresh;
+
+  /// No description provided for @adminChatLiveLive.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE'**
+  String get adminChatLiveLive;
+
+  /// No description provided for @adminChatLiveLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load live chats'**
+  String get adminChatLiveLoadFailed;
+
+  /// No description provided for @adminChatLiveNoActive.
+  ///
+  /// In en, this message translates to:
+  /// **'No active chats at the moment'**
+  String get adminChatLiveNoActive;
+
+  /// No description provided for @adminChatLivePaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get adminChatLivePaused;
+
+  /// No description provided for @adminChatLiveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor active chat sessions in real-time'**
+  String get adminChatLiveSubtitle;
+
+  /// No description provided for @adminChatLiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Chat Monitor'**
+  String get adminChatLiveTitle;
+
+  /// No description provided for @adminChatNoConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations found'**
+  String get adminChatNoConversations;
+
+  /// No description provided for @adminChatQueueAllPriorities.
+  ///
+  /// In en, this message translates to:
+  /// **'All Priorities'**
+  String get adminChatQueueAllPriorities;
+
+  /// No description provided for @adminChatQueueAllStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'All Status'**
+  String get adminChatQueueAllStatus;
+
+  /// No description provided for @adminChatQueueAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get adminChatQueueAssigned;
+
+  /// No description provided for @adminChatQueueAssignedToYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to you'**
+  String get adminChatQueueAssignedToYou;
+
+  /// No description provided for @adminChatQueueAssignToMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign to me'**
+  String get adminChatQueueAssignToMe;
+
+  /// No description provided for @adminChatQueueEscalatedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This conversation has been escalated'**
+  String get adminChatQueueEscalatedHint;
+
+  /// No description provided for @adminChatQueueHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get adminChatQueueHigh;
+
+  /// No description provided for @adminChatQueueInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get adminChatQueueInProgress;
+
+  /// No description provided for @adminChatQueueLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load queue'**
+  String get adminChatQueueLoadFailed;
+
+  /// No description provided for @adminChatQueueLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get adminChatQueueLow;
+
+  /// No description provided for @adminChatQueueNoItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in queue'**
+  String get adminChatQueueNoItems;
+
+  /// No description provided for @adminChatQueueNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get adminChatQueueNormal;
+
+  /// No description provided for @adminChatQueueOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get adminChatQueueOpen;
+
+  /// No description provided for @adminChatQueuePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adminChatQueuePending;
+
+  /// No description provided for @adminChatQueueReasonAutoEscalation.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-escalation due to wait time'**
+  String get adminChatQueueReasonAutoEscalation;
+
+  /// No description provided for @adminChatQueueReasonLowConfidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Low confidence AI response'**
+  String get adminChatQueueReasonLowConfidence;
+
+  /// No description provided for @adminChatQueueReasonNegativeFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Negative user feedback'**
+  String get adminChatQueueReasonNegativeFeedback;
+
+  /// No description provided for @adminChatQueueReasonUserRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'User requested human support'**
+  String get adminChatQueueReasonUserRequest;
+
+  /// No description provided for @adminChatQueueStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminChatQueueStatus;
+
+  /// No description provided for @adminChatQueueSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage escalated conversations requiring attention'**
+  String get adminChatQueueSubtitle;
+
+  /// No description provided for @adminChatQueueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Queue'**
+  String get adminChatQueueTitle;
+
+  /// No description provided for @adminChatQueueUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get adminChatQueueUrgent;
+
+  /// No description provided for @adminChatQuickReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Replies'**
+  String get adminChatQuickReplies;
+
+  /// No description provided for @adminChatRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get adminChatRefresh;
+
+  /// No description provided for @adminChatRefreshNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Now'**
+  String get adminChatRefreshNow;
+
+  /// No description provided for @adminChatReplyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your reply...'**
+  String get adminChatReplyHint;
+
+  /// No description provided for @adminChatReplySentResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply sent and conversation resolved'**
+  String get adminChatReplySentResolved;
+
+  /// No description provided for @adminChatRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get adminChatRestore;
+
+  /// No description provided for @adminChatRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get adminChatRetry;
+
+  /// No description provided for @adminChatSearchConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Search conversations...'**
+  String get adminChatSearchConversations;
+
+  /// No description provided for @adminChatSendAndResolve.
+  ///
+  /// In en, this message translates to:
+  /// **'Send & Resolve'**
+  String get adminChatSendAndResolve;
+
+  /// No description provided for @adminChatSendReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reply'**
+  String get adminChatSendReply;
+
+  /// No description provided for @adminChatStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminChatStatusActive;
+
+  /// No description provided for @adminChatStatusArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get adminChatStatusArchived;
+
+  /// No description provided for @adminChatStatusEscalated.
+  ///
+  /// In en, this message translates to:
+  /// **'Escalated'**
+  String get adminChatStatusEscalated;
+
+  /// No description provided for @adminChatStatusFlagged.
+  ///
+  /// In en, this message translates to:
+  /// **'Flagged'**
+  String get adminChatStatusFlagged;
+
+  /// No description provided for @adminChatSupportAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Agent'**
+  String get adminChatSupportAgent;
+
+  /// No description provided for @adminChatUnknownUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown User'**
+  String get adminChatUnknownUser;
+
+  /// No description provided for @adminFinanceActionCannotBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone'**
+  String get adminFinanceActionCannotBeUndone;
+
+  /// No description provided for @adminFinanceAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminFinanceAll;
+
+  /// No description provided for @adminFinanceAllCompletedPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'All Completed Payments'**
+  String get adminFinanceAllCompletedPayments;
+
+  /// No description provided for @adminFinanceAllLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'All Levels'**
+  String get adminFinanceAllLevels;
+
+  /// No description provided for @adminFinanceAllRefundTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'All Refund Transactions'**
+  String get adminFinanceAllRefundTransactions;
+
+  /// No description provided for @adminFinanceAllStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'All Status'**
+  String get adminFinanceAllStatus;
+
+  /// No description provided for @adminFinanceAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get adminFinanceAllTime;
+
+  /// No description provided for @adminFinanceAllTransactionsNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'All transactions appear normal'**
+  String get adminFinanceAllTransactionsNormal;
+
+  /// No description provided for @adminFinanceAllTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'All Types'**
+  String get adminFinanceAllTypes;
+
+  /// No description provided for @adminFinanceAlreadyReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Reviewed'**
+  String get adminFinanceAlreadyReviewed;
+
+  /// No description provided for @adminFinanceAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get adminFinanceAmount;
+
+  /// No description provided for @adminFinanceAvgSettlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. Settlement'**
+  String get adminFinanceAvgSettlement;
+
+  /// No description provided for @adminFinanceAwaitingProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting Processing'**
+  String get adminFinanceAwaitingProcessing;
+
+  /// No description provided for @adminFinanceCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminFinanceCancel;
+
+  /// No description provided for @adminFinanceChooseTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a transaction'**
+  String get adminFinanceChooseTransaction;
+
+  /// No description provided for @adminFinanceClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get adminFinanceClose;
+
+  /// No description provided for @adminFinanceCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get adminFinanceCompleted;
+
+  /// No description provided for @adminFinanceConfirmRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Refund'**
+  String get adminFinanceConfirmRefund;
+
+  /// No description provided for @adminFinanceCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get adminFinanceCritical;
+
+  /// No description provided for @adminFinanceCriticalHighRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical/High Risk'**
+  String get adminFinanceCriticalHighRisk;
+
+  /// No description provided for @adminFinanceCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get adminFinanceCurrency;
+
+  /// No description provided for @adminFinanceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get adminFinanceDate;
+
+  /// No description provided for @adminFinanceDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
+  String get adminFinanceDateRange;
+
+  /// No description provided for @adminFinanceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get adminFinanceDescription;
+
+  /// No description provided for @adminFinanceDownloadReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Receipt'**
+  String get adminFinanceDownloadReceipt;
+
+  /// No description provided for @adminFinanceEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'Eligible'**
+  String get adminFinanceEligible;
+
+  /// No description provided for @adminFinanceExportReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Report'**
+  String get adminFinanceExportReport;
+
+  /// No description provided for @adminFinanceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get adminFinanceFailed;
+
+  /// No description provided for @adminFinanceFlaggedTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Flagged Transactions'**
+  String get adminFinanceFlaggedTransactions;
+
+  /// No description provided for @adminFinanceFraudDetectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor suspicious activity and flagged transactions'**
+  String get adminFinanceFraudDetectionSubtitle;
+
+  /// No description provided for @adminFinanceFraudDetectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fraud Detection'**
+  String get adminFinanceFraudDetectionTitle;
+
+  /// No description provided for @adminFinanceHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get adminFinanceHigh;
+
+  /// No description provided for @adminFinanceHighRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'High Risk'**
+  String get adminFinanceHighRisk;
+
+  /// No description provided for @adminFinanceItemType.
+  ///
+  /// In en, this message translates to:
+  /// **'Item Type'**
+  String get adminFinanceItemType;
+
+  /// No description provided for @adminFinanceLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days'**
+  String get adminFinanceLast30Days;
+
+  /// No description provided for @adminFinanceLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get adminFinanceLast7Days;
+
+  /// No description provided for @adminFinanceLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get adminFinanceLow;
+
+  /// No description provided for @adminFinanceMarkReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Reviewed'**
+  String get adminFinanceMarkReviewed;
+
+  /// No description provided for @adminFinanceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get adminFinanceMedium;
+
+  /// No description provided for @adminFinanceNewRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'New Refund'**
+  String get adminFinanceNewRefund;
+
+  /// No description provided for @adminFinanceNoEligibleTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No eligible transactions for refund'**
+  String get adminFinanceNoEligibleTransactions;
+
+  /// No description provided for @adminFinanceNoMatchingAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching alerts found'**
+  String get adminFinanceNoMatchingAlerts;
+
+  /// No description provided for @adminFinanceNoSettlementsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No settlements found'**
+  String get adminFinanceNoSettlementsFound;
+
+  /// No description provided for @adminFinanceNoSuspiciousActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No suspicious activity detected'**
+  String get adminFinanceNoSuspiciousActivity;
+
+  /// No description provided for @adminFinanceOriginalTxn.
+  ///
+  /// In en, this message translates to:
+  /// **'Original Transaction'**
+  String get adminFinanceOriginalTxn;
+
+  /// No description provided for @adminFinancePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get adminFinancePayment;
+
+  /// No description provided for @adminFinancePaymentsEligibleForRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments Eligible for Refund'**
+  String get adminFinancePaymentsEligibleForRefund;
+
+  /// No description provided for @adminFinancePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adminFinancePending;
+
+  /// No description provided for @adminFinancePendingReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Review'**
+  String get adminFinancePendingReview;
+
+  /// No description provided for @adminFinancePendingSettlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Settlement'**
+  String get adminFinancePendingSettlement;
+
+  /// No description provided for @adminFinanceProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get adminFinanceProcessing;
+
+  /// No description provided for @adminFinanceProcessNewRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Process New Refund'**
+  String get adminFinanceProcessNewRefund;
+
+  /// No description provided for @adminFinanceProcessRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Refund'**
+  String get adminFinanceProcessRefund;
+
+  /// No description provided for @adminFinanceReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get adminFinanceReason;
+
+  /// No description provided for @adminFinanceReasonForRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for Refund'**
+  String get adminFinanceReasonForRefund;
+
+  /// No description provided for @adminFinanceRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get adminFinanceRefresh;
+
+  /// No description provided for @adminFinanceRefreshTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Transactions'**
+  String get adminFinanceRefreshTransactions;
+
+  /// No description provided for @adminFinanceRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund'**
+  String get adminFinanceRefund;
+
+  /// No description provided for @adminFinanceRefundDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Details'**
+  String get adminFinanceRefundDetails;
+
+  /// No description provided for @adminFinanceRefunded.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunded'**
+  String get adminFinanceRefunded;
+
+  /// No description provided for @adminFinanceRefundedAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunded Amount'**
+  String get adminFinanceRefundedAmount;
+
+  /// No description provided for @adminFinanceRefundFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Failed'**
+  String get adminFinanceRefundFailed;
+
+  /// No description provided for @adminFinanceRefundId.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund ID'**
+  String get adminFinanceRefundId;
+
+  /// No description provided for @adminFinanceRefundProcessedFail.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to process refund'**
+  String get adminFinanceRefundProcessedFail;
+
+  /// No description provided for @adminFinanceRefundProcessedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund processed successfully'**
+  String get adminFinanceRefundProcessedSuccess;
+
+  /// No description provided for @adminFinanceRefundsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Process and manage customer refunds'**
+  String get adminFinanceRefundsSubtitle;
+
+  /// No description provided for @adminFinanceRefundsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds'**
+  String get adminFinanceRefundsTitle;
+
+  /// No description provided for @adminFinanceRefundSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Successful'**
+  String get adminFinanceRefundSuccess;
+
+  /// No description provided for @adminFinanceRescanTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Rescan Transactions'**
+  String get adminFinanceRescanTransactions;
+
+  /// No description provided for @adminFinanceRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get adminFinanceRetry;
+
+  /// No description provided for @adminFinanceReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewed'**
+  String get adminFinanceReviewed;
+
+  /// No description provided for @adminFinanceRiskLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk Level'**
+  String get adminFinanceRiskLevel;
+
+  /// No description provided for @adminFinanceSearchRefundsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search refunds...'**
+  String get adminFinanceSearchRefundsHint;
+
+  /// No description provided for @adminFinanceSearchSettlementsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search settlements...'**
+  String get adminFinanceSearchSettlementsHint;
+
+  /// No description provided for @adminFinanceSearchTransactionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search transactions...'**
+  String get adminFinanceSearchTransactionsHint;
+
+  /// No description provided for @adminFinanceSelectTransactionToRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a transaction to refund'**
+  String get adminFinanceSelectTransactionToRefund;
+
+  /// No description provided for @adminFinanceSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled'**
+  String get adminFinanceSettled;
+
+  /// No description provided for @adminFinanceSettlement.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlement'**
+  String get adminFinanceSettlement;
+
+  /// No description provided for @adminFinanceSettlementBatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlement Batches'**
+  String get adminFinanceSettlementBatches;
+
+  /// No description provided for @adminFinanceSettlementsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage payment settlements'**
+  String get adminFinanceSettlementsSubtitle;
+
+  /// No description provided for @adminFinanceSettlementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlements'**
+  String get adminFinanceSettlementsTitle;
+
+  /// No description provided for @adminFinanceShowReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Reviewed'**
+  String get adminFinanceShowReviewed;
+
+  /// No description provided for @adminFinanceStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminFinanceStatus;
+
+  /// No description provided for @adminFinanceSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful'**
+  String get adminFinanceSuccessful;
+
+  /// No description provided for @adminFinanceSuccessfullyRefunded.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully refunded'**
+  String get adminFinanceSuccessfullyRefunded;
+
+  /// No description provided for @adminFinanceToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get adminFinanceToday;
+
+  /// No description provided for @adminFinanceTotalFlags.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Flags'**
+  String get adminFinanceTotalFlags;
+
+  /// No description provided for @adminFinanceTotalRefunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Refunds'**
+  String get adminFinanceTotalRefunds;
+
+  /// No description provided for @adminFinanceTotalSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Settled'**
+  String get adminFinanceTotalSettled;
+
+  /// No description provided for @adminFinanceTotalVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Volume'**
+  String get adminFinanceTotalVolume;
+
+  /// No description provided for @adminFinanceTransactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get adminFinanceTransactionDetails;
+
+  /// No description provided for @adminFinanceTransactionId.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get adminFinanceTransactionId;
+
+  /// No description provided for @adminFinanceTransactionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage all financial transactions'**
+  String get adminFinanceTransactionsSubtitle;
+
+  /// No description provided for @adminFinanceTransactionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get adminFinanceTransactionsTitle;
+
+  /// No description provided for @adminFinanceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get adminFinanceType;
+
+  /// No description provided for @adminFinanceUnreviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unreviewed'**
+  String get adminFinanceUnreviewed;
+
+  /// No description provided for @adminFinanceUser.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get adminFinanceUser;
+
+  /// No description provided for @adminFinanceUserId.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID'**
+  String get adminFinanceUserId;
+
+  /// No description provided for @adminFinanceViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get adminFinanceViewDetails;
+
+  /// No description provided for @adminFinanceYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get adminFinanceYesterday;
+
+  /// No description provided for @adminReportActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Activated'**
+  String get adminReportActivated;
+
+  /// No description provided for @adminReportAllReports.
+  ///
+  /// In en, this message translates to:
+  /// **'All Reports'**
+  String get adminReportAllReports;
+
+  /// No description provided for @adminReportBuilderHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Builder Help'**
+  String get adminReportBuilderHelpTitle;
+
+  /// No description provided for @adminReportBuilderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Builder'**
+  String get adminReportBuilderTitle;
+
+  /// No description provided for @adminReportCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminReportCancel;
+
+  /// No description provided for @adminReportCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Report'**
+  String get adminReportCreate;
+
+  /// No description provided for @adminReportCreateAutomatedReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Create automated reports that run on a schedule'**
+  String get adminReportCreateAutomatedReports;
+
+  /// No description provided for @adminReportCreateSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Schedule'**
+  String get adminReportCreateSchedule;
+
+  /// No description provided for @adminReportCsvDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Spreadsheet format for Excel'**
+  String get adminReportCsvDescription;
+
+  /// No description provided for @adminReportCsvSpreadsheet.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV Spreadsheet'**
+  String get adminReportCsvSpreadsheet;
+
+  /// No description provided for @adminReportDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get adminReportDaily;
+
+  /// No description provided for @adminReportDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
+  String get adminReportDateRange;
+
+  /// No description provided for @adminReportDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get adminReportDelete;
+
+  /// No description provided for @adminReportDeleteScheduledReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Scheduled Report'**
+  String get adminReportDeleteScheduledReport;
+
+  /// No description provided for @adminReportDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter report description'**
+  String get adminReportDescriptionHint;
+
+  /// No description provided for @adminReportDescriptionOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (Optional)'**
+  String get adminReportDescriptionOptional;
+
+  /// No description provided for @adminReportEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get adminReportEdit;
+
+  /// No description provided for @adminReportEditScheduledReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Scheduled Report'**
+  String get adminReportEditScheduledReport;
+
+  /// No description provided for @adminReportEmailRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Recipients'**
+  String get adminReportEmailRecipients;
+
+  /// No description provided for @adminReportEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get adminReportEndDate;
+
+  /// No description provided for @adminReportExportFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Format'**
+  String get adminReportExportFormat;
+
+  /// No description provided for @adminReportFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Select metrics and data points'**
+  String get adminReportFeature1;
+
+  /// No description provided for @adminReportFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date ranges'**
+  String get adminReportFeature2;
+
+  /// No description provided for @adminReportFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Export in multiple formats'**
+  String get adminReportFeature3;
+
+  /// No description provided for @adminReportFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule automated reports'**
+  String get adminReportFeature4;
+
+  /// No description provided for @adminReportFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get adminReportFeatures;
+
+  /// No description provided for @adminReportFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get adminReportFrequency;
+
+  /// No description provided for @adminReportGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get adminReportGenerate;
+
+  /// No description provided for @adminReportGeneratedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report generated successfully'**
+  String get adminReportGeneratedSuccess;
+
+  /// No description provided for @adminReportGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get adminReportGenerating;
+
+  /// No description provided for @adminReportGenerationStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Report generation started'**
+  String get adminReportGenerationStarted;
+
+  /// No description provided for @adminReportGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get adminReportGotIt;
+
+  /// No description provided for @adminReportHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get adminReportHelp;
+
+  /// No description provided for @adminReportHelpPresetsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Use presets for quick report generation'**
+  String get adminReportHelpPresetsInfo;
+
+  /// No description provided for @adminReportHelpStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Select metrics you want to include'**
+  String get adminReportHelpStep1;
+
+  /// No description provided for @adminReportHelpStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date range'**
+  String get adminReportHelpStep2;
+
+  /// No description provided for @adminReportHelpStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Select export format'**
+  String get adminReportHelpStep3;
+
+  /// No description provided for @adminReportHelpStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'Click Generate to create report'**
+  String get adminReportHelpStep4;
+
+  /// No description provided for @adminReportHelpStep5.
+  ///
+  /// In en, this message translates to:
+  /// **'Download or share the report'**
+  String get adminReportHelpStep5;
+
+  /// No description provided for @adminReportHowToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Use'**
+  String get adminReportHowToUse;
+
+  /// No description provided for @adminReportHowToUseScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Use Scheduled Reports'**
+  String get adminReportHowToUseScheduled;
+
+  /// No description provided for @adminReportInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get adminReportInformation;
+
+  /// No description provided for @adminReportJsonData.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON Data'**
+  String get adminReportJsonData;
+
+  /// No description provided for @adminReportJsonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Raw data format for developers'**
+  String get adminReportJsonDescription;
+
+  /// No description provided for @adminReportLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days'**
+  String get adminReportLast30Days;
+
+  /// No description provided for @adminReportLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get adminReportLast7Days;
+
+  /// No description provided for @adminReportLastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Month'**
+  String get adminReportLastMonth;
+
+  /// No description provided for @adminReportMetricAcceptanceRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance Rate'**
+  String get adminReportMetricAcceptanceRate;
+
+  /// No description provided for @adminReportMetricActiveSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Sessions'**
+  String get adminReportMetricActiveSessions;
+
+  /// No description provided for @adminReportMetricConversion.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversion Rate'**
+  String get adminReportMetricConversion;
+
+  /// No description provided for @adminReportMetricEngagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement'**
+  String get adminReportMetricEngagement;
+
+  /// No description provided for @adminReportMetricNewRegistrations.
+  ///
+  /// In en, this message translates to:
+  /// **'New Registrations'**
+  String get adminReportMetricNewRegistrations;
+
+  /// No description provided for @adminReportMetricRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue'**
+  String get adminReportMetricRevenue;
+
+  /// No description provided for @adminReportMetricTotalApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Applications'**
+  String get adminReportMetricTotalApplications;
+
+  /// No description provided for @adminReportMetricTotalUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Users'**
+  String get adminReportMetricTotalUsers;
+
+  /// No description provided for @adminReportMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get adminReportMonthly;
+
+  /// No description provided for @adminReportNewSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'New Schedule'**
+  String get adminReportNewSchedule;
+
+  /// No description provided for @adminReportNewScheduledReport.
+  ///
+  /// In en, this message translates to:
+  /// **'New Scheduled Report'**
+  String get adminReportNewScheduledReport;
+
+  /// No description provided for @adminReportNextRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Run'**
+  String get adminReportNextRun;
+
+  /// No description provided for @adminReportNoScheduledReports.
+  ///
+  /// In en, this message translates to:
+  /// **'No scheduled reports'**
+  String get adminReportNoScheduledReports;
+
+  /// No description provided for @adminReportPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get adminReportPaused;
+
+  /// No description provided for @adminReportPdfDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Formatted document for printing'**
+  String get adminReportPdfDescription;
+
+  /// No description provided for @adminReportPdfDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF Document'**
+  String get adminReportPdfDocument;
+
+  /// No description provided for @adminReportQuickPresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Presets'**
+  String get adminReportQuickPresets;
+
+  /// No description provided for @adminReportRecipientsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one recipient is required'**
+  String get adminReportRecipientsRequired;
+
+  /// No description provided for @adminReportReportsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate and download reports'**
+  String get adminReportReportsSubtitle;
+
+  /// No description provided for @adminReportReportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get adminReportReportsTitle;
+
+  /// No description provided for @adminReportRunNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Run Now'**
+  String get adminReportRunNow;
+
+  /// No description provided for @adminReportSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get adminReportSave;
+
+  /// No description provided for @adminReportScheduledCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled report created'**
+  String get adminReportScheduledCreated;
+
+  /// No description provided for @adminReportScheduledReportDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled report deleted'**
+  String get adminReportScheduledReportDeleted;
+
+  /// No description provided for @adminReportScheduledReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled Reports'**
+  String get adminReportScheduledReports;
+
+  /// No description provided for @adminReportScheduledReportsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled Reports Help'**
+  String get adminReportScheduledReportsHelp;
+
+  /// No description provided for @adminReportScheduledStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new scheduled report'**
+  String get adminReportScheduledStep1;
+
+  /// No description provided for @adminReportScheduledStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Select frequency (daily, weekly, monthly)'**
+  String get adminReportScheduledStep2;
+
+  /// No description provided for @adminReportScheduledStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose metrics to include'**
+  String get adminReportScheduledStep3;
+
+  /// No description provided for @adminReportScheduledStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'Add email recipients'**
+  String get adminReportScheduledStep4;
+
+  /// No description provided for @adminReportScheduledStep5.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports will be sent automatically'**
+  String get adminReportScheduledStep5;
+
+  /// No description provided for @adminReportScheduledUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled report updated'**
+  String get adminReportScheduledUpdated;
+
+  /// No description provided for @adminReportSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
+  String get adminReportSelectAll;
+
+  /// No description provided for @adminReportSelectAtLeastOneMetric.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one metric'**
+  String get adminReportSelectAtLeastOneMetric;
+
+  /// No description provided for @adminReportSelectMetrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Metrics'**
+  String get adminReportSelectMetrics;
+
+  /// No description provided for @adminReportStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get adminReportStartDate;
+
+  /// No description provided for @adminReportThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get adminReportThisMonth;
+
+  /// No description provided for @adminReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Title'**
+  String get adminReportTitle;
+
+  /// No description provided for @adminReportTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter report title'**
+  String get adminReportTitleHint;
+
+  /// No description provided for @adminReportTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get adminReportTitleRequired;
+
+  /// No description provided for @adminReportTo.
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get adminReportTo;
+
+  /// No description provided for @adminReportToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get adminReportToday;
+
+  /// No description provided for @adminReportTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get adminReportTomorrow;
+
+  /// No description provided for @adminReportWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get adminReportWeekly;
+
+  /// No description provided for @adminSupportAcademic.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic'**
+  String get adminSupportAcademic;
+
+  /// No description provided for @adminSupportAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get adminSupportAccount;
+
+  /// No description provided for @adminSupportActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminSupportActive;
+
+  /// No description provided for @adminSupportAllCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All Categories'**
+  String get adminSupportAllCategories;
+
+  /// No description provided for @adminSupportAllStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'All Status'**
+  String get adminSupportAllStatus;
+
+  /// No description provided for @adminSupportAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get adminSupportAnswer;
+
+  /// No description provided for @adminSupportBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing'**
+  String get adminSupportBilling;
+
+  /// No description provided for @adminSupportCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminSupportCancel;
+
+  /// No description provided for @adminSupportCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get adminSupportCategory;
+
+  /// No description provided for @adminSupportCreateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get adminSupportCreateAction;
+
+  /// No description provided for @adminSupportCreateFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Create FAQ'**
+  String get adminSupportCreateFaq;
+
+  /// No description provided for @adminSupportDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get adminSupportDelete;
+
+  /// No description provided for @adminSupportDeleteFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete FAQ'**
+  String get adminSupportDeleteFaq;
+
+  /// No description provided for @adminSupportDraftArticles.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft Articles'**
+  String get adminSupportDraftArticles;
+
+  /// No description provided for @adminSupportEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get adminSupportEdit;
+
+  /// No description provided for @adminSupportEditFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit FAQ'**
+  String get adminSupportEditFaq;
+
+  /// No description provided for @adminSupportFaqCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ created successfully'**
+  String get adminSupportFaqCreated;
+
+  /// No description provided for @adminSupportFaqDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ deleted successfully'**
+  String get adminSupportFaqDeleted;
+
+  /// No description provided for @adminSupportFaqEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ Entries'**
+  String get adminSupportFaqEntries;
+
+  /// No description provided for @adminSupportFaqUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ updated successfully'**
+  String get adminSupportFaqUpdated;
+
+  /// No description provided for @adminSupportGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get adminSupportGeneral;
+
+  /// No description provided for @adminSupportHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get adminSupportHelpful;
+
+  /// No description provided for @adminSupportHighestHelpfulVotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Helpful Votes'**
+  String get adminSupportHighestHelpfulVotes;
+
+  /// No description provided for @adminSupportInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get adminSupportInactive;
+
+  /// No description provided for @adminSupportKeywords.
+  ///
+  /// In en, this message translates to:
+  /// **'Keywords'**
+  String get adminSupportKeywords;
+
+  /// No description provided for @adminSupportKnowledgeBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge Base'**
+  String get adminSupportKnowledgeBase;
+
+  /// No description provided for @adminSupportKnowledgeBaseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage FAQ entries and help articles'**
+  String get adminSupportKnowledgeBaseSubtitle;
+
+  /// No description provided for @adminSupportMostHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Helpful'**
+  String get adminSupportMostHelpful;
+
+  /// No description provided for @adminSupportNotHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Helpful'**
+  String get adminSupportNotHelpful;
+
+  /// No description provided for @adminSupportPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get adminSupportPriority;
+
+  /// No description provided for @adminSupportPublishedArticles.
+  ///
+  /// In en, this message translates to:
+  /// **'Published Articles'**
+  String get adminSupportPublishedArticles;
+
+  /// No description provided for @adminSupportQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get adminSupportQuestion;
+
+  /// No description provided for @adminSupportRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get adminSupportRefresh;
+
+  /// No description provided for @adminSupportSearchFaqHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search FAQs...'**
+  String get adminSupportSearchFaqHint;
+
+  /// No description provided for @adminSupportStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminSupportStatus;
+
+  /// No description provided for @adminSupportTechnical.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical'**
+  String get adminSupportTechnical;
+
+  /// No description provided for @adminSupportToggleActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle Active'**
+  String get adminSupportToggleActive;
+
+  /// No description provided for @adminSupportTotalArticles.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Articles'**
+  String get adminSupportTotalArticles;
+
+  /// No description provided for @adminSupportUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get adminSupportUpdate;
+
+  /// No description provided for @adminSupportUses.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses'**
+  String get adminSupportUses;
+
+  /// No description provided for @adminUserAcademic.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic'**
+  String get adminUserAcademic;
+
+  /// No description provided for @adminUserAcademicCounseling.
+  ///
+  /// In en, this message translates to:
+  /// **'Academic Counseling'**
+  String get adminUserAcademicCounseling;
+
+  /// No description provided for @adminUserAccountActiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Account is active and can access the platform'**
+  String get adminUserAccountActiveDesc;
+
+  /// No description provided for @adminUserAccountInactiveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Account is inactive and cannot access the platform'**
+  String get adminUserAccountInactiveDesc;
+
+  /// No description provided for @adminUserAccountSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Settings'**
+  String get adminUserAccountSettings;
+
+  /// No description provided for @adminUserAccountStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Status'**
+  String get adminUserAccountStatus;
+
+  /// No description provided for @adminUserAccountUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account updated successfully'**
+  String get adminUserAccountUpdatedSuccess;
+
+  /// No description provided for @adminUserActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get adminUserActivate;
+
+  /// No description provided for @adminUserActivateCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Counselors'**
+  String get adminUserActivateCounselors;
+
+  /// No description provided for @adminUserActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminUserActive;
+
+  /// No description provided for @adminUserAddCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Counselor'**
+  String get adminUserAddCounselor;
+
+  /// No description provided for @adminUserAddNewCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Counselor'**
+  String get adminUserAddNewCounselor;
+
+  /// No description provided for @adminUserAdminColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get adminUserAdminColumn;
+
+  /// No description provided for @adminUserAdminInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Information'**
+  String get adminUserAdminInformation;
+
+  /// No description provided for @adminUserAdminRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Role'**
+  String get adminUserAdminRole;
+
+  /// No description provided for @adminUserAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins'**
+  String get adminUserAdmins;
+
+  /// No description provided for @adminUserAdminUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Users'**
+  String get adminUserAdminUsers;
+
+  /// No description provided for @adminUserAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminUserAll;
+
+  /// No description provided for @adminUserAllRoles.
+  ///
+  /// In en, this message translates to:
+  /// **'All Roles'**
+  String get adminUserAllRoles;
+
+  /// No description provided for @adminUserAllSpecialties.
+  ///
+  /// In en, this message translates to:
+  /// **'All Specialties'**
+  String get adminUserAllSpecialties;
+
+  /// No description provided for @adminUserAllStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'All Status'**
+  String get adminUserAllStatus;
+
+  /// No description provided for @adminUserAnalyticsAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics Admin'**
+  String get adminUserAnalyticsAdmin;
+
+  /// No description provided for @adminUserAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get adminUserAvailability;
+
+  /// No description provided for @adminUserAvailabilityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., Mon-Fri 9am-5pm'**
+  String get adminUserAvailabilityHint;
+
+  /// No description provided for @adminUserBackToCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Counselors'**
+  String get adminUserBackToCounselors;
+
+  /// No description provided for @adminUserCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminUserCancel;
+
+  /// No description provided for @adminUserCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Career'**
+  String get adminUserCareer;
+
+  /// No description provided for @adminUserCareerGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Career Guidance'**
+  String get adminUserCareerGuidance;
+
+  /// No description provided for @adminUserChooseRoleHelperText.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the admin role for this user'**
+  String get adminUserChooseRoleHelperText;
+
+  /// No description provided for @adminUserCollege.
+  ///
+  /// In en, this message translates to:
+  /// **'College'**
+  String get adminUserCollege;
+
+  /// No description provided for @adminUserCollegeAdmissions.
+  ///
+  /// In en, this message translates to:
+  /// **'College Admissions'**
+  String get adminUserCollegeAdmissions;
+
+  /// No description provided for @adminUserConfirmDeactivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Deactivation'**
+  String get adminUserConfirmDeactivation;
+
+  /// No description provided for @adminUserConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get adminUserConfirmPassword;
+
+  /// No description provided for @adminUserContactAndAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact & Availability'**
+  String get adminUserContactAndAvailability;
+
+  /// No description provided for @adminUserContentAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Admin'**
+  String get adminUserContentAdmin;
+
+  /// No description provided for @adminUserCounselorColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor'**
+  String get adminUserCounselorColumn;
+
+  /// No description provided for @adminUserCounselorCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor created successfully'**
+  String get adminUserCounselorCreatedSuccess;
+
+  /// No description provided for @adminUserCounselorId.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor ID'**
+  String get adminUserCounselorId;
+
+  /// No description provided for @adminUserCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselors'**
+  String get adminUserCounselors;
+
+  /// No description provided for @adminUserCounselorUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor updated successfully'**
+  String get adminUserCounselorUpdatedSuccess;
+
+  /// No description provided for @adminUserCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get adminUserCreate;
+
+  /// No description provided for @adminUserCreateAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Admin'**
+  String get adminUserCreateAdmin;
+
+  /// No description provided for @adminUserCreateAdminAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Admin Account'**
+  String get adminUserCreateAdminAccount;
+
+  /// No description provided for @adminUserCreateAdminSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new admin user account'**
+  String get adminUserCreateAdminSubtitle;
+
+  /// No description provided for @adminUserCreateCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Counselor'**
+  String get adminUserCreateCounselor;
+
+  /// No description provided for @adminUserCreateCounselorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new counselor account'**
+  String get adminUserCreateCounselorSubtitle;
+
+  /// No description provided for @adminUserCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get adminUserCreated;
+
+  /// No description provided for @adminUserCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Credentials'**
+  String get adminUserCredentials;
+
+  /// No description provided for @adminUserCredentialsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional certifications and licenses'**
+  String get adminUserCredentialsHint;
+
+  /// No description provided for @adminUserDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get adminUserDashboard;
+
+  /// No description provided for @adminUserDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get adminUserDeactivate;
+
+  /// No description provided for @adminUserDeactivateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Account'**
+  String get adminUserDeactivateAccount;
+
+  /// No description provided for @adminUserDeactivateCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Counselors'**
+  String get adminUserDeactivateCounselors;
+
+  /// No description provided for @adminUserDeactivationComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivation feature coming soon'**
+  String get adminUserDeactivationComingSoon;
+
+  /// No description provided for @adminUserEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get adminUserEdit;
+
+  /// No description provided for @adminUserEditAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Admin'**
+  String get adminUserEditAdmin;
+
+  /// No description provided for @adminUserEditAdminAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Admin Account'**
+  String get adminUserEditAdminAccount;
+
+  /// No description provided for @adminUserEditCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Counselor'**
+  String get adminUserEditCounselor;
+
+  /// No description provided for @adminUserEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get adminUserEmail;
+
+  /// No description provided for @adminUserEmailCannotBeChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Email cannot be changed'**
+  String get adminUserEmailCannotBeChanged;
+
+  /// No description provided for @adminUserEmailLoginHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'This email will be used to log in'**
+  String get adminUserEmailLoginHelper;
+
+  /// No description provided for @adminUserExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get adminUserExport;
+
+  /// No description provided for @adminUserExportComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Export feature coming soon'**
+  String get adminUserExportComingSoon;
+
+  /// No description provided for @adminUserExportCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Counselors'**
+  String get adminUserExportCounselors;
+
+  /// No description provided for @adminUserFailedCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create account'**
+  String get adminUserFailedCreateAccount;
+
+  /// No description provided for @adminUserFailedLoadData.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load data'**
+  String get adminUserFailedLoadData;
+
+  /// No description provided for @adminUserFailedUpdateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update account'**
+  String get adminUserFailedUpdateAccount;
+
+  /// No description provided for @adminUserFinanceAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance Admin'**
+  String get adminUserFinanceAdmin;
+
+  /// No description provided for @adminUserFinancialAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Aid'**
+  String get adminUserFinancialAid;
+
+  /// No description provided for @adminUserFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get adminUserFirstName;
+
+  /// No description provided for @adminUserFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get adminUserFullName;
+
+  /// No description provided for @adminUserInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get adminUserInactive;
+
+  /// No description provided for @adminUserInstitutionCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution created successfully'**
+  String get adminUserInstitutionCreatedSuccess;
+
+  /// No description provided for @adminUserInstitutionInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution Information'**
+  String get adminUserInstitutionInformation;
+
+  /// No description provided for @adminUserInstitutionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution Name'**
+  String get adminUserInstitutionName;
+
+  /// No description provided for @adminUserInstitutionUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution updated successfully'**
+  String get adminUserInstitutionUpdatedSuccess;
+
+  /// No description provided for @adminUserInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address'**
+  String get adminUserInvalidEmail;
+
+  /// No description provided for @adminUserJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get adminUserJoined;
+
+  /// No description provided for @adminUserLanguageSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'Language School'**
+  String get adminUserLanguageSchool;
+
+  /// No description provided for @adminUserLastLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Login'**
+  String get adminUserLastLogin;
+
+  /// No description provided for @adminUserLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get adminUserLastName;
+
+  /// No description provided for @adminUserLicenseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'License Number'**
+  String get adminUserLicenseNumber;
+
+  /// No description provided for @adminUserManageAdminAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Admin Accounts'**
+  String get adminUserManageAdminAccounts;
+
+  /// No description provided for @adminUserManageCounselorAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Counselor Accounts'**
+  String get adminUserManageCounselorAccounts;
+
+  /// No description provided for @adminUserMentalHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Mental Health'**
+  String get adminUserMentalHealth;
+
+  /// No description provided for @adminUserNoPermissionDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to deactivate this account'**
+  String get adminUserNoPermissionDeactivate;
+
+  /// No description provided for @adminUserNoPermissionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to edit this account'**
+  String get adminUserNoPermissionEdit;
+
+  /// No description provided for @adminUserOfficeLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Office Location'**
+  String get adminUserOfficeLocation;
+
+  /// No description provided for @adminUserOfficeLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Building and room number'**
+  String get adminUserOfficeLocationHint;
+
+  /// No description provided for @adminUserPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get adminUserPassword;
+
+  /// No description provided for @adminUserPasswordHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 8 characters'**
+  String get adminUserPasswordHelper;
+
+  /// No description provided for @adminUserPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get adminUserPasswordsDoNotMatch;
+
+  /// No description provided for @adminUserPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adminUserPending;
+
+  /// No description provided for @adminUserPendingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Approval'**
+  String get adminUserPendingApproval;
+
+  /// No description provided for @adminUserPendingVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Verification'**
+  String get adminUserPendingVerification;
+
+  /// No description provided for @adminUserPersonalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get adminUserPersonalInformation;
+
+  /// No description provided for @adminUserPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get adminUserPhone;
+
+  /// No description provided for @adminUserPhoneHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Include country code'**
+  String get adminUserPhoneHelper;
+
+  /// No description provided for @adminUserPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get adminUserPhoneNumber;
+
+  /// No description provided for @adminUserPleaseConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get adminUserPleaseConfirmPassword;
+
+  /// No description provided for @adminUserProfessionalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional Information'**
+  String get adminUserProfessionalInformation;
+
+  /// No description provided for @adminUserRegionalAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional Admin'**
+  String get adminUserRegionalAdmin;
+
+  /// No description provided for @adminUserRegionalScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional Scope'**
+  String get adminUserRegionalScope;
+
+  /// No description provided for @adminUserRegionalScopeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the regions this admin can manage'**
+  String get adminUserRegionalScopeHelper;
+
+  /// No description provided for @adminUserRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get adminUserRejected;
+
+  /// No description provided for @adminUserRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get adminUserRequired;
+
+  /// No description provided for @adminUserRequiredForRegional.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for regional admin role'**
+  String get adminUserRequiredForRegional;
+
+  /// No description provided for @adminUserRoleColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get adminUserRoleColumn;
+
+  /// No description provided for @adminUserSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get adminUserSaveChanges;
+
+  /// No description provided for @adminUserSearchByNameOrEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or email'**
+  String get adminUserSearchByNameOrEmail;
+
+  /// No description provided for @adminUserSearchCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Search counselors...'**
+  String get adminUserSearchCounselors;
+
+  /// No description provided for @adminUserSecuritySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Settings'**
+  String get adminUserSecuritySettings;
+
+  /// No description provided for @adminUserSelectAdminRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Admin Role'**
+  String get adminUserSelectAdminRole;
+
+  /// No description provided for @adminUserSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get adminUserSessions;
+
+  /// No description provided for @adminUserSpecialty.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialty'**
+  String get adminUserSpecialty;
+
+  /// No description provided for @adminUserStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminUserStatus;
+
+  /// No description provided for @adminUserStatusColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminUserStatusColumn;
+
+  /// No description provided for @adminUserStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get adminUserStudents;
+
+  /// No description provided for @adminUserStudySkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Skills'**
+  String get adminUserStudySkills;
+
+  /// No description provided for @adminUserSuperAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Super Admin'**
+  String get adminUserSuperAdmin;
+
+  /// No description provided for @adminUserSupportAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Admin'**
+  String get adminUserSupportAdmin;
+
+  /// No description provided for @adminUserSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get adminUserSuspended;
+
+  /// No description provided for @adminUserType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get adminUserType;
+
+  /// No description provided for @adminUserUniversity.
+  ///
+  /// In en, this message translates to:
+  /// **'University'**
+  String get adminUserUniversity;
+
+  /// No description provided for @adminUserUpdateAdminSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update admin account information'**
+  String get adminUserUpdateAdminSubtitle;
+
+  /// No description provided for @adminUserUpdateCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Counselor'**
+  String get adminUserUpdateCounselor;
+
+  /// No description provided for @adminUserUpdateCounselorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update counselor account information'**
+  String get adminUserUpdateCounselorSubtitle;
+
+  /// No description provided for @adminUserVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get adminUserVerified;
+
+  /// No description provided for @adminUserViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get adminUserViewDetails;
+
+  /// No description provided for @adminUserVocationalSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'Vocational School'**
+  String get adminUserVocationalSchool;
+
+  /// No description provided for @adminUserWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get adminUserWebsite;
+
+  /// No description provided for @adminUserYearsOfExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Years of Experience'**
+  String get adminUserYearsOfExperience;
+
+  /// No description provided for @adminAnalyticsShowingRows.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {count} of {total} rows'**
+  String adminAnalyticsShowingRows(Object count, Object total);
+
+  /// No description provided for @adminAnalyticsColumnsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} columns'**
+  String adminAnalyticsColumnsCount(Object count);
+
+  /// No description provided for @adminChatFailedSendReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send reply: {error}'**
+  String adminChatFailedSendReply(Object error);
+
+  /// No description provided for @adminChatRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role: {role}'**
+  String adminChatRole(Object role);
+
+  /// No description provided for @adminChatMessageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} messages'**
+  String adminChatMessageCount(Object count);
+
+  /// No description provided for @adminChatStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started: {date}'**
+  String adminChatStarted(Object date);
+
+  /// No description provided for @adminChatLastMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Last message: {date}'**
+  String adminChatLastMessage(Object date);
+
+  /// No description provided for @adminChatDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration: {duration}'**
+  String adminChatDuration(Object duration);
+
+  /// No description provided for @adminChatFaqDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{question}\"?'**
+  String adminChatFaqDeleteConfirm(Object question);
+
+  /// No description provided for @adminChatFaqDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete FAQ: {error}'**
+  String adminChatFaqDeleteFailed(Object error);
+
+  /// No description provided for @adminChatFaqUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update FAQ: {error}'**
+  String adminChatFaqUpdateFailed(Object error);
+
+  /// No description provided for @adminChatFaqSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save FAQ: {error}'**
+  String adminChatFaqSaveFailed(Object error);
+
+  /// No description provided for @adminChatQueueAssignFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to assign conversation: {error}'**
+  String adminChatQueueAssignFailed(Object error);
+
+  /// No description provided for @adminReportGenerateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate report: {error}'**
+  String adminReportGenerateFailed(Object error);
+
+  /// No description provided for @adminReportNameGeneratedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} generated successfully'**
+  String adminReportNameGeneratedSuccess(Object name);
+
+  /// No description provided for @adminReportInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'in {days} days'**
+  String adminReportInDays(Object days);
+
+  /// No description provided for @adminUserErrorLoadingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading data: {error}'**
+  String adminUserErrorLoadingData(Object error);
+
+  /// No description provided for @adminUserAccountCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account {email} created successfully'**
+  String adminUserAccountCreatedSuccess(Object email);
+
+  /// No description provided for @adminUserError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String adminUserError(Object error);
+
+  /// No description provided for @adminUserCannotActivateInsufficient.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot activate {count} admins: insufficient permissions'**
+  String adminUserCannotActivateInsufficient(Object count);
+
+  /// No description provided for @adminUserAdminsActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} admins activated'**
+  String adminUserAdminsActivated(Object count);
+
+  /// No description provided for @adminUserCannotDeactivateInsufficient.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot deactivate {count} admins: insufficient permissions'**
+  String adminUserCannotDeactivateInsufficient(Object count);
+
+  /// No description provided for @adminUserConfirmDeactivateAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to deactivate {count} admins?'**
+  String adminUserConfirmDeactivateAdmins(Object count);
+
+  /// No description provided for @adminUserAdminsDeactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} admins deactivated'**
+  String adminUserAdminsDeactivated(Object count);
+
+  /// No description provided for @adminUserConfirmActivateCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to activate {count} counselors?'**
+  String adminUserConfirmActivateCounselors(Object count);
+
+  /// No description provided for @adminUserConfirmDeactivateCounselors.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to deactivate {count} counselors?'**
+  String adminUserConfirmDeactivateCounselors(Object count);
 }
 
 class _AppLocalizationsDelegate

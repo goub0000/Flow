@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/models/conversation_model.dart';
 import '../../../core/models/message_model.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/empty_state.dart';
@@ -343,7 +344,7 @@ class _ConversationCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        conversation.lastMessagePreview,
+                        conversation.lastMessagePreview ?? '',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                           fontWeight: hasUnread ? FontWeight.w600 : null,

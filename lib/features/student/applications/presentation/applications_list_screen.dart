@@ -230,18 +230,18 @@ class _ApplicationCard extends StatelessWidget {
     required this.onTap,
   });
 
-  StatusBadge _getStatusBadge() {
+  StatusBadge _getStatusBadge(BuildContext context) {
     switch (application.status) {
       case 'pending':
-        return StatusBadge.pending();
+        return StatusBadge.pending(context);
       case 'under_review':
-        return StatusBadge.inProgress();
+        return StatusBadge.inProgress(context);
       case 'accepted':
-        return StatusBadge.approved();
+        return StatusBadge.approved(context);
       case 'rejected':
-        return StatusBadge.rejected();
+        return StatusBadge.rejected(context);
       default:
-        return StatusBadge.pending();
+        return StatusBadge.pending(context);
     }
   }
 
@@ -267,7 +267,7 @@ class _ApplicationCard extends StatelessWidget {
                   ),
                 ),
               ),
-              _getStatusBadge(),
+              _getStatusBadge(context),
             ],
           ),
           const SizedBox(height: 8),

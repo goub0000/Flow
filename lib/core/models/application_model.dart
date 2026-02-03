@@ -40,6 +40,9 @@ class Application {
   bool get isRejected => status == 'rejected';
   bool get isPaid => feePaid;
 
+  /// Get the most recent update time (reviewedAt if available, otherwise submittedAt)
+  DateTime get lastUpdate => reviewedAt ?? submittedAt;
+
   factory Application.fromJson(Map<String, dynamic> json) {
     return Application(
       id: json['id'] as String,

@@ -131,6 +131,38 @@ class Conversation extends Equatable {
     );
   }
 
+  /// Get the display name for the conversation participant(s)
+  String get participantName => title ?? 'Conversation';
+
+  /// Get participant photo URL (placeholder for compatibility)
+  String? get participantPhotoUrl => metadata?['photo_url'] as String?;
+
+  /// Get initials for avatar (derived from title)
+  String get initials {
+    final name = title ?? 'C';
+    final parts = name.split(' ');
+    if (parts.length >= 2) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return name.isNotEmpty ? name[0].toUpperCase() : 'C';
+  }
+
+  /// Get formatted last activity time
+  String get formattedLastActivity {
+    final time = lastMessageAt ?? updatedAt;
+    final now = DateTime.now();
+    final diff = now.difference(time);
+
+    if (diff.inMinutes < 1) return 'Just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    return '${time.day}/${time.month}/${time.year}';
+  }
+
+  /// Get participant role (placeholder for compatibility)
+  String? get participantRole => metadata?['role'] as String?;
+
   @override
   List<Object?> get props => [
         id,

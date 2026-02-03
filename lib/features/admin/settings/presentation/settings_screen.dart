@@ -360,7 +360,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
             if (confirmed == true) {
               // TODO: Implement logout
-              ref.read(adminAuthProvider.notifier).logout();
+              ref.read(adminAuthProvider.notifier).signOut();
             }
           },
         ),

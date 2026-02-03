@@ -11676,4 +11676,1985 @@ class AppLocalizationsEn extends AppLocalizations {
   String swProgressLongestStreak(int count) {
     return 'Longest: $count days';
   }
+
+  @override
+  String get adminAnalytics30DayActiveChange => '30-day active change';
+
+  @override
+  String get adminAnalyticsActive30d => 'Active (30d)';
+
+  @override
+  String get adminAnalyticsActiveApplications => 'Active Applications';
+
+  @override
+  String get adminAnalyticsActiveChange => 'Active Change';
+
+  @override
+  String get adminAnalyticsActiveLast30Days => 'Active in last 30 days';
+
+  @override
+  String get adminAnalyticsActiveUsers => 'Active Users';
+
+  @override
+  String get adminAnalyticsActiveUsers30d => 'Active Users (30d)';
+
+  @override
+  String get adminAnalyticsAllRegisteredUsers => 'All Registered Users';
+
+  @override
+  String get adminAnalyticsAllTime => 'All Time';
+
+  @override
+  String get adminAnalyticsApplicationAnalytics => 'Application Analytics';
+
+  @override
+  String get adminAnalyticsApplications => 'Applications';
+
+  @override
+  String get adminAnalyticsApplicationSubmissions => 'Application Submissions';
+
+  @override
+  String get adminAnalyticsApproved => 'Approved';
+
+  @override
+  String get adminAnalyticsApps7d => 'Apps (7d)';
+
+  @override
+  String get adminAnalyticsAppTrendData => 'Application Trend Data';
+
+  @override
+  String get adminAnalyticsAverageTime => 'Average Time';
+
+  @override
+  String get adminAnalyticsAverageValue => 'Average Value';
+
+  @override
+  String get adminAnalyticsAvgCompletion => 'Avg. Completion';
+
+  @override
+  String get adminAnalyticsAvgTransaction => 'Avg. Transaction';
+
+  @override
+  String get adminAnalyticsAwaitingReview => 'Awaiting Review';
+
+  @override
+  String get adminAnalyticsBounceRate => 'Bounce Rate';
+
+  @override
+  String get adminAnalyticsByUserType => 'By User Type';
+
+  @override
+  String get adminAnalyticsClose => 'Close';
+
+  @override
+  String get adminAnalyticsContent => 'Content';
+
+  @override
+  String get adminAnalyticsContentAnalytics => 'Content Analytics';
+
+  @override
+  String get adminAnalyticsContentCompletionRate => 'Content Completion Rate';
+
+  @override
+  String get adminAnalyticsContentEngagement => 'Content Engagement';
+
+  @override
+  String get adminAnalyticsContentEngagementData => 'Content Engagement Data';
+
+  @override
+  String get adminAnalyticsCounselors => 'Counselors';
+
+  @override
+  String get adminAnalyticsCourses => 'Courses';
+
+  @override
+  String get adminAnalyticsCsv => 'CSV';
+
+  @override
+  String get adminAnalyticsCsvDesc => 'Download as CSV spreadsheet';
+
+  @override
+  String get adminAnalyticsCustomDashboards => 'Custom Dashboards';
+
+  @override
+  String get adminAnalyticsDailyActiveUserData => 'Daily Active User Data';
+
+  @override
+  String get adminAnalyticsDailyActiveUsers => 'Daily Active Users';
+
+  @override
+  String get adminAnalyticsDashboardSubtitle =>
+      'View platform metrics and insights';
+
+  @override
+  String get adminAnalyticsDataExplorer => 'Data Explorer';
+
+  @override
+  String get adminAnalyticsDataExplorerSubtitle => 'Query and analyze raw data';
+
+  @override
+  String get adminAnalyticsDataExports => 'Data Exports';
+
+  @override
+  String get adminAnalyticsDataExportsSubtitle => 'Download reports and data';
+
+  @override
+  String get adminAnalyticsDistributionByRole => 'Distribution by Role';
+
+  @override
+  String get adminAnalyticsEngagement => 'Engagement';
+
+  @override
+  String get adminAnalyticsEngagementLabel => 'Engagement';
+
+  @override
+  String get adminAnalyticsExcel => 'Excel';
+
+  @override
+  String get adminAnalyticsExcelDesc => 'Download as Excel workbook';
+
+  @override
+  String get adminAnalyticsExportReport => 'Export Report';
+
+  @override
+  String get adminAnalyticsExportTitle => 'Export Analytics';
+
+  @override
+  String get adminAnalyticsFinancial => 'Financial';
+
+  @override
+  String get adminAnalyticsFinancialAnalytics => 'Financial Analytics';
+
+  @override
+  String get adminAnalyticsInstitutions => 'Institutions';
+
+  @override
+  String get adminAnalyticsKpi => 'KPI';
+
+  @override
+  String get adminAnalyticsLast30Days => 'Last 30 Days';
+
+  @override
+  String get adminAnalyticsLast7Days => 'Last 7 Days';
+
+  @override
+  String get adminAnalyticsLast7DaysShort => 'Last 7d';
+
+  @override
+  String get adminAnalyticsLast90Days => 'Last 90 Days';
+
+  @override
+  String get adminAnalyticsMonthToDate => 'Month to Date';
+
+  @override
+  String get adminAnalyticsMostViewedItems => 'Most Viewed Items';
+
+  @override
+  String get adminAnalyticsNew7d => 'New (7d)';
+
+  @override
+  String get adminAnalyticsNewAppsOverTime => 'New Applications Over Time';
+
+  @override
+  String get adminAnalyticsNewExport => 'New Export';
+
+  @override
+  String get adminAnalyticsNewRegOverTime => 'New Registrations Over Time';
+
+  @override
+  String get adminAnalyticsNewSignUpsOverTime => 'New Sign-ups Over Time';
+
+  @override
+  String get adminAnalyticsNewUsers => 'New Users';
+
+  @override
+  String get adminAnalyticsNewUsersThisWeek => 'New Users This Week';
+
+  @override
+  String get adminAnalyticsNoDataAvailable => 'No data available';
+
+  @override
+  String get adminAnalyticsNoMatchingRows => 'No matching rows found';
+
+  @override
+  String get adminAnalyticsNoRecentActivity => 'No recent activity';
+
+  @override
+  String get adminAnalyticsNoRoleDistData =>
+      'No role distribution data available';
+
+  @override
+  String get adminAnalyticsNoUserGrowthData => 'No user growth data available';
+
+  @override
+  String get adminAnalyticsNoWidgets => 'No widgets configured';
+
+  @override
+  String get adminAnalyticsOverview => 'Overview';
+
+  @override
+  String get adminAnalyticsPageViews => 'Page Views';
+
+  @override
+  String get adminAnalyticsPdf => 'PDF';
+
+  @override
+  String get adminAnalyticsPdfDesc => 'Download as PDF document';
+
+  @override
+  String get adminAnalyticsPending => 'Pending';
+
+  @override
+  String get adminAnalyticsPlatformEngagement => 'Platform Engagement';
+
+  @override
+  String get adminAnalyticsPlatformUptime => 'Platform Uptime';
+
+  @override
+  String get adminAnalyticsPopularContent => 'Popular Content';
+
+  @override
+  String get adminAnalyticsPrograms => 'Programs';
+
+  @override
+  String get adminAnalyticsPublishedItems => 'Published Items';
+
+  @override
+  String get adminAnalyticsQuickStats => 'Quick Stats';
+
+  @override
+  String get adminAnalyticsRecentApplications => 'Recent Applications';
+
+  @override
+  String get adminAnalyticsRecommenders => 'Recommenders';
+
+  @override
+  String get adminAnalyticsRefreshAll => 'Refresh All';
+
+  @override
+  String get adminAnalyticsRefreshData => 'Refresh Data';
+
+  @override
+  String get adminAnalyticsRegionalDataNotAvailable =>
+      'Regional data not available';
+
+  @override
+  String get adminAnalyticsRegionalDistribution => 'Regional Distribution';
+
+  @override
+  String get adminAnalyticsRejected => 'Rejected';
+
+  @override
+  String get adminAnalyticsRevenueBreakdown => 'Revenue Breakdown';
+
+  @override
+  String get adminAnalyticsRevenueMtd => 'Revenue MTD';
+
+  @override
+  String get adminAnalyticsRevenueTrend => 'Revenue Trend';
+
+  @override
+  String get adminAnalyticsRevenueTrendData => 'Revenue Trend Data';
+
+  @override
+  String get adminAnalyticsSearchColumns => 'Search columns...';
+
+  @override
+  String get adminAnalyticsSelectDataSource => 'Select Data Source';
+
+  @override
+  String get adminAnalyticsSelectFormat => 'Select Format';
+
+  @override
+  String get adminAnalyticsSessionDuration => 'Session Duration';
+
+  @override
+  String get adminAnalyticsSinglePageVisits => 'Single Page Visits';
+
+  @override
+  String get adminAnalyticsStudents => 'Students';
+
+  @override
+  String get adminAnalyticsSubtitle => 'Platform analytics and insights';
+
+  @override
+  String get adminAnalyticsSuccessRate => 'Success Rate';
+
+  @override
+  String get adminAnalyticsThisMonth => 'This Month';
+
+  @override
+  String get adminAnalyticsThisYear => 'This Year';
+
+  @override
+  String get adminAnalyticsTitle => 'Analytics Dashboard';
+
+  @override
+  String get adminAnalyticsToggleWidgets => 'Toggle Widgets';
+
+  @override
+  String get adminAnalyticsTotalApproved => 'Total Approved';
+
+  @override
+  String get adminAnalyticsTotalContent => 'Total Content';
+
+  @override
+  String get adminAnalyticsTotalCounselors => 'Total Counselors';
+
+  @override
+  String get adminAnalyticsTotalInstitutions => 'Total Institutions';
+
+  @override
+  String get adminAnalyticsTotalInteractions => 'Total Interactions';
+
+  @override
+  String get adminAnalyticsTotalRecommenders => 'Total Recommenders';
+
+  @override
+  String get adminAnalyticsTotalRejected => 'Total Rejected';
+
+  @override
+  String get adminAnalyticsTotalRevenue => 'Total Revenue';
+
+  @override
+  String get adminAnalyticsTotalStudents => 'Total Students';
+
+  @override
+  String get adminAnalyticsTotalTransactions => 'Total Transactions';
+
+  @override
+  String get adminAnalyticsTotalUsers => 'Total Users';
+
+  @override
+  String get adminAnalyticsTotalViews => 'Total Views';
+
+  @override
+  String get adminAnalyticsTransactions => 'Transactions';
+
+  @override
+  String get adminAnalyticsTransactionSuccess => 'Transaction Success';
+
+  @override
+  String get adminAnalyticsTrends => 'Trends';
+
+  @override
+  String get adminAnalyticsUniversities => 'Universities';
+
+  @override
+  String get adminAnalyticsUserActivityOverTime => 'User Activity Over Time';
+
+  @override
+  String get adminAnalyticsUserAnalytics => 'User Analytics';
+
+  @override
+  String get adminAnalyticsUserDistribution => 'User Distribution';
+
+  @override
+  String get adminAnalyticsUserGrowth => 'User Growth';
+
+  @override
+  String get adminAnalyticsUserGrowthVsPrevious =>
+      'User Growth vs Previous Period';
+
+  @override
+  String get adminAnalyticsUserInteractionsOverTime =>
+      'User Interactions Over Time';
+
+  @override
+  String get adminAnalyticsUserRegistrations => 'User Registrations';
+
+  @override
+  String get adminAnalyticsUsers => 'Users';
+
+  @override
+  String get adminAnalyticsUsersByRegion => 'Users by Region';
+
+  @override
+  String get adminAnalyticsUserTypes => 'User Types';
+
+  @override
+  String get adminAnalyticsVsLastPeriod => 'vs Last Period';
+
+  @override
+  String get adminAnalyticsWidgets => 'Widgets';
+
+  @override
+  String get adminChatArchive => 'Archive';
+
+  @override
+  String get adminChatCancel => 'Cancel';
+
+  @override
+  String get adminChatCannedClosingLabel => 'Closing';
+
+  @override
+  String get adminChatCannedClosingText =>
+      'Thank you for contacting us. Have a great day!';
+
+  @override
+  String get adminChatCannedEscalatingLabel => 'Escalating';
+
+  @override
+  String get adminChatCannedEscalatingText =>
+      'I\'ll escalate this to a specialist who can better assist you.';
+
+  @override
+  String get adminChatCannedFollowUpLabel => 'Follow-up';
+
+  @override
+  String get adminChatCannedFollowUpText =>
+      'Is there anything else I can help you with?';
+
+  @override
+  String get adminChatCannedGreetingLabel => 'Greeting';
+
+  @override
+  String get adminChatCannedGreetingText =>
+      'Hello! How can I assist you today?';
+
+  @override
+  String get adminChatCannedMoreInfoLabel => 'More Info';
+
+  @override
+  String get adminChatCannedMoreInfoText =>
+      'Could you please provide more details about your issue?';
+
+  @override
+  String get adminChatCannedResolutionLabel => 'Resolution';
+
+  @override
+  String get adminChatCannedResolutionText =>
+      'Your issue has been resolved. Please let me know if you need further assistance.';
+
+  @override
+  String get adminChatConvDetailsTitle => 'Conversation Details';
+
+  @override
+  String get adminChatConvHistorySubtitle =>
+      'View past conversations and messages';
+
+  @override
+  String get adminChatConvHistoryTitle => 'Conversation History';
+
+  @override
+  String get adminChatConvNotFound => 'Conversation not found';
+
+  @override
+  String get adminChatDelete => 'Delete';
+
+  @override
+  String get adminChatDeleteConvConfirm =>
+      'Are you sure you want to delete this conversation? This action cannot be undone.';
+
+  @override
+  String get adminChatDeleteConvTitle => 'Delete Conversation';
+
+  @override
+  String get adminChatFaqActivate => 'Activate';
+
+  @override
+  String get adminChatFaqAdd => 'Add FAQ';
+
+  @override
+  String get adminChatFaqAllCategories => 'All Categories';
+
+  @override
+  String get adminChatFaqAnswer => 'Answer';
+
+  @override
+  String get adminChatFaqAnswerHint => 'Enter the answer to this question';
+
+  @override
+  String get adminChatFaqAnswerRequired => 'Answer is required';
+
+  @override
+  String get adminChatFaqCategory => 'Category';
+
+  @override
+  String get adminChatFaqCreate => 'Create FAQ';
+
+  @override
+  String get adminChatFaqCreated => 'FAQ created successfully';
+
+  @override
+  String get adminChatFaqCreateFirst => 'Create your first FAQ entry';
+
+  @override
+  String get adminChatFaqCreateTitle => 'Create FAQ Entry';
+
+  @override
+  String get adminChatFaqDeactivate => 'Deactivate';
+
+  @override
+  String get adminChatFaqDeleted => 'FAQ deleted successfully';
+
+  @override
+  String get adminChatFaqDeleteTitle => 'Delete FAQ';
+
+  @override
+  String get adminChatFaqEdit => 'Edit';
+
+  @override
+  String get adminChatFaqEditTitle => 'Edit FAQ Entry';
+
+  @override
+  String get adminChatFaqHelpful => 'Helpful';
+
+  @override
+  String get adminChatFaqInactive => 'Inactive';
+
+  @override
+  String get adminChatFaqKeywords => 'Keywords';
+
+  @override
+  String get adminChatFaqKeywordsHelper =>
+      'Keywords help the chatbot find this FAQ';
+
+  @override
+  String get adminChatFaqKeywordsHint => 'Enter keywords separated by commas';
+
+  @override
+  String get adminChatFaqLoadMore => 'Load More';
+
+  @override
+  String get adminChatFaqNoFaqs => 'No FAQs found';
+
+  @override
+  String get adminChatFaqNotHelpful => 'Not Helpful';
+
+  @override
+  String get adminChatFaqPriority => 'Priority';
+
+  @override
+  String get adminChatFaqQuestion => 'Question';
+
+  @override
+  String get adminChatFaqQuestionHint => 'Enter the question';
+
+  @override
+  String get adminChatFaqQuestionRequired => 'Question is required';
+
+  @override
+  String get adminChatFaqSearch => 'Search FAQs...';
+
+  @override
+  String get adminChatFaqShowInactive => 'Show Inactive';
+
+  @override
+  String get adminChatFaqSubtitle => 'Manage FAQ entries for the chatbot';
+
+  @override
+  String get adminChatFaqTitle => 'FAQ Management';
+
+  @override
+  String get adminChatFaqUpdate => 'Update FAQ';
+
+  @override
+  String get adminChatFaqUpdated => 'FAQ updated successfully';
+
+  @override
+  String get adminChatFaqUses => 'Uses';
+
+  @override
+  String get adminChatFilter => 'Filter';
+
+  @override
+  String get adminChatFilterAll => 'All';
+
+  @override
+  String get adminChatFlag => 'Flag';
+
+  @override
+  String get adminChatLiveActiveFiveMin => 'Active in last 5 minutes';
+
+  @override
+  String get adminChatLiveAutoRefresh => 'Auto-refresh';
+
+  @override
+  String get adminChatLiveLive => 'LIVE';
+
+  @override
+  String get adminChatLiveLoadFailed => 'Failed to load live chats';
+
+  @override
+  String get adminChatLiveNoActive => 'No active chats at the moment';
+
+  @override
+  String get adminChatLivePaused => 'Paused';
+
+  @override
+  String get adminChatLiveSubtitle =>
+      'Monitor active chat sessions in real-time';
+
+  @override
+  String get adminChatLiveTitle => 'Live Chat Monitor';
+
+  @override
+  String get adminChatNoConversations => 'No conversations found';
+
+  @override
+  String get adminChatQueueAllPriorities => 'All Priorities';
+
+  @override
+  String get adminChatQueueAllStatus => 'All Status';
+
+  @override
+  String get adminChatQueueAssigned => 'Assigned';
+
+  @override
+  String get adminChatQueueAssignedToYou => 'Assigned to you';
+
+  @override
+  String get adminChatQueueAssignToMe => 'Assign to me';
+
+  @override
+  String get adminChatQueueEscalatedHint =>
+      'This conversation has been escalated';
+
+  @override
+  String get adminChatQueueHigh => 'High';
+
+  @override
+  String get adminChatQueueInProgress => 'In Progress';
+
+  @override
+  String get adminChatQueueLoadFailed => 'Failed to load queue';
+
+  @override
+  String get adminChatQueueLow => 'Low';
+
+  @override
+  String get adminChatQueueNoItems => 'No items in queue';
+
+  @override
+  String get adminChatQueueNormal => 'Normal';
+
+  @override
+  String get adminChatQueueOpen => 'Open';
+
+  @override
+  String get adminChatQueuePending => 'Pending';
+
+  @override
+  String get adminChatQueueReasonAutoEscalation =>
+      'Auto-escalation due to wait time';
+
+  @override
+  String get adminChatQueueReasonLowConfidence => 'Low confidence AI response';
+
+  @override
+  String get adminChatQueueReasonNegativeFeedback => 'Negative user feedback';
+
+  @override
+  String get adminChatQueueReasonUserRequest => 'User requested human support';
+
+  @override
+  String get adminChatQueueStatus => 'Status';
+
+  @override
+  String get adminChatQueueSubtitle =>
+      'Manage escalated conversations requiring attention';
+
+  @override
+  String get adminChatQueueTitle => 'Support Queue';
+
+  @override
+  String get adminChatQueueUrgent => 'Urgent';
+
+  @override
+  String get adminChatQuickReplies => 'Quick Replies';
+
+  @override
+  String get adminChatRefresh => 'Refresh';
+
+  @override
+  String get adminChatRefreshNow => 'Refresh Now';
+
+  @override
+  String get adminChatReplyHint => 'Type your reply...';
+
+  @override
+  String get adminChatReplySentResolved =>
+      'Reply sent and conversation resolved';
+
+  @override
+  String get adminChatRestore => 'Restore';
+
+  @override
+  String get adminChatRetry => 'Retry';
+
+  @override
+  String get adminChatSearchConversations => 'Search conversations...';
+
+  @override
+  String get adminChatSendAndResolve => 'Send & Resolve';
+
+  @override
+  String get adminChatSendReply => 'Send Reply';
+
+  @override
+  String get adminChatStatusActive => 'Active';
+
+  @override
+  String get adminChatStatusArchived => 'Archived';
+
+  @override
+  String get adminChatStatusEscalated => 'Escalated';
+
+  @override
+  String get adminChatStatusFlagged => 'Flagged';
+
+  @override
+  String get adminChatSupportAgent => 'Support Agent';
+
+  @override
+  String get adminChatUnknownUser => 'Unknown User';
+
+  @override
+  String get adminFinanceActionCannotBeUndone => 'This action cannot be undone';
+
+  @override
+  String get adminFinanceAll => 'All';
+
+  @override
+  String get adminFinanceAllCompletedPayments => 'All Completed Payments';
+
+  @override
+  String get adminFinanceAllLevels => 'All Levels';
+
+  @override
+  String get adminFinanceAllRefundTransactions => 'All Refund Transactions';
+
+  @override
+  String get adminFinanceAllStatus => 'All Status';
+
+  @override
+  String get adminFinanceAllTime => 'All Time';
+
+  @override
+  String get adminFinanceAllTransactionsNormal =>
+      'All transactions appear normal';
+
+  @override
+  String get adminFinanceAllTypes => 'All Types';
+
+  @override
+  String get adminFinanceAlreadyReviewed => 'Already Reviewed';
+
+  @override
+  String get adminFinanceAmount => 'Amount';
+
+  @override
+  String get adminFinanceAvgSettlement => 'Avg. Settlement';
+
+  @override
+  String get adminFinanceAwaitingProcessing => 'Awaiting Processing';
+
+  @override
+  String get adminFinanceCancel => 'Cancel';
+
+  @override
+  String get adminFinanceChooseTransaction => 'Choose a transaction';
+
+  @override
+  String get adminFinanceClose => 'Close';
+
+  @override
+  String get adminFinanceCompleted => 'Completed';
+
+  @override
+  String get adminFinanceConfirmRefund => 'Confirm Refund';
+
+  @override
+  String get adminFinanceCritical => 'Critical';
+
+  @override
+  String get adminFinanceCriticalHighRisk => 'Critical/High Risk';
+
+  @override
+  String get adminFinanceCurrency => 'Currency';
+
+  @override
+  String get adminFinanceDate => 'Date';
+
+  @override
+  String get adminFinanceDateRange => 'Date Range';
+
+  @override
+  String get adminFinanceDescription => 'Description';
+
+  @override
+  String get adminFinanceDownloadReceipt => 'Download Receipt';
+
+  @override
+  String get adminFinanceEligible => 'Eligible';
+
+  @override
+  String get adminFinanceExportReport => 'Export Report';
+
+  @override
+  String get adminFinanceFailed => 'Failed';
+
+  @override
+  String get adminFinanceFlaggedTransactions => 'Flagged Transactions';
+
+  @override
+  String get adminFinanceFraudDetectionSubtitle =>
+      'Monitor suspicious activity and flagged transactions';
+
+  @override
+  String get adminFinanceFraudDetectionTitle => 'Fraud Detection';
+
+  @override
+  String get adminFinanceHigh => 'High';
+
+  @override
+  String get adminFinanceHighRisk => 'High Risk';
+
+  @override
+  String get adminFinanceItemType => 'Item Type';
+
+  @override
+  String get adminFinanceLast30Days => 'Last 30 Days';
+
+  @override
+  String get adminFinanceLast7Days => 'Last 7 Days';
+
+  @override
+  String get adminFinanceLow => 'Low';
+
+  @override
+  String get adminFinanceMarkReviewed => 'Mark as Reviewed';
+
+  @override
+  String get adminFinanceMedium => 'Medium';
+
+  @override
+  String get adminFinanceNewRefund => 'New Refund';
+
+  @override
+  String get adminFinanceNoEligibleTransactions =>
+      'No eligible transactions for refund';
+
+  @override
+  String get adminFinanceNoMatchingAlerts => 'No matching alerts found';
+
+  @override
+  String get adminFinanceNoSettlementsFound => 'No settlements found';
+
+  @override
+  String get adminFinanceNoSuspiciousActivity =>
+      'No suspicious activity detected';
+
+  @override
+  String get adminFinanceOriginalTxn => 'Original Transaction';
+
+  @override
+  String get adminFinancePayment => 'Payment';
+
+  @override
+  String get adminFinancePaymentsEligibleForRefund =>
+      'Payments Eligible for Refund';
+
+  @override
+  String get adminFinancePending => 'Pending';
+
+  @override
+  String get adminFinancePendingReview => 'Pending Review';
+
+  @override
+  String get adminFinancePendingSettlement => 'Pending Settlement';
+
+  @override
+  String get adminFinanceProcessing => 'Processing';
+
+  @override
+  String get adminFinanceProcessNewRefund => 'Process New Refund';
+
+  @override
+  String get adminFinanceProcessRefund => 'Process Refund';
+
+  @override
+  String get adminFinanceReason => 'Reason';
+
+  @override
+  String get adminFinanceReasonForRefund => 'Reason for Refund';
+
+  @override
+  String get adminFinanceRefresh => 'Refresh';
+
+  @override
+  String get adminFinanceRefreshTransactions => 'Refresh Transactions';
+
+  @override
+  String get adminFinanceRefund => 'Refund';
+
+  @override
+  String get adminFinanceRefundDetails => 'Refund Details';
+
+  @override
+  String get adminFinanceRefunded => 'Refunded';
+
+  @override
+  String get adminFinanceRefundedAmount => 'Refunded Amount';
+
+  @override
+  String get adminFinanceRefundFailed => 'Refund Failed';
+
+  @override
+  String get adminFinanceRefundId => 'Refund ID';
+
+  @override
+  String get adminFinanceRefundProcessedFail => 'Failed to process refund';
+
+  @override
+  String get adminFinanceRefundProcessedSuccess =>
+      'Refund processed successfully';
+
+  @override
+  String get adminFinanceRefundsSubtitle =>
+      'Process and manage customer refunds';
+
+  @override
+  String get adminFinanceRefundsTitle => 'Refunds';
+
+  @override
+  String get adminFinanceRefundSuccess => 'Refund Successful';
+
+  @override
+  String get adminFinanceRescanTransactions => 'Rescan Transactions';
+
+  @override
+  String get adminFinanceRetry => 'Retry';
+
+  @override
+  String get adminFinanceReviewed => 'Reviewed';
+
+  @override
+  String get adminFinanceRiskLevel => 'Risk Level';
+
+  @override
+  String get adminFinanceSearchRefundsHint => 'Search refunds...';
+
+  @override
+  String get adminFinanceSearchSettlementsHint => 'Search settlements...';
+
+  @override
+  String get adminFinanceSearchTransactionsHint => 'Search transactions...';
+
+  @override
+  String get adminFinanceSelectTransactionToRefund =>
+      'Select a transaction to refund';
+
+  @override
+  String get adminFinanceSettled => 'Settled';
+
+  @override
+  String get adminFinanceSettlement => 'Settlement';
+
+  @override
+  String get adminFinanceSettlementBatches => 'Settlement Batches';
+
+  @override
+  String get adminFinanceSettlementsSubtitle =>
+      'View and manage payment settlements';
+
+  @override
+  String get adminFinanceSettlementsTitle => 'Settlements';
+
+  @override
+  String get adminFinanceShowReviewed => 'Show Reviewed';
+
+  @override
+  String get adminFinanceStatus => 'Status';
+
+  @override
+  String get adminFinanceSuccessful => 'Successful';
+
+  @override
+  String get adminFinanceSuccessfullyRefunded => 'Successfully refunded';
+
+  @override
+  String get adminFinanceToday => 'Today';
+
+  @override
+  String get adminFinanceTotalFlags => 'Total Flags';
+
+  @override
+  String get adminFinanceTotalRefunds => 'Total Refunds';
+
+  @override
+  String get adminFinanceTotalSettled => 'Total Settled';
+
+  @override
+  String get adminFinanceTotalVolume => 'Total Volume';
+
+  @override
+  String get adminFinanceTransactionDetails => 'Transaction Details';
+
+  @override
+  String get adminFinanceTransactionId => 'Transaction ID';
+
+  @override
+  String get adminFinanceTransactionsSubtitle =>
+      'View and manage all financial transactions';
+
+  @override
+  String get adminFinanceTransactionsTitle => 'Transactions';
+
+  @override
+  String get adminFinanceType => 'Type';
+
+  @override
+  String get adminFinanceUnreviewed => 'Unreviewed';
+
+  @override
+  String get adminFinanceUser => 'User';
+
+  @override
+  String get adminFinanceUserId => 'User ID';
+
+  @override
+  String get adminFinanceViewDetails => 'View Details';
+
+  @override
+  String get adminFinanceYesterday => 'Yesterday';
+
+  @override
+  String get adminReportActivated => 'Activated';
+
+  @override
+  String get adminReportAllReports => 'All Reports';
+
+  @override
+  String get adminReportBuilderHelpTitle => 'Report Builder Help';
+
+  @override
+  String get adminReportBuilderTitle => 'Report Builder';
+
+  @override
+  String get adminReportCancel => 'Cancel';
+
+  @override
+  String get adminReportCreate => 'Create Report';
+
+  @override
+  String get adminReportCreateAutomatedReports =>
+      'Create automated reports that run on a schedule';
+
+  @override
+  String get adminReportCreateSchedule => 'Create Schedule';
+
+  @override
+  String get adminReportCsvDescription => 'Spreadsheet format for Excel';
+
+  @override
+  String get adminReportCsvSpreadsheet => 'CSV Spreadsheet';
+
+  @override
+  String get adminReportDaily => 'Daily';
+
+  @override
+  String get adminReportDateRange => 'Date Range';
+
+  @override
+  String get adminReportDelete => 'Delete';
+
+  @override
+  String get adminReportDeleteScheduledReport => 'Delete Scheduled Report';
+
+  @override
+  String get adminReportDescriptionHint => 'Enter report description';
+
+  @override
+  String get adminReportDescriptionOptional => 'Description (Optional)';
+
+  @override
+  String get adminReportEdit => 'Edit';
+
+  @override
+  String get adminReportEditScheduledReport => 'Edit Scheduled Report';
+
+  @override
+  String get adminReportEmailRecipients => 'Email Recipients';
+
+  @override
+  String get adminReportEndDate => 'End Date';
+
+  @override
+  String get adminReportExportFormat => 'Export Format';
+
+  @override
+  String get adminReportFeature1 => 'Select metrics and data points';
+
+  @override
+  String get adminReportFeature2 => 'Choose date ranges';
+
+  @override
+  String get adminReportFeature3 => 'Export in multiple formats';
+
+  @override
+  String get adminReportFeature4 => 'Schedule automated reports';
+
+  @override
+  String get adminReportFeatures => 'Features';
+
+  @override
+  String get adminReportFrequency => 'Frequency';
+
+  @override
+  String get adminReportGenerate => 'Generate';
+
+  @override
+  String get adminReportGeneratedSuccess => 'Report generated successfully';
+
+  @override
+  String get adminReportGenerating => 'Generating...';
+
+  @override
+  String get adminReportGenerationStarted => 'Report generation started';
+
+  @override
+  String get adminReportGotIt => 'Got it';
+
+  @override
+  String get adminReportHelp => 'Help';
+
+  @override
+  String get adminReportHelpPresetsInfo =>
+      'Use presets for quick report generation';
+
+  @override
+  String get adminReportHelpStep1 => 'Select metrics you want to include';
+
+  @override
+  String get adminReportHelpStep2 => 'Choose a date range';
+
+  @override
+  String get adminReportHelpStep3 => 'Select export format';
+
+  @override
+  String get adminReportHelpStep4 => 'Click Generate to create report';
+
+  @override
+  String get adminReportHelpStep5 => 'Download or share the report';
+
+  @override
+  String get adminReportHowToUse => 'How to Use';
+
+  @override
+  String get adminReportHowToUseScheduled => 'How to Use Scheduled Reports';
+
+  @override
+  String get adminReportInformation => 'Information';
+
+  @override
+  String get adminReportJsonData => 'JSON Data';
+
+  @override
+  String get adminReportJsonDescription => 'Raw data format for developers';
+
+  @override
+  String get adminReportLast30Days => 'Last 30 Days';
+
+  @override
+  String get adminReportLast7Days => 'Last 7 Days';
+
+  @override
+  String get adminReportLastMonth => 'Last Month';
+
+  @override
+  String get adminReportMetricAcceptanceRate => 'Acceptance Rate';
+
+  @override
+  String get adminReportMetricActiveSessions => 'Active Sessions';
+
+  @override
+  String get adminReportMetricConversion => 'Conversion Rate';
+
+  @override
+  String get adminReportMetricEngagement => 'Engagement';
+
+  @override
+  String get adminReportMetricNewRegistrations => 'New Registrations';
+
+  @override
+  String get adminReportMetricRevenue => 'Revenue';
+
+  @override
+  String get adminReportMetricTotalApplications => 'Total Applications';
+
+  @override
+  String get adminReportMetricTotalUsers => 'Total Users';
+
+  @override
+  String get adminReportMonthly => 'Monthly';
+
+  @override
+  String get adminReportNewSchedule => 'New Schedule';
+
+  @override
+  String get adminReportNewScheduledReport => 'New Scheduled Report';
+
+  @override
+  String get adminReportNextRun => 'Next Run';
+
+  @override
+  String get adminReportNoScheduledReports => 'No scheduled reports';
+
+  @override
+  String get adminReportPaused => 'Paused';
+
+  @override
+  String get adminReportPdfDescription => 'Formatted document for printing';
+
+  @override
+  String get adminReportPdfDocument => 'PDF Document';
+
+  @override
+  String get adminReportQuickPresets => 'Quick Presets';
+
+  @override
+  String get adminReportRecipientsRequired =>
+      'At least one recipient is required';
+
+  @override
+  String get adminReportReportsSubtitle => 'Generate and download reports';
+
+  @override
+  String get adminReportReportsTitle => 'Reports';
+
+  @override
+  String get adminReportRunNow => 'Run Now';
+
+  @override
+  String get adminReportSave => 'Save';
+
+  @override
+  String get adminReportScheduledCreated => 'Scheduled report created';
+
+  @override
+  String get adminReportScheduledReportDeleted => 'Scheduled report deleted';
+
+  @override
+  String get adminReportScheduledReports => 'Scheduled Reports';
+
+  @override
+  String get adminReportScheduledReportsHelp => 'Scheduled Reports Help';
+
+  @override
+  String get adminReportScheduledStep1 => 'Create a new scheduled report';
+
+  @override
+  String get adminReportScheduledStep2 =>
+      'Select frequency (daily, weekly, monthly)';
+
+  @override
+  String get adminReportScheduledStep3 => 'Choose metrics to include';
+
+  @override
+  String get adminReportScheduledStep4 => 'Add email recipients';
+
+  @override
+  String get adminReportScheduledStep5 => 'Reports will be sent automatically';
+
+  @override
+  String get adminReportScheduledUpdated => 'Scheduled report updated';
+
+  @override
+  String get adminReportSelectAll => 'Select All';
+
+  @override
+  String get adminReportSelectAtLeastOneMetric => 'Select at least one metric';
+
+  @override
+  String get adminReportSelectMetrics => 'Select Metrics';
+
+  @override
+  String get adminReportStartDate => 'Start Date';
+
+  @override
+  String get adminReportThisMonth => 'This Month';
+
+  @override
+  String get adminReportTitle => 'Report Title';
+
+  @override
+  String get adminReportTitleHint => 'Enter report title';
+
+  @override
+  String get adminReportTitleRequired => 'Title is required';
+
+  @override
+  String get adminReportTo => 'to';
+
+  @override
+  String get adminReportToday => 'Today';
+
+  @override
+  String get adminReportTomorrow => 'Tomorrow';
+
+  @override
+  String get adminReportWeekly => 'Weekly';
+
+  @override
+  String get adminSupportAcademic => 'Academic';
+
+  @override
+  String get adminSupportAccount => 'Account';
+
+  @override
+  String get adminSupportActive => 'Active';
+
+  @override
+  String get adminSupportAllCategories => 'All Categories';
+
+  @override
+  String get adminSupportAllStatus => 'All Status';
+
+  @override
+  String get adminSupportAnswer => 'Answer';
+
+  @override
+  String get adminSupportBilling => 'Billing';
+
+  @override
+  String get adminSupportCancel => 'Cancel';
+
+  @override
+  String get adminSupportCategory => 'Category';
+
+  @override
+  String get adminSupportCreateAction => 'Create';
+
+  @override
+  String get adminSupportCreateFaq => 'Create FAQ';
+
+  @override
+  String get adminSupportDelete => 'Delete';
+
+  @override
+  String get adminSupportDeleteFaq => 'Delete FAQ';
+
+  @override
+  String get adminSupportDraftArticles => 'Draft Articles';
+
+  @override
+  String get adminSupportEdit => 'Edit';
+
+  @override
+  String get adminSupportEditFaq => 'Edit FAQ';
+
+  @override
+  String get adminSupportFaqCreated => 'FAQ created successfully';
+
+  @override
+  String get adminSupportFaqDeleted => 'FAQ deleted successfully';
+
+  @override
+  String get adminSupportFaqEntries => 'FAQ Entries';
+
+  @override
+  String get adminSupportFaqUpdated => 'FAQ updated successfully';
+
+  @override
+  String get adminSupportGeneral => 'General';
+
+  @override
+  String get adminSupportHelpful => 'Helpful';
+
+  @override
+  String get adminSupportHighestHelpfulVotes => 'Highest Helpful Votes';
+
+  @override
+  String get adminSupportInactive => 'Inactive';
+
+  @override
+  String get adminSupportKeywords => 'Keywords';
+
+  @override
+  String get adminSupportKnowledgeBase => 'Knowledge Base';
+
+  @override
+  String get adminSupportKnowledgeBaseSubtitle =>
+      'Manage FAQ entries and help articles';
+
+  @override
+  String get adminSupportMostHelpful => 'Most Helpful';
+
+  @override
+  String get adminSupportNotHelpful => 'Not Helpful';
+
+  @override
+  String get adminSupportPriority => 'Priority';
+
+  @override
+  String get adminSupportPublishedArticles => 'Published Articles';
+
+  @override
+  String get adminSupportQuestion => 'Question';
+
+  @override
+  String get adminSupportRefresh => 'Refresh';
+
+  @override
+  String get adminSupportSearchFaqHint => 'Search FAQs...';
+
+  @override
+  String get adminSupportStatus => 'Status';
+
+  @override
+  String get adminSupportTechnical => 'Technical';
+
+  @override
+  String get adminSupportToggleActive => 'Toggle Active';
+
+  @override
+  String get adminSupportTotalArticles => 'Total Articles';
+
+  @override
+  String get adminSupportUpdate => 'Update';
+
+  @override
+  String get adminSupportUses => 'Uses';
+
+  @override
+  String get adminUserAcademic => 'Academic';
+
+  @override
+  String get adminUserAcademicCounseling => 'Academic Counseling';
+
+  @override
+  String get adminUserAccountActiveDesc =>
+      'Account is active and can access the platform';
+
+  @override
+  String get adminUserAccountInactiveDesc =>
+      'Account is inactive and cannot access the platform';
+
+  @override
+  String get adminUserAccountSettings => 'Account Settings';
+
+  @override
+  String get adminUserAccountStatus => 'Account Status';
+
+  @override
+  String get adminUserAccountUpdatedSuccess => 'Account updated successfully';
+
+  @override
+  String get adminUserActivate => 'Activate';
+
+  @override
+  String get adminUserActivateCounselors => 'Activate Counselors';
+
+  @override
+  String get adminUserActive => 'Active';
+
+  @override
+  String get adminUserAddCounselor => 'Add Counselor';
+
+  @override
+  String get adminUserAddNewCounselor => 'Add New Counselor';
+
+  @override
+  String get adminUserAdminColumn => 'Admin';
+
+  @override
+  String get adminUserAdminInformation => 'Admin Information';
+
+  @override
+  String get adminUserAdminRole => 'Admin Role';
+
+  @override
+  String get adminUserAdmins => 'Admins';
+
+  @override
+  String get adminUserAdminUsers => 'Admin Users';
+
+  @override
+  String get adminUserAll => 'All';
+
+  @override
+  String get adminUserAllRoles => 'All Roles';
+
+  @override
+  String get adminUserAllSpecialties => 'All Specialties';
+
+  @override
+  String get adminUserAllStatus => 'All Status';
+
+  @override
+  String get adminUserAnalyticsAdmin => 'Analytics Admin';
+
+  @override
+  String get adminUserAvailability => 'Availability';
+
+  @override
+  String get adminUserAvailabilityHint => 'E.g., Mon-Fri 9am-5pm';
+
+  @override
+  String get adminUserBackToCounselors => 'Back to Counselors';
+
+  @override
+  String get adminUserCancel => 'Cancel';
+
+  @override
+  String get adminUserCareer => 'Career';
+
+  @override
+  String get adminUserCareerGuidance => 'Career Guidance';
+
+  @override
+  String get adminUserChooseRoleHelperText =>
+      'Choose the admin role for this user';
+
+  @override
+  String get adminUserCollege => 'College';
+
+  @override
+  String get adminUserCollegeAdmissions => 'College Admissions';
+
+  @override
+  String get adminUserConfirmDeactivation => 'Confirm Deactivation';
+
+  @override
+  String get adminUserConfirmPassword => 'Confirm Password';
+
+  @override
+  String get adminUserContactAndAvailability => 'Contact & Availability';
+
+  @override
+  String get adminUserContentAdmin => 'Content Admin';
+
+  @override
+  String get adminUserCounselorColumn => 'Counselor';
+
+  @override
+  String get adminUserCounselorCreatedSuccess =>
+      'Counselor created successfully';
+
+  @override
+  String get adminUserCounselorId => 'Counselor ID';
+
+  @override
+  String get adminUserCounselors => 'Counselors';
+
+  @override
+  String get adminUserCounselorUpdatedSuccess =>
+      'Counselor updated successfully';
+
+  @override
+  String get adminUserCreate => 'Create';
+
+  @override
+  String get adminUserCreateAdmin => 'Create Admin';
+
+  @override
+  String get adminUserCreateAdminAccount => 'Create Admin Account';
+
+  @override
+  String get adminUserCreateAdminSubtitle => 'Create a new admin user account';
+
+  @override
+  String get adminUserCreateCounselor => 'Create Counselor';
+
+  @override
+  String get adminUserCreateCounselorSubtitle =>
+      'Create a new counselor account';
+
+  @override
+  String get adminUserCreated => 'Created';
+
+  @override
+  String get adminUserCredentials => 'Credentials';
+
+  @override
+  String get adminUserCredentialsHint =>
+      'Professional certifications and licenses';
+
+  @override
+  String get adminUserDashboard => 'Dashboard';
+
+  @override
+  String get adminUserDeactivate => 'Deactivate';
+
+  @override
+  String get adminUserDeactivateAccount => 'Deactivate Account';
+
+  @override
+  String get adminUserDeactivateCounselors => 'Deactivate Counselors';
+
+  @override
+  String get adminUserDeactivationComingSoon =>
+      'Deactivation feature coming soon';
+
+  @override
+  String get adminUserEdit => 'Edit';
+
+  @override
+  String get adminUserEditAdmin => 'Edit Admin';
+
+  @override
+  String get adminUserEditAdminAccount => 'Edit Admin Account';
+
+  @override
+  String get adminUserEditCounselor => 'Edit Counselor';
+
+  @override
+  String get adminUserEmail => 'Email';
+
+  @override
+  String get adminUserEmailCannotBeChanged => 'Email cannot be changed';
+
+  @override
+  String get adminUserEmailLoginHelper => 'This email will be used to log in';
+
+  @override
+  String get adminUserExport => 'Export';
+
+  @override
+  String get adminUserExportComingSoon => 'Export feature coming soon';
+
+  @override
+  String get adminUserExportCounselors => 'Export Counselors';
+
+  @override
+  String get adminUserFailedCreateAccount => 'Failed to create account';
+
+  @override
+  String get adminUserFailedLoadData => 'Failed to load data';
+
+  @override
+  String get adminUserFailedUpdateAccount => 'Failed to update account';
+
+  @override
+  String get adminUserFinanceAdmin => 'Finance Admin';
+
+  @override
+  String get adminUserFinancialAid => 'Financial Aid';
+
+  @override
+  String get adminUserFirstName => 'First Name';
+
+  @override
+  String get adminUserFullName => 'Full Name';
+
+  @override
+  String get adminUserInactive => 'Inactive';
+
+  @override
+  String get adminUserInstitutionCreatedSuccess =>
+      'Institution created successfully';
+
+  @override
+  String get adminUserInstitutionInformation => 'Institution Information';
+
+  @override
+  String get adminUserInstitutionName => 'Institution Name';
+
+  @override
+  String get adminUserInstitutionUpdatedSuccess =>
+      'Institution updated successfully';
+
+  @override
+  String get adminUserInvalidEmail => 'Invalid email address';
+
+  @override
+  String get adminUserJoined => 'Joined';
+
+  @override
+  String get adminUserLanguageSchool => 'Language School';
+
+  @override
+  String get adminUserLastLogin => 'Last Login';
+
+  @override
+  String get adminUserLastName => 'Last Name';
+
+  @override
+  String get adminUserLicenseNumber => 'License Number';
+
+  @override
+  String get adminUserManageAdminAccounts => 'Manage Admin Accounts';
+
+  @override
+  String get adminUserManageCounselorAccounts => 'Manage Counselor Accounts';
+
+  @override
+  String get adminUserMentalHealth => 'Mental Health';
+
+  @override
+  String get adminUserNoPermissionDeactivate =>
+      'You don\'t have permission to deactivate this account';
+
+  @override
+  String get adminUserNoPermissionEdit =>
+      'You don\'t have permission to edit this account';
+
+  @override
+  String get adminUserOfficeLocation => 'Office Location';
+
+  @override
+  String get adminUserOfficeLocationHint => 'Building and room number';
+
+  @override
+  String get adminUserPassword => 'Password';
+
+  @override
+  String get adminUserPasswordHelper => 'Minimum 8 characters';
+
+  @override
+  String get adminUserPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get adminUserPending => 'Pending';
+
+  @override
+  String get adminUserPendingApproval => 'Pending Approval';
+
+  @override
+  String get adminUserPendingVerification => 'Pending Verification';
+
+  @override
+  String get adminUserPersonalInformation => 'Personal Information';
+
+  @override
+  String get adminUserPhone => 'Phone';
+
+  @override
+  String get adminUserPhoneHelper => 'Include country code';
+
+  @override
+  String get adminUserPhoneNumber => 'Phone Number';
+
+  @override
+  String get adminUserPleaseConfirmPassword => 'Please confirm your password';
+
+  @override
+  String get adminUserProfessionalInformation => 'Professional Information';
+
+  @override
+  String get adminUserRegionalAdmin => 'Regional Admin';
+
+  @override
+  String get adminUserRegionalScope => 'Regional Scope';
+
+  @override
+  String get adminUserRegionalScopeHelper =>
+      'Select the regions this admin can manage';
+
+  @override
+  String get adminUserRejected => 'Rejected';
+
+  @override
+  String get adminUserRequired => 'Required';
+
+  @override
+  String get adminUserRequiredForRegional => 'Required for regional admin role';
+
+  @override
+  String get adminUserRoleColumn => 'Role';
+
+  @override
+  String get adminUserSaveChanges => 'Save Changes';
+
+  @override
+  String get adminUserSearchByNameOrEmail => 'Search by name or email';
+
+  @override
+  String get adminUserSearchCounselors => 'Search counselors...';
+
+  @override
+  String get adminUserSecuritySettings => 'Security Settings';
+
+  @override
+  String get adminUserSelectAdminRole => 'Select Admin Role';
+
+  @override
+  String get adminUserSessions => 'Sessions';
+
+  @override
+  String get adminUserSpecialty => 'Specialty';
+
+  @override
+  String get adminUserStatus => 'Status';
+
+  @override
+  String get adminUserStatusColumn => 'Status';
+
+  @override
+  String get adminUserStudents => 'Students';
+
+  @override
+  String get adminUserStudySkills => 'Study Skills';
+
+  @override
+  String get adminUserSuperAdmin => 'Super Admin';
+
+  @override
+  String get adminUserSupportAdmin => 'Support Admin';
+
+  @override
+  String get adminUserSuspended => 'Suspended';
+
+  @override
+  String get adminUserType => 'Type';
+
+  @override
+  String get adminUserUniversity => 'University';
+
+  @override
+  String get adminUserUpdateAdminSubtitle => 'Update admin account information';
+
+  @override
+  String get adminUserUpdateCounselor => 'Update Counselor';
+
+  @override
+  String get adminUserUpdateCounselorSubtitle =>
+      'Update counselor account information';
+
+  @override
+  String get adminUserVerified => 'Verified';
+
+  @override
+  String get adminUserViewDetails => 'View Details';
+
+  @override
+  String get adminUserVocationalSchool => 'Vocational School';
+
+  @override
+  String get adminUserWebsite => 'Website';
+
+  @override
+  String get adminUserYearsOfExperience => 'Years of Experience';
+
+  @override
+  String adminAnalyticsShowingRows(Object count, Object total) {
+    return 'Showing $count of $total rows';
+  }
+
+  @override
+  String adminAnalyticsColumnsCount(Object count) {
+    return '$count columns';
+  }
+
+  @override
+  String adminChatFailedSendReply(Object error) {
+    return 'Failed to send reply: $error';
+  }
+
+  @override
+  String adminChatRole(Object role) {
+    return 'Role: $role';
+  }
+
+  @override
+  String adminChatMessageCount(Object count) {
+    return '$count messages';
+  }
+
+  @override
+  String adminChatStarted(Object date) {
+    return 'Started: $date';
+  }
+
+  @override
+  String adminChatLastMessage(Object date) {
+    return 'Last message: $date';
+  }
+
+  @override
+  String adminChatDuration(Object duration) {
+    return 'Duration: $duration';
+  }
+
+  @override
+  String adminChatFaqDeleteConfirm(Object question) {
+    return 'Are you sure you want to delete \"$question\"?';
+  }
+
+  @override
+  String adminChatFaqDeleteFailed(Object error) {
+    return 'Failed to delete FAQ: $error';
+  }
+
+  @override
+  String adminChatFaqUpdateFailed(Object error) {
+    return 'Failed to update FAQ: $error';
+  }
+
+  @override
+  String adminChatFaqSaveFailed(Object error) {
+    return 'Failed to save FAQ: $error';
+  }
+
+  @override
+  String adminChatQueueAssignFailed(Object error) {
+    return 'Failed to assign conversation: $error';
+  }
+
+  @override
+  String adminReportGenerateFailed(Object error) {
+    return 'Failed to generate report: $error';
+  }
+
+  @override
+  String adminReportNameGeneratedSuccess(Object name) {
+    return '$name generated successfully';
+  }
+
+  @override
+  String adminReportInDays(Object days) {
+    return 'in $days days';
+  }
+
+  @override
+  String adminUserErrorLoadingData(Object error) {
+    return 'Error loading data: $error';
+  }
+
+  @override
+  String adminUserAccountCreatedSuccess(Object email) {
+    return 'Account $email created successfully';
+  }
+
+  @override
+  String adminUserError(Object error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String adminUserCannotActivateInsufficient(Object count) {
+    return 'Cannot activate $count admins: insufficient permissions';
+  }
+
+  @override
+  String adminUserAdminsActivated(Object count) {
+    return '$count admins activated';
+  }
+
+  @override
+  String adminUserCannotDeactivateInsufficient(Object count) {
+    return 'Cannot deactivate $count admins: insufficient permissions';
+  }
+
+  @override
+  String adminUserConfirmDeactivateAdmins(Object count) {
+    return 'Are you sure you want to deactivate $count admins?';
+  }
+
+  @override
+  String adminUserAdminsDeactivated(Object count) {
+    return '$count admins deactivated';
+  }
+
+  @override
+  String adminUserConfirmActivateCounselors(Object count) {
+    return 'Are you sure you want to activate $count counselors?';
+  }
+
+  @override
+  String adminUserConfirmDeactivateCounselors(Object count) {
+    return 'Are you sure you want to deactivate $count counselors?';
+  }
 }

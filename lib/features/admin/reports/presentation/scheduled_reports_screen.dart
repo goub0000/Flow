@@ -281,7 +281,7 @@ class _ScheduledReportCard extends StatelessWidget {
             children: [
               _InfoChip(
                 icon: Icons.schedule,
-                label: _getFrequencyLabel(report.frequency),
+                label: _getFrequencyLabel(report.frequency, context),
                 color: AppColors.primary,
               ),
               _InfoChip(
@@ -359,7 +359,7 @@ class _ScheduledReportCard extends StatelessWidget {
     );
   }
 
-  String _getFrequencyLabel(ReportFrequency frequency) {
+  String _getFrequencyLabel(ReportFrequency frequency, BuildContext context) {
     switch (frequency) {
       case ReportFrequency.daily:
         return context.l10n.adminReportDaily;
@@ -514,7 +514,7 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
                   items: ReportFrequency.values.map((freq) {
                     return DropdownMenuItem(
                       value: freq,
-                      child: Text(_getFrequencyLabel(freq)),
+                      child: Text(_getFrequencyLabel(freq, context)),
                     );
                   }).toList(),
                   onChanged: (value) => setState(() => _frequency = value!),
@@ -618,7 +618,7 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
     );
   }
 
-  String _getFrequencyLabel(ReportFrequency frequency) {
+  String _getFrequencyLabel(ReportFrequency frequency, BuildContext context) {
     switch (frequency) {
       case ReportFrequency.daily:
         return context.l10n.adminReportDaily;

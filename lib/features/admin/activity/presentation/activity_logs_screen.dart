@@ -562,7 +562,6 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
               await ExportUtils.exportToExcel(
                 data: data,
                 filename: 'activity_logs_${DateFormat('yyyyMMdd_HHmmss').format(DateTime.now())}.xlsx',
-                sheetName: 'Activity Logs',
               );
               break;
             case ExportFormat.pdf:

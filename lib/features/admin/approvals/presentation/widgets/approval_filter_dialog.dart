@@ -53,11 +53,11 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
               // Search
               TextField(
                 controller: _searchController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: context.l10n.adminApprovalSearch,
                   hintText: context.l10n.adminApprovalSearchHint,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.search),
+                  border: const OutlineInputBorder(),
                 ),
               ),
 

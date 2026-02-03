@@ -176,7 +176,7 @@ class _AnalyticsDashboardScreenState
                   value: _selectedTimeRange,
                   underline: const SizedBox(),
                   icon: const Icon(Icons.calendar_today, size: 16),
-                  items: const [
+                  items: [
                     DropdownMenuItem(value: '7days', child: Text(context.l10n.adminAnalyticsLast7Days)),
                     DropdownMenuItem(value: '30days', child: Text(context.l10n.adminAnalyticsLast30Days)),
                     DropdownMenuItem(value: '90days', child: Text(context.l10n.adminAnalyticsLast90Days)),
