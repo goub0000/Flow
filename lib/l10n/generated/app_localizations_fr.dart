@@ -20474,4 +20474,234 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscriptionsSelectPlan => 'Sélectionner le plan';
+
+  @override
+  String get privacySecurityTitle => 'Confidentialité et sécurité';
+
+  @override
+  String get privacySecurityBack => 'Retour';
+
+  @override
+  String get privacyProfilePrivacySection => 'CONFIDENTIALITÉ DU PROFIL';
+
+  @override
+  String get privacyProfilePrivacySubtitle =>
+      'Contrôlez qui peut voir les informations de votre profil';
+
+  @override
+  String get privacyPublicProfile => 'Profil public';
+
+  @override
+  String get privacyPublicProfileDesc =>
+      'Permettre à tous de voir votre profil';
+
+  @override
+  String get privacyShowEmail => 'Afficher l\'e-mail';
+
+  @override
+  String get privacyShowEmailDesc => 'Afficher l\'e-mail sur votre profil';
+
+  @override
+  String get privacyShowPhone => 'Afficher le numéro de téléphone';
+
+  @override
+  String get privacyShowPhoneDesc =>
+      'Afficher le numéro de téléphone sur votre profil';
+
+  @override
+  String get privacyShareProgress => 'Partager les progrès';
+
+  @override
+  String get privacyShareProgressDesc =>
+      'Partager vos progrès d\'apprentissage avec les conseillers';
+
+  @override
+  String get privacyCommunicationSection => 'COMMUNICATION';
+
+  @override
+  String get privacyCommunicationSubtitle => 'Gérer qui peut vous contacter';
+
+  @override
+  String get privacyAllowMessages => 'Autoriser les messages de tout le monde';
+
+  @override
+  String get privacyAllowMessagesDesc =>
+      'Tout le monde peut vous envoyer des messages';
+
+  @override
+  String get privacySecuritySection => 'SÉCURITÉ';
+
+  @override
+  String get privacySecuritySubtitle => 'Protégez votre compte';
+
+  @override
+  String get privacyChangePassword => 'Changer le mot de passe';
+
+  @override
+  String get privacyChangePasswordDesc =>
+      'Mettre à jour le mot de passe de votre compte';
+
+  @override
+  String get privacyTwoFactor => 'Authentification à deux facteurs';
+
+  @override
+  String get privacyTwoFactorEnabled => 'Activée';
+
+  @override
+  String get privacyTwoFactorRecommended => 'Recommandée';
+
+  @override
+  String get privacyBiometric => 'Authentification biométrique';
+
+  @override
+  String get privacyBiometricDesc =>
+      'Utiliser l\'empreinte digitale ou Face ID';
+
+  @override
+  String get privacyActiveSessions => 'Sessions actives';
+
+  @override
+  String get privacyActiveSessionsDesc =>
+      'Gérer les appareils connectés à votre compte';
+
+  @override
+  String get privacyDataPrivacySection => 'DONNÉES ET CONFIDENTIALITÉ';
+
+  @override
+  String get privacyDataPrivacySubtitle => 'Contrôlez vos données';
+
+  @override
+  String get privacyDownloadData => 'Télécharger mes données';
+
+  @override
+  String get privacyDownloadDataDesc => 'Demander une copie de vos données';
+
+  @override
+  String get privacyPrivacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get privacyPrivacyPolicyDesc =>
+      'Lire notre politique de confidentialité';
+
+  @override
+  String get privacyTermsOfService => 'Conditions d\'utilisation';
+
+  @override
+  String get privacyTermsOfServiceDesc => 'Lire nos conditions d\'utilisation';
+
+  @override
+  String get privacyAccountActionsSection => 'ACTIONS DU COMPTE';
+
+  @override
+  String get privacyAccountActionsSubtitle => 'Actions irréversibles';
+
+  @override
+  String get privacyDeleteAccount => 'Supprimer le compte';
+
+  @override
+  String get privacyDeleteAccountDesc =>
+      'Supprimer définitivement votre compte et vos données';
+
+  @override
+  String get privacyEnableTwoFactorTitle =>
+      'Activer l\'authentification à deux facteurs';
+
+  @override
+  String get privacyEnableTwoFactorMessage =>
+      'L\'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte. Vous devrez entrer un code de votre téléphone en plus de votre mot de passe lors de la connexion.';
+
+  @override
+  String get privacyCancel => 'Annuler';
+
+  @override
+  String get privacyContinue => 'Continuer';
+
+  @override
+  String get privacyTwoFactorSetupRequired =>
+      'Écran de configuration 2FA - Intégration backend requise';
+
+  @override
+  String get privacyDisableTwoFactorTitle =>
+      'Désactiver l\'authentification à deux facteurs';
+
+  @override
+  String get privacyDisableTwoFactorMessage =>
+      'Êtes-vous sûr de vouloir désactiver l\'authentification à deux facteurs ? Cela rendra votre compte moins sécurisé.';
+
+  @override
+  String get privacyDisable => 'Désactiver';
+
+  @override
+  String get privacyActiveSessionsTitle => 'Sessions actives';
+
+  @override
+  String get privacySessionDevice => 'Appareil';
+
+  @override
+  String get privacySessionLocation => 'Emplacement';
+
+  @override
+  String get privacySessionLastActive => 'Dernière activité';
+
+  @override
+  String get privacySessionCurrent => 'Actuel';
+
+  @override
+  String get privacySessionClose => 'Fermer';
+
+  @override
+  String get privacySessionRevokeAll => 'Révoquer tout';
+
+  @override
+  String get privacySessionsRevoked =>
+      'Toutes les autres sessions ont été révoquées';
+
+  @override
+  String get privacyDownloadDataTitle => 'Télécharger vos données';
+
+  @override
+  String get privacyDownloadDataMessage =>
+      'Nous préparerons une copie de vos données et vous l\'enverrons par e-mail. Cela peut prendre jusqu\'à 24 heures.';
+
+  @override
+  String get privacyRequest => 'Demander';
+
+  @override
+  String get privacyDataDownloadRequested =>
+      'Demande de téléchargement de données soumise';
+
+  @override
+  String get privacyDeleteAccountTitle => 'Supprimer le compte';
+
+  @override
+  String get privacyDeleteAccountMessage =>
+      'Êtes-vous absolument sûr ? Cette action ne peut pas être annulée. Toutes vos données seront supprimées définitivement.';
+
+  @override
+  String get privacyDelete => 'Supprimer';
+
+  @override
+  String get privacyDeleteConfirmationTitle => 'Confirmation finale';
+
+  @override
+  String get privacyDeleteConfirmationPrompt =>
+      'Tapez \"DELETE\" pour confirmer la suppression du compte :';
+
+  @override
+  String get privacyDeletePlaceholder => 'DELETE';
+
+  @override
+  String get privacyDeleteAccountBackendRequired =>
+      'Suppression de compte - Intégration backend requise';
+
+  @override
+  String get privacyPleaseTypeDelete => 'Veuillez taper DELETE pour confirmer';
+
+  @override
+  String get privacyPrivacyPolicyComingSoon =>
+      'Politique de confidentialité à venir';
+
+  @override
+  String get privacyTermsOfServiceComingSoon =>
+      'Conditions d\'utilisation à venir';
 }

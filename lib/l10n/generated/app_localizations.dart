@@ -36527,6 +36527,420 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Plan'**
   String get subscriptionsSelectPlan;
+
+  /// No description provided for @privacySecurityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Security'**
+  String get privacySecurityTitle;
+
+  /// No description provided for @privacySecurityBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get privacySecurityBack;
+
+  /// No description provided for @privacyProfilePrivacySection.
+  ///
+  /// In en, this message translates to:
+  /// **'PROFILE PRIVACY'**
+  String get privacyProfilePrivacySection;
+
+  /// No description provided for @privacyProfilePrivacySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control who can see your profile information'**
+  String get privacyProfilePrivacySubtitle;
+
+  /// No description provided for @privacyPublicProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Profile'**
+  String get privacyPublicProfile;
+
+  /// No description provided for @privacyPublicProfileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow anyone to view your profile'**
+  String get privacyPublicProfileDesc;
+
+  /// No description provided for @privacyShowEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Email'**
+  String get privacyShowEmail;
+
+  /// No description provided for @privacyShowEmailDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Display email on your profile'**
+  String get privacyShowEmailDesc;
+
+  /// No description provided for @privacyShowPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Phone Number'**
+  String get privacyShowPhone;
+
+  /// No description provided for @privacyShowPhoneDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Display phone number on your profile'**
+  String get privacyShowPhoneDesc;
+
+  /// No description provided for @privacyShareProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Progress'**
+  String get privacyShareProgress;
+
+  /// No description provided for @privacyShareProgressDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your learning progress with counselors'**
+  String get privacyShareProgressDesc;
+
+  /// No description provided for @privacyCommunicationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'COMMUNICATION'**
+  String get privacyCommunicationSection;
+
+  /// No description provided for @privacyCommunicationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage who can contact you'**
+  String get privacyCommunicationSubtitle;
+
+  /// No description provided for @privacyAllowMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Messages from Anyone'**
+  String get privacyAllowMessages;
+
+  /// No description provided for @privacyAllowMessagesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone can send you messages'**
+  String get privacyAllowMessagesDesc;
+
+  /// No description provided for @privacySecuritySection.
+  ///
+  /// In en, this message translates to:
+  /// **'SECURITY'**
+  String get privacySecuritySection;
+
+  /// No description provided for @privacySecuritySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect your account'**
+  String get privacySecuritySubtitle;
+
+  /// No description provided for @privacyChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get privacyChangePassword;
+
+  /// No description provided for @privacyChangePasswordDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your account password'**
+  String get privacyChangePasswordDesc;
+
+  /// No description provided for @privacyTwoFactor.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Factor Authentication'**
+  String get privacyTwoFactor;
+
+  /// No description provided for @privacyTwoFactorEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get privacyTwoFactorEnabled;
+
+  /// No description provided for @privacyTwoFactorRecommended.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get privacyTwoFactorRecommended;
+
+  /// No description provided for @privacyBiometric.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Authentication'**
+  String get privacyBiometric;
+
+  /// No description provided for @privacyBiometricDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use fingerprint or face ID'**
+  String get privacyBiometricDesc;
+
+  /// No description provided for @privacyActiveSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Sessions'**
+  String get privacyActiveSessions;
+
+  /// No description provided for @privacyActiveSessionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage devices signed in to your account'**
+  String get privacyActiveSessionsDesc;
+
+  /// No description provided for @privacyDataPrivacySection.
+  ///
+  /// In en, this message translates to:
+  /// **'DATA & PRIVACY'**
+  String get privacyDataPrivacySection;
+
+  /// No description provided for @privacyDataPrivacySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control your data'**
+  String get privacyDataPrivacySubtitle;
+
+  /// No description provided for @privacyDownloadData.
+  ///
+  /// In en, this message translates to:
+  /// **'Download My Data'**
+  String get privacyDownloadData;
+
+  /// No description provided for @privacyDownloadDataDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Request a copy of your data'**
+  String get privacyDownloadDataDesc;
+
+  /// No description provided for @privacyPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPrivacyPolicy;
+
+  /// No description provided for @privacyPrivacyPolicyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Read our privacy policy'**
+  String get privacyPrivacyPolicyDesc;
+
+  /// No description provided for @privacyTermsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get privacyTermsOfService;
+
+  /// No description provided for @privacyTermsOfServiceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Read our terms of service'**
+  String get privacyTermsOfServiceDesc;
+
+  /// No description provided for @privacyAccountActionsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT ACTIONS'**
+  String get privacyAccountActionsSection;
+
+  /// No description provided for @privacyAccountActionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Irreversible actions'**
+  String get privacyAccountActionsSubtitle;
+
+  /// No description provided for @privacyDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get privacyDeleteAccount;
+
+  /// No description provided for @privacyDeleteAccountDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete your account and data'**
+  String get privacyDeleteAccountDesc;
+
+  /// No description provided for @privacyEnableTwoFactorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Two-Factor Authentication'**
+  String get privacyEnableTwoFactorTitle;
+
+  /// No description provided for @privacyEnableTwoFactorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor authentication adds an extra layer of security to your account. You\'ll need to enter a code from your phone in addition to your password when signing in.'**
+  String get privacyEnableTwoFactorMessage;
+
+  /// No description provided for @privacyCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get privacyCancel;
+
+  /// No description provided for @privacyContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get privacyContinue;
+
+  /// No description provided for @privacyTwoFactorSetupRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'2FA setup screen - Backend integration required'**
+  String get privacyTwoFactorSetupRequired;
+
+  /// No description provided for @privacyDisableTwoFactorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable Two-Factor Authentication'**
+  String get privacyDisableTwoFactorTitle;
+
+  /// No description provided for @privacyDisableTwoFactorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to disable two-factor authentication? This will make your account less secure.'**
+  String get privacyDisableTwoFactorMessage;
+
+  /// No description provided for @privacyDisable.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get privacyDisable;
+
+  /// No description provided for @privacyActiveSessionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Sessions'**
+  String get privacyActiveSessionsTitle;
+
+  /// No description provided for @privacySessionDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Device'**
+  String get privacySessionDevice;
+
+  /// No description provided for @privacySessionLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get privacySessionLocation;
+
+  /// No description provided for @privacySessionLastActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Active'**
+  String get privacySessionLastActive;
+
+  /// No description provided for @privacySessionCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get privacySessionCurrent;
+
+  /// No description provided for @privacySessionClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get privacySessionClose;
+
+  /// No description provided for @privacySessionRevokeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke All'**
+  String get privacySessionRevokeAll;
+
+  /// No description provided for @privacySessionsRevoked.
+  ///
+  /// In en, this message translates to:
+  /// **'All other sessions revoked'**
+  String get privacySessionsRevoked;
+
+  /// No description provided for @privacyDownloadDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Your Data'**
+  String get privacyDownloadDataTitle;
+
+  /// No description provided for @privacyDownloadDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll prepare a copy of your data and send it to your email address. This may take up to 24 hours.'**
+  String get privacyDownloadDataMessage;
+
+  /// No description provided for @privacyRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get privacyRequest;
+
+  /// No description provided for @privacyDataDownloadRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Data download request submitted'**
+  String get privacyDataDownloadRequested;
+
+  /// No description provided for @privacyDeleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get privacyDeleteAccountTitle;
+
+  /// No description provided for @privacyDeleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you absolutely sure? This action cannot be undone. All your data will be permanently deleted.'**
+  String get privacyDeleteAccountMessage;
+
+  /// No description provided for @privacyDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get privacyDelete;
+
+  /// No description provided for @privacyDeleteConfirmationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Final Confirmation'**
+  String get privacyDeleteConfirmationTitle;
+
+  /// No description provided for @privacyDeleteConfirmationPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Type \"DELETE\" to confirm account deletion:'**
+  String get privacyDeleteConfirmationPrompt;
+
+  /// No description provided for @privacyDeletePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'DELETE'**
+  String get privacyDeletePlaceholder;
+
+  /// No description provided for @privacyDeleteAccountBackendRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deletion - Backend integration required'**
+  String get privacyDeleteAccountBackendRequired;
+
+  /// No description provided for @privacyPleaseTypeDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Please type DELETE to confirm'**
+  String get privacyPleaseTypeDelete;
+
+  /// No description provided for @privacyPrivacyPolicyComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy coming soon'**
+  String get privacyPrivacyPolicyComingSoon;
+
+  /// No description provided for @privacyTermsOfServiceComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of service coming soon'**
+  String get privacyTermsOfServiceComingSoon;
 }
 
 class _AppLocalizationsDelegate

@@ -20170,4 +20170,223 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionsSelectPlan => 'Select Plan';
+
+  @override
+  String get privacySecurityTitle => 'Privacy & Security';
+
+  @override
+  String get privacySecurityBack => 'Back';
+
+  @override
+  String get privacyProfilePrivacySection => 'PROFILE PRIVACY';
+
+  @override
+  String get privacyProfilePrivacySubtitle =>
+      'Control who can see your profile information';
+
+  @override
+  String get privacyPublicProfile => 'Public Profile';
+
+  @override
+  String get privacyPublicProfileDesc => 'Allow anyone to view your profile';
+
+  @override
+  String get privacyShowEmail => 'Show Email';
+
+  @override
+  String get privacyShowEmailDesc => 'Display email on your profile';
+
+  @override
+  String get privacyShowPhone => 'Show Phone Number';
+
+  @override
+  String get privacyShowPhoneDesc => 'Display phone number on your profile';
+
+  @override
+  String get privacyShareProgress => 'Share Progress';
+
+  @override
+  String get privacyShareProgressDesc =>
+      'Share your learning progress with counselors';
+
+  @override
+  String get privacyCommunicationSection => 'COMMUNICATION';
+
+  @override
+  String get privacyCommunicationSubtitle => 'Manage who can contact you';
+
+  @override
+  String get privacyAllowMessages => 'Allow Messages from Anyone';
+
+  @override
+  String get privacyAllowMessagesDesc => 'Anyone can send you messages';
+
+  @override
+  String get privacySecuritySection => 'SECURITY';
+
+  @override
+  String get privacySecuritySubtitle => 'Protect your account';
+
+  @override
+  String get privacyChangePassword => 'Change Password';
+
+  @override
+  String get privacyChangePasswordDesc => 'Update your account password';
+
+  @override
+  String get privacyTwoFactor => 'Two-Factor Authentication';
+
+  @override
+  String get privacyTwoFactorEnabled => 'Enabled';
+
+  @override
+  String get privacyTwoFactorRecommended => 'Recommended';
+
+  @override
+  String get privacyBiometric => 'Biometric Authentication';
+
+  @override
+  String get privacyBiometricDesc => 'Use fingerprint or face ID';
+
+  @override
+  String get privacyActiveSessions => 'Active Sessions';
+
+  @override
+  String get privacyActiveSessionsDesc =>
+      'Manage devices signed in to your account';
+
+  @override
+  String get privacyDataPrivacySection => 'DATA & PRIVACY';
+
+  @override
+  String get privacyDataPrivacySubtitle => 'Control your data';
+
+  @override
+  String get privacyDownloadData => 'Download My Data';
+
+  @override
+  String get privacyDownloadDataDesc => 'Request a copy of your data';
+
+  @override
+  String get privacyPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get privacyPrivacyPolicyDesc => 'Read our privacy policy';
+
+  @override
+  String get privacyTermsOfService => 'Terms of Service';
+
+  @override
+  String get privacyTermsOfServiceDesc => 'Read our terms of service';
+
+  @override
+  String get privacyAccountActionsSection => 'ACCOUNT ACTIONS';
+
+  @override
+  String get privacyAccountActionsSubtitle => 'Irreversible actions';
+
+  @override
+  String get privacyDeleteAccount => 'Delete Account';
+
+  @override
+  String get privacyDeleteAccountDesc =>
+      'Permanently delete your account and data';
+
+  @override
+  String get privacyEnableTwoFactorTitle => 'Enable Two-Factor Authentication';
+
+  @override
+  String get privacyEnableTwoFactorMessage =>
+      'Two-factor authentication adds an extra layer of security to your account. You\'ll need to enter a code from your phone in addition to your password when signing in.';
+
+  @override
+  String get privacyCancel => 'Cancel';
+
+  @override
+  String get privacyContinue => 'Continue';
+
+  @override
+  String get privacyTwoFactorSetupRequired =>
+      '2FA setup screen - Backend integration required';
+
+  @override
+  String get privacyDisableTwoFactorTitle =>
+      'Disable Two-Factor Authentication';
+
+  @override
+  String get privacyDisableTwoFactorMessage =>
+      'Are you sure you want to disable two-factor authentication? This will make your account less secure.';
+
+  @override
+  String get privacyDisable => 'Disable';
+
+  @override
+  String get privacyActiveSessionsTitle => 'Active Sessions';
+
+  @override
+  String get privacySessionDevice => 'Device';
+
+  @override
+  String get privacySessionLocation => 'Location';
+
+  @override
+  String get privacySessionLastActive => 'Last Active';
+
+  @override
+  String get privacySessionCurrent => 'Current';
+
+  @override
+  String get privacySessionClose => 'Close';
+
+  @override
+  String get privacySessionRevokeAll => 'Revoke All';
+
+  @override
+  String get privacySessionsRevoked => 'All other sessions revoked';
+
+  @override
+  String get privacyDownloadDataTitle => 'Download Your Data';
+
+  @override
+  String get privacyDownloadDataMessage =>
+      'We\'ll prepare a copy of your data and send it to your email address. This may take up to 24 hours.';
+
+  @override
+  String get privacyRequest => 'Request';
+
+  @override
+  String get privacyDataDownloadRequested => 'Data download request submitted';
+
+  @override
+  String get privacyDeleteAccountTitle => 'Delete Account';
+
+  @override
+  String get privacyDeleteAccountMessage =>
+      'Are you absolutely sure? This action cannot be undone. All your data will be permanently deleted.';
+
+  @override
+  String get privacyDelete => 'Delete';
+
+  @override
+  String get privacyDeleteConfirmationTitle => 'Final Confirmation';
+
+  @override
+  String get privacyDeleteConfirmationPrompt =>
+      'Type \"DELETE\" to confirm account deletion:';
+
+  @override
+  String get privacyDeletePlaceholder => 'DELETE';
+
+  @override
+  String get privacyDeleteAccountBackendRequired =>
+      'Account deletion - Backend integration required';
+
+  @override
+  String get privacyPleaseTypeDelete => 'Please type DELETE to confirm';
+
+  @override
+  String get privacyPrivacyPolicyComingSoon => 'Privacy policy coming soon';
+
+  @override
+  String get privacyTermsOfServiceComingSoon => 'Terms of service coming soon';
 }
