@@ -9013,5 +9013,249 @@
   "termsOfServiceSection13Content": "We may modify these terms at any time:\n\n• Changes effective upon posting\n• Material changes will be notified via email\n• Continued use constitutes acceptance\n• You can review current terms anytime\n\nIf you do not agree to modified terms:\n• Discontinue use of our services\n• Contact us to close your account\n• No refunds for remaining subscription period",
   "termsOfServiceSection14Title": "14. Contact Information",
   "termsOfServiceSection14Content": "For questions about these Terms of Service:\n\nGeneral Inquiries:\nEmail: support@flowedtech.com\nPhone: +1 (555) 123-4567\n\nLegal Department:\nEmail: legal@flowedtech.com\n\nMailing Address:\nFlow EdTech\n123 Education Lane\nTech City, TC 12345\nUnited States\n\nBusiness Hours: Monday-Friday, 9am-5pm EST",
-  "termsOfServiceAcknowledgment": "By using Flow EdTech, you acknowledge that you have read and understood these Terms of Service."
+  "termsOfServiceAcknowledgment": "By using Flow EdTech, you acknowledge that you have read and understood these Terms of Service.",
+  "progressReportsTitle": "Progress Reports",
+  "exportReport": "Export Report",
+  "overviewTab": "Overview",
+  "coursesTab": "Courses",
+  "skillsTab": "Skills",
+  "studyTime": "Study Time",
+  "achievements": "Achievements",
+  "avgScore": "Avg. Score",
+  "weeklyActivity": "Weekly Activity",
+  "activityChartPlaceholder": "Activity chart will be displayed here",
+  "lessonsCompleted": "{completed} of {total} lessons completed",
+  "@lessonsCompleted": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "completed": "Completed",
+  "reportExportedSuccessfully": "Report exported successfully",
+  "studyScheduleTitle": "Study Schedule",
+  "save": "Save",
+  "dailyStudyGoal": "Daily Study Goal",
+  "minutesPerDay": "{minutes} minutes per day",
+  "@minutesPerDay": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minAbbreviation": "min",
+  "studyReminders": "Study Reminders",
+  "getNotifiedAtScheduledTimes": "Get notified at scheduled times",
+  "weeklySchedule": "Weekly Schedule",
+  "setYourPreferredStudyTimes": "Set your preferred study times",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+  "addTime": "Add time",
+  "noStudyTimeSet": "No study time set",
+  "studyScheduleSavedSuccessfully": "Study schedule saved successfully",
+
+  "notificationDetailsTitle": "Notification Details",
+  "markAsRead": "Mark as read",
+  "delete": "Delete",
+  "markedAsRead": "Marked as read",
+  "deleteNotificationTitle": "Delete Notification",
+  "deleteNotificationConfirm": "Are you sure you want to delete this notification?",
+  "cancel": "Cancel",
+  "notificationDeleted": "Notification deleted",
+  "actionPerformed": "Action performed",
+  "newBadge": "NEW",
+  "additionalInformation": "Additional Information",
+  "justNow": "Just now",
+  "minuteAgo": "{count} minute ago",
+  "@minuteAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesAgo": "{count} minutes ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hourAgo": "{count} hour ago",
+  "@hourAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{count} hours ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dayAgo": "{count} day ago",
+  "@dayAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{count} days ago",
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationTypeCourse": "COURSE",
+  "notificationTypeApplication": "APPLICATION",
+  "notificationTypePayment": "PAYMENT",
+  "notificationTypeMessage": "MESSAGE",
+  "notificationTypeAnnouncement": "ANNOUNCEMENT",
+  "notificationTypeReminder": "REMINDER",
+  "notificationTypeAchievement": "ACHIEVEMENT",
+  "notificationTypeGeneric": "NOTIFICATION",
+  "viewCourse": "View Course",
+  "viewApplication": "View Application",
+  "viewTransaction": "View Transaction",
+  "openConversation": "Open Conversation",
+  "viewAchievement": "View Achievement",
+  "viewDetails": "View Details",
+
+  "featuresTitle": "Features",
+  "gotIt": "Got It!",
+  "howToUse": "How to use:",
+  "close": "Close",
+  "tryIt": "Try It",
+  "openingFeature": "Opening {feature}...",
+  "@openingFeature": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "exploreFeature": "Explore the app to discover this feature!",
+
+  "featureCategoryCoreFeatures": "Core Features",
+  "featureCategoryStudyTools": "Study Tools",
+  "featureCategoryProductivity": "Productivity",
+  "featureCategoryCollaboration": "Collaboration",
+
+  "featureCourseDiscoveryTitle": "Course Discovery",
+  "featureCourseDiscoveryDesc": "Browse and search thousands of courses from top institutions worldwide",
+  "featureCourseDiscoveryInstructions": "Navigate to the Explore tab and use the search bar or browse categories.",
+
+  "featureApplicationTrackingTitle": "Application Tracking",
+  "featureApplicationTrackingDesc": "Manage all your course applications and track their status in real-time",
+  "featureApplicationTrackingInstructions": "Go to Applications tab to view and manage all your applications.",
+
+  "featureLearningDashboardTitle": "Learning Dashboard",
+  "featureLearningDashboardDesc": "Track your progress, view enrolled courses, and access learning materials",
+  "featureLearningDashboardInstructions": "Access your dashboard from the Home tab to see your progress.",
+
+  "featureMessagingTitle": "Messaging",
+  "featureMessagingDesc": "Communicate directly with institutions and counselors",
+  "featureMessagingInstructions": "Open the Messages tab to chat with institutions and counselors.",
+
+  "featureNotesTitle": "Notes",
+  "featureNotesDesc": "Take, organize, and sync notes across all your devices",
+  "featureNotesInstructions": "Tap the Notes icon to create and organize your study notes.",
+
+  "featureBookmarksTitle": "Bookmarks",
+  "featureBookmarksDesc": "Save courses and resources for quick access later",
+  "featureBookmarksInstructions": "Save items by tapping the bookmark icon on courses or resources.",
+
+  "featureAchievementsTitle": "Achievements",
+  "featureAchievementsDesc": "Earn badges and track milestones as you progress",
+  "featureAchievementsInstructions": "View your achievements in the Profile section under Progress.",
+
+  "featureProgressAnalyticsTitle": "Progress Analytics",
+  "featureProgressAnalyticsDesc": "Visualize your learning journey with detailed statistics",
+  "featureProgressAnalyticsInstructions": "Check detailed analytics in your Profile > Progress section.",
+
+  "featureCalendarTitle": "Calendar",
+  "featureCalendarDesc": "Track deadlines, events, and important dates",
+  "featureCalendarInstructions": "Access the Calendar from the bottom navigation or menu.",
+
+  "featureSmartNotificationsTitle": "Smart Notifications",
+  "featureSmartNotificationsDesc": "Get timely reminders and updates about your applications",
+  "featureSmartNotificationsInstructions": "Enable notifications in Settings > Notifications.",
+
+  "featureStudySchedulerTitle": "Study Scheduler",
+  "featureStudySchedulerDesc": "Plan and optimize your study time",
+  "featureStudySchedulerInstructions": "Create study schedules in Tools > Study Planner.",
+
+  "featureGoalsMilestonesTitle": "Goals & Milestones",
+  "featureGoalsMilestonesDesc": "Set and track your learning goals",
+  "featureGoalsMilestonesInstructions": "Set goals in Profile > Progress > Goals.",
+
+  "featureStudyGroupsTitle": "Study Groups",
+  "featureStudyGroupsDesc": "Connect and collaborate with fellow learners",
+  "featureStudyGroupsInstructions": "Join or create study groups from Community > Groups.",
+
+  "featureDiscussionForumsTitle": "Discussion Forums",
+  "featureDiscussionForumsDesc": "Participate in course discussions and Q&A",
+  "featureDiscussionForumsInstructions": "Participate in forums from Community > Discussions.",
+
+  "featureResourceSharingTitle": "Resource Sharing",
+  "featureResourceSharingDesc": "Share notes, links, and study materials",
+  "featureResourceSharingInstructions": "Share resources using the share button on any content.",
+
+  "featureLiveSessionsTitle": "Live Sessions",
+  "featureLiveSessionsDesc": "Join virtual classes and webinars",
+  "featureLiveSessionsInstructions": "Join live sessions from the Schedule or Courses section.",
+  "subscriptionsTitle": "Subscriptions",
+  "subscriptionsAvailablePlans": "Available Plans",
+  "subscriptionsBasicPlan": "Basic Plan",
+  "subscriptionsPremiumPlan": "Premium Plan",
+  "subscriptionsInstitutionPlan": "Institution Plan",
+  "subscriptionsPriceFree": "Free",
+  "subscriptionsPricePerMonth": "{price}/month",
+  "@subscriptionsPricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionsFeatureBasicCourses": "Access to basic courses",
+  "subscriptionsFeatureLimitedStorage": "Limited storage",
+  "subscriptionsFeatureEmailSupport": "Email support",
+  "subscriptionsFeatureAllCourses": "Access to all courses",
+  "subscriptionsFeatureUnlimitedStorage": "Unlimited storage",
+  "subscriptionsFeaturePrioritySupport": "Priority support",
+  "subscriptionsFeatureOfflineDownloads": "Offline downloads",
+  "subscriptionsFeatureCertificate": "Certificate of completion",
+  "subscriptionsFeatureEverythingInPremium": "Everything in Premium",
+  "subscriptionsFeatureMultiUserManagement": "Multi-user management",
+  "subscriptionsFeatureAnalyticsDashboard": "Analytics dashboard",
+  "subscriptionsFeatureCustomBranding": "Custom branding",
+  "subscriptionsFeatureApiAccess": "API access",
+  "subscriptionsStatusActive": "Active",
+  "subscriptionsStatusLabel": "Status",
+  "subscriptionsPlanLabel": "Plan",
+  "subscriptionsPlanBasicFree": "Basic (Free)",
+  "subscriptionsStartedLabel": "Started",
+  "subscriptionsStartedDate": "January 1, 2025",
+  "subscriptionsUpgradePlan": "Upgrade Plan",
+  "subscriptionsCurrent": "Current",
+  "subscriptionsSelectPlan": "Select Plan"
 }

@@ -394,7 +394,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizAIPowered => 'AI-Powered';
 
   @override
-  String get featuresTitle => 'Everything you need';
+  String get featuresTitle => 'Features';
 
   @override
   String get featuresSubtitle =>
@@ -19665,4 +19665,509 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get termsOfServiceAcknowledgment =>
       'By using Flow EdTech, you acknowledge that you have read and understood these Terms of Service.';
+
+  @override
+  String get progressReportsTitle => 'Progress Reports';
+
+  @override
+  String get exportReport => 'Export Report';
+
+  @override
+  String get overviewTab => 'Overview';
+
+  @override
+  String get coursesTab => 'Courses';
+
+  @override
+  String get skillsTab => 'Skills';
+
+  @override
+  String get studyTime => 'Study Time';
+
+  @override
+  String get achievements => 'Achievements';
+
+  @override
+  String get avgScore => 'Avg. Score';
+
+  @override
+  String get weeklyActivity => 'Weekly Activity';
+
+  @override
+  String get activityChartPlaceholder =>
+      'Activity chart will be displayed here';
+
+  @override
+  String lessonsCompleted(int completed, int total) {
+    return '$completed of $total lessons completed';
+  }
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get reportExportedSuccessfully => 'Report exported successfully';
+
+  @override
+  String get studyScheduleTitle => 'Study Schedule';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get dailyStudyGoal => 'Daily Study Goal';
+
+  @override
+  String minutesPerDay(int minutes) {
+    return '$minutes minutes per day';
+  }
+
+  @override
+  String get minAbbreviation => 'min';
+
+  @override
+  String get studyReminders => 'Study Reminders';
+
+  @override
+  String get getNotifiedAtScheduledTimes => 'Get notified at scheduled times';
+
+  @override
+  String get weeklySchedule => 'Weekly Schedule';
+
+  @override
+  String get setYourPreferredStudyTimes => 'Set your preferred study times';
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get addTime => 'Add time';
+
+  @override
+  String get noStudyTimeSet => 'No study time set';
+
+  @override
+  String get studyScheduleSavedSuccessfully =>
+      'Study schedule saved successfully';
+
+  @override
+  String get notificationDetailsTitle => 'Notification Details';
+
+  @override
+  String get markAsRead => 'Mark as read';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get markedAsRead => 'Marked as read';
+
+  @override
+  String get deleteNotificationTitle => 'Delete Notification';
+
+  @override
+  String get deleteNotificationConfirm =>
+      'Are you sure you want to delete this notification?';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get notificationDeleted => 'Notification deleted';
+
+  @override
+  String get actionPerformed => 'Action performed';
+
+  @override
+  String get newBadge => 'NEW';
+
+  @override
+  String get additionalInformation => 'Additional Information';
+
+  @override
+  String get justNow => 'Just now';
+
+  @override
+  String minuteAgo(int count) {
+    return '$count minute ago';
+  }
+
+  @override
+  String minutesAgo(int count) {
+    return '$count minutes ago';
+  }
+
+  @override
+  String hourAgo(int count) {
+    return '$count hour ago';
+  }
+
+  @override
+  String hoursAgo(int count) {
+    return '$count hours ago';
+  }
+
+  @override
+  String dayAgo(int count) {
+    return '$count day ago';
+  }
+
+  @override
+  String daysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String get notificationTypeCourse => 'COURSE';
+
+  @override
+  String get notificationTypeApplication => 'APPLICATION';
+
+  @override
+  String get notificationTypePayment => 'PAYMENT';
+
+  @override
+  String get notificationTypeMessage => 'MESSAGE';
+
+  @override
+  String get notificationTypeAnnouncement => 'ANNOUNCEMENT';
+
+  @override
+  String get notificationTypeReminder => 'REMINDER';
+
+  @override
+  String get notificationTypeAchievement => 'ACHIEVEMENT';
+
+  @override
+  String get notificationTypeGeneric => 'NOTIFICATION';
+
+  @override
+  String get viewCourse => 'View Course';
+
+  @override
+  String get viewApplication => 'View Application';
+
+  @override
+  String get viewTransaction => 'View Transaction';
+
+  @override
+  String get openConversation => 'Open Conversation';
+
+  @override
+  String get viewAchievement => 'View Achievement';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get gotIt => 'Got It!';
+
+  @override
+  String get howToUse => 'How to use:';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get tryIt => 'Try It';
+
+  @override
+  String openingFeature(String feature) {
+    return 'Opening $feature...';
+  }
+
+  @override
+  String get exploreFeature => 'Explore the app to discover this feature!';
+
+  @override
+  String get featureCategoryCoreFeatures => 'Core Features';
+
+  @override
+  String get featureCategoryStudyTools => 'Study Tools';
+
+  @override
+  String get featureCategoryProductivity => 'Productivity';
+
+  @override
+  String get featureCategoryCollaboration => 'Collaboration';
+
+  @override
+  String get featureCourseDiscoveryTitle => 'Course Discovery';
+
+  @override
+  String get featureCourseDiscoveryDesc =>
+      'Browse and search thousands of courses from top institutions worldwide';
+
+  @override
+  String get featureCourseDiscoveryInstructions =>
+      'Navigate to the Explore tab and use the search bar or browse categories.';
+
+  @override
+  String get featureApplicationTrackingTitle => 'Application Tracking';
+
+  @override
+  String get featureApplicationTrackingDesc =>
+      'Manage all your course applications and track their status in real-time';
+
+  @override
+  String get featureApplicationTrackingInstructions =>
+      'Go to Applications tab to view and manage all your applications.';
+
+  @override
+  String get featureLearningDashboardTitle => 'Learning Dashboard';
+
+  @override
+  String get featureLearningDashboardDesc =>
+      'Track your progress, view enrolled courses, and access learning materials';
+
+  @override
+  String get featureLearningDashboardInstructions =>
+      'Access your dashboard from the Home tab to see your progress.';
+
+  @override
+  String get featureMessagingTitle => 'Messaging';
+
+  @override
+  String get featureMessagingDesc =>
+      'Communicate directly with institutions and counselors';
+
+  @override
+  String get featureMessagingInstructions =>
+      'Open the Messages tab to chat with institutions and counselors.';
+
+  @override
+  String get featureNotesTitle => 'Notes';
+
+  @override
+  String get featureNotesDesc =>
+      'Take, organize, and sync notes across all your devices';
+
+  @override
+  String get featureNotesInstructions =>
+      'Tap the Notes icon to create and organize your study notes.';
+
+  @override
+  String get featureBookmarksTitle => 'Bookmarks';
+
+  @override
+  String get featureBookmarksDesc =>
+      'Save courses and resources for quick access later';
+
+  @override
+  String get featureBookmarksInstructions =>
+      'Save items by tapping the bookmark icon on courses or resources.';
+
+  @override
+  String get featureAchievementsTitle => 'Achievements';
+
+  @override
+  String get featureAchievementsDesc =>
+      'Earn badges and track milestones as you progress';
+
+  @override
+  String get featureAchievementsInstructions =>
+      'View your achievements in the Profile section under Progress.';
+
+  @override
+  String get featureProgressAnalyticsTitle => 'Progress Analytics';
+
+  @override
+  String get featureProgressAnalyticsDesc =>
+      'Visualize your learning journey with detailed statistics';
+
+  @override
+  String get featureProgressAnalyticsInstructions =>
+      'Check detailed analytics in your Profile > Progress section.';
+
+  @override
+  String get featureCalendarTitle => 'Calendar';
+
+  @override
+  String get featureCalendarDesc =>
+      'Track deadlines, events, and important dates';
+
+  @override
+  String get featureCalendarInstructions =>
+      'Access the Calendar from the bottom navigation or menu.';
+
+  @override
+  String get featureSmartNotificationsTitle => 'Smart Notifications';
+
+  @override
+  String get featureSmartNotificationsDesc =>
+      'Get timely reminders and updates about your applications';
+
+  @override
+  String get featureSmartNotificationsInstructions =>
+      'Enable notifications in Settings > Notifications.';
+
+  @override
+  String get featureStudySchedulerTitle => 'Study Scheduler';
+
+  @override
+  String get featureStudySchedulerDesc => 'Plan and optimize your study time';
+
+  @override
+  String get featureStudySchedulerInstructions =>
+      'Create study schedules in Tools > Study Planner.';
+
+  @override
+  String get featureGoalsMilestonesTitle => 'Goals & Milestones';
+
+  @override
+  String get featureGoalsMilestonesDesc => 'Set and track your learning goals';
+
+  @override
+  String get featureGoalsMilestonesInstructions =>
+      'Set goals in Profile > Progress > Goals.';
+
+  @override
+  String get featureStudyGroupsTitle => 'Study Groups';
+
+  @override
+  String get featureStudyGroupsDesc =>
+      'Connect and collaborate with fellow learners';
+
+  @override
+  String get featureStudyGroupsInstructions =>
+      'Join or create study groups from Community > Groups.';
+
+  @override
+  String get featureDiscussionForumsTitle => 'Discussion Forums';
+
+  @override
+  String get featureDiscussionForumsDesc =>
+      'Participate in course discussions and Q&A';
+
+  @override
+  String get featureDiscussionForumsInstructions =>
+      'Participate in forums from Community > Discussions.';
+
+  @override
+  String get featureResourceSharingTitle => 'Resource Sharing';
+
+  @override
+  String get featureResourceSharingDesc =>
+      'Share notes, links, and study materials';
+
+  @override
+  String get featureResourceSharingInstructions =>
+      'Share resources using the share button on any content.';
+
+  @override
+  String get featureLiveSessionsTitle => 'Live Sessions';
+
+  @override
+  String get featureLiveSessionsDesc => 'Join virtual classes and webinars';
+
+  @override
+  String get featureLiveSessionsInstructions =>
+      'Join live sessions from the Schedule or Courses section.';
+
+  @override
+  String get subscriptionsTitle => 'Subscriptions';
+
+  @override
+  String get subscriptionsAvailablePlans => 'Available Plans';
+
+  @override
+  String get subscriptionsBasicPlan => 'Basic Plan';
+
+  @override
+  String get subscriptionsPremiumPlan => 'Premium Plan';
+
+  @override
+  String get subscriptionsInstitutionPlan => 'Institution Plan';
+
+  @override
+  String get subscriptionsPriceFree => 'Free';
+
+  @override
+  String subscriptionsPricePerMonth(String price) {
+    return '$price/month';
+  }
+
+  @override
+  String get subscriptionsFeatureBasicCourses => 'Access to basic courses';
+
+  @override
+  String get subscriptionsFeatureLimitedStorage => 'Limited storage';
+
+  @override
+  String get subscriptionsFeatureEmailSupport => 'Email support';
+
+  @override
+  String get subscriptionsFeatureAllCourses => 'Access to all courses';
+
+  @override
+  String get subscriptionsFeatureUnlimitedStorage => 'Unlimited storage';
+
+  @override
+  String get subscriptionsFeaturePrioritySupport => 'Priority support';
+
+  @override
+  String get subscriptionsFeatureOfflineDownloads => 'Offline downloads';
+
+  @override
+  String get subscriptionsFeatureCertificate => 'Certificate of completion';
+
+  @override
+  String get subscriptionsFeatureEverythingInPremium => 'Everything in Premium';
+
+  @override
+  String get subscriptionsFeatureMultiUserManagement => 'Multi-user management';
+
+  @override
+  String get subscriptionsFeatureAnalyticsDashboard => 'Analytics dashboard';
+
+  @override
+  String get subscriptionsFeatureCustomBranding => 'Custom branding';
+
+  @override
+  String get subscriptionsFeatureApiAccess => 'API access';
+
+  @override
+  String get subscriptionsStatusActive => 'Active';
+
+  @override
+  String get subscriptionsStatusLabel => 'Status';
+
+  @override
+  String get subscriptionsPlanLabel => 'Plan';
+
+  @override
+  String get subscriptionsPlanBasicFree => 'Basic (Free)';
+
+  @override
+  String get subscriptionsStartedLabel => 'Started';
+
+  @override
+  String get subscriptionsStartedDate => 'January 1, 2025';
+
+  @override
+  String get subscriptionsUpgradePlan => 'Upgrade Plan';
+
+  @override
+  String get subscriptionsCurrent => 'Current';
+
+  @override
+  String get subscriptionsSelectPlan => 'Select Plan';
 }

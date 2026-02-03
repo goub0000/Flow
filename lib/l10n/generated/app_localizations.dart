@@ -827,7 +827,7 @@ abstract class AppLocalizations {
   /// No description provided for @featuresTitle.
   ///
   /// In en, this message translates to:
-  /// **'Everything you need'**
+  /// **'Features'**
   String get featuresTitle;
 
   /// No description provided for @featuresSubtitle.
@@ -35621,6 +35621,912 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'By using Flow EdTech, you acknowledge that you have read and understood these Terms of Service.'**
   String get termsOfServiceAcknowledgment;
+
+  /// No description provided for @progressReportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Reports'**
+  String get progressReportsTitle;
+
+  /// No description provided for @exportReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Report'**
+  String get exportReport;
+
+  /// No description provided for @overviewTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overviewTab;
+
+  /// No description provided for @coursesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get coursesTab;
+
+  /// No description provided for @skillsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get skillsTab;
+
+  /// No description provided for @studyTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Time'**
+  String get studyTime;
+
+  /// No description provided for @achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievements;
+
+  /// No description provided for @avgScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. Score'**
+  String get avgScore;
+
+  /// No description provided for @weeklyActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Activity'**
+  String get weeklyActivity;
+
+  /// No description provided for @activityChartPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity chart will be displayed here'**
+  String get activityChartPlaceholder;
+
+  /// No description provided for @lessonsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} lessons completed'**
+  String lessonsCompleted(int completed, int total);
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @reportExportedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Report exported successfully'**
+  String get reportExportedSuccessfully;
+
+  /// No description provided for @studyScheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Schedule'**
+  String get studyScheduleTitle;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @dailyStudyGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Study Goal'**
+  String get dailyStudyGoal;
+
+  /// No description provided for @minutesPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes per day'**
+  String minutesPerDay(int minutes);
+
+  /// No description provided for @minAbbreviation.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get minAbbreviation;
+
+  /// No description provided for @studyReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Reminders'**
+  String get studyReminders;
+
+  /// No description provided for @getNotifiedAtScheduledTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified at scheduled times'**
+  String get getNotifiedAtScheduledTimes;
+
+  /// No description provided for @weeklySchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Schedule'**
+  String get weeklySchedule;
+
+  /// No description provided for @setYourPreferredStudyTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your preferred study times'**
+  String get setYourPreferredStudyTimes;
+
+  /// No description provided for @monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get monday;
+
+  /// No description provided for @tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get tuesday;
+
+  /// No description provided for @wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get wednesday;
+
+  /// No description provided for @thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get thursday;
+
+  /// No description provided for @friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get friday;
+
+  /// No description provided for @saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get saturday;
+
+  /// No description provided for @sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get sunday;
+
+  /// No description provided for @addTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time'**
+  String get addTime;
+
+  /// No description provided for @noStudyTimeSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No study time set'**
+  String get noStudyTimeSet;
+
+  /// No description provided for @studyScheduleSavedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Study schedule saved successfully'**
+  String get studyScheduleSavedSuccessfully;
+
+  /// No description provided for @notificationDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Details'**
+  String get notificationDetailsTitle;
+
+  /// No description provided for @markAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get markAsRead;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @markedAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as read'**
+  String get markedAsRead;
+
+  /// No description provided for @deleteNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Notification'**
+  String get deleteNotificationTitle;
+
+  /// No description provided for @deleteNotificationConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this notification?'**
+  String get deleteNotificationConfirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @notificationDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification deleted'**
+  String get notificationDeleted;
+
+  /// No description provided for @actionPerformed.
+  ///
+  /// In en, this message translates to:
+  /// **'Action performed'**
+  String get actionPerformed;
+
+  /// No description provided for @newBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get newBadge;
+
+  /// No description provided for @additionalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Information'**
+  String get additionalInformation;
+
+  /// No description provided for @justNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get justNow;
+
+  /// No description provided for @minuteAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} minute ago'**
+  String minuteAgo(int count);
+
+  /// No description provided for @minutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} minutes ago'**
+  String minutesAgo(int count);
+
+  /// No description provided for @hourAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hour ago'**
+  String hourAgo(int count);
+
+  /// No description provided for @hoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hours ago'**
+  String hoursAgo(int count);
+
+  /// No description provided for @dayAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} day ago'**
+  String dayAgo(int count);
+
+  /// No description provided for @daysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String daysAgo(int count);
+
+  /// No description provided for @notificationTypeCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'COURSE'**
+  String get notificationTypeCourse;
+
+  /// No description provided for @notificationTypeApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'APPLICATION'**
+  String get notificationTypeApplication;
+
+  /// No description provided for @notificationTypePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'PAYMENT'**
+  String get notificationTypePayment;
+
+  /// No description provided for @notificationTypeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'MESSAGE'**
+  String get notificationTypeMessage;
+
+  /// No description provided for @notificationTypeAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'ANNOUNCEMENT'**
+  String get notificationTypeAnnouncement;
+
+  /// No description provided for @notificationTypeReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'REMINDER'**
+  String get notificationTypeReminder;
+
+  /// No description provided for @notificationTypeAchievement.
+  ///
+  /// In en, this message translates to:
+  /// **'ACHIEVEMENT'**
+  String get notificationTypeAchievement;
+
+  /// No description provided for @notificationTypeGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'NOTIFICATION'**
+  String get notificationTypeGeneric;
+
+  /// No description provided for @viewCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'View Course'**
+  String get viewCourse;
+
+  /// No description provided for @viewApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'View Application'**
+  String get viewApplication;
+
+  /// No description provided for @viewTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'View Transaction'**
+  String get viewTransaction;
+
+  /// No description provided for @openConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Conversation'**
+  String get openConversation;
+
+  /// No description provided for @viewAchievement.
+  ///
+  /// In en, this message translates to:
+  /// **'View Achievement'**
+  String get viewAchievement;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got It!'**
+  String get gotIt;
+
+  /// No description provided for @howToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use:'**
+  String get howToUse;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @tryIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Try It'**
+  String get tryIt;
+
+  /// No description provided for @openingFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening {feature}...'**
+  String openingFeature(String feature);
+
+  /// No description provided for @exploreFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the app to discover this feature!'**
+  String get exploreFeature;
+
+  /// No description provided for @featureCategoryCoreFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Features'**
+  String get featureCategoryCoreFeatures;
+
+  /// No description provided for @featureCategoryStudyTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Tools'**
+  String get featureCategoryStudyTools;
+
+  /// No description provided for @featureCategoryProductivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Productivity'**
+  String get featureCategoryProductivity;
+
+  /// No description provided for @featureCategoryCollaboration.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaboration'**
+  String get featureCategoryCollaboration;
+
+  /// No description provided for @featureCourseDiscoveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Discovery'**
+  String get featureCourseDiscoveryTitle;
+
+  /// No description provided for @featureCourseDiscoveryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse and search thousands of courses from top institutions worldwide'**
+  String get featureCourseDiscoveryDesc;
+
+  /// No description provided for @featureCourseDiscoveryInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate to the Explore tab and use the search bar or browse categories.'**
+  String get featureCourseDiscoveryInstructions;
+
+  /// No description provided for @featureApplicationTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Tracking'**
+  String get featureApplicationTrackingTitle;
+
+  /// No description provided for @featureApplicationTrackingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage all your course applications and track their status in real-time'**
+  String get featureApplicationTrackingDesc;
+
+  /// No description provided for @featureApplicationTrackingInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Applications tab to view and manage all your applications.'**
+  String get featureApplicationTrackingInstructions;
+
+  /// No description provided for @featureLearningDashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Dashboard'**
+  String get featureLearningDashboardTitle;
+
+  /// No description provided for @featureLearningDashboardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your progress, view enrolled courses, and access learning materials'**
+  String get featureLearningDashboardDesc;
+
+  /// No description provided for @featureLearningDashboardInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your dashboard from the Home tab to see your progress.'**
+  String get featureLearningDashboardInstructions;
+
+  /// No description provided for @featureMessagingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Messaging'**
+  String get featureMessagingTitle;
+
+  /// No description provided for @featureMessagingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Communicate directly with institutions and counselors'**
+  String get featureMessagingDesc;
+
+  /// No description provided for @featureMessagingInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Messages tab to chat with institutions and counselors.'**
+  String get featureMessagingInstructions;
+
+  /// No description provided for @featureNotesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get featureNotesTitle;
+
+  /// No description provided for @featureNotesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take, organize, and sync notes across all your devices'**
+  String get featureNotesDesc;
+
+  /// No description provided for @featureNotesInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the Notes icon to create and organize your study notes.'**
+  String get featureNotesInstructions;
+
+  /// No description provided for @featureBookmarksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get featureBookmarksTitle;
+
+  /// No description provided for @featureBookmarksDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save courses and resources for quick access later'**
+  String get featureBookmarksDesc;
+
+  /// No description provided for @featureBookmarksInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Save items by tapping the bookmark icon on courses or resources.'**
+  String get featureBookmarksInstructions;
+
+  /// No description provided for @featureAchievementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get featureAchievementsTitle;
+
+  /// No description provided for @featureAchievementsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn badges and track milestones as you progress'**
+  String get featureAchievementsDesc;
+
+  /// No description provided for @featureAchievementsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'View your achievements in the Profile section under Progress.'**
+  String get featureAchievementsInstructions;
+
+  /// No description provided for @featureProgressAnalyticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Analytics'**
+  String get featureProgressAnalyticsTitle;
+
+  /// No description provided for @featureProgressAnalyticsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Visualize your learning journey with detailed statistics'**
+  String get featureProgressAnalyticsDesc;
+
+  /// No description provided for @featureProgressAnalyticsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Check detailed analytics in your Profile > Progress section.'**
+  String get featureProgressAnalyticsInstructions;
+
+  /// No description provided for @featureCalendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get featureCalendarTitle;
+
+  /// No description provided for @featureCalendarDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track deadlines, events, and important dates'**
+  String get featureCalendarDesc;
+
+  /// No description provided for @featureCalendarInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Access the Calendar from the bottom navigation or menu.'**
+  String get featureCalendarInstructions;
+
+  /// No description provided for @featureSmartNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Notifications'**
+  String get featureSmartNotificationsTitle;
+
+  /// No description provided for @featureSmartNotificationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get timely reminders and updates about your applications'**
+  String get featureSmartNotificationsDesc;
+
+  /// No description provided for @featureSmartNotificationsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications in Settings > Notifications.'**
+  String get featureSmartNotificationsInstructions;
+
+  /// No description provided for @featureStudySchedulerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Scheduler'**
+  String get featureStudySchedulerTitle;
+
+  /// No description provided for @featureStudySchedulerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan and optimize your study time'**
+  String get featureStudySchedulerDesc;
+
+  /// No description provided for @featureStudySchedulerInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Create study schedules in Tools > Study Planner.'**
+  String get featureStudySchedulerInstructions;
+
+  /// No description provided for @featureGoalsMilestonesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals & Milestones'**
+  String get featureGoalsMilestonesTitle;
+
+  /// No description provided for @featureGoalsMilestonesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Set and track your learning goals'**
+  String get featureGoalsMilestonesDesc;
+
+  /// No description provided for @featureGoalsMilestonesInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Set goals in Profile > Progress > Goals.'**
+  String get featureGoalsMilestonesInstructions;
+
+  /// No description provided for @featureStudyGroupsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Groups'**
+  String get featureStudyGroupsTitle;
+
+  /// No description provided for @featureStudyGroupsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect and collaborate with fellow learners'**
+  String get featureStudyGroupsDesc;
+
+  /// No description provided for @featureStudyGroupsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Join or create study groups from Community > Groups.'**
+  String get featureStudyGroupsInstructions;
+
+  /// No description provided for @featureDiscussionForumsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion Forums'**
+  String get featureDiscussionForumsTitle;
+
+  /// No description provided for @featureDiscussionForumsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Participate in course discussions and Q&A'**
+  String get featureDiscussionForumsDesc;
+
+  /// No description provided for @featureDiscussionForumsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Participate in forums from Community > Discussions.'**
+  String get featureDiscussionForumsInstructions;
+
+  /// No description provided for @featureResourceSharingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource Sharing'**
+  String get featureResourceSharingTitle;
+
+  /// No description provided for @featureResourceSharingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share notes, links, and study materials'**
+  String get featureResourceSharingDesc;
+
+  /// No description provided for @featureResourceSharingInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Share resources using the share button on any content.'**
+  String get featureResourceSharingInstructions;
+
+  /// No description provided for @featureLiveSessionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Sessions'**
+  String get featureLiveSessionsTitle;
+
+  /// No description provided for @featureLiveSessionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Join virtual classes and webinars'**
+  String get featureLiveSessionsDesc;
+
+  /// No description provided for @featureLiveSessionsInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Join live sessions from the Schedule or Courses section.'**
+  String get featureLiveSessionsInstructions;
+
+  /// No description provided for @subscriptionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get subscriptionsTitle;
+
+  /// No description provided for @subscriptionsAvailablePlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Plans'**
+  String get subscriptionsAvailablePlans;
+
+  /// No description provided for @subscriptionsBasicPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Plan'**
+  String get subscriptionsBasicPlan;
+
+  /// No description provided for @subscriptionsPremiumPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Plan'**
+  String get subscriptionsPremiumPlan;
+
+  /// No description provided for @subscriptionsInstitutionPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution Plan'**
+  String get subscriptionsInstitutionPlan;
+
+  /// No description provided for @subscriptionsPriceFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get subscriptionsPriceFree;
+
+  /// No description provided for @subscriptionsPricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/month'**
+  String subscriptionsPricePerMonth(String price);
+
+  /// No description provided for @subscriptionsFeatureBasicCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to basic courses'**
+  String get subscriptionsFeatureBasicCourses;
+
+  /// No description provided for @subscriptionsFeatureLimitedStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Limited storage'**
+  String get subscriptionsFeatureLimitedStorage;
+
+  /// No description provided for @subscriptionsFeatureEmailSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Email support'**
+  String get subscriptionsFeatureEmailSupport;
+
+  /// No description provided for @subscriptionsFeatureAllCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to all courses'**
+  String get subscriptionsFeatureAllCourses;
+
+  /// No description provided for @subscriptionsFeatureUnlimitedStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited storage'**
+  String get subscriptionsFeatureUnlimitedStorage;
+
+  /// No description provided for @subscriptionsFeaturePrioritySupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority support'**
+  String get subscriptionsFeaturePrioritySupport;
+
+  /// No description provided for @subscriptionsFeatureOfflineDownloads.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline downloads'**
+  String get subscriptionsFeatureOfflineDownloads;
+
+  /// No description provided for @subscriptionsFeatureCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate of completion'**
+  String get subscriptionsFeatureCertificate;
+
+  /// No description provided for @subscriptionsFeatureEverythingInPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything in Premium'**
+  String get subscriptionsFeatureEverythingInPremium;
+
+  /// No description provided for @subscriptionsFeatureMultiUserManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-user management'**
+  String get subscriptionsFeatureMultiUserManagement;
+
+  /// No description provided for @subscriptionsFeatureAnalyticsDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics dashboard'**
+  String get subscriptionsFeatureAnalyticsDashboard;
+
+  /// No description provided for @subscriptionsFeatureCustomBranding.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom branding'**
+  String get subscriptionsFeatureCustomBranding;
+
+  /// No description provided for @subscriptionsFeatureApiAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'API access'**
+  String get subscriptionsFeatureApiAccess;
+
+  /// No description provided for @subscriptionsStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get subscriptionsStatusActive;
+
+  /// No description provided for @subscriptionsStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get subscriptionsStatusLabel;
+
+  /// No description provided for @subscriptionsPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get subscriptionsPlanLabel;
+
+  /// No description provided for @subscriptionsPlanBasicFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic (Free)'**
+  String get subscriptionsPlanBasicFree;
+
+  /// No description provided for @subscriptionsStartedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get subscriptionsStartedLabel;
+
+  /// No description provided for @subscriptionsStartedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'January 1, 2025'**
+  String get subscriptionsStartedDate;
+
+  /// No description provided for @subscriptionsUpgradePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Plan'**
+  String get subscriptionsUpgradePlan;
+
+  /// No description provided for @subscriptionsCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get subscriptionsCurrent;
+
+  /// No description provided for @subscriptionsSelectPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Plan'**
+  String get subscriptionsSelectPlan;
 }
 
 class _AppLocalizationsDelegate

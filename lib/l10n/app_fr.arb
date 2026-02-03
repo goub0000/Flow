@@ -7093,5 +7093,249 @@
   "termsOfServiceSection13Content": "Nous pouvons modifier ces conditions a tout moment :\n\n• Les modifications prennent effet des leur publication\n• Les modifications importantes seront notifiees par e-mail\n• L'utilisation continue constitue une acceptation\n• Vous pouvez consulter les conditions actuelles a tout moment\n\nSi vous n'acceptez pas les conditions modifiees :\n• Cessez d'utiliser nos services\n• Contactez-nous pour fermer votre compte\n• Pas de remboursement pour la periode d'abonnement restante",
   "termsOfServiceSection14Title": "14. Informations de contact",
   "termsOfServiceSection14Content": "Pour des questions concernant ces conditions d'utilisation :\n\nDemandes generales :\nE-mail : support@flowedtech.com\nTelephone : +1 (555) 123-4567\n\nDepartement juridique :\nE-mail : legal@flowedtech.com\n\nAdresse postale :\nFlow EdTech\n123 Education Lane\nTech City, TC 12345\nEtats-Unis\n\nHeures d'ouverture : Lundi-Vendredi, 9h-17h EST",
-  "termsOfServiceAcknowledgment": "En utilisant Flow EdTech, vous reconnaissez avoir lu et compris ces conditions d'utilisation."
+  "termsOfServiceAcknowledgment": "En utilisant Flow EdTech, vous reconnaissez avoir lu et compris ces conditions d'utilisation.",
+  "progressReportsTitle": "Rapports de Progrès",
+  "exportReport": "Exporter le Rapport",
+  "overviewTab": "Aperçu",
+  "coursesTab": "Cours",
+  "skillsTab": "Compétences",
+  "studyTime": "Temps d'Étude",
+  "achievements": "Réussites",
+  "avgScore": "Score Moyen",
+  "weeklyActivity": "Activité Hebdomadaire",
+  "activityChartPlaceholder": "Le graphique d'activité sera affiché ici",
+  "lessonsCompleted": "{completed} sur {total} leçons terminées",
+  "@lessonsCompleted": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "completed": "Terminé",
+  "reportExportedSuccessfully": "Rapport exporté avec succès",
+  "studyScheduleTitle": "Horaire d'Étude",
+  "save": "Enregistrer",
+  "dailyStudyGoal": "Objectif d'Étude Quotidien",
+  "minutesPerDay": "{minutes} minutes par jour",
+  "@minutesPerDay": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minAbbreviation": "min",
+  "studyReminders": "Rappels d'Étude",
+  "getNotifiedAtScheduledTimes": "Recevoir des notifications aux heures programmées",
+  "weeklySchedule": "Horaire Hebdomadaire",
+  "setYourPreferredStudyTimes": "Définissez vos heures d'étude préférées",
+  "monday": "Lundi",
+  "tuesday": "Mardi",
+  "wednesday": "Mercredi",
+  "thursday": "Jeudi",
+  "friday": "Vendredi",
+  "saturday": "Samedi",
+  "sunday": "Dimanche",
+  "addTime": "Ajouter une heure",
+  "noStudyTimeSet": "Aucune heure d'étude définie",
+  "studyScheduleSavedSuccessfully": "Horaire d'étude enregistré avec succès",
+
+  "notificationDetailsTitle": "Détails de la notification",
+  "markAsRead": "Marquer comme lu",
+  "delete": "Supprimer",
+  "markedAsRead": "Marqué comme lu",
+  "deleteNotificationTitle": "Supprimer la notification",
+  "deleteNotificationConfirm": "Êtes-vous sûr de vouloir supprimer cette notification?",
+  "cancel": "Annuler",
+  "notificationDeleted": "Notification supprimée",
+  "actionPerformed": "Action effectuée",
+  "newBadge": "NOUVEAU",
+  "additionalInformation": "Informations supplémentaires",
+  "justNow": "À l'instant",
+  "minuteAgo": "Il y a {count} minute",
+  "@minuteAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesAgo": "Il y a {count} minutes",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hourAgo": "Il y a {count} heure",
+  "@hourAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "Il y a {count} heures",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dayAgo": "Il y a {count} jour",
+  "@dayAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "Il y a {count} jours",
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationTypeCourse": "COURS",
+  "notificationTypeApplication": "CANDIDATURE",
+  "notificationTypePayment": "PAIEMENT",
+  "notificationTypeMessage": "MESSAGE",
+  "notificationTypeAnnouncement": "ANNONCE",
+  "notificationTypeReminder": "RAPPEL",
+  "notificationTypeAchievement": "RÉUSSITE",
+  "notificationTypeGeneric": "NOTIFICATION",
+  "viewCourse": "Voir le cours",
+  "viewApplication": "Voir la candidature",
+  "viewTransaction": "Voir la transaction",
+  "openConversation": "Ouvrir la conversation",
+  "viewAchievement": "Voir la réussite",
+  "viewDetails": "Voir les détails",
+
+  "featuresTitle": "Fonctionnalités",
+  "gotIt": "Compris!",
+  "howToUse": "Comment utiliser:",
+  "close": "Fermer",
+  "tryIt": "Essayer",
+  "openingFeature": "Ouverture de {feature}...",
+  "@openingFeature": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "exploreFeature": "Explorez l'application pour découvrir cette fonctionnalité!",
+
+  "featureCategoryCoreFeatures": "Fonctionnalités principales",
+  "featureCategoryStudyTools": "Outils d'étude",
+  "featureCategoryProductivity": "Productivité",
+  "featureCategoryCollaboration": "Collaboration",
+
+  "featureCourseDiscoveryTitle": "Découverte de cours",
+  "featureCourseDiscoveryDesc": "Parcourez et recherchez des milliers de cours provenant d'institutions de premier plan dans le monde entier",
+  "featureCourseDiscoveryInstructions": "Accédez à l'onglet Explorer et utilisez la barre de recherche ou parcourez les catégories.",
+
+  "featureApplicationTrackingTitle": "Suivi des candidatures",
+  "featureApplicationTrackingDesc": "Gérez toutes vos candidatures de cours et suivez leur statut en temps réel",
+  "featureApplicationTrackingInstructions": "Accédez à l'onglet Candidatures pour voir et gérer toutes vos candidatures.",
+
+  "featureLearningDashboardTitle": "Tableau de bord d'apprentissage",
+  "featureLearningDashboardDesc": "Suivez votre progression, consultez les cours inscrits et accédez aux supports d'apprentissage",
+  "featureLearningDashboardInstructions": "Accédez à votre tableau de bord depuis l'onglet Accueil pour voir votre progression.",
+
+  "featureMessagingTitle": "Messagerie",
+  "featureMessagingDesc": "Communiquez directement avec les institutions et les conseillers",
+  "featureMessagingInstructions": "Ouvrez l'onglet Messages pour discuter avec les institutions et les conseillers.",
+
+  "featureNotesTitle": "Notes",
+  "featureNotesDesc": "Prenez, organisez et synchronisez des notes sur tous vos appareils",
+  "featureNotesInstructions": "Appuyez sur l'icône Notes pour créer et organiser vos notes d'étude.",
+
+  "featureBookmarksTitle": "Favoris",
+  "featureBookmarksDesc": "Enregistrez des cours et des ressources pour un accès rapide ultérieur",
+  "featureBookmarksInstructions": "Enregistrez des éléments en appuyant sur l'icône de favori sur les cours ou les ressources.",
+
+  "featureAchievementsTitle": "Réussites",
+  "featureAchievementsDesc": "Gagnez des badges et suivez les jalons au fur et à mesure de votre progression",
+  "featureAchievementsInstructions": "Consultez vos réussites dans la section Profil sous Progression.",
+
+  "featureProgressAnalyticsTitle": "Analyses de progression",
+  "featureProgressAnalyticsDesc": "Visualisez votre parcours d'apprentissage avec des statistiques détaillées",
+  "featureProgressAnalyticsInstructions": "Consultez les analyses détaillées dans votre section Profil > Progression.",
+
+  "featureCalendarTitle": "Calendrier",
+  "featureCalendarDesc": "Suivez les échéances, les événements et les dates importantes",
+  "featureCalendarInstructions": "Accédez au Calendrier depuis la navigation en bas ou le menu.",
+
+  "featureSmartNotificationsTitle": "Notifications intelligentes",
+  "featureSmartNotificationsDesc": "Recevez des rappels et des mises à jour opportuns concernant vos candidatures",
+  "featureSmartNotificationsInstructions": "Activez les notifications dans Paramètres > Notifications.",
+
+  "featureStudySchedulerTitle": "Planificateur d'étude",
+  "featureStudySchedulerDesc": "Planifiez et optimisez votre temps d'étude",
+  "featureStudySchedulerInstructions": "Créez des horaires d'étude dans Outils > Planificateur d'étude.",
+
+  "featureGoalsMilestonesTitle": "Objectifs et jalons",
+  "featureGoalsMilestonesDesc": "Définissez et suivez vos objectifs d'apprentissage",
+  "featureGoalsMilestonesInstructions": "Définissez des objectifs dans Profil > Progression > Objectifs.",
+
+  "featureStudyGroupsTitle": "Groupes d'étude",
+  "featureStudyGroupsDesc": "Connectez-vous et collaborez avec d'autres apprenants",
+  "featureStudyGroupsInstructions": "Rejoignez ou créez des groupes d'étude depuis Communauté > Groupes.",
+
+  "featureDiscussionForumsTitle": "Forums de discussion",
+  "featureDiscussionForumsDesc": "Participez aux discussions de cours et aux questions-réponses",
+  "featureDiscussionForumsInstructions": "Participez aux forums depuis Communauté > Discussions.",
+
+  "featureResourceSharingTitle": "Partage de ressources",
+  "featureResourceSharingDesc": "Partagez des notes, des liens et des supports d'étude",
+  "featureResourceSharingInstructions": "Partagez des ressources en utilisant le bouton de partage sur n'importe quel contenu.",
+
+  "featureLiveSessionsTitle": "Sessions en direct",
+  "featureLiveSessionsDesc": "Rejoignez des cours virtuels et des webinaires",
+  "featureLiveSessionsInstructions": "Rejoignez des sessions en direct depuis la section Horaire ou Cours.",
+  "subscriptionsTitle": "Abonnements",
+  "subscriptionsAvailablePlans": "Plans disponibles",
+  "subscriptionsBasicPlan": "Plan de base",
+  "subscriptionsPremiumPlan": "Plan Premium",
+  "subscriptionsInstitutionPlan": "Plan Institution",
+  "subscriptionsPriceFree": "Gratuit",
+  "subscriptionsPricePerMonth": "{price}/mois",
+  "@subscriptionsPricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionsFeatureBasicCourses": "Accès aux cours de base",
+  "subscriptionsFeatureLimitedStorage": "Stockage limité",
+  "subscriptionsFeatureEmailSupport": "Support par e-mail",
+  "subscriptionsFeatureAllCourses": "Accès à tous les cours",
+  "subscriptionsFeatureUnlimitedStorage": "Stockage illimité",
+  "subscriptionsFeaturePrioritySupport": "Support prioritaire",
+  "subscriptionsFeatureOfflineDownloads": "Téléchargements hors ligne",
+  "subscriptionsFeatureCertificate": "Certificat d'achèvement",
+  "subscriptionsFeatureEverythingInPremium": "Tout dans Premium",
+  "subscriptionsFeatureMultiUserManagement": "Gestion multi-utilisateurs",
+  "subscriptionsFeatureAnalyticsDashboard": "Tableau de bord analytique",
+  "subscriptionsFeatureCustomBranding": "Image de marque personnalisée",
+  "subscriptionsFeatureApiAccess": "Accès API",
+  "subscriptionsStatusActive": "Actif",
+  "subscriptionsStatusLabel": "Statut",
+  "subscriptionsPlanLabel": "Plan",
+  "subscriptionsPlanBasicFree": "De base (Gratuit)",
+  "subscriptionsStartedLabel": "Commencé",
+  "subscriptionsStartedDate": "1er janvier 2025",
+  "subscriptionsUpgradePlan": "Mettre à niveau le plan",
+  "subscriptionsCurrent": "Actuel",
+  "subscriptionsSelectPlan": "Sélectionner le plan"
 }
