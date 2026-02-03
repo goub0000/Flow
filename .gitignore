@@ -89,8 +89,8 @@ ml_models/
 *.h5
 *.model
 
-# Data directories and downloaded files
-data/
+# Data directories and downloaded files (root level only, not lib/features/*/data/)
+/data/
 downloads/
 *.csv
 *.zip
