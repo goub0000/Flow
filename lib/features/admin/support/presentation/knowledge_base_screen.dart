@@ -84,7 +84,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                   IconButton(
                     icon: const Icon(Icons.refresh, size: 18),
                     onPressed: () => ref.read(adminKnowledgeBaseProvider.notifier).fetchFAQs(),
-                    tooltip: 'Retry',
+                    tooltip: context.l10n.adminKbRetry,
                   ),
                 ],
               ),
@@ -427,22 +427,22 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                     decoration: InputDecoration(
                       labelText: context.l10n.adminSupportKeywords,
                       border: OutlineInputBorder(),
-                      hintText: 'e.g. login, password, reset',
+                      hintText: context.l10n.adminKbKeywordsHint,
                     ),
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     value: selectedCategory,
-                    decoration: const InputDecoration(
-                      labelText: 'Category',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminSupportCategory,
                       border: OutlineInputBorder(),
                     ),
-                    items: const [
-                      DropdownMenuItem(value: 'general', child: Text('General')),
-                      DropdownMenuItem(value: 'academic', child: Text('Academic')),
-                      DropdownMenuItem(value: 'technical', child: Text('Technical')),
-                      DropdownMenuItem(value: 'billing', child: Text('Billing')),
-                      DropdownMenuItem(value: 'account', child: Text('Account')),
+                    items: [
+                      DropdownMenuItem(value: 'general', child: Text(context.l10n.adminSupportGeneral)),
+                      DropdownMenuItem(value: 'academic', child: Text(context.l10n.adminSupportAcademic)),
+                      DropdownMenuItem(value: 'technical', child: Text(context.l10n.adminSupportTechnical)),
+                      DropdownMenuItem(value: 'billing', child: Text(context.l10n.adminSupportBilling)),
+                      DropdownMenuItem(value: 'account', child: Text(context.l10n.adminSupportAccount)),
                     ],
                     onChanged: (value) {
                       if (value != null) {
@@ -453,15 +453,15 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
                     value: selectedPriority,
-                    decoration: const InputDecoration(
-                      labelText: 'Priority',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminSupportPriority,
                       border: OutlineInputBorder(),
                     ),
-                    items: const [
-                      DropdownMenuItem(value: 0, child: Text('0 - Low')),
-                      DropdownMenuItem(value: 1, child: Text('1 - Medium')),
-                      DropdownMenuItem(value: 2, child: Text('2 - High')),
-                      DropdownMenuItem(value: 3, child: Text('3 - Critical')),
+                    items: [
+                      DropdownMenuItem(value: 0, child: Text(context.l10n.adminKbPriorityLow)),
+                      DropdownMenuItem(value: 1, child: Text(context.l10n.adminKbPriorityMedium)),
+                      DropdownMenuItem(value: 2, child: Text(context.l10n.adminKbPriorityHigh)),
+                      DropdownMenuItem(value: 3, child: Text(context.l10n.adminKbPriorityCritical)),
                     ],
                     onChanged: (value) {
                       if (value != null) {
@@ -534,7 +534,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(context.l10n.adminSupportDeleteFaq),
-        content: Text('Are you sure you want to delete "${faq.question}"?'),
+        content: Text(context.l10n.adminKbDeleteConfirmMessage(faq.question)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -554,7 +554,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
               backgroundColor: AppColors.error,
               foregroundColor: AppColors.textOnPrimary,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.adminSupportDelete),
           ),
         ],
       ),

@@ -228,10 +228,10 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                       ),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Location',
+                        context.l10n.adminInstitutionLocation,
                         [
                           _buildTextField(
-                            label: 'Address',
+                            label: context.l10n.adminInstitutionAddress,
                             controller: _addressController,
                             maxLines: 2,
                           ),
@@ -240,14 +240,14 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'City',
+                                  label: context.l10n.adminInstitutionCity,
                                   controller: _cityController,
                                 ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Country',
+                                  label: context.l10n.adminInstitutionCountry,
                                   controller: _countryController,
                                 ),
                               ),
@@ -257,23 +257,23 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                       ),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Contact Person',
+                        context.l10n.adminInstitutionContactPerson,
                         [
                           Row(
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Full Name',
+                                  label: context.l10n.adminInstitutionFullName,
                                   controller: _contactPersonController,
                                   required: true,
                                   validator: (value) =>
-                                      value?.isEmpty ?? true ? 'Required' : null,
+                                      value?.isEmpty ?? true ? context.l10n.adminInstitutionRequired : null,
                                 ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Position',
+                                  label: context.l10n.adminInstitutionPosition,
                                   controller: _contactPositionController,
                                 ),
                               ),
@@ -284,15 +284,15 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Email',
+                                  label: context.l10n.adminInstitutionContactEmail,
                                   controller: _contactEmailController,
                                   required: true,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    if (value?.isEmpty ?? true) return 'Required';
+                                    if (value?.isEmpty ?? true) return context.l10n.adminInstitutionRequired;
                                     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                         .hasMatch(value!)) {
-                                      return 'Invalid email';
+                                      return context.l10n.adminInstitutionInvalidEmail;
                                     }
                                     return null;
                                   },
@@ -301,7 +301,7 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Phone',
+                                  label: context.l10n.adminInstitutionContactPhone,
                                   controller: _contactPhoneController,
                                   keyboardType: TextInputType.phone,
                                 ),
@@ -331,7 +331,7 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
           TextButton.icon(
             onPressed: () => context.go('/admin/users/institutions'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Institutions'),
+            label: Text(context.l10n.adminInstitutionBackToInstitutions),
           ),
         ],
       ),
@@ -343,14 +343,14 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isEditMode ? 'Edit Institution' : 'Add New Institution',
+          isEditMode ? context.l10n.adminInstitutionEditInstitution : context.l10n.adminInstitutionAddNewInstitution,
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
           isEditMode
-              ? 'Update institution account information'
-              : 'Create a new institution account',
+              ? context.l10n.adminInstitutionUpdateAccountInfo
+              : context.l10n.adminInstitutionCreateAccountInfo,
           style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
         ),
       ],
@@ -460,7 +460,7 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                 : () => context.go('/admin/users/institutions'),
             style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16)),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminInstitutionCancel),
           ),
         ),
         const SizedBox(width: 16),
@@ -477,7 +477,7 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                       width: 20,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white))
-                  : Text(isEditMode ? 'Update Institution' : 'Create Institution'),
+                  : Text(isEditMode ? context.l10n.adminInstitutionUpdateInstitution : context.l10n.adminInstitutionCreateInstitution),
             ),
           ),
         ),

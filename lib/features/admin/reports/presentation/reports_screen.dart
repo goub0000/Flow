@@ -242,7 +242,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          'Last: ${DateFormat('MMM d, HH:mm').format(report.lastGenerated!)}',
+                          context.l10n.adminReportLastGenerated(DateFormat('MMM d, HH:mm').format(report.lastGenerated!)),
                           style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -348,9 +348,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       // Analytics Reports
       ReportModel(
         id: 'user_activity',
-        name: 'User Activity Report',
-        description:
-            'Comprehensive overview of user registrations, logins, and activity patterns',
+        name: context.l10n.adminReportUserActivityReport,
+        description: context.l10n.adminReportUserActivityDescription,
         type: ReportType.users,
         category: ReportCategory.analytics,
         icon: Icons.people,
@@ -359,9 +358,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ),
       ReportModel(
         id: 'engagement',
-        name: 'Engagement Metrics',
-        description:
-            'Track user engagement, course enrollments, and platform interactions',
+        name: context.l10n.adminReportEngagementMetrics,
+        description: context.l10n.adminReportEngagementDescription,
         type: ReportType.engagement,
         category: ReportCategory.analytics,
         icon: Icons.trending_up,
@@ -369,9 +367,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ),
       ReportModel(
         id: 'performance',
-        name: 'System Performance',
-        description:
-            'API response times, throughput, and system performance metrics',
+        name: context.l10n.adminReportSystemPerformance,
+        description: context.l10n.adminReportSystemPerformanceDescription,
         type: ReportType.performance,
         category: ReportCategory.analytics,
         icon: Icons.speed,
@@ -380,9 +377,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       // Financial Reports
       ReportModel(
         id: 'revenue',
-        name: 'Revenue Report',
-        description:
-            'Detailed breakdown of revenue, subscriptions, and transactions',
+        name: context.l10n.adminReportRevenueReport,
+        description: context.l10n.adminReportRevenueDescription,
         type: ReportType.financial,
         category: ReportCategory.finance,
         icon: Icons.attach_money,
@@ -391,9 +387,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ),
       ReportModel(
         id: 'payment_analytics',
-        name: 'Payment Analytics',
-        description:
-            'Payment success rates, processing times, and transaction analysis',
+        name: context.l10n.adminReportPaymentAnalytics,
+        description: context.l10n.adminReportPaymentAnalyticsDescription,
         type: ReportType.financial,
         category: ReportCategory.finance,
         icon: Icons.payment,
@@ -402,9 +397,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       // Operations Reports
       ReportModel(
         id: 'user_growth',
-        name: 'User Growth Report',
-        description:
-            'Track user acquisition, retention, and growth trends over time',
+        name: context.l10n.adminReportUserGrowthReport,
+        description: context.l10n.adminReportUserGrowthDescription,
         type: ReportType.users,
         category: ReportCategory.operations,
         icon: Icons.show_chart,
@@ -412,9 +406,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ),
       ReportModel(
         id: 'system_health',
-        name: 'System Health Report',
-        description:
-            'Infrastructure status, uptime, resource utilization, and health metrics',
+        name: context.l10n.adminReportSystemHealthReport,
+        description: context.l10n.adminReportSystemHealthDescription,
         type: ReportType.system,
         category: ReportCategory.operations,
         icon: Icons.monitor_heart,
@@ -422,9 +415,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ),
       ReportModel(
         id: 'application_funnel',
-        name: 'Application Funnel',
-        description:
-            'Track application submissions, conversions, and completion rates',
+        name: context.l10n.adminReportApplicationFunnel,
+        description: context.l10n.adminReportApplicationFunnelDescription,
         type: ReportType.engagement,
         category: ReportCategory.operations,
         icon: Icons.filter_alt,
@@ -433,18 +425,16 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       // Compliance Reports
       ReportModel(
         id: 'audit_trail',
-        name: 'Audit Trail Report',
-        description:
-            'Complete audit trail of admin actions and system changes',
+        name: context.l10n.adminReportAuditTrailReport,
+        description: context.l10n.adminReportAuditTrailDescription,
         type: ReportType.system,
         category: ReportCategory.compliance,
         icon: Icons.gavel,
       ),
       ReportModel(
         id: 'data_access',
-        name: 'Data Access Report',
-        description:
-            'Track data access patterns and sensitive information requests',
+        name: context.l10n.adminReportDataAccessReport,
+        description: context.l10n.adminReportDataAccessDescription,
         type: ReportType.system,
         category: ReportCategory.compliance,
         icon: Icons.security,

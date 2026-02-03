@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../../../core/models/quiz_assignment_models.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Utility class for importing and exporting quiz questions
 class QuizImportExportUtils {
@@ -104,17 +105,17 @@ class QuizImportExportUtils {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
             const Icon(Icons.file_download),
             const SizedBox(width: 12),
-            const Text('Export Questions'),
+            Text(context.l10n.instCourseExportQuestions),
           ],
         ),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.6,
-          height: MediaQuery.of(context).size.height * 0.6,
+          width: MediaQuery.of(dialogContext).size.width * 0.6,
+          height: MediaQuery.of(dialogContext).size.height * 0.6,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -130,7 +131,7 @@ class QuizImportExportUtils {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Copy this JSON to save your questions. You can import them later or share with others.',
+                        context.l10n.instCourseExportInfo,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.blue.shade900,
@@ -144,9 +145,9 @@ class QuizImportExportUtils {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'JSON Data',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: context.l10n.instCourseJsonData,
                     alignLabelWithHint: true,
                   ),
                   maxLines: null,
@@ -160,19 +161,19 @@ class QuizImportExportUtils {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.instCourseClose),
           ),
           ElevatedButton.icon(
             onPressed: () async {
               // Copy to clipboard
               // Note: This would require platform channels or a package like 'flutter/services'
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('JSON copied to clipboard!')),
+                SnackBar(content: Text(context.l10n.instCourseJsonCopied)),
               );
             },
             icon: const Icon(Icons.copy),
-            label: const Text('Copy to Clipboard'),
+            label: Text(context.l10n.instCourseCopyToClipboard),
           ),
         ],
       ),
@@ -188,19 +189,19 @@ class QuizImportExportUtils {
 
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setState) {
           return AlertDialog(
             title: Row(
               children: [
                 const Icon(Icons.file_upload),
                 const SizedBox(width: 12),
-                const Text('Import Questions'),
+                Text(context.l10n.instCourseImportQuestions),
               ],
             ),
             content: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).size.height * 0.6,
+              width: MediaQuery.of(dialogContext).size.width * 0.6,
+              height: MediaQuery.of(dialogContext).size.height * 0.6,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -216,7 +217,7 @@ class QuizImportExportUtils {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Paste your previously exported JSON data here. Make sure the format is correct.',
+                            context.l10n.instCourseImportInfo,
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.amber.shade900,
@@ -230,10 +231,10 @@ class QuizImportExportUtils {
                   Expanded(
                     child: TextField(
                       controller: controller,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'JSON Data',
-                        hintText: 'Paste your JSON here...',
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: context.l10n.instCourseJsonData,
+                        hintText: context.l10n.instCoursePasteJsonHere,
                         alignLabelWithHint: true,
                       ),
                       maxLines: null,
@@ -246,32 +247,32 @@ class QuizImportExportUtils {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                onPressed: () => Navigator.pop(dialogContext),
+                child: Text(context.l10n.instCourseCancel),
               ),
               ElevatedButton.icon(
                 onPressed: () {
                   try {
                     final questions = importQuestionsFromJson(controller.text);
-                    Navigator.pop(context);
+                    Navigator.pop(dialogContext);
                     onImport(questions);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Successfully imported ${questions.length} questions!'),
+                        content: Text(context.l10n.instCourseImportSuccess(questions.length)),
                         backgroundColor: Colors.green,
                       ),
                     );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Import failed: $e'),
+                        content: Text(context.l10n.instCourseImportFailed(e.toString())),
                         backgroundColor: Colors.red,
                       ),
                     );
                   }
                 },
                 icon: const Icon(Icons.check),
-                label: const Text('Import'),
+                label: Text(context.l10n.instCourseImport),
               ),
             ],
           );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/resource_widgets.dart';
 import '../widgets/coming_soon_dialog.dart';
 
@@ -73,17 +74,17 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           IconButton(
             icon: const Icon(Icons.bookmark_border),
             onPressed: _toggleBookmark,
-            tooltip: 'Bookmark',
+            tooltip: context.l10n.sharedResourcesBookmarkTooltip,
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: _shareResource,
-            tooltip: 'Share',
+            tooltip: context.l10n.sharedResourcesShareTooltip,
           ),
           IconButton(
             icon: const Icon(Icons.download),
             onPressed: _downloadResource,
-            tooltip: 'Download',
+            tooltip: context.l10n.sharedResourcesDownloadTooltip,
           ),
         ],
       ),
@@ -130,14 +131,14 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           ),
           const SizedBox(height: 24),
           Text(
-            'PDF Viewer',
+            context.l10n.sharedResourcesPdfViewerTitle,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           const SizedBox(height: 8),
           Text(
-            'PDF viewing requires video_player package',
+            context.l10n.sharedResourcesPdfViewerMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -147,7 +148,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           FilledButton.icon(
             onPressed: _downloadResource,
             icon: const Icon(Icons.download),
-            label: const Text('Download to View'),
+            label: Text(context.l10n.sharedResourcesDownloadToView),
           ),
         ],
       ),
@@ -175,14 +176,14 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           ),
           const SizedBox(height: 24),
           Text(
-            'Video Player',
+            context.l10n.sharedResourcesVideoPlayerTitle,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Video playback requires video_player package',
+            context.l10n.sharedResourcesVideoPlayerMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -196,8 +197,8 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
                 onPressed: () {
                   ComingSoonDialog.show(
                     context,
-                    featureName: 'Video Player',
-                    customMessage: 'Video playback functionality will be available soon.',
+                    featureName: context.l10n.sharedResourcesVideoPlayerTitle,
+                    customMessage: context.l10n.sharedResourcesVideoPlaybackComingSoon,
                   );
                 },
                 icon: const Icon(Icons.play_arrow, size: 32),
@@ -249,8 +250,8 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
                 onPressed: () {
                   ComingSoonDialog.show(
                     context,
-                    featureName: 'Audio Controls',
-                    customMessage: 'Audio playback controls will be available soon.',
+                    featureName: context.l10n.sharedResourcesAudioControlsFeature,
+                    customMessage: context.l10n.sharedResourcesAudioControlsComingSoon,
                   );
                 },
                 icon: const Icon(Icons.skip_previous, size: 32),
@@ -260,8 +261,8 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
                 onPressed: () {
                   ComingSoonDialog.show(
                     context,
-                    featureName: 'Audio Player',
-                    customMessage: 'Audio playback functionality will be available soon.',
+                    featureName: context.l10n.sharedResourcesAudioPlayerFeature,
+                    customMessage: context.l10n.sharedResourcesAudioPlaybackComingSoon,
                   );
                 },
                 icon: const Icon(Icons.play_arrow, size: 40),
@@ -275,8 +276,8 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
                 onPressed: () {
                   ComingSoonDialog.show(
                     context,
-                    featureName: 'Audio Controls',
-                    customMessage: 'Audio playback controls will be available soon.',
+                    featureName: context.l10n.sharedResourcesAudioControlsFeature,
+                    customMessage: context.l10n.sharedResourcesAudioControlsComingSoon,
                   );
                 },
                 icon: const Icon(Icons.skip_next, size: 32),
@@ -335,7 +336,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Failed to load image',
+                  context.l10n.sharedResourcesFailedToLoadImage,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ],
@@ -428,7 +429,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'This file type requires a specific viewer',
+            context.l10n.sharedResourcesFileTypeRequiresViewer,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -438,7 +439,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           FilledButton.icon(
             onPressed: _downloadResource,
             icon: const Icon(Icons.download),
-            label: const Text('Download to View'),
+            label: Text(context.l10n.sharedResourcesDownloadToView),
           ),
         ],
       ),
@@ -502,14 +503,14 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
           ),
           const SizedBox(height: 24),
           Text(
-            'Failed to Load Resource',
+            context.l10n.sharedResourcesFailedToLoadResource,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Please check your connection and try again',
+            context.l10n.sharedResourcesCheckConnectionMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -525,7 +526,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
               _loadResource();
             },
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text(context.l10n.sharedResourcesRetry),
           ),
         ],
       ),
@@ -614,8 +615,8 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
       SnackBar(
         content: Text(
           widget.resource.isBookmarked
-              ? 'Removed from bookmarks'
-              : 'Added to bookmarks',
+              ? context.l10n.sharedResourcesRemovedFromBookmarks
+              : context.l10n.sharedResourcesAddedToBookmarks,
         ),
       ),
     );
@@ -624,7 +625,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
   void _shareResource() {
     // TODO: Share resource
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Share functionality coming soon')),
+      SnackBar(content: Text(context.l10n.sharedResourcesShareComingSoon)),
     );
   }
 
@@ -656,8 +657,8 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
     if (mounted) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Download completed!'),
+        SnackBar(
+          content: Text(context.l10n.sharedResourcesDownloadCompleted),
           backgroundColor: AppColors.success,
         ),
       );
@@ -667,7 +668,7 @@ class _ResourceViewerScreenState extends State<ResourceViewerScreen> {
   void _openLink() {
     // TODO: Open link in browser
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Opening ${widget.resource.url}...')),
+      SnackBar(content: Text(context.l10n.sharedResourcesOpeningUrl(widget.resource.url))),
     );
   }
 }

@@ -51,14 +51,14 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Activity Logs',
+                          context.l10n.adminActivityTitle,
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Audit trail of all administrative actions',
+                          context.l10n.adminActivitySubtitle,
                           style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 16,
@@ -71,7 +71,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
                         OutlinedButton.icon(
                           onPressed: _handleExportLogs,
                           icon: const Icon(Icons.download, size: 20),
-                          label: const Text('Export Logs'),
+                          label: Text(context.l10n.adminActivityExportLogs),
                         ),
                         const SizedBox(width: 12),
                         OutlinedButton.icon(
@@ -85,7 +85,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
                             });
                           },
                           icon: const Icon(Icons.refresh, size: 20),
-                          label: const Text('Reset Filters'),
+                          label: Text(context.l10n.adminActivityResetFilters),
                         ),
                       ],
                     ),
@@ -127,7 +127,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search by admin, action, or target...',
+                    hintText: context.l10n.adminActivitySearchHint,
                     prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -157,17 +157,17 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
               // Action Type Filter
               Expanded(
                 child: _buildDropdownFilter(
-                  label: 'Action Type',
+                  label: context.l10n.adminActivityActionType,
                   value: _selectedActionType,
-                  items: const [
-                    DropdownMenuItem(value: 'all', child: Text('All Types')),
-                    DropdownMenuItem(value: 'create', child: Text('Create')),
-                    DropdownMenuItem(value: 'update', child: Text('Update')),
-                    DropdownMenuItem(value: 'delete', child: Text('Delete')),
-                    DropdownMenuItem(value: 'login', child: Text('Login')),
-                    DropdownMenuItem(value: 'logout', child: Text('Logout')),
-                    DropdownMenuItem(value: 'export', child: Text('Export')),
-                    DropdownMenuItem(value: 'bulk_operation', child: Text('Bulk Operation')),
+                  items: [
+                    DropdownMenuItem(value: 'all', child: Text(context.l10n.adminActivityAllTypes)),
+                    DropdownMenuItem(value: 'create', child: Text(context.l10n.adminActivityCreate)),
+                    DropdownMenuItem(value: 'update', child: Text(context.l10n.adminActivityUpdate)),
+                    DropdownMenuItem(value: 'delete', child: Text(context.l10n.adminActivityDelete)),
+                    DropdownMenuItem(value: 'login', child: Text(context.l10n.adminActivityLogin)),
+                    DropdownMenuItem(value: 'logout', child: Text(context.l10n.adminActivityLogout)),
+                    DropdownMenuItem(value: 'export', child: Text(context.l10n.adminActivityExport)),
+                    DropdownMenuItem(value: 'bulk_operation', child: Text(context.l10n.adminActivityBulkOperation)),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -181,13 +181,13 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
               // Severity Filter
               Expanded(
                 child: _buildDropdownFilter(
-                  label: 'Severity',
+                  label: context.l10n.adminActivitySeverity,
                   value: _selectedSeverity,
-                  items: const [
-                    DropdownMenuItem(value: 'all', child: Text('All Severity')),
-                    DropdownMenuItem(value: 'info', child: Text('Info')),
-                    DropdownMenuItem(value: 'warning', child: Text('Warning')),
-                    DropdownMenuItem(value: 'critical', child: Text('Critical')),
+                  items: [
+                    DropdownMenuItem(value: 'all', child: Text(context.l10n.adminActivityAllSeverity)),
+                    DropdownMenuItem(value: 'info', child: Text(context.l10n.adminActivityInfo)),
+                    DropdownMenuItem(value: 'warning', child: Text(context.l10n.adminActivityWarning)),
+                    DropdownMenuItem(value: 'critical', child: Text(context.l10n.adminActivityCritical)),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -204,7 +204,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
                 icon: const Icon(Icons.date_range, size: 20),
                 label: Text(
                   _selectedDateRange == null
-                      ? 'Date Range'
+                      ? context.l10n.adminActivityDateRange
                       : '${DateFormat('MMM d').format(_selectedDateRange!.start)} - ${DateFormat('MMM d').format(_selectedDateRange!.end)}',
                 ),
                 style: OutlinedButton.styleFrom(
@@ -293,7 +293,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
       child: AdminDataTable<ActivityLogData>(
         columns: [
           DataTableColumn<ActivityLogData>(
-            label: 'Timestamp',
+            label: context.l10n.adminActivityTimestamp,
             cellBuilder: (log) => Text(
               DateFormat('MMM d, yyyy HH:mm').format(log.timestamp),
               style: const TextStyle(fontSize: 13),
@@ -301,7 +301,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
             sortable: true,
           ),
           DataTableColumn<ActivityLogData>(
-            label: 'Admin',
+            label: context.l10n.adminActivityAdmin,
             cellBuilder: (log) => Row(
               children: [
                 CircleAvatar(
@@ -329,12 +329,12 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
             sortable: true,
           ),
           DataTableColumn<ActivityLogData>(
-            label: 'Action',
+            label: context.l10n.adminActivityAction,
             cellBuilder: (log) => _buildActionBadge(log.actionType),
             sortable: true,
           ),
           DataTableColumn<ActivityLogData>(
-            label: 'Target',
+            label: context.l10n.adminActivityTarget,
             cellBuilder: (log) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -359,7 +359,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
             sortable: false,
           ),
           DataTableColumn<ActivityLogData>(
-            label: 'Details',
+            label: context.l10n.adminActivityDetails,
             cellBuilder: (log) => SizedBox(
               width: 200,
               child: Text(
@@ -372,12 +372,12 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
             sortable: false,
           ),
           DataTableColumn<ActivityLogData>(
-            label: 'Severity',
+            label: context.l10n.adminActivitySeverity,
             cellBuilder: (log) => _buildSeverityBadge(log.severity),
             sortable: true,
           ),
           DataTableColumn<ActivityLogData>(
-            label: 'IP Address',
+            label: context.l10n.adminActivityIpAddress,
             cellBuilder: (log) => Text(
               log.ipAddress,
               style: TextStyle(
@@ -536,7 +536,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
     await showDialog(
       context: context,
       builder: (context) => ExportDialog(
-        title: 'Export Activity Logs',
+        title: context.l10n.adminActivityExportDialogTitle,
         onExport: (format) async {
           final data = logs.map((log) {
             return {
@@ -568,7 +568,7 @@ class _ActivityLogsScreenState extends ConsumerState<ActivityLogsScreen> {
               await ExportUtils.exportToPDF(
                 data: data,
                 filename: 'activity_logs_${DateFormat('yyyyMMdd_HHmmss').format(DateTime.now())}.pdf',
-                title: 'Activity Logs Report',
+                title: context.l10n.adminActivityLogsReport,
               );
               break;
           }

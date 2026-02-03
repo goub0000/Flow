@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Institution Course Detail Screen
 /// Shows course details with management options for institutions
@@ -24,7 +25,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit),
-                tooltip: 'Edit Course',
+                tooltip: context.l10n.instCoursesEditCourse,
                 onPressed: () {
                   context.push('/institution/courses/${course.id}/edit', extra: course);
                 },
@@ -66,7 +67,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Text(
-                          course.isPublished ? 'Published' : course.status.displayName,
+                          course.isPublished ? context.l10n.instCoursesPublished : course.status.displayName,
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -83,7 +84,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
-                            '${course.enrolledCount} Enrolled',
+                            context.l10n.instCoursesEnrolledCount(course.enrolledCount ?? 0),
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -110,7 +111,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
 
                   // Quick Actions
-                  const Text('Quick Actions', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(context.l10n.instCoursesQuickActions, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -166,14 +167,14 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
 
                   // Description
-                  const Text('Description', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(context.l10n.instCoursesDescription, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   Text(course.description, style: const TextStyle(height: 1.6)),
                   const SizedBox(height: 24),
 
                   // Learning Outcomes
                   if (course.learningOutcomes.isNotEmpty) ...[
-                    const Text('Learning Outcomes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(context.l10n.instCoursesLearningOutcomes, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     ...course.learningOutcomes.map((outcome) => Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -190,7 +191,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
 
                   // Prerequisites
                   if (course.prerequisites.isNotEmpty) ...[
-                    const Text('Prerequisites', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(context.l10n.instCoursesPrerequisites, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     ...course.prerequisites.map((prereq) => Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -206,7 +207,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                   ],
 
                   // Course Stats
-                  const Text('Statistics', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(context.l10n.instCoursesStatistics, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
                   Card(
                     child: Padding(

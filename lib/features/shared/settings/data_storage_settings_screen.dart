@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/settings_widgets.dart';
 
 /// Data & Storage Settings Screen

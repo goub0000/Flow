@@ -6350,5 +6350,1266 @@
   "adminUserConfirmDeactivateAdmins": "Are you sure you want to deactivate {count} admins?",
   "adminUserAdminsDeactivated": "{count} admins deactivated",
   "adminUserConfirmActivateCounselors": "Are you sure you want to activate {count} counselors?",
-  "adminUserConfirmDeactivateCounselors": "Are you sure you want to deactivate {count} counselors?"
+  "adminUserConfirmDeactivateCounselors": "Are you sure you want to deactivate {count} counselors?",
+  "adminActivityTitle": "Activity Logs",
+  "adminActivitySubtitle": "Audit trail of all administrative actions",
+  "adminActivityExportLogs": "Export Logs",
+  "adminActivityResetFilters": "Reset Filters",
+  "adminActivitySearchHint": "Search by admin, action, or target...",
+  "adminActivityActionType": "Action Type",
+  "adminActivityAllTypes": "All Types",
+  "adminActivityCreate": "Create",
+  "adminActivityUpdate": "Update",
+  "adminActivityDelete": "Delete",
+  "adminActivityLogin": "Login",
+  "adminActivityLogout": "Logout",
+  "adminActivityExport": "Export",
+  "adminActivityBulkOperation": "Bulk Operation",
+  "adminActivitySeverity": "Severity",
+  "adminActivityAllSeverity": "All Severity",
+  "adminActivityInfo": "Info",
+  "adminActivityWarning": "Warning",
+  "adminActivityCritical": "Critical",
+  "adminActivityDateRange": "Date Range",
+  "adminActivityTimestamp": "Timestamp",
+  "adminActivityAdmin": "Admin",
+  "adminActivityAction": "Action",
+  "adminActivityTarget": "Target",
+  "adminActivityDetails": "Details",
+  "adminActivityIpAddress": "IP Address",
+  "adminActivityExportDialogTitle": "Export Activity Logs",
+  "adminActivityLogsReport": "Activity Logs Report",
+  "homePageApiDocsTitle": "API Documentation",
+  "homePagePressKit": "Press Kit",
+  "adminDashSystemUser": "System",
+  "adminDashErrorWithMessage": "Error: {message}",
+  "adminSettingsTimezoneNairobi": "Nairobi (EAT)",
+  "adminSettingsTimezoneLagos": "Lagos (WAT)",
+  "adminSettingsTimezoneCairo": "Cairo (EET)",
+  "adminRichTextBoldTooltip": "Bold (**text**)",
+  "adminRichTextBoldPlaceholder": "bold text",
+  "adminRichTextItalicTooltip": "Italic (*text*)",
+  "adminRichTextItalicPlaceholder": "italic text",
+  "adminRichTextUnderlineTooltip": "Underline",
+  "adminRichTextUnderlinePlaceholder": "underlined text",
+  "adminRichTextStrikethroughTooltip": "Strikethrough (~~text~~)",
+  "adminRichTextStrikethroughPlaceholder": "strikethrough",
+  "adminRichTextHeading1Tooltip": "Heading 1",
+  "adminRichTextHeading2Tooltip": "Heading 2",
+  "adminRichTextHeading3Tooltip": "Heading 3",
+  "adminRichTextBulletListTooltip": "Bullet list",
+  "adminRichTextNumberedListTooltip": "Numbered list",
+  "adminRichTextQuoteTooltip": "Quote",
+  "adminRichTextLinkTooltip": "Insert link [text](url)",
+  "adminRichTextLinkPlaceholder": "link text",
+  "adminRichTextCodeTooltip": "Inline code",
+  "adminRichTextCodePlaceholder": "code",
+  "adminRichTextHorizontalLineTooltip": "Horizontal line",
+  "instCourseMarkdown": "Markdown",
+  "instCourseRichText": "Rich Text",
+  "studCourseRetry": "Retry",
+  "studCourseSubmitAssignment": "Submit Assignment",
+  "adminNotifTitle": "Notifications Center",
+  "adminNotifSubtitle": "Stay updated with system events and user activities",
+  "adminNotifMarkAllAsRead": "Mark All as Read",
+  "adminNotifClearAll": "Clear All",
+  "adminNotifUnreadCount": "{count} unread",
+  "adminNotifPriority": "Priority",
+  "adminNotifAllPriorities": "All Priorities",
+  "adminNotifUnreadOnly": "Unread only",
+  "adminNotifNotificationTypes": "Notification Types",
+  "adminNotifAllNotifications": "All Notifications",
+  "adminNotifMarkAsUnread": "Mark as Unread",
+  "adminNotifMarkAsRead": "Mark as Read",
+  "adminNotifDelete": "Delete",
+  "adminNotifNoNotifications": "No notifications",
+  "adminNotifAllCaughtUp": "You're all caught up!",
+  "adminNotifJustNow": "Just now",
+  "adminNotifMinutesAgo": "{minutes}m ago",
+  "adminNotifHoursAgo": "{hours}h ago",
+  "adminNotifDaysAgo": "{days}d ago",
+  "adminNotifClearAllTitle": "Clear All Notifications",
+  "adminNotifClearAllConfirmation": "Are you sure you want to clear all notifications? This action cannot be undone.",
+  "adminNotifCancel": "Cancel",
+  "adminCounselorsListUnknownCounselor": "Unknown Counselor",
+  "adminCounselorsListNotSpecified": "Not specified",
+  "adminCounselorsListToday": "Today",
+  "adminCounselorsListYesterday": "Yesterday",
+  "adminCounselorsListDaysAgo": "{count} days ago",
+  "adminCounselorsListWeeksAgo": "{count} weeks ago",
+  "adminCounselorsListMonthsAgo": "{count} months ago",
+  "adminCounselorsListYearsAgo": "{count} years ago",
+  "adminCounselorsListError": "Error: {error}",
+  "homePageAboutTitle": "About Us",
+  "homePageOurMission": "Our Mission",
+  "adminReportLastGenerated": "Last: {date}",
+  "adminReportUserActivityReport": "User Activity Report",
+  "adminReportUserActivityDescription": "Comprehensive overview of user registrations, logins, and activity patterns",
+  "adminReportEngagementMetrics": "Engagement Metrics",
+  "adminReportEngagementDescription": "Track user engagement, course enrollments, and platform interactions",
+  "adminReportSystemPerformance": "System Performance",
+  "adminReportSystemPerformanceDescription": "API response times, throughput, and system performance metrics",
+  "adminReportRevenueReport": "Revenue Report",
+  "adminReportRevenueDescription": "Detailed breakdown of revenue, subscriptions, and transactions",
+  "adminReportPaymentAnalytics": "Payment Analytics",
+  "adminReportPaymentAnalyticsDescription": "Payment success rates, processing times, and transaction analysis",
+  "adminReportUserGrowthReport": "User Growth Report",
+  "adminReportUserGrowthDescription": "Track user acquisition, retention, and growth trends over time",
+  "adminReportSystemHealthReport": "System Health Report",
+  "adminReportSystemHealthDescription": "Infrastructure status, uptime, resource utilization, and health metrics",
+  "adminReportApplicationFunnel": "Application Funnel",
+  "adminReportApplicationFunnelDescription": "Track application submissions, conversions, and completion rates",
+  "adminReportAuditTrailReport": "Audit Trail Report",
+  "adminReportAuditTrailDescription": "Complete audit trail of admin actions and system changes",
+  "adminReportDataAccessReport": "Data Access Report",
+  "adminReportDataAccessDescription": "Track data access patterns and sensitive information requests",
+  "adminReportDefaultTitle": "Analytics Report",
+  "adminReportMetricHeader": "Metric",
+  "adminReportValueHeader": "Value",
+  "adminReportDeleteConfirmation": "Are you sure you want to delete \"{title}\"?",
+  "adminReportRecipientsCount": "{count} recipients",
+  "adminReportEmailRecipientsHint": "admin@example.com, manager@example.com",
+  "adminSqlTitle": "SQL Queries",
+  "adminSqlSubtitle": "Run pre-built queries against platform data",
+  "adminSqlSearchHint": "Search queries...",
+  "adminSqlRetry": "Retry",
+  "adminSqlSelectQuery": "Select a query to run",
+  "adminSqlSelectQueryHint": "Choose from the query library on the left",
+  "adminSqlNoResults": "No results",
+  "adminSqlResultCount": "{rows} rows  |  {columns} columns",
+  "adminSqlAllUsersName": "All Users",
+  "adminSqlAllUsersDescription": "List every registered user with profile data",
+  "adminSqlStudentsOnlyName": "Students Only",
+  "adminSqlStudentsOnlyDescription": "Filter users to show only students",
+  "adminSqlAdminUsersName": "Admin Users",
+  "adminSqlAdminUsersDescription": "List all administrator accounts",
+  "adminSqlRecentActivityName": "Recent Activity",
+  "adminSqlRecentActivityDescription": "Last 50 platform activities from the audit log",
+  "adminSqlActivityStatisticsName": "Activity Statistics",
+  "adminSqlActivityStatisticsDescription": "Aggregated activity counts by type",
+  "adminSqlPlatformMetricsName": "Platform Metrics",
+  "adminSqlPlatformMetricsDescription": "Key metrics: user counts, applications, growth rates",
+  "adminSqlFinanceOverviewName": "Finance Overview",
+  "adminSqlFinanceOverviewDescription": "Revenue, transactions, and financial KPIs",
+  "adminSqlContentStatisticsName": "Content Statistics",
+  "adminSqlContentStatisticsDescription": "Published, draft, and pending content counts",
+  "adminSqlOpenSupportTicketsName": "Open Support Tickets",
+  "adminSqlOpenSupportTicketsDescription": "All currently open support tickets",
+  "adminSqlRecentTransactionsName": "Recent Transactions",
+  "adminSqlRecentTransactionsDescription": "Financial transactions (last 100)",
+  "adminSqlUserGrowthName": "User Growth (6 Months)",
+  "adminSqlUserGrowthDescription": "Monthly user registration trend",
+  "adminSqlRoleDistributionName": "Role Distribution",
+  "adminSqlRoleDistributionDescription": "Breakdown of users by role type",
+  "adminInstitutionLocation": "Location",
+  "adminInstitutionAddress": "Address",
+  "adminInstitutionCity": "City",
+  "adminInstitutionCountry": "Country",
+  "adminInstitutionContactPerson": "Contact Person",
+  "adminInstitutionFullName": "Full Name",
+  "adminInstitutionPosition": "Position",
+  "adminInstitutionContactEmail": "Email",
+  "adminInstitutionContactPhone": "Phone",
+  "adminInstitutionRequired": "Required",
+  "adminInstitutionInvalidEmail": "Invalid email",
+  "adminInstitutionBackToInstitutions": "Back to Institutions",
+  "adminInstitutionEditInstitution": "Edit Institution",
+  "adminInstitutionAddNewInstitution": "Add New Institution",
+  "adminInstitutionUpdateAccountInfo": "Update institution account information",
+  "adminInstitutionCreateAccountInfo": "Create a new institution account",
+  "adminInstitutionCancel": "Cancel",
+  "adminInstitutionUpdateInstitution": "Update Institution",
+  "adminInstitutionCreateInstitution": "Create Institution",
+  "adminMessagingTitle": "Bulk Messaging",
+  "adminMessagingSubtitle": "Send messages to multiple users at once",
+  "adminMessagingNewMessage": "New Message",
+  "adminMessagingSubjectLabel": "Subject",
+  "adminMessagingSubjectHint": "Enter message subject",
+  "adminMessagingMessageLabel": "Message",
+  "adminMessagingMessageHint": "Enter your message here...",
+  "adminMessagingSaveDraft": "Save Draft",
+  "adminMessagingPreview": "Preview",
+  "adminMessagingSending": "Sending...",
+  "adminMessagingSendMessage": "Send Message",
+  "adminMessagingRecipients": "Recipients",
+  "adminMessagingDeliveryChannel": "Delivery Channel",
+  "adminMessagingSchedule": "Schedule",
+  "adminMessagingTemplates": "Message Templates",
+  "adminMessagingRecentMessages": "Recent Messages",
+  "adminMessagingSentCount": "{count} sent",
+  "adminMessagingFillAllFields": "Please fill in all fields",
+  "adminMessagingSendMessageTitle": "Send Message",
+  "adminMessagingSendConfirmation": "Are you sure you want to send this message to {group}?",
+  "adminMessagingCancel": "Cancel",
+  "adminMessagingSend": "Send",
+  "adminMessagingSentSuccess": "Message sent successfully",
+  "adminMessagingDraftSaved": "Draft saved",
+  "adminMessagingPreviewTitle": "Message Preview",
+  "adminMessagingPreviewSubject": "Subject: {subject}",
+  "adminMessagingPreviewTo": "To: {recipient}",
+  "adminMessagingPreviewVia": "Via: {channel}",
+  "adminMessagingClose": "Close",
+  "adminMessagingTemplateWelcomeName": "Welcome Message",
+  "adminMessagingTemplateWelcomeSubject": "Welcome to Flow!",
+  "adminMessagingTemplateWelcomeContent": "Hello! Welcome to Flow, your educational journey starts here. We're excited to have you join our community.",
+  "adminMessagingTemplatePaymentName": "Payment Reminder",
+  "adminMessagingTemplatePaymentSubject": "Payment Due Reminder",
+  "adminMessagingTemplatePaymentContent": "This is a friendly reminder that your payment is due soon. Please complete your payment to continue enjoying our services.",
+  "adminMessagingTemplateSystemName": "System Update",
+  "adminMessagingTemplateSystemSubject": "System Maintenance Notice",
+  "adminMessagingTemplateSystemContent": "We will be performing scheduled maintenance on our systems. During this time, some features may be unavailable.",
+  "adminMessagingRecentWelcomeSubject": "Welcome to New Semester",
+  "adminMessagingRecentWelcomeContent": "We hope you had a great break! Get ready for an exciting semester ahead.",
+  "adminMessagingRecentPaymentSubject": "Payment Due Reminder",
+  "adminMessagingRecentPaymentContent": "This is a reminder that your payment is due by the end of this week.",
+  "adminMessagingRecentFeaturesSubject": "New Features Released",
+  "adminMessagingRecentFeaturesContent": "Check out our latest features and improvements to enhance your experience.",
+  "instCourseAdvancedModule": "Advanced Module",
+  "instCourseImportQuiz": "Import Quiz",
+  "adminLoginTitle": "Admin Portal",
+  "adminLoginSubtitle": "Secure Administrator Access",
+  "adminLoginEmailLabel": "Admin Email",
+  "adminLoginEmailHint": "admin@example.com",
+  "adminLoginEmailRequired": "Please enter your email",
+  "adminLoginEmailInvalid": "Please enter a valid email",
+  "adminLoginPasswordLabel": "Password",
+  "adminLoginPasswordHint": "Enter your password",
+  "adminLoginPasswordRequired": "Please enter your password",
+  "adminLoginPasswordTooShort": "Password must be at least 8 characters",
+  "adminLoginSignInButton": "Sign In Securely",
+  "adminLoginSecurityNotice": "All admin activities are logged and monitored for security.",
+  "adminLoginBackToSite": "Back to Main Site",
+  "adminLoginFailed": "Login failed: {error}",
+  "homePageBlogTitle": "Blog",
+  "homePageSubscribe": "Subscribe",
+  "adminKbRetry": "Retry",
+  "adminKbKeywordsHint": "e.g. login, password, reset",
+  "adminKbPriorityLow": "0 - Low",
+  "adminKbPriorityMedium": "1 - Medium",
+  "adminKbPriorityHigh": "2 - High",
+  "adminKbPriorityCritical": "3 - Critical",
+  "adminKbDeleteConfirmMessage": "Are you sure you want to delete \"{question}\"?",
+  "instCounselorsSearchHint": "Search counselors...",
+  "instCounselorsRetry": "Retry",
+  "instCounselorsNoCounselorsFound": "No Counselors Found",
+  "instCounselorsNoMatchSearch": "No counselors match your search",
+  "instCounselorsAddToInstitution": "Add counselors to your institution",
+  "instCounselorsPageOf": "Page {current} of {total}",
+  "instCounselorsCounselingOverview": "Counseling Overview",
+  "instCounselorsCounselors": "Counselors",
+  "instCounselorsStudents": "Students",
+  "instCounselorsSessions": "Sessions",
+  "instCounselorsCompleted": "Completed",
+  "instCounselorsUpcoming": "Upcoming",
+  "instCounselorsAvgRating": "Avg Rating",
+  "instCounselorsStudentAssigned": "Student assigned successfully",
+  "instCounselorsAssign": "Assign",
+  "instCounselorsTotalSessions": "Total Sessions",
+  "instCounselorsAssignStudents": "Assign Students",
+  "instCounselorsAssignStudentTo": "Assign Student to {name}",
+  "instCounselorsSearchStudents": "Search students...",
+  "instCounselorsNoStudentsFound": "No students found",
+  "instCounselorsUnknown": "Unknown",
+  "instCounselorsError": "Error: {error}",
+  "instCounselorsCancel": "Cancel",
+  "adminAuditAction": "Admin Audit Action",
+  "adminAuditActionType": "Admin Audit Action Type",
+  "adminAuditAllActions": "Admin Audit All Actions",
+  "adminAuditBackendIntegrationNote": "Admin Audit Backend Integration Note",
+  "adminAuditClose": "Admin Audit Close",
+  "adminAuditCreateRecord": "Admin Audit Create Record",
+  "adminAuditCustomRange": "Admin Audit Custom Range",
+  "adminAuditDateRange": "Admin Audit Date Range",
+  "adminAuditDeleteRecord": "Admin Audit Delete Record",
+  "adminAuditDetails": "Admin Audit Details",
+  "adminAuditExportData": "Admin Audit Export Data",
+  "adminAuditExportReport": "Admin Audit Export Report",
+  "adminAuditIpAddress": "Admin Audit Ip Address",
+  "adminAuditLast30Days": "Admin Audit Last30 Days",
+  "adminAuditLast7Days": "Admin Audit Last7 Days",
+  "adminAuditLogDetails": "Admin Audit Log Details",
+  "adminAuditLogin": "Admin Audit Login",
+  "adminAuditLogout": "Admin Audit Logout",
+  "adminAuditRefreshLogs": "Admin Audit Refresh Logs",
+  "adminAuditResource": "Admin Audit Resource",
+  "adminAuditRole": "Admin Audit Role",
+  "adminAuditSearchHint": "Admin Audit Search Hint",
+  "adminAuditSubtitle": "Admin Audit Subtitle",
+  "adminAuditTimestamp": "Admin Audit Timestamp",
+  "adminAuditTitle": "Admin Audit Title",
+  "adminAuditToday": "Admin Audit Today",
+  "adminAuditUpdateRecord": "Admin Audit Update Record",
+  "adminAuditUser": "Admin Audit User",
+  "adminAuditViewDetails": "Admin Audit View Details",
+  "adminAuditYesterday": "Admin Audit Yesterday",
+  "adminCommActionDelete": "Admin Comm Action Delete",
+  "adminCommActionDuplicate": "Admin Comm Action Duplicate",
+  "adminCommActionSchedule": "Admin Comm Action Schedule",
+  "adminCommActionSendNow": "Admin Comm Action Send Now",
+  "adminCommActionViewDetails": "Admin Comm Action View Details",
+  "adminCommCampaignDeleted": "Admin Comm Campaign Deleted",
+  "adminCommCampaignScheduledFor": "Admin Comm Campaign Scheduled For: {date}",
+  "adminCommCampaignTitleHint": "Admin Comm Campaign Title Hint",
+  "adminCommCampaignTitleLabel": "Admin Comm Campaign Title Label",
+  "adminCommCancel": "Admin Comm Cancel",
+  "adminCommClose": "Admin Comm Close",
+  "adminCommConfirm": "Admin Comm Confirm",
+  "adminCommCreateCampaign": "Admin Comm Create Campaign",
+  "adminCommCreateCampaignDialogTitle": "Admin Comm Create Campaign Dialog Title",
+  "adminCommDeleteCampaignMessage": "Admin Comm Delete Campaign Message: {campaign}",
+  "adminCommDeleteCampaignTitle": "Admin Comm Delete Campaign Title",
+  "adminCommDetailCreated": "Admin Comm Detail Created",
+  "adminCommDetailDelivered": "Admin Comm Detail Delivered",
+  "adminCommDetailMessage": "Admin Comm Detail Message",
+  "adminCommDetailOpened": "Admin Comm Detail Opened",
+  "adminCommDetailRecipients": "Admin Comm Detail Recipients",
+  "adminCommDetailScheduled": "Admin Comm Detail Scheduled",
+  "adminCommDetailSent": "Admin Comm Detail Sent",
+  "adminCommDetailStatus": "Admin Comm Detail Status",
+  "adminCommDetailType": "Admin Comm Detail Type",
+  "adminCommDuplicateCampaignDialogTitle": "Admin Comm Duplicate Campaign Dialog Title",
+  "adminCommEmptySubtitle": "Admin Comm Empty Subtitle",
+  "adminCommEmptyTitle": "Admin Comm Empty Title",
+  "adminCommErrorTitle": "Admin Comm Error Title",
+  "adminCommNewCampaign": "Admin Comm New Campaign",
+  "adminCommNoMessageContent": "Admin Comm No Message Content",
+  "adminCommRefresh": "Admin Comm Refresh",
+  "adminCommRetry": "Admin Comm Retry",
+  "adminCommScheduleCampaignTitle": "Admin Comm Schedule Campaign Title",
+  "adminCommSearchHint": "Admin Comm Search Hint",
+  "adminCommSendCampaignMessage": "Admin Comm Send Campaign Message: {campaign}",
+  "adminCommSendCampaignTitle": "Admin Comm Send Campaign Title",
+  "adminCommSendingCampaign": "Admin Comm Sending Campaign",
+  "adminCommStatAllCampaigns": "Admin Comm Stat All Campaigns",
+  "adminCommStatDraft": "Admin Comm Stat Draft",
+  "adminCommStatNotSentYet": "Admin Comm Stat Not Sent Yet",
+  "adminCommStatPendingDelivery": "Admin Comm Stat Pending Delivery",
+  "adminCommStatScheduled": "Admin Comm Stat Scheduled",
+  "adminCommStatSent": "Admin Comm Stat Sent",
+  "adminCommStatSuccessfullySent": "Admin Comm Stat Successfully Sent",
+  "adminCommStatTotalCampaigns": "Admin Comm Stat Total Campaigns",
+  "adminCommSubtitle": "Admin Comm Subtitle",
+  "adminCommTabAllCampaigns": "Admin Comm Tab All Campaigns",
+  "adminCommTabAnnouncements": "Admin Comm Tab Announcements",
+  "adminCommTabEmails": "Admin Comm Tab Emails",
+  "adminCommTabPushNotifications": "Admin Comm Tab Push Notifications",
+  "adminCommTitle": "Admin Comm Title",
+  "adminContentAdvanced": "Admin Content Advanced",
+  "adminContentAllCategories": "Admin Content All Categories",
+  "adminContentAllContentItems": "Admin Content All Content Items",
+  "adminContentAllStatus": "Admin Content All Status",
+  "adminContentAllStudents": "Admin Content All Students",
+  "adminContentArchive": "Admin Content Archive",
+  "adminContentArchiveContent": "Admin Content Archive Content",
+  "adminContentArchived": "Admin Content Archived",
+  "adminContentArchivedNotVisible": "Admin Content Archived Not Visible",
+  "adminContentArchivedSuccessfully": "Admin Content Archived Successfully",
+  "adminContentArts": "Admin Content Arts",
+  "adminContentAssign": "Admin Content Assign",
+  "adminContentAssignContent": "Admin Content Assign Content",
+  "adminContentAssignTo": "Admin Content Assign To",
+  "adminContentAuthorInstitution": "Admin Content Author Institution",
+  "adminContentBeginner": "Admin Content Beginner",
+  "adminContentBusiness": "Admin Content Business",
+  "adminContentCategory": "Admin Content Category",
+  "adminContentClearAll": "Admin Content Clear All",
+  "adminContentConfirmArchive": "Admin Content Confirm Archive: {title}",
+  "adminContentCreatedAsDraft": "Admin Content Created As Draft: {title}",
+  "adminContentDelete": "Admin Content Delete",
+  "adminContentDraft": "Admin Content Draft",
+  "adminContentEditContent": "Admin Content Edit Content",
+  "adminContentEducation": "Admin Content Education",
+  "adminContentExpert": "Admin Content Expert",
+  "adminContentFailedToArchive": "Admin Content Failed To Archive",
+  "adminContentFailedToCreate": "Admin Content Failed To Create",
+  "adminContentHybrid": "Admin Content Hybrid",
+  "adminContentInProgress": "Admin Content In Progress",
+  "adminContentInteractive": "Admin Content Interactive",
+  "adminContentIntermediate": "Admin Content Intermediate",
+  "adminContentLevelRequired": "Admin Content Level Required",
+  "adminContentLive": "Admin Content Live",
+  "adminContentLiveContent": "Admin Content Live Content",
+  "adminContentLiveSession": "Admin Content Live Session",
+  "adminContentMandatoryForUsers": "Admin Content Mandatory For Users",
+  "adminContentOptionalForUsers": "Admin Content Optional For Users",
+  "adminContentPendingApproval": "Admin Content Pending Approval",
+  "adminContentPreview": "Admin Content Preview",
+  "adminContentPublishUnpublish": "Admin Content Publish Unpublish",
+  "adminContentPublished": "Admin Content Published",
+  "adminContentRequired": "Admin Content Required",
+  "adminContentScience": "Admin Content Science",
+  "adminContentSearchByTitleAuthor": "Admin Content Search By Title Author",
+  "adminContentSearchInstitutions": "Admin Content Search Institutions",
+  "adminContentSearchStudents": "Admin Content Search Students",
+  "adminContentSelectedCount": "Admin Content Selected Count: {count}",
+  "adminContentSpecificInstitutions": "Admin Content Specific Institutions",
+  "adminContentSpecificStudents": "Admin Content Specific Students",
+  "adminContentStatus": "Admin Content Status",
+  "adminContentTechnology": "Admin Content Technology",
+  "adminContentText": "Admin Content Text",
+  "adminContentTextCourse": "Admin Content Text Course",
+  "adminContentTitle": "Admin Content Title",
+  "adminContentTotalContent": "Admin Content Total Content",
+  "adminContentType": "Admin Content Type",
+  "adminContentTypeRequired": "Admin Content Type Required",
+  "adminContentVideo": "Admin Content Video",
+  "adminContentVideoCourse": "Admin Content Video Course",
+  "adminCookiesAcceptAll": "Admin Cookies Accept All",
+  "adminCookiesCategoryAcceptanceRates": "Admin Cookies Category Acceptance Rates",
+  "adminCookiesConsentAnalyticsSubtitle": "Admin Cookies Consent Analytics Subtitle",
+  "adminCookiesConsentAnalyticsTitle": "Admin Cookies Consent Analytics Title",
+  "adminCookiesConsentRate": "Admin Cookies Consent Rate",
+  "adminCookiesConsentStatusDistribution": "Admin Cookies Consent Status Distribution",
+  "adminCookiesCustomized": "Admin Cookies Customized",
+  "adminCookiesDeclined": "Admin Cookies Declined",
+  "adminCookiesErrorLoadingStatistics": "Admin Cookies Error Loading Statistics: {error}",
+  "adminCookiesExportAllData": "Admin Cookies Export All Data",
+  "adminCookiesFilter": "Admin Cookies Filter",
+  "adminCookiesFilterAccepted": "Admin Cookies Filter Accepted",
+  "adminCookiesFilterAll": "Admin Cookies Filter All",
+  "adminCookiesNoRecentActivity": "Admin Cookies No Recent Activity",
+  "adminCookiesNotAsked": "Admin Cookies Not Asked",
+  "adminCookiesOverview": "Admin Cookies Overview",
+  "adminCookiesRecentConsentActivity": "Admin Cookies Recent Consent Activity",
+  "adminCookiesRefresh": "Admin Cookies Refresh",
+  "adminCookiesSearchByUserId": "Admin Cookies Search By User Id",
+  "adminCookiesTotalUsers": "Admin Cookies Total Users",
+  "adminCookiesUserCookieDataSubtitle": "Admin Cookies User Cookie Data Subtitle",
+  "adminCookiesUserCookieDataTitle": "Admin Cookies User Cookie Data Title",
+  "adminCookiesViewAll": "Admin Cookies View All",
+  "adminExportsErrorExportFailed": "Admin Exports Error Export Failed: {error}",
+  "adminExportsErrorFetchFailed": "Admin Exports Error Fetch Failed",
+  "adminExportsErrorNoData": "Admin Exports Error No Data",
+  "adminExportsExportData": "Admin Exports Export Data",
+  "adminExportsExporting": "Admin Exports Exporting",
+  "adminExportsFormatCsv": "Admin Exports Format Csv",
+  "adminExportsFormatCsvDesc": "Admin Exports Format Csv Desc",
+  "adminExportsFormatJson": "Admin Exports Format Json",
+  "adminExportsFormatJsonDesc": "Admin Exports Format Json Desc",
+  "adminExportsHistoryEmpty": "Admin Exports History Empty",
+  "adminExportsHistoryItemDetails": "{source} • {rows} rows • {format}",
+  "adminExportsHistoryTitle": "Admin Exports History Title",
+  "adminExportsSelectFormat": "Admin Exports Select Format",
+  "adminExportsSourceActivity": "Admin Exports Source Activity",
+  "adminExportsSourceActivityDesc": "Admin Exports Source Activity Desc",
+  "adminExportsSourceCampaigns": "Admin Exports Source Campaigns",
+  "adminExportsSourceCampaignsDesc": "Admin Exports Source Campaigns Desc",
+  "adminExportsSourceContent": "Admin Exports Source Content",
+  "adminExportsSourceContentDesc": "Admin Exports Source Content Desc",
+  "adminExportsSourceTickets": "Admin Exports Source Tickets",
+  "adminExportsSourceTicketsDesc": "Admin Exports Source Tickets Desc",
+  "adminExportsSourceTransactions": "Admin Exports Source Transactions",
+  "adminExportsSourceTransactionsDesc": "Admin Exports Source Transactions Desc",
+  "adminExportsSourceUsers": "Admin Exports Source Users",
+  "adminExportsSourceUsersDesc": "Admin Exports Source Users Desc",
+  "adminExportsSuccessMessage": "Exported {count} records to {fileName}",
+  "adminSharedAdminAccessRequired": "Admin Shared Admin Access Required",
+  "adminSharedAdminNavigationSidebar": "Admin Shared Admin Navigation Sidebar",
+  "adminSharedAdminToolbar": "Admin Shared Admin Toolbar",
+  "adminSharedCancel": "Admin Shared Cancel",
+  "adminSharedClear": "Admin Shared Clear",
+  "adminSharedFeatureUnderDevelopment": "Admin Shared Feature Under Development",
+  "adminSharedGoBack": "Admin Shared Go Back",
+  "adminSharedItemsSelected": "Admin Shared Items Selected: {count}",
+  "adminSharedMainContent": "Admin Shared Main Content",
+  "adminSharedNotifications": "Admin Shared Notifications",
+  "adminSharedPleaseSignInWithAdmin": "Admin Shared Please Sign In With Admin",
+  "adminSharedProfile": "Admin Shared Profile",
+  "adminSharedRefreshing": "Admin Shared Refreshing",
+  "adminSharedSettings": "Admin Shared Settings",
+  "adminSharedSignOut": "Admin Shared Sign Out",
+  "adminSharedSignOutConfirmation": "Admin Shared Sign Out Confirmation",
+  "adminSharedSwitchToDarkMode": "Admin Shared Switch To Dark Mode",
+  "adminSharedSwitchToLightMode": "Admin Shared Switch To Light Mode",
+  "adminSharedToggleDarkMode": "Admin Shared Toggle Dark Mode",
+  "adminSharedUserMenuFor": "Admin Shared User Menu For: {name}",
+  "adminSupportTicketAllCategories": "Admin Support Ticket All Categories",
+  "adminSupportTicketAllPriorities": "Admin Support Ticket All Priorities",
+  "adminSupportTicketAllStatus": "Admin Support Ticket All Status",
+  "adminSupportTicketAvgResolutionTime": "Admin Support Ticket Avg Resolution Time",
+  "adminSupportTicketAvgResponse": "Admin Support Ticket Avg Response",
+  "adminSupportTicketBeingHandled": "Admin Support Ticket Being Handled",
+  "adminSupportTicketCategoryAccount": "Admin Support Ticket Category Account",
+  "adminSupportTicketCategoryBilling": "Admin Support Ticket Category Billing",
+  "adminSupportTicketCategoryGeneral": "Admin Support Ticket Category General",
+  "adminSupportTicketCategoryLabel": "Admin Support Ticket Category Label",
+  "adminSupportTicketCategoryTechnical": "Admin Support Ticket Category Technical",
+  "adminSupportTicketColumnAssignedTo": "Admin Support Ticket Column Assigned To",
+  "adminSupportTicketColumnCategory": "Admin Support Ticket Column Category",
+  "adminSupportTicketColumnPriority": "Admin Support Ticket Column Priority",
+  "adminSupportTicketColumnStatus": "Admin Support Ticket Column Status",
+  "adminSupportTicketColumnSubject": "Admin Support Ticket Column Subject",
+  "adminSupportTicketColumnTicketId": "Admin Support Ticket Column Ticket Id",
+  "adminSupportTicketColumnUser": "Admin Support Ticket Column User",
+  "adminSupportTicketDaysAgo": "Admin Support Ticket Days Ago: {days}",
+  "adminSupportTicketHoursAgo": "Admin Support Ticket Hours Ago: {hours}",
+  "adminSupportTicketInProgress": "Admin Support Ticket In Progress",
+  "adminSupportTicketJustNow": "Admin Support Ticket Just Now",
+  "adminSupportTicketKnowledgeBase": "Admin Support Ticket Knowledge Base",
+  "adminSupportTicketLiveChat": "Admin Support Ticket Live Chat",
+  "adminSupportTicketMinutesAgo": "Admin Support Ticket Minutes Ago: {minutes}",
+  "adminSupportTicketOpenTickets": "Admin Support Ticket Open Tickets",
+  "adminSupportTicketPendingResolution": "Admin Support Ticket Pending Resolution",
+  "adminSupportTicketPriorityHigh": "Admin Support Ticket Priority High",
+  "adminSupportTicketPriorityLabel": "Admin Support Ticket Priority Label",
+  "adminSupportTicketPriorityLow": "Admin Support Ticket Priority Low",
+  "adminSupportTicketPriorityMedium": "Admin Support Ticket Priority Medium",
+  "adminSupportTicketPriorityUrgent": "Admin Support Ticket Priority Urgent",
+  "adminSupportTicketRefresh": "Admin Support Ticket Refresh",
+  "adminSupportTicketResolved": "Admin Support Ticket Resolved",
+  "adminSupportTicketRetry": "Admin Support Ticket Retry",
+  "adminSupportTicketSearchHint": "Search tickets by ID, subject, or customer...",
+  "adminSupportTicketStatusClosed": "Admin Support Ticket Status Closed",
+  "adminSupportTicketStatusInProgress": "Admin Support Ticket Status In Progress",
+  "adminSupportTicketStatusLabel": "Admin Support Ticket Status Label",
+  "adminSupportTicketStatusOpen": "Admin Support Ticket Status Open",
+  "adminSupportTicketStatusResolved": "Admin Support Ticket Status Resolved",
+  "adminSupportTicketSubtitle": "Admin Support Ticket Subtitle",
+  "adminSupportTicketTitle": "Admin Support Ticket Title",
+  "adminSupportTicketTotalResolved": "Admin Support Ticket Total Resolved",
+  "adminSystemApiBaseUrl": "Admin System Api Base Url",
+  "adminSystemApiBaseUrlDesc": "Admin System Api Base Url Desc",
+  "adminSystemApiKey": "Admin System Api Key",
+  "adminSystemApiRateLimiting": "Admin System Api Rate Limiting",
+  "adminSystemApiRateLimitingDesc": "Admin System Api Rate Limiting Desc",
+  "adminSystemApiSettingsSubtitle": "Admin System Api Settings Subtitle",
+  "adminSystemApiSettingsTitle": "Admin System Api Settings Title",
+  "adminSystemApiVersion": "Admin System Api Version",
+  "adminSystemApiVersionDesc": "Admin System Api Version Desc",
+  "adminSystemApplicationName": "Admin System Application Name",
+  "adminSystemApplicationNameDesc": "Admin System Application Name Desc",
+  "adminSystemApplicationSubmissions": "Admin System Application Submissions",
+  "adminSystemApplicationSubmissionsDesc": "Admin System Application Submissions Desc",
+  "adminSystemConsumerKey": "Admin System Consumer Key",
+  "adminSystemConsumerSecret": "Admin System Consumer Secret",
+  "adminSystemDefaultCurrency": "Admin System Default Currency",
+  "adminSystemDefaultCurrencyDesc": "Admin System Default Currency Desc",
+  "adminSystemDefaultLanguage": "Admin System Default Language",
+  "adminSystemDefaultLanguageDesc": "Admin System Default Language Desc",
+  "adminSystemDefaultRegion": "Admin System Default Region",
+  "adminSystemDefaultRegionDesc": "Admin System Default Region Desc",
+  "adminSystemDocumentUpload": "Admin System Document Upload",
+  "adminSystemDocumentUploadDesc": "Admin System Document Upload Desc",
+  "adminSystemEmailApiKeyDesc": "Admin System Email Api Key Desc",
+  "adminSystemEmailNotifications": "Admin System Email Notifications",
+  "adminSystemEmailNotificationsDesc": "Admin System Email Notifications Desc",
+  "adminSystemEmailService": "Admin System Email Service",
+  "adminSystemEmailServiceDesc": "Admin System Email Service Desc",
+  "adminSystemEmailSettingsSubtitle": "Admin System Email Settings Subtitle",
+  "adminSystemEmailSettingsTitle": "Admin System Email Settings Title",
+  "adminSystemEmailVerification": "Admin System Email Verification",
+  "adminSystemEmailVerificationDesc": "Admin System Email Verification Desc",
+  "adminSystemEnableCardPayments": "Admin System Enable Card Payments",
+  "adminSystemEnableCardPaymentsDesc": "Admin System Enable Card Payments Desc",
+  "adminSystemEnableMpesa": "Admin System Enable Mpesa",
+  "adminSystemEnableMpesaDesc": "Admin System Enable Mpesa Desc",
+  "adminSystemFeatureFlagsSubtitle": "Admin System Feature Flags Subtitle",
+  "adminSystemFeatureFlagsTitle": "Admin System Feature Flags Title",
+  "adminSystemFromEmail": "Admin System From Email",
+  "adminSystemFromEmailDesc": "Admin System From Email Desc",
+  "adminSystemFromName": "Admin System From Name",
+  "adminSystemFromNameDesc": "Admin System From Name Desc",
+  "adminSystemGeneralSettingsSubtitle": "Admin System General Settings Subtitle",
+  "adminSystemGeneralSettingsTitle": "Admin System General Settings Title",
+  "adminSystemGoogleAnalyticsId": "Admin System Google Analytics Id",
+  "adminSystemGoogleAnalyticsIdDesc": "Admin System Google Analytics Id Desc",
+  "adminSystemMpesaConsumerKeyDesc": "Admin System Mpesa Consumer Key Desc",
+  "adminSystemMpesaConsumerSecretDesc": "Admin System Mpesa Consumer Secret Desc",
+  "adminSystemMpesaShortcodeDesc": "Admin System Mpesa Shortcode Desc",
+  "adminSystemNavApiIntegrations": "Admin System Nav Api Integrations",
+  "adminSystemNavBackupRecovery": "Admin System Nav Backup Recovery",
+  "adminSystemNavEmailSettings": "Admin System Nav Email Settings",
+  "adminSystemNavFeatureFlags": "Admin System Nav Feature Flags",
+  "adminSystemNavGeneral": "Admin System Nav General",
+  "adminSystemNavPaymentGateways": "Admin System Nav Payment Gateways",
+  "adminSystemNavSecurity": "Admin System Nav Security",
+  "adminSystemNavSmsSettings": "Admin System Nav Sms Settings",
+  "adminSystemPaymentProcessing": "Admin System Payment Processing",
+  "adminSystemPaymentProcessingDesc": "Admin System Payment Processing Desc",
+  "adminSystemPaymentProcessor": "Admin System Payment Processor",
+  "adminSystemPaymentProcessorDesc": "Admin System Payment Processor Desc",
+  "adminSystemPaymentSettingsSubtitle": "Admin System Payment Settings Subtitle",
+  "adminSystemPaymentSettingsTitle": "Admin System Payment Settings Title",
+  "adminSystemPublishableKey": "Admin System Publishable Key",
+  "adminSystemPublishableKeyDesc": "Admin System Publishable Key Desc",
+  "adminSystemPushNotifications": "Admin System Push Notifications",
+  "adminSystemPushNotificationsDesc": "Admin System Push Notifications Desc",
+  "adminSystemRecommendations": "Admin System Recommendations",
+  "adminSystemRecommendationsDesc": "Admin System Recommendations Desc",
+  "adminSystemSecretKey": "Admin System Secret Key",
+  "adminSystemSecretKeyDesc": "Admin System Secret Key Desc",
+  "adminSystemSectionApiConfiguration": "Admin System Section Api Configuration",
+  "adminSystemSectionApplication": "Admin System Section Application",
+  "adminSystemSectionApplicationFeatures": "Admin System Section Application Features",
+  "adminSystemSectionCardPayments": "Admin System Section Card Payments",
+  "adminSystemSectionCommunication": "Admin System Section Communication",
+  "adminSystemSectionEmailProvider": "Admin System Section Email Provider",
+  "adminSystemSectionMpesa": "Admin System Section Mpesa",
+  "adminSystemSectionRegional": "Admin System Section Regional",
+  "adminSystemSectionSmsProvider": "Admin System Section Sms Provider",
+  "adminSystemSectionThirdPartyServices": "Admin System Section Third Party Services",
+  "adminSystemSectionUserFeatures": "Admin System Section User Features",
+  "adminSystemSentryDsn": "Admin System Sentry Dsn",
+  "adminSystemSentryDsnDesc": "Admin System Sentry Dsn Desc",
+  "adminSystemSettingsSavedError": "Admin System Settings Saved Error",
+  "adminSystemSettingsSavedSuccess": "Admin System Settings Saved Success",
+  "adminSystemSettingsSubtitle": "Admin System Settings Subtitle",
+  "adminSystemSettingsTitle": "Admin System Settings Title",
+  "adminSystemShortcode": "Admin System Shortcode",
+  "adminSystemSmsApiKeyDesc": "Admin System Sms Api Key Desc",
+  "adminSystemSmsNotifications": "Admin System Sms Notifications",
+  "adminSystemSmsNotificationsDesc": "Admin System Sms Notifications Desc",
+  "adminSystemSmsSenderId": "Admin System Sms Sender Id",
+  "adminSystemSmsSenderIdDesc": "Admin System Sms Sender Id Desc",
+  "adminSystemSmsService": "Admin System Sms Service",
+  "adminSystemSmsServiceDesc": "Admin System Sms Service Desc",
+  "adminSystemSmsSettingsSubtitle": "Admin System Sms Settings Subtitle",
+  "adminSystemSmsSettingsTitle": "Admin System Sms Settings Title",
+  "adminSystemSocialLogin": "Admin System Social Login",
+  "adminSystemSocialLoginDesc": "Admin System Social Login Desc",
+  "adminSystemSupportEmail": "Admin System Support Email",
+  "adminSystemSupportEmailDesc": "Admin System Support Email Desc",
+  "adminSystemSupportPhone": "Admin System Support Phone",
+  "adminSystemSupportPhoneDesc": "Admin System Support Phone Desc",
+  "adminSystemUnsavedChanges": "Admin System Unsaved Changes",
+  "adminSystemUserRegistration": "Admin System User Registration",
+  "adminSystemUserRegistrationDesc": "Admin System User Registration Desc",
+  "adminSystemViewAuditLogs": "Admin System View Audit Logs",
+  "adminUserDetailActivate": "Admin User Detail Activate",
+  "adminUserDetailApplications": "Admin User Detail Applications",
+  "adminUserDetailBackToStudents": "Admin User Detail Back To Students",
+  "adminUserDetailCoursesEnrolled": "Admin User Detail Courses Enrolled",
+  "adminUserDetailDeleteAccount": "Admin User Detail Delete Account",
+  "adminUserDetailEditProfile": "Admin User Detail Edit Profile",
+  "adminUserDetailGrade": "Admin User Detail Grade",
+  "adminUserDetailGradePrefix": "Admin User Detail Grade Prefix",
+  "adminUserDetailMessageComingSoon": "Admin User Detail Message Coming Soon",
+  "adminUserDetailOverallProgress": "Admin User Detail Overall Progress",
+  "adminUserDetailSendMessage": "Admin User Detail Send Message",
+  "adminUserDetailStatusActive": "Admin User Detail Status Active",
+  "adminUserDetailStatusInactive": "Admin User Detail Status Inactive",
+  "adminUserDetailStudentDetails": "Admin User Detail Student Details",
+  "adminUserDetailStudentId": "Admin User Detail Student Id",
+  "adminUserDetailSuspend": "Admin User Detail Suspend",
+  "adminUserDetailTabAcademic": "Admin User Detail Tab Academic",
+  "adminUserDetailTabActivity": "Admin User Detail Tab Activity",
+  "adminUserDetailTabApplications": "Admin User Detail Tab Applications",
+  "adminUserDetailTabDocuments": "Admin User Detail Tab Documents",
+  "adminUserDetailTabOverview": "Admin User Detail Tab Overview",
+  "adminUserDetailTabPayments": "Admin User Detail Tab Payments",
+  "adminUserDetailUnknownStudent": "Admin User Detail Unknown Student",
+  "adminUserFormAcademicInformation": "Admin User Form Academic Information",
+  "adminUserFormAddNewStudent": "Admin User Form Add New Student",
+  "adminUserFormBackToStudents": "Admin User Form Back To Students",
+  "adminUserFormCreateStudentAccount": "Admin User Form Create Student Account",
+  "adminUserFormDateFormat": "Admin User Form Date Format",
+  "adminUserFormDateOfBirth": "Admin User Form Date Of Birth",
+  "adminUserFormEditStudent": "Admin User Form Edit Student",
+  "adminUserFormEmail": "Admin User Form Email",
+  "adminUserFormEmailInvalid": "Admin User Form Email Invalid",
+  "adminUserFormEmailRequired": "Admin User Form Email Required",
+  "adminUserFormFirstName": "Admin User Form First Name",
+  "adminUserFormFirstNameRequired": "Admin User Form First Name Required",
+  "adminUserFormGender": "Admin User Form Gender",
+  "adminUserFormGenderFemale": "Admin User Form Gender Female",
+  "adminUserFormGenderMale": "Admin User Form Gender Male",
+  "adminUserFormGenderOther": "Admin User Form Gender Other",
+  "adminUserFormGenderPreferNotToSay": "Admin User Form Gender Prefer Not To Say",
+  "adminUserFormGrade": "Admin User Form Grade",
+  "adminUserFormGrade10": "Admin User Form Grade10",
+  "adminUserFormGrade11": "Admin User Form Grade11",
+  "adminUserFormGrade12": "Admin User Form Grade12",
+  "adminUserFormGrade9": "Admin User Form Grade9",
+  "adminUserFormLastName": "Admin User Form Last Name",
+  "adminUserFormLastNameRequired": "Admin User Form Last Name Required",
+  "adminUserFormPersonalInformation": "Admin User Form Personal Information",
+  "adminUserFormPhone": "Admin User Form Phone",
+  "adminUserFormStatus": "Admin User Form Status",
+  "adminUserFormStatusActive": "Admin User Form Status Active",
+  "adminUserFormStatusInactive": "Admin User Form Status Inactive",
+  "adminUserFormStatusPendingVerification": "Admin User Form Status Pending Verification",
+  "adminUserFormStatusSuspended": "Admin User Form Status Suspended",
+  "adminUserFormStudentCreatedSuccess": "Admin User Form Student Created Success",
+  "adminUserFormStudentUpdatedSuccess": "Admin User Form Student Updated Success",
+  "adminUserFormUpdateStudentInfo": "Admin User Form Update Student Info",
+  "adminUsersListActivate": "Admin Users List Activate",
+  "adminUsersListActivateStudentsConfirm": "Admin Users List Activate Students Confirm: {count}",
+  "adminUsersListActivateStudentsTitle": "Admin Users List Activate Students Title",
+  "adminUsersListAddInstitution": "Admin Users List Add Institution",
+  "adminUsersListAddStudent": "Admin Users List Add Student",
+  "adminUsersListAllGrades": "Admin Users List All Grades",
+  "adminUsersListAllStatus": "Admin Users List All Status",
+  "adminUsersListAllTypes": "Admin Users List All Types",
+  "adminUsersListApprove": "Admin Users List Approve",
+  "adminUsersListApproveInstitutionsConfirm": "Admin Users List Approve Institutions Confirm: {count}",
+  "adminUsersListApproveInstitutionsTitle": "Admin Users List Approve Institutions Title",
+  "adminUsersListCancel": "Admin Users List Cancel",
+  "adminUsersListColumnApplications": "Admin Users List Column Applications",
+  "adminUsersListColumnGrade": "Admin Users List Column Grade",
+  "adminUsersListColumnInstitution": "Admin Users List Column Institution",
+  "adminUsersListColumnInstitutionId": "Admin Users List Column Institution Id",
+  "adminUsersListColumnJoined": "Admin Users List Column Joined",
+  "adminUsersListColumnLocation": "Admin Users List Column Location",
+  "adminUsersListColumnPrograms": "Admin Users List Column Programs",
+  "adminUsersListColumnSchool": "Admin Users List Column School",
+  "adminUsersListColumnStatus": "Admin Users List Column Status",
+  "adminUsersListColumnStudent": "Admin Users List Column Student",
+  "adminUsersListColumnStudentId": "Admin Users List Column Student Id",
+  "adminUsersListColumnType": "Admin Users List Column Type",
+  "adminUsersListDeactivate": "Admin Users List Deactivate",
+  "adminUsersListDeactivateAccount": "Admin Users List Deactivate Account",
+  "adminUsersListDeactivateInstitutionsConfirm": "Admin Users List Deactivate Institutions Confirm: {count}",
+  "adminUsersListDeactivateInstitutionsTitle": "Admin Users List Deactivate Institutions Title",
+  "adminUsersListDeactivateStudentsConfirm": "Admin Users List Deactivate Students Confirm: {count}",
+  "adminUsersListDeactivateStudentsTitle": "Admin Users List Deactivate Students Title",
+  "adminUsersListEditInstitution": "Admin Users List Edit Institution",
+  "adminUsersListEditStudent": "Admin Users List Edit Student",
+  "adminUsersListExport": "Admin Users List Export",
+  "adminUsersListExportInstitutions": "Admin Users List Export Institutions",
+  "adminUsersListExportStudents": "Admin Users List Export Students",
+  "adminUsersListGrade10": "Admin Users List Grade10",
+  "adminUsersListGrade11": "Admin Users List Grade11",
+  "adminUsersListGrade12": "Admin Users List Grade12",
+  "adminUsersListGrade9": "Admin Users List Grade9",
+  "adminUsersListGradeLabel": "Admin Users List Grade Label",
+  "adminUsersListInstitutionsSubtitle": "Admin Users List Institutions Subtitle",
+  "adminUsersListInstitutionsTitle": "Admin Users List Institutions Title",
+  "adminUsersListSearchInstitutionsHint": "Admin Users List Search Institutions Hint",
+  "adminUsersListSearchStudentsHint": "Admin Users List Search Students Hint",
+  "adminUsersListStatusActive": "Admin Users List Status Active",
+  "adminUsersListStatusInactive": "Admin Users List Status Inactive",
+  "adminUsersListStatusLabel": "Admin Users List Status Label",
+  "adminUsersListStatusPending": "Admin Users List Status Pending",
+  "adminUsersListStatusPendingApproval": "Admin Users List Status Pending Approval",
+  "adminUsersListStatusPendingVerification": "Admin Users List Status Pending Verification",
+  "adminUsersListStatusRejected": "Admin Users List Status Rejected",
+  "adminUsersListStudentsSubtitle": "Admin Users List Students Subtitle",
+  "adminUsersListStudentsTitle": "Admin Users List Students Title",
+  "adminUsersListTypeCollege": "Admin Users List Type College",
+  "adminUsersListTypeLabel": "Admin Users List Type Label",
+  "adminUsersListTypeLanguageSchool": "Admin Users List Type Language School",
+  "adminUsersListTypeUniversity": "Admin Users List Type University",
+  "adminUsersListTypeVocational": "Admin Users List Type Vocational",
+  "adminUsersListViewDetails": "Admin Users List View Details",
+  "instCourseAdd": "Inst Course Add",
+  "instCourseAddLearningObjective": "Inst Course Add Learning Objective",
+  "instCourseAddModuleSubtitle": "Inst Course Add Module Subtitle",
+  "instCourseClose": "Inst Course Close",
+  "instCourseCopyToClipboard": "Inst Course Copy To Clipboard",
+  "instCourseCreateModule": "Inst Course Create Module",
+  "instCourseCreateNewModule": "Inst Course Create New Module",
+  "instCourseCtrlPToPreview": "Inst Course Ctrl P To Preview",
+  "instCourseCtrlSToSave": "Inst Course Ctrl S To Save",
+  "instCourseDesktop": "Inst Course Desktop",
+  "instCourseDiscardChanges": "Inst Course Discard Changes",
+  "instCourseEdit": "Inst Course Edit",
+  "instCourseEditLearningObjective": "Inst Course Edit Learning Objective",
+  "instCourseEstimatedDuration": "Inst Course Estimated Duration",
+  "instCourseEstimatedDurationHelper": "Inst Course Estimated Duration Helper",
+  "instCourseExportInfo": "Inst Course Export Info",
+  "instCourseExportQuestions": "Inst Course Export Questions",
+  "instCourseFixIssuesBeforeSaving": "Inst Course Fix Issues Before Saving",
+  "instCourseImport": "Inst Course Import",
+  "instCourseImportFailed": "Inst Course Import Failed",
+  "instCourseImportInfo": "Inst Course Import Info",
+  "instCourseImportQuestions": "Inst Course Import Questions",
+  "instCourseImportSuccess": "Inst Course Import Success",
+  "instCourseJsonCopied": "Inst Course Json Copied",
+  "instCourseJsonData": "Inst Course Json Data",
+  "instCourseLearningObjectivesInfo": "Inst Course Learning Objectives Info",
+  "instCourseMandatory": "Inst Course Mandatory",
+  "instCourseMinutesShort": "Inst Course Minutes Short: {minutes}",
+  "instCourseMobile": "Inst Course Mobile",
+  "instCourseModuleDescription": "Inst Course Module Description",
+  "instCourseModuleDescriptionHelper": "Inst Course Module Description Helper",
+  "instCourseModuleDescriptionHint": "Inst Course Module Description Hint",
+  "instCourseModuleHiddenFromStudents": "Inst Course Module Hidden From Students",
+  "instCourseModuleNumber": "Inst Course Module Number: {number}",
+  "instCourseModuleOptional": "Inst Course Module Optional",
+  "instCourseModuleOverview": "Inst Course Module Overview",
+  "instCourseModuleTitle": "Inst Course Module Title",
+  "instCourseModuleTitleHelper": "Inst Course Module Title Helper",
+  "instCourseModuleTitleHint": "Inst Course Module Title Hint",
+  "instCourseModuleTitleMinLength": "Inst Course Module Title Min Length",
+  "instCourseModuleTitleRequired": "Inst Course Module Title Required",
+  "instCourseModuleVisibleToStudents": "Inst Course Module Visible To Students",
+  "instCourseNoObjectivesSubtitle": "Inst Course No Objectives Subtitle",
+  "instCourseNoObjectivesYet": "Inst Course No Objectives Yet",
+  "instCourseNoOtherModulesAvailable": "Inst Course No Other Modules Available",
+  "instCourseObjective": "Inst Course Objective",
+  "instCourseObjectiveHint": "Inst Course Objective Hint",
+  "instCourseObjectivesCount": "Inst Course Objectives Count: {count}",
+  "instCourseOk": "Inst Course Ok",
+  "instCoursePasteJsonHere": "Inst Course Paste Json Here",
+  "instCoursePrerequisitesDescription": "Inst Course Prerequisites Description",
+  "instCoursePreview": "Inst Course Preview",
+  "instCoursePublished": "Inst Course Published",
+  "instCoursePublishingSettings": "Inst Course Publishing Settings",
+  "instCourseSaveAsDraft": "Inst Course Save As Draft",
+  "instCourseSaved": "Inst Course Saved",
+  "instCourseSettings": "Inst Course Settings",
+  "instCourseStay": "Inst Course Stay",
+  "instCourseStudentPreview": "Inst Course Student Preview",
+  "instCourseStudentsMustComplete": "Inst Course Students Must Complete",
+  "instCourseTablet": "Inst Course Tablet",
+  "instCourseUnsavedChanges": "Inst Course Unsaved Changes",
+  "instCourseUnsavedChangesMessage": "Inst Course Unsaved Changes Message",
+  "instCourseUpdate": "Inst Course Update",
+  "instCourseUpdateModule": "Inst Course Update Module",
+  "instCourseUpdateModuleSubtitle": "Inst Course Update Module Subtitle",
+  "instCourseValidationErrors": "Inst Course Validation Errors",
+  "instCoursesDescription": "Inst Courses Description",
+  "instCoursesEditCourse": "Inst Courses Edit Course",
+  "instCoursesEnrolledCount": "Inst Courses Enrolled Count: {count}",
+  "instCoursesLearningOutcomes": "Inst Courses Learning Outcomes",
+  "instCoursesPrerequisites": "Inst Courses Prerequisites",
+  "instCoursesPublished": "Inst Courses Published",
+  "instCoursesQuickActions": "Inst Courses Quick Actions",
+  "instCoursesStatistics": "Inst Courses Statistics",
+  "instDebugAuthInfo": "Inst Debug Auth Info",
+  "instDebugError": "Inst Debug Error",
+  "instDebugRetry": "Inst Debug Retry",
+  "instDebugRunningDiagnostics": "Inst Debug Running Diagnostics",
+  "instDebugTitle": "Inst Debug Title",
+  "instDebugUserStatus": "Inst Debug User Status",
+  "sharedCookiesDataExportedRecords": "Shared Cookies Data Exported Records: {count}",
+  "sharedCookiesErrorLoadingConsent": "Shared Cookies Error Loading Consent: {error}",
+  "sharedCookiesExpires": "Shared Cookies Expires: {date}",
+  "sharedCookiesUpdated": "Shared Cookies Updated: {date}",
+  "sharedDocumentsBack": "Shared Documents Back",
+  "sharedDocumentsCancel": "Shared Documents Cancel",
+  "sharedDocumentsCategory": "Shared Documents Category",
+  "sharedDocumentsDelete": "Shared Documents Delete",
+  "sharedDocumentsDeleteDocumentConfirm": "Shared Documents Delete Document Confirm: {name}",
+  "sharedDocumentsDeleteDocumentTitle": "Shared Documents Delete Document Title",
+  "sharedDocumentsDescription": "Shared Documents Description",
+  "sharedDocumentsDocumentDeleted": "Shared Documents Document Deleted",
+  "sharedDocumentsDocumentInfo": "Shared Documents Document Info",
+  "sharedDocumentsDocumentInformation": "Shared Documents Document Information",
+  "sharedDocumentsDownload": "Shared Documents Download",
+  "sharedDocumentsDownloadFile": "Shared Documents Download File",
+  "sharedDocumentsDownloading": "Shared Documents Downloading: {filename}",
+  "sharedDocumentsName": "Shared Documents Name",
+  "sharedDocumentsPending": "Shared Documents Pending",
+  "sharedDocumentsPreviewNotAvailable": "Shared Documents Preview Not Available",
+  "sharedDocumentsPreviewNotAvailableSubtitle": "Shared Documents Preview Not Available Subtitle: {type}",
+  "sharedDocumentsShare": "Shared Documents Share",
+  "sharedDocumentsShareComingSoon": "Shared Documents Share Coming Soon",
+  "sharedDocumentsSize": "Shared Documents Size",
+  "sharedDocumentsType": "Shared Documents Type",
+  "sharedDocumentsUnknown": "Shared Documents Unknown",
+  "sharedDocumentsUploadDate": "Shared Documents Upload Date",
+  "sharedDocumentsUploadedBy": "Shared Documents Uploaded By",
+  "sharedDocumentsVerificationStatus": "Shared Documents Verification Status",
+  "sharedDocumentsVerified": "Shared Documents Verified",
+  "sharedExamsAnsweredCount": "Shared Exams Answered Count: {count}",
+  "sharedExamsNext": "Shared Exams Next",
+  "sharedExamsPrevious": "Shared Exams Previous",
+  "sharedExamsQuestionProgress": "Question {current} of {total}",
+  "sharedExamsSubmit": "Shared Exams Submit",
+  "sharedExamsSubmitting": "Shared Exams Submitting",
+  "sharedFocusBreakCompleteReadyToFocus": "Shared Focus Break Complete Ready To Focus",
+  "sharedFocusFinish": "Shared Focus Finish",
+  "sharedFocusGreatWorkTimeForBreak": "Shared Focus Great Work Time For Break",
+  "sharedFocusPomodorosToday": "Shared Focus Pomodoros Today",
+  "sharedFocusSessionComplete": "Shared Focus Session Complete",
+  "sharedFocusStartBreak": "Shared Focus Start Break",
+  "sharedFocusStartFocus": "Shared Focus Start Focus",
+  "sharedFocusTimerTitle": "Shared Focus Timer Title",
+  "sharedHelpArticleCount": "Shared Help Article Count: {count}",
+  "sharedHelpDaysAgo": "Shared Help Days Ago: {days}",
+  "sharedHelpMonthApr": "Shared Help Month Apr",
+  "sharedHelpMonthAug": "Shared Help Month Aug",
+  "sharedHelpMonthDec": "Shared Help Month Dec",
+  "sharedHelpMonthFeb": "Shared Help Month Feb",
+  "sharedHelpMonthJan": "Shared Help Month Jan",
+  "sharedHelpMonthJul": "Shared Help Month Jul",
+  "sharedHelpMonthJun": "Shared Help Month Jun",
+  "sharedHelpMonthMar": "Shared Help Month Mar",
+  "sharedHelpMonthMay": "Shared Help Month May",
+  "sharedHelpMonthNov": "Shared Help Month Nov",
+  "sharedHelpMonthOct": "Shared Help Month Oct",
+  "sharedHelpMonthSep": "Shared Help Month Sep",
+  "sharedHelpSearchingFor": "Shared Help Searching For: {query}",
+  "sharedHelpToday": "Shared Help Today",
+  "sharedHelpViewCount": "Shared Help View Count: {count}",
+  "sharedHelpYesterday": "Shared Help Yesterday",
+  "sharedMessagingChat": "Shared Messaging Chat",
+  "sharedMessagingConnecting": "Shared Messaging Connecting",
+  "sharedMessagingFailedToSend": "Shared Messaging Failed To Send",
+  "sharedMessagingLoadingMessages": "Shared Messaging Loading Messages",
+  "sharedMessagingNoMessagesYet": "Shared Messaging No Messages Yet",
+  "sharedMessagingRetry": "Shared Messaging Retry",
+  "sharedMessagingStartConversation": "Shared Messaging Start Conversation",
+  "sharedMessagingTypeMessage": "Shared Messaging Type Message",
+  "sharedMessagingTyping": "Shared Messaging Typing",
+  "sharedMessagingTypingMultiple": "Shared Messaging Typing Multiple",
+  "sharedNotesCancel": "Shared Notes Cancel",
+  "sharedNotesDiscard": "Shared Notes Discard",
+  "sharedNotesPleaseEnterTitle": "Shared Notes Please Enter Title",
+  "sharedNotesUnsavedChangesMessage": "Shared Notes Unsaved Changes Message",
+  "sharedNotesUnsavedChangesTitle": "Shared Notes Unsaved Changes Title",
+  "sharedNotificationsMarkAllRead": "Shared Notifications Mark All Read",
+  "sharedNotificationsTitle": "Shared Notifications Title",
+  "sharedPaymentsPaymentSuccessfulTitle": "Shared Payments Payment Successful Title",
+  "sharedProfileRetry": "Shared Profile Retry",
+  "sharedQuizzesAnswered": "Shared Quizzes Answered",
+  "sharedQuizzesCancel": "Shared Quizzes Cancel",
+  "sharedQuizzesCurrent": "Shared Quizzes Current",
+  "sharedQuizzesExit": "Shared Quizzes Exit",
+  "sharedQuizzesExitQuizMessage": "Shared Quizzes Exit Quiz Message",
+  "sharedQuizzesExitQuizTitle": "Shared Quizzes Exit Quiz Title",
+  "sharedQuizzesNext": "Shared Quizzes Next",
+  "sharedQuizzesOk": "Shared Quizzes Ok",
+  "sharedQuizzesPrevious": "Shared Quizzes Previous",
+  "sharedQuizzesQuestionNavigator": "Shared Quizzes Question Navigator",
+  "sharedQuizzesReview": "Shared Quizzes Review",
+  "sharedQuizzesSubmit": "Shared Quizzes Submit",
+  "sharedQuizzesSubmitAnyway": "Shared Quizzes Submit Anyway",
+  "sharedQuizzesSubmitQuiz": "Shared Quizzes Submit Quiz",
+  "sharedQuizzesSubmitQuizMessage": "Shared Quizzes Submit Quiz Message",
+  "sharedQuizzesSubmitQuizTitle": "Shared Quizzes Submit Quiz Title",
+  "sharedQuizzesTimeExpiredMessage": "Shared Quizzes Time Expired Message",
+  "sharedQuizzesTimesUp": "Shared Quizzes Times Up",
+  "sharedQuizzesUnanswered": "Shared Quizzes Unanswered",
+  "sharedQuizzesUnansweredQuestionsMessage": "Shared Quizzes Unanswered Questions Message: {count}",
+  "sharedQuizzesUnansweredQuestionsTitle": "Shared Quizzes Unanswered Questions Title",
+  "sharedResourcesAddedToBookmarks": "Shared Resources Added To Bookmarks",
+  "sharedResourcesAudioControlsComingSoon": "Shared Resources Audio Controls Coming Soon",
+  "sharedResourcesAudioControlsFeature": "Shared Resources Audio Controls Feature",
+  "sharedResourcesAudioPlaybackComingSoon": "Shared Resources Audio Playback Coming Soon",
+  "sharedResourcesAudioPlayerFeature": "Shared Resources Audio Player Feature",
+  "sharedResourcesBookmarkTooltip": "Shared Resources Bookmark Tooltip",
+  "sharedResourcesCheckConnectionMessage": "Shared Resources Check Connection Message",
+  "sharedResourcesDownloadCompleted": "Shared Resources Download Completed",
+  "sharedResourcesDownloadToView": "Shared Resources Download To View",
+  "sharedResourcesDownloadTooltip": "Shared Resources Download Tooltip",
+  "sharedResourcesFailedToLoadImage": "Shared Resources Failed To Load Image",
+  "sharedResourcesFailedToLoadResource": "Shared Resources Failed To Load Resource",
+  "sharedResourcesFileTypeRequiresViewer": "Shared Resources File Type Requires Viewer",
+  "sharedResourcesOpeningUrl": "Shared Resources Opening Url: {url}",
+  "sharedResourcesPdfViewerMessage": "Shared Resources Pdf Viewer Message",
+  "sharedResourcesPdfViewerTitle": "Shared Resources Pdf Viewer Title",
+  "sharedResourcesRemovedFromBookmarks": "Shared Resources Removed From Bookmarks",
+  "sharedResourcesRetry": "Shared Resources Retry",
+  "sharedResourcesShareComingSoon": "Shared Resources Share Coming Soon",
+  "sharedResourcesShareTooltip": "Shared Resources Share Tooltip",
+  "sharedResourcesVideoPlaybackComingSoon": "Shared Resources Video Playback Coming Soon",
+  "sharedResourcesVideoPlayerMessage": "Shared Resources Video Player Message",
+  "sharedResourcesVideoPlayerTitle": "Shared Resources Video Player Title",
+  "sharedScheduleCalendar": "Shared Schedule Calendar",
+  "sharedScheduleFilter": "Shared Schedule Filter",
+  "sharedScheduleToday": "Shared Schedule Today",
+  "sharedTasksCourseLabel": "Shared Tasks Course Label",
+  "sharedTasksDeleteTooltip": "Shared Tasks Delete Tooltip",
+  "sharedTasksDescriptionLabel": "Shared Tasks Description Label",
+  "sharedTasksDetailsTitle": "Shared Tasks Details Title",
+  "sharedTasksDueDateLabel": "Shared Tasks Due Date Label",
+  "sharedTasksEditTooltip": "Shared Tasks Edit Tooltip",
+  "sharedTasksFavoriteTooltip": "Shared Tasks Favorite Tooltip",
+  "sharedTasksOverdueWarning": "Shared Tasks Overdue Warning",
+  "studentAppsFailedToPrepare": "Student Apps Failed To Prepare: {error}",
+  "studentAppsUploadingDocuments": "Student Apps Uploading Documents",
+  "studentCoursesCompletedOn": "Student Courses Completed On: {date}",
+  "studentCoursesError": "Student Courses Error: {error}",
+  "studentCoursesFailedToLoadDetails": "Student Courses Failed To Load Details",
+  "@studentAppsFailedToPrepare": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@studentCoursesCompletedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@studentCoursesError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@instCoursesEnrolledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminUsersListActivateStudentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminUsersListDeactivateStudentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminUsersListApproveInstitutionsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminUsersListDeactivateInstitutionsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminContentCreatedAsDraft": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminContentConfirmArchive": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminContentSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminCommSendCampaignMessage": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+    "@adminSharedItemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminSharedUserMenuFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedHelpSearchingFor": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedHelpArticleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sharedHelpViewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sharedHelpDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@instCourseObjectivesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@instCourseMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@instCourseModuleNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminCommDeleteCampaignMessage": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminCommCampaignScheduledFor": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminCookiesErrorLoadingStatistics": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminExportsSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminExportsErrorExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminExportsHistoryItemDetails": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "rows": {
+        "type": "String"
+      },
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "@adminSupportTicketDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminSupportTicketHoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "@adminSupportTicketMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@sharedCookiesErrorLoadingConsent": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedCookiesUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedCookiesExpires": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedCookiesDataExportedRecords": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedDocumentsDownloading": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedDocumentsPreviewNotAvailableSubtitle": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedDocumentsDeleteDocumentConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedResourcesOpeningUrl": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "@sharedExamsQuestionProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@sharedExamsAnsweredCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@sharedQuizzesUnansweredQuestionsMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

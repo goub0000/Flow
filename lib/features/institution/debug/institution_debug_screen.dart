@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../../authentication/providers/auth_provider.dart';
 import '../../shared/widgets/custom_card.dart';
 import '../../shared/widgets/loading_indicator.dart';
@@ -117,11 +118,11 @@ class _InstitutionDebugScreenState extends ConsumerState<InstitutionDebugScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Institution Debug Panel'),
+        title: Text(context.l10n.instDebugTitle),
         backgroundColor: AppColors.primary,
       ),
       body: _isLoading
-          ? const LoadingIndicator(message: 'Running diagnostics...')
+          ? LoadingIndicator(message: context.l10n.instDebugRunningDiagnostics)
           : _error != null
               ? Center(
                   child: Column(
@@ -132,7 +133,7 @@ class _InstitutionDebugScreenState extends ConsumerState<InstitutionDebugScreen>
                              color: Colors.red),
                       const SizedBox(height: 16),
                       Text(
-                        'Debug Error',
+                        context.l10n.instDebugError,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
@@ -147,7 +148,7 @@ class _InstitutionDebugScreenState extends ConsumerState<InstitutionDebugScreen>
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: _runDebugCheck,
-                        child: const Text('Retry Debug Check'),
+                        child: Text(context.l10n.instDebugRetry),
                       ),
                     ],
                   ),
@@ -160,7 +161,7 @@ class _InstitutionDebugScreenState extends ConsumerState<InstitutionDebugScreen>
                         children: [
                           // User Info Section
                           _buildDebugSection(
-                            'Authentication Info',
+                            context.l10n.instDebugAuthInfo,
                             _debugData!['debug_info']?['user_info'],
                             color: AppColors.info,
                           ),
@@ -169,7 +170,7 @@ class _InstitutionDebugScreenState extends ConsumerState<InstitutionDebugScreen>
                           // Institution User Check
                           if (_debugData!['debug_info']?['institution_user'] != null)
                             _buildDebugSection(
-                              'Institution User Status',
+                              context.l10n.instDebugUserStatus,
                               _debugData!['debug_info']['institution_user'],
                               color: AppColors.primary,
                             ),

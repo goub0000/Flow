@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
@@ -94,12 +95,12 @@ class _InstitutionsListScreenState
                   isProcessing: _isBulkOperationInProgress,
                   actions: [
                     BulkAction(
-                      label: 'Approve',
+                      label: context.l10n.adminUsersListApprove,
                       icon: Icons.check_circle,
                       onPressed: _handleBulkApprove,
                     ),
                     BulkAction(
-                      label: 'Deactivate',
+                      label: context.l10n.adminUsersListDeactivate,
                       icon: Icons.block,
                       onPressed: _handleBulkDeactivate,
                       isDestructive: true,
@@ -127,14 +128,14 @@ class _InstitutionsListScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Institutions',
+                context.l10n.adminUsersListInstitutionsTitle,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage institution accounts and verification',
+                context.l10n.adminUsersListInstitutionsSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -152,7 +153,7 @@ class _InstitutionsListScreenState
                     final users = ref.read(adminInstitutionsProvider);
                     await showExportDialog(
                       context: context,
-                      title: 'Export Institutions',
+                      title: context.l10n.adminUsersListExportInstitutions,
                       onExport: (format) => ExportService.exportInstitutions(
                         institutions: users,
                         format: format,
@@ -160,7 +161,7 @@ class _InstitutionsListScreenState
                     );
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export'),
+                  label: Text(context.l10n.adminUsersListExport),
                 ),
               ),
               const SizedBox(width: 12),
@@ -170,7 +171,7 @@ class _InstitutionsListScreenState
                 child: ElevatedButton.icon(
                   onPressed: () => context.go('/admin/users/institutions/create'),
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('Add Institution'),
+                  label: Text(context.l10n.adminUsersListAddInstitution),
                 ),
               ),
             ],
@@ -191,7 +192,7 @@ class _InstitutionsListScreenState
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by name, email, or institution ID...',
+                hintText: context.l10n.adminUsersListSearchInstitutionsHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -216,7 +217,7 @@ class _InstitutionsListScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminUsersListStatusLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -225,13 +226,13 @@ class _InstitutionsListScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'active', child: Text('Active')),
-                DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUsersListAllStatus)),
+                DropdownMenuItem(value: 'active', child: Text(context.l10n.adminUsersListStatusActive)),
+                DropdownMenuItem(value: 'inactive', child: Text(context.l10n.adminUsersListStatusInactive)),
                 DropdownMenuItem(
-                    value: 'pending', child: Text('Pending Approval')),
-                DropdownMenuItem(value: 'rejected', child: Text('Rejected')),
+                    value: 'pending', child: Text(context.l10n.adminUsersListStatusPendingApproval)),
+                DropdownMenuItem(value: 'rejected', child: Text(context.l10n.adminUsersListStatusRejected)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -247,7 +248,7 @@ class _InstitutionsListScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: InputDecoration(
-                labelText: 'Type',
+                labelText: context.l10n.adminUsersListTypeLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -256,15 +257,15 @@ class _InstitutionsListScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Types')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUsersListAllTypes)),
                 DropdownMenuItem(
-                    value: 'university', child: Text('University')),
-                DropdownMenuItem(value: 'college', child: Text('College')),
+                    value: 'university', child: Text(context.l10n.adminUsersListTypeUniversity)),
+                DropdownMenuItem(value: 'college', child: Text(context.l10n.adminUsersListTypeCollege)),
                 DropdownMenuItem(
-                    value: 'vocational', child: Text('Vocational School')),
+                    value: 'vocational', child: Text(context.l10n.adminUsersListTypeVocational)),
                 DropdownMenuItem(
-                    value: 'language', child: Text('Language School')),
+                    value: 'language', child: Text(context.l10n.adminUsersListTypeLanguageSchool)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -319,7 +320,7 @@ class _InstitutionsListScreenState
     return AdminDataTable<InstitutionRowData>(
       columns: [
         DataTableColumn(
-          label: 'Institution',
+          label: context.l10n.adminUsersListColumnInstitution,
           cellBuilder: (institution) => Row(
             children: [
               LogoAvatar.institution(
@@ -353,30 +354,30 @@ class _InstitutionsListScreenState
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Institution ID',
+          label: context.l10n.adminUsersListColumnInstitutionId,
           cellBuilder: (institution) => Text(institution.institutionId),
         ),
         DataTableColumn(
-          label: 'Type',
+          label: context.l10n.adminUsersListColumnType,
           cellBuilder: (institution) => Text(institution.type),
         ),
         DataTableColumn(
-          label: 'Location',
+          label: context.l10n.adminUsersListColumnLocation,
           cellBuilder: (institution) => Text(
             institution.location,
             overflow: TextOverflow.ellipsis,
           ),
         ),
         DataTableColumn(
-          label: 'Programs',
+          label: context.l10n.adminUsersListColumnPrograms,
           cellBuilder: (institution) => Text(institution.programs.toString()),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminUsersListColumnStatus,
           cellBuilder: (institution) => _buildStatusChip(institution.status),
         ),
         DataTableColumn(
-          label: 'Joined',
+          label: context.l10n.adminUsersListColumnJoined,
           cellBuilder: (institution) => Text(institution.joinedDate),
         ),
       ],
@@ -393,7 +394,7 @@ class _InstitutionsListScreenState
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminUsersListViewDetails,
           onPressed: (institution) {
             // TODO: Navigate to institution detail screen
             _showInstitutionDetails(institution);
@@ -401,14 +402,14 @@ class _InstitutionsListScreenState
         ),
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit Institution',
+          tooltip: context.l10n.adminUsersListEditInstitution,
           onPressed: (institution) {
             // TODO: Navigate to edit institution screen
           },
         ),
         DataTableAction(
           icon: Icons.check_circle,
-          tooltip: 'Approve',
+          tooltip: context.l10n.adminUsersListApprove,
           color: AppColors.success,
           onPressed: (institution) {
             // TODO: Show confirmation dialog
@@ -417,7 +418,7 @@ class _InstitutionsListScreenState
         ),
         DataTableAction(
           icon: Icons.block,
-          tooltip: 'Deactivate Account',
+          tooltip: context.l10n.adminUsersListDeactivateAccount,
           color: AppColors.error,
           onPressed: (institution) {
             // TODO: Show confirmation dialog
@@ -435,19 +436,19 @@ class _InstitutionsListScreenState
     switch (status) {
       case 'active':
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminUsersListStatusActive;
         break;
       case 'inactive':
         color = AppColors.textSecondary;
-        label = 'Inactive';
+        label = context.l10n.adminUsersListStatusInactive;
         break;
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending';
+        label = context.l10n.adminUsersListStatusPending;
         break;
       case 'rejected':
         color = AppColors.error;
-        label = 'Rejected';
+        label = context.l10n.adminUsersListStatusRejected;
         break;
       default:
         color = AppColors.textSecondary;
@@ -495,19 +496,19 @@ class _InstitutionsListScreenState
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Approve Institutions'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminUsersListApproveInstitutionsTitle),
         content: Text(
-          'Are you sure you want to approve ${_selectedItems.length} institution(s)?',
+          context.l10n.adminUsersListApproveInstitutionsConfirm(_selectedItems.length),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.adminUsersListCancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Approve'),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(context.l10n.adminUsersListApprove),
           ),
         ],
       ),
@@ -557,22 +558,22 @@ class _InstitutionsListScreenState
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Deactivate Institutions'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminUsersListDeactivateInstitutionsTitle),
         content: Text(
-          'Are you sure you want to deactivate ${_selectedItems.length} institution(s)?',
+          context.l10n.adminUsersListDeactivateInstitutionsConfirm(_selectedItems.length),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.adminUsersListCancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Deactivate'),
+            child: Text(context.l10n.adminUsersListDeactivate),
           ),
         ],
       ),

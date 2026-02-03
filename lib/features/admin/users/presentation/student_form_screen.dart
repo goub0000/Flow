@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 
@@ -103,8 +104,8 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
       SnackBar(
         content: Text(
           widget.studentId == null
-              ? 'Student created successfully'
-              : 'Student updated successfully',
+              ? context.l10n.adminUserFormStudentCreatedSuccess
+              : context.l10n.adminUserFormStudentUpdatedSuccess,
         ),
         backgroundColor: AppColors.success,
       ),
@@ -143,18 +144,18 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
 
                       // Personal Information Section
                       _buildSection(
-                        'Personal Information',
+                        context.l10n.adminUserFormPersonalInformation,
                         [
                           Row(
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'First Name',
+                                  label: context.l10n.adminUserFormFirstName,
                                   controller: _firstNameController,
                                   required: true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'First name is required';
+                                      return context.l10n.adminUserFormFirstNameRequired;
                                     }
                                     return null;
                                   },
@@ -163,12 +164,12 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Last Name',
+                                  label: context.l10n.adminUserFormLastName,
                                   controller: _lastNameController,
                                   required: true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Last name is required';
+                                      return context.l10n.adminUserFormLastNameRequired;
                                     }
                                     return null;
                                   },
@@ -181,7 +182,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Email',
+                                  label: context.l10n.adminUserFormEmail,
                                   controller: _emailController,
                                   required: true,
                                   keyboardType: TextInputType.emailAddress,
@@ -190,11 +191,11 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                                       : null,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Email is required';
+                                      return context.l10n.adminUserFormEmailRequired;
                                     }
                                     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                         .hasMatch(value)) {
-                                      return 'Enter a valid email';
+                                      return context.l10n.adminUserFormEmailInvalid;
                                     }
                                     return null;
                                   },
@@ -203,7 +204,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Phone',
+                                  label: context.l10n.adminUserFormPhone,
                                   controller: _phoneController,
                                   keyboardType: TextInputType.phone,
                                   suffix: _phoneVerified
@@ -218,15 +219,15 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildDropdown(
-                                  label: 'Gender',
+                                  label: context.l10n.adminUserFormGender,
                                   value: _selectedGender,
-                                  items: const [
-                                    DropdownMenuItem(value: 'male', child: Text('Male')),
-                                    DropdownMenuItem(value: 'female', child: Text('Female')),
-                                    DropdownMenuItem(value: 'other', child: Text('Other')),
+                                  items: [
+                                    DropdownMenuItem(value: 'male', child: Text(context.l10n.adminUserFormGenderMale)),
+                                    DropdownMenuItem(value: 'female', child: Text(context.l10n.adminUserFormGenderFemale)),
+                                    DropdownMenuItem(value: 'other', child: Text(context.l10n.adminUserFormGenderOther)),
                                     DropdownMenuItem(
                                         value: 'prefer_not_to_say',
-                                        child: Text('Prefer not to say')),
+                                        child: Text(context.l10n.adminUserFormGenderPreferNotToSay)),
                                   ],
                                   onChanged: (value) {
                                     if (value != null) {
@@ -238,9 +239,9 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Date of Birth',
+                                  label: context.l10n.adminUserFormDateOfBirth,
                                   controller: _dateOfBirthController,
-                                  hintText: 'YYYY-MM-DD',
+                                  hintText: context.l10n.adminUserFormDateFormat,
                                   suffix: IconButton(
                                     icon: const Icon(Icons.calendar_today, size: 20),
                                     onPressed: () async {
@@ -266,20 +267,20 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
 
                       // Academic Information Section
                       _buildSection(
-                        'Academic Information',
+                        context.l10n.adminUserFormAcademicInformation,
                         [
                           Row(
                             children: [
                               Expanded(
                                 child: _buildDropdown(
-                                  label: 'Grade',
+                                  label: context.l10n.adminUserFormGrade,
                                   value: _selectedGrade,
                                   required: true,
-                                  items: const [
-                                    DropdownMenuItem(value: '9', child: Text('Grade 9')),
-                                    DropdownMenuItem(value: '10', child: Text('Grade 10')),
-                                    DropdownMenuItem(value: '11', child: Text('Grade 11')),
-                                    DropdownMenuItem(value: '12', child: Text('Grade 12')),
+                                  items: [
+                                    DropdownMenuItem(value: '9', child: Text(context.l10n.adminUserFormGrade9)),
+                                    DropdownMenuItem(value: '10', child: Text(context.l10n.adminUserFormGrade10)),
+                                    DropdownMenuItem(value: '11', child: Text(context.l10n.adminUserFormGrade11)),
+                                    DropdownMenuItem(value: '12', child: Text(context.l10n.adminUserFormGrade12)),
                                   ],
                                   onChanged: (value) {
                                     if (value != null) {
@@ -291,17 +292,17 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildDropdown(
-                                  label: 'Status',
+                                  label: context.l10n.adminUserFormStatus,
                                   value: _selectedStatus,
                                   required: true,
-                                  items: const [
-                                    DropdownMenuItem(value: 'active', child: Text('Active')),
+                                  items: [
+                                    DropdownMenuItem(value: 'active', child: Text(context.l10n.adminUserFormStatusActive)),
                                     DropdownMenuItem(
-                                        value: 'inactive', child: Text('Inactive')),
+                                        value: 'inactive', child: Text(context.l10n.adminUserFormStatusInactive)),
                                     DropdownMenuItem(
-                                        value: 'suspended', child: Text('Suspended')),
+                                        value: 'suspended', child: Text(context.l10n.adminUserFormStatusSuspended)),
                                     DropdownMenuItem(
-                                        value: 'pending', child: Text('Pending Verification')),
+                                        value: 'pending', child: Text(context.l10n.adminUserFormStatusPendingVerification)),
                                   ],
                                   onChanged: (value) {
                                     if (value != null) {
@@ -368,7 +369,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
           TextButton.icon(
             onPressed: () => context.go('/admin/users/students'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Students'),
+            label: Text(context.l10n.adminUserFormBackToStudents),
           ),
         ],
       ),
@@ -380,7 +381,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isEditMode ? 'Edit Student' : 'Add New Student',
+          isEditMode ? context.l10n.adminUserFormEditStudent : context.l10n.adminUserFormAddNewStudent,
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -389,8 +390,8 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
         const SizedBox(height: 8),
         Text(
           isEditMode
-              ? 'Update student account information'
-              : 'Create a new student account',
+              ? context.l10n.adminUserFormUpdateStudentInfo
+              : context.l10n.adminUserFormCreateStudentAccount,
           style: TextStyle(
             color: AppColors.textSecondary,
             fontSize: 14,

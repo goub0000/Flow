@@ -133,7 +133,7 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(context.l10n.adminReportDeleteScheduledReport),
-        content: Text('Are you sure you want to delete "${report.title}"?'),
+        content: Text(context.l10n.adminReportDeleteConfirmation(report.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -291,7 +291,7 @@ class _ScheduledReportCard extends StatelessWidget {
               ),
               _InfoChip(
                 icon: Icons.email,
-                label: '${report.recipients.length} recipients',
+                label: context.l10n.adminReportRecipientsCount(report.recipients.length),
                 color: AppColors.success,
               ),
             ],
@@ -540,7 +540,7 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
                   decoration: InputDecoration(
                     labelText: context.l10n.adminReportEmailRecipients,
                     border: OutlineInputBorder(),
-                    hintText: 'admin@example.com, manager@example.com',
+                    hintText: context.l10n.adminReportEmailRecipientsHint,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

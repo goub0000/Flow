@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Action bar that appears when items are selected in a data table
 class BulkActionBar extends StatelessWidget {
@@ -33,21 +34,25 @@ class BulkActionBar extends StatelessWidget {
       child: Row(
         children: [
           // Selection count
-          Text(
-            '$selectedCount item${selectedCount == 1 ? '' : 's'} selected',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: AppColors.primary,
+          Builder(
+            builder: (context) => Text(
+              context.l10n.adminSharedItemsSelected(selectedCount),
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+                color: AppColors.primary,
+              ),
             ),
           ),
           const SizedBox(width: 16),
 
           // Clear selection button
-          TextButton.icon(
-            onPressed: isProcessing ? null : onClearSelection,
-            icon: const Icon(Icons.close, size: 18),
-            label: const Text('Clear'),
+          Builder(
+            builder: (context) => TextButton.icon(
+              onPressed: isProcessing ? null : onClearSelection,
+              icon: const Icon(Icons.close, size: 18),
+              label: Text(context.l10n.adminSharedClear),
+            ),
           ),
 
           const Spacer(),

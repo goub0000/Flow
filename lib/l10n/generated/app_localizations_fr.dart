@@ -13880,4 +13880,3279 @@ class AppLocalizationsFr extends AppLocalizations {
   String adminUserConfirmDeactivateCounselors(Object count) {
     return 'Êtes-vous sûr de vouloir désactiver $count conseillers ?';
   }
+
+  @override
+  String get adminActivityTitle => 'Journaux d\'activite';
+
+  @override
+  String get adminActivitySubtitle =>
+      'Historique de toutes les actions administratives';
+
+  @override
+  String get adminActivityExportLogs => 'Exporter les journaux';
+
+  @override
+  String get adminActivityResetFilters => 'Reinitialiser les filtres';
+
+  @override
+  String get adminActivitySearchHint =>
+      'Rechercher par admin, action ou cible...';
+
+  @override
+  String get adminActivityActionType => 'Type d\'action';
+
+  @override
+  String get adminActivityAllTypes => 'Tous les types';
+
+  @override
+  String get adminActivityCreate => 'Creer';
+
+  @override
+  String get adminActivityUpdate => 'Mettre a jour';
+
+  @override
+  String get adminActivityDelete => 'Supprimer';
+
+  @override
+  String get adminActivityLogin => 'Connexion';
+
+  @override
+  String get adminActivityLogout => 'Deconnexion';
+
+  @override
+  String get adminActivityExport => 'Exporter';
+
+  @override
+  String get adminActivityBulkOperation => 'Operation en masse';
+
+  @override
+  String get adminActivitySeverity => 'Severite';
+
+  @override
+  String get adminActivityAllSeverity => 'Toutes les severites';
+
+  @override
+  String get adminActivityInfo => 'Info';
+
+  @override
+  String get adminActivityWarning => 'Avertissement';
+
+  @override
+  String get adminActivityCritical => 'Critique';
+
+  @override
+  String get adminActivityDateRange => 'Plage de dates';
+
+  @override
+  String get adminActivityTimestamp => 'Horodatage';
+
+  @override
+  String get adminActivityAdmin => 'Admin';
+
+  @override
+  String get adminActivityAction => 'Action';
+
+  @override
+  String get adminActivityTarget => 'Cible';
+
+  @override
+  String get adminActivityDetails => 'Details';
+
+  @override
+  String get adminActivityIpAddress => 'Adresse IP';
+
+  @override
+  String get adminActivityExportDialogTitle =>
+      'Exporter les journaux d\'activite';
+
+  @override
+  String get adminActivityLogsReport => 'Rapport des journaux d\'activite';
+
+  @override
+  String get homePageApiDocsTitle => 'Documentation API';
+
+  @override
+  String get homePagePressKit => 'Kit de presse';
+
+  @override
+  String get adminDashSystemUser => 'Systeme';
+
+  @override
+  String adminDashErrorWithMessage(Object message) {
+    return 'Erreur: $message';
+  }
+
+  @override
+  String get adminSettingsTimezoneNairobi => 'Nairobi (EAT)';
+
+  @override
+  String get adminSettingsTimezoneLagos => 'Lagos (WAT)';
+
+  @override
+  String get adminSettingsTimezoneCairo => 'Le Caire (EET)';
+
+  @override
+  String get adminRichTextBoldTooltip => 'Gras (**texte**)';
+
+  @override
+  String get adminRichTextBoldPlaceholder => 'texte en gras';
+
+  @override
+  String get adminRichTextItalicTooltip => 'Italique (*texte*)';
+
+  @override
+  String get adminRichTextItalicPlaceholder => 'texte en italique';
+
+  @override
+  String get adminRichTextUnderlineTooltip => 'Souligné';
+
+  @override
+  String get adminRichTextUnderlinePlaceholder => 'texte souligné';
+
+  @override
+  String get adminRichTextStrikethroughTooltip => 'Barré (~~texte~~)';
+
+  @override
+  String get adminRichTextStrikethroughPlaceholder => 'texte barré';
+
+  @override
+  String get adminRichTextHeading1Tooltip => 'Titre 1';
+
+  @override
+  String get adminRichTextHeading2Tooltip => 'Titre 2';
+
+  @override
+  String get adminRichTextHeading3Tooltip => 'Titre 3';
+
+  @override
+  String get adminRichTextBulletListTooltip => 'Liste à puces';
+
+  @override
+  String get adminRichTextNumberedListTooltip => 'Liste numérotée';
+
+  @override
+  String get adminRichTextQuoteTooltip => 'Citation';
+
+  @override
+  String get adminRichTextLinkTooltip => 'Insérer un lien [texte](url)';
+
+  @override
+  String get adminRichTextLinkPlaceholder => 'texte du lien';
+
+  @override
+  String get adminRichTextCodeTooltip => 'Code en ligne';
+
+  @override
+  String get adminRichTextCodePlaceholder => 'code';
+
+  @override
+  String get adminRichTextHorizontalLineTooltip => 'Ligne horizontale';
+
+  @override
+  String get instCourseMarkdown => 'Markdown';
+
+  @override
+  String get instCourseRichText => 'Texte enrichi';
+
+  @override
+  String get studCourseRetry => 'Réessayer';
+
+  @override
+  String get studCourseSubmitAssignment => 'Soumettre le devoir';
+
+  @override
+  String get adminNotifTitle => 'Centre de notifications';
+
+  @override
+  String get adminNotifSubtitle =>
+      'Restez informé des événements système et des activités des utilisateurs';
+
+  @override
+  String get adminNotifMarkAllAsRead => 'Tout marquer comme lu';
+
+  @override
+  String get adminNotifClearAll => 'Tout effacer';
+
+  @override
+  String adminNotifUnreadCount(Object count) {
+    return '$count non lu(s)';
+  }
+
+  @override
+  String get adminNotifPriority => 'Priorité';
+
+  @override
+  String get adminNotifAllPriorities => 'Toutes les priorités';
+
+  @override
+  String get adminNotifUnreadOnly => 'Non lus uniquement';
+
+  @override
+  String get adminNotifNotificationTypes => 'Types de notifications';
+
+  @override
+  String get adminNotifAllNotifications => 'Toutes les notifications';
+
+  @override
+  String get adminNotifMarkAsUnread => 'Marquer comme non lu';
+
+  @override
+  String get adminNotifMarkAsRead => 'Marquer comme lu';
+
+  @override
+  String get adminNotifDelete => 'Supprimer';
+
+  @override
+  String get adminNotifNoNotifications => 'Aucune notification';
+
+  @override
+  String get adminNotifAllCaughtUp => 'Vous êtes à jour !';
+
+  @override
+  String get adminNotifJustNow => 'À l\'instant';
+
+  @override
+  String adminNotifMinutesAgo(Object minutes) {
+    return 'Il y a $minutes min';
+  }
+
+  @override
+  String adminNotifHoursAgo(Object hours) {
+    return 'Il y a $hours h';
+  }
+
+  @override
+  String adminNotifDaysAgo(Object days) {
+    return 'Il y a $days j';
+  }
+
+  @override
+  String get adminNotifClearAllTitle => 'Effacer toutes les notifications';
+
+  @override
+  String get adminNotifClearAllConfirmation =>
+      'Êtes-vous sûr de vouloir effacer toutes les notifications ? Cette action est irréversible.';
+
+  @override
+  String get adminNotifCancel => 'Annuler';
+
+  @override
+  String get adminCounselorsListUnknownCounselor => 'Conseiller inconnu';
+
+  @override
+  String get adminCounselorsListNotSpecified => 'Non spécifié';
+
+  @override
+  String get adminCounselorsListToday => 'Aujourd\'hui';
+
+  @override
+  String get adminCounselorsListYesterday => 'Hier';
+
+  @override
+  String adminCounselorsListDaysAgo(Object count) {
+    return 'Il y a $count jours';
+  }
+
+  @override
+  String adminCounselorsListWeeksAgo(Object count) {
+    return 'Il y a $count semaines';
+  }
+
+  @override
+  String adminCounselorsListMonthsAgo(Object count) {
+    return 'Il y a $count mois';
+  }
+
+  @override
+  String adminCounselorsListYearsAgo(Object count) {
+    return 'Il y a $count ans';
+  }
+
+  @override
+  String adminCounselorsListError(Object error) {
+    return 'Erreur : $error';
+  }
+
+  @override
+  String get homePageAboutTitle => 'À propos de nous';
+
+  @override
+  String get homePageOurMission => 'Notre mission';
+
+  @override
+  String adminReportLastGenerated(Object date) {
+    return 'Dernier : $date';
+  }
+
+  @override
+  String get adminReportUserActivityReport =>
+      'Rapport d\'activite des utilisateurs';
+
+  @override
+  String get adminReportUserActivityDescription =>
+      'Apercu complet des inscriptions, connexions et comportements des utilisateurs';
+
+  @override
+  String get adminReportEngagementMetrics => 'Metriques d\'engagement';
+
+  @override
+  String get adminReportEngagementDescription =>
+      'Suivre l\'engagement des utilisateurs, les inscriptions aux cours et les interactions sur la plateforme';
+
+  @override
+  String get adminReportSystemPerformance => 'Performance du systeme';
+
+  @override
+  String get adminReportSystemPerformanceDescription =>
+      'Temps de reponse API, debit et metriques de performance systeme';
+
+  @override
+  String get adminReportRevenueReport => 'Rapport de revenus';
+
+  @override
+  String get adminReportRevenueDescription =>
+      'Repartition detaillee des revenus, abonnements et transactions';
+
+  @override
+  String get adminReportPaymentAnalytics => 'Analyse des paiements';
+
+  @override
+  String get adminReportPaymentAnalyticsDescription =>
+      'Taux de reussite des paiements, delais de traitement et analyse des transactions';
+
+  @override
+  String get adminReportUserGrowthReport =>
+      'Rapport de croissance des utilisateurs';
+
+  @override
+  String get adminReportUserGrowthDescription =>
+      'Suivre l\'acquisition, la retention et les tendances de croissance des utilisateurs';
+
+  @override
+  String get adminReportSystemHealthReport => 'Rapport de sante du systeme';
+
+  @override
+  String get adminReportSystemHealthDescription =>
+      'Etat de l\'infrastructure, disponibilite, utilisation des ressources et metriques de sante';
+
+  @override
+  String get adminReportApplicationFunnel => 'Entonnoir de candidatures';
+
+  @override
+  String get adminReportApplicationFunnelDescription =>
+      'Suivre les soumissions de candidatures, les conversions et les taux de completion';
+
+  @override
+  String get adminReportAuditTrailReport => 'Rapport de piste d\'audit';
+
+  @override
+  String get adminReportAuditTrailDescription =>
+      'Piste d\'audit complete des actions administratives et des modifications systeme';
+
+  @override
+  String get adminReportDataAccessReport => 'Rapport d\'acces aux donnees';
+
+  @override
+  String get adminReportDataAccessDescription =>
+      'Suivre les modeles d\'acces aux donnees et les demandes d\'informations sensibles';
+
+  @override
+  String get adminReportDefaultTitle => 'Rapport d\'analyse';
+
+  @override
+  String get adminReportMetricHeader => 'Metrique';
+
+  @override
+  String get adminReportValueHeader => 'Valeur';
+
+  @override
+  String adminReportDeleteConfirmation(Object title) {
+    return 'Etes-vous sur de vouloir supprimer \"$title\" ?';
+  }
+
+  @override
+  String adminReportRecipientsCount(Object count) {
+    return '$count destinataires';
+  }
+
+  @override
+  String get adminReportEmailRecipientsHint =>
+      'admin@exemple.com, responsable@exemple.com';
+
+  @override
+  String get adminSqlTitle => 'Requetes SQL';
+
+  @override
+  String get adminSqlSubtitle =>
+      'Executer des requetes pre-construites sur les donnees de la plateforme';
+
+  @override
+  String get adminSqlSearchHint => 'Rechercher des requetes...';
+
+  @override
+  String get adminSqlRetry => 'Reessayer';
+
+  @override
+  String get adminSqlSelectQuery => 'Selectionnez une requete a executer';
+
+  @override
+  String get adminSqlSelectQueryHint =>
+      'Choisissez dans la bibliotheque de requetes a gauche';
+
+  @override
+  String get adminSqlNoResults => 'Aucun resultat';
+
+  @override
+  String adminSqlResultCount(Object columns, Object rows) {
+    return '$rows lignes  |  $columns colonnes';
+  }
+
+  @override
+  String get adminSqlAllUsersName => 'Tous les utilisateurs';
+
+  @override
+  String get adminSqlAllUsersDescription =>
+      'Liste de tous les utilisateurs enregistres avec leurs donnees de profil';
+
+  @override
+  String get adminSqlStudentsOnlyName => 'Etudiants uniquement';
+
+  @override
+  String get adminSqlStudentsOnlyDescription =>
+      'Filtrer les utilisateurs pour afficher uniquement les etudiants';
+
+  @override
+  String get adminSqlAdminUsersName => 'Utilisateurs administrateurs';
+
+  @override
+  String get adminSqlAdminUsersDescription =>
+      'Liste de tous les comptes administrateurs';
+
+  @override
+  String get adminSqlRecentActivityName => 'Activite recente';
+
+  @override
+  String get adminSqlRecentActivityDescription =>
+      'Les 50 dernieres activites de la plateforme depuis le journal d\'audit';
+
+  @override
+  String get adminSqlActivityStatisticsName => 'Statistiques d\'activite';
+
+  @override
+  String get adminSqlActivityStatisticsDescription =>
+      'Comptages d\'activites agreges par type';
+
+  @override
+  String get adminSqlPlatformMetricsName => 'Metriques de la plateforme';
+
+  @override
+  String get adminSqlPlatformMetricsDescription =>
+      'Metriques cles : nombre d\'utilisateurs, candidatures, taux de croissance';
+
+  @override
+  String get adminSqlFinanceOverviewName => 'Apercu financier';
+
+  @override
+  String get adminSqlFinanceOverviewDescription =>
+      'Revenus, transactions et indicateurs financiers cles';
+
+  @override
+  String get adminSqlContentStatisticsName => 'Statistiques de contenu';
+
+  @override
+  String get adminSqlContentStatisticsDescription =>
+      'Comptages de contenu publie, en brouillon et en attente';
+
+  @override
+  String get adminSqlOpenSupportTicketsName => 'Tickets de support ouverts';
+
+  @override
+  String get adminSqlOpenSupportTicketsDescription =>
+      'Tous les tickets de support actuellement ouverts';
+
+  @override
+  String get adminSqlRecentTransactionsName => 'Transactions recentes';
+
+  @override
+  String get adminSqlRecentTransactionsDescription =>
+      'Transactions financieres (100 dernieres)';
+
+  @override
+  String get adminSqlUserGrowthName => 'Croissance des utilisateurs (6 mois)';
+
+  @override
+  String get adminSqlUserGrowthDescription =>
+      'Tendance mensuelle des inscriptions d\'utilisateurs';
+
+  @override
+  String get adminSqlRoleDistributionName => 'Repartition des roles';
+
+  @override
+  String get adminSqlRoleDistributionDescription =>
+      'Repartition des utilisateurs par type de role';
+
+  @override
+  String get adminInstitutionLocation => 'Emplacement';
+
+  @override
+  String get adminInstitutionAddress => 'Adresse';
+
+  @override
+  String get adminInstitutionCity => 'Ville';
+
+  @override
+  String get adminInstitutionCountry => 'Pays';
+
+  @override
+  String get adminInstitutionContactPerson => 'Personne de contact';
+
+  @override
+  String get adminInstitutionFullName => 'Nom complet';
+
+  @override
+  String get adminInstitutionPosition => 'Poste';
+
+  @override
+  String get adminInstitutionContactEmail => 'Email';
+
+  @override
+  String get adminInstitutionContactPhone => 'Telephone';
+
+  @override
+  String get adminInstitutionRequired => 'Obligatoire';
+
+  @override
+  String get adminInstitutionInvalidEmail => 'Email invalide';
+
+  @override
+  String get adminInstitutionBackToInstitutions => 'Retour aux etablissements';
+
+  @override
+  String get adminInstitutionEditInstitution => 'Modifier l\'etablissement';
+
+  @override
+  String get adminInstitutionAddNewInstitution =>
+      'Ajouter un nouvel etablissement';
+
+  @override
+  String get adminInstitutionUpdateAccountInfo =>
+      'Mettre a jour les informations du compte de l\'etablissement';
+
+  @override
+  String get adminInstitutionCreateAccountInfo =>
+      'Creer un nouveau compte d\'etablissement';
+
+  @override
+  String get adminInstitutionCancel => 'Annuler';
+
+  @override
+  String get adminInstitutionUpdateInstitution =>
+      'Mettre a jour l\'etablissement';
+
+  @override
+  String get adminInstitutionCreateInstitution => 'Creer l\'etablissement';
+
+  @override
+  String get adminMessagingTitle => 'Messagerie groupee';
+
+  @override
+  String get adminMessagingSubtitle =>
+      'Envoyer des messages a plusieurs utilisateurs a la fois';
+
+  @override
+  String get adminMessagingNewMessage => 'Nouveau message';
+
+  @override
+  String get adminMessagingSubjectLabel => 'Objet';
+
+  @override
+  String get adminMessagingSubjectHint => 'Entrez l\'objet du message';
+
+  @override
+  String get adminMessagingMessageLabel => 'Message';
+
+  @override
+  String get adminMessagingMessageHint => 'Entrez votre message ici...';
+
+  @override
+  String get adminMessagingSaveDraft => 'Enregistrer le brouillon';
+
+  @override
+  String get adminMessagingPreview => 'Apercu';
+
+  @override
+  String get adminMessagingSending => 'Envoi en cours...';
+
+  @override
+  String get adminMessagingSendMessage => 'Envoyer le message';
+
+  @override
+  String get adminMessagingRecipients => 'Destinataires';
+
+  @override
+  String get adminMessagingDeliveryChannel => 'Canal de diffusion';
+
+  @override
+  String get adminMessagingSchedule => 'Planifier';
+
+  @override
+  String get adminMessagingTemplates => 'Modeles de messages';
+
+  @override
+  String get adminMessagingRecentMessages => 'Messages recents';
+
+  @override
+  String adminMessagingSentCount(Object count) {
+    return '$count envoye(s)';
+  }
+
+  @override
+  String get adminMessagingFillAllFields => 'Veuillez remplir tous les champs';
+
+  @override
+  String get adminMessagingSendMessageTitle => 'Envoyer le message';
+
+  @override
+  String adminMessagingSendConfirmation(Object group) {
+    return 'Etes-vous sur de vouloir envoyer ce message a $group ?';
+  }
+
+  @override
+  String get adminMessagingCancel => 'Annuler';
+
+  @override
+  String get adminMessagingSend => 'Envoyer';
+
+  @override
+  String get adminMessagingSentSuccess => 'Message envoye avec succes';
+
+  @override
+  String get adminMessagingDraftSaved => 'Brouillon enregistre';
+
+  @override
+  String get adminMessagingPreviewTitle => 'Apercu du message';
+
+  @override
+  String adminMessagingPreviewSubject(Object subject) {
+    return 'Objet : $subject';
+  }
+
+  @override
+  String adminMessagingPreviewTo(Object recipient) {
+    return 'A : $recipient';
+  }
+
+  @override
+  String adminMessagingPreviewVia(Object channel) {
+    return 'Via : $channel';
+  }
+
+  @override
+  String get adminMessagingClose => 'Fermer';
+
+  @override
+  String get adminMessagingTemplateWelcomeName => 'Message de bienvenue';
+
+  @override
+  String get adminMessagingTemplateWelcomeSubject => 'Bienvenue sur Flow !';
+
+  @override
+  String get adminMessagingTemplateWelcomeContent =>
+      'Bonjour ! Bienvenue sur Flow, votre parcours educatif commence ici. Nous sommes ravis de vous accueillir dans notre communaute.';
+
+  @override
+  String get adminMessagingTemplatePaymentName => 'Rappel de paiement';
+
+  @override
+  String get adminMessagingTemplatePaymentSubject =>
+      'Rappel de paiement a effectuer';
+
+  @override
+  String get adminMessagingTemplatePaymentContent =>
+      'Ceci est un rappel amical que votre paiement arrive bientot a echeance. Veuillez effectuer votre paiement pour continuer a profiter de nos services.';
+
+  @override
+  String get adminMessagingTemplateSystemName => 'Mise a jour systeme';
+
+  @override
+  String get adminMessagingTemplateSystemSubject =>
+      'Avis de maintenance systeme';
+
+  @override
+  String get adminMessagingTemplateSystemContent =>
+      'Nous effectuerons une maintenance programmee sur nos systemes. Pendant cette periode, certaines fonctionnalites peuvent etre indisponibles.';
+
+  @override
+  String get adminMessagingRecentWelcomeSubject =>
+      'Bienvenue pour le nouveau semestre';
+
+  @override
+  String get adminMessagingRecentWelcomeContent =>
+      'Nous esperons que vous avez passe de bonnes vacances ! Preparez-vous pour un semestre passionnant.';
+
+  @override
+  String get adminMessagingRecentPaymentSubject =>
+      'Rappel de paiement a effectuer';
+
+  @override
+  String get adminMessagingRecentPaymentContent =>
+      'Ceci est un rappel que votre paiement doit etre effectue d\'ici la fin de cette semaine.';
+
+  @override
+  String get adminMessagingRecentFeaturesSubject =>
+      'Nouvelles fonctionnalites disponibles';
+
+  @override
+  String get adminMessagingRecentFeaturesContent =>
+      'Decouvrez nos dernieres fonctionnalites et ameliorations pour enrichir votre experience.';
+
+  @override
+  String get instCourseAdvancedModule => 'Module avancé';
+
+  @override
+  String get instCourseImportQuiz => 'Importer le quiz';
+
+  @override
+  String get adminLoginTitle => 'Portail Administrateur';
+
+  @override
+  String get adminLoginSubtitle => 'Acces Administrateur Securise';
+
+  @override
+  String get adminLoginEmailLabel => 'Email Administrateur';
+
+  @override
+  String get adminLoginEmailHint => 'admin@exemple.com';
+
+  @override
+  String get adminLoginEmailRequired => 'Veuillez entrer votre email';
+
+  @override
+  String get adminLoginEmailInvalid => 'Veuillez entrer un email valide';
+
+  @override
+  String get adminLoginPasswordLabel => 'Mot de passe';
+
+  @override
+  String get adminLoginPasswordHint => 'Entrez votre mot de passe';
+
+  @override
+  String get adminLoginPasswordRequired => 'Veuillez entrer votre mot de passe';
+
+  @override
+  String get adminLoginPasswordTooShort =>
+      'Le mot de passe doit contenir au moins 8 caracteres';
+
+  @override
+  String get adminLoginSignInButton => 'Connexion Securisee';
+
+  @override
+  String get adminLoginSecurityNotice =>
+      'Toutes les activites administrateur sont enregistrees et surveillees pour la securite.';
+
+  @override
+  String get adminLoginBackToSite => 'Retour au site principal';
+
+  @override
+  String adminLoginFailed(Object error) {
+    return 'Echec de la connexion : $error';
+  }
+
+  @override
+  String get homePageBlogTitle => 'Blog';
+
+  @override
+  String get homePageSubscribe => 'S\'abonner';
+
+  @override
+  String get adminKbRetry => 'Reessayer';
+
+  @override
+  String get adminKbKeywordsHint =>
+      'ex. connexion, mot de passe, reinitialisation';
+
+  @override
+  String get adminKbPriorityLow => '0 - Basse';
+
+  @override
+  String get adminKbPriorityMedium => '1 - Moyenne';
+
+  @override
+  String get adminKbPriorityHigh => '2 - Haute';
+
+  @override
+  String get adminKbPriorityCritical => '3 - Critique';
+
+  @override
+  String adminKbDeleteConfirmMessage(Object question) {
+    return 'Etes-vous sur de vouloir supprimer \"$question\" ?';
+  }
+
+  @override
+  String get instCounselorsSearchHint => 'Rechercher des conseillers...';
+
+  @override
+  String get instCounselorsRetry => 'Reessayer';
+
+  @override
+  String get instCounselorsNoCounselorsFound => 'Aucun conseiller trouve';
+
+  @override
+  String get instCounselorsNoMatchSearch =>
+      'Aucun conseiller ne correspond a votre recherche';
+
+  @override
+  String get instCounselorsAddToInstitution =>
+      'Ajoutez des conseillers a votre institution';
+
+  @override
+  String instCounselorsPageOf(Object current, Object total) {
+    return 'Page $current sur $total';
+  }
+
+  @override
+  String get instCounselorsCounselingOverview => 'Apercu du conseil';
+
+  @override
+  String get instCounselorsCounselors => 'Conseillers';
+
+  @override
+  String get instCounselorsStudents => 'Etudiants';
+
+  @override
+  String get instCounselorsSessions => 'Seances';
+
+  @override
+  String get instCounselorsCompleted => 'Terminees';
+
+  @override
+  String get instCounselorsUpcoming => 'A venir';
+
+  @override
+  String get instCounselorsAvgRating => 'Note moy.';
+
+  @override
+  String get instCounselorsStudentAssigned => 'Etudiant assigne avec succes';
+
+  @override
+  String get instCounselorsAssign => 'Assigner';
+
+  @override
+  String get instCounselorsTotalSessions => 'Total seances';
+
+  @override
+  String get instCounselorsAssignStudents => 'Assigner des etudiants';
+
+  @override
+  String instCounselorsAssignStudentTo(Object name) {
+    return 'Assigner un etudiant a $name';
+  }
+
+  @override
+  String get instCounselorsSearchStudents => 'Rechercher des etudiants...';
+
+  @override
+  String get instCounselorsNoStudentsFound => 'Aucun etudiant trouve';
+
+  @override
+  String get instCounselorsUnknown => 'Inconnu';
+
+  @override
+  String instCounselorsError(Object error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get instCounselorsCancel => 'Annuler';
+
+  @override
+  String get adminAuditAction => 'Admin Audit Action';
+
+  @override
+  String get adminAuditActionType => 'Admin Audit Action Type';
+
+  @override
+  String get adminAuditAllActions => 'Admin Audit All Actions';
+
+  @override
+  String get adminAuditBackendIntegrationNote =>
+      'Admin Audit Backend Integration Note';
+
+  @override
+  String get adminAuditClose => 'Admin Audit Close';
+
+  @override
+  String get adminAuditCreateRecord => 'Admin Audit Create Record';
+
+  @override
+  String get adminAuditCustomRange => 'Admin Audit Custom Range';
+
+  @override
+  String get adminAuditDateRange => 'Admin Audit Date Range';
+
+  @override
+  String get adminAuditDeleteRecord => 'Admin Audit Delete Record';
+
+  @override
+  String get adminAuditDetails => 'Admin Audit Details';
+
+  @override
+  String get adminAuditExportData => 'Admin Audit Export Data';
+
+  @override
+  String get adminAuditExportReport => 'Admin Audit Export Report';
+
+  @override
+  String get adminAuditIpAddress => 'Admin Audit Ip Address';
+
+  @override
+  String get adminAuditLast30Days => 'Admin Audit Last30 Days';
+
+  @override
+  String get adminAuditLast7Days => 'Admin Audit Last7 Days';
+
+  @override
+  String get adminAuditLogDetails => 'Admin Audit Log Details';
+
+  @override
+  String get adminAuditLogin => 'Admin Audit Login';
+
+  @override
+  String get adminAuditLogout => 'Admin Audit Logout';
+
+  @override
+  String get adminAuditRefreshLogs => 'Admin Audit Refresh Logs';
+
+  @override
+  String get adminAuditResource => 'Admin Audit Resource';
+
+  @override
+  String get adminAuditRole => 'Admin Audit Role';
+
+  @override
+  String get adminAuditSearchHint => 'Admin Audit Search Hint';
+
+  @override
+  String get adminAuditSubtitle => 'Admin Audit Subtitle';
+
+  @override
+  String get adminAuditTimestamp => 'Admin Audit Timestamp';
+
+  @override
+  String get adminAuditTitle => 'Admin Audit Title';
+
+  @override
+  String get adminAuditToday => 'Admin Audit Today';
+
+  @override
+  String get adminAuditUpdateRecord => 'Admin Audit Update Record';
+
+  @override
+  String get adminAuditUser => 'Admin Audit User';
+
+  @override
+  String get adminAuditViewDetails => 'Admin Audit View Details';
+
+  @override
+  String get adminAuditYesterday => 'Admin Audit Yesterday';
+
+  @override
+  String get adminCommActionDelete => 'Admin Comm Action Delete';
+
+  @override
+  String get adminCommActionDuplicate => 'Admin Comm Action Duplicate';
+
+  @override
+  String get adminCommActionSchedule => 'Admin Comm Action Schedule';
+
+  @override
+  String get adminCommActionSendNow => 'Admin Comm Action Send Now';
+
+  @override
+  String get adminCommActionViewDetails => 'Admin Comm Action View Details';
+
+  @override
+  String get adminCommCampaignDeleted => 'Admin Comm Campaign Deleted';
+
+  @override
+  String adminCommCampaignScheduledFor(String date) {
+    return 'Admin Comm Campaign Scheduled For: $date';
+  }
+
+  @override
+  String get adminCommCampaignTitleHint => 'Admin Comm Campaign Title Hint';
+
+  @override
+  String get adminCommCampaignTitleLabel => 'Admin Comm Campaign Title Label';
+
+  @override
+  String get adminCommCancel => 'Admin Comm Cancel';
+
+  @override
+  String get adminCommClose => 'Admin Comm Close';
+
+  @override
+  String get adminCommConfirm => 'Admin Comm Confirm';
+
+  @override
+  String get adminCommCreateCampaign => 'Admin Comm Create Campaign';
+
+  @override
+  String get adminCommCreateCampaignDialogTitle =>
+      'Admin Comm Create Campaign Dialog Title';
+
+  @override
+  String adminCommDeleteCampaignMessage(String campaign) {
+    return 'Admin Comm Delete Campaign Message: $campaign';
+  }
+
+  @override
+  String get adminCommDeleteCampaignTitle => 'Admin Comm Delete Campaign Title';
+
+  @override
+  String get adminCommDetailCreated => 'Admin Comm Detail Created';
+
+  @override
+  String get adminCommDetailDelivered => 'Admin Comm Detail Delivered';
+
+  @override
+  String get adminCommDetailMessage => 'Admin Comm Detail Message';
+
+  @override
+  String get adminCommDetailOpened => 'Admin Comm Detail Opened';
+
+  @override
+  String get adminCommDetailRecipients => 'Admin Comm Detail Recipients';
+
+  @override
+  String get adminCommDetailScheduled => 'Admin Comm Detail Scheduled';
+
+  @override
+  String get adminCommDetailSent => 'Admin Comm Detail Sent';
+
+  @override
+  String get adminCommDetailStatus => 'Admin Comm Detail Status';
+
+  @override
+  String get adminCommDetailType => 'Admin Comm Detail Type';
+
+  @override
+  String get adminCommDuplicateCampaignDialogTitle =>
+      'Admin Comm Duplicate Campaign Dialog Title';
+
+  @override
+  String get adminCommEmptySubtitle => 'Admin Comm Empty Subtitle';
+
+  @override
+  String get adminCommEmptyTitle => 'Admin Comm Empty Title';
+
+  @override
+  String get adminCommErrorTitle => 'Admin Comm Error Title';
+
+  @override
+  String get adminCommNewCampaign => 'Admin Comm New Campaign';
+
+  @override
+  String get adminCommNoMessageContent => 'Admin Comm No Message Content';
+
+  @override
+  String get adminCommRefresh => 'Admin Comm Refresh';
+
+  @override
+  String get adminCommRetry => 'Admin Comm Retry';
+
+  @override
+  String get adminCommScheduleCampaignTitle =>
+      'Admin Comm Schedule Campaign Title';
+
+  @override
+  String get adminCommSearchHint => 'Admin Comm Search Hint';
+
+  @override
+  String adminCommSendCampaignMessage(String campaign) {
+    return 'Admin Comm Send Campaign Message: $campaign';
+  }
+
+  @override
+  String get adminCommSendCampaignTitle => 'Admin Comm Send Campaign Title';
+
+  @override
+  String get adminCommSendingCampaign => 'Admin Comm Sending Campaign';
+
+  @override
+  String get adminCommStatAllCampaigns => 'Admin Comm Stat All Campaigns';
+
+  @override
+  String get adminCommStatDraft => 'Admin Comm Stat Draft';
+
+  @override
+  String get adminCommStatNotSentYet => 'Admin Comm Stat Not Sent Yet';
+
+  @override
+  String get adminCommStatPendingDelivery => 'Admin Comm Stat Pending Delivery';
+
+  @override
+  String get adminCommStatScheduled => 'Admin Comm Stat Scheduled';
+
+  @override
+  String get adminCommStatSent => 'Admin Comm Stat Sent';
+
+  @override
+  String get adminCommStatSuccessfullySent =>
+      'Admin Comm Stat Successfully Sent';
+
+  @override
+  String get adminCommStatTotalCampaigns => 'Admin Comm Stat Total Campaigns';
+
+  @override
+  String get adminCommSubtitle => 'Admin Comm Subtitle';
+
+  @override
+  String get adminCommTabAllCampaigns => 'Admin Comm Tab All Campaigns';
+
+  @override
+  String get adminCommTabAnnouncements => 'Admin Comm Tab Announcements';
+
+  @override
+  String get adminCommTabEmails => 'Admin Comm Tab Emails';
+
+  @override
+  String get adminCommTabPushNotifications =>
+      'Admin Comm Tab Push Notifications';
+
+  @override
+  String get adminCommTitle => 'Admin Comm Title';
+
+  @override
+  String get adminContentAdvanced => 'Admin Content Advanced';
+
+  @override
+  String get adminContentAllCategories => 'Admin Content All Categories';
+
+  @override
+  String get adminContentAllContentItems => 'Admin Content All Content Items';
+
+  @override
+  String get adminContentAllStatus => 'Admin Content All Status';
+
+  @override
+  String get adminContentAllStudents => 'Admin Content All Students';
+
+  @override
+  String get adminContentArchive => 'Admin Content Archive';
+
+  @override
+  String get adminContentArchiveContent => 'Admin Content Archive Content';
+
+  @override
+  String get adminContentArchived => 'Admin Content Archived';
+
+  @override
+  String get adminContentArchivedNotVisible =>
+      'Admin Content Archived Not Visible';
+
+  @override
+  String get adminContentArchivedSuccessfully =>
+      'Admin Content Archived Successfully';
+
+  @override
+  String get adminContentArts => 'Admin Content Arts';
+
+  @override
+  String get adminContentAssign => 'Admin Content Assign';
+
+  @override
+  String get adminContentAssignContent => 'Admin Content Assign Content';
+
+  @override
+  String get adminContentAssignTo => 'Admin Content Assign To';
+
+  @override
+  String get adminContentAuthorInstitution =>
+      'Admin Content Author Institution';
+
+  @override
+  String get adminContentBeginner => 'Admin Content Beginner';
+
+  @override
+  String get adminContentBusiness => 'Admin Content Business';
+
+  @override
+  String get adminContentCategory => 'Admin Content Category';
+
+  @override
+  String get adminContentClearAll => 'Admin Content Clear All';
+
+  @override
+  String adminContentConfirmArchive(String title) {
+    return 'Admin Content Confirm Archive: $title';
+  }
+
+  @override
+  String adminContentCreatedAsDraft(String title) {
+    return 'Admin Content Created As Draft: $title';
+  }
+
+  @override
+  String get adminContentDelete => 'Admin Content Delete';
+
+  @override
+  String get adminContentDraft => 'Admin Content Draft';
+
+  @override
+  String get adminContentEditContent => 'Admin Content Edit Content';
+
+  @override
+  String get adminContentEducation => 'Admin Content Education';
+
+  @override
+  String get adminContentExpert => 'Admin Content Expert';
+
+  @override
+  String get adminContentFailedToArchive => 'Admin Content Failed To Archive';
+
+  @override
+  String get adminContentFailedToCreate => 'Admin Content Failed To Create';
+
+  @override
+  String get adminContentHybrid => 'Admin Content Hybrid';
+
+  @override
+  String get adminContentInProgress => 'Admin Content In Progress';
+
+  @override
+  String get adminContentInteractive => 'Admin Content Interactive';
+
+  @override
+  String get adminContentIntermediate => 'Admin Content Intermediate';
+
+  @override
+  String get adminContentLevelRequired => 'Admin Content Level Required';
+
+  @override
+  String get adminContentLive => 'Admin Content Live';
+
+  @override
+  String get adminContentLiveContent => 'Admin Content Live Content';
+
+  @override
+  String get adminContentLiveSession => 'Admin Content Live Session';
+
+  @override
+  String get adminContentMandatoryForUsers =>
+      'Admin Content Mandatory For Users';
+
+  @override
+  String get adminContentOptionalForUsers => 'Admin Content Optional For Users';
+
+  @override
+  String get adminContentPendingApproval => 'Admin Content Pending Approval';
+
+  @override
+  String get adminContentPreview => 'Admin Content Preview';
+
+  @override
+  String get adminContentPublishUnpublish => 'Admin Content Publish Unpublish';
+
+  @override
+  String get adminContentPublished => 'Admin Content Published';
+
+  @override
+  String get adminContentRequired => 'Admin Content Required';
+
+  @override
+  String get adminContentScience => 'Admin Content Science';
+
+  @override
+  String get adminContentSearchByTitleAuthor =>
+      'Admin Content Search By Title Author';
+
+  @override
+  String get adminContentSearchInstitutions =>
+      'Admin Content Search Institutions';
+
+  @override
+  String get adminContentSearchStudents => 'Admin Content Search Students';
+
+  @override
+  String adminContentSelectedCount(int count) {
+    return 'Admin Content Selected Count: $count';
+  }
+
+  @override
+  String get adminContentSpecificInstitutions =>
+      'Admin Content Specific Institutions';
+
+  @override
+  String get adminContentSpecificStudents => 'Admin Content Specific Students';
+
+  @override
+  String get adminContentStatus => 'Admin Content Status';
+
+  @override
+  String get adminContentTechnology => 'Admin Content Technology';
+
+  @override
+  String get adminContentText => 'Admin Content Text';
+
+  @override
+  String get adminContentTextCourse => 'Admin Content Text Course';
+
+  @override
+  String get adminContentTitle => 'Admin Content Title';
+
+  @override
+  String get adminContentTotalContent => 'Admin Content Total Content';
+
+  @override
+  String get adminContentType => 'Admin Content Type';
+
+  @override
+  String get adminContentTypeRequired => 'Admin Content Type Required';
+
+  @override
+  String get adminContentVideo => 'Admin Content Video';
+
+  @override
+  String get adminContentVideoCourse => 'Admin Content Video Course';
+
+  @override
+  String get adminCookiesAcceptAll => 'Admin Cookies Accept All';
+
+  @override
+  String get adminCookiesCategoryAcceptanceRates =>
+      'Admin Cookies Category Acceptance Rates';
+
+  @override
+  String get adminCookiesConsentAnalyticsSubtitle =>
+      'Admin Cookies Consent Analytics Subtitle';
+
+  @override
+  String get adminCookiesConsentAnalyticsTitle =>
+      'Admin Cookies Consent Analytics Title';
+
+  @override
+  String get adminCookiesConsentRate => 'Admin Cookies Consent Rate';
+
+  @override
+  String get adminCookiesConsentStatusDistribution =>
+      'Admin Cookies Consent Status Distribution';
+
+  @override
+  String get adminCookiesCustomized => 'Admin Cookies Customized';
+
+  @override
+  String get adminCookiesDeclined => 'Admin Cookies Declined';
+
+  @override
+  String adminCookiesErrorLoadingStatistics(String error) {
+    return 'Admin Cookies Error Loading Statistics: $error';
+  }
+
+  @override
+  String get adminCookiesExportAllData => 'Admin Cookies Export All Data';
+
+  @override
+  String get adminCookiesFilter => 'Admin Cookies Filter';
+
+  @override
+  String get adminCookiesFilterAccepted => 'Admin Cookies Filter Accepted';
+
+  @override
+  String get adminCookiesFilterAll => 'Admin Cookies Filter All';
+
+  @override
+  String get adminCookiesNoRecentActivity => 'Admin Cookies No Recent Activity';
+
+  @override
+  String get adminCookiesNotAsked => 'Admin Cookies Not Asked';
+
+  @override
+  String get adminCookiesOverview => 'Admin Cookies Overview';
+
+  @override
+  String get adminCookiesRecentConsentActivity =>
+      'Admin Cookies Recent Consent Activity';
+
+  @override
+  String get adminCookiesRefresh => 'Admin Cookies Refresh';
+
+  @override
+  String get adminCookiesSearchByUserId => 'Admin Cookies Search By User Id';
+
+  @override
+  String get adminCookiesTotalUsers => 'Admin Cookies Total Users';
+
+  @override
+  String get adminCookiesUserCookieDataSubtitle =>
+      'Admin Cookies User Cookie Data Subtitle';
+
+  @override
+  String get adminCookiesUserCookieDataTitle =>
+      'Admin Cookies User Cookie Data Title';
+
+  @override
+  String get adminCookiesViewAll => 'Admin Cookies View All';
+
+  @override
+  String adminExportsErrorExportFailed(String error) {
+    return 'Admin Exports Error Export Failed: $error';
+  }
+
+  @override
+  String get adminExportsErrorFetchFailed => 'Admin Exports Error Fetch Failed';
+
+  @override
+  String get adminExportsErrorNoData => 'Admin Exports Error No Data';
+
+  @override
+  String get adminExportsExportData => 'Admin Exports Export Data';
+
+  @override
+  String get adminExportsExporting => 'Admin Exports Exporting';
+
+  @override
+  String get adminExportsFormatCsv => 'Admin Exports Format Csv';
+
+  @override
+  String get adminExportsFormatCsvDesc => 'Admin Exports Format Csv Desc';
+
+  @override
+  String get adminExportsFormatJson => 'Admin Exports Format Json';
+
+  @override
+  String get adminExportsFormatJsonDesc => 'Admin Exports Format Json Desc';
+
+  @override
+  String get adminExportsHistoryEmpty => 'Admin Exports History Empty';
+
+  @override
+  String adminExportsHistoryItemDetails(
+    String source,
+    String rows,
+    String format,
+  ) {
+    return '$source • $rows lignes • $format';
+  }
+
+  @override
+  String get adminExportsHistoryTitle => 'Admin Exports History Title';
+
+  @override
+  String get adminExportsSelectFormat => 'Admin Exports Select Format';
+
+  @override
+  String get adminExportsSourceActivity => 'Admin Exports Source Activity';
+
+  @override
+  String get adminExportsSourceActivityDesc =>
+      'Admin Exports Source Activity Desc';
+
+  @override
+  String get adminExportsSourceCampaigns => 'Admin Exports Source Campaigns';
+
+  @override
+  String get adminExportsSourceCampaignsDesc =>
+      'Admin Exports Source Campaigns Desc';
+
+  @override
+  String get adminExportsSourceContent => 'Admin Exports Source Content';
+
+  @override
+  String get adminExportsSourceContentDesc =>
+      'Admin Exports Source Content Desc';
+
+  @override
+  String get adminExportsSourceTickets => 'Admin Exports Source Tickets';
+
+  @override
+  String get adminExportsSourceTicketsDesc =>
+      'Admin Exports Source Tickets Desc';
+
+  @override
+  String get adminExportsSourceTransactions =>
+      'Admin Exports Source Transactions';
+
+  @override
+  String get adminExportsSourceTransactionsDesc =>
+      'Admin Exports Source Transactions Desc';
+
+  @override
+  String get adminExportsSourceUsers => 'Admin Exports Source Users';
+
+  @override
+  String get adminExportsSourceUsersDesc => 'Admin Exports Source Users Desc';
+
+  @override
+  String adminExportsSuccessMessage(int count, String fileName) {
+    return '$count enregistrements exportés vers $fileName';
+  }
+
+  @override
+  String get adminSharedAdminAccessRequired =>
+      'Admin Shared Admin Access Required';
+
+  @override
+  String get adminSharedAdminNavigationSidebar =>
+      'Admin Shared Admin Navigation Sidebar';
+
+  @override
+  String get adminSharedAdminToolbar => 'Admin Shared Admin Toolbar';
+
+  @override
+  String get adminSharedCancel => 'Admin Shared Cancel';
+
+  @override
+  String get adminSharedClear => 'Admin Shared Clear';
+
+  @override
+  String get adminSharedFeatureUnderDevelopment =>
+      'Admin Shared Feature Under Development';
+
+  @override
+  String get adminSharedGoBack => 'Admin Shared Go Back';
+
+  @override
+  String adminSharedItemsSelected(int count) {
+    return 'Admin Shared Items Selected: $count';
+  }
+
+  @override
+  String get adminSharedMainContent => 'Admin Shared Main Content';
+
+  @override
+  String get adminSharedNotifications => 'Admin Shared Notifications';
+
+  @override
+  String get adminSharedPleaseSignInWithAdmin =>
+      'Admin Shared Please Sign In With Admin';
+
+  @override
+  String get adminSharedProfile => 'Admin Shared Profile';
+
+  @override
+  String get adminSharedRefreshing => 'Admin Shared Refreshing';
+
+  @override
+  String get adminSharedSettings => 'Admin Shared Settings';
+
+  @override
+  String get adminSharedSignOut => 'Admin Shared Sign Out';
+
+  @override
+  String get adminSharedSignOutConfirmation =>
+      'Admin Shared Sign Out Confirmation';
+
+  @override
+  String get adminSharedSwitchToDarkMode => 'Admin Shared Switch To Dark Mode';
+
+  @override
+  String get adminSharedSwitchToLightMode =>
+      'Admin Shared Switch To Light Mode';
+
+  @override
+  String get adminSharedToggleDarkMode => 'Admin Shared Toggle Dark Mode';
+
+  @override
+  String adminSharedUserMenuFor(String name) {
+    return 'Admin Shared User Menu For: $name';
+  }
+
+  @override
+  String get adminSupportTicketAllCategories =>
+      'Admin Support Ticket All Categories';
+
+  @override
+  String get adminSupportTicketAllPriorities =>
+      'Admin Support Ticket All Priorities';
+
+  @override
+  String get adminSupportTicketAllStatus => 'Admin Support Ticket All Status';
+
+  @override
+  String get adminSupportTicketAvgResolutionTime =>
+      'Admin Support Ticket Avg Resolution Time';
+
+  @override
+  String get adminSupportTicketAvgResponse =>
+      'Admin Support Ticket Avg Response';
+
+  @override
+  String get adminSupportTicketBeingHandled =>
+      'Admin Support Ticket Being Handled';
+
+  @override
+  String get adminSupportTicketCategoryAccount =>
+      'Admin Support Ticket Category Account';
+
+  @override
+  String get adminSupportTicketCategoryBilling =>
+      'Admin Support Ticket Category Billing';
+
+  @override
+  String get adminSupportTicketCategoryGeneral =>
+      'Admin Support Ticket Category General';
+
+  @override
+  String get adminSupportTicketCategoryLabel =>
+      'Admin Support Ticket Category Label';
+
+  @override
+  String get adminSupportTicketCategoryTechnical =>
+      'Admin Support Ticket Category Technical';
+
+  @override
+  String get adminSupportTicketColumnAssignedTo =>
+      'Admin Support Ticket Column Assigned To';
+
+  @override
+  String get adminSupportTicketColumnCategory =>
+      'Admin Support Ticket Column Category';
+
+  @override
+  String get adminSupportTicketColumnPriority =>
+      'Admin Support Ticket Column Priority';
+
+  @override
+  String get adminSupportTicketColumnStatus =>
+      'Admin Support Ticket Column Status';
+
+  @override
+  String get adminSupportTicketColumnSubject =>
+      'Admin Support Ticket Column Subject';
+
+  @override
+  String get adminSupportTicketColumnTicketId =>
+      'Admin Support Ticket Column Ticket Id';
+
+  @override
+  String get adminSupportTicketColumnUser => 'Admin Support Ticket Column User';
+
+  @override
+  String adminSupportTicketDaysAgo(int days) {
+    return 'Admin Support Ticket Days Ago: $days';
+  }
+
+  @override
+  String adminSupportTicketHoursAgo(int hours) {
+    return 'Admin Support Ticket Hours Ago: $hours';
+  }
+
+  @override
+  String get adminSupportTicketInProgress => 'Admin Support Ticket In Progress';
+
+  @override
+  String get adminSupportTicketJustNow => 'Admin Support Ticket Just Now';
+
+  @override
+  String get adminSupportTicketKnowledgeBase =>
+      'Admin Support Ticket Knowledge Base';
+
+  @override
+  String get adminSupportTicketLiveChat => 'Admin Support Ticket Live Chat';
+
+  @override
+  String adminSupportTicketMinutesAgo(int minutes) {
+    return 'Admin Support Ticket Minutes Ago: $minutes';
+  }
+
+  @override
+  String get adminSupportTicketOpenTickets =>
+      'Admin Support Ticket Open Tickets';
+
+  @override
+  String get adminSupportTicketPendingResolution =>
+      'Admin Support Ticket Pending Resolution';
+
+  @override
+  String get adminSupportTicketPriorityHigh =>
+      'Admin Support Ticket Priority High';
+
+  @override
+  String get adminSupportTicketPriorityLabel =>
+      'Admin Support Ticket Priority Label';
+
+  @override
+  String get adminSupportTicketPriorityLow =>
+      'Admin Support Ticket Priority Low';
+
+  @override
+  String get adminSupportTicketPriorityMedium =>
+      'Admin Support Ticket Priority Medium';
+
+  @override
+  String get adminSupportTicketPriorityUrgent =>
+      'Admin Support Ticket Priority Urgent';
+
+  @override
+  String get adminSupportTicketRefresh => 'Admin Support Ticket Refresh';
+
+  @override
+  String get adminSupportTicketResolved => 'Admin Support Ticket Resolved';
+
+  @override
+  String get adminSupportTicketRetry => 'Admin Support Ticket Retry';
+
+  @override
+  String get adminSupportTicketSearchHint =>
+      'Rechercher par ID, sujet ou client...';
+
+  @override
+  String get adminSupportTicketStatusClosed =>
+      'Admin Support Ticket Status Closed';
+
+  @override
+  String get adminSupportTicketStatusInProgress =>
+      'Admin Support Ticket Status In Progress';
+
+  @override
+  String get adminSupportTicketStatusLabel =>
+      'Admin Support Ticket Status Label';
+
+  @override
+  String get adminSupportTicketStatusOpen => 'Admin Support Ticket Status Open';
+
+  @override
+  String get adminSupportTicketStatusResolved =>
+      'Admin Support Ticket Status Resolved';
+
+  @override
+  String get adminSupportTicketSubtitle => 'Admin Support Ticket Subtitle';
+
+  @override
+  String get adminSupportTicketTitle => 'Admin Support Ticket Title';
+
+  @override
+  String get adminSupportTicketTotalResolved =>
+      'Admin Support Ticket Total Resolved';
+
+  @override
+  String get adminSystemApiBaseUrl => 'Admin System Api Base Url';
+
+  @override
+  String get adminSystemApiBaseUrlDesc => 'Admin System Api Base Url Desc';
+
+  @override
+  String get adminSystemApiKey => 'Admin System Api Key';
+
+  @override
+  String get adminSystemApiRateLimiting => 'Admin System Api Rate Limiting';
+
+  @override
+  String get adminSystemApiRateLimitingDesc =>
+      'Admin System Api Rate Limiting Desc';
+
+  @override
+  String get adminSystemApiSettingsSubtitle =>
+      'Admin System Api Settings Subtitle';
+
+  @override
+  String get adminSystemApiSettingsTitle => 'Admin System Api Settings Title';
+
+  @override
+  String get adminSystemApiVersion => 'Admin System Api Version';
+
+  @override
+  String get adminSystemApiVersionDesc => 'Admin System Api Version Desc';
+
+  @override
+  String get adminSystemApplicationName => 'Admin System Application Name';
+
+  @override
+  String get adminSystemApplicationNameDesc =>
+      'Admin System Application Name Desc';
+
+  @override
+  String get adminSystemApplicationSubmissions =>
+      'Admin System Application Submissions';
+
+  @override
+  String get adminSystemApplicationSubmissionsDesc =>
+      'Admin System Application Submissions Desc';
+
+  @override
+  String get adminSystemConsumerKey => 'Admin System Consumer Key';
+
+  @override
+  String get adminSystemConsumerSecret => 'Admin System Consumer Secret';
+
+  @override
+  String get adminSystemDefaultCurrency => 'Admin System Default Currency';
+
+  @override
+  String get adminSystemDefaultCurrencyDesc =>
+      'Admin System Default Currency Desc';
+
+  @override
+  String get adminSystemDefaultLanguage => 'Admin System Default Language';
+
+  @override
+  String get adminSystemDefaultLanguageDesc =>
+      'Admin System Default Language Desc';
+
+  @override
+  String get adminSystemDefaultRegion => 'Admin System Default Region';
+
+  @override
+  String get adminSystemDefaultRegionDesc => 'Admin System Default Region Desc';
+
+  @override
+  String get adminSystemDocumentUpload => 'Admin System Document Upload';
+
+  @override
+  String get adminSystemDocumentUploadDesc =>
+      'Admin System Document Upload Desc';
+
+  @override
+  String get adminSystemEmailApiKeyDesc => 'Admin System Email Api Key Desc';
+
+  @override
+  String get adminSystemEmailNotifications =>
+      'Admin System Email Notifications';
+
+  @override
+  String get adminSystemEmailNotificationsDesc =>
+      'Admin System Email Notifications Desc';
+
+  @override
+  String get adminSystemEmailService => 'Admin System Email Service';
+
+  @override
+  String get adminSystemEmailServiceDesc => 'Admin System Email Service Desc';
+
+  @override
+  String get adminSystemEmailSettingsSubtitle =>
+      'Admin System Email Settings Subtitle';
+
+  @override
+  String get adminSystemEmailSettingsTitle =>
+      'Admin System Email Settings Title';
+
+  @override
+  String get adminSystemEmailVerification => 'Admin System Email Verification';
+
+  @override
+  String get adminSystemEmailVerificationDesc =>
+      'Admin System Email Verification Desc';
+
+  @override
+  String get adminSystemEnableCardPayments =>
+      'Admin System Enable Card Payments';
+
+  @override
+  String get adminSystemEnableCardPaymentsDesc =>
+      'Admin System Enable Card Payments Desc';
+
+  @override
+  String get adminSystemEnableMpesa => 'Admin System Enable Mpesa';
+
+  @override
+  String get adminSystemEnableMpesaDesc => 'Admin System Enable Mpesa Desc';
+
+  @override
+  String get adminSystemFeatureFlagsSubtitle =>
+      'Admin System Feature Flags Subtitle';
+
+  @override
+  String get adminSystemFeatureFlagsTitle => 'Admin System Feature Flags Title';
+
+  @override
+  String get adminSystemFromEmail => 'Admin System From Email';
+
+  @override
+  String get adminSystemFromEmailDesc => 'Admin System From Email Desc';
+
+  @override
+  String get adminSystemFromName => 'Admin System From Name';
+
+  @override
+  String get adminSystemFromNameDesc => 'Admin System From Name Desc';
+
+  @override
+  String get adminSystemGeneralSettingsSubtitle =>
+      'Admin System General Settings Subtitle';
+
+  @override
+  String get adminSystemGeneralSettingsTitle =>
+      'Admin System General Settings Title';
+
+  @override
+  String get adminSystemGoogleAnalyticsId => 'Admin System Google Analytics Id';
+
+  @override
+  String get adminSystemGoogleAnalyticsIdDesc =>
+      'Admin System Google Analytics Id Desc';
+
+  @override
+  String get adminSystemMpesaConsumerKeyDesc =>
+      'Admin System Mpesa Consumer Key Desc';
+
+  @override
+  String get adminSystemMpesaConsumerSecretDesc =>
+      'Admin System Mpesa Consumer Secret Desc';
+
+  @override
+  String get adminSystemMpesaShortcodeDesc =>
+      'Admin System Mpesa Shortcode Desc';
+
+  @override
+  String get adminSystemNavApiIntegrations =>
+      'Admin System Nav Api Integrations';
+
+  @override
+  String get adminSystemNavBackupRecovery => 'Admin System Nav Backup Recovery';
+
+  @override
+  String get adminSystemNavEmailSettings => 'Admin System Nav Email Settings';
+
+  @override
+  String get adminSystemNavFeatureFlags => 'Admin System Nav Feature Flags';
+
+  @override
+  String get adminSystemNavGeneral => 'Admin System Nav General';
+
+  @override
+  String get adminSystemNavPaymentGateways =>
+      'Admin System Nav Payment Gateways';
+
+  @override
+  String get adminSystemNavSecurity => 'Admin System Nav Security';
+
+  @override
+  String get adminSystemNavSmsSettings => 'Admin System Nav Sms Settings';
+
+  @override
+  String get adminSystemPaymentProcessing => 'Admin System Payment Processing';
+
+  @override
+  String get adminSystemPaymentProcessingDesc =>
+      'Admin System Payment Processing Desc';
+
+  @override
+  String get adminSystemPaymentProcessor => 'Admin System Payment Processor';
+
+  @override
+  String get adminSystemPaymentProcessorDesc =>
+      'Admin System Payment Processor Desc';
+
+  @override
+  String get adminSystemPaymentSettingsSubtitle =>
+      'Admin System Payment Settings Subtitle';
+
+  @override
+  String get adminSystemPaymentSettingsTitle =>
+      'Admin System Payment Settings Title';
+
+  @override
+  String get adminSystemPublishableKey => 'Admin System Publishable Key';
+
+  @override
+  String get adminSystemPublishableKeyDesc =>
+      'Admin System Publishable Key Desc';
+
+  @override
+  String get adminSystemPushNotifications => 'Admin System Push Notifications';
+
+  @override
+  String get adminSystemPushNotificationsDesc =>
+      'Admin System Push Notifications Desc';
+
+  @override
+  String get adminSystemRecommendations => 'Admin System Recommendations';
+
+  @override
+  String get adminSystemRecommendationsDesc =>
+      'Admin System Recommendations Desc';
+
+  @override
+  String get adminSystemSecretKey => 'Admin System Secret Key';
+
+  @override
+  String get adminSystemSecretKeyDesc => 'Admin System Secret Key Desc';
+
+  @override
+  String get adminSystemSectionApiConfiguration =>
+      'Admin System Section Api Configuration';
+
+  @override
+  String get adminSystemSectionApplication =>
+      'Admin System Section Application';
+
+  @override
+  String get adminSystemSectionApplicationFeatures =>
+      'Admin System Section Application Features';
+
+  @override
+  String get adminSystemSectionCardPayments =>
+      'Admin System Section Card Payments';
+
+  @override
+  String get adminSystemSectionCommunication =>
+      'Admin System Section Communication';
+
+  @override
+  String get adminSystemSectionEmailProvider =>
+      'Admin System Section Email Provider';
+
+  @override
+  String get adminSystemSectionMpesa => 'Admin System Section Mpesa';
+
+  @override
+  String get adminSystemSectionRegional => 'Admin System Section Regional';
+
+  @override
+  String get adminSystemSectionSmsProvider =>
+      'Admin System Section Sms Provider';
+
+  @override
+  String get adminSystemSectionThirdPartyServices =>
+      'Admin System Section Third Party Services';
+
+  @override
+  String get adminSystemSectionUserFeatures =>
+      'Admin System Section User Features';
+
+  @override
+  String get adminSystemSentryDsn => 'Admin System Sentry Dsn';
+
+  @override
+  String get adminSystemSentryDsnDesc => 'Admin System Sentry Dsn Desc';
+
+  @override
+  String get adminSystemSettingsSavedError =>
+      'Admin System Settings Saved Error';
+
+  @override
+  String get adminSystemSettingsSavedSuccess =>
+      'Admin System Settings Saved Success';
+
+  @override
+  String get adminSystemSettingsSubtitle => 'Admin System Settings Subtitle';
+
+  @override
+  String get adminSystemSettingsTitle => 'Admin System Settings Title';
+
+  @override
+  String get adminSystemShortcode => 'Admin System Shortcode';
+
+  @override
+  String get adminSystemSmsApiKeyDesc => 'Admin System Sms Api Key Desc';
+
+  @override
+  String get adminSystemSmsNotifications => 'Admin System Sms Notifications';
+
+  @override
+  String get adminSystemSmsNotificationsDesc =>
+      'Admin System Sms Notifications Desc';
+
+  @override
+  String get adminSystemSmsSenderId => 'Admin System Sms Sender Id';
+
+  @override
+  String get adminSystemSmsSenderIdDesc => 'Admin System Sms Sender Id Desc';
+
+  @override
+  String get adminSystemSmsService => 'Admin System Sms Service';
+
+  @override
+  String get adminSystemSmsServiceDesc => 'Admin System Sms Service Desc';
+
+  @override
+  String get adminSystemSmsSettingsSubtitle =>
+      'Admin System Sms Settings Subtitle';
+
+  @override
+  String get adminSystemSmsSettingsTitle => 'Admin System Sms Settings Title';
+
+  @override
+  String get adminSystemSocialLogin => 'Admin System Social Login';
+
+  @override
+  String get adminSystemSocialLoginDesc => 'Admin System Social Login Desc';
+
+  @override
+  String get adminSystemSupportEmail => 'Admin System Support Email';
+
+  @override
+  String get adminSystemSupportEmailDesc => 'Admin System Support Email Desc';
+
+  @override
+  String get adminSystemSupportPhone => 'Admin System Support Phone';
+
+  @override
+  String get adminSystemSupportPhoneDesc => 'Admin System Support Phone Desc';
+
+  @override
+  String get adminSystemUnsavedChanges => 'Admin System Unsaved Changes';
+
+  @override
+  String get adminSystemUserRegistration => 'Admin System User Registration';
+
+  @override
+  String get adminSystemUserRegistrationDesc =>
+      'Admin System User Registration Desc';
+
+  @override
+  String get adminSystemViewAuditLogs => 'Admin System View Audit Logs';
+
+  @override
+  String get adminUserDetailActivate => 'Admin User Detail Activate';
+
+  @override
+  String get adminUserDetailApplications => 'Admin User Detail Applications';
+
+  @override
+  String get adminUserDetailBackToStudents =>
+      'Admin User Detail Back To Students';
+
+  @override
+  String get adminUserDetailCoursesEnrolled =>
+      'Admin User Detail Courses Enrolled';
+
+  @override
+  String get adminUserDetailDeleteAccount => 'Admin User Detail Delete Account';
+
+  @override
+  String get adminUserDetailEditProfile => 'Admin User Detail Edit Profile';
+
+  @override
+  String get adminUserDetailGrade => 'Admin User Detail Grade';
+
+  @override
+  String get adminUserDetailGradePrefix => 'Admin User Detail Grade Prefix';
+
+  @override
+  String get adminUserDetailMessageComingSoon =>
+      'Admin User Detail Message Coming Soon';
+
+  @override
+  String get adminUserDetailOverallProgress =>
+      'Admin User Detail Overall Progress';
+
+  @override
+  String get adminUserDetailSendMessage => 'Admin User Detail Send Message';
+
+  @override
+  String get adminUserDetailStatusActive => 'Admin User Detail Status Active';
+
+  @override
+  String get adminUserDetailStatusInactive =>
+      'Admin User Detail Status Inactive';
+
+  @override
+  String get adminUserDetailStudentDetails =>
+      'Admin User Detail Student Details';
+
+  @override
+  String get adminUserDetailStudentId => 'Admin User Detail Student Id';
+
+  @override
+  String get adminUserDetailSuspend => 'Admin User Detail Suspend';
+
+  @override
+  String get adminUserDetailTabAcademic => 'Admin User Detail Tab Academic';
+
+  @override
+  String get adminUserDetailTabActivity => 'Admin User Detail Tab Activity';
+
+  @override
+  String get adminUserDetailTabApplications =>
+      'Admin User Detail Tab Applications';
+
+  @override
+  String get adminUserDetailTabDocuments => 'Admin User Detail Tab Documents';
+
+  @override
+  String get adminUserDetailTabOverview => 'Admin User Detail Tab Overview';
+
+  @override
+  String get adminUserDetailTabPayments => 'Admin User Detail Tab Payments';
+
+  @override
+  String get adminUserDetailUnknownStudent =>
+      'Admin User Detail Unknown Student';
+
+  @override
+  String get adminUserFormAcademicInformation =>
+      'Admin User Form Academic Information';
+
+  @override
+  String get adminUserFormAddNewStudent => 'Admin User Form Add New Student';
+
+  @override
+  String get adminUserFormBackToStudents => 'Admin User Form Back To Students';
+
+  @override
+  String get adminUserFormCreateStudentAccount =>
+      'Admin User Form Create Student Account';
+
+  @override
+  String get adminUserFormDateFormat => 'Admin User Form Date Format';
+
+  @override
+  String get adminUserFormDateOfBirth => 'Admin User Form Date Of Birth';
+
+  @override
+  String get adminUserFormEditStudent => 'Admin User Form Edit Student';
+
+  @override
+  String get adminUserFormEmail => 'Admin User Form Email';
+
+  @override
+  String get adminUserFormEmailInvalid => 'Admin User Form Email Invalid';
+
+  @override
+  String get adminUserFormEmailRequired => 'Admin User Form Email Required';
+
+  @override
+  String get adminUserFormFirstName => 'Admin User Form First Name';
+
+  @override
+  String get adminUserFormFirstNameRequired =>
+      'Admin User Form First Name Required';
+
+  @override
+  String get adminUserFormGender => 'Admin User Form Gender';
+
+  @override
+  String get adminUserFormGenderFemale => 'Admin User Form Gender Female';
+
+  @override
+  String get adminUserFormGenderMale => 'Admin User Form Gender Male';
+
+  @override
+  String get adminUserFormGenderOther => 'Admin User Form Gender Other';
+
+  @override
+  String get adminUserFormGenderPreferNotToSay =>
+      'Admin User Form Gender Prefer Not To Say';
+
+  @override
+  String get adminUserFormGrade => 'Admin User Form Grade';
+
+  @override
+  String get adminUserFormGrade10 => 'Admin User Form Grade10';
+
+  @override
+  String get adminUserFormGrade11 => 'Admin User Form Grade11';
+
+  @override
+  String get adminUserFormGrade12 => 'Admin User Form Grade12';
+
+  @override
+  String get adminUserFormGrade9 => 'Admin User Form Grade9';
+
+  @override
+  String get adminUserFormLastName => 'Admin User Form Last Name';
+
+  @override
+  String get adminUserFormLastNameRequired =>
+      'Admin User Form Last Name Required';
+
+  @override
+  String get adminUserFormPersonalInformation =>
+      'Admin User Form Personal Information';
+
+  @override
+  String get adminUserFormPhone => 'Admin User Form Phone';
+
+  @override
+  String get adminUserFormStatus => 'Admin User Form Status';
+
+  @override
+  String get adminUserFormStatusActive => 'Admin User Form Status Active';
+
+  @override
+  String get adminUserFormStatusInactive => 'Admin User Form Status Inactive';
+
+  @override
+  String get adminUserFormStatusPendingVerification =>
+      'Admin User Form Status Pending Verification';
+
+  @override
+  String get adminUserFormStatusSuspended => 'Admin User Form Status Suspended';
+
+  @override
+  String get adminUserFormStudentCreatedSuccess =>
+      'Admin User Form Student Created Success';
+
+  @override
+  String get adminUserFormStudentUpdatedSuccess =>
+      'Admin User Form Student Updated Success';
+
+  @override
+  String get adminUserFormUpdateStudentInfo =>
+      'Admin User Form Update Student Info';
+
+  @override
+  String get adminUsersListActivate => 'Admin Users List Activate';
+
+  @override
+  String adminUsersListActivateStudentsConfirm(int count) {
+    return 'Admin Users List Activate Students Confirm: $count';
+  }
+
+  @override
+  String get adminUsersListActivateStudentsTitle =>
+      'Admin Users List Activate Students Title';
+
+  @override
+  String get adminUsersListAddInstitution => 'Admin Users List Add Institution';
+
+  @override
+  String get adminUsersListAddStudent => 'Admin Users List Add Student';
+
+  @override
+  String get adminUsersListAllGrades => 'Admin Users List All Grades';
+
+  @override
+  String get adminUsersListAllStatus => 'Admin Users List All Status';
+
+  @override
+  String get adminUsersListAllTypes => 'Admin Users List All Types';
+
+  @override
+  String get adminUsersListApprove => 'Admin Users List Approve';
+
+  @override
+  String adminUsersListApproveInstitutionsConfirm(int count) {
+    return 'Admin Users List Approve Institutions Confirm: $count';
+  }
+
+  @override
+  String get adminUsersListApproveInstitutionsTitle =>
+      'Admin Users List Approve Institutions Title';
+
+  @override
+  String get adminUsersListCancel => 'Admin Users List Cancel';
+
+  @override
+  String get adminUsersListColumnApplications =>
+      'Admin Users List Column Applications';
+
+  @override
+  String get adminUsersListColumnGrade => 'Admin Users List Column Grade';
+
+  @override
+  String get adminUsersListColumnInstitution =>
+      'Admin Users List Column Institution';
+
+  @override
+  String get adminUsersListColumnInstitutionId =>
+      'Admin Users List Column Institution Id';
+
+  @override
+  String get adminUsersListColumnJoined => 'Admin Users List Column Joined';
+
+  @override
+  String get adminUsersListColumnLocation => 'Admin Users List Column Location';
+
+  @override
+  String get adminUsersListColumnPrograms => 'Admin Users List Column Programs';
+
+  @override
+  String get adminUsersListColumnSchool => 'Admin Users List Column School';
+
+  @override
+  String get adminUsersListColumnStatus => 'Admin Users List Column Status';
+
+  @override
+  String get adminUsersListColumnStudent => 'Admin Users List Column Student';
+
+  @override
+  String get adminUsersListColumnStudentId =>
+      'Admin Users List Column Student Id';
+
+  @override
+  String get adminUsersListColumnType => 'Admin Users List Column Type';
+
+  @override
+  String get adminUsersListDeactivate => 'Admin Users List Deactivate';
+
+  @override
+  String get adminUsersListDeactivateAccount =>
+      'Admin Users List Deactivate Account';
+
+  @override
+  String adminUsersListDeactivateInstitutionsConfirm(int count) {
+    return 'Admin Users List Deactivate Institutions Confirm: $count';
+  }
+
+  @override
+  String get adminUsersListDeactivateInstitutionsTitle =>
+      'Admin Users List Deactivate Institutions Title';
+
+  @override
+  String adminUsersListDeactivateStudentsConfirm(int count) {
+    return 'Admin Users List Deactivate Students Confirm: $count';
+  }
+
+  @override
+  String get adminUsersListDeactivateStudentsTitle =>
+      'Admin Users List Deactivate Students Title';
+
+  @override
+  String get adminUsersListEditInstitution =>
+      'Admin Users List Edit Institution';
+
+  @override
+  String get adminUsersListEditStudent => 'Admin Users List Edit Student';
+
+  @override
+  String get adminUsersListExport => 'Admin Users List Export';
+
+  @override
+  String get adminUsersListExportInstitutions =>
+      'Admin Users List Export Institutions';
+
+  @override
+  String get adminUsersListExportStudents => 'Admin Users List Export Students';
+
+  @override
+  String get adminUsersListGrade10 => 'Admin Users List Grade10';
+
+  @override
+  String get adminUsersListGrade11 => 'Admin Users List Grade11';
+
+  @override
+  String get adminUsersListGrade12 => 'Admin Users List Grade12';
+
+  @override
+  String get adminUsersListGrade9 => 'Admin Users List Grade9';
+
+  @override
+  String get adminUsersListGradeLabel => 'Admin Users List Grade Label';
+
+  @override
+  String get adminUsersListInstitutionsSubtitle =>
+      'Admin Users List Institutions Subtitle';
+
+  @override
+  String get adminUsersListInstitutionsTitle =>
+      'Admin Users List Institutions Title';
+
+  @override
+  String get adminUsersListSearchInstitutionsHint =>
+      'Admin Users List Search Institutions Hint';
+
+  @override
+  String get adminUsersListSearchStudentsHint =>
+      'Admin Users List Search Students Hint';
+
+  @override
+  String get adminUsersListStatusActive => 'Admin Users List Status Active';
+
+  @override
+  String get adminUsersListStatusInactive => 'Admin Users List Status Inactive';
+
+  @override
+  String get adminUsersListStatusLabel => 'Admin Users List Status Label';
+
+  @override
+  String get adminUsersListStatusPending => 'Admin Users List Status Pending';
+
+  @override
+  String get adminUsersListStatusPendingApproval =>
+      'Admin Users List Status Pending Approval';
+
+  @override
+  String get adminUsersListStatusPendingVerification =>
+      'Admin Users List Status Pending Verification';
+
+  @override
+  String get adminUsersListStatusRejected => 'Admin Users List Status Rejected';
+
+  @override
+  String get adminUsersListStudentsSubtitle =>
+      'Admin Users List Students Subtitle';
+
+  @override
+  String get adminUsersListStudentsTitle => 'Admin Users List Students Title';
+
+  @override
+  String get adminUsersListTypeCollege => 'Admin Users List Type College';
+
+  @override
+  String get adminUsersListTypeLabel => 'Admin Users List Type Label';
+
+  @override
+  String get adminUsersListTypeLanguageSchool =>
+      'Admin Users List Type Language School';
+
+  @override
+  String get adminUsersListTypeUniversity => 'Admin Users List Type University';
+
+  @override
+  String get adminUsersListTypeVocational => 'Admin Users List Type Vocational';
+
+  @override
+  String get adminUsersListViewDetails => 'Admin Users List View Details';
+
+  @override
+  String get instCourseAdd => 'Inst Course Add';
+
+  @override
+  String get instCourseAddLearningObjective =>
+      'Inst Course Add Learning Objective';
+
+  @override
+  String get instCourseAddModuleSubtitle => 'Inst Course Add Module Subtitle';
+
+  @override
+  String get instCourseClose => 'Inst Course Close';
+
+  @override
+  String get instCourseCopyToClipboard => 'Inst Course Copy To Clipboard';
+
+  @override
+  String get instCourseCreateModule => 'Inst Course Create Module';
+
+  @override
+  String get instCourseCreateNewModule => 'Inst Course Create New Module';
+
+  @override
+  String get instCourseCtrlPToPreview => 'Inst Course Ctrl P To Preview';
+
+  @override
+  String get instCourseCtrlSToSave => 'Inst Course Ctrl S To Save';
+
+  @override
+  String get instCourseDesktop => 'Inst Course Desktop';
+
+  @override
+  String get instCourseDiscardChanges => 'Inst Course Discard Changes';
+
+  @override
+  String get instCourseEdit => 'Inst Course Edit';
+
+  @override
+  String get instCourseEditLearningObjective =>
+      'Inst Course Edit Learning Objective';
+
+  @override
+  String get instCourseEstimatedDuration => 'Inst Course Estimated Duration';
+
+  @override
+  String get instCourseEstimatedDurationHelper =>
+      'Inst Course Estimated Duration Helper';
+
+  @override
+  String get instCourseExportInfo => 'Inst Course Export Info';
+
+  @override
+  String get instCourseExportQuestions => 'Inst Course Export Questions';
+
+  @override
+  String get instCourseFixIssuesBeforeSaving =>
+      'Inst Course Fix Issues Before Saving';
+
+  @override
+  String get instCourseImport => 'Inst Course Import';
+
+  @override
+  String get instCourseImportFailed => 'Inst Course Import Failed';
+
+  @override
+  String get instCourseImportInfo => 'Inst Course Import Info';
+
+  @override
+  String get instCourseImportQuestions => 'Inst Course Import Questions';
+
+  @override
+  String get instCourseImportSuccess => 'Inst Course Import Success';
+
+  @override
+  String get instCourseJsonCopied => 'Inst Course Json Copied';
+
+  @override
+  String get instCourseJsonData => 'Inst Course Json Data';
+
+  @override
+  String get instCourseLearningObjectivesInfo =>
+      'Inst Course Learning Objectives Info';
+
+  @override
+  String get instCourseMandatory => 'Inst Course Mandatory';
+
+  @override
+  String instCourseMinutesShort(int minutes) {
+    return 'Inst Course Minutes Short: $minutes';
+  }
+
+  @override
+  String get instCourseMobile => 'Inst Course Mobile';
+
+  @override
+  String get instCourseModuleDescription => 'Inst Course Module Description';
+
+  @override
+  String get instCourseModuleDescriptionHelper =>
+      'Inst Course Module Description Helper';
+
+  @override
+  String get instCourseModuleDescriptionHint =>
+      'Inst Course Module Description Hint';
+
+  @override
+  String get instCourseModuleHiddenFromStudents =>
+      'Inst Course Module Hidden From Students';
+
+  @override
+  String instCourseModuleNumber(int number) {
+    return 'Inst Course Module Number: $number';
+  }
+
+  @override
+  String get instCourseModuleOptional => 'Inst Course Module Optional';
+
+  @override
+  String get instCourseModuleOverview => 'Inst Course Module Overview';
+
+  @override
+  String get instCourseModuleTitle => 'Inst Course Module Title';
+
+  @override
+  String get instCourseModuleTitleHelper => 'Inst Course Module Title Helper';
+
+  @override
+  String get instCourseModuleTitleHint => 'Inst Course Module Title Hint';
+
+  @override
+  String get instCourseModuleTitleMinLength =>
+      'Inst Course Module Title Min Length';
+
+  @override
+  String get instCourseModuleTitleRequired =>
+      'Inst Course Module Title Required';
+
+  @override
+  String get instCourseModuleVisibleToStudents =>
+      'Inst Course Module Visible To Students';
+
+  @override
+  String get instCourseNoObjectivesSubtitle =>
+      'Inst Course No Objectives Subtitle';
+
+  @override
+  String get instCourseNoObjectivesYet => 'Inst Course No Objectives Yet';
+
+  @override
+  String get instCourseNoOtherModulesAvailable =>
+      'Inst Course No Other Modules Available';
+
+  @override
+  String get instCourseObjective => 'Inst Course Objective';
+
+  @override
+  String get instCourseObjectiveHint => 'Inst Course Objective Hint';
+
+  @override
+  String instCourseObjectivesCount(int count) {
+    return 'Inst Course Objectives Count: $count';
+  }
+
+  @override
+  String get instCourseOk => 'Inst Course Ok';
+
+  @override
+  String get instCoursePasteJsonHere => 'Inst Course Paste Json Here';
+
+  @override
+  String get instCoursePrerequisitesDescription =>
+      'Inst Course Prerequisites Description';
+
+  @override
+  String get instCoursePreview => 'Inst Course Preview';
+
+  @override
+  String get instCoursePublished => 'Inst Course Published';
+
+  @override
+  String get instCoursePublishingSettings => 'Inst Course Publishing Settings';
+
+  @override
+  String get instCourseSaveAsDraft => 'Inst Course Save As Draft';
+
+  @override
+  String get instCourseSaved => 'Inst Course Saved';
+
+  @override
+  String get instCourseSettings => 'Inst Course Settings';
+
+  @override
+  String get instCourseStay => 'Inst Course Stay';
+
+  @override
+  String get instCourseStudentPreview => 'Inst Course Student Preview';
+
+  @override
+  String get instCourseStudentsMustComplete =>
+      'Inst Course Students Must Complete';
+
+  @override
+  String get instCourseTablet => 'Inst Course Tablet';
+
+  @override
+  String get instCourseUnsavedChanges => 'Inst Course Unsaved Changes';
+
+  @override
+  String get instCourseUnsavedChangesMessage =>
+      'Inst Course Unsaved Changes Message';
+
+  @override
+  String get instCourseUpdate => 'Inst Course Update';
+
+  @override
+  String get instCourseUpdateModule => 'Inst Course Update Module';
+
+  @override
+  String get instCourseUpdateModuleSubtitle =>
+      'Inst Course Update Module Subtitle';
+
+  @override
+  String get instCourseValidationErrors => 'Inst Course Validation Errors';
+
+  @override
+  String get instCoursesDescription => 'Inst Courses Description';
+
+  @override
+  String get instCoursesEditCourse => 'Inst Courses Edit Course';
+
+  @override
+  String instCoursesEnrolledCount(int count) {
+    return 'Inst Courses Enrolled Count: $count';
+  }
+
+  @override
+  String get instCoursesLearningOutcomes => 'Inst Courses Learning Outcomes';
+
+  @override
+  String get instCoursesPrerequisites => 'Inst Courses Prerequisites';
+
+  @override
+  String get instCoursesPublished => 'Inst Courses Published';
+
+  @override
+  String get instCoursesQuickActions => 'Inst Courses Quick Actions';
+
+  @override
+  String get instCoursesStatistics => 'Inst Courses Statistics';
+
+  @override
+  String get instDebugAuthInfo => 'Inst Debug Auth Info';
+
+  @override
+  String get instDebugError => 'Inst Debug Error';
+
+  @override
+  String get instDebugRetry => 'Inst Debug Retry';
+
+  @override
+  String get instDebugRunningDiagnostics => 'Inst Debug Running Diagnostics';
+
+  @override
+  String get instDebugTitle => 'Inst Debug Title';
+
+  @override
+  String get instDebugUserStatus => 'Inst Debug User Status';
+
+  @override
+  String sharedCookiesDataExportedRecords(String count) {
+    return 'Shared Cookies Data Exported Records: $count';
+  }
+
+  @override
+  String sharedCookiesErrorLoadingConsent(String error) {
+    return 'Shared Cookies Error Loading Consent: $error';
+  }
+
+  @override
+  String sharedCookiesExpires(String date) {
+    return 'Shared Cookies Expires: $date';
+  }
+
+  @override
+  String sharedCookiesUpdated(String date) {
+    return 'Shared Cookies Updated: $date';
+  }
+
+  @override
+  String get sharedDocumentsBack => 'Shared Documents Back';
+
+  @override
+  String get sharedDocumentsCancel => 'Shared Documents Cancel';
+
+  @override
+  String get sharedDocumentsCategory => 'Shared Documents Category';
+
+  @override
+  String get sharedDocumentsDelete => 'Shared Documents Delete';
+
+  @override
+  String sharedDocumentsDeleteDocumentConfirm(String name) {
+    return 'Shared Documents Delete Document Confirm: $name';
+  }
+
+  @override
+  String get sharedDocumentsDeleteDocumentTitle =>
+      'Shared Documents Delete Document Title';
+
+  @override
+  String get sharedDocumentsDescription => 'Shared Documents Description';
+
+  @override
+  String get sharedDocumentsDocumentDeleted =>
+      'Shared Documents Document Deleted';
+
+  @override
+  String get sharedDocumentsDocumentInfo => 'Shared Documents Document Info';
+
+  @override
+  String get sharedDocumentsDocumentInformation =>
+      'Shared Documents Document Information';
+
+  @override
+  String get sharedDocumentsDownload => 'Shared Documents Download';
+
+  @override
+  String get sharedDocumentsDownloadFile => 'Shared Documents Download File';
+
+  @override
+  String sharedDocumentsDownloading(String filename) {
+    return 'Shared Documents Downloading: $filename';
+  }
+
+  @override
+  String get sharedDocumentsName => 'Shared Documents Name';
+
+  @override
+  String get sharedDocumentsPending => 'Shared Documents Pending';
+
+  @override
+  String get sharedDocumentsPreviewNotAvailable =>
+      'Shared Documents Preview Not Available';
+
+  @override
+  String sharedDocumentsPreviewNotAvailableSubtitle(String type) {
+    return 'Shared Documents Preview Not Available Subtitle: $type';
+  }
+
+  @override
+  String get sharedDocumentsShare => 'Shared Documents Share';
+
+  @override
+  String get sharedDocumentsShareComingSoon =>
+      'Shared Documents Share Coming Soon';
+
+  @override
+  String get sharedDocumentsSize => 'Shared Documents Size';
+
+  @override
+  String get sharedDocumentsType => 'Shared Documents Type';
+
+  @override
+  String get sharedDocumentsUnknown => 'Shared Documents Unknown';
+
+  @override
+  String get sharedDocumentsUploadDate => 'Shared Documents Upload Date';
+
+  @override
+  String get sharedDocumentsUploadedBy => 'Shared Documents Uploaded By';
+
+  @override
+  String get sharedDocumentsVerificationStatus =>
+      'Shared Documents Verification Status';
+
+  @override
+  String get sharedDocumentsVerified => 'Shared Documents Verified';
+
+  @override
+  String sharedExamsAnsweredCount(int count) {
+    return 'Shared Exams Answered Count: $count';
+  }
+
+  @override
+  String get sharedExamsNext => 'Shared Exams Next';
+
+  @override
+  String get sharedExamsPrevious => 'Shared Exams Previous';
+
+  @override
+  String sharedExamsQuestionProgress(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String get sharedExamsSubmit => 'Shared Exams Submit';
+
+  @override
+  String get sharedExamsSubmitting => 'Shared Exams Submitting';
+
+  @override
+  String get sharedFocusBreakCompleteReadyToFocus =>
+      'Shared Focus Break Complete Ready To Focus';
+
+  @override
+  String get sharedFocusFinish => 'Shared Focus Finish';
+
+  @override
+  String get sharedFocusGreatWorkTimeForBreak =>
+      'Shared Focus Great Work Time For Break';
+
+  @override
+  String get sharedFocusPomodorosToday => 'Shared Focus Pomodoros Today';
+
+  @override
+  String get sharedFocusSessionComplete => 'Shared Focus Session Complete';
+
+  @override
+  String get sharedFocusStartBreak => 'Shared Focus Start Break';
+
+  @override
+  String get sharedFocusStartFocus => 'Shared Focus Start Focus';
+
+  @override
+  String get sharedFocusTimerTitle => 'Shared Focus Timer Title';
+
+  @override
+  String sharedHelpArticleCount(int count) {
+    return 'Shared Help Article Count: $count';
+  }
+
+  @override
+  String sharedHelpDaysAgo(int days) {
+    return 'Shared Help Days Ago: $days';
+  }
+
+  @override
+  String get sharedHelpMonthApr => 'Shared Help Month Apr';
+
+  @override
+  String get sharedHelpMonthAug => 'Shared Help Month Aug';
+
+  @override
+  String get sharedHelpMonthDec => 'Shared Help Month Dec';
+
+  @override
+  String get sharedHelpMonthFeb => 'Shared Help Month Feb';
+
+  @override
+  String get sharedHelpMonthJan => 'Shared Help Month Jan';
+
+  @override
+  String get sharedHelpMonthJul => 'Shared Help Month Jul';
+
+  @override
+  String get sharedHelpMonthJun => 'Shared Help Month Jun';
+
+  @override
+  String get sharedHelpMonthMar => 'Shared Help Month Mar';
+
+  @override
+  String get sharedHelpMonthMay => 'Shared Help Month May';
+
+  @override
+  String get sharedHelpMonthNov => 'Shared Help Month Nov';
+
+  @override
+  String get sharedHelpMonthOct => 'Shared Help Month Oct';
+
+  @override
+  String get sharedHelpMonthSep => 'Shared Help Month Sep';
+
+  @override
+  String sharedHelpSearchingFor(String query) {
+    return 'Shared Help Searching For: $query';
+  }
+
+  @override
+  String get sharedHelpToday => 'Shared Help Today';
+
+  @override
+  String sharedHelpViewCount(int count) {
+    return 'Shared Help View Count: $count';
+  }
+
+  @override
+  String get sharedHelpYesterday => 'Shared Help Yesterday';
+
+  @override
+  String get sharedMessagingChat => 'Shared Messaging Chat';
+
+  @override
+  String get sharedMessagingConnecting => 'Shared Messaging Connecting';
+
+  @override
+  String get sharedMessagingFailedToSend => 'Shared Messaging Failed To Send';
+
+  @override
+  String get sharedMessagingLoadingMessages =>
+      'Shared Messaging Loading Messages';
+
+  @override
+  String get sharedMessagingNoMessagesYet => 'Shared Messaging No Messages Yet';
+
+  @override
+  String get sharedMessagingRetry => 'Shared Messaging Retry';
+
+  @override
+  String get sharedMessagingStartConversation =>
+      'Shared Messaging Start Conversation';
+
+  @override
+  String get sharedMessagingTypeMessage => 'Shared Messaging Type Message';
+
+  @override
+  String get sharedMessagingTyping => 'Shared Messaging Typing';
+
+  @override
+  String get sharedMessagingTypingMultiple =>
+      'Shared Messaging Typing Multiple';
+
+  @override
+  String get sharedNotesCancel => 'Shared Notes Cancel';
+
+  @override
+  String get sharedNotesDiscard => 'Shared Notes Discard';
+
+  @override
+  String get sharedNotesPleaseEnterTitle => 'Shared Notes Please Enter Title';
+
+  @override
+  String get sharedNotesUnsavedChangesMessage =>
+      'Shared Notes Unsaved Changes Message';
+
+  @override
+  String get sharedNotesUnsavedChangesTitle =>
+      'Shared Notes Unsaved Changes Title';
+
+  @override
+  String get sharedNotificationsMarkAllRead =>
+      'Shared Notifications Mark All Read';
+
+  @override
+  String get sharedNotificationsTitle => 'Shared Notifications Title';
+
+  @override
+  String get sharedPaymentsPaymentSuccessfulTitle =>
+      'Shared Payments Payment Successful Title';
+
+  @override
+  String get sharedProfileRetry => 'Shared Profile Retry';
+
+  @override
+  String get sharedQuizzesAnswered => 'Shared Quizzes Answered';
+
+  @override
+  String get sharedQuizzesCancel => 'Shared Quizzes Cancel';
+
+  @override
+  String get sharedQuizzesCurrent => 'Shared Quizzes Current';
+
+  @override
+  String get sharedQuizzesExit => 'Shared Quizzes Exit';
+
+  @override
+  String get sharedQuizzesExitQuizMessage => 'Shared Quizzes Exit Quiz Message';
+
+  @override
+  String get sharedQuizzesExitQuizTitle => 'Shared Quizzes Exit Quiz Title';
+
+  @override
+  String get sharedQuizzesNext => 'Shared Quizzes Next';
+
+  @override
+  String get sharedQuizzesOk => 'Shared Quizzes Ok';
+
+  @override
+  String get sharedQuizzesPrevious => 'Shared Quizzes Previous';
+
+  @override
+  String get sharedQuizzesQuestionNavigator =>
+      'Shared Quizzes Question Navigator';
+
+  @override
+  String get sharedQuizzesReview => 'Shared Quizzes Review';
+
+  @override
+  String get sharedQuizzesSubmit => 'Shared Quizzes Submit';
+
+  @override
+  String get sharedQuizzesSubmitAnyway => 'Shared Quizzes Submit Anyway';
+
+  @override
+  String get sharedQuizzesSubmitQuiz => 'Shared Quizzes Submit Quiz';
+
+  @override
+  String get sharedQuizzesSubmitQuizMessage =>
+      'Shared Quizzes Submit Quiz Message';
+
+  @override
+  String get sharedQuizzesSubmitQuizTitle => 'Shared Quizzes Submit Quiz Title';
+
+  @override
+  String get sharedQuizzesTimeExpiredMessage =>
+      'Shared Quizzes Time Expired Message';
+
+  @override
+  String get sharedQuizzesTimesUp => 'Shared Quizzes Times Up';
+
+  @override
+  String get sharedQuizzesUnanswered => 'Shared Quizzes Unanswered';
+
+  @override
+  String sharedQuizzesUnansweredQuestionsMessage(int count) {
+    return 'Shared Quizzes Unanswered Questions Message: $count';
+  }
+
+  @override
+  String get sharedQuizzesUnansweredQuestionsTitle =>
+      'Shared Quizzes Unanswered Questions Title';
+
+  @override
+  String get sharedResourcesAddedToBookmarks =>
+      'Shared Resources Added To Bookmarks';
+
+  @override
+  String get sharedResourcesAudioControlsComingSoon =>
+      'Shared Resources Audio Controls Coming Soon';
+
+  @override
+  String get sharedResourcesAudioControlsFeature =>
+      'Shared Resources Audio Controls Feature';
+
+  @override
+  String get sharedResourcesAudioPlaybackComingSoon =>
+      'Shared Resources Audio Playback Coming Soon';
+
+  @override
+  String get sharedResourcesAudioPlayerFeature =>
+      'Shared Resources Audio Player Feature';
+
+  @override
+  String get sharedResourcesBookmarkTooltip =>
+      'Shared Resources Bookmark Tooltip';
+
+  @override
+  String get sharedResourcesCheckConnectionMessage =>
+      'Shared Resources Check Connection Message';
+
+  @override
+  String get sharedResourcesDownloadCompleted =>
+      'Shared Resources Download Completed';
+
+  @override
+  String get sharedResourcesDownloadToView =>
+      'Shared Resources Download To View';
+
+  @override
+  String get sharedResourcesDownloadTooltip =>
+      'Shared Resources Download Tooltip';
+
+  @override
+  String get sharedResourcesFailedToLoadImage =>
+      'Shared Resources Failed To Load Image';
+
+  @override
+  String get sharedResourcesFailedToLoadResource =>
+      'Shared Resources Failed To Load Resource';
+
+  @override
+  String get sharedResourcesFileTypeRequiresViewer =>
+      'Shared Resources File Type Requires Viewer';
+
+  @override
+  String sharedResourcesOpeningUrl(String url) {
+    return 'Shared Resources Opening Url: $url';
+  }
+
+  @override
+  String get sharedResourcesPdfViewerMessage =>
+      'Shared Resources Pdf Viewer Message';
+
+  @override
+  String get sharedResourcesPdfViewerTitle =>
+      'Shared Resources Pdf Viewer Title';
+
+  @override
+  String get sharedResourcesRemovedFromBookmarks =>
+      'Shared Resources Removed From Bookmarks';
+
+  @override
+  String get sharedResourcesRetry => 'Shared Resources Retry';
+
+  @override
+  String get sharedResourcesShareComingSoon =>
+      'Shared Resources Share Coming Soon';
+
+  @override
+  String get sharedResourcesShareTooltip => 'Shared Resources Share Tooltip';
+
+  @override
+  String get sharedResourcesVideoPlaybackComingSoon =>
+      'Shared Resources Video Playback Coming Soon';
+
+  @override
+  String get sharedResourcesVideoPlayerMessage =>
+      'Shared Resources Video Player Message';
+
+  @override
+  String get sharedResourcesVideoPlayerTitle =>
+      'Shared Resources Video Player Title';
+
+  @override
+  String get sharedScheduleCalendar => 'Shared Schedule Calendar';
+
+  @override
+  String get sharedScheduleFilter => 'Shared Schedule Filter';
+
+  @override
+  String get sharedScheduleToday => 'Shared Schedule Today';
+
+  @override
+  String get sharedTasksCourseLabel => 'Shared Tasks Course Label';
+
+  @override
+  String get sharedTasksDeleteTooltip => 'Shared Tasks Delete Tooltip';
+
+  @override
+  String get sharedTasksDescriptionLabel => 'Shared Tasks Description Label';
+
+  @override
+  String get sharedTasksDetailsTitle => 'Shared Tasks Details Title';
+
+  @override
+  String get sharedTasksDueDateLabel => 'Shared Tasks Due Date Label';
+
+  @override
+  String get sharedTasksEditTooltip => 'Shared Tasks Edit Tooltip';
+
+  @override
+  String get sharedTasksFavoriteTooltip => 'Shared Tasks Favorite Tooltip';
+
+  @override
+  String get sharedTasksOverdueWarning => 'Shared Tasks Overdue Warning';
+
+  @override
+  String studentAppsFailedToPrepare(String error) {
+    return 'Student Apps Failed To Prepare: $error';
+  }
+
+  @override
+  String get studentAppsUploadingDocuments =>
+      'Student Apps Uploading Documents';
+
+  @override
+  String studentCoursesCompletedOn(String date) {
+    return 'Student Courses Completed On: $date';
+  }
+
+  @override
+  String studentCoursesError(String error) {
+    return 'Student Courses Error: $error';
+  }
+
+  @override
+  String get studentCoursesFailedToLoadDetails =>
+      'Student Courses Failed To Load Details';
 }

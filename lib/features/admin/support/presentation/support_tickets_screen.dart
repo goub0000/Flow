@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_support_provider.dart';
@@ -95,7 +96,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   IconButton(
                     icon: const Icon(Icons.refresh, size: 18),
                     onPressed: () => ref.read(adminSupportProvider.notifier).fetchTickets(),
-                    tooltip: 'Retry',
+                    tooltip: context.l10n.adminSupportTicketRetry,
                   ),
                 ],
               ),
@@ -136,7 +137,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Support Tickets',
+                    context.l10n.adminSupportTicketTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -145,7 +146,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage and resolve user support requests',
+                context.l10n.adminSupportTicketSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -162,7 +163,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                     context.go('/admin/knowledge-base');
                   },
                   icon: const Icon(Icons.menu_book, size: 20),
-                  label: const Text('Knowledge Base'),
+                  label: Text(context.l10n.adminSupportTicketKnowledgeBase),
                 ),
               ),
               const SizedBox(width: 12),
@@ -173,7 +174,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                     context.go('/admin/chat');
                   },
                   icon: const Icon(Icons.chat, size: 20),
-                  label: const Text('Live Chat'),
+                  label: Text(context.l10n.adminSupportTicketLiveChat),
                 ),
               ),
               const SizedBox(width: 12),
@@ -182,7 +183,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   ref.read(adminSupportProvider.notifier).fetchTickets();
                 },
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh Tickets',
+                tooltip: context.l10n.adminSupportTicketRefresh,
               ),
             ],
           ),
@@ -201,9 +202,9 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
         children: [
           Expanded(
             child: _buildStatCard(
-              'Open Tickets',
+              context.l10n.adminSupportTicketOpenTickets,
               '${stats['open'] ?? 0}',
-              'Pending resolution',
+              context.l10n.adminSupportTicketPendingResolution,
               Icons.pending,
               AppColors.warning,
             ),
@@ -211,9 +212,9 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'In Progress',
+              context.l10n.adminSupportTicketInProgress,
               '${stats['inProgress'] ?? 0}',
-              'Being handled',
+              context.l10n.adminSupportTicketBeingHandled,
               Icons.timelapse,
               AppColors.primary,
             ),
@@ -221,9 +222,9 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Resolved',
+              context.l10n.adminSupportTicketResolved,
               '$resolvedCount',
-              'Total resolved',
+              context.l10n.adminSupportTicketTotalResolved,
               Icons.check_circle,
               AppColors.success,
             ),
@@ -231,9 +232,9 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Avg Response',
+              context.l10n.adminSupportTicketAvgResponse,
               '${avgHours}h',
-              'Average resolution time',
+              context.l10n.adminSupportTicketAvgResolutionTime,
               Icons.access_time,
               AppColors.textSecondary,
             ),
@@ -305,7 +306,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by ticket ID, user, or subject...',
+                hintText: context.l10n.adminSupportTicketSearchHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -326,7 +327,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminSupportTicketStatusLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -335,12 +336,12 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'open', child: Text('Open')),
-                DropdownMenuItem(value: 'in_progress', child: Text('In Progress')),
-                DropdownMenuItem(value: 'resolved', child: Text('Resolved')),
-                DropdownMenuItem(value: 'closed', child: Text('Closed')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminSupportTicketAllStatus)),
+                DropdownMenuItem(value: 'open', child: Text(context.l10n.adminSupportTicketStatusOpen)),
+                DropdownMenuItem(value: 'in_progress', child: Text(context.l10n.adminSupportTicketStatusInProgress)),
+                DropdownMenuItem(value: 'resolved', child: Text(context.l10n.adminSupportTicketStatusResolved)),
+                DropdownMenuItem(value: 'closed', child: Text(context.l10n.adminSupportTicketStatusClosed)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -354,7 +355,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedPriority,
               decoration: InputDecoration(
-                labelText: 'Priority',
+                labelText: context.l10n.adminSupportTicketPriorityLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -363,12 +364,12 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Priorities')),
-                DropdownMenuItem(value: 'urgent', child: Text('Urgent')),
-                DropdownMenuItem(value: 'high', child: Text('High')),
-                DropdownMenuItem(value: 'medium', child: Text('Medium')),
-                DropdownMenuItem(value: 'low', child: Text('Low')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminSupportTicketAllPriorities)),
+                DropdownMenuItem(value: 'urgent', child: Text(context.l10n.adminSupportTicketPriorityUrgent)),
+                DropdownMenuItem(value: 'high', child: Text(context.l10n.adminSupportTicketPriorityHigh)),
+                DropdownMenuItem(value: 'medium', child: Text(context.l10n.adminSupportTicketPriorityMedium)),
+                DropdownMenuItem(value: 'low', child: Text(context.l10n.adminSupportTicketPriorityLow)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -382,7 +383,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedCategory,
               decoration: InputDecoration(
-                labelText: 'Category',
+                labelText: context.l10n.adminSupportTicketCategoryLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -391,12 +392,12 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Categories')),
-                DropdownMenuItem(value: 'technical', child: Text('Technical')),
-                DropdownMenuItem(value: 'billing', child: Text('Billing')),
-                DropdownMenuItem(value: 'account', child: Text('Account')),
-                DropdownMenuItem(value: 'general', child: Text('General')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminSupportTicketAllCategories)),
+                DropdownMenuItem(value: 'technical', child: Text(context.l10n.adminSupportTicketCategoryTechnical)),
+                DropdownMenuItem(value: 'billing', child: Text(context.l10n.adminSupportTicketCategoryBilling)),
+                DropdownMenuItem(value: 'account', child: Text(context.l10n.adminSupportTicketCategoryAccount)),
+                DropdownMenuItem(value: 'general', child: Text(context.l10n.adminSupportTicketCategoryGeneral)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -416,17 +417,17 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
 
   String _timeSince(DateTime date) {
     final diff = DateTime.now().difference(date);
-    if (diff.inDays > 0) return '${diff.inDays}d ago';
-    if (diff.inHours > 0) return '${diff.inHours}h ago';
-    if (diff.inMinutes > 0) return '${diff.inMinutes}m ago';
-    return 'Just now';
+    if (diff.inDays > 0) return context.l10n.adminSupportTicketDaysAgo(diff.inDays);
+    if (diff.inHours > 0) return context.l10n.adminSupportTicketHoursAgo(diff.inHours);
+    if (diff.inMinutes > 0) return context.l10n.adminSupportTicketMinutesAgo(diff.inMinutes);
+    return context.l10n.adminSupportTicketJustNow;
   }
 
   Widget _buildDataTable(List<SupportTicket> tickets, bool isLoading) {
     return AdminDataTable<SupportTicket>(
       columns: [
         DataTableColumn(
-          label: 'Ticket ID',
+          label: context.l10n.adminSupportTicketColumnTicketId,
           cellBuilder: (ticket) => Text(
             ticket.id,
             style: const TextStyle(
@@ -438,7 +439,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Subject',
+          label: context.l10n.adminSupportTicketColumnSubject,
           cellBuilder: (ticket) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -464,7 +465,7 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'User',
+          label: context.l10n.adminSupportTicketColumnUser,
           cellBuilder: (ticket) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -487,22 +488,22 @@ class _SupportTicketsScreenState extends ConsumerState<SupportTicketsScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Category',
+          label: context.l10n.adminSupportTicketColumnCategory,
           cellBuilder: (ticket) => Text(
             ticket.category,
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Priority',
+          label: context.l10n.adminSupportTicketColumnPriority,
           cellBuilder: (ticket) => _buildPriorityChip(ticket.priority),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminSupportTicketColumnStatus,
           cellBuilder: (ticket) => _buildStatusChip(ticket.status),
         ),
         DataTableColumn(
-          label: 'Assigned To',
+          label: context.l10n.adminSupportTicketColumnAssignedTo,
           cellBuilder: (ticket) => Text(
             ticket.assignedTo ?? 'Unassigned',
             style: TextStyle(

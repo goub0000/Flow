@@ -218,7 +218,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               // TODO: Perform search
               if (value.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Searching for: $value')),
+                  SnackBar(content: Text(context.l10n.sharedHelpSearchingFor(value))),
                 );
               }
             },
@@ -477,7 +477,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                           ),
                         ),
                         Text(
-                          '${category.articleCount} articles',
+                          context.l10n.sharedHelpArticleCount(category.articleCount),
                           style: TextStyle(
                             fontSize: 13,
                             color: AppColors.textSecondary,
@@ -594,7 +594,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${article.views} views',
+                        context.l10n.sharedHelpViewCount(article.views),
                         style: TextStyle(
                           fontSize: 13,
                           color: AppColors.textSecondary,
@@ -722,23 +722,23 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     final now = DateTime.now();
     final difference = now.difference(date).inDays;
 
-    if (difference == 0) return 'Today';
-    if (difference == 1) return 'Yesterday';
-    if (difference < 7) return '$difference days ago';
+    if (difference == 0) return context.l10n.sharedHelpToday;
+    if (difference == 1) return context.l10n.sharedHelpYesterday;
+    if (difference < 7) return context.l10n.sharedHelpDaysAgo(difference);
 
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      context.l10n.sharedHelpMonthJan,
+      context.l10n.sharedHelpMonthFeb,
+      context.l10n.sharedHelpMonthMar,
+      context.l10n.sharedHelpMonthApr,
+      context.l10n.sharedHelpMonthMay,
+      context.l10n.sharedHelpMonthJun,
+      context.l10n.sharedHelpMonthJul,
+      context.l10n.sharedHelpMonthAug,
+      context.l10n.sharedHelpMonthSep,
+      context.l10n.sharedHelpMonthOct,
+      context.l10n.sharedHelpMonthNov,
+      context.l10n.sharedHelpMonthDec
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }

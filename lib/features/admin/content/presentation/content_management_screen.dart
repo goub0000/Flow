@@ -257,17 +257,17 @@ class _ContentManagementScreenState
                       child: DropdownButtonFormField<String>(
                         value: selectedType,
                         decoration: InputDecoration(
-                          labelText: 'Type *',
+                          labelText: context.l10n.adminContentTypeRequired,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        items: const [
-                          DropdownMenuItem(value: 'video', child: Text('Video Course')),
-                          DropdownMenuItem(value: 'text', child: Text('Text Course')),
-                          DropdownMenuItem(value: 'interactive', child: Text('Interactive')),
-                          DropdownMenuItem(value: 'live', child: Text('Live Session')),
-                          DropdownMenuItem(value: 'hybrid', child: Text('Hybrid')),
+                        items: [
+                          DropdownMenuItem(value: 'video', child: Text(context.l10n.adminContentVideoCourse)),
+                          DropdownMenuItem(value: 'text', child: Text(context.l10n.adminContentTextCourse)),
+                          DropdownMenuItem(value: 'interactive', child: Text(context.l10n.adminContentInteractive)),
+                          DropdownMenuItem(value: 'live', child: Text(context.l10n.adminContentLiveSession)),
+                          DropdownMenuItem(value: 'hybrid', child: Text(context.l10n.adminContentHybrid)),
                         ],
                         onChanged: (value) {
                           if (value != null) {
@@ -281,16 +281,16 @@ class _ContentManagementScreenState
                       child: DropdownButtonFormField<String>(
                         value: selectedLevel,
                         decoration: InputDecoration(
-                          labelText: 'Level *',
+                          labelText: context.l10n.adminContentLevelRequired,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        items: const [
-                          DropdownMenuItem(value: 'beginner', child: Text('Beginner')),
-                          DropdownMenuItem(value: 'intermediate', child: Text('Intermediate')),
-                          DropdownMenuItem(value: 'advanced', child: Text('Advanced')),
-                          DropdownMenuItem(value: 'expert', child: Text('Expert')),
+                        items: [
+                          DropdownMenuItem(value: 'beginner', child: Text(context.l10n.adminContentBeginner)),
+                          DropdownMenuItem(value: 'intermediate', child: Text(context.l10n.adminContentIntermediate)),
+                          DropdownMenuItem(value: 'advanced', child: Text(context.l10n.adminContentAdvanced)),
+                          DropdownMenuItem(value: 'expert', child: Text(context.l10n.adminContentExpert)),
                         ],
                         onChanged: (value) {
                           if (value != null) {
@@ -305,17 +305,17 @@ class _ContentManagementScreenState
                 DropdownButtonFormField<String>(
                   value: selectedCategory,
                   decoration: InputDecoration(
-                    labelText: 'Category',
+                    labelText: context.l10n.adminContentCategory,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'technology', child: Text('Technology')),
-                    DropdownMenuItem(value: 'business', child: Text('Business')),
-                    DropdownMenuItem(value: 'science', child: Text('Science')),
-                    DropdownMenuItem(value: 'arts', child: Text('Arts')),
-                    DropdownMenuItem(value: 'education', child: Text('Education')),
+                  items: [
+                    DropdownMenuItem(value: 'technology', child: Text(context.l10n.adminContentTechnology)),
+                    DropdownMenuItem(value: 'business', child: Text(context.l10n.adminContentBusiness)),
+                    DropdownMenuItem(value: 'science', child: Text(context.l10n.adminContentScience)),
+                    DropdownMenuItem(value: 'arts', child: Text(context.l10n.adminContentArts)),
+                    DropdownMenuItem(value: 'education', child: Text(context.l10n.adminContentEducation)),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -338,7 +338,7 @@ class _ContentManagementScreenState
           actions: [
             TextButton(
               onPressed: isCreating ? null : () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.adminContentCancel),
             ),
             ElevatedButton(
               onPressed: isCreating ? null : () async {
@@ -369,8 +369,8 @@ class _ContentManagementScreenState
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(success
-                          ? 'Created "${titleController.text}" as draft'
-                          : 'Failed to create content'),
+                          ? context.l10n.adminContentCreatedAsDraft(titleController.text)
+                          : context.l10n.adminContentFailedToCreate),
                       backgroundColor: success ? AppColors.success : AppColors.error,
                     ),
                   );
@@ -382,7 +382,7 @@ class _ContentManagementScreenState
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
-                  : const Text('Create'),
+                  : Text(context.l10n.adminContentCreate),
             ),
           ],
         ),
@@ -399,9 +399,9 @@ class _ContentManagementScreenState
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Content',
+              context.l10n.adminContentTotalContent,
               stats.total.toString(),
-              'All content items',
+              context.l10n.adminContentAllContentItems,
               Icons.library_books,
               AppColors.primary,
             ),
@@ -409,9 +409,9 @@ class _ContentManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Published',
+              context.l10n.adminContentPublished,
               stats.published.toString(),
-              'Live content',
+              context.l10n.adminContentLiveContent,
               Icons.check_circle,
               AppColors.success,
             ),
@@ -419,9 +419,9 @@ class _ContentManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Pending Approval',
+              context.l10n.adminContentPendingApproval,
               stats.pending.toString(),
-              'Awaiting review',
+              context.l10n.adminContentAwaitingReview,
               Icons.pending,
               AppColors.warning,
             ),
@@ -429,9 +429,9 @@ class _ContentManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Draft',
+              context.l10n.adminContentDraft,
               stats.draft.toString(),
-              'In progress',
+              context.l10n.adminContentInProgress,
               Icons.edit_note,
               AppColors.textSecondary,
             ),
@@ -504,7 +504,7 @@ class _ContentManagementScreenState
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by title, author, or keywords...',
+                hintText: context.l10n.adminContentSearchByTitleAuthor,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -529,7 +529,7 @@ class _ContentManagementScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminContentStatus,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -538,12 +538,12 @@ class _ContentManagementScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'published', child: Text('Published')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending Approval')),
-                DropdownMenuItem(value: 'draft', child: Text('Draft')),
-                DropdownMenuItem(value: 'archived', child: Text('Archived')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminContentAllStatus)),
+                DropdownMenuItem(value: 'published', child: Text(context.l10n.adminContentPublished)),
+                DropdownMenuItem(value: 'pending', child: Text(context.l10n.adminContentPendingApproval)),
+                DropdownMenuItem(value: 'draft', child: Text(context.l10n.adminContentDraft)),
+                DropdownMenuItem(value: 'archived', child: Text(context.l10n.adminContentArchived)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -559,7 +559,7 @@ class _ContentManagementScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: InputDecoration(
-                labelText: 'Type',
+                labelText: context.l10n.adminContentType,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -568,13 +568,13 @@ class _ContentManagementScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Types')),
-                DropdownMenuItem(value: 'video', child: Text('Video')),
-                DropdownMenuItem(value: 'text', child: Text('Text')),
-                DropdownMenuItem(value: 'interactive', child: Text('Interactive')),
-                DropdownMenuItem(value: 'live', child: Text('Live')),
-                DropdownMenuItem(value: 'hybrid', child: Text('Hybrid')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminContentAllTypes)),
+                DropdownMenuItem(value: 'video', child: Text(context.l10n.adminContentVideo)),
+                DropdownMenuItem(value: 'text', child: Text(context.l10n.adminContentText)),
+                DropdownMenuItem(value: 'interactive', child: Text(context.l10n.adminContentInteractive)),
+                DropdownMenuItem(value: 'live', child: Text(context.l10n.adminContentLive)),
+                DropdownMenuItem(value: 'hybrid', child: Text(context.l10n.adminContentHybrid)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -590,7 +590,7 @@ class _ContentManagementScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedSubject,
               decoration: InputDecoration(
-                labelText: 'Category',
+                labelText: context.l10n.adminContentCategory,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -599,13 +599,13 @@ class _ContentManagementScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Categories')),
-                DropdownMenuItem(value: 'technology', child: Text('Technology')),
-                DropdownMenuItem(value: 'business', child: Text('Business')),
-                DropdownMenuItem(value: 'science', child: Text('Science')),
-                DropdownMenuItem(value: 'arts', child: Text('Arts')),
-                DropdownMenuItem(value: 'education', child: Text('Education')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminContentAllCategories)),
+                DropdownMenuItem(value: 'technology', child: Text(context.l10n.adminContentTechnology)),
+                DropdownMenuItem(value: 'business', child: Text(context.l10n.adminContentBusiness)),
+                DropdownMenuItem(value: 'science', child: Text(context.l10n.adminContentScience)),
+                DropdownMenuItem(value: 'arts', child: Text(context.l10n.adminContentArts)),
+                DropdownMenuItem(value: 'education', child: Text(context.l10n.adminContentEducation)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -668,7 +668,7 @@ class _ContentManagementScreenState
     return AdminDataTable<ContentRowData>(
       columns: [
         DataTableColumn(
-          label: 'Title',
+          label: context.l10n.adminContentTitle,
           cellBuilder: (content) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -695,18 +695,18 @@ class _ContentManagementScreenState
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Type',
+          label: context.l10n.adminContentType,
           cellBuilder: (content) => _buildTypeChip(content.type),
         ),
         DataTableColumn(
-          label: 'Category',
+          label: context.l10n.adminContentCategory,
           cellBuilder: (content) => Text(
             content.subject,
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Author/Institution',
+          label: context.l10n.adminContentAuthorInstitution,
           cellBuilder: (content) => Text(
             content.author,
             style: const TextStyle(fontSize: 13),
@@ -714,11 +714,11 @@ class _ContentManagementScreenState
           ),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminContentStatus,
           cellBuilder: (content) => _buildStatusChip(content.status),
         ),
         DataTableColumn(
-          label: 'Last Updated',
+          label: context.l10n.adminContentLastUpdated,
           cellBuilder: (content) => Text(
             content.lastUpdated,
             style: TextStyle(
@@ -741,14 +741,14 @@ class _ContentManagementScreenState
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'Preview',
+          tooltip: context.l10n.adminContentPreview,
           onPressed: (content) {
             _showContentDetails(content);
           },
         ),
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit Content',
+          tooltip: context.l10n.adminContentEditContent,
           color: AppColors.primary,
           onPressed: (content) {
             // Navigate to course content builder
@@ -757,7 +757,7 @@ class _ContentManagementScreenState
         ),
         DataTableAction(
           icon: Icons.person_add,
-          tooltip: 'Assign',
+          tooltip: context.l10n.adminContentAssign,
           color: Colors.purple,
           onPressed: (content) {
             _showAssignContentDialog(content);
@@ -765,7 +765,7 @@ class _ContentManagementScreenState
         ),
         DataTableAction(
           icon: Icons.publish,
-          tooltip: 'Publish/Unpublish',
+          tooltip: context.l10n.adminContentPublishUnpublish,
           color: AppColors.success,
           onPressed: (content) {
             _showApprovalDialog(content);
@@ -773,7 +773,7 @@ class _ContentManagementScreenState
         ),
         DataTableAction(
           icon: Icons.archive,
-          tooltip: 'Archive',
+          tooltip: context.l10n.adminContentArchive,
           color: AppColors.warning,
           onPressed: (content) {
             _showArchiveDialog(content);
@@ -781,7 +781,7 @@ class _ContentManagementScreenState
         ),
         DataTableAction(
           icon: Icons.delete,
-          tooltip: 'Delete',
+          tooltip: context.l10n.adminContentDelete,
           color: AppColors.error,
           onPressed: (content) {
             _showDeleteDialog(content);
@@ -816,7 +816,7 @@ class _ContentManagementScreenState
               color: AppColors.warning,
             ),
             const SizedBox(width: 12),
-            const Text('Archive Content'),
+            Text(context.l10n.adminContentArchiveContent),
           ],
         ),
         content: Column(
@@ -824,12 +824,12 @@ class _ContentManagementScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Are you sure you want to archive "${content.title}"?',
+              context.l10n.adminContentConfirmArchive(content.title),
               style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 16),
             Text(
-              'Archived content will not be visible to users.',
+              context.l10n.adminContentArchivedNotVisible,
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 12,
@@ -840,7 +840,7 @@ class _ContentManagementScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminContentCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -851,8 +851,8 @@ class _ContentManagementScreenState
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(success
-                        ? 'Content archived successfully'
-                        : 'Failed to archive content'),
+                        ? context.l10n.adminContentArchivedSuccessfully
+                        : context.l10n.adminContentFailedToArchive),
                     backgroundColor: success ? AppColors.success : AppColors.error,
                   ),
                 );
@@ -861,7 +861,7 @@ class _ContentManagementScreenState
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.warning,
             ),
-            child: const Text('Archive'),
+            child: Text(context.l10n.adminContentArchive),
           ),
         ],
       ),
@@ -907,8 +907,8 @@ class _ContentManagementScreenState
               children: [
                 Icon(Icons.person_add, color: AppColors.primary),
                 const SizedBox(width: 12),
-                const Expanded(
-                  child: Text('Assign Content'),
+                Expanded(
+                  child: Text(context.l10n.adminContentAssignContent),
                 ),
               ],
             ),
@@ -955,7 +955,7 @@ class _ContentManagementScreenState
 
                   // Target type selection
                   Text(
-                    'Assign to:',
+                    context.l10n.adminContentAssignTo,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -973,14 +973,14 @@ class _ContentManagementScreenState
                         vertical: 12,
                       ),
                     ),
-                    items: const [
+                    items: [
                       DropdownMenuItem(
                         value: 'all_students',
                         child: Row(
                           children: [
-                            Icon(Icons.groups, size: 20),
-                            SizedBox(width: 8),
-                            Text('All Students'),
+                            const Icon(Icons.groups, size: 20),
+                            const SizedBox(width: 8),
+                            Text(context.l10n.adminContentAllStudents),
                           ],
                         ),
                       ),
@@ -988,9 +988,9 @@ class _ContentManagementScreenState
                         value: 'institution',
                         child: Row(
                           children: [
-                            Icon(Icons.business, size: 20),
-                            SizedBox(width: 8),
-                            Text('Specific Institutions'),
+                            const Icon(Icons.business, size: 20),
+                            const SizedBox(width: 8),
+                            Text(context.l10n.adminContentSpecificInstitutions),
                           ],
                         ),
                       ),
@@ -998,9 +998,9 @@ class _ContentManagementScreenState
                         value: 'student',
                         child: Row(
                           children: [
-                            Icon(Icons.person, size: 20),
-                            SizedBox(width: 8),
-                            Text('Specific Students'),
+                            const Icon(Icons.person, size: 20),
+                            const SizedBox(width: 8),
+                            Text(context.l10n.adminContentSpecificStudents),
                           ],
                         ),
                       ),
@@ -1020,11 +1020,11 @@ class _ContentManagementScreenState
 
                   // Required toggle
                   SwitchListTile(
-                    title: const Text('Required'),
+                    title: Text(context.l10n.adminContentRequired),
                     subtitle: Text(
                       isRequired
-                          ? 'This content is mandatory for assigned users'
-                          : 'This content is optional for assigned users',
+                          ? context.l10n.adminContentMandatoryForUsers
+                          : context.l10n.adminContentOptionalForUsers,
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -1046,8 +1046,8 @@ class _ContentManagementScreenState
                       controller: searchController,
                       decoration: InputDecoration(
                         hintText: selectedTargetType == 'student'
-                            ? 'Search students by name or email...'
-                            : 'Search institutions by name or email...',
+                            ? context.l10n.adminContentSearchStudents
+                            : context.l10n.adminContentSearchInstitutions,
                         prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -1067,7 +1067,7 @@ class _ContentManagementScreenState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${selectedUserIds.length} selected',
+                          context.l10n.adminContentSelectedCount(selectedUserIds.length),
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppColors.primary,
@@ -1078,7 +1078,7 @@ class _ContentManagementScreenState
                             onPressed: () {
                               setDialogState(() => selectedUserIds.clear());
                             },
-                            child: const Text('Clear all'),
+                            child: Text(context.l10n.adminContentClearAll),
                           ),
                       ],
                     ),

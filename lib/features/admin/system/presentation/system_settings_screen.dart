@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/country_data.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_system_provider.dart';
 
@@ -71,14 +72,14 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
       setState(() => _isDirty = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Settings saved successfully'),
+          content: Text(context.l10n.adminSystemSettingsSavedSuccess),
           backgroundColor: AppColors.success,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Failed to save settings'),
+          content: Text(context.l10n.adminSystemSettingsSavedError),
           backgroundColor: AppColors.error,
         ),
       );
@@ -148,7 +149,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'System Settings',
+                    context.l10n.adminSystemSettingsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -157,7 +158,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Configure system-wide application settings',
+                context.l10n.adminSystemSettingsSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -171,7 +172,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
                 Padding(
                   padding: const EdgeInsets.only(right: 12),
                   child: Text(
-                    'Unsaved changes',
+                    context.l10n.adminSystemUnsavedChanges,
                     style: TextStyle(
                       color: AppColors.warning,
                       fontSize: 13,
@@ -187,7 +188,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
                     // TODO: Navigate to audit logs with settings filter
                   },
                   icon: const Icon(Icons.history, size: 20),
-                  label: const Text('View Audit Logs'),
+                  label: Text(context.l10n.adminSystemViewAuditLogs),
                 ),
               ),
             ],
@@ -209,42 +210,42 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         children: [
           _buildNavItem(
             'general',
-            'General',
+            context.l10n.adminSystemNavGeneral,
             Icons.settings_outlined,
           ),
           _buildNavItem(
             'features',
-            'Feature Flags',
+            context.l10n.adminSystemNavFeatureFlags,
             Icons.flag_outlined,
           ),
           _buildNavItem(
             'api',
-            'API & Integrations',
+            context.l10n.adminSystemNavApiIntegrations,
             Icons.api_outlined,
           ),
           _buildNavItem(
             'email',
-            'Email Settings',
+            context.l10n.adminSystemNavEmailSettings,
             Icons.email_outlined,
           ),
           _buildNavItem(
             'sms',
-            'SMS Settings',
+            context.l10n.adminSystemNavSmsSettings,
             Icons.sms_outlined,
           ),
           _buildNavItem(
             'payment',
-            'Payment Gateways',
+            context.l10n.adminSystemNavPaymentGateways,
             Icons.payment_outlined,
           ),
           _buildNavItem(
             'security',
-            'Security',
+            context.l10n.adminSystemNavSecurity,
             Icons.security_outlined,
           ),
           _buildNavItem(
             'backup',
-            'Backup & Recovery',
+            context.l10n.adminSystemNavBackupRecovery,
             Icons.backup_outlined,
           ),
         ],
@@ -326,7 +327,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'General Settings',
+            context.l10n.adminSystemGeneralSettingsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -334,7 +335,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Configure basic application settings',
+            context.l10n.adminSystemGeneralSettingsSubtitle,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
@@ -343,38 +344,38 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           const SizedBox(height: 24),
 
           _buildSettingSection(
-            'Application',
+            context.l10n.adminSystemSectionApplication,
             [
               _buildTextSetting(
                 'app_name',
-                'Application Name',
+                context.l10n.adminSystemApplicationName,
                 'Flow Education Platform',
-                'The name displayed throughout the application',
+                context.l10n.adminSystemApplicationNameDesc,
               ),
               _buildTextSetting(
                 'support_email',
-                'Support Email',
+                context.l10n.adminSystemSupportEmail,
                 'support@flow.edu',
-                'Email address for user support inquiries',
+                context.l10n.adminSystemSupportEmailDesc,
               ),
               _buildTextSetting(
                 'support_phone',
-                'Support Phone',
+                context.l10n.adminSystemSupportPhone,
                 '+254 123 456 789',
-                'Phone number for user support',
+                context.l10n.adminSystemSupportPhoneDesc,
               ),
             ],
           ),
 
           _buildSettingSection(
-            'Regional',
+            context.l10n.adminSystemSectionRegional,
             [
               _buildDropdownSetting(
                 'default_region',
-                'Default Region',
+                context.l10n.adminSystemDefaultRegion,
                 'Kenya',
                 allCountries,
-                'Default region for new users',
+                context.l10n.adminSystemDefaultRegionDesc,
                 onChanged: (value) {
                   if (value == null) return;
                   _updateLocal('default_region', value);
@@ -387,17 +388,17 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
               ),
               _buildDropdownSetting(
                 'currency',
-                'Default Currency',
+                context.l10n.adminSystemDefaultCurrency,
                 'KES',
                 allCurrencies,
-                'Default currency for transactions',
+                context.l10n.adminSystemDefaultCurrencyDesc,
               ),
               _buildDropdownSetting(
                 'default_language',
-                'Default Language',
+                context.l10n.adminSystemDefaultLanguage,
                 'English',
                 ['English', 'Swahili', 'French'],
-                'Default application language',
+                context.l10n.adminSystemDefaultLanguageDesc,
               ),
             ],
           ),
@@ -416,7 +417,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Feature Flags',
+            context.l10n.adminSystemFeatureFlagsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -424,7 +425,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Enable or disable platform features',
+            context.l10n.adminSystemFeatureFlagsSubtitle,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
@@ -433,79 +434,79 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           const SizedBox(height: 24),
 
           _buildSettingSection(
-            'User Features',
+            context.l10n.adminSystemSectionUserFeatures,
             [
               _buildToggleSetting(
                 'allow_registration',
-                'User Registration',
+                context.l10n.adminSystemUserRegistration,
                 true,
-                'Allow new users to register accounts',
+                context.l10n.adminSystemUserRegistrationDesc,
               ),
               _buildToggleSetting(
                 'social_login',
-                'Social Login',
+                context.l10n.adminSystemSocialLogin,
                 false,
-                'Enable login with Google, Facebook, etc.',
+                context.l10n.adminSystemSocialLoginDesc,
               ),
               _buildToggleSetting(
                 'require_email_verification',
-                'Email Verification',
+                context.l10n.adminSystemEmailVerification,
                 true,
-                'Require email verification for new accounts',
+                context.l10n.adminSystemEmailVerificationDesc,
               ),
             ],
           ),
 
           _buildSettingSection(
-            'Application Features',
+            context.l10n.adminSystemSectionApplicationFeatures,
             [
               _buildToggleSetting(
                 'application_submissions',
-                'Application Submissions',
+                context.l10n.adminSystemApplicationSubmissions,
                 true,
-                'Allow users to submit scholarship applications',
+                context.l10n.adminSystemApplicationSubmissionsDesc,
               ),
               _buildToggleSetting(
                 'enable_recommendations',
-                'Recommendations',
+                context.l10n.adminSystemRecommendations,
                 true,
-                'Enable recommendation system',
+                context.l10n.adminSystemRecommendationsDesc,
               ),
               _buildToggleSetting(
                 'document_upload',
-                'Document Upload',
+                context.l10n.adminSystemDocumentUpload,
                 true,
-                'Allow users to upload documents',
+                context.l10n.adminSystemDocumentUploadDesc,
               ),
               _buildToggleSetting(
                 'enable_payments',
-                'Payment Processing',
+                context.l10n.adminSystemPaymentProcessing,
                 true,
-                'Enable payment processing for fees',
+                context.l10n.adminSystemPaymentProcessingDesc,
               ),
             ],
           ),
 
           _buildSettingSection(
-            'Communication',
+            context.l10n.adminSystemSectionCommunication,
             [
               _buildToggleSetting(
                 'email_notifications',
-                'Email Notifications',
+                context.l10n.adminSystemEmailNotifications,
                 true,
-                'Send email notifications to users',
+                context.l10n.adminSystemEmailNotificationsDesc,
               ),
               _buildToggleSetting(
                 'sms_notifications',
-                'SMS Notifications',
+                context.l10n.adminSystemSmsNotifications,
                 false,
-                'Send SMS notifications to users',
+                context.l10n.adminSystemSmsNotificationsDesc,
               ),
               _buildToggleSetting(
                 'push_notifications',
-                'Push Notifications',
+                context.l10n.adminSystemPushNotifications,
                 true,
-                'Send push notifications to mobile apps',
+                context.l10n.adminSystemPushNotificationsDesc,
               ),
             ],
           ),
@@ -524,7 +525,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'API & Integration Settings',
+            context.l10n.adminSystemApiSettingsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -532,7 +533,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Configure API endpoints and third-party integrations',
+            context.l10n.adminSystemApiSettingsSubtitle,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
@@ -541,43 +542,43 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           const SizedBox(height: 24),
 
           _buildSettingSection(
-            'API Configuration',
+            context.l10n.adminSystemSectionApiConfiguration,
             [
               _buildTextSetting(
                 'api_base_url',
-                'API Base URL',
+                context.l10n.adminSystemApiBaseUrl,
                 'https://api.flow.edu',
-                'Base URL for API endpoints',
+                context.l10n.adminSystemApiBaseUrlDesc,
               ),
               _buildTextSetting(
                 'api_version',
-                'API Version',
+                context.l10n.adminSystemApiVersion,
                 'v1',
-                'Current API version',
+                context.l10n.adminSystemApiVersionDesc,
               ),
               _buildToggleSetting(
                 'api_rate_limiting',
-                'API Rate Limiting',
+                context.l10n.adminSystemApiRateLimiting,
                 true,
-                'Enable rate limiting for API requests',
+                context.l10n.adminSystemApiRateLimitingDesc,
               ),
             ],
           ),
 
           _buildSettingSection(
-            'Third-Party Services',
+            context.l10n.adminSystemSectionThirdPartyServices,
             [
               _buildTextSetting(
                 'google_analytics_id',
-                'Google Analytics ID',
+                context.l10n.adminSystemGoogleAnalyticsId,
                 'UA-XXXXXXXXX-X',
-                'Google Analytics tracking ID',
+                context.l10n.adminSystemGoogleAnalyticsIdDesc,
               ),
               _buildTextSetting(
                 'sentry_dsn',
-                'Sentry DSN',
+                context.l10n.adminSystemSentryDsn,
                 'https://xxx@sentry.io/xxx',
-                'Sentry error tracking DSN',
+                context.l10n.adminSystemSentryDsnDesc,
               ),
             ],
           ),
@@ -596,7 +597,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Email Settings',
+            context.l10n.adminSystemEmailSettingsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -604,7 +605,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Configure email service provider and templates',
+            context.l10n.adminSystemEmailSettingsSubtitle,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
@@ -613,33 +614,33 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           const SizedBox(height: 24),
 
           _buildSettingSection(
-            'Email Provider',
+            context.l10n.adminSystemSectionEmailProvider,
             [
               _buildDropdownSetting(
                 'email_service',
-                'Email Service',
+                context.l10n.adminSystemEmailService,
                 'SendGrid',
                 ['SendGrid', 'AWS SES', 'Mailgun', 'SMTP'],
-                'Email service provider',
+                context.l10n.adminSystemEmailServiceDesc,
               ),
               _buildTextSetting(
                 'email_api_key',
-                'API Key',
+                context.l10n.adminSystemApiKey,
                 '',
-                'Email service API key',
+                context.l10n.adminSystemEmailApiKeyDesc,
                 obscureText: true,
               ),
               _buildTextSetting(
                 'from_email',
-                'From Email',
+                context.l10n.adminSystemFromEmail,
                 'noreply@flow.edu',
-                'Default sender email address',
+                context.l10n.adminSystemFromEmailDesc,
               ),
               _buildTextSetting(
                 'from_name',
-                'From Name',
+                context.l10n.adminSystemFromName,
                 'Flow Education',
-                'Default sender name',
+                context.l10n.adminSystemFromNameDesc,
               ),
             ],
           ),
@@ -658,7 +659,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'SMS Settings',
+            context.l10n.adminSystemSmsSettingsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -666,7 +667,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Configure SMS service provider',
+            context.l10n.adminSystemSmsSettingsSubtitle,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
@@ -675,27 +676,27 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           const SizedBox(height: 24),
 
           _buildSettingSection(
-            'SMS Provider',
+            context.l10n.adminSystemSectionSmsProvider,
             [
               _buildDropdownSetting(
                 'sms_service',
-                'SMS Service',
+                context.l10n.adminSystemSmsService,
                 'AfricasTalking',
                 ['AfricasTalking', 'Twilio', 'Nexmo'],
-                'SMS service provider',
+                context.l10n.adminSystemSmsServiceDesc,
               ),
               _buildTextSetting(
                 'sms_api_key',
-                'API Key',
+                context.l10n.adminSystemApiKey,
                 '',
-                'SMS service API key',
+                context.l10n.adminSystemSmsApiKeyDesc,
                 obscureText: true,
               ),
               _buildTextSetting(
                 'sms_sender_id',
-                'Sender ID',
+                context.l10n.adminSystemSmsSenderId,
                 'FLOW_EDU',
-                'SMS sender ID/shortcode',
+                context.l10n.adminSystemSmsSenderIdDesc,
               ),
             ],
           ),
@@ -714,7 +715,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Payment Gateway Settings',
+            context.l10n.adminSystemPaymentSettingsTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -722,7 +723,7 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Configure payment processing providers',
+            context.l10n.adminSystemPaymentSettingsSubtitle,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,
@@ -731,64 +732,64 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           const SizedBox(height: 24),
 
           _buildSettingSection(
-            'M-Pesa (Kenya)',
+            context.l10n.adminSystemSectionMpesa,
             [
               _buildToggleSetting(
                 'enable_mpesa',
-                'Enable M-Pesa',
+                context.l10n.adminSystemEnableMpesa,
                 true,
-                'Accept M-Pesa payments',
+                context.l10n.adminSystemEnableMpesaDesc,
               ),
               _buildTextSetting(
                 'mpesa_consumer_key',
-                'Consumer Key',
+                context.l10n.adminSystemConsumerKey,
                 '',
-                'M-Pesa consumer key',
+                context.l10n.adminSystemMpesaConsumerKeyDesc,
                 obscureText: true,
               ),
               _buildTextSetting(
                 'mpesa_consumer_secret',
-                'Consumer Secret',
+                context.l10n.adminSystemConsumerSecret,
                 '',
-                'M-Pesa consumer secret',
+                context.l10n.adminSystemMpesaConsumerSecretDesc,
                 obscureText: true,
               ),
               _buildTextSetting(
                 'mpesa_shortcode',
-                'Shortcode',
+                context.l10n.adminSystemShortcode,
                 '174379',
-                'M-Pesa paybill/till number',
+                context.l10n.adminSystemMpesaShortcodeDesc,
               ),
             ],
           ),
 
           _buildSettingSection(
-            'Card Payments',
+            context.l10n.adminSystemSectionCardPayments,
             [
               _buildToggleSetting(
                 'enable_card_payments',
-                'Enable Card Payments',
+                context.l10n.adminSystemEnableCardPayments,
                 true,
-                'Accept credit/debit card payments',
+                context.l10n.adminSystemEnableCardPaymentsDesc,
               ),
               _buildDropdownSetting(
                 'payment_gateway',
-                'Payment Processor',
+                context.l10n.adminSystemPaymentProcessor,
                 'Stripe',
                 ['Stripe', 'Paystack', 'Flutterwave'],
-                'Card payment processor',
+                context.l10n.adminSystemPaymentProcessorDesc,
               ),
               _buildTextSetting(
                 'payment_publishable_key',
-                'Publishable Key',
+                context.l10n.adminSystemPublishableKey,
                 '',
-                'Payment processor publishable key',
+                context.l10n.adminSystemPublishableKeyDesc,
               ),
               _buildTextSetting(
                 'payment_secret_key',
-                'Secret Key',
+                context.l10n.adminSystemSecretKey,
                 '',
-                'Payment processor secret key',
+                context.l10n.adminSystemSecretKeyDesc,
                 obscureText: true,
               ),
             ],

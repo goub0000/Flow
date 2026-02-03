@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/models/payment_model.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/custom_card.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class PaymentSuccessScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment Successful'),
+        title: Text(context.l10n.sharedPaymentsPaymentSuccessfulTitle),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(

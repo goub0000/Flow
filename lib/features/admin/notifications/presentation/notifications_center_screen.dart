@@ -40,7 +40,7 @@ class _NotificationsCenterScreenState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Notifications Center',
+                          context.l10n.adminNotifTitle,
                           style: Theme.of(context)
                               .textTheme
                               .headlineLarge
@@ -50,7 +50,7 @@ class _NotificationsCenterScreenState
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Stay updated with system events and user activities',
+                          context.l10n.adminNotifSubtitle,
                           style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 16,
@@ -65,13 +65,13 @@ class _NotificationsCenterScreenState
                         OutlinedButton.icon(
                           onPressed: _handleMarkAllAsRead,
                           icon: const Icon(Icons.done_all, size: 20),
-                          label: const Text('Mark All as Read'),
+                          label: Text(context.l10n.adminNotifMarkAllAsRead),
                         ),
                         const SizedBox(width: 12),
                         OutlinedButton.icon(
                           onPressed: _handleClearAll,
                           icon: const Icon(Icons.clear_all, size: 20),
-                          label: const Text('Clear All'),
+                          label: Text(context.l10n.adminNotifClearAll),
                         ),
                       ],
                     ),
@@ -133,7 +133,7 @@ class _NotificationsCenterScreenState
           ),
           const SizedBox(width: 8),
           Text(
-            '$unreadCount unread',
+            context.l10n.adminNotifUnreadCount(unreadCount),
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
@@ -157,12 +157,12 @@ class _NotificationsCenterScreenState
         children: [
           // Priority Filter
           _buildDropdownFilter(
-            label: 'Priority',
+            label: context.l10n.adminNotifPriority,
             value: _selectedPriority,
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
-                child: Text('All Priorities'),
+                child: Text(context.l10n.adminNotifAllPriorities),
               ),
               ...NotificationPriority.values.map(
                 (priority) => DropdownMenuItem(
@@ -195,7 +195,7 @@ class _NotificationsCenterScreenState
                   },
                 ),
                 Text(
-                  'Unread only',
+                  context.l10n.adminNotifUnreadOnly,
                   style: TextStyle(
                     fontSize: 14,
                     color: AppColors.textPrimary,
@@ -258,7 +258,7 @@ class _NotificationsCenterScreenState
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              'Notification Types',
+              context.l10n.adminNotifNotificationTypes,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -267,7 +267,7 @@ class _NotificationsCenterScreenState
             ),
           ),
           Divider(height: 1, color: AppColors.border),
-          _buildTypeOption(null, 'All Notifications', Icons.notifications),
+          _buildTypeOption(null, context.l10n.adminNotifAllNotifications, Icons.notifications),
           ...NotificationType.values.map((type) {
             final count = _getMockNotifications()
                 .where((n) => n.type == type)
@@ -493,18 +493,18 @@ class _NotificationsCenterScreenState
                           const SizedBox(width: 8),
                           Text(
                             notification.isRead
-                                ? 'Mark as Unread'
-                                : 'Mark as Read',
+                                ? context.l10n.adminNotifMarkAsUnread
+                                : context.l10n.adminNotifMarkAsRead,
                           ),
                         ],
                       ),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       child: Row(
                         children: [
-                          Icon(Icons.delete_outline, size: 18),
-                          SizedBox(width: 8),
-                          Text('Delete'),
+                          const Icon(Icons.delete_outline, size: 18),
+                          const SizedBox(width: 8),
+                          Text(context.l10n.adminNotifDelete),
                         ],
                       ),
                     ),
@@ -583,7 +583,7 @@ class _NotificationsCenterScreenState
             ),
             const SizedBox(height: 24),
             Text(
-              'No notifications',
+              context.l10n.adminNotifNoNotifications,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -592,7 +592,7 @@ class _NotificationsCenterScreenState
             ),
             const SizedBox(height: 8),
             Text(
-              'You\'re all caught up!',
+              context.l10n.adminNotifAllCaughtUp,
               style: TextStyle(
                 fontSize: 14,
                 color: AppColors.textSecondary.withValues(alpha: 0.7),
@@ -609,13 +609,13 @@ class _NotificationsCenterScreenState
     final difference = now.difference(timestamp);
 
     if (difference.inMinutes < 1) {
-      return 'Just now';
+      return context.l10n.adminNotifJustNow;
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
+      return context.l10n.adminNotifMinutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return context.l10n.adminNotifHoursAgo(difference.inHours);
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return context.l10n.adminNotifDaysAgo(difference.inDays);
     } else {
       return DateFormat('MMM d, yyyy').format(timestamp);
     }
@@ -674,19 +674,19 @@ class _NotificationsCenterScreenState
   void _handleClearAll() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Clear All Notifications'),
-        content: const Text(
-          'Are you sure you want to clear all notifications? This action cannot be undone.',
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminNotifClearAllTitle),
+        content: Text(
+          context.l10n.adminNotifClearAllConfirmation,
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(context.l10n.adminNotifCancel),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(dialogContext).pop();
               setState(() {
                 // In a real app, this would clear all notifications
               });
@@ -694,7 +694,7 @@ class _NotificationsCenterScreenState
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Clear All'),
+            child: Text(context.l10n.adminNotifClearAll),
           ),
         ],
       ),

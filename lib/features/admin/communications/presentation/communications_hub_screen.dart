@@ -73,7 +73,7 @@ class _CommunicationsHubScreenState
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Communications Hub',
+                    context.l10n.adminCommTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -82,7 +82,7 @@ class _CommunicationsHubScreenState
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage announcements, campaigns, and user communications',
+                context.l10n.adminCommSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -98,7 +98,7 @@ class _CommunicationsHubScreenState
                   ref.read(adminCommunicationsProvider.notifier).fetchCampaigns();
                 },
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh',
+                tooltip: context.l10n.adminCommRefresh,
               ),
               const SizedBox(width: 12),
               // Create campaign button
@@ -107,7 +107,7 @@ class _CommunicationsHubScreenState
                 child: ElevatedButton.icon(
                   onPressed: () => _showCreateCampaignDialog(),
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('New Campaign'),
+                  label: Text(context.l10n.adminCommNewCampaign),
                 ),
               ),
             ],
@@ -123,10 +123,10 @@ class _CommunicationsHubScreenState
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          _buildTab('campaigns', 'All Campaigns', Icons.campaign),
-          _buildTab('announcements', 'Announcements', Icons.announcement),
-          _buildTab('emails', 'Emails', Icons.email),
-          _buildTab('push', 'Push Notifications', Icons.notifications),
+          _buildTab('campaigns', context.l10n.adminCommTabAllCampaigns, Icons.campaign),
+          _buildTab('announcements', context.l10n.adminCommTabAnnouncements, Icons.announcement),
+          _buildTab('emails', context.l10n.adminCommTabEmails, Icons.email),
+          _buildTab('push', context.l10n.adminCommTabPushNotifications, Icons.notifications),
         ],
       ),
     );
@@ -214,7 +214,7 @@ class _CommunicationsHubScreenState
           child: TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Search campaigns...',
+              hintText: context.l10n.adminCommSearchHint,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -254,9 +254,9 @@ class _CommunicationsHubScreenState
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Campaigns',
+              context.l10n.adminCommStatTotalCampaigns,
               '${stats['total'] ?? 0}',
-              'All campaigns',
+              context.l10n.adminCommStatAllCampaigns,
               Icons.campaign,
               AppColors.primary,
             ),
@@ -264,9 +264,9 @@ class _CommunicationsHubScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Draft',
+              context.l10n.adminCommStatDraft,
               '${stats['draft'] ?? 0}',
-              'Not sent yet',
+              context.l10n.adminCommStatNotSentYet,
               Icons.edit_note,
               AppColors.textSecondary,
             ),
@@ -274,9 +274,9 @@ class _CommunicationsHubScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Scheduled',
+              context.l10n.adminCommStatScheduled,
               '${stats['scheduled'] ?? 0}',
-              'Pending delivery',
+              context.l10n.adminCommStatPendingDelivery,
               Icons.schedule,
               AppColors.warning,
             ),
@@ -284,9 +284,9 @@ class _CommunicationsHubScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Sent',
+              context.l10n.adminCommStatSent,
               '${stats['sent'] ?? 0}',
-              'Successfully sent',
+              context.l10n.adminCommStatSuccessfullySent,
               Icons.check_circle,
               AppColors.success,
             ),
@@ -455,45 +455,45 @@ class _CommunicationsHubScreenState
               icon: const Icon(Icons.more_vert),
               onSelected: (action) => _handleCampaignAction(action, campaign),
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'view',
                   child: Row(
                     children: [
-                      Icon(Icons.visibility, size: 18),
-                      SizedBox(width: 8),
-                      Text('View Details'),
+                      const Icon(Icons.visibility, size: 18),
+                      const SizedBox(width: 8),
+                      Text(context.l10n.adminCommActionViewDetails),
                     ],
                   ),
                 ),
                 if (campaign.status == 'draft') ...[
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'send',
                     child: Row(
                       children: [
-                        Icon(Icons.send, size: 18),
-                        SizedBox(width: 8),
-                        Text('Send Now'),
+                        const Icon(Icons.send, size: 18),
+                        const SizedBox(width: 8),
+                        Text(context.l10n.adminCommActionSendNow),
                       ],
                     ),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'schedule',
                     child: Row(
                       children: [
-                        Icon(Icons.schedule, size: 18),
-                        SizedBox(width: 8),
-                        Text('Schedule'),
+                        const Icon(Icons.schedule, size: 18),
+                        const SizedBox(width: 8),
+                        Text(context.l10n.adminCommActionSchedule),
                       ],
                     ),
                   ),
                 ],
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'duplicate',
                   child: Row(
                     children: [
-                      Icon(Icons.copy, size: 18),
-                      SizedBox(width: 8),
-                      Text('Duplicate'),
+                      const Icon(Icons.copy, size: 18),
+                      const SizedBox(width: 8),
+                      Text(context.l10n.adminCommActionDuplicate),
                     ],
                   ),
                 ),
@@ -503,7 +503,7 @@ class _CommunicationsHubScreenState
                     children: [
                       Icon(Icons.delete, size: 18, color: AppColors.error),
                       const SizedBox(width: 8),
-                      Text('Delete', style: TextStyle(color: AppColors.error)),
+                      Text(context.l10n.adminCommActionDelete, style: TextStyle(color: AppColors.error)),
                     ],
                   ),
                 ),
@@ -563,7 +563,7 @@ class _CommunicationsHubScreenState
           ),
           const SizedBox(height: 16),
           Text(
-            'No campaigns yet',
+            context.l10n.adminCommEmptyTitle,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -572,7 +572,7 @@ class _CommunicationsHubScreenState
           ),
           const SizedBox(height: 8),
           Text(
-            'Create your first campaign to engage with users',
+            context.l10n.adminCommEmptySubtitle,
             style: TextStyle(
               color: AppColors.textSecondary.withValues(alpha: 0.6),
               fontSize: 14,
@@ -582,7 +582,7 @@ class _CommunicationsHubScreenState
           ElevatedButton.icon(
             onPressed: () => _showCreateCampaignDialog(),
             icon: const Icon(Icons.add),
-            label: const Text('Create Campaign'),
+            label: Text(context.l10n.adminCommCreateCampaign),
           ),
         ],
       ),
@@ -597,7 +597,7 @@ class _CommunicationsHubScreenState
           Icon(Icons.error_outline, size: 64, color: AppColors.error),
           const SizedBox(height: 16),
           Text(
-            'Failed to load campaigns',
+            context.l10n.adminCommErrorTitle,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -616,7 +616,7 @@ class _CommunicationsHubScreenState
               ref.read(adminCommunicationsProvider.notifier).fetchCampaigns();
             },
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text(context.l10n.adminCommRetry),
           ),
         ],
       ),
@@ -666,13 +666,13 @@ class _CommunicationsHubScreenState
         break;
       case 'send':
         final confirmed = await _showConfirmDialog(
-          'Send Campaign',
-          'Are you sure you want to send "${campaign.title}" now?',
+          context.l10n.adminCommSendCampaignTitle,
+          context.l10n.adminCommSendCampaignMessage(campaign.title),
         );
         if (confirmed && mounted) {
           // Update status to sent via API
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Sending campaign...')),
+            SnackBar(content: Text(context.l10n.adminCommSendingCampaign)),
           );
           ref.read(adminCommunicationsProvider.notifier).fetchCampaigns();
         }
@@ -685,8 +685,8 @@ class _CommunicationsHubScreenState
         break;
       case 'delete':
         final confirmed = await _showConfirmDialog(
-          'Delete Campaign',
-          'Are you sure you want to delete "${campaign.title}"? This action cannot be undone.',
+          context.l10n.adminCommDeleteCampaignTitle,
+          context.l10n.adminCommDeleteCampaignMessage(campaign.title),
         );
         if (confirmed && mounted) {
           final success = await ref
@@ -694,7 +694,7 @@ class _CommunicationsHubScreenState
               .deleteCampaign(campaign.id);
           if (success && mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Campaign deleted')),
+              SnackBar(content: Text(context.l10n.adminCommCampaignDeleted)),
             );
           }
         }
@@ -711,11 +711,11 @@ class _CommunicationsHubScreenState
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: Text(context.l10n.adminCommCancel),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Confirm'),
+                child: Text(context.l10n.adminCommConfirm),
               ),
             ],
           ),
@@ -731,7 +731,7 @@ class _CommunicationsHubScreenState
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Schedule Campaign'),
+          title: Text(context.l10n.adminCommScheduleCampaignTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -770,7 +770,7 @@ class _CommunicationsHubScreenState
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.adminCommCancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -789,13 +789,13 @@ class _CommunicationsHubScreenState
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Campaign scheduled for ${DateFormat('MMM d, yyyy HH:mm').format(scheduledDateTime)}',
+                        context.l10n.adminCommCampaignScheduledFor(DateFormat('MMM d, yyyy HH:mm').format(scheduledDateTime)),
                       ),
                     ),
                   );
                 }
               },
-              child: const Text('Schedule'),
+              child: Text(context.l10n.adminCommActionSchedule),
             ),
           ],
         ),
@@ -825,15 +825,15 @@ class _CommunicationsHubScreenState
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Type', campaign.type.toUpperCase()),
-              _buildDetailRow('Status', campaign.status.toUpperCase()),
-              _buildDetailRow('Created', _formatDate(campaign.createdAt)),
+              _buildDetailRow(context.l10n.adminCommDetailType, campaign.type.toUpperCase()),
+              _buildDetailRow(context.l10n.adminCommDetailStatus, campaign.status.toUpperCase()),
+              _buildDetailRow(context.l10n.adminCommDetailCreated, _formatDate(campaign.createdAt)),
               if (campaign.scheduledAt != null)
-                _buildDetailRow('Scheduled', DateFormat('MMM d, yyyy HH:mm').format(campaign.scheduledAt!)),
+                _buildDetailRow(context.l10n.adminCommDetailScheduled, DateFormat('MMM d, yyyy HH:mm').format(campaign.scheduledAt!)),
               if (campaign.sentAt != null)
-                _buildDetailRow('Sent', DateFormat('MMM d, yyyy HH:mm').format(campaign.sentAt!)),
+                _buildDetailRow(context.l10n.adminCommDetailSent, DateFormat('MMM d, yyyy HH:mm').format(campaign.sentAt!)),
               const Divider(height: 24),
-              const Text('Message:', style: TextStyle(fontWeight: FontWeight.w600)),
+              Text('${context.l10n.adminCommDetailMessage}:', style: const TextStyle(fontWeight: FontWeight.w600)),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -841,15 +841,15 @@ class _CommunicationsHubScreenState
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(campaign.message ?? 'No message content'),
+                child: Text(campaign.message ?? context.l10n.adminCommNoMessageContent),
               ),
               const Divider(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildStatItem('Recipients', '${campaign.recipientCount ?? 0}'),
-                  _buildStatItem('Delivered', '${campaign.deliveredCount ?? 0}'),
-                  _buildStatItem('Opened', '${campaign.openedCount ?? 0}'),
+                  _buildStatItem(context.l10n.adminCommDetailRecipients, '${campaign.recipientCount ?? 0}'),
+                  _buildStatItem(context.l10n.adminCommDetailDelivered, '${campaign.deliveredCount ?? 0}'),
+                  _buildStatItem(context.l10n.adminCommDetailOpened, '${campaign.openedCount ?? 0}'),
                 ],
               ),
             ],
@@ -858,7 +858,7 @@ class _CommunicationsHubScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.adminCommClose),
           ),
         ],
       ),
@@ -925,7 +925,7 @@ class _CommunicationsHubScreenState
             children: [
               Icon(Icons.campaign, color: AppColors.primary),
               const SizedBox(width: 12),
-              Text(duplicateFrom != null ? 'Duplicate Campaign' : 'Create New Campaign'),
+              Text(duplicateFrom != null ? context.l10n.adminCommDuplicateCampaignDialogTitle : context.l10n.adminCommCreateCampaignDialogTitle),
             ],
           ),
           content: SizedBox(
@@ -938,10 +938,10 @@ class _CommunicationsHubScreenState
                   // Campaign Title
                   TextField(
                     controller: titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Campaign Title',
-                      hintText: 'Enter campaign title',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminCommCampaignTitleLabel,
+                      hintText: context.l10n.adminCommCampaignTitleHint,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 16),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 

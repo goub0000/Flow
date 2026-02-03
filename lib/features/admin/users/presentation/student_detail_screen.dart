@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/user_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/providers/admin_users_provider.dart';
@@ -91,11 +92,11 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
           TextButton.icon(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Students'),
+            label: Text(context.l10n.adminUserDetailBackToStudents),
           ),
           const Text(' / '),
           Text(
-            'Student Details',
+            context.l10n.adminUserDetailStudentDetails,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
@@ -126,7 +127,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
 
           // Name
           Text(
-            student.displayName ?? 'Unknown Student',
+            student.displayName ?? context.l10n.adminUserDetailUnknownStudent,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -151,15 +152,15 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
           const SizedBox(height: 24),
 
           // Quick Stats
-          _buildStatCard('Student ID', 'STU${student.id.substring(0, 6).toUpperCase()}'),
+          _buildStatCard(context.l10n.adminUserDetailStudentId, 'STU${student.id.substring(0, 6).toUpperCase()}'),
           const SizedBox(height: 12),
-          _buildStatCard('Grade', 'Grade ${10 + (student.id.hashCode % 4)}'),
+          _buildStatCard(context.l10n.adminUserDetailGrade, '${context.l10n.adminUserDetailGradePrefix} ${10 + (student.id.hashCode % 4)}'),
           const SizedBox(height: 12),
-          _buildStatCard('Courses Enrolled', '${2 + (student.id.hashCode % 5)}'),
+          _buildStatCard(context.l10n.adminUserDetailCoursesEnrolled, '${2 + (student.id.hashCode % 5)}'),
           const SizedBox(height: 12),
-          _buildStatCard('Applications', '${3 + (student.id.hashCode % 6)}'),
+          _buildStatCard(context.l10n.adminUserDetailApplications, '${3 + (student.id.hashCode % 6)}'),
           const SizedBox(height: 12),
-          _buildStatCard('Overall Progress', '${50 + (student.id.hashCode % 40)}%'),
+          _buildStatCard(context.l10n.adminUserDetailOverallProgress, '${50 + (student.id.hashCode % 40)}%'),
           const SizedBox(height: 24),
 
           // Action Buttons
@@ -178,7 +179,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        isActive ? 'Active' : 'Inactive',
+        isActive ? context.l10n.adminUserDetailStatusActive : context.l10n.adminUserDetailStatusInactive,
         style: TextStyle(
           color: isActive ? AppColors.success : AppColors.textSecondary,
           fontSize: 12,
@@ -227,25 +228,25 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
             context.go('/admin/users/students/${widget.studentId}/edit');
           },
           icon: const Icon(Icons.edit, size: 18),
-          label: const Text('Edit Profile'),
+          label: Text(context.l10n.adminUserDetailEditProfile),
         ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: () {
             // TODO: Send message
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Message functionality coming soon')),
+              SnackBar(content: Text(context.l10n.adminUserDetailMessageComingSoon)),
             );
           },
           icon: const Icon(Icons.message, size: 18),
-          label: const Text('Send Message'),
+          label: Text(context.l10n.adminUserDetailSendMessage),
         ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: () => _showSuspendDialog(student),
           icon: const Icon(Icons.block, size: 18),
           label: Text(
-            student.metadata?['isActive'] == true ? 'Suspend' : 'Activate',
+            student.metadata?['isActive'] == true ? context.l10n.adminUserDetailSuspend : context.l10n.adminUserDetailActivate,
           ),
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.warning,
@@ -256,7 +257,7 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
         OutlinedButton.icon(
           onPressed: () => _showDeleteDialog(student),
           icon: const Icon(Icons.delete, size: 18),
-          label: const Text('Delete Account'),
+          label: Text(context.l10n.adminUserDetailDeleteAccount),
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.error,
             side: BorderSide(color: AppColors.error),
@@ -285,13 +286,13 @@ class _StudentDetailScreenState extends ConsumerState<StudentDetailScreen>
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
-              tabs: const [
-                Tab(text: 'Overview'),
-                Tab(text: 'Academic'),
-                Tab(text: 'Applications'),
-                Tab(text: 'Documents'),
-                Tab(text: 'Payments'),
-                Tab(text: 'Activity'),
+              tabs: [
+                Tab(text: context.l10n.adminUserDetailTabOverview),
+                Tab(text: context.l10n.adminUserDetailTabAcademic),
+                Tab(text: context.l10n.adminUserDetailTabApplications),
+                Tab(text: context.l10n.adminUserDetailTabDocuments),
+                Tab(text: context.l10n.adminUserDetailTabPayments),
+                Tab(text: context.l10n.adminUserDetailTabActivity),
               ],
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/providers/cookie_providers.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 
 class UserDataViewerScreen extends ConsumerStatefulWidget {
@@ -50,21 +51,21 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
             child: Icon(Icons.people, color: AppColors.primary, size: 24),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'User Cookie Data',
-                  style: TextStyle(
+                  context.l10n.adminCookiesUserCookieDataTitle,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1E293B),
                   ),
                 ),
                 Text(
-                  'View and manage user cookie consent data',
-                  style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                  context.l10n.adminCookiesUserCookieDataSubtitle,
+                  style: const TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                 ),
               ],
             ),
@@ -72,7 +73,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
           IconButton(
             icon: const Icon(Icons.download),
             onPressed: () => _exportAllData(),
-            tooltip: 'Export All Data',
+            tooltip: context.l10n.adminCookiesExportAllData,
           ),
         ],
       ),
@@ -98,7 +99,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
           // Search field
           TextField(
             decoration: InputDecoration(
-              hintText: 'Search by User ID...',
+              hintText: context.l10n.adminCookiesSearchByUserId,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -116,17 +117,17 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                const Text('Filter: ', style: TextStyle(fontWeight: FontWeight.w500)),
+                Text(context.l10n.adminCookiesFilter, style: const TextStyle(fontWeight: FontWeight.w500)),
                 const SizedBox(width: 8),
-                _buildFilterChip('All', null),
+                _buildFilterChip(context.l10n.adminCookiesFilterAll, null),
                 const SizedBox(width: 8),
-                _buildFilterChip('Accepted', ConsentStatus.accepted),
+                _buildFilterChip(context.l10n.adminCookiesFilterAccepted, ConsentStatus.accepted),
                 const SizedBox(width: 8),
-                _buildFilterChip('Customized', ConsentStatus.customized),
+                _buildFilterChip(context.l10n.adminCookiesCustomized, ConsentStatus.customized),
                 const SizedBox(width: 8),
-                _buildFilterChip('Declined', ConsentStatus.declined),
+                _buildFilterChip(context.l10n.adminCookiesDeclined, ConsentStatus.declined),
                 const SizedBox(width: 8),
-                _buildFilterChip('Not Asked', ConsentStatus.notAsked),
+                _buildFilterChip(context.l10n.adminCookiesNotAsked, ConsentStatus.notAsked),
               ],
             ),
           ),

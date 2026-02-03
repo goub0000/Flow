@@ -662,7 +662,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                             size: 14, color: Colors.green[600]),
                         const SizedBox(width: 4),
                         Text(
-                          'Completed: ${_formatDate(enrollment.completedAt!)}',
+                          context.l10n.studentCoursesCompletedOn(_formatDate(enrollment.completedAt!)),
                           style:
                               TextStyle(fontSize: 12, color: Colors.grey[600]),
                         ),
@@ -788,8 +788,8 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
         context.push('/student/courses/$courseId', extra: course);
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to load course details'),
+          SnackBar(
+            content: Text(context.l10n.studentCoursesFailedToLoadDetails),
             backgroundColor: Colors.red,
           ),
         );
@@ -798,7 +798,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(context.l10n.studentCoursesError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );

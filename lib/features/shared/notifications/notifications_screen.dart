@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/l10n_extension.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
 
@@ -46,7 +47,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(context.l10n.sharedNotificationsTitle),
         actions: [
           // Mark all as read
           if (state.unreadCount > 0)
@@ -54,7 +55,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               onPressed: () {
                 ref.read(notificationsProvider.notifier).markAllAsRead();
               },
-              child: const Text('Mark all read'),
+              child: Text(context.l10n.sharedNotificationsMarkAllRead),
             ),
 
           // Settings button

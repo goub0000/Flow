@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/focus_tools_widgets.dart';
 
 /// Focus Timer Screen
@@ -174,7 +175,7 @@ class _FocusTimerScreenState extends State<FocusTimerScreen> {
               size: 28,
             ),
             const SizedBox(width: 12),
-            const Text('Session Complete!'),
+            Text(context.l10n.sharedFocusSessionComplete),
           ],
         ),
         content: Column(
@@ -182,8 +183,8 @@ class _FocusTimerScreenState extends State<FocusTimerScreen> {
           children: [
             Text(
               _currentType == SessionType.pomodoro
-                  ? 'Great work! Time for a break.'
-                  : 'Break complete! Ready to focus?',
+                  ? context.l10n.sharedFocusGreatWorkTimeForBreak
+                  : context.l10n.sharedFocusBreakCompleteReadyToFocus,
               style: const TextStyle(fontSize: 16),
             ),
             if (_currentType == SessionType.pomodoro) ...[
@@ -200,7 +201,7 @@ class _FocusTimerScreenState extends State<FocusTimerScreen> {
                     const Icon(Icons.timer, color: AppColors.success),
                     const SizedBox(width: 8),
                     Text(
-                      '$_completedPomodoros Pomodoro${_completedPomodoros > 1 ? 's' : ''} today',
+                      context.l10n.sharedFocusPomodorosToday(_completedPomodoros),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: AppColors.success,
@@ -218,7 +219,7 @@ class _FocusTimerScreenState extends State<FocusTimerScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Finish'),
+              child: Text(context.l10n.sharedFocusFinish),
             ),
           FilledButton(
             onPressed: () {
@@ -229,8 +230,8 @@ class _FocusTimerScreenState extends State<FocusTimerScreen> {
               }
             },
             child: Text(_currentType == SessionType.pomodoro
-                ? 'Start Break'
-                : 'Start Focus'),
+                ? context.l10n.sharedFocusStartBreak
+                : context.l10n.sharedFocusStartFocus),
           ),
         ],
       ),
@@ -243,7 +244,7 @@ class _FocusTimerScreenState extends State<FocusTimerScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Focus Timer'),
+        title: Text(context.l10n.sharedFocusTimerTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

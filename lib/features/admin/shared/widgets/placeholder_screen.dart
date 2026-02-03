@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Placeholder screen for admin features not yet implemented
 class AdminPlaceholderScreen extends StatelessWidget {
   final String title;
-  final String description;
+  final String? description;
   final IconData icon;
 
   const AdminPlaceholderScreen({
     required this.title,
-    this.description = 'This feature is under development and will be available soon.',
+    this.description,
     this.icon = Icons.construction,
     super.key,
   });
@@ -40,7 +41,7 @@ class AdminPlaceholderScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                description,
+                description ?? context.l10n.adminSharedFeatureUnderDevelopment,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -50,7 +51,7 @@ class AdminPlaceholderScreen extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back),
-                label: const Text('Go Back'),
+                label: Text(context.l10n.adminSharedGoBack),
               ),
             ],
           ),

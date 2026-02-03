@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/constants/user_roles.dart';
 import '../../../core/widgets/custom_app_bar.dart';
+import '../../../core/l10n_extension.dart';
 import '../../authentication/providers/auth_provider.dart';
 import '../widgets/custom_card.dart';
 import '../providers/profile_provider.dart';

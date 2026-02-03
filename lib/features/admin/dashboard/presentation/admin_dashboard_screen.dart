@@ -549,7 +549,7 @@ class _ActivityCardState extends ConsumerState<_ActivityCard> {
               icon: _getActionIcon(activity.actionType),
               color: _getActionColor(activity.actionType),
               title: activity.description,
-              subtitle: activity.userName ?? 'System',
+              subtitle: activity.userName ?? context.l10n.adminDashSystemUser,
               time: _formatTime(activity.timestamp, context),
             )),
         ],
@@ -802,7 +802,7 @@ class _UserGrowthChartState extends ConsumerState<_UserGrowthChart> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? Center(child: Text('Error: $_error', style: TextStyle(color: AppColors.error)))
+                    ? Center(child: Text(context.l10n.adminDashErrorWithMessage(_error!), style: TextStyle(color: AppColors.error)))
                     : _buildChart(),
           ),
         ],
@@ -989,7 +989,7 @@ class _UserDistributionChartState extends ConsumerState<_UserDistributionChart> 
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? Center(child: Text('Error: $_error', style: TextStyle(color: AppColors.error, fontSize: 12)))
+                    ? Center(child: Text(context.l10n.adminDashErrorWithMessage(_error!), style: TextStyle(color: AppColors.error, fontSize: 12)))
                     : _buildPieChart(),
           ),
           const SizedBox(height: 16),

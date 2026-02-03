@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/models/course_content_models.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Advanced Module Editor Dialog
 /// Features: Learning objectives management, duration tracking, prerequisites, and more
@@ -125,8 +126,8 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
               children: [
                 Text(
                   widget.existingModule == null
-                      ? 'Create New Module'
-                      : 'Edit Module',
+                      ? context.l10n.instCourseCreateNewModule
+                      : context.l10n.instCourseEditModule,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -134,8 +135,8 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 const SizedBox(height: 4),
                 Text(
                   widget.existingModule == null
-                      ? 'Add a new module to organize your course content'
-                      : 'Update module information and settings',
+                      ? context.l10n.instCourseAddModuleSubtitle
+                      : context.l10n.instCourseUpdateModuleSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -164,18 +165,18 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
         labelColor: Theme.of(context).primaryColor,
         unselectedLabelColor: Colors.grey,
         indicatorColor: Theme.of(context).primaryColor,
-        tabs: const [
+        tabs: [
           Tab(
-            icon: Icon(Icons.info_outline),
-            text: 'Basic Info',
+            icon: const Icon(Icons.info_outline),
+            text: context.l10n.instCourseBasicInfo,
           ),
           Tab(
-            icon: Icon(Icons.checklist),
-            text: 'Learning Objectives',
+            icon: const Icon(Icons.checklist),
+            text: context.l10n.instCourseLearningObjectives,
           ),
           Tab(
-            icon: Icon(Icons.settings),
-            text: 'Settings',
+            icon: const Icon(Icons.settings),
+            text: context.l10n.instCourseSettings,
           ),
         ],
       ),
@@ -194,20 +195,20 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
             TextFormField(
               controller: _titleController,
               decoration: InputDecoration(
-                labelText: 'Module Title *',
-                hintText: 'e.g., Introduction to Programming Fundamentals',
+                labelText: context.l10n.instCourseModuleTitle,
+                hintText: context.l10n.instCourseModuleTitleHint,
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.title),
-                helperText: 'Choose a clear, descriptive title for your module',
+                helperText: context.l10n.instCourseModuleTitleHelper,
                 counterText: '${_titleController.text.length}/100',
               ),
               maxLength: 100,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Please enter a module title';
+                  return context.l10n.instCourseModuleTitleRequired;
                 }
                 if (value.length < 5) {
-                  return 'Title should be at least 5 characters';
+                  return context.l10n.instCourseModuleTitleMinLength;
                 }
                 return null;
               },
@@ -219,12 +220,12 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
             TextFormField(
               controller: _descriptionController,
               decoration: InputDecoration(
-                labelText: 'Module Description',
-                hintText: 'Describe what students will learn in this module...',
+                labelText: context.l10n.instCourseModuleDescription,
+                hintText: context.l10n.instCourseModuleDescriptionHint,
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.description),
                 alignLabelWithHint: true,
-                helperText: 'Provide a comprehensive overview of the module content',
+                helperText: context.l10n.instCourseModuleDescriptionHelper,
                 counterText: '${_descriptionController.text.length}/500',
               ),
               maxLines: 5,
@@ -236,12 +237,12 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
             // Estimated Duration
             TextFormField(
               initialValue: _estimatedDuration.toString(),
-              decoration: const InputDecoration(
-                labelText: 'Estimated Duration (minutes)',
+              decoration: InputDecoration(
+                labelText: context.l10n.instCourseEstimatedDuration,
                 hintText: '60',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.access_time),
-                helperText: 'Approximate time to complete this module',
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.access_time),
+                helperText: context.l10n.instCourseEstimatedDurationHelper,
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
@@ -273,7 +274,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 Icon(Icons.analytics, color: Colors.blue.shade700, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Module Overview',
+                  context.l10n.instCourseModuleOverview,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.blue.shade900,
@@ -288,17 +289,17 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
               children: [
                 _buildStatChip(
                   Icons.checklist,
-                  '${_learningObjectives.length} Objectives',
+                  context.l10n.instCourseObjectivesCount(_learningObjectives.length),
                   Colors.green,
                 ),
                 _buildStatChip(
                   Icons.timer,
-                  '$_estimatedDuration min',
+                  context.l10n.instCourseMinutesShort(_estimatedDuration),
                   Colors.orange,
                 ),
                 _buildStatChip(
                   Icons.playlist_play,
-                  '${widget.existingModule?.lessonCount ?? 0} Lessons',
+                  context.l10n.instCourseLessonsCount(widget.existingModule?.lessonCount ?? 0),
                   Colors.purple,
                 ),
               ],
@@ -355,7 +356,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Learning objectives help students understand what they\'ll achieve by completing this module. Be specific and measurable.',
+                    context.l10n.instCourseLearningObjectivesInfo,
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.amber.shade900,
@@ -374,11 +375,11 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
               Expanded(
                 child: TextField(
                   controller: _objectiveController,
-                  decoration: const InputDecoration(
-                    labelText: 'Add Learning Objective',
-                    hintText: 'e.g., Understand variables and data types',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.add_circle_outline),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.instCourseAddLearningObjective,
+                    hintText: context.l10n.instCourseObjectiveHint,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.add_circle_outline),
                   ),
                   maxLines: 2,
                   onSubmitted: (_) => _addObjective(),
@@ -388,7 +389,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
               ElevatedButton.icon(
                 onPressed: _addObjective,
                 icon: const Icon(Icons.add),
-                label: const Text('Add'),
+                label: Text(context.l10n.instCourseAdd),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -424,7 +425,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
             Icon(Icons.checklist, size: 64, color: Colors.grey.shade400),
             const SizedBox(height: 16),
             Text(
-              'No learning objectives yet',
+              context.l10n.instCourseNoObjectivesYet,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey.shade600,
@@ -433,7 +434,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
             ),
             const SizedBox(height: 8),
             Text(
-              'Add objectives to help students understand what they\'ll learn',
+              context.l10n.instCourseNoObjectivesSubtitle,
               style: TextStyle(color: Colors.grey.shade500),
               textAlign: TextAlign.center,
             ),
@@ -512,7 +513,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
         children: [
           // Publishing Settings
           Text(
-            'Publishing Settings',
+            context.l10n.instCoursePublishingSettings,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -526,11 +527,11 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                     Icons.visibility,
                     color: _isPublished ? Colors.green : Colors.grey,
                   ),
-                  title: const Text('Published'),
+                  title: Text(context.l10n.instCoursePublished),
                   subtitle: Text(
                     _isPublished
-                        ? 'Module is visible to enrolled students'
-                        : 'Module is hidden from students',
+                        ? context.l10n.instCourseModuleVisibleToStudents
+                        : context.l10n.instCourseModuleHiddenFromStudents,
                     style: TextStyle(
                       color: _isPublished ? Colors.green.shade700 : Colors.grey,
                     ),
@@ -544,11 +545,11 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                     Icons.star,
                     color: _isMandatory ? Colors.orange : Colors.grey,
                   ),
-                  title: const Text('Mandatory'),
+                  title: Text(context.l10n.instCourseMandatory),
                   subtitle: Text(
                     _isMandatory
-                        ? 'Students must complete this module'
-                        : 'Module is optional',
+                        ? context.l10n.instCourseStudentsMustComplete
+                        : context.l10n.instCourseModuleOptional,
                     style: TextStyle(
                       color: _isMandatory ? Colors.orange.shade700 : Colors.grey,
                     ),
@@ -563,14 +564,14 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
 
           // Prerequisites
           Text(
-            'Prerequisites',
+            context.l10n.instCoursePrerequisites,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Select modules that students must complete before accessing this one',
+            context.l10n.instCoursePrerequisitesDescription,
             style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
           ),
           const SizedBox(height: 16),
@@ -598,7 +599,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
         ),
         child: Center(
           child: Text(
-            'No other modules available',
+            context.l10n.instCourseNoOtherModulesAvailable,
             style: TextStyle(color: Colors.grey.shade600),
           ),
         ),
@@ -617,7 +618,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                'Module ${module.orderIndex}',
+                context.l10n.instCourseModuleNumber(module.orderIndex),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -664,7 +665,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
           TextButton.icon(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.close),
-            label: const Text('Cancel'),
+            label: Text(context.l10n.instCourseCancel),
           ),
           Row(
             children: [
@@ -672,7 +673,7 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 OutlinedButton.icon(
                   onPressed: _saveDraft,
                   icon: const Icon(Icons.save_outlined),
-                  label: const Text('Save as Draft'),
+                  label: Text(context.l10n.instCourseSaveAsDraft),
                 ),
               const SizedBox(width: 12),
               ElevatedButton.icon(
@@ -680,8 +681,8 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 icon: const Icon(Icons.check_circle),
                 label: Text(
                   widget.existingModule == null
-                      ? 'Create Module'
-                      : 'Update Module',
+                      ? context.l10n.instCourseCreateModule
+                      : context.l10n.instCourseUpdateModule,
                 ),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -711,21 +712,21 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
     final controller = TextEditingController(text: _learningObjectives[index]);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Learning Objective'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.instCourseEditLearningObjective),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            labelText: 'Objective',
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: context.l10n.instCourseObjective,
+            border: const OutlineInputBorder(),
           ),
           maxLines: 3,
           autofocus: true,
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.instCourseCancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -733,10 +734,10 @@ class _AdvancedModuleEditorState extends State<AdvancedModuleEditor>
                 setState(() {
                   _learningObjectives[index] = controller.text.trim();
                 });
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
               }
             },
-            child: const Text('Update'),
+            child: Text(context.l10n.instCourseUpdate),
           ),
         ],
       ),

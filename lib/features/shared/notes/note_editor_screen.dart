@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/notes_widgets.dart';
 
 /// Note Editor Screen
@@ -201,19 +202,19 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Unsaved Changes'),
-        content: const Text('You have unsaved changes. Do you want to discard them?'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.sharedNotesUnsavedChangesTitle),
+        content: Text(context.l10n.sharedNotesUnsavedChangesMessage),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(context.l10n.sharedNotesCancel),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              'Discard',
-              style: TextStyle(color: AppColors.error),
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: Text(
+              context.l10n.sharedNotesDiscard,
+              style: const TextStyle(color: AppColors.error),
             ),
           ),
         ],
@@ -226,8 +227,8 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   void _saveNote() {
     if (_titleController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a title'),
+        SnackBar(
+          content: Text(context.l10n.sharedNotesPleaseEnterTitle),
           backgroundColor: AppColors.error,
         ),
       );

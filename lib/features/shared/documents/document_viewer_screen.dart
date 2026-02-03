@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/models/document_model.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/enhanced_document_viewer.dart';
 import '../widgets/cached_image.dart';
@@ -23,7 +24,7 @@ class DocumentViewerScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Back',
+          tooltip: context.l10n.sharedDocumentsBack,
         ),
         title: Text(
           document.name,
@@ -35,40 +36,40 @@ class DocumentViewerScreen extends StatelessWidget {
             onPressed: () {
               // TODO: Implement download
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Downloading ${document.name}...')),
+                SnackBar(content: Text(context.l10n.sharedDocumentsDownloading(document.name))),
               );
             },
-            tooltip: 'Download',
+            tooltip: context.l10n.sharedDocumentsDownload,
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               // TODO: Implement share
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Share feature coming soon')),
+                SnackBar(content: Text(context.l10n.sharedDocumentsShareComingSoon)),
               );
             },
-            tooltip: 'Share',
+            tooltip: context.l10n.sharedDocumentsShare,
           ),
           PopupMenuButton(
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'info',
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline, size: 20),
-                    SizedBox(width: 12),
-                    Text('Document Info'),
+                    const Icon(Icons.info_outline, size: 20),
+                    const SizedBox(width: 12),
+                    Text(context.l10n.sharedDocumentsDocumentInfo),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'delete',
                 child: Row(
                   children: [
-                    Icon(Icons.delete, size: 20, color: AppColors.error),
-                    SizedBox(width: 12),
-                    Text('Delete', style: TextStyle(color: AppColors.error)),
+                    const Icon(Icons.delete, size: 20, color: AppColors.error),
+                    const SizedBox(width: 12),
+                    Text(context.l10n.sharedDocumentsDelete, style: const TextStyle(color: AppColors.error)),
                   ],
                 ),
               ),
@@ -181,19 +182,18 @@ class DocumentViewerScreen extends StatelessWidget {
         child: CustomCard(
           child: _buildPreviewPlaceholder(
             icon: _getFileIcon(),
-            message: 'Preview Not Available',
-            subtitle:
-                'This file type (${document.fileExtension}) cannot be previewed in-app.\nClick download to view in your device\'s default viewer.',
+            message: context.l10n.sharedDocumentsPreviewNotAvailable,
+            subtitle: context.l10n.sharedDocumentsPreviewNotAvailableSubtitle(document.fileExtension),
             color: _getFileColor(),
             action: ElevatedButton.icon(
               onPressed: () {
                 // TODO: Implement download
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Downloading ${document.name}...')),
+                  SnackBar(content: Text(context.l10n.sharedDocumentsDownloading(document.name))),
                 );
               },
               icon: const Icon(Icons.download),
-              label: const Text('Download File'),
+              label: Text(context.l10n.sharedDocumentsDownloadFile),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _getFileColor(),
               ),
@@ -287,7 +287,7 @@ class DocumentViewerScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Document Information',
+                          context.l10n.sharedDocumentsDocumentInformation,
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge
@@ -296,34 +296,34 @@ class DocumentViewerScreen extends StatelessWidget {
                               ),
                         ),
                         const SizedBox(height: 24),
-                        _InfoRow(label: 'Name', value: document.name),
+                        _InfoRow(label: context.l10n.sharedDocumentsName, value: document.name),
                         const Divider(height: 24),
-                        _InfoRow(label: 'Type', value: document.fileExtension),
+                        _InfoRow(label: context.l10n.sharedDocumentsType, value: document.fileExtension),
                         const Divider(height: 24),
-                        _InfoRow(label: 'Size', value: document.formattedSize),
+                        _InfoRow(label: context.l10n.sharedDocumentsSize, value: document.formattedSize),
                         const Divider(height: 24),
                         _InfoRow(
-                            label: 'Category',
+                            label: context.l10n.sharedDocumentsCategory,
                             value: document.categoryDisplayName),
                         const Divider(height: 24),
                         _InfoRow(
-                            label: 'Uploaded By',
-                            value: document.uploadedByName ?? 'Unknown'),
+                            label: context.l10n.sharedDocumentsUploadedBy,
+                            value: document.uploadedByName ?? context.l10n.sharedDocumentsUnknown),
                         const Divider(height: 24),
                         _InfoRow(
-                          label: 'Upload Date',
+                          label: context.l10n.sharedDocumentsUploadDate,
                           value: _formatFullDate(document.uploadedAt),
                         ),
                         if (document.description != null) ...[
                           const Divider(height: 24),
                           _InfoRow(
-                              label: 'Description',
+                              label: context.l10n.sharedDocumentsDescription,
                               value: document.description!),
                         ],
                         const Divider(height: 24),
                         _InfoRow(
-                          label: 'Verification Status',
-                          value: document.isVerified ? 'Verified' : 'Pending',
+                          label: context.l10n.sharedDocumentsVerificationStatus,
+                          value: document.isVerified ? context.l10n.sharedDocumentsVerified : context.l10n.sharedDocumentsPending,
                           valueColor: document.isVerified
                               ? AppColors.success
                               : AppColors.warning,
@@ -343,21 +343,21 @@ class DocumentViewerScreen extends StatelessWidget {
   void _showDeleteConfirmation(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Document?'),
-        content: Text('Are you sure you want to delete "${document.name}"?'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.sharedDocumentsDeleteDocumentTitle),
+        content: Text(context.l10n.sharedDocumentsDeleteDocumentConfirm(document.name)),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.sharedDocumentsCancel),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context); // Close dialog
+              Navigator.pop(dialogContext); // Close dialog
               Navigator.pop(context); // Close viewer
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Document deleted'),
+                SnackBar(
+                  content: Text(context.l10n.sharedDocumentsDocumentDeleted),
                   backgroundColor: AppColors.success,
                 ),
               );
@@ -365,7 +365,7 @@ class DocumentViewerScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.sharedDocumentsDelete),
           ),
         ],
       ),

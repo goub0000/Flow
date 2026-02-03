@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../core/models/admin_user_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../providers/admin_auth_provider.dart';
 import 'admin_role_badge.dart';
 import 'admin_global_search.dart';
@@ -47,7 +48,7 @@ class AdminTopBar extends ConsumerWidget {
           // Theme Toggle
           Semantics(
             button: true,
-            label: 'Toggle dark mode',
+            label: context.l10n.adminSharedToggleDarkMode,
             child: IconButton(
               icon: Icon(
                 ref.watch(themeModeProvider) == ThemeMode.dark
@@ -58,8 +59,8 @@ class AdminTopBar extends ConsumerWidget {
                 ref.read(themeModeProvider.notifier).toggleTheme();
               },
               tooltip: ref.watch(themeModeProvider) == ThemeMode.dark
-                  ? 'Switch to Light Mode'
-                  : 'Switch to Dark Mode',
+                  ? context.l10n.adminSharedSwitchToLightMode
+                  : context.l10n.adminSharedSwitchToDarkMode,
             ),
           ),
           const SizedBox(width: 8),
@@ -67,7 +68,7 @@ class AdminTopBar extends ConsumerWidget {
           // Notifications icon (placeholder for Phase 3)
           Semantics(
             button: true,
-            label: 'Notifications',
+            label: context.l10n.adminSharedNotifications,
             child: Stack(
               children: [
                 IconButton(
@@ -75,7 +76,7 @@ class AdminTopBar extends ConsumerWidget {
                   onPressed: () {
                     context.go('/admin/notifications');
                   },
-                  tooltip: 'Notifications',
+                  tooltip: context.l10n.adminSharedNotifications,
                 ),
                 // Notification badge (decorative)
                 Positioned(
@@ -116,19 +117,19 @@ class AdminTopBar extends ConsumerWidget {
           // Quick Logout Button
           Semantics(
             button: true,
-            label: 'Sign out',
+            label: context.l10n.adminSharedSignOut,
             child: IconButton(
               icon: Icon(Icons.logout, color: AppColors.error),
               onPressed: () async {
               final shouldLogout = await showDialog<bool>(
                 context: context,
                 builder: (ctx) => AlertDialog(
-                  title: const Text('Sign Out'),
-                  content: const Text('Are you sure you want to sign out?'),
+                  title: Text(context.l10n.adminSharedSignOut),
+                  content: Text(context.l10n.adminSharedSignOutConfirmation),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(ctx).pop(false),
-                      child: const Text('Cancel'),
+                      child: Text(context.l10n.adminSharedCancel),
                     ),
                     ElevatedButton(
                       onPressed: () => Navigator.of(ctx).pop(true),
@@ -136,7 +137,7 @@ class AdminTopBar extends ConsumerWidget {
                         backgroundColor: AppColors.error,
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('Sign Out'),
+                      child: Text(context.l10n.adminSharedSignOut),
                     ),
                   ],
                 ),
@@ -149,7 +150,7 @@ class AdminTopBar extends ConsumerWidget {
                 }
               }
             },
-            tooltip: 'Sign Out',
+            tooltip: context.l10n.adminSharedSignOut,
             ),
           ),
           const SizedBox(width: 8),
@@ -157,7 +158,7 @@ class AdminTopBar extends ConsumerWidget {
           // User profile menu
           Semantics(
             button: true,
-            label: 'User menu for ${adminUser.displayName}',
+            label: context.l10n.adminSharedUserMenuFor(adminUser.displayName),
             child: PopupMenuButton<String>(
             offset: const Offset(0, 50),
             child: Row(
@@ -213,7 +214,7 @@ class AdminTopBar extends ConsumerWidget {
                   children: [
                     const Icon(Icons.person_outline, size: 20),
                     const SizedBox(width: 12),
-                    const Text('Profile'),
+                    Text(context.l10n.adminSharedProfile),
                   ],
                 ),
               ),
@@ -223,7 +224,7 @@ class AdminTopBar extends ConsumerWidget {
                   children: [
                     const Icon(Icons.settings_outlined, size: 20),
                     const SizedBox(width: 12),
-                    const Text('Settings'),
+                    Text(context.l10n.adminSharedSettings),
                   ],
                 ),
               ),
@@ -235,7 +236,7 @@ class AdminTopBar extends ConsumerWidget {
                     Icon(Icons.logout, size: 20, color: AppColors.error),
                     const SizedBox(width: 12),
                     Text(
-                      'Sign Out',
+                      context.l10n.adminSharedSignOut,
                       style: TextStyle(color: AppColors.error),
                     ),
                   ],
@@ -254,21 +255,21 @@ class AdminTopBar extends ConsumerWidget {
                   // Show confirmation dialog
                   final shouldLogout = await showDialog<bool>(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Sign Out'),
-                      content: const Text('Are you sure you want to sign out?'),
+                    builder: (dialogContext) => AlertDialog(
+                      title: Text(context.l10n.adminSharedSignOut),
+                      content: Text(context.l10n.adminSharedSignOutConfirmation),
                       actions: [
                         TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text('Cancel'),
+                          onPressed: () => Navigator.of(dialogContext).pop(false),
+                          child: Text(context.l10n.adminSharedCancel),
                         ),
                         ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(true),
+                          onPressed: () => Navigator.of(dialogContext).pop(true),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.error,
                             foregroundColor: Colors.white,
                           ),
-                          child: const Text('Sign Out'),
+                          child: Text(context.l10n.adminSharedSignOut),
                         ),
                       ],
                     ),

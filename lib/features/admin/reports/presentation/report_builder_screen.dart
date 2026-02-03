@@ -450,13 +450,13 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
       // Export based on format
       if (_exportFormat == ExportFormat.pdf) {
         await ExportService.exportAnalyticsToPDF(
-          title: _reportTitle.isNotEmpty ? _reportTitle : 'Analytics Report',
+          title: _reportTitle.isNotEmpty ? _reportTitle : context.l10n.adminReportDefaultTitle,
           analytics: selectedMetricsData,
           description: _reportDescription.isNotEmpty ? _reportDescription : null,
         );
       } else if (_exportFormat == ExportFormat.csv) {
         final data = [
-          ['Metric', 'Value'],
+          [context.l10n.adminReportMetricHeader, context.l10n.adminReportValueHeader],
           ...selectedMetricsData.entries.map((e) => [
             _formatMetricName(e.key),
             e.value.toString(),

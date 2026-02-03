@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/user_roles.dart';
 import '../../../core/models/user_model.dart';
+import '../../../core/l10n_extension.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/loading_indicator.dart';
@@ -103,7 +104,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ref.read(profileProvider.notifier).loadProfile();
                   },
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
+                  label: Text(context.l10n.sharedProfileRetry),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -215,7 +216,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ref.read(profileProvider.notifier).loadProfile();
                   },
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
+                  label: Text(context.l10n.sharedProfileRetry),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/models/document_model.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/skeleton_loader.dart';

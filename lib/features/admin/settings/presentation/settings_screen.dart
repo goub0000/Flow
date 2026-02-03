@@ -234,10 +234,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           trailing: DropdownButton<String>(
             value: _timezone,
             underline: const SizedBox(),
-            items: const [
-              DropdownMenuItem(value: 'Africa/Nairobi', child: Text('Nairobi (EAT)')),
-              DropdownMenuItem(value: 'Africa/Lagos', child: Text('Lagos (WAT)')),
-              DropdownMenuItem(value: 'Africa/Cairo', child: Text('Cairo (EET)')),
+            items: [
+              DropdownMenuItem(value: 'Africa/Nairobi', child: Text(context.l10n.adminSettingsTimezoneNairobi)),
+              DropdownMenuItem(value: 'Africa/Lagos', child: Text(context.l10n.adminSettingsTimezoneLagos)),
+              DropdownMenuItem(value: 'Africa/Cairo', child: Text(context.l10n.adminSettingsTimezoneCairo)),
             ],
             onChanged: (value) {
               if (value != null) {

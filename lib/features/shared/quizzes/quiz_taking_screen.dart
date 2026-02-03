@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/quiz_widgets.dart';
 
 /// Quiz Taking Screen
@@ -76,9 +77,9 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Time\'s Up!'),
-        content: const Text(
-          'The quiz time has expired. Your answers will be submitted automatically.',
+        title: Text(context.l10n.sharedQuizzesTimesUp),
+        content: Text(
+          context.l10n.sharedQuizzesTimeExpiredMessage,
         ),
         actions: [
           FilledButton(
@@ -86,7 +87,7 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
               Navigator.pop(context);
               _submitQuiz();
             },
-            child: const Text('OK'),
+            child: Text(context.l10n.sharedQuizzesOk),
           ),
         ],
       ),
@@ -129,21 +130,21 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
     final shouldExit = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Exit Quiz?'),
-        content: const Text(
-          'Are you sure you want to exit? Your progress will be lost.',
+        title: Text(context.l10n.sharedQuizzesExitQuizTitle),
+        content: Text(
+          context.l10n.sharedQuizzesExitQuizMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.sharedQuizzesCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Exit'),
+            child: Text(context.l10n.sharedQuizzesExit),
           ),
         ],
       ),
@@ -168,22 +169,21 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Unanswered Questions'),
+        title: Text(context.l10n.sharedQuizzesUnansweredQuestionsTitle),
         content: Text(
-          'You have $count unanswered ${count == 1 ? 'question' : 'questions'}. '
-          'Do you want to review them or submit anyway?',
+          context.l10n.sharedQuizzesUnansweredQuestionsMessage(count),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Review'),
+            child: Text(context.l10n.sharedQuizzesReview),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
               _confirmSubmit();
             },
-            child: const Text('Submit Anyway'),
+            child: Text(context.l10n.sharedQuizzesSubmitAnyway),
           ),
         ],
       ),
@@ -194,21 +194,21 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Submit Quiz?'),
-        content: const Text(
-          'Are you sure you want to submit? You cannot change your answers after submission.',
+        title: Text(context.l10n.sharedQuizzesSubmitQuizTitle),
+        content: Text(
+          context.l10n.sharedQuizzesSubmitQuizMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.sharedQuizzesCancel),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
               _processSubmission();
             },
-            child: const Text('Submit'),
+            child: Text(context.l10n.sharedQuizzesSubmit),
           ),
         ],
       ),
@@ -278,7 +278,7 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
             IconButton(
               icon: const Icon(Icons.grid_view),
               onPressed: _showQuestionNavigator,
-              tooltip: 'Question Navigator',
+              tooltip: context.l10n.sharedQuizzesQuestionNavigator,
             ),
           ],
         ),
@@ -337,7 +337,7 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
                         child: OutlinedButton.icon(
                           onPressed: _previousQuestion,
                           icon: const Icon(Icons.arrow_back),
-                          label: const Text('Previous'),
+                          label: Text(context.l10n.sharedQuizzesPrevious),
                         ),
                       ),
                     if (_currentQuestionIndex > 0) const SizedBox(width: 12),
@@ -348,7 +348,7 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
                           ? FilledButton.icon(
                               onPressed: _submitQuiz,
                               icon: const Icon(Icons.check),
-                              label: const Text('Submit Quiz'),
+                              label: Text(context.l10n.sharedQuizzesSubmitQuiz),
                               style: FilledButton.styleFrom(
                                 backgroundColor: AppColors.success,
                                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -357,7 +357,7 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
                           : FilledButton.icon(
                               onPressed: _nextQuestion,
                               icon: const Icon(Icons.arrow_forward),
-                              label: const Text('Next'),
+                              label: Text(context.l10n.sharedQuizzesNext),
                               style: FilledButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                               ),
@@ -455,18 +455,18 @@ class _QuizTakingScreenState extends State<QuizTakingScreen> {
               children: [
                 _buildLegendItem(
                   AppColors.primary,
-                  'Current',
+                  context.l10n.sharedQuizzesCurrent,
                   isSolid: true,
                 ),
                 const SizedBox(width: 16),
                 _buildLegendItem(
                   AppColors.success,
-                  'Answered',
+                  context.l10n.sharedQuizzesAnswered,
                 ),
                 const SizedBox(width: 16),
                 _buildLegendItem(
                   AppColors.border,
-                  'Unanswered',
+                  context.l10n.sharedQuizzesUnanswered,
                 ),
               ],
             ),

@@ -37,7 +37,7 @@ class CookieSettingsScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
-              Text('Error loading consent: $error'),
+              Text(context.l10n.sharedCookiesErrorLoadingConsent(error.toString())),
             ],
           ),
         ),
@@ -106,7 +106,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Updated: ${_formatDate(consent.timestamp)}',
+                                context.l10n.sharedCookiesUpdated(_formatDate(consent.timestamp)),
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.grey[600],
@@ -115,7 +115,7 @@ class CookieSettingsScreen extends ConsumerWidget {
                               if (consent.expiresAt != null) ...[
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Expires: ${_formatDate(consent.expiresAt!)}',
+                                  context.l10n.sharedCookiesExpires(_formatDate(consent.expiresAt!)),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
@@ -304,7 +304,7 @@ class CookieSettingsScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Data exported: ${data['dataCount']} records'),
+            content: Text(context.l10n.sharedCookiesDataExportedRecords(data['dataCount'].toString())),
             backgroundColor: Colors.green,
           ),
         );

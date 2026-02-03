@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/page_content_provider.dart';
 import '../../../../core/models/page_content_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../widgets/dynamic_page_wrapper.dart';
 
 /// Press Kit page with media resources - fetches content from CMS

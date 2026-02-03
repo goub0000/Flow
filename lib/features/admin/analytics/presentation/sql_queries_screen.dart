@@ -26,19 +26,19 @@ class _QueryTemplate {
   });
 }
 
-const _queryTemplates = <_QueryTemplate>[
+List<_QueryTemplate> _getQueryTemplates(BuildContext context) => <_QueryTemplate>[
   _QueryTemplate(
     id: 'all_users',
-    name: 'All Users',
-    description: 'List every registered user with profile data',
+    name: context.l10n.adminSqlAllUsersName,
+    description: context.l10n.adminSqlAllUsersDescription,
     icon: Icons.people,
     endpoint: '/admin/users',
     dataKey: 'users',
   ),
   _QueryTemplate(
     id: 'student_users',
-    name: 'Students Only',
-    description: 'Filter users to show only students',
+    name: context.l10n.adminSqlStudentsOnlyName,
+    description: context.l10n.adminSqlStudentsOnlyDescription,
     icon: Icons.school,
     endpoint: '/admin/users',
     params: {'role': 'student'},
@@ -46,16 +46,16 @@ const _queryTemplates = <_QueryTemplate>[
   ),
   _QueryTemplate(
     id: 'admin_users',
-    name: 'Admin Users',
-    description: 'List all administrator accounts',
+    name: context.l10n.adminSqlAdminUsersName,
+    description: context.l10n.adminSqlAdminUsersDescription,
     icon: Icons.admin_panel_settings,
     endpoint: '/admin/users/admins',
     dataKey: 'admins',
   ),
   _QueryTemplate(
     id: 'recent_activity',
-    name: 'Recent Activity',
-    description: 'Last 50 platform activities from the audit log',
+    name: context.l10n.adminSqlRecentActivityName,
+    description: context.l10n.adminSqlRecentActivityDescription,
     icon: Icons.history,
     endpoint: '/admin/dashboard/recent-activity',
     params: {'limit': '50'},
@@ -63,40 +63,40 @@ const _queryTemplates = <_QueryTemplate>[
   ),
   _QueryTemplate(
     id: 'activity_stats',
-    name: 'Activity Statistics',
-    description: 'Aggregated activity counts by type',
+    name: context.l10n.adminSqlActivityStatisticsName,
+    description: context.l10n.adminSqlActivityStatisticsDescription,
     icon: Icons.bar_chart,
     endpoint: '/admin/dashboard/activity-stats',
     dataKey: '_root',
   ),
   _QueryTemplate(
     id: 'analytics_metrics',
-    name: 'Platform Metrics',
-    description: 'Key metrics: user counts, applications, growth rates',
+    name: context.l10n.adminSqlPlatformMetricsName,
+    description: context.l10n.adminSqlPlatformMetricsDescription,
     icon: Icons.analytics,
     endpoint: '/admin/analytics/metrics',
     dataKey: '_root',
   ),
   _QueryTemplate(
     id: 'finance_stats',
-    name: 'Finance Overview',
-    description: 'Revenue, transactions, and financial KPIs',
+    name: context.l10n.adminSqlFinanceOverviewName,
+    description: context.l10n.adminSqlFinanceOverviewDescription,
     icon: Icons.attach_money,
     endpoint: '/admin/finance/stats',
     dataKey: '_root',
   ),
   _QueryTemplate(
     id: 'content_stats',
-    name: 'Content Statistics',
-    description: 'Published, draft, and pending content counts',
+    name: context.l10n.adminSqlContentStatisticsName,
+    description: context.l10n.adminSqlContentStatisticsDescription,
     icon: Icons.library_books,
     endpoint: '/admin/content/stats',
     dataKey: '_root',
   ),
   _QueryTemplate(
     id: 'open_tickets',
-    name: 'Open Support Tickets',
-    description: 'All currently open support tickets',
+    name: context.l10n.adminSqlOpenSupportTicketsName,
+    description: context.l10n.adminSqlOpenSupportTicketsDescription,
     icon: Icons.support_agent,
     endpoint: '/admin/support/tickets',
     params: {'status': 'open'},
@@ -104,8 +104,8 @@ const _queryTemplates = <_QueryTemplate>[
   ),
   _QueryTemplate(
     id: 'transactions',
-    name: 'Recent Transactions',
-    description: 'Financial transactions (last 100)',
+    name: context.l10n.adminSqlRecentTransactionsName,
+    description: context.l10n.adminSqlRecentTransactionsDescription,
     icon: Icons.receipt_long,
     endpoint: '/admin/finance/transactions',
     params: {'limit': '100'},
@@ -113,8 +113,8 @@ const _queryTemplates = <_QueryTemplate>[
   ),
   _QueryTemplate(
     id: 'user_growth',
-    name: 'User Growth (6 Months)',
-    description: 'Monthly user registration trend',
+    name: context.l10n.adminSqlUserGrowthName,
+    description: context.l10n.adminSqlUserGrowthDescription,
     icon: Icons.trending_up,
     endpoint: '/admin/dashboard/analytics/user-growth',
     params: {'period': '6_months'},
@@ -122,8 +122,8 @@ const _queryTemplates = <_QueryTemplate>[
   ),
   _QueryTemplate(
     id: 'role_distribution',
-    name: 'Role Distribution',
-    description: 'Breakdown of users by role type',
+    name: context.l10n.adminSqlRoleDistributionName,
+    description: context.l10n.adminSqlRoleDistributionDescription,
     icon: Icons.pie_chart,
     endpoint: '/admin/dashboard/analytics/role-distribution',
     dataKey: '_root',
@@ -259,13 +259,13 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'SQL Queries',
+                  context.l10n.adminSqlTitle,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 Text(
-                  'Run pre-built queries against platform data',
+                  context.l10n.adminSqlSubtitle,
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                 ),
               ],
@@ -303,7 +303,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
           child: TextField(
             decoration: InputDecoration(
-              hintText: 'Search queries...',
+              hintText: context.l10n.adminSqlSearchHint,
               prefixIcon: const Icon(Icons.search, size: 18),
               isDense: true,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -315,7 +315,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
         Expanded(
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            children: _queryTemplates.where((q) {
+            children: _getQueryTemplates(context).where((q) {
               if (_search.isEmpty) return true;
               final s = _search.toLowerCase();
               return q.name.toLowerCase().contains(s) ||
@@ -393,7 +393,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
             ElevatedButton.icon(
               onPressed: _activeQuery != null ? () => _runQuery(_activeQuery!) : null,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(context.l10n.adminSqlRetry),
             ),
           ],
         ),
@@ -408,12 +408,12 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
             Icon(Icons.touch_app, size: 64, color: Colors.grey[300]),
             const SizedBox(height: 16),
             Text(
-              'Select a query to run',
+              context.l10n.adminSqlSelectQuery,
               style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
             ),
             const SizedBox(height: 8),
             Text(
-              'Choose from the query library on the left',
+              context.l10n.adminSqlSelectQueryHint,
               style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
             ),
           ],
@@ -428,7 +428,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
           children: [
             Icon(Icons.inbox, size: 48, color: Colors.grey[300]),
             const SizedBox(height: 16),
-            Text('No results', style: TextStyle(color: AppColors.textSecondary)),
+            Text(context.l10n.adminSqlNoResults, style: TextStyle(color: AppColors.textSecondary)),
           ],
         ),
       );
@@ -454,7 +454,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
               ),
               const Spacer(),
               Text(
-                '${_resultRows.length} rows  |  ${_resultColumns.length} columns',
+                context.l10n.adminSqlResultCount(_resultRows.length, _resultColumns.length),
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
               ),
             ],

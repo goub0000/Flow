@@ -246,26 +246,26 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
           // Bold
           _ToolbarButton(
             icon: Icons.format_bold,
-            tooltip: 'Bold (**text**)',
-            onPressed: () => _applyFormatting('**', '**', placeholder: 'bold text'),
+            tooltip: context.l10n.adminRichTextBoldTooltip,
+            onPressed: () => _applyFormatting('**', '**', placeholder: context.l10n.adminRichTextBoldPlaceholder),
           ),
           // Italic
           _ToolbarButton(
             icon: Icons.format_italic,
-            tooltip: 'Italic (*text*)',
-            onPressed: () => _applyFormatting('*', '*', placeholder: 'italic text'),
+            tooltip: context.l10n.adminRichTextItalicTooltip,
+            onPressed: () => _applyFormatting('*', '*', placeholder: context.l10n.adminRichTextItalicPlaceholder),
           ),
           // Underline (using HTML tag for markdown compatibility)
           _ToolbarButton(
             icon: Icons.format_underlined,
-            tooltip: 'Underline',
-            onPressed: () => _applyFormatting('<u>', '</u>', placeholder: 'underlined text'),
+            tooltip: context.l10n.adminRichTextUnderlineTooltip,
+            onPressed: () => _applyFormatting('<u>', '</u>', placeholder: context.l10n.adminRichTextUnderlinePlaceholder),
           ),
           // Strikethrough
           _ToolbarButton(
             icon: Icons.format_strikethrough,
-            tooltip: 'Strikethrough (~~text~~)',
-            onPressed: () => _applyFormatting('~~', '~~', placeholder: 'strikethrough'),
+            tooltip: context.l10n.adminRichTextStrikethroughTooltip,
+            onPressed: () => _applyFormatting('~~', '~~', placeholder: context.l10n.adminRichTextStrikethroughPlaceholder),
           ),
 
           _ToolbarDivider(),
@@ -273,21 +273,21 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
           // Heading 1
           _ToolbarButton(
             icon: Icons.title,
-            tooltip: 'Heading 1',
+            tooltip: context.l10n.adminRichTextHeading1Tooltip,
             label: 'H1',
             onPressed: () => _insertAtCursor('\n# '),
           ),
           // Heading 2
           _ToolbarButton(
             icon: Icons.title,
-            tooltip: 'Heading 2',
+            tooltip: context.l10n.adminRichTextHeading2Tooltip,
             label: 'H2',
             onPressed: () => _insertAtCursor('\n## '),
           ),
           // Heading 3
           _ToolbarButton(
             icon: Icons.title,
-            tooltip: 'Heading 3',
+            tooltip: context.l10n.adminRichTextHeading3Tooltip,
             label: 'H3',
             onPressed: () => _insertAtCursor('\n### '),
           ),
@@ -297,19 +297,19 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
           // Bullet list
           _ToolbarButton(
             icon: Icons.format_list_bulleted,
-            tooltip: 'Bullet list',
+            tooltip: context.l10n.adminRichTextBulletListTooltip,
             onPressed: () => _insertAtCursor('\n- '),
           ),
           // Numbered list
           _ToolbarButton(
             icon: Icons.format_list_numbered,
-            tooltip: 'Numbered list',
+            tooltip: context.l10n.adminRichTextNumberedListTooltip,
             onPressed: () => _insertAtCursor('\n1. '),
           ),
           // Quote
           _ToolbarButton(
             icon: Icons.format_quote,
-            tooltip: 'Quote',
+            tooltip: context.l10n.adminRichTextQuoteTooltip,
             onPressed: () => _insertAtCursor('\n> '),
           ),
 
@@ -318,19 +318,19 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
           // Link
           _ToolbarButton(
             icon: Icons.link,
-            tooltip: 'Insert link [text](url)',
-            onPressed: () => _applyFormatting('[', '](url)', placeholder: 'link text'),
+            tooltip: context.l10n.adminRichTextLinkTooltip,
+            onPressed: () => _applyFormatting('[', '](url)', placeholder: context.l10n.adminRichTextLinkPlaceholder),
           ),
           // Code
           _ToolbarButton(
             icon: Icons.code,
-            tooltip: 'Inline code',
-            onPressed: () => _applyFormatting('`', '`', placeholder: 'code'),
+            tooltip: context.l10n.adminRichTextCodeTooltip,
+            onPressed: () => _applyFormatting('`', '`', placeholder: context.l10n.adminRichTextCodePlaceholder),
           ),
           // Horizontal rule
           _ToolbarButton(
             icon: Icons.horizontal_rule,
-            tooltip: 'Horizontal line',
+            tooltip: context.l10n.adminRichTextHorizontalLineTooltip,
             onPressed: () => _insertAtCursor('\n\n---\n\n'),
           ),
         ],

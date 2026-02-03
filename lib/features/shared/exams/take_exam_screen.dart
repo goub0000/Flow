@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/exam_widgets.dart';
 
 /// Take Exam Screen
@@ -217,14 +218,14 @@ class _TakeExamScreenState extends State<TakeExamScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Question ${_currentQuestionIndex + 1} of ${_questions.length}',
+                        context.l10n.sharedExamsQuestionProgress(_currentQuestionIndex + 1, _questions.length),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        '$_answeredCount answered',
+                        context.l10n.sharedExamsAnsweredCount(_answeredCount),
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
@@ -299,7 +300,7 @@ class _TakeExamScreenState extends State<TakeExamScreen> {
                         );
                       },
                       icon: const Icon(Icons.arrow_back),
-                      label: const Text('Previous'),
+                      label: Text(context.l10n.sharedExamsPrevious),
                     )
                   else
                     const SizedBox(width: 100),
@@ -324,7 +325,7 @@ class _TakeExamScreenState extends State<TakeExamScreen> {
                         );
                       },
                       icon: const Icon(Icons.arrow_forward),
-                      label: const Text('Next'),
+                      label: Text(context.l10n.sharedExamsNext),
                     )
                   else
                     FilledButton.icon(
@@ -339,7 +340,7 @@ class _TakeExamScreenState extends State<TakeExamScreen> {
                               ),
                             )
                           : const Icon(Icons.check),
-                      label: Text(_isSubmitting ? 'Submitting...' : 'Submit'),
+                      label: Text(_isSubmitting ? context.l10n.sharedExamsSubmitting : context.l10n.sharedExamsSubmit),
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.success,
                       ),

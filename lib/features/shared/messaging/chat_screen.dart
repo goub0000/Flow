@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../../../core/models/conversation_model.dart';
 import '../../../core/models/message_model.dart';
 import '../../../core/providers/service_providers.dart';
@@ -109,7 +110,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to send message: $e'),
+            content: Text(context.l10n.sharedMessagingFailedToSend(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -135,9 +136,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final isConnected = conversationState.isConnected;
 
     // Get conversation title
-    String title = 'Chat';
+    String title = context.l10n.sharedMessagingChat;
     if (conversation != null) {
-      title = conversation.title ?? 'Chat';
+      title = conversation.title ?? context.l10n.sharedMessagingChat;
 
       // For direct conversations, show the other participant's name
       if (conversation.conversationType == ConversationType.direct && currentUser != null) {
@@ -168,7 +169,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                   if (!isConnected)
                     Text(
-                      'Connecting...',
+                      context.l10n.sharedMessagingConnecting,
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.warning,
@@ -176,7 +177,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     )
                   else if (typingUsers.isNotEmpty)
                     Text(
-                      typingUsers.length == 1 ? 'typing...' : '${typingUsers.length} typing...',
+                      typingUsers.length == 1 ? context.l10n.sharedMessagingTyping : context.l10n.sharedMessagingTypingMultiple(typingUsers.length),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -218,7 +219,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     onPressed: () {
                       ref.read(conversationRealtimeProvider(widget.conversationId).notifier).refresh();
                     },
-                    child: const Text('Retry'),
+                    child: Text(context.l10n.sharedMessagingRetry),
                   ),
                 ],
               ),
@@ -226,8 +227,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // Loading State
           if (isLoading && messages.isEmpty)
-            const Expanded(
-              child: LoadingIndicator(message: 'Loading messages...'),
+            Expanded(
+              child: LoadingIndicator(message: context.l10n.sharedMessagingLoadingMessages),
             )
           // Messages List
           else
@@ -244,14 +245,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No messages yet',
+                            context.l10n.sharedMessagingNoMessagesYet,
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: AppColors.textSecondary,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Start the conversation!',
+                            context.l10n.sharedMessagingStartConversation,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -326,7 +327,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: 'Type a message...',
+                        hintText: context.l10n.sharedMessagingTypeMessage,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                           borderSide: BorderSide.none,

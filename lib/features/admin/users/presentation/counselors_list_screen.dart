@@ -277,14 +277,14 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
       final metadata = user.metadata ?? {};
       return CounselorRowData(
         id: user.id,
-        name: user.displayName ?? 'Unknown Counselor',
+        name: user.displayName ?? context.l10n.adminCounselorsListUnknownCounselor,
         email: user.email,
         counselorId: 'COU${user.id.substring(0, 6).toUpperCase()}',
-        specialty: metadata['specialty']?.toString() ?? 'Not specified',
+        specialty: metadata['specialty']?.toString() ?? context.l10n.adminCounselorsListNotSpecified,
         students: (metadata['students_count'] as int?) ?? 0,
         sessions: (metadata['sessions_count'] as int?) ?? 0,
         status: metadata['isActive'] == true ? 'active' : 'inactive',
-        joinedDate: _formatDate(user.createdAt),
+        joinedDate: _formatDate(user.createdAt, context),
       );
     }).toList();
 
@@ -459,16 +459,16 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
   }
 
   /// Helper method to format date relative to now
-  String _formatDate(DateTime date) {
+  String _formatDate(DateTime date, BuildContext context) {
     final now = DateTime.now();
     final diff = now.difference(date);
 
-    if (diff.inDays == 0) return 'Today';
-    if (diff.inDays == 1) return 'Yesterday';
-    if (diff.inDays < 7) return '${diff.inDays} days ago';
-    if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
-    if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
-    return '${(diff.inDays / 365).floor()} years ago';
+    if (diff.inDays == 0) return context.l10n.adminCounselorsListToday;
+    if (diff.inDays == 1) return context.l10n.adminCounselorsListYesterday;
+    if (diff.inDays < 7) return context.l10n.adminCounselorsListDaysAgo(diff.inDays);
+    if (diff.inDays < 30) return context.l10n.adminCounselorsListWeeksAgo((diff.inDays / 7).floor());
+    if (diff.inDays < 365) return context.l10n.adminCounselorsListMonthsAgo((diff.inDays / 30).floor());
+    return context.l10n.adminCounselorsListYearsAgo((diff.inDays / 365).floor());
   }
 
   Future<void> _handleBulkActivate() async {
@@ -493,7 +493,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
         if (result.isSuccess) setState(() => _selectedItems = []);
       }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.adminCounselorsListError(e.toString())), backgroundColor: AppColors.error));
     } finally {
       if (mounted) setState(() => _isBulkOperationInProgress = false);
     }
@@ -521,7 +521,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
         if (result.isSuccess) setState(() => _selectedItems = []);
       }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.adminCounselorsListError(e.toString())), backgroundColor: AppColors.error));
     } finally {
       if (mounted) setState(() => _isBulkOperationInProgress = false);
     }

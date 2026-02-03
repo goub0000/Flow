@@ -97,19 +97,19 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
     // Show uploading indicator
     print('[CreateApplication] Showing upload indicator');
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 20,
               height: 20,
               child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
             ),
-            SizedBox(width: 12),
-            Text('Uploading documents...'),
+            const SizedBox(width: 12),
+            Text(context.l10n.studentAppsUploadingDocuments),
           ],
         ),
-        duration: Duration(minutes: 2),
+        duration: const Duration(minutes: 2),
       ),
     );
 
@@ -189,7 +189,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to prepare application: ${e.toString()}'),
+            content: Text(context.l10n.studentAppsFailedToPrepare(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

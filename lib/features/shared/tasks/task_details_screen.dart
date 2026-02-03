@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/task_widgets.dart';
 
 /// Task Details Screen
@@ -45,24 +46,24 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Task Details'),
+        title: Text(context.l10n.sharedTasksDetailsTitle),
         actions: [
           IconButton(
             icon: Icon(
               _task.isFavorite ? Icons.star : Icons.star_border,
             ),
             onPressed: _toggleFavorite,
-            tooltip: 'Favorite',
+            tooltip: context.l10n.sharedTasksFavoriteTooltip,
           ),
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: _editTask,
-            tooltip: 'Edit',
+            tooltip: context.l10n.sharedTasksEditTooltip,
           ),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: _deleteTask,
-            tooltip: 'Delete',
+            tooltip: context.l10n.sharedTasksDeleteTooltip,
           ),
         ],
       ),
@@ -200,7 +201,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   // Description
                   if (_task.description != null &&
                       _task.description!.isNotEmpty) ...[
-                    _buildSectionHeader('Description'),
+                    _buildSectionHeader(context.l10n.sharedTasksDescriptionLabel),
                     const SizedBox(height: 12),
                     Text(
                       _task.description!,
@@ -213,7 +214,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   if (_task.dueDate != null) ...[
                     _buildDetailRow(
                       icon: Icons.calendar_today,
-                      title: 'Due Date',
+                      title: context.l10n.sharedTasksDueDateLabel,
                       content: Text(
                         _formatDate(_task.dueDate!),
                         style: theme.textTheme.bodyLarge?.copyWith(
@@ -247,7 +248,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'This task is overdue',
+                              context.l10n.sharedTasksOverdueWarning,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: AppColors.error,
                                 fontWeight: FontWeight.w600,
@@ -264,7 +265,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   if (_task.courseName != null) ...[
                     _buildDetailRow(
                       icon: Icons.class_,
-                      title: 'Course',
+                      title: context.l10n.sharedTasksCourseLabel,
                       content: Text(
                         _task.courseName!,
                         style: theme.textTheme.bodyLarge,

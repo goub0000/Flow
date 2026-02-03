@@ -56,7 +56,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login failed: ${e.toString()}'),
+            content: Text(context.l10n.adminLoginFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -147,7 +147,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
         ),
         const SizedBox(height: 16),
         Text(
-          'Admin Portal',
+          context.l10n.adminLoginTitle,
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -155,7 +155,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Secure Administrator Access',
+          context.l10n.adminLoginSubtitle,
           style: TextStyle(
             color: AppColors.textSecondary,
             fontSize: 14,
@@ -177,8 +177,8 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'Admin Email',
-              hintText: 'admin@example.com',
+              labelText: context.l10n.adminLoginEmailLabel,
+              hintText: context.l10n.adminLoginEmailHint,
               prefixIcon: const Icon(Icons.email_outlined),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -186,10 +186,10 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your email';
+                return context.l10n.adminLoginEmailRequired;
               }
               if (!value.contains('@')) {
-                return 'Please enter a valid email';
+                return context.l10n.adminLoginEmailInvalid;
               }
               return null;
             },
@@ -202,8 +202,8 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
             obscureText: _obscurePassword,
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
-              labelText: 'Password',
-              hintText: 'Enter your password',
+              labelText: context.l10n.adminLoginPasswordLabel,
+              hintText: context.l10n.adminLoginPasswordHint,
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
                 icon: Icon(
@@ -219,10 +219,10 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your password';
+                return context.l10n.adminLoginPasswordRequired;
               }
               if (value.length < 8) {
-                return 'Password must be at least 8 characters';
+                return context.l10n.adminLoginPasswordTooShort;
               }
               return null;
             },
@@ -253,9 +253,9 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
                 color: Colors.white,
               ),
             )
-          : const Text(
-              'Sign In Securely',
-              style: TextStyle(
+          : Text(
+              context.l10n.adminLoginSignInButton,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -283,7 +283,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'All admin activities are logged and monitored for security.',
+              context.l10n.adminLoginSecurityNotice,
               style: TextStyle(
                 fontSize: 12,
                 color: AppColors.textSecondary,
@@ -315,7 +315,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
           ),
           const SizedBox(width: 8),
           Text(
-            'Back to Main Site',
+            context.l10n.adminLoginBackToSite,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,

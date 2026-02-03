@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// A professional wrapper widget that provides common functionality for all content editors.
 /// Features: auto-save, validation framework, preview toggle, template management,
@@ -132,30 +133,27 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
     if (widget.hasUnsavedChanges()) {
       final result = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (dialogContext) => AlertDialog(
           title: Row(
             children: [
               Icon(Icons.warning_amber_rounded, color: Colors.orange.shade700),
               const SizedBox(width: 12),
-              const Text('Unsaved Changes'),
+              Text(context.l10n.instCourseUnsavedChanges),
             ],
           ),
-          content: const Text(
-            'You have unsaved changes. Are you sure you want to leave? '
-            'Your changes will be lost.',
-          ),
+          content: Text(context.l10n.instCourseUnsavedChangesMessage),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Stay'),
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(context.l10n.instCourseStay),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () => Navigator.pop(dialogContext, true),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Discard Changes'),
+              child: Text(context.l10n.instCourseDiscardChanges),
             ),
           ],
         ),
@@ -180,12 +178,12 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
   void _showValidationDialog(List<String> errors) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Row(
           children: [
             Icon(Icons.error_outline, color: Colors.red.shade700),
             const SizedBox(width: 12),
-            const Text('Validation Errors'),
+            Text(context.l10n.instCourseValidationErrors),
           ],
         ),
         content: SingleChildScrollView(
@@ -193,9 +191,9 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Please fix the following issues before saving:',
-                style: TextStyle(fontWeight: FontWeight.w500),
+              Text(
+                context.l10n.instCourseFixIssuesBeforeSaving,
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 16),
               Container(
@@ -236,8 +234,8 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
         ),
         actions: [
           ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.instCourseOk),
           ),
         ],
       ),
@@ -358,7 +356,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
             Icon(Icons.cloud_done, size: 16, color: Colors.green.shade700),
             const SizedBox(width: 6),
             Text(
-              'Saved',
+              context.l10n.instCourseSaved,
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.green.shade700,
@@ -377,16 +375,16 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
 
   Widget _buildPreviewToggle() {
     return SegmentedButton<bool>(
-      segments: const [
+      segments: [
         ButtonSegment(
           value: false,
-          label: Text('Edit'),
-          icon: Icon(Icons.edit, size: 16),
+          label: Text(context.l10n.instCourseEdit),
+          icon: const Icon(Icons.edit, size: 16),
         ),
         ButtonSegment(
           value: true,
-          label: Text('Preview'),
-          icon: Icon(Icons.visibility, size: 16),
+          label: Text(context.l10n.instCoursePreview),
+          icon: const Icon(Icons.visibility, size: 16),
         ),
       ],
       selected: {_isPreviewMode},
@@ -415,7 +413,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
               Icon(Icons.preview, color: Colors.grey.shade600, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Student Preview',
+                context.l10n.instCourseStudentPreview,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.grey.shade700,
@@ -442,11 +440,11 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildDeviceButton(Icons.desktop_windows, 'Desktop', true),
+        _buildDeviceButton(Icons.desktop_windows, context.l10n.instCourseDesktop, true),
         const SizedBox(width: 8),
-        _buildDeviceButton(Icons.tablet, 'Tablet', false),
+        _buildDeviceButton(Icons.tablet, context.l10n.instCourseTablet, false),
         const SizedBox(width: 8),
-        _buildDeviceButton(Icons.phone_android, 'Mobile', false),
+        _buildDeviceButton(Icons.phone_android, context.l10n.instCourseMobile, false),
       ],
     );
   }
@@ -496,7 +494,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
               Icon(Icons.keyboard, size: 16, color: Colors.grey.shade600),
               const SizedBox(width: 8),
               Text(
-                'Ctrl+S to save',
+                context.l10n.instCourseCtrlSToSave,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey.shade600,
@@ -504,7 +502,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
               ),
               if (widget.showPreviewToggle) ...[
                 Text(
-                  ' | Ctrl+P to preview',
+                  context.l10n.instCourseCtrlPToPreview,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey.shade600,
@@ -522,7 +520,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
               widget.onCancel();
             }
           },
-          child: const Text('Cancel'),
+          child: Text(context.l10n.instCourseCancel),
         ),
         const SizedBox(width: 12),
         ElevatedButton.icon(
@@ -537,7 +535,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
                   widget.isValid ? Icons.save : Icons.warning_amber_rounded,
                   size: 18,
                 ),
-          label: Text(widget.isSaving ? 'Saving...' : widget.saveButtonLabel),
+          label: Text(widget.isSaving ? context.l10n.instCourseSaving : widget.saveButtonLabel),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             backgroundColor: widget.isValid ? null : Colors.orange,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../widgets/schedule_widgets.dart';
 
 /// Calendar Screen
@@ -155,17 +156,17 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar'),
+        title: Text(context.l10n.sharedScheduleCalendar),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: _showFilterOptions,
-            tooltip: 'Filter',
+            tooltip: context.l10n.sharedScheduleFilter,
           ),
           IconButton(
             icon: const Icon(Icons.today),
             onPressed: _goToToday,
-            tooltip: 'Today',
+            tooltip: context.l10n.sharedScheduleToday,
           ),
         ],
         bottom: TabBar(

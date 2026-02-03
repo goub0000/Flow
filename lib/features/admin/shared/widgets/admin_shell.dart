@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../providers/admin_auth_provider.dart';
 import '../services/keyboard_shortcuts_service.dart';
 import 'admin_sidebar.dart';
@@ -62,7 +63,7 @@ class _AdminShellState extends ConsumerState<AdminShell> {
       () {
         // Trigger page refresh - implementation depends on page
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Refreshing...')),
+          SnackBar(content: Text(context.l10n.adminSharedRefreshing)),
         );
       },
     );
@@ -85,17 +86,17 @@ class _AdminShellState extends ConsumerState<AdminShell> {
                 color: AppColors.error,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Admin Access Required',
-                style: TextStyle(
+              Text(
+                context.l10n.adminSharedAdminAccessRequired,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Please sign in with an admin account',
-                style: TextStyle(
+              Text(
+                context.l10n.adminSharedPleaseSignInWithAdmin,
+                style: const TextStyle(
                   fontSize: 16,
                   color: AppColors.textSecondary,
                 ),
@@ -120,7 +121,7 @@ class _AdminShellState extends ConsumerState<AdminShell> {
               children: [
                 // Sidebar - collapsible navigation
                 Semantics(
-                  label: 'Admin navigation sidebar',
+                  label: context.l10n.adminSharedAdminNavigationSidebar,
                   namesRoute: true,
                   child: AdminSidebar(adminUser: adminUser),
                 ),
@@ -131,14 +132,14 @@ class _AdminShellState extends ConsumerState<AdminShell> {
                     children: [
                       // Top bar with user info and actions
                       Semantics(
-                        label: 'Admin toolbar',
+                        label: context.l10n.adminSharedAdminToolbar,
                         child: AdminTopBar(adminUser: adminUser),
                       ),
 
                       // Page content
                       Expanded(
                         child: Semantics(
-                          label: 'Main content',
+                          label: context.l10n.adminSharedMainContent,
                           child: Container(
                             color: AppColors.background,
                             child: widget.child,

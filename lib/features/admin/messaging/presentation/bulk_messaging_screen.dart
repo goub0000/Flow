@@ -81,14 +81,14 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Bulk Messaging',
+          context.l10n.adminMessagingTitle,
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Send messages to multiple users at once',
+          context.l10n.adminMessagingSubtitle,
           style: TextStyle(
             color: AppColors.textSecondary,
             fontSize: 16,
@@ -120,7 +120,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'New Message',
+                  context.l10n.adminMessagingNewMessage,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -145,8 +145,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
                 TextField(
                   controller: _subjectController,
                   decoration: InputDecoration(
-                    labelText: 'Subject',
-                    hintText: 'Enter message subject',
+                    labelText: context.l10n.adminMessagingSubjectLabel,
+                    hintText: context.l10n.adminMessagingSubjectHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -160,8 +160,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
                   controller: _contentController,
                   maxLines: 10,
                   decoration: InputDecoration(
-                    labelText: 'Message',
-                    hintText: 'Enter your message here...',
+                    labelText: context.l10n.adminMessagingMessageLabel,
+                    hintText: context.l10n.adminMessagingMessageHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -187,13 +187,13 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
                     OutlinedButton.icon(
                       onPressed: _handleSaveDraft,
                       icon: const Icon(Icons.save, size: 20),
-                      label: const Text('Save Draft'),
+                      label: Text(context.l10n.adminMessagingSaveDraft),
                     ),
                     const SizedBox(width: 12),
                     OutlinedButton.icon(
                       onPressed: _handlePreview,
                       icon: const Icon(Icons.preview, size: 20),
-                      label: const Text('Preview'),
+                      label: Text(context.l10n.adminMessagingPreview),
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton.icon(
@@ -208,7 +208,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
                               ),
                             )
                           : const Icon(Icons.send, size: 20),
-                      label: Text(_isSending ? 'Sending...' : 'Send Message'),
+                      label: Text(_isSending ? context.l10n.adminMessagingSending : context.l10n.adminMessagingSendMessage),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
@@ -233,7 +233,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Recipients',
+          context.l10n.adminMessagingRecipients,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -303,7 +303,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Delivery Channel',
+          context.l10n.adminMessagingDeliveryChannel,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -388,7 +388,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       icon: const Icon(Icons.schedule, size: 20),
       label: Text(
         _scheduledFor == null
-            ? 'Schedule'
+            ? context.l10n.adminMessagingSchedule
             : DateFormat('MMM d, HH:mm').format(_scheduledFor!),
       ),
       style: OutlinedButton.styleFrom(
@@ -404,7 +404,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Message Templates',
+            context.l10n.adminMessagingTemplates,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -483,7 +483,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       padding: const EdgeInsets.all(20),
       children: [
         Text(
-          'Recent Messages',
+          context.l10n.adminMessagingRecentMessages,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -568,7 +568,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
               ),
               const Spacer(),
               Text(
-                '${message.sentCount} sent',
+                context.l10n.adminMessagingSentCount(message.sentCount),
                 style: TextStyle(
                   fontSize: 11,
                   color: AppColors.textSecondary,
@@ -622,7 +622,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
     if (_subjectController.text.isEmpty || _contentController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Please fill in all fields'),
+          content: Text(context.l10n.adminMessagingFillAllFields),
           backgroundColor: AppColors.error,
         ),
       );
@@ -631,22 +631,22 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Send Message'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminMessagingSendMessageTitle),
         content: Text(
-          'Are you sure you want to send this message to ${_selectedGroup.label}?',
+          context.l10n.adminMessagingSendConfirmation(_selectedGroup.label),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.adminMessagingCancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
             ),
-            child: const Text('Send'),
+            child: Text(context.l10n.adminMessagingSend),
           ),
         ],
       ),
@@ -664,7 +664,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Message sent successfully'),
+          content: Text(context.l10n.adminMessagingSentSuccess),
           backgroundColor: AppColors.success,
         ),
       );
@@ -679,7 +679,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
   void _handleSaveDraft() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Draft saved'),
+        content: Text(context.l10n.adminMessagingDraftSaved),
         backgroundColor: AppColors.success,
       ),
     );
@@ -688,8 +688,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
   void _handlePreview() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Message Preview'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminMessagingPreviewTitle),
         content: SizedBox(
           width: 500,
           child: Column(
@@ -697,7 +697,7 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Subject: ${_subjectController.text}',
+                context.l10n.adminMessagingPreviewSubject(_subjectController.text),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -706,14 +706,14 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
               Divider(color: AppColors.border),
               const SizedBox(height: 8),
               Text(
-                'To: ${_selectedGroup.label}',
+                context.l10n.adminMessagingPreviewTo(_selectedGroup.label),
                 style: TextStyle(
                   fontSize: 12,
                   color: AppColors.textSecondary,
                 ),
               ),
               Text(
-                'Via: ${_selectedChannel.label}',
+                context.l10n.adminMessagingPreviewVia(_selectedChannel.label),
                 style: TextStyle(
                   fontSize: 12,
                   color: AppColors.textSecondary,
@@ -724,8 +724,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(context.l10n.adminMessagingClose),
           ),
         ],
       ),
@@ -736,28 +736,25 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
     return [
       MessageTemplate(
         id: '1',
-        name: 'Welcome Message',
-        subject: 'Welcome to Flow!',
-        content:
-            'Hello! Welcome to Flow, your educational journey starts here. We\'re excited to have you join our community.',
+        name: context.l10n.adminMessagingTemplateWelcomeName,
+        subject: context.l10n.adminMessagingTemplateWelcomeSubject,
+        content: context.l10n.adminMessagingTemplateWelcomeContent,
         category: MessageCategory.announcement,
         icon: Icons.waving_hand,
       ),
       MessageTemplate(
         id: '2',
-        name: 'Payment Reminder',
-        subject: 'Payment Due Reminder',
-        content:
-            'This is a friendly reminder that your payment is due soon. Please complete your payment to continue enjoying our services.',
+        name: context.l10n.adminMessagingTemplatePaymentName,
+        subject: context.l10n.adminMessagingTemplatePaymentSubject,
+        content: context.l10n.adminMessagingTemplatePaymentContent,
         category: MessageCategory.reminder,
         icon: Icons.payment,
       ),
       MessageTemplate(
         id: '3',
-        name: 'System Update',
-        subject: 'System Maintenance Notice',
-        content:
-            'We will be performing scheduled maintenance on our systems. During this time, some features may be unavailable.',
+        name: context.l10n.adminMessagingTemplateSystemName,
+        subject: context.l10n.adminMessagingTemplateSystemSubject,
+        content: context.l10n.adminMessagingTemplateSystemContent,
         category: MessageCategory.update,
         icon: Icons.build,
       ),
@@ -768,8 +765,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
     return [
       BulkMessage(
         id: '1',
-        subject: 'Welcome to New Semester',
-        content: 'We hope you had a great break! Get ready for an exciting semester ahead.',
+        subject: context.l10n.adminMessagingRecentWelcomeSubject,
+        content: context.l10n.adminMessagingRecentWelcomeContent,
         recipientGroup: MessageRecipientGroup.students,
         status: MessageStatus.sent,
         createdAt: DateTime.now().subtract(const Duration(hours: 2)),
@@ -777,8 +774,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       ),
       BulkMessage(
         id: '2',
-        subject: 'Payment Due Reminder',
-        content: 'This is a reminder that your payment is due by the end of this week.',
+        subject: context.l10n.adminMessagingRecentPaymentSubject,
+        content: context.l10n.adminMessagingRecentPaymentContent,
         recipientGroup: MessageRecipientGroup.allUsers,
         status: MessageStatus.sent,
         createdAt: DateTime.now().subtract(const Duration(days: 1)),
@@ -786,8 +783,8 @@ class _BulkMessagingScreenState extends ConsumerState<BulkMessagingScreen> {
       ),
       BulkMessage(
         id: '3',
-        subject: 'New Features Released',
-        content: 'Check out our latest features and improvements to enhance your experience.',
+        subject: context.l10n.adminMessagingRecentFeaturesSubject,
+        content: context.l10n.adminMessagingRecentFeaturesContent,
         recipientGroup: MessageRecipientGroup.institutions,
         status: MessageStatus.scheduled,
         createdAt: DateTime.now().subtract(const Duration(days: 2)),

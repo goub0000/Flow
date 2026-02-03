@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
@@ -91,7 +92,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Audit Logs',
+                    context.l10n.adminAuditTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -100,7 +101,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Monitor and review all administrative activities',
+                context.l10n.adminAuditSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -116,7 +117,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                   // TODO: Refresh audit logs
                 },
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh Logs',
+                tooltip: context.l10n.adminAuditRefreshLogs,
               ),
               const SizedBox(width: 8),
               // Export button (requires permission)
@@ -130,7 +131,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                     // - Trigger download
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export Report'),
+                  label: Text(context.l10n.adminAuditExportReport),
                 ),
               ),
             ],
@@ -153,7 +154,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search logs by user, action, or details...',
+                    hintText: context.l10n.adminAuditSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -179,7 +180,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                 child: DropdownButtonFormField<String>(
                   value: _selectedAction,
                   decoration: InputDecoration(
-                    labelText: 'Action Type',
+                    labelText: context.l10n.adminAuditActionType,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -188,18 +189,18 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                       vertical: 12,
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'all', child: Text('All Actions')),
-                    DropdownMenuItem(value: 'login', child: Text('Login')),
-                    DropdownMenuItem(value: 'logout', child: Text('Logout')),
+                  items: [
+                    DropdownMenuItem(value: 'all', child: Text(context.l10n.adminAuditAllActions)),
+                    DropdownMenuItem(value: 'login', child: Text(context.l10n.adminAuditLogin)),
+                    DropdownMenuItem(value: 'logout', child: Text(context.l10n.adminAuditLogout)),
                     DropdownMenuItem(
-                        value: 'create', child: Text('Create Record')),
+                        value: 'create', child: Text(context.l10n.adminAuditCreateRecord)),
                     DropdownMenuItem(
-                        value: 'update', child: Text('Update Record')),
+                        value: 'update', child: Text(context.l10n.adminAuditUpdateRecord)),
                     DropdownMenuItem(
-                        value: 'delete', child: Text('Delete Record')),
+                        value: 'delete', child: Text(context.l10n.adminAuditDeleteRecord)),
                     DropdownMenuItem(
-                        value: 'export', child: Text('Export Data')),
+                        value: 'export', child: Text(context.l10n.adminAuditExportData)),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -216,7 +217,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                 child: DropdownButtonFormField<String>(
                   value: _selectedDateRange,
                   decoration: InputDecoration(
-                    labelText: 'Date Range',
+                    labelText: context.l10n.adminAuditDateRange,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -225,16 +226,16 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
                       vertical: 12,
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'today', child: Text('Today')),
+                  items: [
+                    DropdownMenuItem(value: 'today', child: Text(context.l10n.adminAuditToday)),
                     DropdownMenuItem(
-                        value: 'yesterday', child: Text('Yesterday')),
+                        value: 'yesterday', child: Text(context.l10n.adminAuditYesterday)),
                     DropdownMenuItem(
-                        value: 'last7days', child: Text('Last 7 Days')),
+                        value: 'last7days', child: Text(context.l10n.adminAuditLast7Days)),
                     DropdownMenuItem(
-                        value: 'last30days', child: Text('Last 30 Days')),
+                        value: 'last30days', child: Text(context.l10n.adminAuditLast30Days)),
                     DropdownMenuItem(
-                        value: 'custom', child: Text('Custom Range')),
+                        value: 'custom', child: Text(context.l10n.adminAuditCustomRange)),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -259,7 +260,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
     return AdminDataTable<AuditLogRowData>(
       columns: [
         DataTableColumn(
-          label: 'Timestamp',
+          label: context.l10n.adminAuditTimestamp,
           cellBuilder: (log) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -283,7 +284,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
           sortable: true,
         ),
         DataTableColumn(
-          label: 'User',
+          label: context.l10n.adminAuditUser,
           cellBuilder: (log) => Row(
             children: [
               CircleAvatar(
@@ -326,18 +327,18 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Action',
+          label: context.l10n.adminAuditAction,
           cellBuilder: (log) => _buildActionChip(log.action),
         ),
         DataTableColumn(
-          label: 'Resource',
+          label: context.l10n.adminAuditResource,
           cellBuilder: (log) => Text(
             log.resource,
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Details',
+          label: context.l10n.adminAuditDetails,
           cellBuilder: (log) => Text(
             log.details,
             style: TextStyle(
@@ -348,7 +349,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'IP Address',
+          label: context.l10n.adminAuditIpAddress,
           cellBuilder: (log) => Text(
             log.ipAddress,
             style: const TextStyle(
@@ -368,7 +369,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
       rowActions: [
         DataTableAction(
           icon: Icons.info_outline,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminAuditViewDetails,
           onPressed: (log) {
             _showLogDetails(log);
           },
@@ -460,7 +461,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
               color: AppColors.primary,
             ),
             const SizedBox(width: 12),
-            const Text('Audit Log Details'),
+            Text(context.l10n.adminAuditLogDetails),
           ],
         ),
         content: SizedBox(
@@ -469,16 +470,16 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Timestamp', log.timestamp),
-              _buildDetailRow('User', log.userName),
-              _buildDetailRow('Role', log.userRole),
-              _buildDetailRow('Action', log.action),
-              _buildDetailRow('Resource', log.resource),
-              _buildDetailRow('Details', log.details),
-              _buildDetailRow('IP Address', log.ipAddress),
+              _buildDetailRow(context.l10n.adminAuditTimestamp, log.timestamp),
+              _buildDetailRow(context.l10n.adminAuditUser, log.userName),
+              _buildDetailRow(context.l10n.adminAuditRole, log.userRole),
+              _buildDetailRow(context.l10n.adminAuditAction, log.action),
+              _buildDetailRow(context.l10n.adminAuditResource, log.resource),
+              _buildDetailRow(context.l10n.adminAuditDetails, log.details),
+              _buildDetailRow(context.l10n.adminAuditIpAddress, log.ipAddress),
               const SizedBox(height: 16),
               Text(
-                'Full details will be available with backend integration.',
+                context.l10n.adminAuditBackendIntegrationNote,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
@@ -491,7 +492,7 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.adminAuditClose),
           ),
         ],
       ),

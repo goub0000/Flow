@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
@@ -91,12 +92,12 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                   isProcessing: _isBulkOperationInProgress,
                   actions: [
                     BulkAction(
-                      label: 'Activate',
+                      label: context.l10n.adminUsersListActivate,
                       icon: Icons.check_circle,
                       onPressed: _handleBulkActivate,
                     ),
                     BulkAction(
-                      label: 'Deactivate',
+                      label: context.l10n.adminUsersListDeactivate,
                       icon: Icons.block,
                       onPressed: _handleBulkDeactivate,
                       isDestructive: true,
@@ -124,14 +125,14 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Students',
+                context.l10n.adminUsersListStudentsTitle,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage student accounts and profiles',
+                context.l10n.adminUsersListStudentsSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -149,7 +150,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     final users = ref.read(adminStudentsProvider);
                     await showExportDialog(
                       context: context,
-                      title: 'Export Students',
+                      title: context.l10n.adminUsersListExportStudents,
                       onExport: (format) => ExportService.exportStudents(
                         students: users,
                         format: format,
@@ -157,7 +158,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     );
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export'),
+                  label: Text(context.l10n.adminUsersListExport),
                 ),
               ),
               const SizedBox(width: 12),
@@ -167,7 +168,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () => context.go('/admin/users/students/create'),
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('Add Student'),
+                  label: Text(context.l10n.adminUsersListAddStudent),
                 ),
               ),
             ],
@@ -188,7 +189,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by name, email, or student ID...',
+                hintText: context.l10n.adminUsersListSearchStudentsHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -213,7 +214,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminUsersListStatusLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -222,11 +223,11 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'active', child: Text('Active')),
-                DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending Verification')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUsersListAllStatus)),
+                DropdownMenuItem(value: 'active', child: Text(context.l10n.adminUsersListStatusActive)),
+                DropdownMenuItem(value: 'inactive', child: Text(context.l10n.adminUsersListStatusInactive)),
+                DropdownMenuItem(value: 'pending', child: Text(context.l10n.adminUsersListStatusPendingVerification)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -242,7 +243,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedGrade,
               decoration: InputDecoration(
-                labelText: 'Grade',
+                labelText: context.l10n.adminUsersListGradeLabel,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -251,12 +252,12 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Grades')),
-                DropdownMenuItem(value: '9', child: Text('Grade 9')),
-                DropdownMenuItem(value: '10', child: Text('Grade 10')),
-                DropdownMenuItem(value: '11', child: Text('Grade 11')),
-                DropdownMenuItem(value: '12', child: Text('Grade 12')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUsersListAllGrades)),
+                DropdownMenuItem(value: '9', child: Text(context.l10n.adminUsersListGrade9)),
+                DropdownMenuItem(value: '10', child: Text(context.l10n.adminUsersListGrade10)),
+                DropdownMenuItem(value: '11', child: Text(context.l10n.adminUsersListGrade11)),
+                DropdownMenuItem(value: '12', child: Text(context.l10n.adminUsersListGrade12)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -311,7 +312,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     return AdminDataTable<StudentRowData>(
       columns: [
         DataTableColumn(
-          label: 'Student',
+          label: context.l10n.adminUsersListColumnStudent,
           cellBuilder: (student) => Row(
             children: [
               LogoAvatar.user(
@@ -345,30 +346,30 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Student ID',
+          label: context.l10n.adminUsersListColumnStudentId,
           cellBuilder: (student) => Text(student.studentId),
         ),
         DataTableColumn(
-          label: 'Grade',
+          label: context.l10n.adminUsersListColumnGrade,
           cellBuilder: (student) => Text(student.grade),
         ),
         DataTableColumn(
-          label: 'School',
+          label: context.l10n.adminUsersListColumnSchool,
           cellBuilder: (student) => Text(
             student.school,
             overflow: TextOverflow.ellipsis,
           ),
         ),
         DataTableColumn(
-          label: 'Applications',
+          label: context.l10n.adminUsersListColumnApplications,
           cellBuilder: (student) => Text(student.applications.toString()),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminUsersListColumnStatus,
           cellBuilder: (student) => _buildStatusChip(student.status),
         ),
         DataTableColumn(
-          label: 'Joined',
+          label: context.l10n.adminUsersListColumnJoined,
           cellBuilder: (student) => Text(student.joinedDate),
         ),
       ],
@@ -385,14 +386,14 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
       rowActions: [
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit Student',
+          tooltip: context.l10n.adminUsersListEditStudent,
           onPressed: (student) {
             // TODO: Navigate to edit student screen
           },
         ),
         DataTableAction(
           icon: Icons.block,
-          tooltip: 'Deactivate Account',
+          tooltip: context.l10n.adminUsersListDeactivateAccount,
           color: AppColors.error,
           onPressed: (student) {
             // TODO: Show confirmation dialog
@@ -410,15 +411,15 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     switch (status) {
       case 'active':
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminUsersListStatusActive;
         break;
       case 'inactive':
         color = AppColors.textSecondary;
-        label = 'Inactive';
+        label = context.l10n.adminUsersListStatusInactive;
         break;
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending';
+        label = context.l10n.adminUsersListStatusPending;
         break;
       default:
         color = AppColors.textSecondary;
@@ -467,19 +468,19 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Activate Students'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminUsersListActivateStudentsTitle),
         content: Text(
-          'Are you sure you want to activate ${_selectedItems.length} student(s)?',
+          context.l10n.adminUsersListActivateStudentsConfirm(_selectedItems.length),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.adminUsersListCancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Activate'),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(context.l10n.adminUsersListActivate),
           ),
         ],
       ),
@@ -531,23 +532,22 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Deactivate Students'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminUsersListDeactivateStudentsTitle),
         content: Text(
-          'Are you sure you want to deactivate ${_selectedItems.length} student(s)? '
-          'They will no longer be able to access their accounts.',
+          context.l10n.adminUsersListDeactivateStudentsConfirm(_selectedItems.length),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.adminUsersListCancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Deactivate'),
+            child: Text(context.l10n.adminUsersListDeactivate),
           ),
         ],
       ),

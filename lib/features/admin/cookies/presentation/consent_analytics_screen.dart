@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/cookie_constants.dart';
 import '../../../../core/providers/cookie_providers.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 
 class ConsentAnalyticsScreen extends ConsumerWidget {
@@ -18,7 +19,7 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Page Header
-          _buildPageHeader(ref),
+          _buildPageHeader(context, ref),
           const SizedBox(height: 24),
 
           // Overview Cards
@@ -40,7 +41,7 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPageHeader(WidgetRef ref) {
+  Widget _buildPageHeader(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
         Container(
@@ -52,21 +53,21 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
           child: Icon(Icons.cookie, color: AppColors.info, size: 24),
         ),
         const SizedBox(width: 16),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Cookie Consent Analytics',
-                style: TextStyle(
+                context.l10n.adminCookiesConsentAnalyticsTitle,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1E293B),
                 ),
               ),
               Text(
-                'Track user consent preferences and compliance',
-                style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
+                context.l10n.adminCookiesConsentAnalyticsSubtitle,
+                style: const TextStyle(fontSize: 13, color: Color(0xFF64748B)),
               ),
             ],
           ),
@@ -76,7 +77,7 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
           onPressed: () {
             ref.invalidate(consentStatisticsProvider);
           },
-          tooltip: 'Refresh',
+          tooltip: context.l10n.adminCookiesRefresh,
         ),
       ],
     );
@@ -99,7 +100,7 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Overview',
+              context.l10n.adminCookiesOverview,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -114,25 +115,25 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
               childAspectRatio: 1.5,
               children: [
                 _buildStatCard(
-                  'Total Users',
+                  context.l10n.adminCookiesTotalUsers,
                   totalUsers.toString(),
                   Icons.people,
                   AppColors.primary,
                 ),
                 _buildStatCard(
-                  'Consent Rate',
+                  context.l10n.adminCookiesConsentRate,
                   '$consentRate%',
                   Icons.check_circle,
                   AppColors.success,
                 ),
                 _buildStatCard(
-                  'Accept All',
+                  context.l10n.adminCookiesAcceptAll,
                   acceptedAll.toString(),
                   Icons.done_all,
                   AppColors.info,
                 ),
                 _buildStatCard(
-                  'Customized',
+                  context.l10n.adminCookiesCustomized,
                   customized.toString(),
                   Icons.tune,
                   AppColors.warning,
@@ -144,7 +145,7 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Center(
-        child: Text('Error loading statistics: $error'),
+        child: Text(context.l10n.adminCookiesErrorLoadingStatistics(error.toString())),
       ),
     );
   }
@@ -196,9 +197,9 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Consent Status Distribution',
-              style: TextStyle(
+            Text(
+              context.l10n.adminCookiesConsentStatusDistribution,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -282,22 +283,22 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            _buildLegend(),
+            _buildLegend(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildLegend() {
+  Widget _buildLegend(BuildContext context) {
     return Wrap(
       spacing: 16,
       runSpacing: 8,
       children: [
-        _buildLegendItem('Accept All', AppColors.success),
-        _buildLegendItem('Customized', AppColors.warning),
-        _buildLegendItem('Declined', AppColors.error),
-        _buildLegendItem('Not Asked', Colors.grey),
+        _buildLegendItem(context.l10n.adminCookiesAcceptAll, AppColors.success),
+        _buildLegendItem(context.l10n.adminCookiesCustomized, AppColors.warning),
+        _buildLegendItem(context.l10n.adminCookiesDeclined, AppColors.error),
+        _buildLegendItem(context.l10n.adminCookiesNotAsked, Colors.grey),
       ],
     );
   }
@@ -332,9 +333,9 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Category Acceptance Rates',
-              style: TextStyle(
+            Text(
+              context.l10n.adminCookiesCategoryAcceptanceRates,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -420,9 +421,9 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
           children: [
             Row(
               children: [
-                const Text(
-                  'Recent Consent Activity',
-                  style: TextStyle(
+                Text(
+                  context.l10n.adminCookiesRecentConsentActivity,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -433,7 +434,7 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
                     // Navigate to user data viewer
                   },
                   icon: const Icon(Icons.arrow_forward, size: 16),
-                  label: const Text('View All'),
+                  label: Text(context.l10n.adminCookiesViewAll),
                 ),
               ],
             ),
@@ -442,9 +443,9 @@ class ConsentAnalyticsScreen extends ConsumerWidget {
               data: (stats) {
                 final recentActivity = (stats['recentActivity'] as List<dynamic>?) ?? [];
                 if (recentActivity.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(child: Text('No recent activity')),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: Text(context.l10n.adminCookiesNoRecentActivity)),
                   );
                 }
                 return Column(

@@ -12,8 +12,8 @@ import '../../shared/utils/export_utils_web.dart' as export_utils;
 /// Export data source definition
 class _ExportSource {
   final String id;
-  final String label;
-  final String description;
+  final String Function(BuildContext) labelBuilder;
+  final String Function(BuildContext) descriptionBuilder;
   final IconData icon;
   final String endpoint;
   final String dataKey;
@@ -21,20 +21,23 @@ class _ExportSource {
 
   const _ExportSource({
     required this.id,
-    required this.label,
-    required this.description,
+    required this.labelBuilder,
+    required this.descriptionBuilder,
     required this.icon,
     required this.endpoint,
     required this.dataKey,
     required this.color,
   });
+
+  String getLabel(BuildContext context) => labelBuilder(context);
+  String getDescription(BuildContext context) => descriptionBuilder(context);
 }
 
-const _exportSources = <_ExportSource>[
+List<_ExportSource> _getExportSources() => <_ExportSource>[
   _ExportSource(
     id: 'users',
-    label: 'Users',
-    description: 'All registered users with profiles',
+    labelBuilder: (context) => context.l10n.adminExportsSourceUsers,
+    descriptionBuilder: (context) => context.l10n.adminExportsSourceUsersDesc,
     icon: Icons.people,
     endpoint: '/admin/users',
     dataKey: 'users',
@@ -42,17 +45,17 @@ const _exportSources = <_ExportSource>[
   ),
   _ExportSource(
     id: 'transactions',
-    label: 'Transactions',
-    description: 'Financial transaction records',
+    labelBuilder: (context) => context.l10n.adminExportsSourceTransactions,
+    descriptionBuilder: (context) => context.l10n.adminExportsSourceTransactionsDesc,
     icon: Icons.receipt_long,
     endpoint: '/admin/finance/transactions',
     dataKey: 'transactions',
-    color: Color(0xFFFAA61A),
+    color: const Color(0xFFFAA61A),
   ),
   _ExportSource(
     id: 'content',
-    label: 'Content',
-    description: 'Courses and educational content',
+    labelBuilder: (context) => context.l10n.adminExportsSourceContent,
+    descriptionBuilder: (context) => context.l10n.adminExportsSourceContentDesc,
     icon: Icons.library_books,
     endpoint: '/admin/content',
     dataKey: 'content',
@@ -60,8 +63,8 @@ const _exportSources = <_ExportSource>[
   ),
   _ExportSource(
     id: 'tickets',
-    label: 'Support Tickets',
-    description: 'Support ticket history',
+    labelBuilder: (context) => context.l10n.adminExportsSourceTickets,
+    descriptionBuilder: (context) => context.l10n.adminExportsSourceTicketsDesc,
     icon: Icons.support_agent,
     endpoint: '/admin/support/tickets',
     dataKey: 'tickets',
@@ -69,8 +72,8 @@ const _exportSources = <_ExportSource>[
   ),
   _ExportSource(
     id: 'campaigns',
-    label: 'Campaigns',
-    description: 'Communication campaigns',
+    labelBuilder: (context) => context.l10n.adminExportsSourceCampaigns,
+    descriptionBuilder: (context) => context.l10n.adminExportsSourceCampaignsDesc,
     icon: Icons.campaign,
     endpoint: '/admin/communications/campaigns',
     dataKey: 'campaigns',
@@ -78,12 +81,12 @@ const _exportSources = <_ExportSource>[
   ),
   _ExportSource(
     id: 'activity',
-    label: 'Activity Log',
-    description: 'Platform activity and audit trail',
+    labelBuilder: (context) => context.l10n.adminExportsSourceActivity,
+    descriptionBuilder: (context) => context.l10n.adminExportsSourceActivityDesc,
     icon: Icons.history,
     endpoint: '/admin/dashboard/recent-activity',
     dataKey: 'activities',
-    color: Color(0xFF4CAF50),
+    color: const Color(0xFF4CAF50),
   ),
 ];
 
@@ -121,7 +124,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
 
       if (!response.success || response.data == null) {
         setState(() {
-          _error = response.message ?? 'Failed to fetch data';
+          _error = response.message ?? context.l10n.adminExportsErrorFetchFailed;
           _exporting = false;
         });
         return;
@@ -137,7 +140,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
 
       if (rows.isEmpty) {
         setState(() {
-          _error = 'No data to export';
+          _error = context.l10n.adminExportsErrorNoData;
           _exporting = false;
         });
         return;
@@ -191,7 +194,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
 
       setState(() {
         _history.insert(0, {
-          'source': src.label,
+          'source': src.getLabel(context),
           'format': extension.toUpperCase(),
           'rows': '${rows.length}',
           'time': DateTime.now().toIso8601String(),
@@ -203,14 +206,14 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Exported ${rows.length} rows to $fileName'),
+            content: Text(context.l10n.adminExportsSuccessMessage(rows.length, fileName)),
             backgroundColor: AppColors.success,
           ),
         );
       }
     } catch (e) {
       setState(() {
-        _error = 'Export failed: $e';
+        _error = context.l10n.adminExportsErrorExportFailed(e.toString());
         _exporting = false;
       });
     }
@@ -285,7 +288,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
           Wrap(
             spacing: 10,
             runSpacing: 10,
-            children: _exportSources.map((src) {
+            children: _getExportSources().map((src) {
               final isSelected = _selectedSource?.id == src.id;
               return InkWell(
                 onTap: () => setState(() => _selectedSource = src),
@@ -306,9 +309,9 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
                     children: [
                       Icon(src.icon, color: isSelected ? src.color : AppColors.textSecondary, size: 24),
                       const SizedBox(height: 8),
-                      Text(src.label, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: isSelected ? src.color : AppColors.textPrimary)),
+                      Text(src.getLabel(context), style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: isSelected ? src.color : AppColors.textPrimary)),
                       const SizedBox(height: 4),
-                      Text(src.description, style: TextStyle(fontSize: 11, color: AppColors.textSecondary), maxLines: 2),
+                      Text(src.getDescription(context), style: TextStyle(fontSize: 11, color: AppColors.textSecondary), maxLines: 2),
                     ],
                   ),
                 ),
@@ -319,21 +322,21 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
           const SizedBox(height: 24),
 
           // Step 2: Select format
-          const Text('2. Select format', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          Text(context.l10n.adminExportsSelectFormat, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           const SizedBox(height: 12),
           Row(
             children: [
               _buildFormatOption(
                 _ExportFormat.csv,
-                'CSV',
-                'Comma-separated values — opens in Excel, Google Sheets',
+                context.l10n.adminExportsFormatCsv,
+                context.l10n.adminExportsFormatCsvDesc,
                 Icons.table_chart,
               ),
               const SizedBox(width: 12),
               _buildFormatOption(
                 _ExportFormat.json,
-                'JSON',
-                'Structured data format — for developers and APIs',
+                context.l10n.adminExportsFormatJson,
+                context.l10n.adminExportsFormatJsonDesc,
                 Icons.data_object,
               ),
             ],
@@ -367,7 +370,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
               icon: _exporting
                   ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                   : const Icon(Icons.download),
-              label: Text(_exporting ? 'Exporting...' : 'Export Data'),
+              label: Text(_exporting ? context.l10n.adminExportsExporting : context.l10n.adminExportsExportData),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -433,7 +436,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
             children: [
               const Icon(Icons.history, size: 20),
               const SizedBox(width: 8),
-              const Text('Export History (this session)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(context.l10n.adminExportsHistoryTitle, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 16),
@@ -441,7 +444,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Center(
-                child: Text('No exports yet this session', style: TextStyle(color: AppColors.textSecondary)),
+                child: Text(context.l10n.adminExportsHistoryEmpty, style: TextStyle(color: AppColors.textSecondary)),
               ),
             )
           else
@@ -464,7 +467,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
                         children: [
                           Text(entry['file'] ?? '', style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13)),
                           Text(
-                            '${entry['source']}  |  ${entry['rows']} rows  |  ${entry['format']}',
+                            context.l10n.adminExportsHistoryItemDetails(entry['source'] ?? '', entry['rows'] ?? '0', entry['format'] ?? ''),
                             style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                           ),
                         ],
