@@ -343,7 +343,7 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
               ),
               const SizedBox(width: 8),
               Text(
-                '• Linked ${_timeAgo(parent.linkedAt)}',
+                context.l10n.parentLinkLinkedTimeAgo(_timeAgo(context, parent.linkedAt)),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -384,18 +384,18 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
     );
   }
 
-  String _timeAgo(DateTime dateTime) {
+  String _timeAgo(BuildContext context, DateTime dateTime) {
     final difference = DateTime.now().difference(dateTime);
     if (difference.inDays > 30) {
-      return '${(difference.inDays / 30).floor()} month${(difference.inDays / 30).floor() > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoMonths((difference.inDays / 30).floor());
     } else if (difference.inDays > 0) {
-      return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoDays(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoHours(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoMinutes(difference.inMinutes);
     } else {
-      return 'Just now';
+      return context.l10n.parentLinkTimeAgoJustNow;
     }
   }
 }
@@ -595,7 +595,7 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
 
           // Time ago
           Text(
-            'Requested ${_timeAgo(link.createdAt)}',
+            context.l10n.parentLinkRequestedTimeAgo(_timeAgo(context, link.createdAt)),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -642,16 +642,16 @@ class _PendingLinkCardState extends ConsumerState<_PendingLinkCard> {
     );
   }
 
-  String _timeAgo(DateTime dateTime) {
+  String _timeAgo(BuildContext context, DateTime dateTime) {
     final difference = DateTime.now().difference(dateTime);
     if (difference.inDays > 0) {
-      return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoDays(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoHours(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+      return context.l10n.parentLinkTimeAgoMinutes(difference.inMinutes);
     } else {
-      return 'Just now';
+      return context.l10n.parentLinkTimeAgoJustNow;
     }
   }
 }
@@ -801,7 +801,7 @@ class _InviteCodesTab extends ConsumerWidget {
 
               // Expires in days
               Text(
-                'Expires in: $expiresInDays days',
+                context.l10n.parentLinkExpiresInDays(expiresInDays),
                 style: const TextStyle(fontSize: 14),
               ),
               Slider(
@@ -817,7 +817,7 @@ class _InviteCodesTab extends ConsumerWidget {
 
               // Max uses
               Text(
-                'Maximum uses: $maxUses',
+                context.l10n.parentLinkMaxUses(maxUses),
                 style: const TextStyle(fontSize: 14),
               ),
               Slider(
@@ -968,19 +968,19 @@ class _InviteCodeCard extends ConsumerWidget {
           Row(
             children: [
               _StatusChip(
-                label: isUsable ? 'Active' : (code.isExpired ? 'Expired' : 'Used'),
+                label: isUsable ? context.l10n.parentLinkStatusActive : (code.isExpired ? context.l10n.parentLinkStatusExpired : context.l10n.parentLinkStatusUsed),
                 color: isUsable ? AppColors.success : AppColors.textSecondary,
               ),
               const SizedBox(width: 8),
               Text(
-                '${code.usesRemaining}/${code.maxUses} uses left',
+                context.l10n.parentLinkUsesRemaining(code.usesRemaining, code.maxUses),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
               ),
               const Spacer(),
               Text(
-                'Expires: ${_formatDate(code.expiresAt)}',
+                context.l10n.parentLinkExpiresOn(_formatDate(code.expiresAt)),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: code.isExpired ? AppColors.error : AppColors.textSecondary,
                     ),

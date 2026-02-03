@@ -416,16 +416,16 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
           children: [
             Icon(Icons.error_outline, size: 64, color: AppColors.error),
             const SizedBox(height: 16),
-            Text('Error loading page', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.error)),
+            Text(context.l10n.adminContentErrorLoadingPage, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.error)),
             const SizedBox(height: 8),
             Text(_error!, style: TextStyle(color: AppColors.textSecondary), textAlign: TextAlign.center),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                OutlinedButton.icon(onPressed: () => context.go('/admin/pages'), icon: const Icon(Icons.arrow_back), label: const Text('Back')),
+                OutlinedButton.icon(onPressed: () => context.go('/admin/pages'), icon: const Icon(Icons.arrow_back), label: Text(context.l10n.adminContentBack)),
                 const SizedBox(width: 16),
-                ElevatedButton.icon(onPressed: _loadPage, icon: const Icon(Icons.refresh), label: const Text('Retry')),
+                ElevatedButton.icon(onPressed: _loadPage, icon: const Icon(Icons.refresh), label: Text(context.l10n.adminContentRetry)),
               ],
             ),
           ],
@@ -444,12 +444,12 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             children: [
               Icon(Icons.visibility, color: AppColors.info),
               const SizedBox(width: 12),
-              Text('Preview Mode', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: AppColors.info)),
+              Text(context.l10n.adminContentPreviewMode, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: AppColors.info)),
               const Spacer(),
               ElevatedButton.icon(
                 onPressed: () => setState(() => _isPreviewMode = false),
                 icon: const Icon(Icons.edit, size: 18),
-                label: const Text('Back to Editor'),
+                label: Text(context.l10n.adminContentBackToEditor),
               ),
             ],
           ),
@@ -545,11 +545,11 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Edit Page: ${_formatSlug(widget.pageSlug)}', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+              Text(context.l10n.adminContentEditPageTitle(_formatSlug(widget.pageSlug)), style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Text('Slug: ${widget.pageSlug}', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
+                  Text(context.l10n.adminContentSlug(widget.pageSlug), style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
                   const SizedBox(width: 16),
                   _buildStatusBadge(_originalPage?.status ?? 'draft'),
                   if (_hasChanges) ...[
@@ -557,7 +557,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(color: AppColors.warning.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                      child: Text('UNSAVED', style: TextStyle(color: AppColors.warning, fontSize: 10, fontWeight: FontWeight.w600)),
+                      child: Text(context.l10n.adminContentUnsaved, style: TextStyle(color: AppColors.warning, fontSize: 10, fontWeight: FontWeight.w600)),
                     ),
                   ],
                 ],
@@ -567,17 +567,17 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         ),
         Row(
           children: [
-            OutlinedButton.icon(onPressed: () => setState(() => _isPreviewMode = true), icon: const Icon(Icons.visibility, size: 18), label: const Text('Preview')),
+            OutlinedButton.icon(onPressed: () => setState(() => _isPreviewMode = true), icon: const Icon(Icons.visibility, size: 18), label: Text(context.l10n.adminContentPreview)),
             const SizedBox(width: 12),
             if (_originalPage?.isPublished == true)
-              OutlinedButton.icon(onPressed: _isSaving ? null : _unpublishPage, icon: const Icon(Icons.visibility_off, size: 18), label: const Text('Unpublish'), style: OutlinedButton.styleFrom(foregroundColor: AppColors.warning))
+              OutlinedButton.icon(onPressed: _isSaving ? null : _unpublishPage, icon: const Icon(Icons.visibility_off, size: 18), label: Text(context.l10n.adminContentUnpublish), style: OutlinedButton.styleFrom(foregroundColor: AppColors.warning))
             else
-              OutlinedButton.icon(onPressed: _isSaving ? null : _publishPage, icon: const Icon(Icons.visibility, size: 18), label: const Text('Publish'), style: OutlinedButton.styleFrom(foregroundColor: AppColors.success)),
+              OutlinedButton.icon(onPressed: _isSaving ? null : _publishPage, icon: const Icon(Icons.visibility, size: 18), label: Text(context.l10n.adminContentPublish), style: OutlinedButton.styleFrom(foregroundColor: AppColors.success)),
             const SizedBox(width: 12),
             ElevatedButton.icon(
               onPressed: _isSaving ? null : _savePage,
               icon: _isSaving ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Icon(Icons.save, size: 18),
-              label: Text(_isSaving ? 'Saving...' : 'Save'),
+              label: Text(_isSaving ? context.l10n.adminContentSaving : context.l10n.adminContentSave),
             ),
           ],
         ),
@@ -592,25 +592,25 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Basic Information', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+          Text(context.l10n.adminContentBasicInformation, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 20),
           TextFormField(
             controller: _titleController,
-            decoration: const InputDecoration(labelText: 'Page Title', hintText: 'Enter the page title'),
-            validator: (value) => (value == null || value.isEmpty) ? 'Title is required' : null,
+            decoration: InputDecoration(labelText: context.l10n.adminContentPageTitle, hintText: context.l10n.adminContentEnterPageTitle),
+            validator: (value) => (value == null || value.isEmpty) ? context.l10n.adminContentTitleRequired : null,
             onChanged: (_) => _markChanged(),
           ),
           const SizedBox(height: 20),
           TextFormField(
             controller: _subtitleController,
-            decoration: const InputDecoration(labelText: 'Subtitle (optional)', hintText: 'Enter a subtitle or tagline'),
+            decoration: InputDecoration(labelText: context.l10n.adminContentSubtitleOptional, hintText: context.l10n.adminContentEnterSubtitle),
             maxLines: 2,
             onChanged: (_) => _markChanged(),
           ),
           const SizedBox(height: 20),
           TextFormField(
             controller: _metaDescriptionController,
-            decoration: const InputDecoration(labelText: 'Meta Description (SEO)', hintText: 'Brief description for search engines'),
+            decoration: InputDecoration(labelText: context.l10n.adminContentMetaDescription, hintText: context.l10n.adminContentBriefDescription),
             maxLines: 3,
             maxLength: 300,
             onChanged: (_) => _markChanged(),
@@ -630,15 +630,15 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Content', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              Text(context.l10n.adminContentContent, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
               _buildEditorModeToggle(theme),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             _editorMode == EditorMode.visual
-                ? 'Use the rich text editor to format your content with bold, italic, headings, and lists.'
-                : 'Edit the page content in JSON format.',
+                ? context.l10n.adminContentUseRichTextEditor
+                : context.l10n.adminContentEditJsonFormat,
             style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
           ),
           const SizedBox(height: 16),
@@ -657,8 +657,8 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildModeButton(icon: Icons.edit_note, label: 'Visual', isSelected: _editorMode == EditorMode.visual, onTap: () => _switchToMode(EditorMode.visual)),
-          _buildModeButton(icon: Icons.code, label: 'Raw JSON', isSelected: _editorMode == EditorMode.rawJson, onTap: () => _switchToMode(EditorMode.rawJson)),
+          _buildModeButton(icon: Icons.edit_note, label: context.l10n.adminContentVisual, isSelected: _editorMode == EditorMode.visual, onTap: () => _switchToMode(EditorMode.visual)),
+          _buildModeButton(icon: Icons.code, label: context.l10n.adminContentRawJson, isSelected: _editorMode == EditorMode.rawJson, onTap: () => _switchToMode(EditorMode.rawJson)),
         ],
       ),
     );
@@ -693,7 +693,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         // Sections
         if (_hasSections) ...[
           if (_richTextFields.isNotEmpty) const Divider(height: 32),
-          Text('Sections', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
+          Text(context.l10n.adminContentSections, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 16),
           ..._sections.asMap().entries.map((entry) {
             final index = entry.key;
@@ -712,7 +712,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             child: OutlinedButton.icon(
               onPressed: _addSection,
               icon: const Icon(Icons.add, size: 18),
-              label: const Text('Add Section'),
+              label: Text(context.l10n.adminContentAddSection),
               style: OutlinedButton.styleFrom(foregroundColor: AppColors.primary),
             ),
           ),
@@ -779,12 +779,12 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             Icon(Icons.data_object, size: 48, color: AppColors.textSecondary),
             const SizedBox(height: 16),
             Text(
-              'This page has a complex structure.',
+              context.l10n.adminContentComplexStructure,
               style: theme.textTheme.titleSmall?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 8),
             Text(
-              'Use Raw JSON mode to edit this page\'s content.',
+              context.l10n.adminContentUseRawJsonMode,
               style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
             ),
           ],
@@ -817,7 +817,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            TextButton.icon(onPressed: _formatJson, icon: const Icon(Icons.format_align_left, size: 16), label: const Text('Format')),
+            TextButton.icon(onPressed: _formatJson, icon: const Icon(Icons.format_align_left, size: 16), label: Text(context.l10n.adminContentFormat)),
           ],
         ),
         const SizedBox(height: 8),
@@ -827,11 +827,11 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
           maxLines: 25,
           style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
           validator: (value) {
-            if (value == null || value.isEmpty) return 'Content is required';
+            if (value == null || value.isEmpty) return context.l10n.adminContentContentRequired;
             try {
               json.decode(value);
             } catch (e) {
-              return 'Invalid JSON format';
+              return context.l10n.adminContentInvalidJsonFormat;
             }
             return null;
           },
@@ -857,11 +857,10 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Rich Text Editor', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.info)),
+                Text(context.l10n.adminContentRichTextEditor, style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.info)),
                 const SizedBox(height: 4),
                 Text(
-                  'Use the Visual Editor for WYSIWYG editing with formatting toolbar. '
-                  'Switch to Raw JSON for advanced editing of complex content structures.',
+                  context.l10n.adminContentVisualEditorHelp,
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                 ),
               ],
@@ -898,7 +897,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
       _markChanged();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: const Text('Cannot format: Invalid JSON'), backgroundColor: AppColors.error),
+        SnackBar(content: Text(context.l10n.adminContentCannotFormatInvalidJson), backgroundColor: AppColors.error),
       );
     }
   }

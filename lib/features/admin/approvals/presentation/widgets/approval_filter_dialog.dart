@@ -208,19 +208,19 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
   String _getRequestTypeDisplayName(ApprovalRequestType type) {
     switch (type) {
       case ApprovalRequestType.userManagement:
-        return 'User Management';
+        return context.l10n.adminApprovalTypeUserManagement;
       case ApprovalRequestType.contentManagement:
-        return 'Content';
+        return context.l10n.adminApprovalTypeContent;
       case ApprovalRequestType.financial:
-        return 'Financial';
+        return context.l10n.adminApprovalTypeFinancial;
       case ApprovalRequestType.system:
-        return 'System';
+        return context.l10n.adminApprovalTypeSystem;
       case ApprovalRequestType.notifications:
-        return 'Notifications';
+        return context.l10n.adminApprovalTypeNotifications;
       case ApprovalRequestType.dataExport:
-        return 'Data Export';
+        return context.l10n.adminApprovalTypeDataExport;
       case ApprovalRequestType.adminManagement:
-        return 'Admin Management';
+        return context.l10n.adminApprovalTypeAdminManagement;
     }
   }
 }

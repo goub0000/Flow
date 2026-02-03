@@ -653,7 +653,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                           size: 14, color: Colors.grey[600]),
                       const SizedBox(width: 4),
                       Text(
-                        'Enrolled: ${_formatDate(enrollment.enrolledAt)}',
+                        context.l10n.studentCoursesEnrolledDate(_formatDate(enrollment.enrolledAt)),
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                       if (enrollment.completedAt != null) ...[
@@ -764,17 +764,17 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Today';
+      return context.l10n.studentCoursesDateToday;
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return context.l10n.studentCoursesDateYesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return context.l10n.studentCoursesDateDaysAgo(difference.inDays);
     } else if (difference.inDays < 30) {
       final weeks = (difference.inDays / 7).floor();
-      return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
+      return context.l10n.studentCoursesDateWeeksAgo(weeks);
     } else if (difference.inDays < 365) {
       final months = (difference.inDays / 30).floor();
-      return '$months ${months == 1 ? 'month' : 'months'} ago';
+      return context.l10n.studentCoursesDateMonthsAgo(months);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }

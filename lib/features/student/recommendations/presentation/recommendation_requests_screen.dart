@@ -309,17 +309,17 @@ class _RecommendationRequestsScreenState
   String _getStatusLabel(RecommendationRequestStatus status) {
     switch (status) {
       case RecommendationRequestStatus.pending:
-        return 'Pending';
+        return context.l10n.studentRecStatusPending;
       case RecommendationRequestStatus.accepted:
-        return 'Accepted';
+        return context.l10n.studentRecStatusAccepted;
       case RecommendationRequestStatus.inProgress:
-        return 'In Progress';
+        return context.l10n.studentRecStatusInProgress;
       case RecommendationRequestStatus.completed:
-        return 'Completed';
+        return context.l10n.studentRecStatusCompleted;
       case RecommendationRequestStatus.declined:
-        return 'Declined';
+        return context.l10n.studentRecStatusDeclined;
       case RecommendationRequestStatus.cancelled:
-        return 'Cancelled';
+        return context.l10n.studentRecStatusCancelled;
     }
   }
 
@@ -555,27 +555,27 @@ class _StatusChip extends StatelessWidget {
     switch (status) {
       case RecommendationRequestStatus.pending:
         color = AppColors.warning;
-        label = 'PENDING';
+        label = context.l10n.studentRecChipPending;
         break;
       case RecommendationRequestStatus.accepted:
         color = AppColors.info;
-        label = 'ACCEPTED';
+        label = context.l10n.studentRecChipAccepted;
         break;
       case RecommendationRequestStatus.inProgress:
         color = AppColors.info;
-        label = 'WRITING';
+        label = context.l10n.studentRecChipWriting;
         break;
       case RecommendationRequestStatus.completed:
         color = AppColors.success;
-        label = 'COMPLETED';
+        label = context.l10n.studentRecChipCompleted;
         break;
       case RecommendationRequestStatus.declined:
         color = AppColors.error;
-        label = 'DECLINED';
+        label = context.l10n.studentRecChipDeclined;
         break;
       case RecommendationRequestStatus.cancelled:
         color = AppColors.textSecondary;
-        label = 'CANCELLED';
+        label = context.l10n.studentRecChipCancelled;
         break;
     }
 

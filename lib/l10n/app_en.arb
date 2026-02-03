@@ -5033,6 +5033,36 @@
       }
     }
   },
+  "adminApprovalTypeUserManagement": "User Management",
+  "adminApprovalTypeContent": "Content",
+  "adminApprovalTypeFinancial": "Financial",
+  "adminApprovalTypeSystem": "System",
+  "adminApprovalTypeNotifications": "Notifications",
+  "adminApprovalTypeDataExport": "Data Export",
+  "adminApprovalTypeAdminManagement": "Admin Management",
+  "adminApprovalActionCreateUser": "Create User",
+  "adminApprovalActionDeleteUserAccount": "Delete User Account",
+  "adminApprovalActionSuspendUserAccount": "Suspend User Account",
+  "adminApprovalActionUnsuspendUserAccount": "Unsuspend User Account",
+  "adminApprovalActionGrantAdminRole": "Grant Admin Role",
+  "adminApprovalActionRevokeAdminRole": "Revoke Admin Role",
+  "adminApprovalActionModifyUserPermissions": "Modify User Permissions",
+  "adminApprovalActionPublishContent": "Publish Content",
+  "adminApprovalActionUnpublishContent": "Unpublish Content",
+  "adminApprovalActionDeleteContent": "Delete Content",
+  "adminApprovalActionDeleteProgram": "Delete Program",
+  "adminApprovalActionDeleteInstitutionContent": "Delete Institution Content",
+  "adminApprovalActionProcessLargeRefund": "Process Large Refund",
+  "adminApprovalActionModifyFeeStructure": "Modify Fee Structure",
+  "adminApprovalActionVoidTransaction": "Void Transaction",
+  "adminApprovalActionSendBulkNotification": "Send Bulk Notification",
+  "adminApprovalActionSendPlatformAnnouncement": "Send Platform Announcement",
+  "adminApprovalActionExportSensitiveData": "Export Sensitive Data",
+  "adminApprovalActionExportUserData": "Export User Data",
+  "adminApprovalActionModifySystemSettings": "Modify System Settings",
+  "adminApprovalActionClearCache": "Clear Cache",
+  "adminApprovalActionCreateAdmin": "Create Admin",
+  "adminApprovalActionModifyAdmin": "Modify Admin",
   "adminContentAssessmentsManagement": "Assessments Management",
   "adminContentManageQuizzesAndAssignments": "Manage quizzes and assignments across all courses",
   "adminContentRefresh": "Refresh",
@@ -7397,7 +7427,7 @@
       }
     }
   },
-    "@adminSharedItemsSelected": {
+  "@adminSharedItemsSelected": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -7609,6 +7639,324 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "adminContentSelectCourse": "Select a course",
+  "adminContentModuleTitleRequired": "Module Title *",
+  "adminContentEnterModuleTitle": "Enter module title",
+  "adminContentEnterModuleDescription": "Enter module description (optional)",
+  "adminContentModuleCreatedAsDraft": "Module will be created as a draft. Use the Course Builder to add lessons.",
+  "adminContentPleaseSelectCourse": "Please select a course",
+  "adminContentFailedToCreateModule": "Failed to create module",
+  "adminContentTotalModules": "Total Modules",
+  "adminContentAcrossAllCourses": "Across all courses",
+  "adminContentLiveModules": "Live modules",
+  "adminContentDrafts": "Drafts",
+  "adminContentUnpublishedModules": "Unpublished modules",
+  "adminContentTotalLessons": "Total Lessons",
+  "adminContentAllLessons": "All lessons",
+  "adminContentSearchModules": "Search modules by title...",
+  "adminContentModuleTitle": "Module Title",
+  "adminContentCourse": "Course",
+  "adminContentLessons": "Lessons",
+  "adminContentDuration": "Duration",
+  "adminContentViewDetails": "View Details",
+  "adminContentEditInBuilder": "Edit in Course Builder",
+  "adminContentErrorLoadingPage": "Error loading page",
+  "adminContentBack": "Back",
+  "adminContentPreviewMode": "Preview Mode",
+  "adminContentBackToEditor": "Back to Editor",
+  "adminContentUnsaved": "UNSAVED",
+  "adminContentUnpublish": "Unpublish",
+  "adminContentPublish": "Publish",
+  "adminContentSaving": "Saving...",
+  "adminContentSave": "Save",
+  "adminContentBasicInformation": "Basic Information",
+  "adminContentPageTitle": "Page Title",
+  "adminContentEnterPageTitle": "Enter the page title",
+  "adminContentSubtitleOptional": "Subtitle (optional)",
+  "adminContentEnterSubtitle": "Enter a subtitle or tagline",
+  "adminContentMetaDescription": "Meta Description (SEO)",
+  "adminContentBriefDescription": "Brief description for search engines",
+  "adminContentContent": "Content",
+  "adminContentUseRichTextEditor": "Use the rich text editor to format your content.",
+  "adminContentEditJsonFormat": "Edit the page content in JSON format.",
+  "adminContentVisual": "Visual",
+  "adminContentRawJson": "Raw JSON",
+  "adminContentSections": "Sections",
+  "adminContentAddSection": "Add Section",
+  "adminContentComplexStructure": "This page has a complex structure.",
+  "adminContentUseRawJsonMode": "Use Raw JSON mode to edit this page's content.",
+  "adminContentFormat": "Format",
+  "adminContentContentRequired": "Content is required",
+  "adminContentInvalidJsonFormat": "Invalid JSON format",
+  "adminContentRichTextEditor": "Rich Text Editor",
+  "adminContentVisualEditorHelp": "Use the Visual Editor for WYSIWYG editing. Switch to Raw JSON for advanced editing.",
+  "adminContentCannotFormatInvalidJson": "Cannot format: Invalid JSON",
+  "adminContentResourceTypeRequired": "Resource Type *",
+  "adminContentTextContent": "Text Content",
+  "adminContentSelectCourseFirst": "Select a course first",
+  "adminContentSelectModule": "Select a module",
+  "adminContentVideoUrlRequired": "Video URL *",
+  "adminContentVideoUrlHint": "https://youtube.com/watch?v=...",
+  "adminContentEnterTextContent": "Enter text content (Markdown supported)",
+  "adminContentResourceCreatedAsDraft": "Resource will be created as a draft lesson.",
+  "adminContentPleaseEnterLessonTitle": "Please enter a lesson title",
+  "adminContentPleaseEnterVideoUrl": "Please enter a video URL",
+  "adminContentPleaseEnterContent": "Please enter content",
+  "adminContentVideoResourceCreated": "Video resource created",
+  "adminContentTextResourceCreated": "Text resource created",
+  "adminContentFailedToCreateResource": "Failed to create resource",
+  "adminContentTotalResources": "Total Resources",
+  "adminContentVideos": "Videos",
+  "adminContentVideoResources": "Video resources",
+  "adminContentTextResources": "Text resources",
+  "adminContentTotalDuration": "Total Duration",
+  "adminContentVideoContent": "Video content",
+  "adminContentSearchResources": "Search resources by title...",
+  "adminContentResourceType": "Resource Type",
+  "adminContentLocation": "Location",
+  "adminContentDurationReadTime": "Duration / Read Time",
+  "adminContentModule": "Module",
+  "adminContentLesson": "Lesson",
+  "adminContentVideoUrl": "Video URL",
+  "adminContentReadingTime": "Reading Time",
+  "studentHelpCategoryGettingStarted": "Getting Started",
+  "studentHelpCategoryApplications": "Applications",
+  "studentHelpCategoryCounseling": "Counseling",
+  "studentHelpCategoryCourses": "Courses",
+  "studentHelpCategoryAccount": "Account",
+  "studentHelpCategoryTechnical": "Technical",
+  "studentResourcesCategoryStudyGuide": "Study Guide",
+  "studentResourcesCategoryVideo": "Video",
+  "studentResourcesCategoryTemplate": "Template",
+  "studentResourcesCategoryExternalLink": "External Link",
+  "studentResourcesCategoryCareer": "Career",
+  "studentResourcesDateToday": "Today",
+  "studentResourcesDateYesterday": "Yesterday",
+  "studentScheduleWeekdaySun": "Sun",
+  "studentScheduleWeekdayMon": "Mon",
+  "studentScheduleWeekdayTue": "Tue",
+  "studentScheduleWeekdayWed": "Wed",
+  "studentScheduleWeekdayThu": "Thu",
+  "studentScheduleWeekdayFri": "Fri",
+  "studentScheduleWeekdaySat": "Sat",
+  "studentScheduleEventCounseling": "Counseling",
+  "studentScheduleEventCourse": "Course",
+  "studentScheduleEventDeadline": "Deadline",
+  "studentScheduleEventStudy": "Study",
+  "studentScheduleEventOther": "Other",
+  "studentCoursesDateToday": "Today",
+  "studentCoursesDateYesterday": "Yesterday",
+  "parentLinkTimeAgoJustNow": "Just now",
+  "parentLinkStatusActive": "Active",
+  "parentLinkStatusExpired": "Expired",
+  "parentLinkStatusUsed": "Used",
+  "studentRecStatusPending": "Pending",
+  "studentRecStatusAccepted": "Accepted",
+  "studentRecStatusInProgress": "In Progress",
+  "studentRecStatusCompleted": "Completed",
+  "studentRecStatusDeclined": "Declined",
+  "studentRecStatusCancelled": "Cancelled",
+  "studentRecChipPending": "PENDING",
+  "studentRecChipAccepted": "ACCEPTED",
+  "studentRecChipWriting": "WRITING",
+  "studentRecChipCompleted": "COMPLETED",
+  "studentRecChipDeclined": "DECLINED",
+  "studentRecChipCancelled": "CANCELLED",
+  "studentCoursesEnrolledDate": "Enrolled: {date}",
+  "@studentCoursesEnrolledDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "studentCoursesDateDaysAgo": "{days} days ago",
+  "@studentCoursesDateDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "studentCoursesDateWeeksAgo": "{weeks} weeks ago",
+  "@studentCoursesDateWeeksAgo": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "studentCoursesDateMonthsAgo": "{months} months ago",
+  "@studentCoursesDateMonthsAgo": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkLinkedTimeAgo": "Linked {timeAgo}",
+  "@parentLinkLinkedTimeAgo": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkRequestedTimeAgo": "Requested {timeAgo}",
+  "@parentLinkRequestedTimeAgo": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      }
+    }
+  },
+  "parentLinkTimeAgoMonths": "{months} months ago",
+  "@parentLinkTimeAgoMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkTimeAgoDays": "{days} days ago",
+  "@parentLinkTimeAgoDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkTimeAgoHours": "{hours} hours ago",
+  "@parentLinkTimeAgoHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkTimeAgoMinutes": "{minutes} minutes ago",
+  "@parentLinkTimeAgoMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkExpiresInDays": "Expires in: {days} days",
+  "@parentLinkExpiresInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkMaxUses": "Maximum uses: {count}",
+  "@parentLinkMaxUses": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkUsesRemaining": "{remaining}/{total} uses left",
+  "@parentLinkUsesRemaining": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "parentLinkExpiresOn": "Expires: {date}",
+  "@parentLinkExpiresOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "studentScheduleNoEventsOn": "No events on {date}",
+  "@studentScheduleNoEventsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "studentScheduleDueBy": "Due by {time}",
+  "@studentScheduleDueBy": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "studentResourcesDateDaysAgo": "{days}d ago",
+  "@studentResourcesDateDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "studentResourcesDateWeeksAgo": "{weeks}w ago",
+  "@studentResourcesDateWeeksAgo": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "studentResourcesDateMonthsAgo": "{months}mo ago",
+  "@studentResourcesDateMonthsAgo": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "studentResourcesOpening": "Opening {title}...",
+  "@studentResourcesOpening": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "studentHelpAppVersion": "Flow App v{version}",
+  "@studentHelpAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "adminContentEditPageTitle": "Edit Page: {title}",
+  "@adminContentEditPageTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "adminContentSlug": "Slug: {slug}",
+  "@adminContentSlug": {
+    "placeholders": {
+      "slug": {
+        "type": "String"
+      }
+    }
+  },
+  "adminContentModuleCreated": "Module \"{title}\" created",
+  "@adminContentModuleCreated": {
+    "placeholders": {
+      "title": {
+        "type": "String"
       }
     }
   }

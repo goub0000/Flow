@@ -10900,6 +10900,110 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get adminApprovalTypeUserManagement => 'Gestion des utilisateurs';
+
+  @override
+  String get adminApprovalTypeContent => 'Contenu';
+
+  @override
+  String get adminApprovalTypeFinancial => 'Financier';
+
+  @override
+  String get adminApprovalTypeSystem => 'Systeme';
+
+  @override
+  String get adminApprovalTypeNotifications => 'Notifications';
+
+  @override
+  String get adminApprovalTypeDataExport => 'Export de donnees';
+
+  @override
+  String get adminApprovalTypeAdminManagement => 'Gestion des administrateurs';
+
+  @override
+  String get adminApprovalActionCreateUser => 'Creer un utilisateur';
+
+  @override
+  String get adminApprovalActionDeleteUserAccount =>
+      'Supprimer un compte utilisateur';
+
+  @override
+  String get adminApprovalActionSuspendUserAccount =>
+      'Suspendre un compte utilisateur';
+
+  @override
+  String get adminApprovalActionUnsuspendUserAccount =>
+      'Reactiver un compte utilisateur';
+
+  @override
+  String get adminApprovalActionGrantAdminRole =>
+      'Accorder un role administrateur';
+
+  @override
+  String get adminApprovalActionRevokeAdminRole =>
+      'Revoquer un role administrateur';
+
+  @override
+  String get adminApprovalActionModifyUserPermissions =>
+      'Modifier les permissions utilisateur';
+
+  @override
+  String get adminApprovalActionPublishContent => 'Publier du contenu';
+
+  @override
+  String get adminApprovalActionUnpublishContent => 'Depublier du contenu';
+
+  @override
+  String get adminApprovalActionDeleteContent => 'Supprimer du contenu';
+
+  @override
+  String get adminApprovalActionDeleteProgram => 'Supprimer un programme';
+
+  @override
+  String get adminApprovalActionDeleteInstitutionContent =>
+      'Supprimer le contenu d\'une institution';
+
+  @override
+  String get adminApprovalActionProcessLargeRefund =>
+      'Traiter un remboursement important';
+
+  @override
+  String get adminApprovalActionModifyFeeStructure =>
+      'Modifier la structure tarifaire';
+
+  @override
+  String get adminApprovalActionVoidTransaction => 'Annuler une transaction';
+
+  @override
+  String get adminApprovalActionSendBulkNotification =>
+      'Envoyer une notification en masse';
+
+  @override
+  String get adminApprovalActionSendPlatformAnnouncement =>
+      'Envoyer une annonce plateforme';
+
+  @override
+  String get adminApprovalActionExportSensitiveData =>
+      'Exporter des donnees sensibles';
+
+  @override
+  String get adminApprovalActionExportUserData =>
+      'Exporter des donnees utilisateur';
+
+  @override
+  String get adminApprovalActionModifySystemSettings =>
+      'Modifier les parametres systeme';
+
+  @override
+  String get adminApprovalActionClearCache => 'Vider le cache';
+
+  @override
+  String get adminApprovalActionCreateAdmin => 'Creer un administrateur';
+
+  @override
+  String get adminApprovalActionModifyAdmin => 'Modifier un administrateur';
+
+  @override
   String get adminContentAssessmentsManagement => 'Gestion des evaluations';
 
   @override
@@ -17155,4 +17259,512 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get studentCoursesFailedToLoadDetails =>
       'Student Courses Failed To Load Details';
+
+  @override
+  String get adminContentSelectCourse => 'Sélectionner un cours';
+
+  @override
+  String get adminContentModuleTitleRequired => 'Titre du module *';
+
+  @override
+  String get adminContentEnterModuleTitle => 'Entrer le titre du module';
+
+  @override
+  String get adminContentEnterModuleDescription =>
+      'Entrer la description du module (optionnel)';
+
+  @override
+  String get adminContentModuleCreatedAsDraft =>
+      'Le module sera créé en tant que brouillon.';
+
+  @override
+  String get adminContentPleaseSelectCourse => 'Veuillez sélectionner un cours';
+
+  @override
+  String get adminContentFailedToCreateModule =>
+      'Échec de la création du module';
+
+  @override
+  String get adminContentTotalModules => 'Total des modules';
+
+  @override
+  String get adminContentAcrossAllCourses => 'Dans tous les cours';
+
+  @override
+  String get adminContentLiveModules => 'Modules en ligne';
+
+  @override
+  String get adminContentDrafts => 'Brouillons';
+
+  @override
+  String get adminContentUnpublishedModules => 'Modules non publiés';
+
+  @override
+  String get adminContentTotalLessons => 'Total des leçons';
+
+  @override
+  String get adminContentAllLessons => 'Toutes les leçons';
+
+  @override
+  String get adminContentSearchModules => 'Rechercher des modules par titre...';
+
+  @override
+  String get adminContentModuleTitle => 'Titre du module';
+
+  @override
+  String get adminContentCourse => 'Cours';
+
+  @override
+  String get adminContentLessons => 'Leçons';
+
+  @override
+  String get adminContentDuration => 'Durée';
+
+  @override
+  String get adminContentViewDetails => 'Voir les détails';
+
+  @override
+  String get adminContentEditInBuilder =>
+      'Modifier dans le Constructeur de cours';
+
+  @override
+  String get adminContentErrorLoadingPage =>
+      'Erreur lors du chargement de la page';
+
+  @override
+  String get adminContentBack => 'Retour';
+
+  @override
+  String get adminContentPreviewMode => 'Mode aperçu';
+
+  @override
+  String get adminContentBackToEditor => 'Retour à l\'éditeur';
+
+  @override
+  String get adminContentUnsaved => 'NON ENREGISTRÉ';
+
+  @override
+  String get adminContentUnpublish => 'Dépublier';
+
+  @override
+  String get adminContentPublish => 'Publier';
+
+  @override
+  String get adminContentSaving => 'Enregistrement...';
+
+  @override
+  String get adminContentSave => 'Enregistrer';
+
+  @override
+  String get adminContentBasicInformation => 'Informations de base';
+
+  @override
+  String get adminContentPageTitle => 'Titre de la page';
+
+  @override
+  String get adminContentEnterPageTitle => 'Entrer le titre de la page';
+
+  @override
+  String get adminContentSubtitleOptional => 'Sous-titre (optionnel)';
+
+  @override
+  String get adminContentEnterSubtitle =>
+      'Entrer un sous-titre ou une accroche';
+
+  @override
+  String get adminContentMetaDescription => 'Meta description (SEO)';
+
+  @override
+  String get adminContentBriefDescription =>
+      'Brève description pour les moteurs de recherche';
+
+  @override
+  String get adminContentContent => 'Contenu';
+
+  @override
+  String get adminContentUseRichTextEditor =>
+      'Utilisez l\'éditeur de texte enrichi pour formater votre contenu.';
+
+  @override
+  String get adminContentEditJsonFormat =>
+      'Modifier le contenu au format JSON.';
+
+  @override
+  String get adminContentVisual => 'Visuel';
+
+  @override
+  String get adminContentRawJson => 'JSON brut';
+
+  @override
+  String get adminContentSections => 'Sections';
+
+  @override
+  String get adminContentAddSection => 'Ajouter une section';
+
+  @override
+  String get adminContentComplexStructure =>
+      'Cette page a une structure complexe.';
+
+  @override
+  String get adminContentUseRawJsonMode =>
+      'Utilisez le mode JSON brut pour modifier cette page.';
+
+  @override
+  String get adminContentFormat => 'Format';
+
+  @override
+  String get adminContentContentRequired => 'Le contenu est requis';
+
+  @override
+  String get adminContentInvalidJsonFormat => 'Format JSON invalide';
+
+  @override
+  String get adminContentRichTextEditor => 'Éditeur de texte enrichi';
+
+  @override
+  String get adminContentVisualEditorHelp =>
+      'Utilisez l\'éditeur visuel pour l\'édition WYSIWYG. Passez au JSON brut pour l\'édition avancée.';
+
+  @override
+  String get adminContentCannotFormatInvalidJson =>
+      'Impossible de formater: JSON invalide';
+
+  @override
+  String get adminContentResourceTypeRequired => 'Type de ressource *';
+
+  @override
+  String get adminContentTextContent => 'Contenu texte';
+
+  @override
+  String get adminContentSelectCourseFirst => 'Sélectionnez d\'abord un cours';
+
+  @override
+  String get adminContentSelectModule => 'Sélectionner un module';
+
+  @override
+  String get adminContentVideoUrlRequired => 'URL de la vidéo *';
+
+  @override
+  String get adminContentVideoUrlHint => 'https://youtube.com/watch?v=...';
+
+  @override
+  String get adminContentEnterTextContent =>
+      'Entrer le contenu texte (Markdown supporté)';
+
+  @override
+  String get adminContentResourceCreatedAsDraft =>
+      'La ressource sera créée en tant que brouillon.';
+
+  @override
+  String get adminContentPleaseEnterLessonTitle =>
+      'Veuillez entrer un titre de leçon';
+
+  @override
+  String get adminContentPleaseEnterVideoUrl =>
+      'Veuillez entrer une URL de vidéo';
+
+  @override
+  String get adminContentPleaseEnterContent => 'Veuillez entrer du contenu';
+
+  @override
+  String get adminContentVideoResourceCreated => 'Ressource vidéo créée';
+
+  @override
+  String get adminContentTextResourceCreated => 'Ressource texte créée';
+
+  @override
+  String get adminContentFailedToCreateResource =>
+      'Échec de la création de la ressource';
+
+  @override
+  String get adminContentTotalResources => 'Total des ressources';
+
+  @override
+  String get adminContentVideos => 'Vidéos';
+
+  @override
+  String get adminContentVideoResources => 'Ressources vidéo';
+
+  @override
+  String get adminContentTextResources => 'Ressources texte';
+
+  @override
+  String get adminContentTotalDuration => 'Durée totale';
+
+  @override
+  String get adminContentVideoContent => 'Contenu vidéo';
+
+  @override
+  String get adminContentSearchResources =>
+      'Rechercher des ressources par titre...';
+
+  @override
+  String get adminContentResourceType => 'Type de ressource';
+
+  @override
+  String get adminContentLocation => 'Emplacement';
+
+  @override
+  String get adminContentDurationReadTime => 'Durée / Temps de lecture';
+
+  @override
+  String get adminContentModule => 'Module';
+
+  @override
+  String get adminContentLesson => 'Leçon';
+
+  @override
+  String get adminContentVideoUrl => 'URL de la vidéo';
+
+  @override
+  String get adminContentReadingTime => 'Temps de lecture';
+
+  @override
+  String get studentHelpCategoryGettingStarted => 'Premiers pas';
+
+  @override
+  String get studentHelpCategoryApplications => 'Candidatures';
+
+  @override
+  String get studentHelpCategoryCounseling => 'Conseils';
+
+  @override
+  String get studentHelpCategoryCourses => 'Cours';
+
+  @override
+  String get studentHelpCategoryAccount => 'Compte';
+
+  @override
+  String get studentHelpCategoryTechnical => 'Technique';
+
+  @override
+  String get studentResourcesCategoryStudyGuide => 'Guide d\'étude';
+
+  @override
+  String get studentResourcesCategoryVideo => 'Vidéo';
+
+  @override
+  String get studentResourcesCategoryTemplate => 'Modèle';
+
+  @override
+  String get studentResourcesCategoryExternalLink => 'Lien externe';
+
+  @override
+  String get studentResourcesCategoryCareer => 'Carrière';
+
+  @override
+  String get studentResourcesDateToday => 'Aujourd\'hui';
+
+  @override
+  String get studentResourcesDateYesterday => 'Hier';
+
+  @override
+  String get studentScheduleWeekdaySun => 'Dim';
+
+  @override
+  String get studentScheduleWeekdayMon => 'Lun';
+
+  @override
+  String get studentScheduleWeekdayTue => 'Mar';
+
+  @override
+  String get studentScheduleWeekdayWed => 'Mer';
+
+  @override
+  String get studentScheduleWeekdayThu => 'Jeu';
+
+  @override
+  String get studentScheduleWeekdayFri => 'Ven';
+
+  @override
+  String get studentScheduleWeekdaySat => 'Sam';
+
+  @override
+  String get studentScheduleEventCounseling => 'Conseil';
+
+  @override
+  String get studentScheduleEventCourse => 'Cours';
+
+  @override
+  String get studentScheduleEventDeadline => 'Échéance';
+
+  @override
+  String get studentScheduleEventStudy => 'Étude';
+
+  @override
+  String get studentScheduleEventOther => 'Autre';
+
+  @override
+  String get studentCoursesDateToday => 'Aujourd\'hui';
+
+  @override
+  String get studentCoursesDateYesterday => 'Hier';
+
+  @override
+  String get parentLinkTimeAgoJustNow => 'À l\'instant';
+
+  @override
+  String get parentLinkStatusActive => 'Actif';
+
+  @override
+  String get parentLinkStatusExpired => 'Expiré';
+
+  @override
+  String get parentLinkStatusUsed => 'Utilisé';
+
+  @override
+  String get studentRecStatusPending => 'En attente';
+
+  @override
+  String get studentRecStatusAccepted => 'Accepté';
+
+  @override
+  String get studentRecStatusInProgress => 'En cours';
+
+  @override
+  String get studentRecStatusCompleted => 'Terminé';
+
+  @override
+  String get studentRecStatusDeclined => 'Refusé';
+
+  @override
+  String get studentRecStatusCancelled => 'Annulé';
+
+  @override
+  String get studentRecChipPending => 'EN ATTENTE';
+
+  @override
+  String get studentRecChipAccepted => 'ACCEPTÉ';
+
+  @override
+  String get studentRecChipWriting => 'RÉDACTION';
+
+  @override
+  String get studentRecChipCompleted => 'TERMINÉ';
+
+  @override
+  String get studentRecChipDeclined => 'REFUSÉ';
+
+  @override
+  String get studentRecChipCancelled => 'ANNULÉ';
+
+  @override
+  String studentCoursesEnrolledDate(String date) {
+    return 'Inscrit: $date';
+  }
+
+  @override
+  String studentCoursesDateDaysAgo(int days) {
+    return 'Il y a $days jours';
+  }
+
+  @override
+  String studentCoursesDateWeeksAgo(int weeks) {
+    return 'Il y a $weeks semaines';
+  }
+
+  @override
+  String studentCoursesDateMonthsAgo(int months) {
+    return 'Il y a $months mois';
+  }
+
+  @override
+  String parentLinkLinkedTimeAgo(String timeAgo) {
+    return 'Lié $timeAgo';
+  }
+
+  @override
+  String parentLinkRequestedTimeAgo(String timeAgo) {
+    return 'Demandé $timeAgo';
+  }
+
+  @override
+  String parentLinkTimeAgoMonths(int months) {
+    return 'Il y a $months mois';
+  }
+
+  @override
+  String parentLinkTimeAgoDays(int days) {
+    return 'Il y a $days jours';
+  }
+
+  @override
+  String parentLinkTimeAgoHours(int hours) {
+    return 'Il y a $hours heures';
+  }
+
+  @override
+  String parentLinkTimeAgoMinutes(int minutes) {
+    return 'Il y a $minutes minutes';
+  }
+
+  @override
+  String parentLinkExpiresInDays(int days) {
+    return 'Expire dans: $days jours';
+  }
+
+  @override
+  String parentLinkMaxUses(int count) {
+    return 'Utilisations maximum: $count';
+  }
+
+  @override
+  String parentLinkUsesRemaining(int remaining, int total) {
+    return '$remaining/$total utilisations restantes';
+  }
+
+  @override
+  String parentLinkExpiresOn(String date) {
+    return 'Expire: $date';
+  }
+
+  @override
+  String studentScheduleNoEventsOn(String date) {
+    return 'Aucun événement le $date';
+  }
+
+  @override
+  String studentScheduleDueBy(String time) {
+    return 'Échéance à $time';
+  }
+
+  @override
+  String studentResourcesDateDaysAgo(int days) {
+    return 'Il y a ${days}j';
+  }
+
+  @override
+  String studentResourcesDateWeeksAgo(int weeks) {
+    return 'Il y a ${weeks}sem';
+  }
+
+  @override
+  String studentResourcesDateMonthsAgo(int months) {
+    return 'Il y a ${months}m';
+  }
+
+  @override
+  String studentResourcesOpening(String title) {
+    return 'Ouverture de $title...';
+  }
+
+  @override
+  String studentHelpAppVersion(String version) {
+    return 'Flow App v$version';
+  }
+
+  @override
+  String adminContentEditPageTitle(String title) {
+    return 'Modifier la page: $title';
+  }
+
+  @override
+  String adminContentSlug(String slug) {
+    return 'Slug: $slug';
+  }
+
+  @override
+  String adminContentModuleCreated(String title) {
+    return 'Module \"$title\" créé';
+  }
 }

@@ -341,7 +341,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                   // App version
                   Center(
                     child: Text(
-                      'Flow App v1.0.0',
+                      context.l10n.studentHelpAppVersion('1.0.0'),
                       style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 12,
@@ -450,7 +450,7 @@ class _HelpScreenState extends ConsumerState<HelpScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          category.category.label,
+                          category.category.labelFor(context),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -625,20 +625,20 @@ enum HelpCategory {
   account,
   technical;
 
-  String get label {
+  String labelFor(BuildContext context) {
     switch (this) {
       case HelpCategory.gettingStarted:
-        return 'Getting Started';
+        return context.l10n.studentHelpCategoryGettingStarted;
       case HelpCategory.applications:
-        return 'Applications';
+        return context.l10n.studentHelpCategoryApplications;
       case HelpCategory.counseling:
-        return 'Counseling';
+        return context.l10n.studentHelpCategoryCounseling;
       case HelpCategory.courses:
-        return 'Courses';
+        return context.l10n.studentHelpCategoryCourses;
       case HelpCategory.account:
-        return 'Account & Settings';
+        return context.l10n.studentHelpCategoryAccount;
       case HelpCategory.technical:
-        return 'Technical Support';
+        return context.l10n.studentHelpCategoryTechnical;
     }
   }
 }

@@ -28,46 +28,106 @@ class _CreateApprovalRequestScreenState
 
   bool _isSubmitting = false;
 
-  // Action types grouped by request type
-  final Map<ApprovalRequestType, List<Map<String, String>>> _actionTypes = {
+  // Action type values - labels are resolved dynamically with l10n
+  static const Map<ApprovalRequestType, List<String>> _actionTypeValues = {
     ApprovalRequestType.userManagement: [
-      {'value': 'create_user', 'label': 'Create User'},
-      {'value': 'delete_user_account', 'label': 'Delete User Account'},
-      {'value': 'suspend_user_account', 'label': 'Suspend User Account'},
-      {'value': 'unsuspend_user_account', 'label': 'Unsuspend User Account'},
-      {'value': 'grant_admin_role', 'label': 'Grant Admin Role'},
-      {'value': 'revoke_admin_role', 'label': 'Revoke Admin Role'},
-      {'value': 'modify_user_permissions', 'label': 'Modify User Permissions'},
+      'create_user',
+      'delete_user_account',
+      'suspend_user_account',
+      'unsuspend_user_account',
+      'grant_admin_role',
+      'revoke_admin_role',
+      'modify_user_permissions',
     ],
     ApprovalRequestType.contentManagement: [
-      {'value': 'publish_content', 'label': 'Publish Content'},
-      {'value': 'unpublish_content', 'label': 'Unpublish Content'},
-      {'value': 'delete_content', 'label': 'Delete Content'},
-      {'value': 'delete_program', 'label': 'Delete Program'},
-      {'value': 'delete_institution_content', 'label': 'Delete Institution Content'},
+      'publish_content',
+      'unpublish_content',
+      'delete_content',
+      'delete_program',
+      'delete_institution_content',
     ],
     ApprovalRequestType.financial: [
-      {'value': 'process_large_refund', 'label': 'Process Large Refund'},
-      {'value': 'modify_fee_structure', 'label': 'Modify Fee Structure'},
-      {'value': 'void_transaction', 'label': 'Void Transaction'},
+      'process_large_refund',
+      'modify_fee_structure',
+      'void_transaction',
     ],
     ApprovalRequestType.notifications: [
-      {'value': 'send_bulk_notification', 'label': 'Send Bulk Notification'},
-      {'value': 'send_platform_announcement', 'label': 'Send Platform Announcement'},
+      'send_bulk_notification',
+      'send_platform_announcement',
     ],
     ApprovalRequestType.dataExport: [
-      {'value': 'export_sensitive_data', 'label': 'Export Sensitive Data'},
-      {'value': 'export_user_data', 'label': 'Export User Data'},
+      'export_sensitive_data',
+      'export_user_data',
     ],
     ApprovalRequestType.system: [
-      {'value': 'modify_system_settings', 'label': 'Modify System Settings'},
-      {'value': 'clear_cache', 'label': 'Clear Cache'},
+      'modify_system_settings',
+      'clear_cache',
     ],
     ApprovalRequestType.adminManagement: [
-      {'value': 'create_admin', 'label': 'Create Admin'},
-      {'value': 'modify_admin', 'label': 'Modify Admin'},
+      'create_admin',
+      'modify_admin',
     ],
   };
+
+  String _getActionTypeLabel(String actionType) {
+    switch (actionType) {
+      // User Management
+      case 'create_user':
+        return context.l10n.adminApprovalActionCreateUser;
+      case 'delete_user_account':
+        return context.l10n.adminApprovalActionDeleteUserAccount;
+      case 'suspend_user_account':
+        return context.l10n.adminApprovalActionSuspendUserAccount;
+      case 'unsuspend_user_account':
+        return context.l10n.adminApprovalActionUnsuspendUserAccount;
+      case 'grant_admin_role':
+        return context.l10n.adminApprovalActionGrantAdminRole;
+      case 'revoke_admin_role':
+        return context.l10n.adminApprovalActionRevokeAdminRole;
+      case 'modify_user_permissions':
+        return context.l10n.adminApprovalActionModifyUserPermissions;
+      // Content Management
+      case 'publish_content':
+        return context.l10n.adminApprovalActionPublishContent;
+      case 'unpublish_content':
+        return context.l10n.adminApprovalActionUnpublishContent;
+      case 'delete_content':
+        return context.l10n.adminApprovalActionDeleteContent;
+      case 'delete_program':
+        return context.l10n.adminApprovalActionDeleteProgram;
+      case 'delete_institution_content':
+        return context.l10n.adminApprovalActionDeleteInstitutionContent;
+      // Financial
+      case 'process_large_refund':
+        return context.l10n.adminApprovalActionProcessLargeRefund;
+      case 'modify_fee_structure':
+        return context.l10n.adminApprovalActionModifyFeeStructure;
+      case 'void_transaction':
+        return context.l10n.adminApprovalActionVoidTransaction;
+      // Notifications
+      case 'send_bulk_notification':
+        return context.l10n.adminApprovalActionSendBulkNotification;
+      case 'send_platform_announcement':
+        return context.l10n.adminApprovalActionSendPlatformAnnouncement;
+      // Data Export
+      case 'export_sensitive_data':
+        return context.l10n.adminApprovalActionExportSensitiveData;
+      case 'export_user_data':
+        return context.l10n.adminApprovalActionExportUserData;
+      // System
+      case 'modify_system_settings':
+        return context.l10n.adminApprovalActionModifySystemSettings;
+      case 'clear_cache':
+        return context.l10n.adminApprovalActionClearCache;
+      // Admin Management
+      case 'create_admin':
+        return context.l10n.adminApprovalActionCreateAdmin;
+      case 'modify_admin':
+        return context.l10n.adminApprovalActionModifyAdmin;
+      default:
+        return actionType.replaceAll('_', ' ');
+    }
+  }
 
   @override
   void dispose() {
@@ -125,7 +185,7 @@ class _CreateApprovalRequestScreenState
                             setState(() {
                               _selectedRequestType = value;
                               _selectedActionType =
-                                  _actionTypes[value]!.first['value']!;
+                                  _actionTypeValues[value]!.first;
                               _updateTargetResourceType();
                             });
                           }
@@ -138,10 +198,10 @@ class _CreateApprovalRequestScreenState
                           labelText: context.l10n.adminApprovalAction,
                           border: const OutlineInputBorder(),
                         ),
-                        items: _actionTypes[_selectedRequestType]!.map((action) {
+                        items: _actionTypeValues[_selectedRequestType]!.map((actionValue) {
                           return DropdownMenuItem(
-                            value: action['value'],
-                            child: Text(action['label']!),
+                            value: actionValue,
+                            child: Text(_getActionTypeLabel(actionValue)),
                           );
                         }).toList(),
                         onChanged: (value) {

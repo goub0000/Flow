@@ -144,14 +144,14 @@ class _ResourcesManagementScreenState
                     DropdownButtonFormField<String>(
                       value: selectedType,
                       decoration: InputDecoration(
-                        labelText: 'Resource Type *',
+                        labelText: context.l10n.adminContentResourceTypeRequired,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'video', child: Text('Video')),
-                        DropdownMenuItem(value: 'text', child: Text('Text Content')),
+                      items: [
+                        DropdownMenuItem(value: 'video', child: Text(context.l10n.adminContentVideo)),
+                        DropdownMenuItem(value: 'text', child: Text(context.l10n.adminContentTextContent)),
                       ],
                       onChanged: (value) {
                         if (value != null) {
@@ -164,10 +164,10 @@ class _ResourcesManagementScreenState
                     DropdownButtonFormField<String>(
                       value: selectedCourseId,
                       decoration: InputDecoration(
-                        labelText: 'Course *',
+                        labelText: context.l10n.adminContentCourseRequired,
                         hintText: courseListState.isLoading
-                            ? 'Loading courses...'
-                            : 'Select a course',
+                            ? context.l10n.adminContentLoadingCourses
+                            : context.l10n.adminContentSelectCourse,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -202,14 +202,14 @@ class _ResourcesManagementScreenState
                     DropdownButtonFormField<String>(
                       value: selectedModuleId,
                       decoration: InputDecoration(
-                        labelText: 'Module *',
+                        labelText: context.l10n.adminContentModuleRequired,
                         hintText: isLoadingModules
-                            ? 'Loading modules...'
+                            ? context.l10n.adminContentLoadingModules
                             : selectedCourseId == null
-                                ? 'Select a course first'
+                                ? context.l10n.adminContentSelectCourseFirst
                                 : modules.isEmpty
-                                    ? 'No modules in this course'
-                                    : 'Select a module',
+                                    ? context.l10n.adminContentNoModulesInCourse
+                                    : context.l10n.adminContentSelectModule,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -229,8 +229,8 @@ class _ResourcesManagementScreenState
                     TextField(
                       controller: lessonTitleController,
                       decoration: InputDecoration(
-                        labelText: 'Lesson Title *',
-                        hintText: 'Enter lesson title',
+                        labelText: context.l10n.adminContentLessonTitleRequired,
+                        hintText: context.l10n.adminContentEnterLessonTitle,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -242,8 +242,8 @@ class _ResourcesManagementScreenState
                       TextField(
                         controller: videoUrlController,
                         decoration: InputDecoration(
-                          labelText: 'Video URL *',
-                          hintText: 'https://youtube.com/watch?v=...',
+                          labelText: context.l10n.adminContentVideoUrlRequired,
+                          hintText: context.l10n.adminContentVideoUrlHint,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -254,8 +254,8 @@ class _ResourcesManagementScreenState
                         controller: textContentController,
                         maxLines: 5,
                         decoration: InputDecoration(
-                          labelText: 'Content *',
-                          hintText: 'Enter text content (Markdown supported)',
+                          labelText: context.l10n.adminContentContentRequired,
+                          hintText: context.l10n.adminContentEnterTextContent,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -264,7 +264,7 @@ class _ResourcesManagementScreenState
                     ],
                     const SizedBox(height: 16),
                     Text(
-                      'Resource will be created as a draft lesson. Use the Course Builder for advanced editing.',
+                      context.l10n.adminContentResourceCreatedAsDraft,
                       style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 12,
@@ -278,7 +278,7 @@ class _ResourcesManagementScreenState
             actions: [
               TextButton(
                 onPressed: isCreating ? null : () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                child: Text(context.l10n.adminContentCancel),
               ),
               ElevatedButton(
                 onPressed: isCreating
@@ -289,7 +289,7 @@ class _ResourcesManagementScreenState
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content:
-                                  const Text('Please select course and module'),
+                                  Text(context.l10n.adminContentPleaseSelectCourseAndModule),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -298,7 +298,7 @@ class _ResourcesManagementScreenState
                         if (lessonTitleController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Please enter a lesson title'),
+                              content: Text(context.l10n.adminContentPleaseEnterLessonTitle),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -308,7 +308,7 @@ class _ResourcesManagementScreenState
                             videoUrlController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Please enter a video URL'),
+                              content: Text(context.l10n.adminContentPleaseEnterVideoUrl),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -318,7 +318,7 @@ class _ResourcesManagementScreenState
                             textContentController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Please enter content'),
+                              content: Text(context.l10n.adminContentPleaseEnterContent),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -348,8 +348,8 @@ class _ResourcesManagementScreenState
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(success
-                                  ? '${selectedType == 'video' ? 'Video' : 'Text'} resource created'
-                                  : 'Failed to create resource'),
+                                  ? (selectedType == 'video' ? context.l10n.adminContentVideoResourceCreated : context.l10n.adminContentTextResourceCreated)
+                                  : context.l10n.adminContentFailedToCreateResource),
                               backgroundColor:
                                   success ? AppColors.success : AppColors.error,
                             ),
@@ -365,7 +365,7 @@ class _ResourcesManagementScreenState
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Create'),
+                    : Text(context.l10n.adminContentCreate),
               ),
             ],
           );
@@ -383,9 +383,9 @@ class _ResourcesManagementScreenState
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Resources',
+              context.l10n.adminContentTotalResources,
               stats.totalResources.toString(),
-              'All content items',
+              context.l10n.adminContentAllContentItems,
               Icons.folder_open,
               AppColors.primary,
             ),
@@ -393,9 +393,9 @@ class _ResourcesManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Videos',
+              context.l10n.adminContentVideos,
               stats.videoCount.toString(),
-              'Video resources',
+              context.l10n.adminContentVideoResources,
               Icons.play_circle,
               AppColors.error,
             ),
@@ -403,9 +403,9 @@ class _ResourcesManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Text Content',
+              context.l10n.adminContentTextContent,
               stats.textCount.toString(),
-              'Text resources',
+              context.l10n.adminContentTextResources,
               Icons.article,
               AppColors.success,
             ),
@@ -413,9 +413,9 @@ class _ResourcesManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Total Duration',
+              context.l10n.adminContentTotalDuration,
               '${stats.totalDurationMinutes} min',
-              'Video content',
+              context.l10n.adminContentVideoContent,
               Icons.timer,
               Colors.purple,
             ),
@@ -481,7 +481,7 @@ class _ResourcesManagementScreenState
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search resources by title...',
+                hintText: context.l10n.adminContentSearchResources,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -504,7 +504,7 @@ class _ResourcesManagementScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: InputDecoration(
-                labelText: 'Resource Type',
+                labelText: context.l10n.adminContentResourceType,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -513,10 +513,10 @@ class _ResourcesManagementScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Types')),
-                DropdownMenuItem(value: 'video', child: Text('Video')),
-                DropdownMenuItem(value: 'text', child: Text('Text')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminContentAllTypes)),
+                DropdownMenuItem(value: 'video', child: Text(context.l10n.adminContentVideo)),
+                DropdownMenuItem(value: 'text', child: Text(context.l10n.adminContentText)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -568,7 +568,7 @@ class _ResourcesManagementScreenState
     return AdminDataTable<ResourceRowData>(
       columns: [
         DataTableColumn(
-          label: 'Title',
+          label: context.l10n.adminContentTitle,
           cellBuilder: (item) => Text(
             item.title,
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
@@ -576,11 +576,11 @@ class _ResourcesManagementScreenState
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Type',
+          label: context.l10n.adminContentType,
           cellBuilder: (item) => _buildTypeChip(item.resourceType),
         ),
         DataTableColumn(
-          label: 'Course',
+          label: context.l10n.adminContentCourse,
           cellBuilder: (item) => Text(
             item.courseTitle,
             style: const TextStyle(fontSize: 13),
@@ -588,7 +588,7 @@ class _ResourcesManagementScreenState
           ),
         ),
         DataTableColumn(
-          label: 'Location',
+          label: context.l10n.adminContentLocation,
           cellBuilder: (item) => Text(
             '${item.moduleTitle} > ${item.lessonTitle}',
             style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
@@ -596,7 +596,7 @@ class _ResourcesManagementScreenState
           ),
         ),
         DataTableColumn(
-          label: 'Duration / Read Time',
+          label: context.l10n.adminContentDurationReadTime,
           cellBuilder: (item) => Text(
             item.resourceType == 'video'
                 ? _formatDuration(item.durationSeconds)
@@ -607,7 +607,7 @@ class _ResourcesManagementScreenState
           ),
         ),
         DataTableColumn(
-          label: 'Updated',
+          label: context.l10n.adminContentUpdated,
           cellBuilder: (item) => Text(
             item.lastUpdated,
             style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
@@ -621,12 +621,12 @@ class _ResourcesManagementScreenState
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminContentViewDetails,
           onPressed: (item) => _showResourceDetails(item),
         ),
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit in Course Builder',
+          tooltip: context.l10n.adminContentEditInBuilder,
           color: AppColors.primary,
           onPressed: (item) {
             if (item.courseId.isNotEmpty) {
@@ -685,28 +685,28 @@ class _ResourcesManagementScreenState
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Type', item.resourceType == 'video' ? 'Video' : 'Text'),
-              _buildDetailRow('Course', item.courseTitle),
-              _buildDetailRow('Module', item.moduleTitle),
-              _buildDetailRow('Lesson', item.lessonTitle),
+              _buildDetailRow(context.l10n.adminContentType, item.resourceType == 'video' ? context.l10n.adminContentVideo : context.l10n.adminContentText),
+              _buildDetailRow(context.l10n.adminContentCourse, item.courseTitle),
+              _buildDetailRow(context.l10n.adminContentModule, item.moduleTitle),
+              _buildDetailRow(context.l10n.adminContentLesson, item.lessonTitle),
               if (item.resourceType == 'video') ...[
-                _buildDetailRow('Duration', _formatDuration(item.durationSeconds)),
+                _buildDetailRow(context.l10n.adminContentDuration, _formatDuration(item.durationSeconds)),
                 if (item.videoUrl != null)
-                  _buildDetailRow('Video URL', item.videoUrl!),
+                  _buildDetailRow(context.l10n.adminContentVideoUrl, item.videoUrl!),
               ] else ...[
                 if (item.contentFormat != null)
-                  _buildDetailRow('Format', item.contentFormat!),
+                  _buildDetailRow(context.l10n.adminContentFormat, item.contentFormat!),
                 if (item.estimatedReadingTime != null)
-                  _buildDetailRow('Reading Time', '${item.estimatedReadingTime} min'),
+                  _buildDetailRow(context.l10n.adminContentReadingTime, '${item.estimatedReadingTime} min'),
               ],
-              _buildDetailRow('Last Updated', item.lastUpdated),
+              _buildDetailRow(context.l10n.adminContentLastUpdated, item.lastUpdated),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.adminContentClose),
           ),
           if (item.courseId.isNotEmpty)
             ElevatedButton.icon(
@@ -715,7 +715,7 @@ class _ResourcesManagementScreenState
                 context.go('/admin/content/${item.courseId}/edit');
               },
               icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Edit in Course Builder'),
+              label: Text(context.l10n.adminContentEditInBuilder),
             ),
         ],
       ),

@@ -179,7 +179,15 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   }
 
   Widget _buildWeekdayHeaders() {
-    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    final weekdays = [
+      context.l10n.studentScheduleWeekdaySun,
+      context.l10n.studentScheduleWeekdayMon,
+      context.l10n.studentScheduleWeekdayTue,
+      context.l10n.studentScheduleWeekdayWed,
+      context.l10n.studentScheduleWeekdayThu,
+      context.l10n.studentScheduleWeekdayFri,
+      context.l10n.studentScheduleWeekdaySat,
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
@@ -306,7 +314,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No events on $dateStr',
+              context.l10n.studentScheduleNoEventsOn(dateStr),
               style: theme.textTheme.titleMedium?.copyWith(
                 color: Colors.grey[600],
               ),
@@ -378,7 +386,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          event.type.label,
+                          event.type.labelFor(context),
                           style: TextStyle(
                             fontSize: 12,
                             color: event.type.color,
@@ -412,7 +420,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                         const SizedBox(width: 4),
                         Text(
                           event.type == EventType.deadline
-                              ? 'Due by ${DateFormat('h:mm a').format(event.endTime)}'
+                              ? context.l10n.studentScheduleDueBy(DateFormat('h:mm a').format(event.endTime))
                               : '${DateFormat('h:mm a').format(event.startTime)} - ${DateFormat('h:mm a').format(event.endTime)}',
                           style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         ),
@@ -482,7 +490,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                       Icon(event.type.icon, size: 16, color: event.type.color),
                       const SizedBox(width: 6),
                       Text(
-                        event.type.label,
+                        event.type.labelFor(context),
                         style: TextStyle(
                           color: event.type.color,
                           fontWeight: FontWeight.w600,
@@ -514,7 +522,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               Icons.access_time,
               context.l10n.studentScheduleTime,
               event.type == EventType.deadline
-                  ? 'Due by ${DateFormat('h:mm a').format(event.endTime)}'
+                  ? context.l10n.studentScheduleDueBy(DateFormat('h:mm a').format(event.endTime))
                   : '${DateFormat('h:mm a').format(event.startTime)} - ${DateFormat('h:mm a').format(event.endTime)}',
             ),
             if (event.location != null)
@@ -593,18 +601,18 @@ enum EventType {
   study,
   other;
 
-  String get label {
+  String labelFor(BuildContext context) {
     switch (this) {
       case EventType.counseling:
-        return 'Counseling';
+        return context.l10n.studentScheduleEventCounseling;
       case EventType.course:
-        return 'Course';
+        return context.l10n.studentScheduleEventCourse;
       case EventType.deadline:
-        return 'Deadline';
+        return context.l10n.studentScheduleEventDeadline;
       case EventType.study:
-        return 'Study';
+        return context.l10n.studentScheduleEventStudy;
       case EventType.other:
-        return 'Other';
+        return context.l10n.studentScheduleEventOther;
     }
   }
 

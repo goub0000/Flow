@@ -139,10 +139,10 @@ class _CurriculumManagementScreenState
                   DropdownButtonFormField<String>(
                     value: selectedCourseId,
                     decoration: InputDecoration(
-                      labelText: 'Course *',
+                      labelText: context.l10n.adminContentCourseRequired,
                       hintText: courseListState.isLoading
-                          ? 'Loading courses...'
-                          : 'Select a course',
+                          ? context.l10n.adminContentLoadingCourses
+                          : context.l10n.adminContentSelectCourse,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -164,8 +164,8 @@ class _CurriculumManagementScreenState
                   TextField(
                     controller: titleController,
                     decoration: InputDecoration(
-                      labelText: 'Module Title *',
-                      hintText: 'Enter module title',
+                      labelText: context.l10n.adminContentModuleTitleRequired,
+                      hintText: context.l10n.adminContentEnterModuleTitle,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -176,8 +176,8 @@ class _CurriculumManagementScreenState
                     controller: descriptionController,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      labelText: 'Description',
-                      hintText: 'Enter module description (optional)',
+                      labelText: context.l10n.adminContentDescription,
+                      hintText: context.l10n.adminContentEnterModuleDescription,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -185,7 +185,7 @@ class _CurriculumManagementScreenState
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Module will be created as a draft. Use the Course Builder to add lessons.',
+                    context.l10n.adminContentModuleCreatedAsDraft,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 12,
@@ -198,7 +198,7 @@ class _CurriculumManagementScreenState
             actions: [
               TextButton(
                 onPressed: isCreating ? null : () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                child: Text(context.l10n.adminContentCancel),
               ),
               ElevatedButton(
                 onPressed: isCreating
@@ -207,7 +207,7 @@ class _CurriculumManagementScreenState
                         if (selectedCourseId == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Please select a course'),
+                              content: Text(context.l10n.adminContentPleaseSelectCourse),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -216,7 +216,7 @@ class _CurriculumManagementScreenState
                         if (titleController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Please enter a title'),
+                              content: Text(context.l10n.adminContentPleaseEnterTitle),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -241,8 +241,8 @@ class _CurriculumManagementScreenState
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(success
-                                  ? 'Module "${titleController.text}" created'
-                                  : 'Failed to create module'),
+                                  ? context.l10n.adminContentModuleCreated(titleController.text)
+                                  : context.l10n.adminContentFailedToCreateModule),
                               backgroundColor:
                                   success ? AppColors.success : AppColors.error,
                             ),
@@ -258,7 +258,7 @@ class _CurriculumManagementScreenState
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Create'),
+                    : Text(context.l10n.adminContentCreate),
               ),
             ],
           );
@@ -276,9 +276,9 @@ class _CurriculumManagementScreenState
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Modules',
+              context.l10n.adminContentTotalModules,
               stats.totalModules.toString(),
-              'Across all courses',
+              context.l10n.adminContentAcrossAllCourses,
               Icons.view_module,
               AppColors.primary,
             ),
@@ -286,9 +286,9 @@ class _CurriculumManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Published',
+              context.l10n.adminContentPublished,
               stats.publishedModules.toString(),
-              'Live modules',
+              context.l10n.adminContentLiveModules,
               Icons.check_circle,
               AppColors.success,
             ),
@@ -296,9 +296,9 @@ class _CurriculumManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Drafts',
+              context.l10n.adminContentDrafts,
               stats.draftModules.toString(),
-              'Unpublished modules',
+              context.l10n.adminContentUnpublishedModules,
               Icons.edit_note,
               AppColors.warning,
             ),
@@ -306,9 +306,9 @@ class _CurriculumManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Total Lessons',
+              context.l10n.adminContentTotalLessons,
               stats.totalLessons.toString(),
-              'All lessons',
+              context.l10n.adminContentAllLessons,
               Icons.list_alt,
               Colors.purple,
             ),
@@ -374,7 +374,7 @@ class _CurriculumManagementScreenState
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search modules by title...',
+                hintText: context.l10n.adminContentSearchModules,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -397,7 +397,7 @@ class _CurriculumManagementScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminContentStatus,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -406,10 +406,10 @@ class _CurriculumManagementScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'published', child: Text('Published')),
-                DropdownMenuItem(value: 'draft', child: Text('Draft')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminContentAllStatus)),
+                DropdownMenuItem(value: 'published', child: Text(context.l10n.adminContentPublished)),
+                DropdownMenuItem(value: 'draft', child: Text(context.l10n.adminContentDraft)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -458,7 +458,7 @@ class _CurriculumManagementScreenState
     return AdminDataTable<CurriculumRowData>(
       columns: [
         DataTableColumn(
-          label: 'Module Title',
+          label: context.l10n.adminContentModuleTitle,
           cellBuilder: (item) => Text(
             item.title,
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
@@ -466,7 +466,7 @@ class _CurriculumManagementScreenState
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Course',
+          label: context.l10n.adminContentCourse,
           cellBuilder: (item) => Text(
             item.courseTitle,
             style: const TextStyle(fontSize: 13),
@@ -474,25 +474,25 @@ class _CurriculumManagementScreenState
           ),
         ),
         DataTableColumn(
-          label: 'Lessons',
+          label: context.l10n.adminContentLessons,
           cellBuilder: (item) => Text(
             item.lessonCount.toString(),
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Duration',
+          label: context.l10n.adminContentDuration,
           cellBuilder: (item) => Text(
             item.duration,
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminContentStatus,
           cellBuilder: (item) => _buildStatusChip(item.isPublished),
         ),
         DataTableColumn(
-          label: 'Updated',
+          label: context.l10n.adminContentUpdated,
           cellBuilder: (item) => Text(
             item.lastUpdated,
             style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
@@ -506,12 +506,12 @@ class _CurriculumManagementScreenState
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminContentViewDetails,
           onPressed: (item) => _showModuleDetails(item),
         ),
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit in Course Builder',
+          tooltip: context.l10n.adminContentEditInBuilder,
           color: AppColors.primary,
           onPressed: (item) {
             context.go('/admin/content/${item.courseId}/edit');
@@ -523,7 +523,7 @@ class _CurriculumManagementScreenState
 
   Widget _buildStatusChip(bool isPublished) {
     final color = isPublished ? AppColors.success : AppColors.textSecondary;
-    final label = isPublished ? 'Published' : 'Draft';
+    final label = isPublished ? context.l10n.adminContentPublished : context.l10n.adminContentDraft;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -557,18 +557,18 @@ class _CurriculumManagementScreenState
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Course', item.courseTitle),
-              _buildDetailRow('Lessons', item.lessonCount.toString()),
-              _buildDetailRow('Duration', item.duration),
-              _buildDetailRow('Status', item.isPublished ? 'Published' : 'Draft'),
-              _buildDetailRow('Last Updated', item.lastUpdated),
+              _buildDetailRow(context.l10n.adminContentCourse, item.courseTitle),
+              _buildDetailRow(context.l10n.adminContentLessons, item.lessonCount.toString()),
+              _buildDetailRow(context.l10n.adminContentDuration, item.duration),
+              _buildDetailRow(context.l10n.adminContentStatus, item.isPublished ? context.l10n.adminContentPublished : context.l10n.adminContentDraft),
+              _buildDetailRow(context.l10n.adminContentLastUpdated, item.lastUpdated),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.adminContentClose),
           ),
           ElevatedButton.icon(
             onPressed: () {
@@ -576,7 +576,7 @@ class _CurriculumManagementScreenState
               context.go('/admin/content/${item.courseId}/edit');
             },
             icon: const Icon(Icons.edit, size: 18),
-            label: const Text('Edit in Course Builder'),
+            label: Text(context.l10n.adminContentEditInBuilder),
           ),
         ],
       ),

@@ -232,7 +232,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
               children: [
                 _buildCategoryChip(null, context.l10n.studentResourcesAll),
                 ...ResourceCategory.values.map((cat) {
-                  return _buildCategoryChip(cat, cat.label);
+                  return _buildCategoryChip(cat, cat.labelFor(context));
                 }),
               ],
             ),
@@ -349,7 +349,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            resource.category.label,
+                            resource.category.labelFor(context),
                             style: TextStyle(
                               fontSize: 10,
                               color: resource.category.color,
@@ -436,15 +436,15 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
     final diff = now.difference(date);
 
     if (diff.inDays == 0) {
-      return 'Today';
+      return context.l10n.studentResourcesDateToday;
     } else if (diff.inDays == 1) {
-      return 'Yesterday';
+      return context.l10n.studentResourcesDateYesterday;
     } else if (diff.inDays < 7) {
-      return '${diff.inDays}d ago';
+      return context.l10n.studentResourcesDateDaysAgo(diff.inDays);
     } else if (diff.inDays < 30) {
-      return '${(diff.inDays / 7).floor()}w ago';
+      return context.l10n.studentResourcesDateWeeksAgo((diff.inDays / 7).floor());
     } else {
-      return '${(diff.inDays / 30).floor()}mo ago';
+      return context.l10n.studentResourcesDateMonthsAgo((diff.inDays / 30).floor());
     }
   }
 
@@ -536,7 +536,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          resource.category.label,
+                          resource.category.labelFor(context),
                           style: TextStyle(
                             fontSize: 11,
                             color: resource.category.color,
@@ -604,7 +604,7 @@ class _ResourcesScreenState extends ConsumerState<ResourcesScreen>
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Opening ${resource.title}...'),
+                      content: Text(context.l10n.studentResourcesOpening(resource.title)),
                       action: SnackBarAction(
                         label: 'View',
                         onPressed: () {
@@ -644,18 +644,18 @@ enum ResourceCategory {
   externalLink,
   career;
 
-  String get label {
+  String labelFor(BuildContext context) {
     switch (this) {
       case ResourceCategory.studyGuide:
-        return 'Study Guide';
+        return context.l10n.studentResourcesCategoryStudyGuide;
       case ResourceCategory.video:
-        return 'Video';
+        return context.l10n.studentResourcesCategoryVideo;
       case ResourceCategory.template:
-        return 'Template';
+        return context.l10n.studentResourcesCategoryTemplate;
       case ResourceCategory.externalLink:
-        return 'External Link';
+        return context.l10n.studentResourcesCategoryExternalLink;
       case ResourceCategory.career:
-        return 'Career';
+        return context.l10n.studentResourcesCategoryCareer;
     }
   }
 

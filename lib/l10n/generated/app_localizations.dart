@@ -19532,6 +19532,186 @@ abstract class AppLocalizations {
   /// **'By: {name}'**
   String adminApprovalByName(String name);
 
+  /// No description provided for @adminApprovalTypeUserManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'User Management'**
+  String get adminApprovalTypeUserManagement;
+
+  /// No description provided for @adminApprovalTypeContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get adminApprovalTypeContent;
+
+  /// No description provided for @adminApprovalTypeFinancial.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial'**
+  String get adminApprovalTypeFinancial;
+
+  /// No description provided for @adminApprovalTypeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get adminApprovalTypeSystem;
+
+  /// No description provided for @adminApprovalTypeNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get adminApprovalTypeNotifications;
+
+  /// No description provided for @adminApprovalTypeDataExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Export'**
+  String get adminApprovalTypeDataExport;
+
+  /// No description provided for @adminApprovalTypeAdminManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Management'**
+  String get adminApprovalTypeAdminManagement;
+
+  /// No description provided for @adminApprovalActionCreateUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Create User'**
+  String get adminApprovalActionCreateUser;
+
+  /// No description provided for @adminApprovalActionDeleteUserAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete User Account'**
+  String get adminApprovalActionDeleteUserAccount;
+
+  /// No description provided for @adminApprovalActionSuspendUserAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend User Account'**
+  String get adminApprovalActionSuspendUserAccount;
+
+  /// No description provided for @adminApprovalActionUnsuspendUserAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsuspend User Account'**
+  String get adminApprovalActionUnsuspendUserAccount;
+
+  /// No description provided for @adminApprovalActionGrantAdminRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Admin Role'**
+  String get adminApprovalActionGrantAdminRole;
+
+  /// No description provided for @adminApprovalActionRevokeAdminRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke Admin Role'**
+  String get adminApprovalActionRevokeAdminRole;
+
+  /// No description provided for @adminApprovalActionModifyUserPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify User Permissions'**
+  String get adminApprovalActionModifyUserPermissions;
+
+  /// No description provided for @adminApprovalActionPublishContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish Content'**
+  String get adminApprovalActionPublishContent;
+
+  /// No description provided for @adminApprovalActionUnpublishContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpublish Content'**
+  String get adminApprovalActionUnpublishContent;
+
+  /// No description provided for @adminApprovalActionDeleteContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Content'**
+  String get adminApprovalActionDeleteContent;
+
+  /// No description provided for @adminApprovalActionDeleteProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Program'**
+  String get adminApprovalActionDeleteProgram;
+
+  /// No description provided for @adminApprovalActionDeleteInstitutionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Institution Content'**
+  String get adminApprovalActionDeleteInstitutionContent;
+
+  /// No description provided for @adminApprovalActionProcessLargeRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Large Refund'**
+  String get adminApprovalActionProcessLargeRefund;
+
+  /// No description provided for @adminApprovalActionModifyFeeStructure.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify Fee Structure'**
+  String get adminApprovalActionModifyFeeStructure;
+
+  /// No description provided for @adminApprovalActionVoidTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Void Transaction'**
+  String get adminApprovalActionVoidTransaction;
+
+  /// No description provided for @adminApprovalActionSendBulkNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Bulk Notification'**
+  String get adminApprovalActionSendBulkNotification;
+
+  /// No description provided for @adminApprovalActionSendPlatformAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Platform Announcement'**
+  String get adminApprovalActionSendPlatformAnnouncement;
+
+  /// No description provided for @adminApprovalActionExportSensitiveData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Sensitive Data'**
+  String get adminApprovalActionExportSensitiveData;
+
+  /// No description provided for @adminApprovalActionExportUserData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export User Data'**
+  String get adminApprovalActionExportUserData;
+
+  /// No description provided for @adminApprovalActionModifySystemSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify System Settings'**
+  String get adminApprovalActionModifySystemSettings;
+
+  /// No description provided for @adminApprovalActionClearCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Cache'**
+  String get adminApprovalActionClearCache;
+
+  /// No description provided for @adminApprovalActionCreateAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Admin'**
+  String get adminApprovalActionCreateAdmin;
+
+  /// No description provided for @adminApprovalActionModifyAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify Admin'**
+  String get adminApprovalActionModifyAdmin;
+
   /// No description provided for @adminContentAssessmentsManagement.
   ///
   /// In en, this message translates to:
@@ -30659,6 +30839,888 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Student Courses Failed To Load Details'**
   String get studentCoursesFailedToLoadDetails;
+
+  /// No description provided for @adminContentSelectCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a course'**
+  String get adminContentSelectCourse;
+
+  /// No description provided for @adminContentModuleTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Module Title *'**
+  String get adminContentModuleTitleRequired;
+
+  /// No description provided for @adminContentEnterModuleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter module title'**
+  String get adminContentEnterModuleTitle;
+
+  /// No description provided for @adminContentEnterModuleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter module description (optional)'**
+  String get adminContentEnterModuleDescription;
+
+  /// No description provided for @adminContentModuleCreatedAsDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Module will be created as a draft. Use the Course Builder to add lessons.'**
+  String get adminContentModuleCreatedAsDraft;
+
+  /// No description provided for @adminContentPleaseSelectCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a course'**
+  String get adminContentPleaseSelectCourse;
+
+  /// No description provided for @adminContentFailedToCreateModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create module'**
+  String get adminContentFailedToCreateModule;
+
+  /// No description provided for @adminContentTotalModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Modules'**
+  String get adminContentTotalModules;
+
+  /// No description provided for @adminContentAcrossAllCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Across all courses'**
+  String get adminContentAcrossAllCourses;
+
+  /// No description provided for @adminContentLiveModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Live modules'**
+  String get adminContentLiveModules;
+
+  /// No description provided for @adminContentDrafts.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafts'**
+  String get adminContentDrafts;
+
+  /// No description provided for @adminContentUnpublishedModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpublished modules'**
+  String get adminContentUnpublishedModules;
+
+  /// No description provided for @adminContentTotalLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Lessons'**
+  String get adminContentTotalLessons;
+
+  /// No description provided for @adminContentAllLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'All lessons'**
+  String get adminContentAllLessons;
+
+  /// No description provided for @adminContentSearchModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Search modules by title...'**
+  String get adminContentSearchModules;
+
+  /// No description provided for @adminContentModuleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Module Title'**
+  String get adminContentModuleTitle;
+
+  /// No description provided for @adminContentCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Course'**
+  String get adminContentCourse;
+
+  /// No description provided for @adminContentLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get adminContentLessons;
+
+  /// No description provided for @adminContentDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get adminContentDuration;
+
+  /// No description provided for @adminContentViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get adminContentViewDetails;
+
+  /// No description provided for @adminContentEditInBuilder.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit in Course Builder'**
+  String get adminContentEditInBuilder;
+
+  /// No description provided for @adminContentErrorLoadingPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading page'**
+  String get adminContentErrorLoadingPage;
+
+  /// No description provided for @adminContentBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get adminContentBack;
+
+  /// No description provided for @adminContentPreviewMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Mode'**
+  String get adminContentPreviewMode;
+
+  /// No description provided for @adminContentBackToEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Editor'**
+  String get adminContentBackToEditor;
+
+  /// No description provided for @adminContentUnsaved.
+  ///
+  /// In en, this message translates to:
+  /// **'UNSAVED'**
+  String get adminContentUnsaved;
+
+  /// No description provided for @adminContentUnpublish.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpublish'**
+  String get adminContentUnpublish;
+
+  /// No description provided for @adminContentPublish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get adminContentPublish;
+
+  /// No description provided for @adminContentSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get adminContentSaving;
+
+  /// No description provided for @adminContentSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get adminContentSave;
+
+  /// No description provided for @adminContentBasicInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get adminContentBasicInformation;
+
+  /// No description provided for @adminContentPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Page Title'**
+  String get adminContentPageTitle;
+
+  /// No description provided for @adminContentEnterPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the page title'**
+  String get adminContentEnterPageTitle;
+
+  /// No description provided for @adminContentSubtitleOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtitle (optional)'**
+  String get adminContentSubtitleOptional;
+
+  /// No description provided for @adminContentEnterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a subtitle or tagline'**
+  String get adminContentEnterSubtitle;
+
+  /// No description provided for @adminContentMetaDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Meta Description (SEO)'**
+  String get adminContentMetaDescription;
+
+  /// No description provided for @adminContentBriefDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief description for search engines'**
+  String get adminContentBriefDescription;
+
+  /// No description provided for @adminContentContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get adminContentContent;
+
+  /// No description provided for @adminContentUseRichTextEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the rich text editor to format your content.'**
+  String get adminContentUseRichTextEditor;
+
+  /// No description provided for @adminContentEditJsonFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the page content in JSON format.'**
+  String get adminContentEditJsonFormat;
+
+  /// No description provided for @adminContentVisual.
+  ///
+  /// In en, this message translates to:
+  /// **'Visual'**
+  String get adminContentVisual;
+
+  /// No description provided for @adminContentRawJson.
+  ///
+  /// In en, this message translates to:
+  /// **'Raw JSON'**
+  String get adminContentRawJson;
+
+  /// No description provided for @adminContentSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections'**
+  String get adminContentSections;
+
+  /// No description provided for @adminContentAddSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Section'**
+  String get adminContentAddSection;
+
+  /// No description provided for @adminContentComplexStructure.
+  ///
+  /// In en, this message translates to:
+  /// **'This page has a complex structure.'**
+  String get adminContentComplexStructure;
+
+  /// No description provided for @adminContentUseRawJsonMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Raw JSON mode to edit this page\'s content.'**
+  String get adminContentUseRawJsonMode;
+
+  /// No description provided for @adminContentFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Format'**
+  String get adminContentFormat;
+
+  /// No description provided for @adminContentContentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Content is required'**
+  String get adminContentContentRequired;
+
+  /// No description provided for @adminContentInvalidJsonFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid JSON format'**
+  String get adminContentInvalidJsonFormat;
+
+  /// No description provided for @adminContentRichTextEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Rich Text Editor'**
+  String get adminContentRichTextEditor;
+
+  /// No description provided for @adminContentVisualEditorHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the Visual Editor for WYSIWYG editing. Switch to Raw JSON for advanced editing.'**
+  String get adminContentVisualEditorHelp;
+
+  /// No description provided for @adminContentCannotFormatInvalidJson.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot format: Invalid JSON'**
+  String get adminContentCannotFormatInvalidJson;
+
+  /// No description provided for @adminContentResourceTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource Type *'**
+  String get adminContentResourceTypeRequired;
+
+  /// No description provided for @adminContentTextContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Text Content'**
+  String get adminContentTextContent;
+
+  /// No description provided for @adminContentSelectCourseFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a course first'**
+  String get adminContentSelectCourseFirst;
+
+  /// No description provided for @adminContentSelectModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a module'**
+  String get adminContentSelectModule;
+
+  /// No description provided for @adminContentVideoUrlRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Video URL *'**
+  String get adminContentVideoUrlRequired;
+
+  /// No description provided for @adminContentVideoUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'https://youtube.com/watch?v=...'**
+  String get adminContentVideoUrlHint;
+
+  /// No description provided for @adminContentEnterTextContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter text content (Markdown supported)'**
+  String get adminContentEnterTextContent;
+
+  /// No description provided for @adminContentResourceCreatedAsDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource will be created as a draft lesson.'**
+  String get adminContentResourceCreatedAsDraft;
+
+  /// No description provided for @adminContentPleaseEnterLessonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a lesson title'**
+  String get adminContentPleaseEnterLessonTitle;
+
+  /// No description provided for @adminContentPleaseEnterVideoUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a video URL'**
+  String get adminContentPleaseEnterVideoUrl;
+
+  /// No description provided for @adminContentPleaseEnterContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter content'**
+  String get adminContentPleaseEnterContent;
+
+  /// No description provided for @adminContentVideoResourceCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Video resource created'**
+  String get adminContentVideoResourceCreated;
+
+  /// No description provided for @adminContentTextResourceCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Text resource created'**
+  String get adminContentTextResourceCreated;
+
+  /// No description provided for @adminContentFailedToCreateResource.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create resource'**
+  String get adminContentFailedToCreateResource;
+
+  /// No description provided for @adminContentTotalResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Resources'**
+  String get adminContentTotalResources;
+
+  /// No description provided for @adminContentVideos.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get adminContentVideos;
+
+  /// No description provided for @adminContentVideoResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Video resources'**
+  String get adminContentVideoResources;
+
+  /// No description provided for @adminContentTextResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Text resources'**
+  String get adminContentTextResources;
+
+  /// No description provided for @adminContentTotalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Duration'**
+  String get adminContentTotalDuration;
+
+  /// No description provided for @adminContentVideoContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Video content'**
+  String get adminContentVideoContent;
+
+  /// No description provided for @adminContentSearchResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Search resources by title...'**
+  String get adminContentSearchResources;
+
+  /// No description provided for @adminContentResourceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource Type'**
+  String get adminContentResourceType;
+
+  /// No description provided for @adminContentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get adminContentLocation;
+
+  /// No description provided for @adminContentDurationReadTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration / Read Time'**
+  String get adminContentDurationReadTime;
+
+  /// No description provided for @adminContentModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Module'**
+  String get adminContentModule;
+
+  /// No description provided for @adminContentLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson'**
+  String get adminContentLesson;
+
+  /// No description provided for @adminContentVideoUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Video URL'**
+  String get adminContentVideoUrl;
+
+  /// No description provided for @adminContentReadingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading Time'**
+  String get adminContentReadingTime;
+
+  /// No description provided for @studentHelpCategoryGettingStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting Started'**
+  String get studentHelpCategoryGettingStarted;
+
+  /// No description provided for @studentHelpCategoryApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get studentHelpCategoryApplications;
+
+  /// No description provided for @studentHelpCategoryCounseling.
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling'**
+  String get studentHelpCategoryCounseling;
+
+  /// No description provided for @studentHelpCategoryCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get studentHelpCategoryCourses;
+
+  /// No description provided for @studentHelpCategoryAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get studentHelpCategoryAccount;
+
+  /// No description provided for @studentHelpCategoryTechnical.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical'**
+  String get studentHelpCategoryTechnical;
+
+  /// No description provided for @studentResourcesCategoryStudyGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Guide'**
+  String get studentResourcesCategoryStudyGuide;
+
+  /// No description provided for @studentResourcesCategoryVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get studentResourcesCategoryVideo;
+
+  /// No description provided for @studentResourcesCategoryTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get studentResourcesCategoryTemplate;
+
+  /// No description provided for @studentResourcesCategoryExternalLink.
+  ///
+  /// In en, this message translates to:
+  /// **'External Link'**
+  String get studentResourcesCategoryExternalLink;
+
+  /// No description provided for @studentResourcesCategoryCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Career'**
+  String get studentResourcesCategoryCareer;
+
+  /// No description provided for @studentResourcesDateToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get studentResourcesDateToday;
+
+  /// No description provided for @studentResourcesDateYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get studentResourcesDateYesterday;
+
+  /// No description provided for @studentScheduleWeekdaySun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get studentScheduleWeekdaySun;
+
+  /// No description provided for @studentScheduleWeekdayMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get studentScheduleWeekdayMon;
+
+  /// No description provided for @studentScheduleWeekdayTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get studentScheduleWeekdayTue;
+
+  /// No description provided for @studentScheduleWeekdayWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get studentScheduleWeekdayWed;
+
+  /// No description provided for @studentScheduleWeekdayThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get studentScheduleWeekdayThu;
+
+  /// No description provided for @studentScheduleWeekdayFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get studentScheduleWeekdayFri;
+
+  /// No description provided for @studentScheduleWeekdaySat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get studentScheduleWeekdaySat;
+
+  /// No description provided for @studentScheduleEventCounseling.
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling'**
+  String get studentScheduleEventCounseling;
+
+  /// No description provided for @studentScheduleEventCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Course'**
+  String get studentScheduleEventCourse;
+
+  /// No description provided for @studentScheduleEventDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get studentScheduleEventDeadline;
+
+  /// No description provided for @studentScheduleEventStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Study'**
+  String get studentScheduleEventStudy;
+
+  /// No description provided for @studentScheduleEventOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get studentScheduleEventOther;
+
+  /// No description provided for @studentCoursesDateToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get studentCoursesDateToday;
+
+  /// No description provided for @studentCoursesDateYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get studentCoursesDateYesterday;
+
+  /// No description provided for @parentLinkTimeAgoJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get parentLinkTimeAgoJustNow;
+
+  /// No description provided for @parentLinkStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get parentLinkStatusActive;
+
+  /// No description provided for @parentLinkStatusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get parentLinkStatusExpired;
+
+  /// No description provided for @parentLinkStatusUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get parentLinkStatusUsed;
+
+  /// No description provided for @studentRecStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get studentRecStatusPending;
+
+  /// No description provided for @studentRecStatusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get studentRecStatusAccepted;
+
+  /// No description provided for @studentRecStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get studentRecStatusInProgress;
+
+  /// No description provided for @studentRecStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get studentRecStatusCompleted;
+
+  /// No description provided for @studentRecStatusDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get studentRecStatusDeclined;
+
+  /// No description provided for @studentRecStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get studentRecStatusCancelled;
+
+  /// No description provided for @studentRecChipPending.
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING'**
+  String get studentRecChipPending;
+
+  /// No description provided for @studentRecChipAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCEPTED'**
+  String get studentRecChipAccepted;
+
+  /// No description provided for @studentRecChipWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'WRITING'**
+  String get studentRecChipWriting;
+
+  /// No description provided for @studentRecChipCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'COMPLETED'**
+  String get studentRecChipCompleted;
+
+  /// No description provided for @studentRecChipDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'DECLINED'**
+  String get studentRecChipDeclined;
+
+  /// No description provided for @studentRecChipCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'CANCELLED'**
+  String get studentRecChipCancelled;
+
+  /// No description provided for @studentCoursesEnrolledDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrolled: {date}'**
+  String studentCoursesEnrolledDate(String date);
+
+  /// No description provided for @studentCoursesDateDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days ago'**
+  String studentCoursesDateDaysAgo(int days);
+
+  /// No description provided for @studentCoursesDateWeeksAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{weeks} weeks ago'**
+  String studentCoursesDateWeeksAgo(int weeks);
+
+  /// No description provided for @studentCoursesDateMonthsAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} months ago'**
+  String studentCoursesDateMonthsAgo(int months);
+
+  /// No description provided for @parentLinkLinkedTimeAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked {timeAgo}'**
+  String parentLinkLinkedTimeAgo(String timeAgo);
+
+  /// No description provided for @parentLinkRequestedTimeAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested {timeAgo}'**
+  String parentLinkRequestedTimeAgo(String timeAgo);
+
+  /// No description provided for @parentLinkTimeAgoMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} months ago'**
+  String parentLinkTimeAgoMonths(int months);
+
+  /// No description provided for @parentLinkTimeAgoDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days ago'**
+  String parentLinkTimeAgoDays(int days);
+
+  /// No description provided for @parentLinkTimeAgoHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hours ago'**
+  String parentLinkTimeAgoHours(int hours);
+
+  /// No description provided for @parentLinkTimeAgoMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes ago'**
+  String parentLinkTimeAgoMinutes(int minutes);
+
+  /// No description provided for @parentLinkExpiresInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in: {days} days'**
+  String parentLinkExpiresInDays(int days);
+
+  /// No description provided for @parentLinkMaxUses.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum uses: {count}'**
+  String parentLinkMaxUses(int count);
+
+  /// No description provided for @parentLinkUsesRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{remaining}/{total} uses left'**
+  String parentLinkUsesRemaining(int remaining, int total);
+
+  /// No description provided for @parentLinkExpiresOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires: {date}'**
+  String parentLinkExpiresOn(String date);
+
+  /// No description provided for @studentScheduleNoEventsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'No events on {date}'**
+  String studentScheduleNoEventsOn(String date);
+
+  /// No description provided for @studentScheduleDueBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Due by {time}'**
+  String studentScheduleDueBy(String time);
+
+  /// No description provided for @studentResourcesDateDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d ago'**
+  String studentResourcesDateDaysAgo(int days);
+
+  /// No description provided for @studentResourcesDateWeeksAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{weeks}w ago'**
+  String studentResourcesDateWeeksAgo(int weeks);
+
+  /// No description provided for @studentResourcesDateMonthsAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{months}mo ago'**
+  String studentResourcesDateMonthsAgo(int months);
+
+  /// No description provided for @studentResourcesOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening {title}...'**
+  String studentResourcesOpening(String title);
+
+  /// No description provided for @studentHelpAppVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow App v{version}'**
+  String studentHelpAppVersion(String version);
+
+  /// No description provided for @adminContentEditPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Page: {title}'**
+  String adminContentEditPageTitle(String title);
+
+  /// No description provided for @adminContentSlug.
+  ///
+  /// In en, this message translates to:
+  /// **'Slug: {slug}'**
+  String adminContentSlug(String slug);
+
+  /// No description provided for @adminContentModuleCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Module \"{title}\" created'**
+  String adminContentModuleCreated(String title);
 }
 
 class _AppLocalizationsDelegate
