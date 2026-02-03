@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
@@ -106,7 +107,7 @@ class _RecommenderDetailScreenState
           TextButton.icon(
             onPressed: () => context.go('/admin/users/recommenders'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Recommenders'),
+            label: Text(context.l10n.adminRecommenderDetailBackToRecommenders),
           ),
         ],
       ),
@@ -171,17 +172,17 @@ class _RecommenderDetailScreenState
               ),
               child: Column(
                 children: [
-                  _buildStatRow('Recommender ID', recommenderId),
+                  _buildStatRow(context.l10n.adminRecommenderDetailRecommenderId, recommenderId),
                   const Divider(height: 16),
-                  _buildStatRow('Type', type),
+                  _buildStatRow(context.l10n.adminRecommenderDetailType, type),
                   const Divider(height: 16),
-                  _buildStatRow('Organization', organization),
+                  _buildStatRow(context.l10n.adminRecommenderDetailOrganization, organization),
                   const Divider(height: 16),
-                  _buildStatRow('Requests', '$requestsCount'),
+                  _buildStatRow(context.l10n.adminRecommenderDetailRequests, '$requestsCount'),
                   const Divider(height: 16),
-                  _buildStatRow('Completed', '$completedCount'),
+                  _buildStatRow(context.l10n.adminRecommenderDetailCompleted, '$completedCount'),
                   const Divider(height: 16),
-                  _buildStatRow('Completion Rate', '${((completedCount / requestsCount) * 100).toInt()}%'),
+                  _buildStatRow(context.l10n.adminRecommenderDetailCompletionRate, '${((completedCount / requestsCount) * 100).toInt()}%'),
                 ],
               ),
             ),
@@ -203,17 +204,17 @@ class _RecommenderDetailScreenState
     switch (status) {
       case 'active':
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminRecommenderDetailStatusActive;
         icon = Icons.check_circle;
         break;
       case 'inactive':
         color = AppColors.textSecondary;
-        label = 'Inactive';
+        label = context.l10n.adminRecommenderDetailStatusInactive;
         icon = Icons.cancel;
         break;
       case 'suspended':
         color = AppColors.error;
-        label = 'Suspended';
+        label = context.l10n.adminRecommenderDetailStatusSuspended;
         icon = Icons.block;
         break;
       default:
@@ -281,7 +282,7 @@ class _RecommenderDetailScreenState
                 context.go('/admin/users/recommenders/${widget.recommenderId}/edit');
               },
               icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Edit Recommender'),
+              label: Text(context.l10n.adminRecommenderDetailEditRecommender),
             ),
           ),
         ),
@@ -295,7 +296,7 @@ class _RecommenderDetailScreenState
               // TODO: Open messaging
             },
             icon: const Icon(Icons.message, size: 18),
-            label: const Text('Send Message'),
+            label: Text(context.l10n.adminRecommenderDetailSendMessage),
           ),
         ),
         const SizedBox(height: 12),
@@ -311,7 +312,7 @@ class _RecommenderDetailScreenState
                 status == 'active' ? Icons.block : Icons.check_circle,
                 size: 18,
               ),
-              label: Text(status == 'active' ? 'Suspend Account' : 'Activate Account'),
+              label: Text(status == 'active' ? context.l10n.adminRecommenderDetailSuspendAccount : context.l10n.adminRecommenderDetailActivateAccount),
               style: OutlinedButton.styleFrom(
                 foregroundColor:
                     status == 'active' ? AppColors.error : AppColors.success,
@@ -329,7 +330,7 @@ class _RecommenderDetailScreenState
             child: OutlinedButton.icon(
               onPressed: () => _showDeleteDialog(recommender),
               icon: const Icon(Icons.delete, size: 18),
-              label: const Text('Delete Recommender'),
+              label: Text(context.l10n.adminRecommenderDetailDeleteRecommender),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.error,
               ),
@@ -353,13 +354,13 @@ class _RecommenderDetailScreenState
           child: TabBar(
             controller: _tabController,
             isScrollable: true,
-            tabs: const [
-              Tab(text: 'Overview'),
-              Tab(text: 'Requests'),
-              Tab(text: 'Recommendations'),
-              Tab(text: 'Statistics'),
-              Tab(text: 'Documents'),
-              Tab(text: 'Activity'),
+            tabs: [
+              Tab(text: context.l10n.adminRecommenderDetailTabOverview),
+              Tab(text: context.l10n.adminRecommenderDetailTabRequests),
+              Tab(text: context.l10n.adminRecommenderDetailTabRecommendations),
+              Tab(text: context.l10n.adminRecommenderDetailTabStatistics),
+              Tab(text: context.l10n.adminRecommenderDetailTabDocuments),
+              Tab(text: context.l10n.adminRecommenderDetailTabActivity),
             ],
           ),
         ),
@@ -396,36 +397,36 @@ class _RecommenderDetailScreenState
         children: [
           // Professional Information
           _buildInfoSection(
-            'Professional Information',
+            context.l10n.adminRecommenderDetailProfessionalInfo,
             [
-              _buildInfoRow('Full Name', name),
-              _buildInfoRow('Email', email),
-              _buildInfoRow('Type', type),
-              _buildInfoRow('Organization', organization),
-              _buildInfoRow('Position', 'Senior ${type.toLowerCase()}'),
-              _buildInfoRow('Years at Organization', '5 years'),
+              _buildInfoRow(context.l10n.adminRecommenderDetailFullName, name),
+              _buildInfoRow(context.l10n.adminRecommenderDetailEmail, email),
+              _buildInfoRow(context.l10n.adminRecommenderDetailType, type),
+              _buildInfoRow(context.l10n.adminRecommenderDetailOrganization, organization),
+              _buildInfoRow(context.l10n.adminRecommenderDetailPosition, '${context.l10n.adminRecommenderDetailSenior} ${type.toLowerCase()}'),
+              _buildInfoRow(context.l10n.adminRecommenderDetailYearsAtOrg, context.l10n.adminRecommenderDetailYearsValue),
             ],
           ),
           const SizedBox(height: 24),
 
           // Contact Information
           _buildInfoSection(
-            'Contact Information',
+            context.l10n.adminRecommenderDetailContactInfo,
             [
-              _buildInfoRow('Phone', '+254 712 345 678'),
-              _buildInfoRow('Office', 'Building B, Room 305'),
-              _buildInfoRow('Preferred Contact', 'Email'),
+              _buildInfoRow(context.l10n.adminRecommenderDetailPhone, '+254 712 345 678'),
+              _buildInfoRow(context.l10n.adminRecommenderDetailOffice, 'Building B, Room 305'),
+              _buildInfoRow(context.l10n.adminRecommenderDetailPreferredContact, context.l10n.adminRecommenderDetailEmail),
             ],
           ),
           const SizedBox(height: 24),
 
           // Account Information
           _buildInfoSection(
-            'Account Information',
+            context.l10n.adminRecommenderDetailAccountInfo,
             [
-              _buildInfoRow('Account Created', joinedDate),
-              _buildInfoRow('Last Login', '1 day ago'),
-              _buildInfoRow('Email Verified', 'Yes'),
+              _buildInfoRow(context.l10n.adminRecommenderDetailAccountCreated, joinedDate),
+              _buildInfoRow(context.l10n.adminRecommenderDetailLastLogin, context.l10n.adminRecommenderDetailDayAgo),
+              _buildInfoRow(context.l10n.adminRecommenderDetailEmailVerified, context.l10n.adminRecommenderDetailYes),
             ],
           ),
         ],
@@ -443,7 +444,7 @@ class _RecommenderDetailScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Recommendation Requests (${requests.length})',
+            context.l10n.adminRecommenderDetailRequestsCount(requests.length),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -564,7 +565,7 @@ class _RecommenderDetailScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Completed Recommendations (${recommendations.length})',
+            context.l10n.adminRecommenderDetailCompletedRecommendations(recommendations.length),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -625,7 +626,7 @@ class _RecommenderDetailScreenState
                     Icon(Icons.check, size: 14, color: AppColors.success),
                     const SizedBox(width: 4),
                     Text(
-                      'Submitted',
+                      context.l10n.adminRecommenderDetailSubmitted,
                       style: TextStyle(
                         color: AppColors.success,
                         fontSize: 12,
@@ -661,9 +662,9 @@ class _RecommenderDetailScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Statistics',
-            style: TextStyle(
+          Text(
+            context.l10n.adminRecommenderDetailStatistics,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -675,7 +676,7 @@ class _RecommenderDetailScreenState
             children: [
               Expanded(
                 child: _buildStatCard(
-                  'Total Requests',
+                  context.l10n.adminRecommenderDetailTotalRequests,
                   '$requestsCount',
                   Icons.mail,
                   AppColors.primary,
@@ -684,7 +685,7 @@ class _RecommenderDetailScreenState
               const SizedBox(width: 16),
               Expanded(
                 child: _buildStatCard(
-                  'Completed',
+                  context.l10n.adminRecommenderDetailCompleted,
                   '$completedCount',
                   Icons.check_circle,
                   AppColors.success,
@@ -697,7 +698,7 @@ class _RecommenderDetailScreenState
             children: [
               Expanded(
                 child: _buildStatCard(
-                  'Pending',
+                  context.l10n.adminRecommenderDetailPending,
                   '$pendingCount',
                   Icons.pending,
                   AppColors.warning,
@@ -706,8 +707,8 @@ class _RecommenderDetailScreenState
               const SizedBox(width: 16),
               Expanded(
                 child: _buildStatCard(
-                  'Avg Response Time',
-                  '$avgResponseTime days',
+                  context.l10n.adminRecommenderDetailAvgResponseTime,
+                  context.l10n.adminRecommenderDetailDaysValue(avgResponseTime),
                   Icons.access_time,
                   AppColors.secondary,
                 ),
@@ -734,7 +735,7 @@ class _RecommenderDetailScreenState
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Recommendation Trends',
+                    context.l10n.adminRecommenderDetailRecommendationTrends,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
@@ -742,7 +743,7 @@ class _RecommenderDetailScreenState
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Charts will be implemented with fl_chart',
+                    context.l10n.adminRecommenderDetailChartComingSoon,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 12,
@@ -812,9 +813,9 @@ class _RecommenderDetailScreenState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Documents',
-                style: TextStyle(
+              Text(
+                context.l10n.adminRecommenderDetailDocuments,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -824,7 +825,7 @@ class _RecommenderDetailScreenState
                   // TODO: Upload document
                 },
                 icon: const Icon(Icons.upload, size: 18),
-                label: const Text('Upload'),
+                label: Text(context.l10n.adminRecommenderDetailUpload),
               ),
             ],
           ),
@@ -889,14 +890,14 @@ class _RecommenderDetailScreenState
                   // TODO: View document
                 },
                 icon: const Icon(Icons.visibility, size: 20),
-                tooltip: 'View',
+                tooltip: context.l10n.adminRecommenderDetailView,
               ),
               IconButton(
                 onPressed: () {
                   // TODO: Download document
                 },
                 icon: const Icon(Icons.download, size: 20),
-                tooltip: 'Download',
+                tooltip: context.l10n.adminRecommenderDetailDownload,
               ),
             ],
           ),
@@ -914,9 +915,9 @@ class _RecommenderDetailScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Activity Timeline',
-            style: TextStyle(
+          Text(
+            context.l10n.adminRecommenderDetailActivityTimeline,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -1050,33 +1051,33 @@ class _RecommenderDetailScreenState
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(isActive ? 'Suspend Recommender Account' : 'Activate Recommender Account'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(isActive ? context.l10n.adminRecommenderDetailSuspendTitle : context.l10n.adminRecommenderDetailActivateTitle),
         content: Text(
           isActive
-              ? 'Are you sure you want to suspend ${recommender.displayName}\'s account? They will no longer be able to submit recommendations.'
-              : 'Are you sure you want to activate ${recommender.displayName}\'s account? They will be able to submit recommendations again.',
+              ? context.l10n.adminRecommenderDetailSuspendMessage(recommender.displayName ?? '')
+              : context.l10n.adminRecommenderDetailActivateMessage(recommender.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminRecommenderDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call suspend/activate API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                     isActive
-                        ? 'Recommender account suspended successfully'
-                        : 'Recommender account activated successfully',
+                        ? context.l10n.adminRecommenderDetailSuspendSuccess
+                        : context.l10n.adminRecommenderDetailActivateSuccess,
                   ),
                 ),
               );
             },
-            child: Text(isActive ? 'Suspend' : 'Activate'),
+            child: Text(isActive ? context.l10n.adminRecommenderDetailSuspend : context.l10n.adminRecommenderDetailActivate),
           ),
         ],
       ),
@@ -1086,29 +1087,29 @@ class _RecommenderDetailScreenState
   void _showDeleteDialog(dynamic recommender) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Recommender Account'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminRecommenderDetailDeleteTitle),
         content: Text(
-          'Are you sure you want to delete ${recommender.displayName}\'s account? This action cannot be undone and will remove all recommendation history.',
+          context.l10n.adminRecommenderDetailDeleteMessage(recommender.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminRecommenderDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call delete API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               context.go('/admin/users/recommenders');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Recommender account deleted successfully')),
+                SnackBar(content: Text(context.l10n.adminRecommenderDetailDeleteSuccess)),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.adminRecommenderDetailDelete),
           ),
         ],
       ),

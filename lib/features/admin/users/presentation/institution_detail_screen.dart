@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
@@ -107,7 +108,7 @@ class _InstitutionDetailScreenState
           TextButton.icon(
             onPressed: () => context.go('/admin/users/institutions'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Institutions'),
+            label: Text(context.l10n.adminInstitutionDetailBackToInstitutions),
           ),
         ],
       ),
@@ -173,17 +174,17 @@ class _InstitutionDetailScreenState
               ),
               child: Column(
                 children: [
-                  _buildStatRow('Institution ID', institutionId),
+                  _buildStatRow(context.l10n.adminInstitutionDetailInstitutionId, institutionId),
                   const Divider(height: 16),
-                  _buildStatRow('Type', type),
+                  _buildStatRow(context.l10n.adminInstitutionDetailType, type),
                   const Divider(height: 16),
-                  _buildStatRow('Location', location),
+                  _buildStatRow(context.l10n.adminInstitutionDetailLocation, location),
                   const Divider(height: 16),
-                  _buildStatRow('Programs', '$programs'),
+                  _buildStatRow(context.l10n.adminInstitutionDetailPrograms, '$programs'),
                   const Divider(height: 16),
-                  _buildStatRow('Students', '$students'),
+                  _buildStatRow(context.l10n.adminInstitutionDetailStudents, '$students'),
                   const Divider(height: 16),
-                  _buildStatRow('Applicants', '$applicants'),
+                  _buildStatRow(context.l10n.adminInstitutionDetailApplicants, '$applicants'),
                 ],
               ),
             ),
@@ -205,22 +206,22 @@ class _InstitutionDetailScreenState
     switch (status) {
       case 'verified':
         color = AppColors.success;
-        label = 'Verified';
+        label = context.l10n.adminInstitutionDetailStatusVerified;
         icon = Icons.verified;
         break;
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending Verification';
+        label = context.l10n.adminInstitutionDetailStatusPending;
         icon = Icons.pending;
         break;
       case 'rejected':
         color = AppColors.error;
-        label = 'Rejected';
+        label = context.l10n.adminInstitutionDetailStatusRejected;
         icon = Icons.cancel;
         break;
       default:
         color = AppColors.primary;
-        label = 'Active';
+        label = context.l10n.adminInstitutionDetailStatusActive;
         icon = Icons.check_circle;
     }
 
@@ -283,7 +284,7 @@ class _InstitutionDetailScreenState
                 context.go('/admin/users/institutions/${widget.institutionId}/edit');
               },
               icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Edit Institution'),
+              label: Text(context.l10n.adminInstitutionDetailEditInstitution),
             ),
           ),
         ),
@@ -299,7 +300,7 @@ class _InstitutionDetailScreenState
                   child: ElevatedButton.icon(
                     onPressed: () => _showApproveDialog(institution),
                     icon: const Icon(Icons.check_circle, size: 18),
-                    label: const Text('Approve'),
+                    label: Text(context.l10n.adminInstitutionDetailApprove),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.success,
                     ),
@@ -313,7 +314,7 @@ class _InstitutionDetailScreenState
                   child: OutlinedButton.icon(
                     onPressed: () => _showRejectDialog(institution),
                     icon: const Icon(Icons.cancel, size: 18),
-                    label: const Text('Reject'),
+                    label: Text(context.l10n.adminInstitutionDetailReject),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.error,
                     ),
@@ -333,7 +334,7 @@ class _InstitutionDetailScreenState
               // TODO: Open messaging
             },
             icon: const Icon(Icons.message, size: 18),
-            label: const Text('Send Message'),
+            label: Text(context.l10n.adminInstitutionDetailSendMessage),
           ),
         ),
         const SizedBox(height: 12),
@@ -349,7 +350,7 @@ class _InstitutionDetailScreenState
                 status == 'active' ? Icons.block : Icons.check_circle,
                 size: 18,
               ),
-              label: Text(status == 'active' ? 'Deactivate' : 'Activate'),
+              label: Text(status == 'active' ? context.l10n.adminInstitutionDetailDeactivate : context.l10n.adminInstitutionDetailActivate),
               style: OutlinedButton.styleFrom(
                 foregroundColor:
                     status == 'active' ? AppColors.error : AppColors.success,
@@ -367,7 +368,7 @@ class _InstitutionDetailScreenState
             child: OutlinedButton.icon(
               onPressed: () => _showDeleteDialog(institution),
               icon: const Icon(Icons.delete, size: 18),
-              label: const Text('Delete Institution'),
+              label: Text(context.l10n.adminInstitutionDetailDeleteInstitution),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.error,
               ),
@@ -391,13 +392,13 @@ class _InstitutionDetailScreenState
           child: TabBar(
             controller: _tabController,
             isScrollable: true,
-            tabs: const [
-              Tab(text: 'Overview'),
-              Tab(text: 'Programs'),
-              Tab(text: 'Applicants'),
-              Tab(text: 'Statistics'),
-              Tab(text: 'Documents'),
-              Tab(text: 'Activity'),
+            tabs: [
+              Tab(text: context.l10n.adminInstitutionDetailTabOverview),
+              Tab(text: context.l10n.adminInstitutionDetailTabPrograms),
+              Tab(text: context.l10n.adminInstitutionDetailTabApplicants),
+              Tab(text: context.l10n.adminInstitutionDetailTabStatistics),
+              Tab(text: context.l10n.adminInstitutionDetailTabDocuments),
+              Tab(text: context.l10n.adminInstitutionDetailTabActivity),
             ],
           ),
         ),
@@ -434,38 +435,38 @@ class _InstitutionDetailScreenState
         children: [
           // Institution Information
           _buildInfoSection(
-            'Institution Information',
+            context.l10n.adminInstitutionDetailInstitutionInfo,
             [
-              _buildInfoRow('Full Name', name),
-              _buildInfoRow('Institution Type', type),
-              _buildInfoRow('Email', email),
-              _buildInfoRow('Location', location),
-              _buildInfoRow('Website', 'www.example.edu'),
-              _buildInfoRow('Phone', '+254 712 345 678'),
+              _buildInfoRow(context.l10n.adminInstitutionDetailFullName, name),
+              _buildInfoRow(context.l10n.adminInstitutionDetailInstitutionType, type),
+              _buildInfoRow(context.l10n.adminInstitutionDetailEmail, email),
+              _buildInfoRow(context.l10n.adminInstitutionDetailLocation, location),
+              _buildInfoRow(context.l10n.adminInstitutionDetailWebsite, 'www.example.edu'),
+              _buildInfoRow(context.l10n.adminInstitutionDetailPhone, '+254 712 345 678'),
             ],
           ),
           const SizedBox(height: 24),
 
           // Contact Person
           _buildInfoSection(
-            'Contact Person',
+            context.l10n.adminInstitutionDetailContactPerson,
             [
-              _buildInfoRow('Name', 'Dr. John Kamau'),
-              _buildInfoRow('Position', 'Admissions Director'),
-              _buildInfoRow('Email', 'admissions@example.edu'),
-              _buildInfoRow('Phone', '+254 712 345 679'),
+              _buildInfoRow(context.l10n.adminInstitutionDetailName, 'Dr. John Kamau'),
+              _buildInfoRow(context.l10n.adminInstitutionDetailPosition, context.l10n.adminInstitutionDetailAdmissionsDirector),
+              _buildInfoRow(context.l10n.adminInstitutionDetailEmail, 'admissions@example.edu'),
+              _buildInfoRow(context.l10n.adminInstitutionDetailPhone, '+254 712 345 679'),
             ],
           ),
           const SizedBox(height: 24),
 
           // Account Information
           _buildInfoSection(
-            'Account Information',
+            context.l10n.adminInstitutionDetailAccountInfo,
             [
-              _buildInfoRow('Account Created', joinedDate),
-              _buildInfoRow('Last Updated', '2 weeks ago'),
-              _buildInfoRow('Last Login', '3 hours ago'),
-              _buildInfoRow('Verification Date', '1 month ago'),
+              _buildInfoRow(context.l10n.adminInstitutionDetailAccountCreated, joinedDate),
+              _buildInfoRow(context.l10n.adminInstitutionDetailLastUpdated, context.l10n.adminInstitutionDetailWeeksAgo),
+              _buildInfoRow(context.l10n.adminInstitutionDetailLastLogin, context.l10n.adminInstitutionDetailHoursAgo),
+              _buildInfoRow(context.l10n.adminInstitutionDetailVerificationDate, context.l10n.adminInstitutionDetailMonthAgo),
             ],
           ),
         ],
@@ -486,7 +487,7 @@ class _InstitutionDetailScreenState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Programs (${programs.length})',
+                context.l10n.adminInstitutionDetailProgramsCount(programs.length),
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -497,7 +498,7 @@ class _InstitutionDetailScreenState
                   // TODO: Add new program
                 },
                 icon: const Icon(Icons.add, size: 18),
-                label: const Text('Add Program'),
+                label: Text(context.l10n.adminInstitutionDetailAddProgram),
               ),
             ],
           ),
@@ -611,7 +612,7 @@ class _InstitutionDetailScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Recent Applicants (${applicants.length})',
+            context.l10n.adminInstitutionDetailRecentApplicants(applicants.length),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -717,9 +718,9 @@ class _InstitutionDetailScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Statistics',
-            style: TextStyle(
+          Text(
+            context.l10n.adminInstitutionDetailStatistics,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -731,21 +732,21 @@ class _InstitutionDetailScreenState
             children: [
               Expanded(
                 child: _buildStatCard(
-                  'Total Applicants',
+                  context.l10n.adminInstitutionDetailTotalApplicants,
                   '1,234',
                   Icons.people,
                   AppColors.primary,
-                  '+12% from last month',
+                  context.l10n.adminInstitutionDetailFromLastMonth,
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: _buildStatCard(
-                  'Acceptance Rate',
+                  context.l10n.adminInstitutionDetailAcceptanceRate,
                   '45%',
                   Icons.check_circle,
                   AppColors.success,
-                  'Above average',
+                  context.l10n.adminInstitutionDetailAboveAverage,
                 ),
               ),
             ],
@@ -755,21 +756,21 @@ class _InstitutionDetailScreenState
             children: [
               Expanded(
                 child: _buildStatCard(
-                  'Active Programs',
+                  context.l10n.adminInstitutionDetailActivePrograms,
                   '24',
                   Icons.school,
                   AppColors.secondary,
-                  '3 new this year',
+                  context.l10n.adminInstitutionDetailNewThisYear,
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: _buildStatCard(
-                  'Enrolled Students',
+                  context.l10n.adminInstitutionDetailEnrolledStudents,
                   '856',
                   Icons.people_outline,
                   AppColors.warning,
-                  '+8% from last year',
+                  context.l10n.adminInstitutionDetailFromLastYear,
                 ),
               ),
             ],
@@ -794,7 +795,7 @@ class _InstitutionDetailScreenState
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Application Trends Chart',
+                    context.l10n.adminInstitutionDetailApplicationTrends,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
@@ -802,7 +803,7 @@ class _InstitutionDetailScreenState
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Charts will be implemented with fl_chart',
+                    context.l10n.adminInstitutionDetailChartComingSoon,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 12,
@@ -886,9 +887,9 @@ class _InstitutionDetailScreenState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Verification Documents',
-                style: TextStyle(
+              Text(
+                context.l10n.adminInstitutionDetailVerificationDocuments,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -898,7 +899,7 @@ class _InstitutionDetailScreenState
                   // TODO: Upload document
                 },
                 icon: const Icon(Icons.upload, size: 18),
-                label: const Text('Upload'),
+                label: Text(context.l10n.adminInstitutionDetailUpload),
               ),
             ],
           ),
@@ -963,14 +964,14 @@ class _InstitutionDetailScreenState
                   // TODO: View document
                 },
                 icon: const Icon(Icons.visibility, size: 20),
-                tooltip: 'View',
+                tooltip: context.l10n.adminInstitutionDetailView,
               ),
               IconButton(
                 onPressed: () {
                   // TODO: Download document
                 },
                 icon: const Icon(Icons.download, size: 20),
-                tooltip: 'Download',
+                tooltip: context.l10n.adminInstitutionDetailDownload,
               ),
             ],
           ),
@@ -988,9 +989,9 @@ class _InstitutionDetailScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Activity Timeline',
-            style: TextStyle(
+          Text(
+            context.l10n.adminInstitutionDetailActivityTimeline,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -1122,25 +1123,25 @@ class _InstitutionDetailScreenState
   void _showApproveDialog(dynamic institution) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Approve Institution'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminInstitutionDetailApproveTitle),
         content: Text(
-          'Are you sure you want to approve ${institution.displayName}? This will activate their account and allow them to start accepting applications.',
+          context.l10n.adminInstitutionDetailApproveMessage(institution.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminInstitutionDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call approve API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Institution approved successfully')),
+                SnackBar(content: Text(context.l10n.adminInstitutionDetailApproveSuccess)),
               );
             },
-            child: const Text('Approve'),
+            child: Text(context.l10n.adminInstitutionDetailApprove),
           ),
         ],
       ),
@@ -1152,20 +1153,20 @@ class _InstitutionDetailScreenState
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Reject Institution'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminInstitutionDetailRejectTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Are you sure you want to reject ${institution.displayName}?',
+              context.l10n.adminInstitutionDetailRejectConfirm(institution.displayName ?? ''),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason for rejection',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.adminInstitutionDetailReasonForRejection,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -1173,21 +1174,21 @@ class _InstitutionDetailScreenState
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminInstitutionDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call reject API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Institution rejected')),
+                SnackBar(content: Text(context.l10n.adminInstitutionDetailRejectSuccess)),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Reject'),
+            child: Text(context.l10n.adminInstitutionDetailReject),
           ),
         ],
       ),
@@ -1199,34 +1200,34 @@ class _InstitutionDetailScreenState
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(isActive ? 'Deactivate Institution' : 'Activate Institution'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(isActive ? context.l10n.adminInstitutionDetailDeactivateTitle : context.l10n.adminInstitutionDetailActivateTitle),
         content: Text(
           isActive
-              ? 'Are you sure you want to deactivate ${institution.displayName}? They will no longer be able to accept applications.'
-              : 'Are you sure you want to activate ${institution.displayName}? They will be able to accept applications again.',
+              ? context.l10n.adminInstitutionDetailDeactivateMessage(institution.displayName ?? '')
+              : context.l10n.adminInstitutionDetailActivateMessage(institution.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminInstitutionDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call suspend/activate API
               // ref.read(adminInstitutionsProvider.notifier).toggleActive(institution.id);
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                     isActive
-                        ? 'Institution deactivated successfully'
-                        : 'Institution activated successfully',
+                        ? context.l10n.adminInstitutionDetailDeactivateSuccess
+                        : context.l10n.adminInstitutionDetailActivateSuccess,
                   ),
                 ),
               );
             },
-            child: Text(isActive ? 'Deactivate' : 'Activate'),
+            child: Text(isActive ? context.l10n.adminInstitutionDetailDeactivate : context.l10n.adminInstitutionDetailActivate),
           ),
         ],
       ),
@@ -1236,29 +1237,29 @@ class _InstitutionDetailScreenState
   void _showDeleteDialog(dynamic institution) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Institution'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminInstitutionDetailDeleteTitle),
         content: Text(
-          'Are you sure you want to delete ${institution.displayName}? This action cannot be undone and will remove all associated data including programs, applications, and documents.',
+          context.l10n.adminInstitutionDetailDeleteMessage(institution.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminInstitutionDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call delete API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               context.go('/admin/users/institutions');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Institution deleted successfully')),
+                SnackBar(content: Text(context.l10n.adminInstitutionDetailDeleteSuccess)),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.adminInstitutionDetailDelete),
           ),
         ],
       ),

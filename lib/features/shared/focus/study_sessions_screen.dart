@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flow/core/l10n_extension.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/user_roles.dart';
 import '../widgets/focus_tools_widgets.dart';
@@ -149,17 +150,17 @@ class _StudySessionsScreenState extends ConsumerState<StudySessionsScreen>
               }
             }
           },
-          tooltip: 'Back',
+          tooltip: context.l10n.studySessionsBack,
         ),
-        title: const Text('Study Sessions'),
+        title: Text(context.l10n.studySessionsTitle),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           tabs: [
-            Tab(text: 'Today (${_todaySessions.length})'),
-            Tab(text: 'This Week (${_thisWeekSessions.length})'),
-            Tab(text: 'All (${_sessions.length})'),
+            Tab(text: context.l10n.studySessionsToday(_todaySessions.length)),
+            Tab(text: context.l10n.studySessionsThisWeek(_thisWeekSessions.length)),
+            Tab(text: context.l10n.studySessionsAll(_sessions.length)),
           ],
         ),
       ),
@@ -199,9 +200,9 @@ class _StudySessionsScreenState extends ConsumerState<StudySessionsScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildStatItem('Sessions', '$completedCount', Icons.timer),
-          _buildStatItem('Total Time', '${totalMinutes}m', Icons.schedule),
-          _buildStatItem('Avg Focus', '${(85).toStringAsFixed(0)}%', Icons.trending_up),
+          _buildStatItem(context.l10n.studySessionsSessions, '$completedCount', Icons.timer),
+          _buildStatItem(context.l10n.studySessionsTotalTime, '${totalMinutes}m', Icons.schedule),
+          _buildStatItem(context.l10n.studySessionsAvgFocus, '${(85).toStringAsFixed(0)}%', Icons.trending_up),
         ],
       ),
     );
@@ -232,9 +233,9 @@ class _StudySessionsScreenState extends ConsumerState<StudySessionsScreen>
 
   Widget _buildSessionsList(List<FocusSession> sessions) {
     if (sessions.isEmpty) {
-      return const EmptyFocusState(
-        message: 'No sessions yet',
-        subtitle: 'Start a focus session to see it here',
+      return EmptyFocusState(
+        message: context.l10n.studySessionsNoSessions,
+        subtitle: context.l10n.studySessionsNoSessionsSubtitle,
       );
     }
 
@@ -302,19 +303,19 @@ class _StudySessionsScreenState extends ConsumerState<StudySessionsScreen>
               ],
             ),
             const SizedBox(height: 24),
-            _buildDetailRow('Duration', session.formattedDuration),
-            _buildDetailRow('Status', session.statusLabel),
+            _buildDetailRow(context.l10n.studySessionsDuration, session.formattedDuration),
+            _buildDetailRow(context.l10n.studySessionsStatus, session.statusLabel),
             if (session.focusLevel != null)
               _buildDetailRow(
-                  'Focus Level', session.focusLevel!.name.toUpperCase()),
+                  context.l10n.studySessionsFocusLevel, session.focusLevel!.name.toUpperCase()),
             if (session.distractions != null)
-              _buildDetailRow('Distractions', '${session.distractions}'),
+              _buildDetailRow(context.l10n.studySessionsDistractions, '${session.distractions}'),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Close'),
+                child: Text(context.l10n.studySessionsClose),
               ),
             ),
           ],

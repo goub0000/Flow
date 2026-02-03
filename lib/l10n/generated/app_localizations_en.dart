@@ -17513,4 +17513,968 @@ class AppLocalizationsEn extends AppLocalizations {
   String adminContentModuleCreated(String title) {
     return 'Module \"$title\" created';
   }
+
+  @override
+  String get focusAnalyticsTitle => 'Focus Analytics';
+
+  @override
+  String get focusAnalyticsShare => 'Share';
+
+  @override
+  String get focusAnalyticsThisMonth => 'This Month';
+
+  @override
+  String get focusAnalyticsTotalFocusTime => 'Total Focus Time';
+
+  @override
+  String get focusAnalyticsSessions => 'Sessions';
+
+  @override
+  String get focusAnalyticsCompletion => 'Completion';
+
+  @override
+  String get focusAnalyticsAvgFocus => 'Avg Focus';
+
+  @override
+  String get focusAnalyticsCurrentStreak => 'Current Streak';
+
+  @override
+  String get focusAnalyticsDaysInARow => 'days in a row';
+
+  @override
+  String get focusAnalyticsBestStreak => 'Best Streak';
+
+  @override
+  String get focusAnalyticsDaysAchieved => 'days achieved';
+
+  @override
+  String get focusAnalyticsLongestSession => 'Longest Session';
+
+  @override
+  String get focusAnalyticsCompletionRate => 'Completion Rate';
+
+  @override
+  String get focusAnalyticsInsights => 'Insights';
+
+  @override
+  String get focusAnalyticsPeakFocusTime => 'Peak Focus Time';
+
+  @override
+  String get focusAnalyticsPeakFocusTimeDesc =>
+      'You are most productive between 9 AM - 11 AM';
+
+  @override
+  String get focusAnalyticsGreatWeek => 'Great Week!';
+
+  @override
+  String get focusAnalyticsGreatWeekDesc =>
+      'You completed 87% of your sessions this week';
+
+  @override
+  String get focusAnalyticsKeepItUp => 'Keep it up!';
+
+  @override
+  String get focusAnalyticsKeepItUpDesc =>
+      '7-day streak - just 7 more for your best';
+
+  @override
+  String get focusAnalyticsShareComingSoon => 'Share functionality coming soon';
+
+  @override
+  String get studySessionsTitle => 'Study Sessions';
+
+  @override
+  String get studySessionsBack => 'Back';
+
+  @override
+  String studySessionsToday(int count) {
+    return 'Today ($count)';
+  }
+
+  @override
+  String studySessionsThisWeek(int count) {
+    return 'This Week ($count)';
+  }
+
+  @override
+  String studySessionsAll(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String get studySessionsSessions => 'Sessions';
+
+  @override
+  String get studySessionsTotalTime => 'Total Time';
+
+  @override
+  String get studySessionsAvgFocus => 'Avg Focus';
+
+  @override
+  String get studySessionsNoSessions => 'No sessions yet';
+
+  @override
+  String get studySessionsNoSessionsSubtitle =>
+      'Start a focus session to see it here';
+
+  @override
+  String get studySessionsDuration => 'Duration';
+
+  @override
+  String get studySessionsStatus => 'Status';
+
+  @override
+  String get studySessionsFocusLevel => 'Focus Level';
+
+  @override
+  String get studySessionsDistractions => 'Distractions';
+
+  @override
+  String get studySessionsClose => 'Close';
+
+  @override
+  String get adminCounselorDetailBackToCounselors => 'Back to Counselors';
+
+  @override
+  String get adminCounselorDetailTitle => 'Counselor Details';
+
+  @override
+  String get adminCounselorDetailStudents => 'Students';
+
+  @override
+  String get adminCounselorDetailSessions => 'Sessions';
+
+  @override
+  String get adminCounselorDetailRating => 'Rating';
+
+  @override
+  String get adminCounselorDetailActive => 'Active';
+
+  @override
+  String get adminCounselorDetailSuspended => 'Suspended';
+
+  @override
+  String get adminCounselorDetailPending => 'Pending';
+
+  @override
+  String get adminCounselorDetailInactive => 'Inactive';
+
+  @override
+  String get adminCounselorDetailApprove => 'Approve';
+
+  @override
+  String get adminCounselorDetailSuspend => 'Suspend';
+
+  @override
+  String get adminCounselorDetailActivate => 'Activate';
+
+  @override
+  String get adminCounselorDetailDelete => 'Delete';
+
+  @override
+  String get adminCounselorDetailMessage => 'Message';
+
+  @override
+  String get adminCounselorDetailTabOverview => 'Overview';
+
+  @override
+  String get adminCounselorDetailTabStudents => 'Students';
+
+  @override
+  String get adminCounselorDetailTabSessions => 'Sessions';
+
+  @override
+  String get adminCounselorDetailTabSchedule => 'Schedule';
+
+  @override
+  String get adminCounselorDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminCounselorDetailTabActivity => 'Activity';
+
+  @override
+  String get adminCounselorDetailBasicInfo => 'Basic Information';
+
+  @override
+  String get adminCounselorDetailEmail => 'Email';
+
+  @override
+  String get adminCounselorDetailPhone => 'Phone';
+
+  @override
+  String get adminCounselorDetailJoined => 'Joined';
+
+  @override
+  String get adminCounselorDetailLastActive => 'Last Active';
+
+  @override
+  String get adminCounselorDetailProfessionalInfo => 'Professional Information';
+
+  @override
+  String get adminCounselorDetailSpecialization => 'Specialization';
+
+  @override
+  String get adminCounselorDetailExperience => 'Experience';
+
+  @override
+  String get adminCounselorDetailCertifications => 'Certifications';
+
+  @override
+  String get adminCounselorDetailHourlyRate => 'Hourly Rate';
+
+  @override
+  String get adminCounselorDetailBio => 'Bio';
+
+  @override
+  String get adminCounselorDetailAssignedStudents => 'Assigned Students';
+
+  @override
+  String get adminCounselorDetailNoStudents => 'No students assigned';
+
+  @override
+  String get adminCounselorDetailCounselingSessions => 'Counseling Sessions';
+
+  @override
+  String get adminCounselorDetailNoSessions => 'No sessions found';
+
+  @override
+  String get adminCounselorDetailSchedule => 'Schedule';
+
+  @override
+  String get adminCounselorDetailNoSchedule => 'No schedule set';
+
+  @override
+  String get adminCounselorDetailDocuments => 'Documents';
+
+  @override
+  String get adminCounselorDetailNoDocuments => 'No documents';
+
+  @override
+  String get adminCounselorDetailActivityLog => 'Activity Log';
+
+  @override
+  String get adminCounselorDetailNoActivity => 'No activity recorded';
+
+  @override
+  String get adminCounselorDetailSuspendTitle => 'Suspend Counselor';
+
+  @override
+  String adminCounselorDetailSuspendMessage(String name) {
+    return 'Are you sure you want to suspend $name?';
+  }
+
+  @override
+  String get adminCounselorDetailCancel => 'Cancel';
+
+  @override
+  String get adminCounselorDetailSuspendAction => 'Suspend';
+
+  @override
+  String get adminCounselorDetailActivateTitle => 'Activate Counselor';
+
+  @override
+  String adminCounselorDetailActivateMessage(String name) {
+    return 'Are you sure you want to activate $name?';
+  }
+
+  @override
+  String get adminCounselorDetailActivateAction => 'Activate';
+
+  @override
+  String get adminCounselorDetailDeleteTitle => 'Delete Counselor';
+
+  @override
+  String adminCounselorDetailDeleteMessage(String name) {
+    return 'Are you sure you want to permanently delete $name? This action cannot be undone.';
+  }
+
+  @override
+  String get adminCounselorDetailDeleteAction => 'Delete';
+
+  @override
+  String get adminCounselorDetailSuspendSuccess =>
+      'Counselor suspended successfully';
+
+  @override
+  String get adminCounselorDetailActivateSuccess =>
+      'Counselor activated successfully';
+
+  @override
+  String get adminCounselorDetailDeleteSuccess =>
+      'Counselor deleted successfully';
+
+  @override
+  String adminCounselorDetailYears(int count) {
+    return '$count years';
+  }
+
+  @override
+  String adminCounselorDetailCertCount(int count) {
+    return '$count certifications';
+  }
+
+  @override
+  String adminCounselorDetailHourlyRateValue(String rate) {
+    return '\$$rate/hour';
+  }
+
+  @override
+  String get adminCounselorDetailCompleted => 'Completed';
+
+  @override
+  String get adminCounselorDetailScheduled => 'Scheduled';
+
+  @override
+  String get adminCounselorDetailCancelled => 'Cancelled';
+
+  @override
+  String get adminInstitutionDetailBackToInstitutions => 'Back to Institutions';
+
+  @override
+  String get adminInstitutionDetailTitle => 'Institution Details';
+
+  @override
+  String get adminInstitutionDetailPrograms => 'Programs';
+
+  @override
+  String get adminInstitutionDetailApplicants => 'Applicants';
+
+  @override
+  String get adminInstitutionDetailAcceptance => 'Acceptance';
+
+  @override
+  String get adminInstitutionDetailApproved => 'Approved';
+
+  @override
+  String get adminInstitutionDetailPending => 'Pending';
+
+  @override
+  String get adminInstitutionDetailRejected => 'Rejected';
+
+  @override
+  String get adminInstitutionDetailSuspended => 'Suspended';
+
+  @override
+  String get adminInstitutionDetailApprove => 'Approve';
+
+  @override
+  String get adminInstitutionDetailReject => 'Reject';
+
+  @override
+  String get adminInstitutionDetailSuspend => 'Suspend';
+
+  @override
+  String get adminInstitutionDetailActivate => 'Activate';
+
+  @override
+  String get adminInstitutionDetailDelete => 'Delete';
+
+  @override
+  String get adminInstitutionDetailMessage => 'Message';
+
+  @override
+  String get adminInstitutionDetailTabOverview => 'Overview';
+
+  @override
+  String get adminInstitutionDetailTabPrograms => 'Programs';
+
+  @override
+  String get adminInstitutionDetailTabApplicants => 'Applicants';
+
+  @override
+  String get adminInstitutionDetailTabStatistics => 'Statistics';
+
+  @override
+  String get adminInstitutionDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminInstitutionDetailTabActivity => 'Activity';
+
+  @override
+  String get adminInstitutionDetailBasicInfo => 'Basic Information';
+
+  @override
+  String get adminInstitutionDetailType => 'Type';
+
+  @override
+  String get adminInstitutionDetailLocation => 'Location';
+
+  @override
+  String get adminInstitutionDetailWebsite => 'Website';
+
+  @override
+  String get adminInstitutionDetailEmail => 'Email';
+
+  @override
+  String get adminInstitutionDetailPhone => 'Phone';
+
+  @override
+  String get adminInstitutionDetailJoined => 'Joined';
+
+  @override
+  String get adminInstitutionDetailDescription => 'Description';
+
+  @override
+  String get adminInstitutionDetailAcademicInfo => 'Academic Information';
+
+  @override
+  String get adminInstitutionDetailRanking => 'Ranking';
+
+  @override
+  String get adminInstitutionDetailAccreditedPrograms => 'Accredited Programs';
+
+  @override
+  String get adminInstitutionDetailTuitionRange => 'Tuition Range';
+
+  @override
+  String get adminInstitutionDetailAcceptanceRate => 'Acceptance Rate';
+
+  @override
+  String get adminInstitutionDetailOfferedPrograms => 'Offered Programs';
+
+  @override
+  String get adminInstitutionDetailNoPrograms => 'No programs offered';
+
+  @override
+  String get adminInstitutionDetailRecentApplicants => 'Recent Applicants';
+
+  @override
+  String get adminInstitutionDetailNoApplicants => 'No applicants';
+
+  @override
+  String get adminInstitutionDetailInstitutionStatistics =>
+      'Institution Statistics';
+
+  @override
+  String get adminInstitutionDetailApplicationsTrend =>
+      'Applications trend over time';
+
+  @override
+  String get adminInstitutionDetailDocuments => 'Documents';
+
+  @override
+  String get adminInstitutionDetailNoDocuments => 'No documents';
+
+  @override
+  String get adminInstitutionDetailActivityLog => 'Activity Log';
+
+  @override
+  String get adminInstitutionDetailNoActivity => 'No activity recorded';
+
+  @override
+  String get adminInstitutionDetailApproveTitle => 'Approve Institution';
+
+  @override
+  String adminInstitutionDetailApproveMessage(String name) {
+    return 'Are you sure you want to approve $name?';
+  }
+
+  @override
+  String get adminInstitutionDetailCancel => 'Cancel';
+
+  @override
+  String get adminInstitutionDetailApproveAction => 'Approve';
+
+  @override
+  String get adminInstitutionDetailRejectTitle => 'Reject Institution';
+
+  @override
+  String adminInstitutionDetailRejectMessage(String name) {
+    return 'Are you sure you want to reject $name?';
+  }
+
+  @override
+  String get adminInstitutionDetailRejectAction => 'Reject';
+
+  @override
+  String get adminInstitutionDetailSuspendTitle => 'Suspend Institution';
+
+  @override
+  String adminInstitutionDetailSuspendMessage(String name) {
+    return 'Are you sure you want to suspend $name?';
+  }
+
+  @override
+  String get adminInstitutionDetailSuspendAction => 'Suspend';
+
+  @override
+  String get adminInstitutionDetailActivateTitle => 'Activate Institution';
+
+  @override
+  String adminInstitutionDetailActivateMessage(String name) {
+    return 'Are you sure you want to activate $name?';
+  }
+
+  @override
+  String get adminInstitutionDetailActivateAction => 'Activate';
+
+  @override
+  String get adminInstitutionDetailDeleteTitle => 'Delete Institution';
+
+  @override
+  String adminInstitutionDetailDeleteMessage(String name) {
+    return 'Are you sure you want to permanently delete $name? This action cannot be undone.';
+  }
+
+  @override
+  String get adminInstitutionDetailDeleteAction => 'Delete';
+
+  @override
+  String get adminInstitutionDetailApproveSuccess =>
+      'Institution approved successfully';
+
+  @override
+  String get adminInstitutionDetailRejectSuccess =>
+      'Institution rejected successfully';
+
+  @override
+  String get adminInstitutionDetailSuspendSuccess =>
+      'Institution suspended successfully';
+
+  @override
+  String get adminInstitutionDetailActivateSuccess =>
+      'Institution activated successfully';
+
+  @override
+  String get adminInstitutionDetailDeleteSuccess =>
+      'Institution deleted successfully';
+
+  @override
+  String get adminInstitutionDetailUniversity => 'University';
+
+  @override
+  String get adminInstitutionDetailCollege => 'College';
+
+  @override
+  String get adminInstitutionDetailCommunityCollege => 'Community College';
+
+  @override
+  String get adminInstitutionDetailTechnicalSchool => 'Technical School';
+
+  @override
+  String get adminInstitutionDetailVocationalSchool => 'Vocational School';
+
+  @override
+  String get adminInstitutionDetailOther => 'Other';
+
+  @override
+  String adminInstitutionDetailRankingValue(int rank) {
+    return '#$rank nationally';
+  }
+
+  @override
+  String adminInstitutionDetailProgramCount(int count) {
+    return '$count programs';
+  }
+
+  @override
+  String adminInstitutionDetailTuitionRangeValue(String min, String max) {
+    return '\$$min - \$$max';
+  }
+
+  @override
+  String adminInstitutionDetailAcceptanceRateValue(String rate) {
+    return '$rate%';
+  }
+
+  @override
+  String get adminInstitutionDetailViewDetails => 'View details';
+
+  @override
+  String get adminInstitutionDetailAccepted => 'Accepted';
+
+  @override
+  String adminInstitutionDetailGpa(String gpa) {
+    return 'GPA: $gpa';
+  }
+
+  @override
+  String get adminParentDetailBackToParents => 'Back to Parents';
+
+  @override
+  String get adminParentDetailTitle => 'Parent Details';
+
+  @override
+  String get adminParentDetailChildren => 'Children';
+
+  @override
+  String get adminParentDetailApplications => 'Applications';
+
+  @override
+  String get adminParentDetailSpent => 'Spent';
+
+  @override
+  String get adminParentDetailActive => 'Active';
+
+  @override
+  String get adminParentDetailSuspended => 'Suspended';
+
+  @override
+  String get adminParentDetailPending => 'Pending';
+
+  @override
+  String get adminParentDetailInactive => 'Inactive';
+
+  @override
+  String get adminParentDetailSuspend => 'Suspend';
+
+  @override
+  String get adminParentDetailActivate => 'Activate';
+
+  @override
+  String get adminParentDetailDelete => 'Delete';
+
+  @override
+  String get adminParentDetailMessage => 'Message';
+
+  @override
+  String get adminParentDetailTabOverview => 'Overview';
+
+  @override
+  String get adminParentDetailTabChildren => 'Children';
+
+  @override
+  String get adminParentDetailTabApplications => 'Applications';
+
+  @override
+  String get adminParentDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminParentDetailTabPayments => 'Payments';
+
+  @override
+  String get adminParentDetailTabActivity => 'Activity';
+
+  @override
+  String get adminParentDetailBasicInfo => 'Basic Information';
+
+  @override
+  String get adminParentDetailEmail => 'Email';
+
+  @override
+  String get adminParentDetailPhone => 'Phone';
+
+  @override
+  String get adminParentDetailAddress => 'Address';
+
+  @override
+  String get adminParentDetailJoined => 'Joined';
+
+  @override
+  String get adminParentDetailLastActive => 'Last Active';
+
+  @override
+  String get adminParentDetailLinkedChildren => 'Linked Children';
+
+  @override
+  String get adminParentDetailNoChildren => 'No children linked';
+
+  @override
+  String get adminParentDetailApplicationsTracked => 'Applications Tracked';
+
+  @override
+  String get adminParentDetailNoApplications => 'No applications tracked';
+
+  @override
+  String get adminParentDetailDocuments => 'Documents';
+
+  @override
+  String get adminParentDetailNoDocuments => 'No documents';
+
+  @override
+  String get adminParentDetailPaymentHistory => 'Payment History';
+
+  @override
+  String get adminParentDetailNoPayments => 'No payments';
+
+  @override
+  String get adminParentDetailActivityLog => 'Activity Log';
+
+  @override
+  String get adminParentDetailNoActivity => 'No activity recorded';
+
+  @override
+  String get adminParentDetailSuspendTitle => 'Suspend Parent';
+
+  @override
+  String adminParentDetailSuspendMessage(String name) {
+    return 'Are you sure you want to suspend $name?';
+  }
+
+  @override
+  String get adminParentDetailCancel => 'Cancel';
+
+  @override
+  String get adminParentDetailSuspendAction => 'Suspend';
+
+  @override
+  String get adminParentDetailActivateTitle => 'Activate Parent';
+
+  @override
+  String adminParentDetailActivateMessage(String name) {
+    return 'Are you sure you want to activate $name?';
+  }
+
+  @override
+  String get adminParentDetailActivateAction => 'Activate';
+
+  @override
+  String get adminParentDetailDeleteTitle => 'Delete Parent';
+
+  @override
+  String adminParentDetailDeleteMessage(String name) {
+    return 'Are you sure you want to permanently delete $name? This action cannot be undone.';
+  }
+
+  @override
+  String get adminParentDetailDeleteAction => 'Delete';
+
+  @override
+  String get adminParentDetailSuspendSuccess => 'Parent suspended successfully';
+
+  @override
+  String get adminParentDetailActivateSuccess =>
+      'Parent activated successfully';
+
+  @override
+  String get adminParentDetailDeleteSuccess => 'Parent deleted successfully';
+
+  @override
+  String adminParentDetailGrade(String grade) {
+    return 'Grade $grade';
+  }
+
+  @override
+  String get adminParentDetailViewProfile => 'View Profile';
+
+  @override
+  String adminParentDetailAppliedTo(String institution) {
+    return 'Applied to: $institution';
+  }
+
+  @override
+  String get adminParentDetailSubmitted => 'Submitted';
+
+  @override
+  String get adminParentDetailAccepted => 'Accepted';
+
+  @override
+  String get adminParentDetailRejected => 'Rejected';
+
+  @override
+  String get adminParentDetailDraft => 'Draft';
+
+  @override
+  String adminParentDetailPaymentAmount(String amount) {
+    return '\$$amount';
+  }
+
+  @override
+  String get adminParentDetailCompleted => 'Completed';
+
+  @override
+  String get adminParentDetailFailed => 'Failed';
+
+  @override
+  String get adminRecommenderDetailBackToRecommenders => 'Back to Recommenders';
+
+  @override
+  String get adminRecommenderDetailTitle => 'Recommender Details';
+
+  @override
+  String get adminRecommenderDetailRequests => 'Requests';
+
+  @override
+  String get adminRecommenderDetailCompleted => 'Completed';
+
+  @override
+  String get adminRecommenderDetailRating => 'Rating';
+
+  @override
+  String get adminRecommenderDetailActive => 'Active';
+
+  @override
+  String get adminRecommenderDetailSuspended => 'Suspended';
+
+  @override
+  String get adminRecommenderDetailPending => 'Pending';
+
+  @override
+  String get adminRecommenderDetailInactive => 'Inactive';
+
+  @override
+  String get adminRecommenderDetailSuspend => 'Suspend';
+
+  @override
+  String get adminRecommenderDetailActivate => 'Activate';
+
+  @override
+  String get adminRecommenderDetailDelete => 'Delete';
+
+  @override
+  String get adminRecommenderDetailMessage => 'Message';
+
+  @override
+  String get adminRecommenderDetailTabOverview => 'Overview';
+
+  @override
+  String get adminRecommenderDetailTabRequests => 'Requests';
+
+  @override
+  String get adminRecommenderDetailTabRecommendations => 'Recommendations';
+
+  @override
+  String get adminRecommenderDetailTabStatistics => 'Statistics';
+
+  @override
+  String get adminRecommenderDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminRecommenderDetailTabActivity => 'Activity';
+
+  @override
+  String get adminRecommenderDetailBasicInfo => 'Basic Information';
+
+  @override
+  String get adminRecommenderDetailEmail => 'Email';
+
+  @override
+  String get adminRecommenderDetailPhone => 'Phone';
+
+  @override
+  String get adminRecommenderDetailInstitution => 'Institution';
+
+  @override
+  String get adminRecommenderDetailPosition => 'Position';
+
+  @override
+  String get adminRecommenderDetailJoined => 'Joined';
+
+  @override
+  String get adminRecommenderDetailLastActive => 'Last Active';
+
+  @override
+  String get adminRecommenderDetailProfessionalInfo =>
+      'Professional Information';
+
+  @override
+  String get adminRecommenderDetailDepartment => 'Department';
+
+  @override
+  String get adminRecommenderDetailYearsExperience => 'Years of Experience';
+
+  @override
+  String get adminRecommenderDetailSpecialization => 'Specialization';
+
+  @override
+  String get adminRecommenderDetailRecommendationRequests =>
+      'Recommendation Requests';
+
+  @override
+  String get adminRecommenderDetailNoRequests => 'No requests';
+
+  @override
+  String get adminRecommenderDetailSubmittedRecommendations =>
+      'Submitted Recommendations';
+
+  @override
+  String get adminRecommenderDetailNoRecommendations =>
+      'No recommendations submitted';
+
+  @override
+  String get adminRecommenderDetailRecommenderStatistics =>
+      'Recommender Statistics';
+
+  @override
+  String get adminRecommenderDetailResponseTimeChart =>
+      'Response time and completion rate over time';
+
+  @override
+  String get adminRecommenderDetailDocuments => 'Documents';
+
+  @override
+  String get adminRecommenderDetailNoDocuments => 'No documents';
+
+  @override
+  String get adminRecommenderDetailActivityLog => 'Activity Log';
+
+  @override
+  String get adminRecommenderDetailNoActivity => 'No activity recorded';
+
+  @override
+  String get adminRecommenderDetailSuspendTitle => 'Suspend Recommender';
+
+  @override
+  String adminRecommenderDetailSuspendMessage(String name) {
+    return 'Are you sure you want to suspend $name?';
+  }
+
+  @override
+  String get adminRecommenderDetailCancel => 'Cancel';
+
+  @override
+  String get adminRecommenderDetailSuspendAction => 'Suspend';
+
+  @override
+  String get adminRecommenderDetailActivateTitle => 'Activate Recommender';
+
+  @override
+  String adminRecommenderDetailActivateMessage(String name) {
+    return 'Are you sure you want to activate $name?';
+  }
+
+  @override
+  String get adminRecommenderDetailActivateAction => 'Activate';
+
+  @override
+  String get adminRecommenderDetailDeleteTitle => 'Delete Recommender';
+
+  @override
+  String adminRecommenderDetailDeleteMessage(String name) {
+    return 'Are you sure you want to permanently delete $name? This action cannot be undone.';
+  }
+
+  @override
+  String get adminRecommenderDetailDeleteAction => 'Delete';
+
+  @override
+  String get adminRecommenderDetailSuspendSuccess =>
+      'Recommender suspended successfully';
+
+  @override
+  String get adminRecommenderDetailActivateSuccess =>
+      'Recommender activated successfully';
+
+  @override
+  String get adminRecommenderDetailDeleteSuccess =>
+      'Recommender deleted successfully';
+
+  @override
+  String adminRecommenderDetailYearsCount(int count) {
+    return '$count years';
+  }
+
+  @override
+  String get adminRecommenderDetailRequestPending => 'Pending';
+
+  @override
+  String get adminRecommenderDetailRequestInProgress => 'In Progress';
+
+  @override
+  String get adminRecommenderDetailRequestDeclined => 'Declined';
+
+  @override
+  String adminRecommenderDetailDueDate(String date) {
+    return 'Due: $date';
+  }
+
+  @override
+  String adminRecommenderDetailForStudent(String student) {
+    return 'For: $student';
+  }
+
+  @override
+  String adminRecommenderDetailToInstitution(String institution) {
+    return 'To: $institution';
+  }
 }

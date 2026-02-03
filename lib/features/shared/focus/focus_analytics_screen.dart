@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flow/core/l10n_extension.dart';
 import '../../../core/theme/app_colors.dart';
 import '../widgets/focus_tools_widgets.dart';
 
@@ -58,12 +59,12 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Focus Analytics'),
+        title: Text(context.l10n.focusAnalyticsTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: _shareReport,
-            tooltip: 'Share',
+            tooltip: context.l10n.focusAnalyticsShare,
           ),
         ],
       ),
@@ -110,9 +111,9 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'This Month',
-            style: TextStyle(
+          Text(
+            context.l10n.focusAnalyticsThisMonth,
+            style: const TextStyle(
               color: Colors.white70,
               fontSize: 14,
             ),
@@ -127,9 +128,9 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'Total Focus Time',
-            style: TextStyle(
+          Text(
+            context.l10n.focusAnalyticsTotalFocusTime,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
@@ -140,15 +141,15 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
             children: [
               _buildOverviewStat(
                 '${_stats.completedSessions}',
-                'Sessions',
+                context.l10n.focusAnalyticsSessions,
               ),
               _buildOverviewStat(
                 '${_stats.completionRate.toStringAsFixed(0)}%',
-                'Completion',
+                context.l10n.focusAnalyticsCompletion,
               ),
               _buildOverviewStat(
                 '${_stats.averageFocusScore.toStringAsFixed(0)}%',
-                'Avg Focus',
+                context.l10n.focusAnalyticsAvgFocus,
               ),
             ],
           ),
@@ -190,27 +191,27 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
       crossAxisSpacing: 16,
       children: [
         FocusStatsCard(
-          label: 'Current Streak',
+          label: context.l10n.focusAnalyticsCurrentStreak,
           value: '${_stats.currentStreak}',
           icon: Icons.local_fire_department,
           color: Colors.orange,
-          subtitle: 'days in a row',
+          subtitle: context.l10n.focusAnalyticsDaysInARow,
         ),
         FocusStatsCard(
-          label: 'Best Streak',
+          label: context.l10n.focusAnalyticsBestStreak,
           value: '${_stats.bestStreak}',
           icon: Icons.emoji_events,
           color: Colors.amber,
-          subtitle: 'days achieved',
+          subtitle: context.l10n.focusAnalyticsDaysAchieved,
         ),
         FocusStatsCard(
-          label: 'Longest Session',
+          label: context.l10n.focusAnalyticsLongestSession,
           value: _stats.formattedLongestSession,
           icon: Icons.timer,
           color: AppColors.primary,
         ),
         FocusStatsCard(
-          label: 'Completion Rate',
+          label: context.l10n.focusAnalyticsCompletionRate,
           value: '${_stats.completionRate.toStringAsFixed(0)}%',
           icon: Icons.check_circle,
           color: AppColors.success,
@@ -230,9 +231,9 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
               children: [
                 Icon(Icons.lightbulb_outline, color: Colors.amber),
                 const SizedBox(width: 12),
-                const Text(
-                  'Insights',
-                  style: TextStyle(
+                Text(
+                  context.l10n.focusAnalyticsInsights,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -242,22 +243,22 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
             const SizedBox(height: 16),
             _buildInsightItem(
               Icons.trending_up,
-              'Peak Focus Time',
-              'You are most productive between 9 AM - 11 AM',
+              context.l10n.focusAnalyticsPeakFocusTime,
+              context.l10n.focusAnalyticsPeakFocusTimeDesc,
               Colors.green,
             ),
             const SizedBox(height: 12),
             _buildInsightItem(
               Icons.star,
-              'Great Week!',
-              'You completed 87% of your sessions this week',
+              context.l10n.focusAnalyticsGreatWeek,
+              context.l10n.focusAnalyticsGreatWeekDesc,
               Colors.blue,
             ),
             const SizedBox(height: 12),
             _buildInsightItem(
               Icons.whatshot,
-              'Keep it up!',
-              '7-day streak - just 7 more for your best',
+              context.l10n.focusAnalyticsKeepItUp,
+              context.l10n.focusAnalyticsKeepItUpDesc,
               Colors.orange,
             ),
           ],
@@ -313,8 +314,8 @@ class _FocusAnalyticsScreenState extends State<FocusAnalyticsScreen> {
   void _shareReport() {
     // TODO: Implement share functionality
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Share functionality coming soon'),
+      SnackBar(
+        content: Text(context.l10n.focusAnalyticsShareComingSoon),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
@@ -105,7 +106,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
           TextButton.icon(
             onPressed: () => context.go('/admin/users/counselors'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Counselors'),
+            label: Text(context.l10n.adminCounselorDetailBackToCounselors),
           ),
         ],
       ),
@@ -169,15 +170,15 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
               ),
               child: Column(
                 children: [
-                  _buildStatRow('Counselor ID', counselorId),
+                  _buildStatRow(context.l10n.adminCounselorDetailCounselorId, counselorId),
                   const Divider(height: 16),
-                  _buildStatRow('Specialty', specialty),
+                  _buildStatRow(context.l10n.adminCounselorDetailSpecialty, specialty),
                   const Divider(height: 16),
-                  _buildStatRow('Students', '$students'),
+                  _buildStatRow(context.l10n.adminCounselorDetailStudents, '$students'),
                   const Divider(height: 16),
-                  _buildStatRow('Sessions', '$sessions'),
+                  _buildStatRow(context.l10n.adminCounselorDetailSessions, '$sessions'),
                   const Divider(height: 16),
-                  _buildStatRow('Rating', '4.8 ⭐'),
+                  _buildStatRow(context.l10n.adminCounselorDetailRating, '4.8 ⭐'),
                 ],
               ),
             ),
@@ -199,17 +200,17 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
     switch (status) {
       case 'active':
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminCounselorDetailStatusActive;
         icon = Icons.check_circle;
         break;
       case 'inactive':
         color = AppColors.textSecondary;
-        label = 'Inactive';
+        label = context.l10n.adminCounselorDetailStatusInactive;
         icon = Icons.cancel;
         break;
       case 'suspended':
         color = AppColors.error;
-        label = 'Suspended';
+        label = context.l10n.adminCounselorDetailStatusSuspended;
         icon = Icons.block;
         break;
       default:
@@ -277,7 +278,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
                 context.go('/admin/users/counselors/${widget.counselorId}/edit');
               },
               icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Edit Counselor'),
+              label: Text(context.l10n.adminCounselorDetailEditCounselor),
             ),
           ),
         ),
@@ -291,7 +292,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
               // TODO: Open messaging
             },
             icon: const Icon(Icons.message, size: 18),
-            label: const Text('Send Message'),
+            label: Text(context.l10n.adminCounselorDetailSendMessage),
           ),
         ),
         const SizedBox(height: 12),
@@ -307,7 +308,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
                 status == 'active' ? Icons.block : Icons.check_circle,
                 size: 18,
               ),
-              label: Text(status == 'active' ? 'Suspend Account' : 'Activate Account'),
+              label: Text(status == 'active' ? context.l10n.adminCounselorDetailSuspendAccount : context.l10n.adminCounselorDetailActivateAccount),
               style: OutlinedButton.styleFrom(
                 foregroundColor:
                     status == 'active' ? AppColors.error : AppColors.success,
@@ -325,7 +326,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
             child: OutlinedButton.icon(
               onPressed: () => _showDeleteDialog(counselor),
               icon: const Icon(Icons.delete, size: 18),
-              label: const Text('Delete Counselor'),
+              label: Text(context.l10n.adminCounselorDetailDeleteCounselor),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.error,
               ),
@@ -349,13 +350,13 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
           child: TabBar(
             controller: _tabController,
             isScrollable: true,
-            tabs: const [
-              Tab(text: 'Overview'),
-              Tab(text: 'Students'),
-              Tab(text: 'Sessions'),
-              Tab(text: 'Schedule'),
-              Tab(text: 'Documents'),
-              Tab(text: 'Activity'),
+            tabs: [
+              Tab(text: context.l10n.adminCounselorDetailTabOverview),
+              Tab(text: context.l10n.adminCounselorDetailTabStudents),
+              Tab(text: context.l10n.adminCounselorDetailTabSessions),
+              Tab(text: context.l10n.adminCounselorDetailTabSchedule),
+              Tab(text: context.l10n.adminCounselorDetailTabDocuments),
+              Tab(text: context.l10n.adminCounselorDetailTabActivity),
             ],
           ),
         ),
@@ -391,36 +392,36 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
         children: [
           // Professional Information
           _buildInfoSection(
-            'Professional Information',
+            context.l10n.adminCounselorDetailProfessionalInfo,
             [
-              _buildInfoRow('Full Name', name),
-              _buildInfoRow('Email', email),
-              _buildInfoRow('Specialty', specialty),
-              _buildInfoRow('Credentials', 'M.A. Counseling Psychology'),
-              _buildInfoRow('License Number', 'LPC-${counselor.id.substring(0, 8).toUpperCase()}'),
-              _buildInfoRow('Years of Experience', '8 years'),
+              _buildInfoRow(context.l10n.adminCounselorDetailFullName, name),
+              _buildInfoRow(context.l10n.adminCounselorDetailEmail, email),
+              _buildInfoRow(context.l10n.adminCounselorDetailSpecialty, specialty),
+              _buildInfoRow(context.l10n.adminCounselorDetailCredentials, 'M.A. Counseling Psychology'),
+              _buildInfoRow(context.l10n.adminCounselorDetailLicenseNumber, 'LPC-${counselor.id.substring(0, 8).toUpperCase()}'),
+              _buildInfoRow(context.l10n.adminCounselorDetailYearsExperience, context.l10n.adminCounselorDetailYearsValue),
             ],
           ),
           const SizedBox(height: 24),
 
           // Contact Information
           _buildInfoSection(
-            'Contact Information',
+            context.l10n.adminCounselorDetailContactInfo,
             [
-              _buildInfoRow('Phone', '+254 712 345 678'),
-              _buildInfoRow('Office Location', 'Building A, Room 203'),
-              _buildInfoRow('Availability', 'Mon-Fri, 9AM-5PM'),
+              _buildInfoRow(context.l10n.adminCounselorDetailPhone, '+254 712 345 678'),
+              _buildInfoRow(context.l10n.adminCounselorDetailOfficeLocation, 'Building A, Room 203'),
+              _buildInfoRow(context.l10n.adminCounselorDetailAvailability, 'Mon-Fri, 9AM-5PM'),
             ],
           ),
           const SizedBox(height: 24),
 
           // Account Information
           _buildInfoSection(
-            'Account Information',
+            context.l10n.adminCounselorDetailAccountInfo,
             [
-              _buildInfoRow('Account Created', joinedDate),
-              _buildInfoRow('Last Login', '3 hours ago'),
-              _buildInfoRow('Email Verified', 'Yes'),
+              _buildInfoRow(context.l10n.adminCounselorDetailAccountCreated, joinedDate),
+              _buildInfoRow(context.l10n.adminCounselorDetailLastLogin, context.l10n.adminCounselorDetailHoursAgo),
+              _buildInfoRow(context.l10n.adminCounselorDetailEmailVerified, context.l10n.adminCounselorDetailYes),
             ],
           ),
         ],
@@ -438,7 +439,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Assigned Students (${students.length})',
+            context.l10n.adminCounselorDetailAssignedStudents(students.length),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -491,7 +492,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
             ),
           ),
           Text(
-            '${student['sessions']} sessions',
+            context.l10n.adminCounselorDetailSessionsCount(student['sessions']),
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 12,
@@ -503,7 +504,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
               // TODO: Navigate to student detail
             },
             icon: const Icon(Icons.arrow_forward, size: 20),
-            tooltip: 'View Details',
+            tooltip: context.l10n.adminCounselorDetailViewDetails,
           ),
         ],
       ),
@@ -520,7 +521,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Recent Sessions (${sessions.length})',
+            context.l10n.adminCounselorDetailRecentSessions(sessions.length),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -619,9 +620,9 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Weekly Schedule',
-            style: TextStyle(
+          Text(
+            context.l10n.adminCounselorDetailWeeklySchedule,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -646,7 +647,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Schedule Calendar',
+                    context.l10n.adminCounselorDetailScheduleCalendar,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 16,
@@ -655,7 +656,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Calendar view will be implemented with table_calendar package',
+                    context.l10n.adminCounselorDetailCalendarComingSoon,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 13,
@@ -683,9 +684,9 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Professional Documents',
-                style: TextStyle(
+              Text(
+                context.l10n.adminCounselorDetailProfessionalDocuments,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -695,7 +696,7 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
                   // TODO: Upload document
                 },
                 icon: const Icon(Icons.upload, size: 18),
-                label: const Text('Upload'),
+                label: Text(context.l10n.adminCounselorDetailUpload),
               ),
             ],
           ),
@@ -760,14 +761,14 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
                   // TODO: View document
                 },
                 icon: const Icon(Icons.visibility, size: 20),
-                tooltip: 'View',
+                tooltip: context.l10n.adminCounselorDetailView,
               ),
               IconButton(
                 onPressed: () {
                   // TODO: Download document
                 },
                 icon: const Icon(Icons.download, size: 20),
-                tooltip: 'Download',
+                tooltip: context.l10n.adminCounselorDetailDownload,
               ),
             ],
           ),
@@ -785,9 +786,9 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Activity Timeline',
-            style: TextStyle(
+          Text(
+            context.l10n.adminCounselorDetailActivityTimeline,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -921,33 +922,33 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(isActive ? 'Suspend Counselor Account' : 'Activate Counselor Account'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(isActive ? context.l10n.adminCounselorDetailSuspendTitle : context.l10n.adminCounselorDetailActivateTitle),
         content: Text(
           isActive
-              ? 'Are you sure you want to suspend ${counselor.displayName}\'s account? They will no longer be able to access the platform.'
-              : 'Are you sure you want to activate ${counselor.displayName}\'s account? They will regain access to the platform.',
+              ? context.l10n.adminCounselorDetailSuspendMessage(counselor.displayName ?? '')
+              : context.l10n.adminCounselorDetailActivateMessage(counselor.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminCounselorDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call suspend/activate API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                     isActive
-                        ? 'Counselor account suspended successfully'
-                        : 'Counselor account activated successfully',
+                        ? context.l10n.adminCounselorDetailSuspendSuccess
+                        : context.l10n.adminCounselorDetailActivateSuccess,
                   ),
                 ),
               );
             },
-            child: Text(isActive ? 'Suspend' : 'Activate'),
+            child: Text(isActive ? context.l10n.adminCounselorDetailSuspend : context.l10n.adminCounselorDetailActivate),
           ),
         ],
       ),
@@ -957,29 +958,29 @@ class _CounselorDetailScreenState extends ConsumerState<CounselorDetailScreen>
   void _showDeleteDialog(dynamic counselor) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Counselor Account'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminCounselorDetailDeleteTitle),
         content: Text(
-          'Are you sure you want to delete ${counselor.displayName}\'s account? This action cannot be undone and will remove all associated data including sessions and student assignments.',
+          context.l10n.adminCounselorDetailDeleteMessage(counselor.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminCounselorDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call delete API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               context.go('/admin/users/counselors');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Counselor account deleted successfully')),
+                SnackBar(content: Text(context.l10n.adminCounselorDetailDeleteSuccess)),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.adminCounselorDetailDelete),
           ),
         ],
       ),

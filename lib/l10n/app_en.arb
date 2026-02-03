@@ -7959,5 +7959,528 @@
         "type": "String"
       }
     }
+  },
+  "focusAnalyticsTitle": "Focus Analytics",
+  "focusAnalyticsShare": "Share",
+  "focusAnalyticsThisMonth": "This Month",
+  "focusAnalyticsTotalFocusTime": "Total Focus Time",
+  "focusAnalyticsSessions": "Sessions",
+  "focusAnalyticsCompletion": "Completion",
+  "focusAnalyticsAvgFocus": "Avg Focus",
+  "focusAnalyticsCurrentStreak": "Current Streak",
+  "focusAnalyticsDaysInARow": "days in a row",
+  "focusAnalyticsBestStreak": "Best Streak",
+  "focusAnalyticsDaysAchieved": "days achieved",
+  "focusAnalyticsLongestSession": "Longest Session",
+  "focusAnalyticsCompletionRate": "Completion Rate",
+  "focusAnalyticsInsights": "Insights",
+  "focusAnalyticsPeakFocusTime": "Peak Focus Time",
+  "focusAnalyticsPeakFocusTimeDesc": "You are most productive between 9 AM - 11 AM",
+  "focusAnalyticsGreatWeek": "Great Week!",
+  "focusAnalyticsGreatWeekDesc": "You completed 87% of your sessions this week",
+  "focusAnalyticsKeepItUp": "Keep it up!",
+  "focusAnalyticsKeepItUpDesc": "7-day streak - just 7 more for your best",
+  "focusAnalyticsShareComingSoon": "Share functionality coming soon",
+  "studySessionsTitle": "Study Sessions",
+  "studySessionsBack": "Back",
+  "studySessionsToday": "Today ({count})",
+  "@studySessionsToday": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studySessionsThisWeek": "This Week ({count})",
+  "@studySessionsThisWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studySessionsAll": "All ({count})",
+  "@studySessionsAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studySessionsSessions": "Sessions",
+  "studySessionsTotalTime": "Total Time",
+  "studySessionsAvgFocus": "Avg Focus",
+  "studySessionsNoSessions": "No sessions yet",
+  "studySessionsNoSessionsSubtitle": "Start a focus session to see it here",
+  "studySessionsDuration": "Duration",
+  "studySessionsStatus": "Status",
+  "studySessionsFocusLevel": "Focus Level",
+  "studySessionsDistractions": "Distractions",
+  "studySessionsClose": "Close",
+
+  "adminCounselorDetailBackToCounselors": "Back to Counselors",
+  "adminCounselorDetailTitle": "Counselor Details",
+  "adminCounselorDetailStudents": "Students",
+  "adminCounselorDetailSessions": "Sessions",
+  "adminCounselorDetailRating": "Rating",
+  "adminCounselorDetailActive": "Active",
+  "adminCounselorDetailSuspended": "Suspended",
+  "adminCounselorDetailPending": "Pending",
+  "adminCounselorDetailInactive": "Inactive",
+  "adminCounselorDetailApprove": "Approve",
+  "adminCounselorDetailSuspend": "Suspend",
+  "adminCounselorDetailActivate": "Activate",
+  "adminCounselorDetailDelete": "Delete",
+  "adminCounselorDetailMessage": "Message",
+  "adminCounselorDetailTabOverview": "Overview",
+  "adminCounselorDetailTabStudents": "Students",
+  "adminCounselorDetailTabSessions": "Sessions",
+  "adminCounselorDetailTabSchedule": "Schedule",
+  "adminCounselorDetailTabDocuments": "Documents",
+  "adminCounselorDetailTabActivity": "Activity",
+  "adminCounselorDetailBasicInfo": "Basic Information",
+  "adminCounselorDetailEmail": "Email",
+  "adminCounselorDetailPhone": "Phone",
+  "adminCounselorDetailJoined": "Joined",
+  "adminCounselorDetailLastActive": "Last Active",
+  "adminCounselorDetailProfessionalInfo": "Professional Information",
+  "adminCounselorDetailSpecialization": "Specialization",
+  "adminCounselorDetailExperience": "Experience",
+  "adminCounselorDetailCertifications": "Certifications",
+  "adminCounselorDetailHourlyRate": "Hourly Rate",
+  "adminCounselorDetailBio": "Bio",
+  "adminCounselorDetailAssignedStudents": "Assigned Students",
+  "adminCounselorDetailNoStudents": "No students assigned",
+  "adminCounselorDetailCounselingSessions": "Counseling Sessions",
+  "adminCounselorDetailNoSessions": "No sessions found",
+  "adminCounselorDetailSchedule": "Schedule",
+  "adminCounselorDetailNoSchedule": "No schedule set",
+  "adminCounselorDetailDocuments": "Documents",
+  "adminCounselorDetailNoDocuments": "No documents",
+  "adminCounselorDetailActivityLog": "Activity Log",
+  "adminCounselorDetailNoActivity": "No activity recorded",
+  "adminCounselorDetailSuspendTitle": "Suspend Counselor",
+  "adminCounselorDetailSuspendMessage": "Are you sure you want to suspend {name}?",
+  "@adminCounselorDetailSuspendMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminCounselorDetailCancel": "Cancel",
+  "adminCounselorDetailSuspendAction": "Suspend",
+  "adminCounselorDetailActivateTitle": "Activate Counselor",
+  "adminCounselorDetailActivateMessage": "Are you sure you want to activate {name}?",
+  "@adminCounselorDetailActivateMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminCounselorDetailActivateAction": "Activate",
+  "adminCounselorDetailDeleteTitle": "Delete Counselor",
+  "adminCounselorDetailDeleteMessage": "Are you sure you want to permanently delete {name}? This action cannot be undone.",
+  "@adminCounselorDetailDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminCounselorDetailDeleteAction": "Delete",
+  "adminCounselorDetailSuspendSuccess": "Counselor suspended successfully",
+  "adminCounselorDetailActivateSuccess": "Counselor activated successfully",
+  "adminCounselorDetailDeleteSuccess": "Counselor deleted successfully",
+  "adminCounselorDetailYears": "{count} years",
+  "@adminCounselorDetailYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailCertCount": "{count} certifications",
+  "@adminCounselorDetailCertCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailHourlyRateValue": "${rate}/hour",
+  "@adminCounselorDetailHourlyRateValue": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "adminCounselorDetailCompleted": "Completed",
+  "adminCounselorDetailScheduled": "Scheduled",
+  "adminCounselorDetailCancelled": "Cancelled",
+
+  "adminInstitutionDetailBackToInstitutions": "Back to Institutions",
+  "adminInstitutionDetailTitle": "Institution Details",
+  "adminInstitutionDetailPrograms": "Programs",
+  "adminInstitutionDetailApplicants": "Applicants",
+  "adminInstitutionDetailAcceptance": "Acceptance",
+  "adminInstitutionDetailApproved": "Approved",
+  "adminInstitutionDetailPending": "Pending",
+  "adminInstitutionDetailRejected": "Rejected",
+  "adminInstitutionDetailSuspended": "Suspended",
+  "adminInstitutionDetailApprove": "Approve",
+  "adminInstitutionDetailReject": "Reject",
+  "adminInstitutionDetailSuspend": "Suspend",
+  "adminInstitutionDetailActivate": "Activate",
+  "adminInstitutionDetailDelete": "Delete",
+  "adminInstitutionDetailMessage": "Message",
+  "adminInstitutionDetailTabOverview": "Overview",
+  "adminInstitutionDetailTabPrograms": "Programs",
+  "adminInstitutionDetailTabApplicants": "Applicants",
+  "adminInstitutionDetailTabStatistics": "Statistics",
+  "adminInstitutionDetailTabDocuments": "Documents",
+  "adminInstitutionDetailTabActivity": "Activity",
+  "adminInstitutionDetailBasicInfo": "Basic Information",
+  "adminInstitutionDetailType": "Type",
+  "adminInstitutionDetailLocation": "Location",
+  "adminInstitutionDetailWebsite": "Website",
+  "adminInstitutionDetailEmail": "Email",
+  "adminInstitutionDetailPhone": "Phone",
+  "adminInstitutionDetailJoined": "Joined",
+  "adminInstitutionDetailDescription": "Description",
+  "adminInstitutionDetailAcademicInfo": "Academic Information",
+  "adminInstitutionDetailRanking": "Ranking",
+  "adminInstitutionDetailAccreditedPrograms": "Accredited Programs",
+  "adminInstitutionDetailTuitionRange": "Tuition Range",
+  "adminInstitutionDetailAcceptanceRate": "Acceptance Rate",
+  "adminInstitutionDetailOfferedPrograms": "Offered Programs",
+  "adminInstitutionDetailNoPrograms": "No programs offered",
+  "adminInstitutionDetailRecentApplicants": "Recent Applicants",
+  "adminInstitutionDetailNoApplicants": "No applicants",
+  "adminInstitutionDetailInstitutionStatistics": "Institution Statistics",
+  "adminInstitutionDetailApplicationsTrend": "Applications trend over time",
+  "adminInstitutionDetailDocuments": "Documents",
+  "adminInstitutionDetailNoDocuments": "No documents",
+  "adminInstitutionDetailActivityLog": "Activity Log",
+  "adminInstitutionDetailNoActivity": "No activity recorded",
+  "adminInstitutionDetailApproveTitle": "Approve Institution",
+  "adminInstitutionDetailApproveMessage": "Are you sure you want to approve {name}?",
+  "@adminInstitutionDetailApproveMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailCancel": "Cancel",
+  "adminInstitutionDetailApproveAction": "Approve",
+  "adminInstitutionDetailRejectTitle": "Reject Institution",
+  "adminInstitutionDetailRejectMessage": "Are you sure you want to reject {name}?",
+  "@adminInstitutionDetailRejectMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailRejectAction": "Reject",
+  "adminInstitutionDetailSuspendTitle": "Suspend Institution",
+  "adminInstitutionDetailSuspendMessage": "Are you sure you want to suspend {name}?",
+  "@adminInstitutionDetailSuspendMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailSuspendAction": "Suspend",
+  "adminInstitutionDetailActivateTitle": "Activate Institution",
+  "adminInstitutionDetailActivateMessage": "Are you sure you want to activate {name}?",
+  "@adminInstitutionDetailActivateMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailActivateAction": "Activate",
+  "adminInstitutionDetailDeleteTitle": "Delete Institution",
+  "adminInstitutionDetailDeleteMessage": "Are you sure you want to permanently delete {name}? This action cannot be undone.",
+  "@adminInstitutionDetailDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailDeleteAction": "Delete",
+  "adminInstitutionDetailApproveSuccess": "Institution approved successfully",
+  "adminInstitutionDetailRejectSuccess": "Institution rejected successfully",
+  "adminInstitutionDetailSuspendSuccess": "Institution suspended successfully",
+  "adminInstitutionDetailActivateSuccess": "Institution activated successfully",
+  "adminInstitutionDetailDeleteSuccess": "Institution deleted successfully",
+  "adminInstitutionDetailUniversity": "University",
+  "adminInstitutionDetailCollege": "College",
+  "adminInstitutionDetailCommunityCollege": "Community College",
+  "adminInstitutionDetailTechnicalSchool": "Technical School",
+  "adminInstitutionDetailVocationalSchool": "Vocational School",
+  "adminInstitutionDetailOther": "Other",
+  "adminInstitutionDetailRankingValue": "#{rank} nationally",
+  "@adminInstitutionDetailRankingValue": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "adminInstitutionDetailProgramCount": "{count} programs",
+  "@adminInstitutionDetailProgramCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminInstitutionDetailTuitionRangeValue": "${min} - ${max}",
+  "@adminInstitutionDetailTuitionRangeValue": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailAcceptanceRateValue": "{rate}%",
+  "@adminInstitutionDetailAcceptanceRateValue": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailViewDetails": "View details",
+  "adminInstitutionDetailAccepted": "Accepted",
+  "adminInstitutionDetailGpa": "GPA: {gpa}",
+  "@adminInstitutionDetailGpa": {
+    "placeholders": {
+      "gpa": {
+        "type": "String"
+      }
+    }
+  },
+
+  "adminParentDetailBackToParents": "Back to Parents",
+  "adminParentDetailTitle": "Parent Details",
+  "adminParentDetailChildren": "Children",
+  "adminParentDetailApplications": "Applications",
+  "adminParentDetailSpent": "Spent",
+  "adminParentDetailActive": "Active",
+  "adminParentDetailSuspended": "Suspended",
+  "adminParentDetailPending": "Pending",
+  "adminParentDetailInactive": "Inactive",
+  "adminParentDetailSuspend": "Suspend",
+  "adminParentDetailActivate": "Activate",
+  "adminParentDetailDelete": "Delete",
+  "adminParentDetailMessage": "Message",
+  "adminParentDetailTabOverview": "Overview",
+  "adminParentDetailTabChildren": "Children",
+  "adminParentDetailTabApplications": "Applications",
+  "adminParentDetailTabDocuments": "Documents",
+  "adminParentDetailTabPayments": "Payments",
+  "adminParentDetailTabActivity": "Activity",
+  "adminParentDetailBasicInfo": "Basic Information",
+  "adminParentDetailEmail": "Email",
+  "adminParentDetailPhone": "Phone",
+  "adminParentDetailAddress": "Address",
+  "adminParentDetailJoined": "Joined",
+  "adminParentDetailLastActive": "Last Active",
+  "adminParentDetailLinkedChildren": "Linked Children",
+  "adminParentDetailNoChildren": "No children linked",
+  "adminParentDetailApplicationsTracked": "Applications Tracked",
+  "adminParentDetailNoApplications": "No applications tracked",
+  "adminParentDetailDocuments": "Documents",
+  "adminParentDetailNoDocuments": "No documents",
+  "adminParentDetailPaymentHistory": "Payment History",
+  "adminParentDetailNoPayments": "No payments",
+  "adminParentDetailActivityLog": "Activity Log",
+  "adminParentDetailNoActivity": "No activity recorded",
+  "adminParentDetailSuspendTitle": "Suspend Parent",
+  "adminParentDetailSuspendMessage": "Are you sure you want to suspend {name}?",
+  "@adminParentDetailSuspendMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminParentDetailCancel": "Cancel",
+  "adminParentDetailSuspendAction": "Suspend",
+  "adminParentDetailActivateTitle": "Activate Parent",
+  "adminParentDetailActivateMessage": "Are you sure you want to activate {name}?",
+  "@adminParentDetailActivateMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminParentDetailActivateAction": "Activate",
+  "adminParentDetailDeleteTitle": "Delete Parent",
+  "adminParentDetailDeleteMessage": "Are you sure you want to permanently delete {name}? This action cannot be undone.",
+  "@adminParentDetailDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminParentDetailDeleteAction": "Delete",
+  "adminParentDetailSuspendSuccess": "Parent suspended successfully",
+  "adminParentDetailActivateSuccess": "Parent activated successfully",
+  "adminParentDetailDeleteSuccess": "Parent deleted successfully",
+  "adminParentDetailGrade": "Grade {grade}",
+  "@adminParentDetailGrade": {
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "adminParentDetailViewProfile": "View Profile",
+  "adminParentDetailAppliedTo": "Applied to: {institution}",
+  "@adminParentDetailAppliedTo": {
+    "placeholders": {
+      "institution": {
+        "type": "String"
+      }
+    }
+  },
+  "adminParentDetailSubmitted": "Submitted",
+  "adminParentDetailAccepted": "Accepted",
+  "adminParentDetailRejected": "Rejected",
+  "adminParentDetailDraft": "Draft",
+  "adminParentDetailPaymentAmount": "${amount}",
+  "@adminParentDetailPaymentAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "adminParentDetailCompleted": "Completed",
+  "adminParentDetailFailed": "Failed",
+
+  "adminRecommenderDetailBackToRecommenders": "Back to Recommenders",
+  "adminRecommenderDetailTitle": "Recommender Details",
+  "adminRecommenderDetailRequests": "Requests",
+  "adminRecommenderDetailCompleted": "Completed",
+  "adminRecommenderDetailRating": "Rating",
+  "adminRecommenderDetailActive": "Active",
+  "adminRecommenderDetailSuspended": "Suspended",
+  "adminRecommenderDetailPending": "Pending",
+  "adminRecommenderDetailInactive": "Inactive",
+  "adminRecommenderDetailSuspend": "Suspend",
+  "adminRecommenderDetailActivate": "Activate",
+  "adminRecommenderDetailDelete": "Delete",
+  "adminRecommenderDetailMessage": "Message",
+  "adminRecommenderDetailTabOverview": "Overview",
+  "adminRecommenderDetailTabRequests": "Requests",
+  "adminRecommenderDetailTabRecommendations": "Recommendations",
+  "adminRecommenderDetailTabStatistics": "Statistics",
+  "adminRecommenderDetailTabDocuments": "Documents",
+  "adminRecommenderDetailTabActivity": "Activity",
+  "adminRecommenderDetailBasicInfo": "Basic Information",
+  "adminRecommenderDetailEmail": "Email",
+  "adminRecommenderDetailPhone": "Phone",
+  "adminRecommenderDetailInstitution": "Institution",
+  "adminRecommenderDetailPosition": "Position",
+  "adminRecommenderDetailJoined": "Joined",
+  "adminRecommenderDetailLastActive": "Last Active",
+  "adminRecommenderDetailProfessionalInfo": "Professional Information",
+  "adminRecommenderDetailDepartment": "Department",
+  "adminRecommenderDetailYearsExperience": "Years of Experience",
+  "adminRecommenderDetailSpecialization": "Specialization",
+  "adminRecommenderDetailRecommendationRequests": "Recommendation Requests",
+  "adminRecommenderDetailNoRequests": "No requests",
+  "adminRecommenderDetailSubmittedRecommendations": "Submitted Recommendations",
+  "adminRecommenderDetailNoRecommendations": "No recommendations submitted",
+  "adminRecommenderDetailRecommenderStatistics": "Recommender Statistics",
+  "adminRecommenderDetailResponseTimeChart": "Response time and completion rate over time",
+  "adminRecommenderDetailDocuments": "Documents",
+  "adminRecommenderDetailNoDocuments": "No documents",
+  "adminRecommenderDetailActivityLog": "Activity Log",
+  "adminRecommenderDetailNoActivity": "No activity recorded",
+  "adminRecommenderDetailSuspendTitle": "Suspend Recommender",
+  "adminRecommenderDetailSuspendMessage": "Are you sure you want to suspend {name}?",
+  "@adminRecommenderDetailSuspendMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminRecommenderDetailCancel": "Cancel",
+  "adminRecommenderDetailSuspendAction": "Suspend",
+  "adminRecommenderDetailActivateTitle": "Activate Recommender",
+  "adminRecommenderDetailActivateMessage": "Are you sure you want to activate {name}?",
+  "@adminRecommenderDetailActivateMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminRecommenderDetailActivateAction": "Activate",
+  "adminRecommenderDetailDeleteTitle": "Delete Recommender",
+  "adminRecommenderDetailDeleteMessage": "Are you sure you want to permanently delete {name}? This action cannot be undone.",
+  "@adminRecommenderDetailDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminRecommenderDetailDeleteAction": "Delete",
+  "adminRecommenderDetailSuspendSuccess": "Recommender suspended successfully",
+  "adminRecommenderDetailActivateSuccess": "Recommender activated successfully",
+  "adminRecommenderDetailDeleteSuccess": "Recommender deleted successfully",
+  "adminRecommenderDetailYearsCount": "{count} years",
+  "@adminRecommenderDetailYearsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminRecommenderDetailRequestPending": "Pending",
+  "adminRecommenderDetailRequestInProgress": "In Progress",
+  "adminRecommenderDetailRequestDeclined": "Declined",
+  "adminRecommenderDetailDueDate": "Due: {date}",
+  "@adminRecommenderDetailDueDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "adminRecommenderDetailForStudent": "For: {student}",
+  "@adminRecommenderDetailForStudent": {
+    "placeholders": {
+      "student": {
+        "type": "String"
+      }
+    }
+  },
+  "adminRecommenderDetailToInstitution": "To: {institution}",
+  "@adminRecommenderDetailToInstitution": {
+    "placeholders": {
+      "institution": {
+        "type": "String"
+      }
+    }
   }
 }

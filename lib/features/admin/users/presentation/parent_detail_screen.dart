@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/logo_avatar.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
@@ -105,7 +106,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
           TextButton.icon(
             onPressed: () => context.go('/admin/users/parents'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Parents'),
+            label: Text(context.l10n.adminParentDetailBackToParents),
           ),
         ],
       ),
@@ -168,13 +169,13 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
               ),
               child: Column(
                 children: [
-                  _buildStatRow('Parent ID', parentId),
+                  _buildStatRow(context.l10n.adminParentDetailParentId, parentId),
                   const Divider(height: 16),
-                  _buildStatRow('Children', '$children'),
+                  _buildStatRow(context.l10n.adminParentDetailChildren, '$children'),
                   const Divider(height: 16),
-                  _buildStatRow('Applications', '$applications'),
+                  _buildStatRow(context.l10n.adminParentDetailApplications, '$applications'),
                   const Divider(height: 16),
-                  _buildStatRow('Messages', '${12 + (parent.id.hashCode % 20)}'),
+                  _buildStatRow(context.l10n.adminParentDetailMessages, '${12 + (parent.id.hashCode % 20)}'),
                 ],
               ),
             ),
@@ -196,17 +197,17 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
     switch (status) {
       case 'active':
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminParentDetailStatusActive;
         icon = Icons.check_circle;
         break;
       case 'inactive':
         color = AppColors.textSecondary;
-        label = 'Inactive';
+        label = context.l10n.adminParentDetailStatusInactive;
         icon = Icons.cancel;
         break;
       case 'suspended':
         color = AppColors.error;
-        label = 'Suspended';
+        label = context.l10n.adminParentDetailStatusSuspended;
         icon = Icons.block;
         break;
       default:
@@ -274,7 +275,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
                 context.go('/admin/users/parents/${widget.parentId}/edit');
               },
               icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Edit Parent'),
+              label: Text(context.l10n.adminParentDetailEditParent),
             ),
           ),
         ),
@@ -288,7 +289,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
               // TODO: Open messaging
             },
             icon: const Icon(Icons.message, size: 18),
-            label: const Text('Send Message'),
+            label: Text(context.l10n.adminParentDetailSendMessage),
           ),
         ),
         const SizedBox(height: 12),
@@ -304,7 +305,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
                 status == 'active' ? Icons.block : Icons.check_circle,
                 size: 18,
               ),
-              label: Text(status == 'active' ? 'Suspend Account' : 'Activate Account'),
+              label: Text(status == 'active' ? context.l10n.adminParentDetailSuspendAccount : context.l10n.adminParentDetailActivateAccount),
               style: OutlinedButton.styleFrom(
                 foregroundColor:
                     status == 'active' ? AppColors.error : AppColors.success,
@@ -322,7 +323,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
             child: OutlinedButton.icon(
               onPressed: () => _showDeleteDialog(parent),
               icon: const Icon(Icons.delete, size: 18),
-              label: const Text('Delete Parent'),
+              label: Text(context.l10n.adminParentDetailDeleteParent),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.error,
               ),
@@ -346,13 +347,13 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
           child: TabBar(
             controller: _tabController,
             isScrollable: true,
-            tabs: const [
-              Tab(text: 'Overview'),
-              Tab(text: 'Children'),
-              Tab(text: 'Applications'),
-              Tab(text: 'Documents'),
-              Tab(text: 'Payments'),
-              Tab(text: 'Activity'),
+            tabs: [
+              Tab(text: context.l10n.adminParentDetailTabOverview),
+              Tab(text: context.l10n.adminParentDetailTabChildren),
+              Tab(text: context.l10n.adminParentDetailTabApplications),
+              Tab(text: context.l10n.adminParentDetailTabDocuments),
+              Tab(text: context.l10n.adminParentDetailTabPayments),
+              Tab(text: context.l10n.adminParentDetailTabActivity),
             ],
           ),
         ),
@@ -387,25 +388,25 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
         children: [
           // Personal Information
           _buildInfoSection(
-            'Personal Information',
+            context.l10n.adminParentDetailPersonalInfo,
             [
-              _buildInfoRow('Full Name', name),
-              _buildInfoRow('Email', email),
-              _buildInfoRow('Phone', '+254 712 345 678'),
-              _buildInfoRow('Location', 'Nairobi, Kenya'),
-              _buildInfoRow('Occupation', 'Business Owner'),
+              _buildInfoRow(context.l10n.adminParentDetailFullName, name),
+              _buildInfoRow(context.l10n.adminParentDetailEmail, email),
+              _buildInfoRow(context.l10n.adminParentDetailPhone, '+254 712 345 678'),
+              _buildInfoRow(context.l10n.adminParentDetailLocation, 'Nairobi, Kenya'),
+              _buildInfoRow(context.l10n.adminParentDetailOccupation, context.l10n.adminParentDetailBusinessOwner),
             ],
           ),
           const SizedBox(height: 24),
 
           // Account Information
           _buildInfoSection(
-            'Account Information',
+            context.l10n.adminParentDetailAccountInfo,
             [
-              _buildInfoRow('Account Created', joinedDate),
-              _buildInfoRow('Last Login', '2 hours ago'),
-              _buildInfoRow('Email Verified', 'Yes'),
-              _buildInfoRow('Phone Verified', 'Yes'),
+              _buildInfoRow(context.l10n.adminParentDetailAccountCreated, joinedDate),
+              _buildInfoRow(context.l10n.adminParentDetailLastLogin, context.l10n.adminParentDetailHoursAgo),
+              _buildInfoRow(context.l10n.adminParentDetailEmailVerified, context.l10n.adminParentDetailYes),
+              _buildInfoRow(context.l10n.adminParentDetailPhoneVerified, context.l10n.adminParentDetailYes),
             ],
           ),
         ],
@@ -426,7 +427,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Children (${children.length})',
+                context.l10n.adminParentDetailChildrenCount(children.length),
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -437,7 +438,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
                   // TODO: Link child account
                 },
                 icon: const Icon(Icons.person_add, size: 18),
-                label: const Text('Link Child'),
+                label: Text(context.l10n.adminParentDetailLinkChild),
               ),
             ],
           ),
@@ -517,7 +518,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
               // TODO: Navigate to child detail
             },
             icon: const Icon(Icons.arrow_forward),
-            tooltip: 'View Details',
+            tooltip: context.l10n.adminParentDetailViewDetails,
           ),
         ],
       ),
@@ -534,7 +535,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Applications from all children (${applications.length})',
+            context.l10n.adminParentDetailApplicationsFromChildren(applications.length),
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -649,9 +650,9 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Documents',
-                style: TextStyle(
+              Text(
+                context.l10n.adminParentDetailDocuments,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -661,7 +662,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
                   // TODO: Upload document
                 },
                 icon: const Icon(Icons.upload, size: 18),
-                label: const Text('Upload'),
+                label: Text(context.l10n.adminParentDetailUpload),
               ),
             ],
           ),
@@ -726,14 +727,14 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
                   // TODO: View document
                 },
                 icon: const Icon(Icons.visibility, size: 20),
-                tooltip: 'View',
+                tooltip: context.l10n.adminParentDetailView,
               ),
               IconButton(
                 onPressed: () {
                   // TODO: Download document
                 },
                 icon: const Icon(Icons.download, size: 20),
-                tooltip: 'Download',
+                tooltip: context.l10n.adminParentDetailDownload,
               ),
             ],
           ),
@@ -755,9 +756,9 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Payment Summary',
-            style: TextStyle(
+          Text(
+            context.l10n.adminParentDetailPaymentSummary,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -769,7 +770,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
             children: [
               Expanded(
                 child: _buildSummaryCard(
-                  'Total Paid',
+                  context.l10n.adminParentDetailTotalPaid,
                   '\$${totalPaid.toStringAsFixed(2)}',
                   Icons.payments,
                   AppColors.success,
@@ -778,7 +779,7 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
               const SizedBox(width: 16),
               Expanded(
                 child: _buildSummaryCard(
-                  'Transactions',
+                  context.l10n.adminParentDetailTransactions,
                   '${payments.length}',
                   Icons.receipt,
                   AppColors.primary,
@@ -789,9 +790,9 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
           const SizedBox(height: 24),
 
           // Payment History
-          const Text(
-            'Payment History',
-            style: TextStyle(
+          Text(
+            context.l10n.adminParentDetailPaymentHistory,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -913,9 +914,9 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Activity Timeline',
-            style: TextStyle(
+          Text(
+            context.l10n.adminParentDetailActivityTimeline,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -1049,33 +1050,33 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(isActive ? 'Suspend Parent Account' : 'Activate Parent Account'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(isActive ? context.l10n.adminParentDetailSuspendTitle : context.l10n.adminParentDetailActivateTitle),
         content: Text(
           isActive
-              ? 'Are you sure you want to suspend ${parent.displayName}\'s account? They will no longer be able to access the platform.'
-              : 'Are you sure you want to activate ${parent.displayName}\'s account? They will regain access to the platform.',
+              ? context.l10n.adminParentDetailSuspendMessage(parent.displayName ?? '')
+              : context.l10n.adminParentDetailActivateMessage(parent.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminParentDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call suspend/activate API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                     isActive
-                        ? 'Parent account suspended successfully'
-                        : 'Parent account activated successfully',
+                        ? context.l10n.adminParentDetailSuspendSuccess
+                        : context.l10n.adminParentDetailActivateSuccess,
                   ),
                 ),
               );
             },
-            child: Text(isActive ? 'Suspend' : 'Activate'),
+            child: Text(isActive ? context.l10n.adminParentDetailSuspend : context.l10n.adminParentDetailActivate),
           ),
         ],
       ),
@@ -1085,29 +1086,29 @@ class _ParentDetailScreenState extends ConsumerState<ParentDetailScreen>
   void _showDeleteDialog(dynamic parent) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Parent Account'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.adminParentDetailDeleteTitle),
         content: Text(
-          'Are you sure you want to delete ${parent.displayName}\'s account? This action cannot be undone and will remove all associated data.',
+          context.l10n.adminParentDetailDeleteMessage(parent.displayName ?? ''),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.adminParentDetailCancel),
           ),
           ElevatedButton(
             onPressed: () {
               // TODO: Call delete API
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               context.go('/admin/users/parents');
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Parent account deleted successfully')),
+                SnackBar(content: Text(context.l10n.adminParentDetailDeleteSuccess)),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
+            child: Text(context.l10n.adminParentDetailDelete),
           ),
         ],
       ),

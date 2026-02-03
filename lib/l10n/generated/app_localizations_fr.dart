@@ -17767,4 +17767,975 @@ class AppLocalizationsFr extends AppLocalizations {
   String adminContentModuleCreated(String title) {
     return 'Module \"$title\" créé';
   }
+
+  @override
+  String get focusAnalyticsTitle => 'Analyse de concentration';
+
+  @override
+  String get focusAnalyticsShare => 'Partager';
+
+  @override
+  String get focusAnalyticsThisMonth => 'Ce mois';
+
+  @override
+  String get focusAnalyticsTotalFocusTime => 'Temps de concentration total';
+
+  @override
+  String get focusAnalyticsSessions => 'Sessions';
+
+  @override
+  String get focusAnalyticsCompletion => 'Complétion';
+
+  @override
+  String get focusAnalyticsAvgFocus => 'Moy. concentration';
+
+  @override
+  String get focusAnalyticsCurrentStreak => 'Série actuelle';
+
+  @override
+  String get focusAnalyticsDaysInARow => 'jours consécutifs';
+
+  @override
+  String get focusAnalyticsBestStreak => 'Meilleure série';
+
+  @override
+  String get focusAnalyticsDaysAchieved => 'jours atteints';
+
+  @override
+  String get focusAnalyticsLongestSession => 'Session la plus longue';
+
+  @override
+  String get focusAnalyticsCompletionRate => 'Taux de complétion';
+
+  @override
+  String get focusAnalyticsInsights => 'Analyses';
+
+  @override
+  String get focusAnalyticsPeakFocusTime => 'Pic de concentration';
+
+  @override
+  String get focusAnalyticsPeakFocusTimeDesc =>
+      'Vous êtes le plus productif entre 9h et 11h';
+
+  @override
+  String get focusAnalyticsGreatWeek => 'Excellente semaine !';
+
+  @override
+  String get focusAnalyticsGreatWeekDesc =>
+      'Vous avez complété 87% de vos sessions cette semaine';
+
+  @override
+  String get focusAnalyticsKeepItUp => 'Continuez ainsi !';
+
+  @override
+  String get focusAnalyticsKeepItUpDesc =>
+      'Série de 7 jours - encore 7 pour votre record';
+
+  @override
+  String get focusAnalyticsShareComingSoon =>
+      'Fonctionnalité de partage bientôt disponible';
+
+  @override
+  String get studySessionsTitle => 'Sessions d\'étude';
+
+  @override
+  String get studySessionsBack => 'Retour';
+
+  @override
+  String studySessionsToday(int count) {
+    return 'Aujourd\'hui ($count)';
+  }
+
+  @override
+  String studySessionsThisWeek(int count) {
+    return 'Cette semaine ($count)';
+  }
+
+  @override
+  String studySessionsAll(int count) {
+    return 'Tout ($count)';
+  }
+
+  @override
+  String get studySessionsSessions => 'Sessions';
+
+  @override
+  String get studySessionsTotalTime => 'Temps total';
+
+  @override
+  String get studySessionsAvgFocus => 'Moy. concentration';
+
+  @override
+  String get studySessionsNoSessions => 'Aucune session';
+
+  @override
+  String get studySessionsNoSessionsSubtitle =>
+      'Démarrez une session de concentration pour la voir ici';
+
+  @override
+  String get studySessionsDuration => 'Durée';
+
+  @override
+  String get studySessionsStatus => 'Statut';
+
+  @override
+  String get studySessionsFocusLevel => 'Niveau de concentration';
+
+  @override
+  String get studySessionsDistractions => 'Distractions';
+
+  @override
+  String get studySessionsClose => 'Fermer';
+
+  @override
+  String get adminCounselorDetailBackToCounselors => 'Retour aux conseillers';
+
+  @override
+  String get adminCounselorDetailTitle => 'Détails du conseiller';
+
+  @override
+  String get adminCounselorDetailStudents => 'Étudiants';
+
+  @override
+  String get adminCounselorDetailSessions => 'Sessions';
+
+  @override
+  String get adminCounselorDetailRating => 'Évaluation';
+
+  @override
+  String get adminCounselorDetailActive => 'Actif';
+
+  @override
+  String get adminCounselorDetailSuspended => 'Suspendu';
+
+  @override
+  String get adminCounselorDetailPending => 'En attente';
+
+  @override
+  String get adminCounselorDetailInactive => 'Inactif';
+
+  @override
+  String get adminCounselorDetailApprove => 'Approuver';
+
+  @override
+  String get adminCounselorDetailSuspend => 'Suspendre';
+
+  @override
+  String get adminCounselorDetailActivate => 'Activer';
+
+  @override
+  String get adminCounselorDetailDelete => 'Supprimer';
+
+  @override
+  String get adminCounselorDetailMessage => 'Message';
+
+  @override
+  String get adminCounselorDetailTabOverview => 'Aperçu';
+
+  @override
+  String get adminCounselorDetailTabStudents => 'Étudiants';
+
+  @override
+  String get adminCounselorDetailTabSessions => 'Sessions';
+
+  @override
+  String get adminCounselorDetailTabSchedule => 'Emploi du temps';
+
+  @override
+  String get adminCounselorDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminCounselorDetailTabActivity => 'Activité';
+
+  @override
+  String get adminCounselorDetailBasicInfo => 'Informations de base';
+
+  @override
+  String get adminCounselorDetailEmail => 'E-mail';
+
+  @override
+  String get adminCounselorDetailPhone => 'Téléphone';
+
+  @override
+  String get adminCounselorDetailJoined => 'Inscrit le';
+
+  @override
+  String get adminCounselorDetailLastActive => 'Dernière activité';
+
+  @override
+  String get adminCounselorDetailProfessionalInfo =>
+      'Informations professionnelles';
+
+  @override
+  String get adminCounselorDetailSpecialization => 'Spécialisation';
+
+  @override
+  String get adminCounselorDetailExperience => 'Expérience';
+
+  @override
+  String get adminCounselorDetailCertifications => 'Certifications';
+
+  @override
+  String get adminCounselorDetailHourlyRate => 'Tarif horaire';
+
+  @override
+  String get adminCounselorDetailBio => 'Biographie';
+
+  @override
+  String get adminCounselorDetailAssignedStudents => 'Étudiants assignés';
+
+  @override
+  String get adminCounselorDetailNoStudents => 'Aucun étudiant assigné';
+
+  @override
+  String get adminCounselorDetailCounselingSessions => 'Sessions de conseil';
+
+  @override
+  String get adminCounselorDetailNoSessions => 'Aucune session trouvée';
+
+  @override
+  String get adminCounselorDetailSchedule => 'Emploi du temps';
+
+  @override
+  String get adminCounselorDetailNoSchedule => 'Aucun emploi du temps défini';
+
+  @override
+  String get adminCounselorDetailDocuments => 'Documents';
+
+  @override
+  String get adminCounselorDetailNoDocuments => 'Aucun document';
+
+  @override
+  String get adminCounselorDetailActivityLog => 'Journal d\'activité';
+
+  @override
+  String get adminCounselorDetailNoActivity => 'Aucune activité enregistrée';
+
+  @override
+  String get adminCounselorDetailSuspendTitle => 'Suspendre le conseiller';
+
+  @override
+  String adminCounselorDetailSuspendMessage(String name) {
+    return 'Êtes-vous sûr de vouloir suspendre $name ?';
+  }
+
+  @override
+  String get adminCounselorDetailCancel => 'Annuler';
+
+  @override
+  String get adminCounselorDetailSuspendAction => 'Suspendre';
+
+  @override
+  String get adminCounselorDetailActivateTitle => 'Activer le conseiller';
+
+  @override
+  String adminCounselorDetailActivateMessage(String name) {
+    return 'Êtes-vous sûr de vouloir activer $name ?';
+  }
+
+  @override
+  String get adminCounselorDetailActivateAction => 'Activer';
+
+  @override
+  String get adminCounselorDetailDeleteTitle => 'Supprimer le conseiller';
+
+  @override
+  String adminCounselorDetailDeleteMessage(String name) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement $name ? Cette action est irréversible.';
+  }
+
+  @override
+  String get adminCounselorDetailDeleteAction => 'Supprimer';
+
+  @override
+  String get adminCounselorDetailSuspendSuccess =>
+      'Conseiller suspendu avec succès';
+
+  @override
+  String get adminCounselorDetailActivateSuccess =>
+      'Conseiller activé avec succès';
+
+  @override
+  String get adminCounselorDetailDeleteSuccess =>
+      'Conseiller supprimé avec succès';
+
+  @override
+  String adminCounselorDetailYears(int count) {
+    return '$count ans';
+  }
+
+  @override
+  String adminCounselorDetailCertCount(int count) {
+    return '$count certifications';
+  }
+
+  @override
+  String adminCounselorDetailHourlyRateValue(String rate) {
+    return '$rate \$/heure';
+  }
+
+  @override
+  String get adminCounselorDetailCompleted => 'Terminée';
+
+  @override
+  String get adminCounselorDetailScheduled => 'Planifiée';
+
+  @override
+  String get adminCounselorDetailCancelled => 'Annulée';
+
+  @override
+  String get adminInstitutionDetailBackToInstitutions =>
+      'Retour aux établissements';
+
+  @override
+  String get adminInstitutionDetailTitle => 'Détails de l\'établissement';
+
+  @override
+  String get adminInstitutionDetailPrograms => 'Programmes';
+
+  @override
+  String get adminInstitutionDetailApplicants => 'Candidats';
+
+  @override
+  String get adminInstitutionDetailAcceptance => 'Admission';
+
+  @override
+  String get adminInstitutionDetailApproved => 'Approuvé';
+
+  @override
+  String get adminInstitutionDetailPending => 'En attente';
+
+  @override
+  String get adminInstitutionDetailRejected => 'Refusé';
+
+  @override
+  String get adminInstitutionDetailSuspended => 'Suspendu';
+
+  @override
+  String get adminInstitutionDetailApprove => 'Approuver';
+
+  @override
+  String get adminInstitutionDetailReject => 'Refuser';
+
+  @override
+  String get adminInstitutionDetailSuspend => 'Suspendre';
+
+  @override
+  String get adminInstitutionDetailActivate => 'Activer';
+
+  @override
+  String get adminInstitutionDetailDelete => 'Supprimer';
+
+  @override
+  String get adminInstitutionDetailMessage => 'Message';
+
+  @override
+  String get adminInstitutionDetailTabOverview => 'Aperçu';
+
+  @override
+  String get adminInstitutionDetailTabPrograms => 'Programmes';
+
+  @override
+  String get adminInstitutionDetailTabApplicants => 'Candidats';
+
+  @override
+  String get adminInstitutionDetailTabStatistics => 'Statistiques';
+
+  @override
+  String get adminInstitutionDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminInstitutionDetailTabActivity => 'Activité';
+
+  @override
+  String get adminInstitutionDetailBasicInfo => 'Informations de base';
+
+  @override
+  String get adminInstitutionDetailType => 'Type';
+
+  @override
+  String get adminInstitutionDetailLocation => 'Localisation';
+
+  @override
+  String get adminInstitutionDetailWebsite => 'Site web';
+
+  @override
+  String get adminInstitutionDetailEmail => 'E-mail';
+
+  @override
+  String get adminInstitutionDetailPhone => 'Téléphone';
+
+  @override
+  String get adminInstitutionDetailJoined => 'Inscrit le';
+
+  @override
+  String get adminInstitutionDetailDescription => 'Description';
+
+  @override
+  String get adminInstitutionDetailAcademicInfo => 'Informations académiques';
+
+  @override
+  String get adminInstitutionDetailRanking => 'Classement';
+
+  @override
+  String get adminInstitutionDetailAccreditedPrograms =>
+      'Programmes accrédités';
+
+  @override
+  String get adminInstitutionDetailTuitionRange => 'Fourchette des frais';
+
+  @override
+  String get adminInstitutionDetailAcceptanceRate => 'Taux d\'admission';
+
+  @override
+  String get adminInstitutionDetailOfferedPrograms => 'Programmes proposés';
+
+  @override
+  String get adminInstitutionDetailNoPrograms => 'Aucun programme proposé';
+
+  @override
+  String get adminInstitutionDetailRecentApplicants => 'Candidats récents';
+
+  @override
+  String get adminInstitutionDetailNoApplicants => 'Aucun candidat';
+
+  @override
+  String get adminInstitutionDetailInstitutionStatistics =>
+      'Statistiques de l\'établissement';
+
+  @override
+  String get adminInstitutionDetailApplicationsTrend =>
+      'Évolution des candidatures dans le temps';
+
+  @override
+  String get adminInstitutionDetailDocuments => 'Documents';
+
+  @override
+  String get adminInstitutionDetailNoDocuments => 'Aucun document';
+
+  @override
+  String get adminInstitutionDetailActivityLog => 'Journal d\'activité';
+
+  @override
+  String get adminInstitutionDetailNoActivity => 'Aucune activité enregistrée';
+
+  @override
+  String get adminInstitutionDetailApproveTitle => 'Approuver l\'établissement';
+
+  @override
+  String adminInstitutionDetailApproveMessage(String name) {
+    return 'Êtes-vous sûr de vouloir approuver $name ?';
+  }
+
+  @override
+  String get adminInstitutionDetailCancel => 'Annuler';
+
+  @override
+  String get adminInstitutionDetailApproveAction => 'Approuver';
+
+  @override
+  String get adminInstitutionDetailRejectTitle => 'Refuser l\'établissement';
+
+  @override
+  String adminInstitutionDetailRejectMessage(String name) {
+    return 'Êtes-vous sûr de vouloir refuser $name ?';
+  }
+
+  @override
+  String get adminInstitutionDetailRejectAction => 'Refuser';
+
+  @override
+  String get adminInstitutionDetailSuspendTitle => 'Suspendre l\'établissement';
+
+  @override
+  String adminInstitutionDetailSuspendMessage(String name) {
+    return 'Êtes-vous sûr de vouloir suspendre $name ?';
+  }
+
+  @override
+  String get adminInstitutionDetailSuspendAction => 'Suspendre';
+
+  @override
+  String get adminInstitutionDetailActivateTitle => 'Activer l\'établissement';
+
+  @override
+  String adminInstitutionDetailActivateMessage(String name) {
+    return 'Êtes-vous sûr de vouloir activer $name ?';
+  }
+
+  @override
+  String get adminInstitutionDetailActivateAction => 'Activer';
+
+  @override
+  String get adminInstitutionDetailDeleteTitle => 'Supprimer l\'établissement';
+
+  @override
+  String adminInstitutionDetailDeleteMessage(String name) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement $name ? Cette action est irréversible.';
+  }
+
+  @override
+  String get adminInstitutionDetailDeleteAction => 'Supprimer';
+
+  @override
+  String get adminInstitutionDetailApproveSuccess =>
+      'Établissement approuvé avec succès';
+
+  @override
+  String get adminInstitutionDetailRejectSuccess =>
+      'Établissement refusé avec succès';
+
+  @override
+  String get adminInstitutionDetailSuspendSuccess =>
+      'Établissement suspendu avec succès';
+
+  @override
+  String get adminInstitutionDetailActivateSuccess =>
+      'Établissement activé avec succès';
+
+  @override
+  String get adminInstitutionDetailDeleteSuccess =>
+      'Établissement supprimé avec succès';
+
+  @override
+  String get adminInstitutionDetailUniversity => 'Université';
+
+  @override
+  String get adminInstitutionDetailCollege => 'Collège universitaire';
+
+  @override
+  String get adminInstitutionDetailCommunityCollege => 'Collège communautaire';
+
+  @override
+  String get adminInstitutionDetailTechnicalSchool => 'École technique';
+
+  @override
+  String get adminInstitutionDetailVocationalSchool => 'École professionnelle';
+
+  @override
+  String get adminInstitutionDetailOther => 'Autre';
+
+  @override
+  String adminInstitutionDetailRankingValue(int rank) {
+    return '#$rank au niveau national';
+  }
+
+  @override
+  String adminInstitutionDetailProgramCount(int count) {
+    return '$count programmes';
+  }
+
+  @override
+  String adminInstitutionDetailTuitionRangeValue(String min, String max) {
+    return '$min \$ - $max \$';
+  }
+
+  @override
+  String adminInstitutionDetailAcceptanceRateValue(String rate) {
+    return '$rate %';
+  }
+
+  @override
+  String get adminInstitutionDetailViewDetails => 'Voir les détails';
+
+  @override
+  String get adminInstitutionDetailAccepted => 'Accepté';
+
+  @override
+  String adminInstitutionDetailGpa(String gpa) {
+    return 'Moyenne : $gpa';
+  }
+
+  @override
+  String get adminParentDetailBackToParents => 'Retour aux parents';
+
+  @override
+  String get adminParentDetailTitle => 'Détails du parent';
+
+  @override
+  String get adminParentDetailChildren => 'Enfants';
+
+  @override
+  String get adminParentDetailApplications => 'Candidatures';
+
+  @override
+  String get adminParentDetailSpent => 'Dépensé';
+
+  @override
+  String get adminParentDetailActive => 'Actif';
+
+  @override
+  String get adminParentDetailSuspended => 'Suspendu';
+
+  @override
+  String get adminParentDetailPending => 'En attente';
+
+  @override
+  String get adminParentDetailInactive => 'Inactif';
+
+  @override
+  String get adminParentDetailSuspend => 'Suspendre';
+
+  @override
+  String get adminParentDetailActivate => 'Activer';
+
+  @override
+  String get adminParentDetailDelete => 'Supprimer';
+
+  @override
+  String get adminParentDetailMessage => 'Message';
+
+  @override
+  String get adminParentDetailTabOverview => 'Aperçu';
+
+  @override
+  String get adminParentDetailTabChildren => 'Enfants';
+
+  @override
+  String get adminParentDetailTabApplications => 'Candidatures';
+
+  @override
+  String get adminParentDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminParentDetailTabPayments => 'Paiements';
+
+  @override
+  String get adminParentDetailTabActivity => 'Activité';
+
+  @override
+  String get adminParentDetailBasicInfo => 'Informations de base';
+
+  @override
+  String get adminParentDetailEmail => 'E-mail';
+
+  @override
+  String get adminParentDetailPhone => 'Téléphone';
+
+  @override
+  String get adminParentDetailAddress => 'Adresse';
+
+  @override
+  String get adminParentDetailJoined => 'Inscrit le';
+
+  @override
+  String get adminParentDetailLastActive => 'Dernière activité';
+
+  @override
+  String get adminParentDetailLinkedChildren => 'Enfants liés';
+
+  @override
+  String get adminParentDetailNoChildren => 'Aucun enfant lié';
+
+  @override
+  String get adminParentDetailApplicationsTracked => 'Candidatures suivies';
+
+  @override
+  String get adminParentDetailNoApplications => 'Aucune candidature suivie';
+
+  @override
+  String get adminParentDetailDocuments => 'Documents';
+
+  @override
+  String get adminParentDetailNoDocuments => 'Aucun document';
+
+  @override
+  String get adminParentDetailPaymentHistory => 'Historique des paiements';
+
+  @override
+  String get adminParentDetailNoPayments => 'Aucun paiement';
+
+  @override
+  String get adminParentDetailActivityLog => 'Journal d\'activité';
+
+  @override
+  String get adminParentDetailNoActivity => 'Aucune activité enregistrée';
+
+  @override
+  String get adminParentDetailSuspendTitle => 'Suspendre le parent';
+
+  @override
+  String adminParentDetailSuspendMessage(String name) {
+    return 'Êtes-vous sûr de vouloir suspendre $name ?';
+  }
+
+  @override
+  String get adminParentDetailCancel => 'Annuler';
+
+  @override
+  String get adminParentDetailSuspendAction => 'Suspendre';
+
+  @override
+  String get adminParentDetailActivateTitle => 'Activer le parent';
+
+  @override
+  String adminParentDetailActivateMessage(String name) {
+    return 'Êtes-vous sûr de vouloir activer $name ?';
+  }
+
+  @override
+  String get adminParentDetailActivateAction => 'Activer';
+
+  @override
+  String get adminParentDetailDeleteTitle => 'Supprimer le parent';
+
+  @override
+  String adminParentDetailDeleteMessage(String name) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement $name ? Cette action est irréversible.';
+  }
+
+  @override
+  String get adminParentDetailDeleteAction => 'Supprimer';
+
+  @override
+  String get adminParentDetailSuspendSuccess => 'Parent suspendu avec succès';
+
+  @override
+  String get adminParentDetailActivateSuccess => 'Parent activé avec succès';
+
+  @override
+  String get adminParentDetailDeleteSuccess => 'Parent supprimé avec succès';
+
+  @override
+  String adminParentDetailGrade(String grade) {
+    return 'Classe de $grade';
+  }
+
+  @override
+  String get adminParentDetailViewProfile => 'Voir le profil';
+
+  @override
+  String adminParentDetailAppliedTo(String institution) {
+    return 'Candidature à : $institution';
+  }
+
+  @override
+  String get adminParentDetailSubmitted => 'Soumise';
+
+  @override
+  String get adminParentDetailAccepted => 'Acceptée';
+
+  @override
+  String get adminParentDetailRejected => 'Refusée';
+
+  @override
+  String get adminParentDetailDraft => 'Brouillon';
+
+  @override
+  String adminParentDetailPaymentAmount(String amount) {
+    return '$amount \$';
+  }
+
+  @override
+  String get adminParentDetailCompleted => 'Effectué';
+
+  @override
+  String get adminParentDetailFailed => 'Échoué';
+
+  @override
+  String get adminRecommenderDetailBackToRecommenders =>
+      'Retour aux recommandataires';
+
+  @override
+  String get adminRecommenderDetailTitle => 'Détails du recommandataire';
+
+  @override
+  String get adminRecommenderDetailRequests => 'Demandes';
+
+  @override
+  String get adminRecommenderDetailCompleted => 'Complétées';
+
+  @override
+  String get adminRecommenderDetailRating => 'Évaluation';
+
+  @override
+  String get adminRecommenderDetailActive => 'Actif';
+
+  @override
+  String get adminRecommenderDetailSuspended => 'Suspendu';
+
+  @override
+  String get adminRecommenderDetailPending => 'En attente';
+
+  @override
+  String get adminRecommenderDetailInactive => 'Inactif';
+
+  @override
+  String get adminRecommenderDetailSuspend => 'Suspendre';
+
+  @override
+  String get adminRecommenderDetailActivate => 'Activer';
+
+  @override
+  String get adminRecommenderDetailDelete => 'Supprimer';
+
+  @override
+  String get adminRecommenderDetailMessage => 'Message';
+
+  @override
+  String get adminRecommenderDetailTabOverview => 'Aperçu';
+
+  @override
+  String get adminRecommenderDetailTabRequests => 'Demandes';
+
+  @override
+  String get adminRecommenderDetailTabRecommendations => 'Recommandations';
+
+  @override
+  String get adminRecommenderDetailTabStatistics => 'Statistiques';
+
+  @override
+  String get adminRecommenderDetailTabDocuments => 'Documents';
+
+  @override
+  String get adminRecommenderDetailTabActivity => 'Activité';
+
+  @override
+  String get adminRecommenderDetailBasicInfo => 'Informations de base';
+
+  @override
+  String get adminRecommenderDetailEmail => 'E-mail';
+
+  @override
+  String get adminRecommenderDetailPhone => 'Téléphone';
+
+  @override
+  String get adminRecommenderDetailInstitution => 'Établissement';
+
+  @override
+  String get adminRecommenderDetailPosition => 'Poste';
+
+  @override
+  String get adminRecommenderDetailJoined => 'Inscrit le';
+
+  @override
+  String get adminRecommenderDetailLastActive => 'Dernière activité';
+
+  @override
+  String get adminRecommenderDetailProfessionalInfo =>
+      'Informations professionnelles';
+
+  @override
+  String get adminRecommenderDetailDepartment => 'Département';
+
+  @override
+  String get adminRecommenderDetailYearsExperience => 'Années d\'expérience';
+
+  @override
+  String get adminRecommenderDetailSpecialization => 'Spécialisation';
+
+  @override
+  String get adminRecommenderDetailRecommendationRequests =>
+      'Demandes de recommandation';
+
+  @override
+  String get adminRecommenderDetailNoRequests => 'Aucune demande';
+
+  @override
+  String get adminRecommenderDetailSubmittedRecommendations =>
+      'Recommandations soumises';
+
+  @override
+  String get adminRecommenderDetailNoRecommendations =>
+      'Aucune recommandation soumise';
+
+  @override
+  String get adminRecommenderDetailRecommenderStatistics =>
+      'Statistiques du recommandataire';
+
+  @override
+  String get adminRecommenderDetailResponseTimeChart =>
+      'Temps de réponse et taux de complétion dans le temps';
+
+  @override
+  String get adminRecommenderDetailDocuments => 'Documents';
+
+  @override
+  String get adminRecommenderDetailNoDocuments => 'Aucun document';
+
+  @override
+  String get adminRecommenderDetailActivityLog => 'Journal d\'activité';
+
+  @override
+  String get adminRecommenderDetailNoActivity => 'Aucune activité enregistrée';
+
+  @override
+  String get adminRecommenderDetailSuspendTitle =>
+      'Suspendre le recommandataire';
+
+  @override
+  String adminRecommenderDetailSuspendMessage(String name) {
+    return 'Êtes-vous sûr de vouloir suspendre $name ?';
+  }
+
+  @override
+  String get adminRecommenderDetailCancel => 'Annuler';
+
+  @override
+  String get adminRecommenderDetailSuspendAction => 'Suspendre';
+
+  @override
+  String get adminRecommenderDetailActivateTitle =>
+      'Activer le recommandataire';
+
+  @override
+  String adminRecommenderDetailActivateMessage(String name) {
+    return 'Êtes-vous sûr de vouloir activer $name ?';
+  }
+
+  @override
+  String get adminRecommenderDetailActivateAction => 'Activer';
+
+  @override
+  String get adminRecommenderDetailDeleteTitle =>
+      'Supprimer le recommandataire';
+
+  @override
+  String adminRecommenderDetailDeleteMessage(String name) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement $name ? Cette action est irréversible.';
+  }
+
+  @override
+  String get adminRecommenderDetailDeleteAction => 'Supprimer';
+
+  @override
+  String get adminRecommenderDetailSuspendSuccess =>
+      'Recommandataire suspendu avec succès';
+
+  @override
+  String get adminRecommenderDetailActivateSuccess =>
+      'Recommandataire activé avec succès';
+
+  @override
+  String get adminRecommenderDetailDeleteSuccess =>
+      'Recommandataire supprimé avec succès';
+
+  @override
+  String adminRecommenderDetailYearsCount(int count) {
+    return '$count ans';
+  }
+
+  @override
+  String get adminRecommenderDetailRequestPending => 'En attente';
+
+  @override
+  String get adminRecommenderDetailRequestInProgress => 'En cours';
+
+  @override
+  String get adminRecommenderDetailRequestDeclined => 'Refusée';
+
+  @override
+  String adminRecommenderDetailDueDate(String date) {
+    return 'Échéance : $date';
+  }
+
+  @override
+  String adminRecommenderDetailForStudent(String student) {
+    return 'Pour : $student';
+  }
+
+  @override
+  String adminRecommenderDetailToInstitution(String institution) {
+    return 'À : $institution';
+  }
 }
