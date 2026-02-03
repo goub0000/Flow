@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 
 /// Card widget for displaying pending approval items
@@ -73,10 +74,10 @@ class PendingApprovalsCard extends StatelessWidget {
 
           // Items
           if (displayItems.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(24),
+            Padding(
+              padding: const EdgeInsets.all(24),
               child: Center(
-                child: Text('No items'),
+                child: Text(context.l10n.adminApprovalNoItems),
               ),
             )
           else
@@ -103,7 +104,7 @@ class PendingApprovalsCard extends StatelessWidget {
                   onPressed: () {
                     // Navigate to filtered list
                   },
-                  child: Text('View all ${items.length} items'),
+                  child: Text(context.l10n.adminApprovalViewAllItems(items.length)),
                 ),
               ),
             ),
@@ -151,7 +152,7 @@ class _PendingItemTile extends StatelessWidget {
           ),
           if (item.initiatorName != null)
             Text(
-              'By: ${item.initiatorName}',
+              context.l10n.adminApprovalByName(item.initiatorName!),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: Colors.grey.shade600,
               ),
@@ -172,7 +173,7 @@ class _PendingItemTile extends StatelessWidget {
           if (item.expiresAt != null) ...[
             const SizedBox(height: 4),
             Text(
-              _getExpiryText(item.expiresAt!),
+              _getExpiryText(context, item.expiresAt!),
               style: theme.textTheme.labelSmall?.copyWith(
                 color: _isExpiringSoon(item.expiresAt!)
                     ? Colors.red
@@ -194,18 +195,18 @@ class _PendingItemTile extends StatelessWidget {
         .join(' ');
   }
 
-  String _getExpiryText(DateTime expiresAt) {
+  String _getExpiryText(BuildContext context, DateTime expiresAt) {
     final now = DateTime.now();
     final diff = expiresAt.difference(now);
 
     if (diff.isNegative) {
-      return 'Expired';
+      return context.l10n.adminApprovalExpired;
     } else if (diff.inDays > 0) {
-      return 'Expires in ${diff.inDays}d';
+      return context.l10n.adminApprovalExpiresInDays(diff.inDays);
     } else if (diff.inHours > 0) {
-      return 'Expires in ${diff.inHours}h';
+      return context.l10n.adminApprovalExpiresInHours(diff.inHours);
     } else {
-      return 'Expires in ${diff.inMinutes}m';
+      return context.l10n.adminApprovalExpiresInMinutes(diff.inMinutes);
     }
   }
 
@@ -270,27 +271,27 @@ class _StatusBadge extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'pending_review':
         color = Colors.orange;
-        displayStatus = 'Pending';
+        displayStatus = context.l10n.adminApprovalStatusPending;
         break;
       case 'under_review':
         color = Colors.blue;
-        displayStatus = 'Reviewing';
+        displayStatus = context.l10n.adminApprovalStatusReviewing;
         break;
       case 'awaiting_info':
         color = Colors.amber;
-        displayStatus = 'Info Needed';
+        displayStatus = context.l10n.adminApprovalStatusInfoNeeded;
         break;
       case 'escalated':
         color = Colors.purple;
-        displayStatus = 'Escalated';
+        displayStatus = context.l10n.adminApprovalStatusEscalated;
         break;
       case 'approved':
         color = Colors.green;
-        displayStatus = 'Approved';
+        displayStatus = context.l10n.adminApprovalStatusApprovedLabel;
         break;
       case 'denied':
         color = Colors.red;
-        displayStatus = 'Denied';
+        displayStatus = context.l10n.adminApprovalStatusDeniedLabel;
         break;
       default:
         color = Colors.grey;

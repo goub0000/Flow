@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 import '../../providers/approvals_provider.dart';
 
@@ -80,7 +81,7 @@ class _CreateApprovalRequestScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Approval Request'),
+        title: Text(context.l10n.adminApprovalCreateRequest),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/admin/approvals'),
@@ -101,7 +102,7 @@ class _CreateApprovalRequestScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Request Type',
+                        context.l10n.adminApprovalRequestType,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -109,9 +110,9 @@ class _CreateApprovalRequestScreenState
                       const SizedBox(height: 16),
                       DropdownButtonFormField<ApprovalRequestType>(
                         value: _selectedRequestType,
-                        decoration: const InputDecoration(
-                          labelText: 'Category',
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminApprovalCategory,
+                          border: const OutlineInputBorder(),
                         ),
                         items: ApprovalRequestType.values.map((type) {
                           return DropdownMenuItem(
@@ -133,9 +134,9 @@ class _CreateApprovalRequestScreenState
                       const SizedBox(height: 16),
                       DropdownButtonFormField<String>(
                         value: _selectedActionType,
-                        decoration: const InputDecoration(
-                          labelText: 'Action',
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminApprovalAction,
+                          border: const OutlineInputBorder(),
                         ),
                         items: _actionTypes[_selectedRequestType]!.map((action) {
                           return DropdownMenuItem(
@@ -166,7 +167,7 @@ class _CreateApprovalRequestScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Priority',
+                        context.l10n.adminApprovalPriority,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -204,7 +205,7 @@ class _CreateApprovalRequestScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Target Resource',
+                        context.l10n.adminApprovalTargetResource,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -212,7 +213,7 @@ class _CreateApprovalRequestScreenState
                       const SizedBox(height: 16),
                       TextFormField(
                         decoration: InputDecoration(
-                          labelText: 'Resource Type',
+                          labelText: context.l10n.adminApprovalResourceType,
                           border: const OutlineInputBorder(),
                           enabled: false,
                           hintText: _targetResourceType,
@@ -221,10 +222,10 @@ class _CreateApprovalRequestScreenState
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Resource ID (optional)',
-                          hintText: 'Enter the ID of the target resource',
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminApprovalResourceIdOptional,
+                          hintText: context.l10n.adminApprovalEnterResourceId,
+                          border: const OutlineInputBorder(),
                         ),
                         onChanged: (value) {
                           _targetResourceId = value.isEmpty ? null : value;
@@ -244,14 +245,14 @@ class _CreateApprovalRequestScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Justification',
+                        context.l10n.adminApprovalJustification,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Please provide a detailed justification for this request.',
+                        context.l10n.adminApprovalJustificationDescription,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: Colors.grey.shade600,
                         ),
@@ -259,20 +260,19 @@ class _CreateApprovalRequestScreenState
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _justificationController,
-                        decoration: const InputDecoration(
-                          labelText: 'Justification',
-                          hintText:
-                              'Explain why this action is needed and its expected impact...',
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminApprovalJustification,
+                          hintText: context.l10n.adminApprovalJustificationHint,
+                          border: const OutlineInputBorder(),
                           alignLabelWithHint: true,
                         ),
                         maxLines: 5,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Please provide a justification';
+                            return context.l10n.adminApprovalPleaseProvideJustification;
                           }
                           if (value.trim().length < 20) {
-                            return 'Justification must be at least 20 characters';
+                            return context.l10n.adminApprovalJustificationMinLength;
                           }
                           return null;
                         },
@@ -291,7 +291,7 @@ class _CreateApprovalRequestScreenState
                       onPressed: _isSubmitting
                           ? null
                           : () => context.go('/admin/approvals'),
-                      child: const Text('Cancel'),
+                      child: Text(context.l10n.adminApprovalCancel),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -307,7 +307,7 @@ class _CreateApprovalRequestScreenState
                                 color: Colors.white,
                               ),
                             )
-                          : const Text('Submit Request'),
+                          : Text(context.l10n.adminApprovalSubmitRequest),
                     ),
                   ),
                 ],
@@ -321,7 +321,6 @@ class _CreateApprovalRequestScreenState
   }
 
   void _updateTargetResourceType() {
-    // Set target resource type based on action
     if (_selectedActionType.contains('user') ||
         _selectedActionType.contains('admin')) {
       _targetResourceType = 'user';
@@ -368,8 +367,8 @@ class _CreateApprovalRequestScreenState
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Approval request submitted successfully'),
+          SnackBar(
+            content: Text(context.l10n.adminApprovalRequestSubmittedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -379,7 +378,7 @@ class _CreateApprovalRequestScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(context.l10n.adminApprovalErrorWithMessage(e.toString())),
             backgroundColor: Colors.red,
           ),
         );

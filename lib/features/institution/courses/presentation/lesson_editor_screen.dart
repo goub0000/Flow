@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/course_content_models.dart';
 import '../../../../core/models/quiz_assignment_models.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../institution/providers/course_content_provider.dart';
 import '../widgets/video_content_editor.dart';
 import '../widgets/text_content_editor.dart';
@@ -82,14 +83,14 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
 
       if (updatedLesson != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Lesson saved successfully')),
+          SnackBar(content: Text(context.l10n.lessonEditorSaveSuccess)),
         );
         Navigator.pop(context, true);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving lesson: $e')),
+          SnackBar(content: Text('${context.l10n.lessonEditorSaveError}: $e')),
         );
       }
     } finally {
@@ -103,7 +104,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit ${widget.lesson.lessonType.displayName}'),
+        title: Text('${context.l10n.lessonEditorEdit} ${widget.lesson.lessonType.displayName}'),
         actions: [
           if (_isSaving)
             const Padding(
@@ -118,7 +119,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
             IconButton(
               icon: const Icon(Icons.save),
               onPressed: _saveLesson,
-              tooltip: 'Save Lesson',
+              tooltip: context.l10n.lessonEditorSaveLesson,
             ),
         ],
       ),
@@ -148,7 +149,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Basic Information',
+                context.l10n.lessonEditorBasicInfo,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -156,14 +157,14 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
               const SizedBox(height: 24),
               TextFormField(
                 controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Lesson Title *',
-                  border: OutlineInputBorder(),
-                  helperText: 'Give your lesson a clear, descriptive title',
+                decoration: InputDecoration(
+                  labelText: context.l10n.lessonEditorLessonTitle,
+                  border: const OutlineInputBorder(),
+                  helperText: context.l10n.lessonEditorLessonTitleHelper,
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a lesson title';
+                    return context.l10n.lessonEditorLessonTitleError;
                   }
                   return null;
                 },
@@ -171,10 +172,10 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
-                  helperText: 'Provide a brief overview of this lesson',
+                decoration: InputDecoration(
+                  labelText: context.l10n.lessonEditorDescription,
+                  border: const OutlineInputBorder(),
+                  helperText: context.l10n.lessonEditorDescriptionHelper,
                 ),
                 maxLines: 3,
               ),
@@ -184,10 +185,10 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
                   Expanded(
                     child: TextFormField(
                       initialValue: _durationMinutes.toString(),
-                      decoration: const InputDecoration(
-                        labelText: 'Duration (minutes)',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.access_time),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.lessonEditorDuration,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.access_time),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
@@ -201,16 +202,16 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SwitchListTile(
-                          title: const Text('Mandatory'),
-                          subtitle: const Text('Students must complete this lesson'),
+                          title: Text(context.l10n.lessonEditorMandatory),
+                          subtitle: Text(context.l10n.lessonEditorMandatorySubtitle),
                           value: _isMandatory,
                           onChanged: (value) {
                             setState(() => _isMandatory = value);
                           },
                         ),
                         SwitchListTile(
-                          title: const Text('Published'),
-                          subtitle: const Text('Visible to students'),
+                          title: Text(context.l10n.lessonEditorPublished),
+                          subtitle: Text(context.l10n.lessonEditorPublishedSubtitle),
                           value: _isPublished,
                           onChanged: (value) {
                             setState(() => _isPublished = value);
@@ -233,7 +234,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Lesson Content',
+          context.l10n.lessonEditorLessonContent,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -275,7 +276,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
   Future<void> _handleVideoContentSave(VideoContentRequest content) async {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Video content will be saved (API integration pending)')),
+        SnackBar(content: Text(context.l10n.lessonEditorVideoSavePending)),
       );
     }
   }
@@ -283,7 +284,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
   Future<void> _handleTextContentSave(TextContentRequest content) async {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Text content will be saved (API integration pending)')),
+        SnackBar(content: Text(context.l10n.lessonEditorTextSavePending)),
       );
     }
   }
@@ -291,7 +292,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
   Future<void> _handleQuizContentSave(QuizContentRequest content) async {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Quiz content will be saved (API integration pending)')),
+        SnackBar(content: Text(context.l10n.lessonEditorQuizSavePending)),
       );
     }
   }
@@ -299,7 +300,7 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
   Future<void> _handleAssignmentContentSave(AssignmentContentRequest content) async {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Assignment content will be saved (API integration pending)')),
+        SnackBar(content: Text(context.l10n.lessonEditorAssignmentSavePending)),
       );
     }
   }

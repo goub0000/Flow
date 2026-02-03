@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Chart Widgets for Analytics
 ///
@@ -208,8 +209,8 @@ class SimpleBarChart extends StatelessWidget {
     if (data.isEmpty) {
       return SizedBox(
         height: height,
-        child: const Center(
-          child: Text('No data available'),
+        child: Center(
+          child: Text(context.l10n.swChartNoDataAvailable),
         ),
       );
     }
@@ -316,8 +317,8 @@ class SimpleLineChart extends StatelessWidget {
     if (data.isEmpty) {
       return SizedBox(
         height: height,
-        child: const Center(
-          child: Text('No data available'),
+        child: Center(
+          child: Text(context.l10n.swChartNoDataAvailable),
         ),
       );
     }

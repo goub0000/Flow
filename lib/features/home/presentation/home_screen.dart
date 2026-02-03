@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/providers/locale_provider.dart';
+import '../../../core/l10n_extension.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -87,7 +88,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         TextButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.star, size: 18),
-                          label: const Text('Features'),
+                          label: Text(context.l10n.homeNavFeatures),
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.textPrimary,
                           ),
@@ -95,7 +96,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         TextButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.info, size: 18),
-                          label: const Text('About'),
+                          label: Text(context.l10n.homeNavAbout),
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.textPrimary,
                           ),
@@ -103,7 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         TextButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.contact_mail, size: 18),
-                          label: const Text('Contact'),
+                          label: Text(context.l10n.homeNavContact),
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.textPrimary,
                           ),
@@ -116,7 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             side: const BorderSide(color: AppColors.primary),
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           ),
-                          child: const Text('Login'),
+                          child: Text(context.l10n.homeNavLogin),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton(
@@ -126,7 +127,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             foregroundColor: AppColors.textOnPrimary,
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           ),
-                          child: const Text('Sign Up'),
+                          child: Text(context.l10n.homeNavSignUp),
                         ),
                       ] else ...[
                     // Mobile menu icon
@@ -160,24 +161,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.star, color: AppColors.primary),
-                                      title: const Text('Features'),
+                                      title: Text(context.l10n.homeNavFeatures),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.info, color: AppColors.primary),
-                                      title: const Text('About'),
+                                      title: Text(context.l10n.homeNavAbout),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.contact_mail, color: AppColors.primary),
-                                      title: const Text('Contact'),
+                                      title: Text(context.l10n.homeNavContact),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     const Divider(),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                       child: Text(
-                                        'Account Types',
+                                        context.l10n.homeNavAccountTypes,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.textSecondary,
@@ -187,33 +188,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.school, color: AppColors.studentRole),
-                                      title: const Text('Students'),
+                                      title: Text(context.l10n.homeNavStudents),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.business, color: AppColors.institutionRole),
-                                      title: const Text('Institutions'),
+                                      title: Text(context.l10n.homeNavInstitutions),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.family_restroom, color: AppColors.parentRole),
-                                      title: const Text('Parents'),
+                                      title: Text(context.l10n.homeNavParents),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.psychology, color: AppColors.counselorRole),
-                                      title: const Text('Counselors'),
+                                      title: Text(context.l10n.homeNavCounselors),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.rate_review, color: AppColors.recommenderRole),
-                                      title: const Text('Recommenders'),
+                                      title: Text(context.l10n.homeNavRecommenders),
                                       onTap: () => Navigator.pop(context),
                                     ),
                                     const Divider(),
                                     ListTile(
                                       leading: Icon(Icons.login, color: AppColors.primary),
-                                      title: const Text('Login'),
+                                      title: Text(context.l10n.homeNavLogin),
                                       onTap: () {
                                         Navigator.pop(context);
                                         context.go('/login');
@@ -221,7 +222,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.person_add, color: AppColors.primary),
-                                      title: const Text('Sign Up'),
+                                      title: Text(context.l10n.homeNavSignUp),
                                       onTap: () {
                                         Navigator.pop(context);
                                         context.go('/register');
@@ -271,7 +272,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Icon(Icons.rocket_launch, color: AppColors.textPrimary, size: 14),
                         const SizedBox(width: 6),
                         Text(
-                          'Africa\'s Premier EdTech Platform',
+                          context.l10n.homeNavBadge,
                           style: theme.textTheme.labelSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
@@ -282,7 +283,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Welcome to Flow',
+                    context.l10n.homeNavWelcome,
                     style: theme.textTheme.displayLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -294,7 +295,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 800),
                     child: Text(
-                      'Connect students, institutions, parents, counselors across Africa. Offline-first with mobile money.',
+                      context.l10n.homeNavSubtitle,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                         height: 1.4,
@@ -313,7 +314,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ElevatedButton.icon(
                         onPressed: () => context.go('/register'),
                         icon: const Icon(Icons.person_add, size: 18),
-                        label: const Text('Get Started'),
+                        label: Text(context.l10n.homeNavGetStarted),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
@@ -325,7 +326,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
                         icon: const Icon(Icons.login, size: 16),
-                        label: const Text('Sign In'),
+                        label: Text(context.l10n.homeNavSignIn),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
                           side: BorderSide(color: AppColors.secondary, width: 1.5),
@@ -348,21 +349,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         icon: Icons.verified_user,
                         targetValue: 50,
                         suffix: 'K+',
-                        label: 'Active Users',
+                        label: context.l10n.homeNavActiveUsers,
                         color: AppColors.primary,
                       ),
                       _AnimatedStatItem(
                         icon: Icons.business,
                         targetValue: 200,
                         suffix: '+',
-                        label: 'Institutions',
+                        label: context.l10n.homeNavInstitutions,
                         color: AppColors.secondary,
                       ),
                       _AnimatedStatItem(
                         icon: Icons.public,
                         targetValue: 20,
                         suffix: '+',
-                        label: 'Countries',
+                        label: context.l10n.homeNavCountries,
                         color: AppColors.accent,
                       ),
                     ],
@@ -403,13 +404,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text('NEW', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                          child: Text(context.l10n.homeNavNew, style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Find Your Path',
+                      context.l10n.homeNavFindYourPath,
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -418,7 +419,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Answer a few questions and get personalized university recommendations.',
+                      context.l10n.homeNavFindYourPathDesc,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: Colors.white.withValues(alpha: 0.9),
                       ),
@@ -434,15 +435,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       children: [
                         _FindYourPathBenefit(
                           icon: Icons.lightbulb_outline,
-                          text: 'Personalized Recommendations',
+                          text: context.l10n.homeNavPersonalizedRec,
                         ),
                         _FindYourPathBenefit(
                           icon: Icons.school_outlined,
-                          text: '12+ Top Universities',
+                          text: context.l10n.homeNavTopUniversities,
                         ),
                         _FindYourPathBenefit(
                           icon: Icons.analytics_outlined,
-                          text: 'Smart Matching Algorithm',
+                          text: context.l10n.homeNavSmartMatching,
                         ),
                       ],
                     ),
@@ -452,7 +453,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ElevatedButton.icon(
                       onPressed: () => context.go('/find-your-path'),
                       icon: const Icon(Icons.arrow_forward, size: 16),
-                      label: const Text('Start Now'),
+                      label: Text(context.l10n.homeNavStartNow),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primary,
@@ -483,7 +484,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Platform Features',
+                    context.l10n.homeNavPlatformFeatures,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -497,33 +498,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       _PlatformFeature(
                         icon: Icons.offline_bolt,
-                        title: 'Offline-First Design',
-                        description: 'Access your content even without internet connectivity',
+                        title: context.l10n.homeNavOfflineFirst,
+                        description: context.l10n.homeNavOfflineFirstDesc,
                       ),
                       _PlatformFeature(
                         icon: Icons.payment,
-                        title: 'Mobile Money Integration',
-                        description: 'Pay with M-Pesa, MTN, and other mobile money services',
+                        title: context.l10n.homeNavMobileMoney,
+                        description: context.l10n.homeNavMobileMoneyDesc,
                       ),
                       _PlatformFeature(
                         icon: Icons.language,
-                        title: 'Multi-Language Support',
-                        description: 'Available in English, French, Swahili, and more',
+                        title: context.l10n.homeNavMultiLang,
+                        description: context.l10n.homeNavMultiLangDesc,
                       ),
                       _PlatformFeature(
                         icon: Icons.security,
-                        title: 'Secure & Private',
-                        description: 'End-to-end encryption for all your data',
+                        title: context.l10n.homeNavSecure,
+                        description: context.l10n.homeNavSecureDesc,
                       ),
                       _PlatformFeature(
                         icon: Icons.phone_android,
-                        title: 'USSD Support',
-                        description: 'Access features via basic phones without internet',
+                        title: context.l10n.homeNavUssd,
+                        description: context.l10n.homeNavUssdDesc,
                       ),
                       _PlatformFeature(
                         icon: Icons.cloud_sync,
-                        title: 'Cloud Sync',
-                        description: 'Automatically sync across all your devices',
+                        title: context.l10n.homeNavCloudSync,
+                        description: context.l10n.homeNavCloudSyncDesc,
                       ),
                     ],
                   ),
@@ -548,7 +549,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Text(
-                    'How It Works',
+                    context.l10n.homeNavHowItWorks,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -563,26 +564,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       _HowItWorksStep(
                         step: '1',
                         icon: Icons.person_add,
-                        title: 'Create Account',
-                        description: 'Sign up with your role - student, institution, parent, counselor, or recommender',
+                        title: context.l10n.homeNavCreateAccount,
+                        description: context.l10n.homeNavCreateAccountDesc,
                       ),
                       _HowItWorksStep(
                         step: '2',
                         icon: Icons.dashboard,
-                        title: 'Access Dashboard',
-                        description: 'Get a personalized dashboard tailored to your needs',
+                        title: context.l10n.homeNavAccessDashboard,
+                        description: context.l10n.homeNavAccessDashboardDesc,
                       ),
                       _HowItWorksStep(
                         step: '3',
                         icon: Icons.explore,
-                        title: 'Explore Features',
-                        description: 'Browse courses, applications, or manage your responsibilities',
+                        title: context.l10n.homeNavExploreFeatures,
+                        description: context.l10n.homeNavExploreFeaturesDesc,
                       ),
                       _HowItWorksStep(
                         step: '4',
                         icon: Icons.rocket_launch,
-                        title: 'Achieve Goals',
-                        description: 'Track progress, collaborate, and reach your educational objectives',
+                        title: context.l10n.homeNavAchieveGoals,
+                        description: context.l10n.homeNavAchieveGoalsDesc,
                       ),
                     ],
                   ),
@@ -608,7 +609,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Trusted Across Africa',
+                    context.l10n.homeNavTrustedAcrossAfrica,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -622,20 +623,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       _TestimonialCard(
                         name: 'Amina Mensah',
-                        role: 'Student, University of Ghana',
-                        quote: 'Flow made my application process so much easier. I could track everything in one place!',
+                        role: context.l10n.homeNavTestimonialRole1,
+                        quote: context.l10n.homeNavTestimonialQuote1,
                         avatarColor: AppColors.studentRole,
                       ),
                       _TestimonialCard(
                         name: 'Dr. Kwame Nkrumah',
-                        role: 'Dean, Ashesi University',
-                        quote: 'Managing applications has never been this efficient. Flow is a game-changer for institutions.',
+                        role: context.l10n.homeNavTestimonialRole2,
+                        quote: context.l10n.homeNavTestimonialQuote2,
                         avatarColor: AppColors.institutionRole,
                       ),
                       _TestimonialCard(
                         name: 'Sarah Okonkwo',
-                        role: 'Parent, Nigeria',
-                        quote: 'I can now monitor my children\'s academic progress even when I\'m traveling. Peace of mind!',
+                        role: context.l10n.homeNavTestimonialRole3,
+                        quote: context.l10n.homeNavTestimonialQuote3,
                         avatarColor: AppColors.parentRole,
                       ),
                     ],
@@ -665,7 +666,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Ready to Get Started?',
+                    context.l10n.homeNavReadyToStart,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -673,7 +674,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Join thousands transforming education with Flow.',
+                    context.l10n.homeNavJoinThousands,
                     style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
                     textAlign: TextAlign.center,
                   ),
@@ -686,7 +687,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ElevatedButton.icon(
                         onPressed: () => context.go('/register'),
                         icon: const Icon(Icons.person_add, size: 16),
-                        label: const Text('Sign Up'),
+                        label: Text(context.l10n.homeNavSignUp),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textOnPrimary,
@@ -698,7 +699,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       OutlinedButton.icon(
                         onPressed: () => context.go('/login'),
                         icon: const Icon(Icons.login, size: 16),
-                        label: const Text('Login'),
+                        label: Text(context.l10n.homeNavLogin),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.secondary,
                           side: BorderSide(color: AppColors.secondary, width: 1.5),
@@ -731,7 +732,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       Icon(Icons.school, color: AppColors.accent, size: 20),
                       const SizedBox(width: 6),
-                      Text('Flow EdTech', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.textOnPrimary, fontWeight: FontWeight.bold)),
+                      Text(context.l10n.homeNavFlowEdTech, style: theme.textTheme.titleMedium?.copyWith(color: AppColors.textOnPrimary, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -741,17 +742,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     runSpacing: 4,
                     alignment: WrapAlignment.center,
                     children: [
-                      _FooterLink(label: 'About', onTap: () {}),
-                      _FooterLink(label: 'Contact', onTap: () {}),
-                      _FooterLink(label: 'Privacy', onTap: () {}),
-                      _FooterLink(label: 'Terms', onTap: () {}),
+                      _FooterLink(label: context.l10n.homeNavAbout, onTap: () {}),
+                      _FooterLink(label: context.l10n.homeNavContact, onTap: () {}),
+                      _FooterLink(label: context.l10n.homeNavPrivacy, onTap: () {}),
+                      _FooterLink(label: context.l10n.homeNavTerms, onTap: () {}),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('© 2025 Flow EdTech', style: TextStyle(color: AppColors.textSecondary, fontSize: 10)),
+                      Text(context.l10n.homeNavCopyright, style: TextStyle(color: AppColors.textSecondary, fontSize: 10)),
                       InkWell(
                         onTap: _scrollToTop,
                         child: Row(
@@ -759,7 +760,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: [
                             Icon(Icons.arrow_upward, size: 12, color: AppColors.accent),
                             const SizedBox(width: 4),
-                            Text('Top', style: TextStyle(color: AppColors.accent, fontSize: 10)),
+                            Text(context.l10n.homeNavTop, style: TextStyle(color: AppColors.accent, fontSize: 10)),
                           ],
                         ),
                       ),
@@ -1264,7 +1265,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Column(
         children: [
-          Text('Who Can Use Flow?', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
+          Text(context.l10n.homeNavWhoCanUse, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
           const SizedBox(height: 10),
 
           // Tab Navigation
@@ -1279,12 +1280,12 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
               dividerColor: Colors.transparent,
               padding: const EdgeInsets.all(4),
               labelPadding: const EdgeInsets.symmetric(horizontal: 12),
-              tabs: const [
-                Tab(icon: Icon(Icons.school, size: 16), text: 'Students'),
-                Tab(icon: Icon(Icons.business, size: 16), text: 'Institutions'),
-                Tab(icon: Icon(Icons.family_restroom, size: 16), text: 'Parents'),
-                Tab(icon: Icon(Icons.psychology, size: 16), text: 'Counselors'),
-                Tab(icon: Icon(Icons.rate_review, size: 16), text: 'Recommenders'),
+              tabs: [
+                Tab(icon: Icon(Icons.school, size: 16), text: context.l10n.homeNavStudents),
+                Tab(icon: Icon(Icons.business, size: 16), text: context.l10n.homeNavInstitutions),
+                Tab(icon: Icon(Icons.family_restroom, size: 16), text: context.l10n.homeNavParents),
+                Tab(icon: Icon(Icons.psychology, size: 16), text: context.l10n.homeNavCounselors),
+                Tab(icon: Icon(Icons.rate_review, size: 16), text: context.l10n.homeNavRecommenders),
               ],
             ),
           ),
@@ -1295,200 +1296,80 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
             height: 350,
             child: TabBarView(
               controller: _tabController,
-              children: const [
+              children: [
                 _AccountTypeDetails(
                   icon: Icons.school,
-                  title: 'For Students',
-                  subtitle: 'Your gateway to academic success',
+                  title: context.l10n.homeNavForStudents,
+                  subtitle: context.l10n.homeNavForStudentsSubtitle,
                   color: AppColors.studentRole,
-                  description: 'Flow empowers students to take control of their educational journey with comprehensive tools designed for modern learners across Africa.',
+                  description: context.l10n.homeNavForStudentsDesc,
                   features: [
-                    _FeatureItem(
-                      icon: Icons.book,
-                      title: 'Course Access',
-                      description: 'Browse and enroll in thousands of courses from top institutions across Africa',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.assignment,
-                      title: 'Application Management',
-                      description: 'Apply to multiple institutions, track application status, and manage deadlines in one place',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.bar_chart,
-                      title: 'Progress Tracking',
-                      description: 'Monitor your academic progress with detailed analytics and performance insights',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.description,
-                      title: 'Document Management',
-                      description: 'Store and share transcripts, certificates, and other academic documents securely',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.payment,
-                      title: 'Easy Payments',
-                      description: 'Pay tuition and fees using mobile money services like M-Pesa, MTN Money, and more',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.offline_bolt,
-                      title: 'Offline Access',
-                      description: 'Download course materials and access them without internet connectivity',
-                    ),
+                    _FeatureItem(icon: Icons.book, title: context.l10n.homeNavCourseAccess, description: context.l10n.homeNavCourseAccessDesc),
+                    _FeatureItem(icon: Icons.assignment, title: context.l10n.homeNavAppManagement, description: context.l10n.homeNavAppManagementDesc),
+                    _FeatureItem(icon: Icons.bar_chart, title: context.l10n.homeNavProgressTracking, description: context.l10n.homeNavProgressTrackingDesc),
+                    _FeatureItem(icon: Icons.description, title: context.l10n.homeNavDocManagement, description: context.l10n.homeNavDocManagementDesc),
+                    _FeatureItem(icon: Icons.payment, title: context.l10n.homeNavEasyPayments, description: context.l10n.homeNavEasyPaymentsDesc),
+                    _FeatureItem(icon: Icons.offline_bolt, title: context.l10n.homeNavOfflineAccess, description: context.l10n.homeNavOfflineAccessDesc),
                   ],
                 ),
                 _AccountTypeDetails(
                   icon: Icons.business,
-                  title: 'For Institutions',
-                  subtitle: 'Streamline admissions and student management',
+                  title: context.l10n.homeNavForInstitutions,
+                  subtitle: context.l10n.homeNavForInstitutionsSubtitle,
                   color: AppColors.institutionRole,
-                  description: 'Transform your institution\'s operations with powerful tools for admissions, student management, and program delivery.',
+                  description: context.l10n.homeNavForInstitutionsDesc,
                   features: [
-                    _FeatureItem(
-                      icon: Icons.people,
-                      title: 'Applicant Management',
-                      description: 'Review, process, and track applications efficiently with automated workflows',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.school,
-                      title: 'Program Management',
-                      description: 'Create and manage academic programs, set requirements, and track enrollments',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.analytics,
-                      title: 'Analytics Dashboard',
-                      description: 'Get insights into application trends, student performance, and institutional metrics',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.message,
-                      title: 'Communication Hub',
-                      description: 'Engage with students, parents, and staff through integrated messaging',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.verified,
-                      title: 'Document Verification',
-                      description: 'Verify student documents and credentials securely',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.account_balance,
-                      title: 'Financial Management',
-                      description: 'Track payments, manage scholarships, and generate financial reports',
-                    ),
+                    _FeatureItem(icon: Icons.people, title: context.l10n.homeNavApplicantMgmt, description: context.l10n.homeNavApplicantMgmtDesc),
+                    _FeatureItem(icon: Icons.school, title: context.l10n.homeNavProgramMgmt, description: context.l10n.homeNavProgramMgmtDesc),
+                    _FeatureItem(icon: Icons.analytics, title: context.l10n.homeNavAnalyticsDash, description: context.l10n.homeNavAnalyticsDashDesc),
+                    _FeatureItem(icon: Icons.message, title: context.l10n.homeNavCommHub, description: context.l10n.homeNavCommHubDesc),
+                    _FeatureItem(icon: Icons.verified, title: context.l10n.homeNavDocVerification, description: context.l10n.homeNavDocVerificationDesc),
+                    _FeatureItem(icon: Icons.account_balance, title: context.l10n.homeNavFinancialMgmt, description: context.l10n.homeNavFinancialMgmtDesc),
                   ],
                 ),
                 _AccountTypeDetails(
                   icon: Icons.family_restroom,
-                  title: 'For Parents',
-                  subtitle: 'Stay connected to your child\'s education',
+                  title: context.l10n.homeNavForParents,
+                  subtitle: context.l10n.homeNavForParentsSubtitle,
                   color: AppColors.parentRole,
-                  description: 'Stay informed and engaged in your children\'s educational journey with real-time updates and comprehensive monitoring tools.',
+                  description: context.l10n.homeNavForParentsDesc,
                   features: [
-                    _FeatureItem(
-                      icon: Icons.bar_chart,
-                      title: 'Progress Monitoring',
-                      description: 'Track your children\'s academic performance, attendance, and achievements',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.notifications,
-                      title: 'Real-time Updates',
-                      description: 'Receive instant notifications about grades, assignments, and school events',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.chat,
-                      title: 'Teacher Communication',
-                      description: 'Connect directly with teachers and counselors about your child\'s progress',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.payment,
-                      title: 'Fee Management',
-                      description: 'View and pay school fees conveniently using mobile money',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.calendar_today,
-                      title: 'Schedule Access',
-                      description: 'View class schedules, exam dates, and school calendar events',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.report,
-                      title: 'Report Cards',
-                      description: 'Access detailed report cards and performance summaries',
-                    ),
+                    _FeatureItem(icon: Icons.bar_chart, title: context.l10n.homeNavProgressMonitoring, description: context.l10n.homeNavProgressMonitoringDesc),
+                    _FeatureItem(icon: Icons.notifications, title: context.l10n.homeNavRealtimeUpdates, description: context.l10n.homeNavRealtimeUpdatesDesc),
+                    _FeatureItem(icon: Icons.chat, title: context.l10n.homeNavTeacherComm, description: context.l10n.homeNavTeacherCommDesc),
+                    _FeatureItem(icon: Icons.payment, title: context.l10n.homeNavFeeMgmt, description: context.l10n.homeNavFeeMgmtDesc),
+                    _FeatureItem(icon: Icons.calendar_today, title: context.l10n.homeNavScheduleAccess, description: context.l10n.homeNavScheduleAccessDesc),
+                    _FeatureItem(icon: Icons.report, title: context.l10n.homeNavReportCards, description: context.l10n.homeNavReportCardsDesc),
                   ],
                 ),
                 _AccountTypeDetails(
                   icon: Icons.psychology,
-                  title: 'For Counselors',
-                  subtitle: 'Guide students to their best future',
+                  title: context.l10n.homeNavForCounselors,
+                  subtitle: context.l10n.homeNavForCounselorsSubtitle,
                   color: AppColors.counselorRole,
-                  description: 'Empower your counseling practice with tools to manage sessions, track student progress, and provide personalized guidance.',
+                  description: context.l10n.homeNavForCounselorsDesc,
                   features: [
-                    _FeatureItem(
-                      icon: Icons.calendar_month,
-                      title: 'Session Management',
-                      description: 'Schedule, track, and document counseling sessions with students',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.people,
-                      title: 'Student Portfolio',
-                      description: 'Maintain comprehensive profiles and notes for each student you counsel',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.task,
-                      title: 'Action Plans',
-                      description: 'Create and monitor personalized action plans and goals for students',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.school,
-                      title: 'College Guidance',
-                      description: 'Help students explore programs and navigate the application process',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.assessment,
-                      title: 'Career Assessment',
-                      description: 'Provide career assessments and recommend suitable paths',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.handshake,
-                      title: 'Parent Collaboration',
-                      description: 'Coordinate with parents to support student success',
-                    ),
+                    _FeatureItem(icon: Icons.calendar_month, title: context.l10n.homeNavSessionMgmt, description: context.l10n.homeNavSessionMgmtDesc),
+                    _FeatureItem(icon: Icons.people, title: context.l10n.homeNavStudentPortfolio, description: context.l10n.homeNavStudentPortfolioDesc),
+                    _FeatureItem(icon: Icons.task, title: context.l10n.homeNavActionPlans, description: context.l10n.homeNavActionPlansDesc),
+                    _FeatureItem(icon: Icons.school, title: context.l10n.homeNavCollegeGuidance, description: context.l10n.homeNavCollegeGuidanceDesc),
+                    _FeatureItem(icon: Icons.assessment, title: context.l10n.homeNavCareerAssessment, description: context.l10n.homeNavCareerAssessmentDesc),
+                    _FeatureItem(icon: Icons.handshake, title: context.l10n.homeNavParentCollab, description: context.l10n.homeNavParentCollabDesc),
                   ],
                 ),
                 _AccountTypeDetails(
                   icon: Icons.rate_review,
-                  title: 'For Recommenders',
-                  subtitle: 'Support students with powerful recommendations',
+                  title: context.l10n.homeNavForRecommenders,
+                  subtitle: context.l10n.homeNavForRecommendersSubtitle,
                   color: AppColors.recommenderRole,
-                  description: 'Write, manage, and submit recommendation letters efficiently while maintaining your professional network.',
+                  description: context.l10n.homeNavForRecommendersDesc,
                   features: [
-                    _FeatureItem(
-                      icon: Icons.edit_document,
-                      title: 'Letter Management',
-                      description: 'Write, edit, and store recommendation letters with templates',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.send,
-                      title: 'Easy Submission',
-                      description: 'Submit recommendations directly to institutions securely',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.assignment_turned_in,
-                      title: 'Request Tracking',
-                      description: 'Track all recommendation requests and deadlines in one place',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.history,
-                      title: 'Letter Templates',
-                      description: 'Use customizable templates to streamline your writing process',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.verified_user,
-                      title: 'Digital Signature',
-                      description: 'Sign and verify letters digitally with secure authentication',
-                    ),
-                    _FeatureItem(
-                      icon: Icons.timeline,
-                      title: 'Student History',
-                      description: 'Maintain records of students you\'ve recommended over time',
-                    ),
+                    _FeatureItem(icon: Icons.edit_document, title: context.l10n.homeNavLetterMgmt, description: context.l10n.homeNavLetterMgmtDesc),
+                    _FeatureItem(icon: Icons.send, title: context.l10n.homeNavEasySubmission, description: context.l10n.homeNavEasySubmissionDesc),
+                    _FeatureItem(icon: Icons.assignment_turned_in, title: context.l10n.homeNavRequestTracking, description: context.l10n.homeNavRequestTrackingDesc),
+                    _FeatureItem(icon: Icons.history, title: context.l10n.homeNavLetterTemplates, description: context.l10n.homeNavLetterTemplatesDesc),
+                    _FeatureItem(icon: Icons.verified_user, title: context.l10n.homeNavDigitalSignature, description: context.l10n.homeNavDigitalSignatureDesc),
+                    _FeatureItem(icon: Icons.timeline, title: context.l10n.homeNavStudentHistory, description: context.l10n.homeNavStudentHistoryDesc),
                   ],
                 ),
               ],
@@ -1578,7 +1459,7 @@ class _AccountTypeDetails extends StatelessWidget {
           // CTA Button
           ElevatedButton(
             onPressed: () => context.go('/register'),
-            child: Text('Get Started as ${title.replaceAll("For ", "")}'),
+            child: Text(context.l10n.homeNavGetStartedAs(title.replaceAll(context.l10n.homeNavForPrefix, ''))),
             style: ElevatedButton.styleFrom(
               backgroundColor: color,
               foregroundColor: AppColors.textOnPrimary,
@@ -1629,7 +1510,7 @@ class _AccountTypesTabDelegate extends SliverPersistentHeaderDelegate {
           child: Row(
             children: [
               Text(
-                'Who Can Use Flow: ',
+                '${context.l10n.homeNavWhoCanUse}: ',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -1639,35 +1520,35 @@ class _AccountTypesTabDelegate extends SliverPersistentHeaderDelegate {
               const SizedBox(width: 16),
               _TabButton(
                 icon: Icons.school,
-                label: 'Students',
+                label: context.l10n.homeNavStudents,
                 color: AppColors.studentRole,
                 onTap: () {},
               ),
               const SizedBox(width: 8),
               _TabButton(
                 icon: Icons.business,
-                label: 'Institutions',
+                label: context.l10n.homeNavInstitutions,
                 color: AppColors.institutionRole,
                 onTap: () {},
               ),
               const SizedBox(width: 8),
               _TabButton(
                 icon: Icons.family_restroom,
-                label: 'Parents',
+                label: context.l10n.homeNavParents,
                 color: AppColors.parentRole,
                 onTap: () {},
               ),
               const SizedBox(width: 8),
               _TabButton(
                 icon: Icons.psychology,
-                label: 'Counselors',
+                label: context.l10n.homeNavCounselors,
                 color: AppColors.counselorRole,
                 onTap: () {},
               ),
               const SizedBox(width: 8),
               _TabButton(
                 icon: Icons.rate_review,
-                label: 'Recommenders',
+                label: context.l10n.homeNavRecommenders,
                 color: AppColors.recommenderRole,
                 onTap: () {},
               ),

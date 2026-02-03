@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Typing indicator widget showing animated dots
 class TypingIndicator extends StatefulWidget {
@@ -115,11 +116,11 @@ class TypingIndicatorBubble extends StatelessWidget {
     String text;
 
     if (typingUserNames.length == 1) {
-      text = '${typingUserNames[0]} is typing';
+      text = context.l10n.typingIndicatorOneUser(typingUserNames[0]);
     } else if (typingUserNames.length == 2) {
-      text = '${typingUserNames[0]} and ${typingUserNames[1]} are typing';
+      text = context.l10n.typingIndicatorTwoUsers(typingUserNames[0], typingUserNames[1]);
     } else {
-      text = '${typingUserNames[0]}, ${typingUserNames[1]} and ${typingUserNames.length - 2} others are typing';
+      text = context.l10n.typingIndicatorMultipleUsers(typingUserNames[0], typingUserNames[1], (typingUserNames.length - 2).toString());
     }
 
     return Padding(

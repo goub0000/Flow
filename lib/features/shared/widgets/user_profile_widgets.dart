@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import 'logo_avatar.dart';
 
 /// User Profile Widgets Library
@@ -308,7 +309,7 @@ class ProfileHeader extends StatelessWidget {
                     FilledButton.icon(
                       onPressed: onEditProfile,
                       icon: const Icon(Icons.edit),
-                      label: const Text('Edit Profile'),
+                      label: Text(context.l10n.swUserProfileEditProfile),
                       style: FilledButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.primary,
@@ -320,7 +321,7 @@ class ProfileHeader extends StatelessWidget {
                     OutlinedButton.icon(
                       onPressed: onSettings,
                       icon: const Icon(Icons.settings),
-                      label: const Text('Settings'),
+                      label: Text(context.l10n.swUserProfileSettings),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.white,
                         side: const BorderSide(color: Colors.white),
@@ -715,7 +716,7 @@ class ActivityTimelineItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _formatTimestamp(timestamp),
+                    _formatTimestamp(timestamp, context),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                       fontSize: 11,
@@ -730,28 +731,28 @@ class ActivityTimelineItem extends StatelessWidget {
     );
   }
 
-  String _formatTimestamp(DateTime timestamp) {
+  String _formatTimestamp(DateTime timestamp, BuildContext context) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
-    if (difference.inMinutes < 1) return 'Just now';
-    if (difference.inMinutes < 60) return '${difference.inMinutes}m ago';
-    if (difference.inHours < 24) return '${difference.inHours}h ago';
-    if (difference.inDays < 7) return '${difference.inDays}d ago';
+    if (difference.inMinutes < 1) return context.l10n.swUserProfileJustNow;
+    if (difference.inMinutes < 60) return context.l10n.swUserProfileMinutesAgo(difference.inMinutes.toString());
+    if (difference.inHours < 24) return context.l10n.swUserProfileHoursAgo(difference.inHours.toString());
+    if (difference.inDays < 7) return context.l10n.swUserProfileDaysAgo(difference.inDays.toString());
 
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      context.l10n.swUserProfileMonthJan,
+      context.l10n.swUserProfileMonthFeb,
+      context.l10n.swUserProfileMonthMar,
+      context.l10n.swUserProfileMonthApr,
+      context.l10n.swUserProfileMonthMay,
+      context.l10n.swUserProfileMonthJun,
+      context.l10n.swUserProfileMonthJul,
+      context.l10n.swUserProfileMonthAug,
+      context.l10n.swUserProfileMonthSep,
+      context.l10n.swUserProfileMonthOct,
+      context.l10n.swUserProfileMonthNov,
+      context.l10n.swUserProfileMonthDec
     ];
     return '${months[timestamp.month - 1]} ${timestamp.day}';
   }
@@ -809,7 +810,7 @@ class EmptyProfileState extends StatelessWidget {
               const SizedBox(height: 24),
               FilledButton(
                 onPressed: onAction,
-                child: Text(actionLabel ?? 'Get Started'),
+                child: Text(actionLabel ?? context.l10n.swUserProfileGetStarted),
               ),
             ],
           ],

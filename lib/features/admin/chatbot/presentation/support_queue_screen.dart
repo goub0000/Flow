@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Admin Support Queue Screen - Manage escalated conversations
@@ -104,13 +105,13 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Assigned to you')),
+          SnackBar(content: Text(context.l10n.adminChatQueueAssignedToYou)),
         );
         _loadQueue();
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to assign: $e')),
+        SnackBar(content: Text(context.l10n.adminChatQueueAssignFailed(e.toString()))),
       );
     }
   }
@@ -169,12 +170,12 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
             child: Icon(Icons.support_agent, color: AppColors.warning, size: 24),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Support Queue',
+                  context.l10n.adminChatQueueTitle,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -182,7 +183,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
                   ),
                 ),
                 Text(
-                  'Handle escalated support requests',
+                  context.l10n.adminChatQueueSubtitle,
                   style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                 ),
               ],
@@ -191,7 +192,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadQueue,
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminChatRefresh,
           ),
         ],
       ),
@@ -206,7 +207,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
         children: [
           Expanded(
             child: _buildStatCard(
-              'Pending',
+              context.l10n.adminChatQueuePending,
               _pendingCount.toString(),
               AppColors.warning,
               Icons.hourglass_empty,
@@ -215,7 +216,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: _buildStatCard(
-              'Assigned',
+              context.l10n.adminChatQueueAssigned,
               _assignedCount.toString(),
               AppColors.info,
               Icons.person_add,
@@ -224,7 +225,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: _buildStatCard(
-              'In Progress',
+              context.l10n.adminChatQueueInProgress,
               _inProgressCount.toString(),
               AppColors.success,
               Icons.pending_actions,
@@ -286,18 +287,18 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
             child: DropdownButtonFormField<String>(
               value: _statusFilter,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminChatQueueStatus,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                 isDense: true,
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                DropdownMenuItem(value: 'assigned', child: Text('Assigned')),
-                DropdownMenuItem(value: 'in_progress', child: Text('In Progress')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminChatQueueAllStatus)),
+                DropdownMenuItem(value: 'pending', child: Text(context.l10n.adminChatQueuePending)),
+                DropdownMenuItem(value: 'assigned', child: Text(context.l10n.adminChatQueueAssigned)),
+                DropdownMenuItem(value: 'in_progress', child: Text(context.l10n.adminChatQueueInProgress)),
               ],
               onChanged: (value) {
                 setState(() => _statusFilter = value ?? 'all');
@@ -311,19 +312,19 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
             child: DropdownButtonFormField<String>(
               value: _priorityFilter,
               decoration: InputDecoration(
-                labelText: 'Priority',
+                labelText: context.l10n.adminChatFaqPriority,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                 isDense: true,
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Priorities')),
-                DropdownMenuItem(value: 'urgent', child: Text('Urgent')),
-                DropdownMenuItem(value: 'high', child: Text('High')),
-                DropdownMenuItem(value: 'normal', child: Text('Normal')),
-                DropdownMenuItem(value: 'low', child: Text('Low')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminChatQueueAllPriorities)),
+                DropdownMenuItem(value: 'urgent', child: Text(context.l10n.adminChatQueueUrgent)),
+                DropdownMenuItem(value: 'high', child: Text(context.l10n.adminChatQueueHigh)),
+                DropdownMenuItem(value: 'normal', child: Text(context.l10n.adminChatQueueNormal)),
+                DropdownMenuItem(value: 'low', child: Text(context.l10n.adminChatQueueLow)),
               ],
               onChanged: (value) {
                 setState(() => _priorityFilter = value ?? 'all');
@@ -385,7 +386,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item.userName ?? 'Unknown User',
+                          item.userName ?? context.l10n.adminChatUnknownUser,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -445,13 +446,13 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
                     TextButton.icon(
                       onPressed: () => _assignToSelf(item),
                       icon: const Icon(Icons.person_add, size: 18),
-                      label: const Text('Assign to me'),
+                      label: Text(context.l10n.adminChatQueueAssignToMe),
                     ),
                   const SizedBox(width: 8),
                   FilledButton.icon(
                     onPressed: () => context.push('/admin/chatbot/conversation/${item.conversationId}'),
                     icon: const Icon(Icons.open_in_new, size: 18),
-                    label: const Text('Open'),
+                    label: Text(context.l10n.adminChatQueueOpen),
                     style: FilledButton.styleFrom(
                       backgroundColor: AppColors.primary,
                     ),
@@ -543,13 +544,13 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
   String _formatReason(String reason) {
     switch (reason) {
       case 'user_request':
-        return 'User requested human support';
+        return context.l10n.adminChatQueueReasonUserRequest;
       case 'negative_feedback':
-        return 'Multiple negative feedback';
+        return context.l10n.adminChatQueueReasonNegativeFeedback;
       case 'low_confidence':
-        return 'AI confidence too low';
+        return context.l10n.adminChatQueueReasonLowConfidence;
       case 'auto_escalation':
-        return 'Automatic escalation';
+        return context.l10n.adminChatQueueReasonAutoEscalation;
       default:
         return reason.replaceAll('_', ' ');
     }
@@ -573,7 +574,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           Icon(Icons.inbox_outlined, size: 64, color: AppColors.textSecondary),
           const SizedBox(height: 16),
           Text(
-            'No items in queue',
+            context.l10n.adminChatQueueNoItems,
             style: TextStyle(
               fontSize: 18,
               color: AppColors.textSecondary,
@@ -581,7 +582,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Escalated conversations will appear here',
+            context.l10n.adminChatQueueEscalatedHint,
             style: TextStyle(
               fontSize: 14,
               color: AppColors.textSecondary,
@@ -600,7 +601,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           Icon(Icons.error_outline, size: 64, color: AppColors.error),
           const SizedBox(height: 16),
           Text(
-            'Failed to load queue',
+            context.l10n.adminChatQueueLoadFailed,
             style: TextStyle(
               fontSize: 16,
               color: AppColors.error,
@@ -609,7 +610,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           const SizedBox(height: 8),
           TextButton(
             onPressed: _loadQueue,
-            child: const Text('Retry'),
+            child: Text(context.l10n.adminChatRetry),
           ),
         ],
       ),

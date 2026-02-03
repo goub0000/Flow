@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../models/report_model.dart';
 import '../services/report_service.dart';
@@ -37,7 +38,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Reports',
+                          context.l10n.adminReportReportsTitle,
                           style: Theme.of(context)
                               .textTheme
                               .headlineLarge
@@ -47,7 +48,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Generate and download comprehensive reports',
+                          context.l10n.adminReportReportsSubtitle,
                           style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 16,
@@ -60,7 +61,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                         // TODO: Navigate to scheduled reports
                       },
                       icon: const Icon(Icons.schedule, size: 20),
-                      label: const Text('Scheduled Reports'),
+                      label: Text(context.l10n.adminReportScheduledReports),
                     ),
                   ],
                 ),
@@ -93,7 +94,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildCategoryChip(null, 'All Reports'),
+          _buildCategoryChip(null, context.l10n.adminReportAllReports),
           ...ReportCategory.values.map((category) {
             return _buildCategoryChip(category, category.label);
           }),
@@ -309,7 +310,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${report.name} generated successfully'),
+            content: Text(context.l10n.adminReportNameGeneratedSuccess(report.name)),
             backgroundColor: AppColors.success,
           ),
         );
@@ -318,7 +319,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to generate report: $e'),
+            content: Text(context.l10n.adminReportGenerateFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -513,7 +514,7 @@ class _ReportGenerationDialogState extends State<_ReportGenerationDialog> {
 
             // Date Range
             Text(
-              'Date Range',
+              context.l10n.adminReportDateRange,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -533,9 +534,9 @@ class _ReportGenerationDialogState extends State<_ReportGenerationDialog> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('to'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(context.l10n.adminReportTo),
                 ),
                 Expanded(
                   child: OutlinedButton.icon(
@@ -553,7 +554,7 @@ class _ReportGenerationDialogState extends State<_ReportGenerationDialog> {
 
             // Format Selection
             Text(
-              'Export Format',
+              context.l10n.adminReportExportFormat,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -588,7 +589,7 @@ class _ReportGenerationDialogState extends State<_ReportGenerationDialog> {
       actions: [
         TextButton(
           onPressed: _isGenerating ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.adminReportCancel),
         ),
         ElevatedButton.icon(
           onPressed: _isGenerating ? null : _handleGenerate,
@@ -602,7 +603,7 @@ class _ReportGenerationDialogState extends State<_ReportGenerationDialog> {
                   ),
                 )
               : const Icon(Icons.download, size: 18),
-          label: Text(_isGenerating ? 'Generating...' : 'Generate Report'),
+          label: Text(_isGenerating ? context.l10n.adminReportGenerating : context.l10n.adminReportGenerate),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,

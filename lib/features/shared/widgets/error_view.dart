@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 class ErrorView extends StatelessWidget {
   final Object error;
@@ -23,7 +24,7 @@ class ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final errorInfo = _parseError(error);
+    final errorInfo = _parseError(error, context);
 
     return Center(
       child: Container(
@@ -72,7 +73,7 @@ class ErrorView extends StatelessWidget {
               const SizedBox(height: 16),
               ExpansionTile(
                 title: Text(
-                  'Technical Details',
+                  context.l10n.swErrorTechnicalDetails,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withOpacity(0.5),
                   ),
@@ -107,7 +108,7 @@ class ErrorView extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: onRetry,
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
+                  label: Text(context.l10n.swErrorRetry),
                   style: FilledButton.styleFrom(
                     backgroundColor: errorInfo.color,
                     foregroundColor: Colors.white,
@@ -177,7 +178,7 @@ class ErrorView extends StatelessWidget {
     return buffer.toString();
   }
 
-  ErrorInfo _parseError(Object error) {
+  ErrorInfo _parseError(Object error, BuildContext context) {
     final errorString = error.toString().toLowerCase();
 
     // Network Errors
@@ -186,11 +187,11 @@ class ErrorView extends StatelessWidget {
         errorString.contains('connection') ||
         errorString.contains('timeout')) {
       return ErrorInfo(
-        title: 'Connection Error',
-        message: 'Unable to connect to our servers. Please check your internet connection and try again.',
+        title: context.l10n.swErrorConnectionTitle,
+        message: context.l10n.swErrorConnectionMessage,
         icon: Icons.wifi_off,
         color: AppColors.warning,
-        helpText: 'Make sure you have a stable internet connection. If the problem persists, our servers might be temporarily unavailable.',
+        helpText: context.l10n.swErrorConnectionHelp,
         secondaryAction: null,
       );
     }
@@ -202,13 +203,13 @@ class ErrorView extends StatelessWidget {
         errorString.contains('forbidden') ||
         errorString.contains('authentication')) {
       return ErrorInfo(
-        title: 'Authentication Required',
-        message: 'Your session has expired or you don\'t have permission to access this content.',
+        title: context.l10n.swErrorAuthTitle,
+        message: context.l10n.swErrorAuthMessage,
         icon: Icons.lock_outline,
         color: AppColors.error,
-        helpText: 'Try logging out and logging back in to refresh your session.',
+        helpText: context.l10n.swErrorAuthHelp,
         secondaryAction: ErrorAction(
-          label: 'Sign Out',
+          label: context.l10n.swErrorSignOut,
           onPressed: () {
             // TODO: Implement sign out navigation
           },
@@ -220,11 +221,11 @@ class ErrorView extends StatelessWidget {
     if (errorString.contains('404') ||
         errorString.contains('not found')) {
       return ErrorInfo(
-        title: 'Content Not Found',
-        message: 'The content you\'re looking for doesn\'t exist or has been moved.',
+        title: context.l10n.swErrorNotFoundTitle,
+        message: context.l10n.swErrorNotFoundMessage,
         icon: Icons.search_off,
         color: AppColors.info,
-        helpText: 'The item may have been deleted or you may not have access to view it.',
+        helpText: context.l10n.swErrorNotFoundHelp,
         secondaryAction: null,
       );
     }
@@ -236,11 +237,11 @@ class ErrorView extends StatelessWidget {
         errorString.contains('server error') ||
         errorString.contains('internal')) {
       return ErrorInfo(
-        title: 'Server Error',
-        message: 'Something went wrong on our end. We\'re working to fix it.',
+        title: context.l10n.swErrorServerTitle,
+        message: context.l10n.swErrorServerMessage,
         icon: Icons.cloud_off,
         color: AppColors.error,
-        helpText: 'This is a temporary issue. Please try again in a few minutes.',
+        helpText: context.l10n.swErrorServerHelp,
         secondaryAction: null,
       );
     }
@@ -250,11 +251,11 @@ class ErrorView extends StatelessWidget {
         errorString.contains('rate limit') ||
         errorString.contains('too many requests')) {
       return ErrorInfo(
-        title: 'Too Many Requests',
-        message: 'You\'ve made too many requests. Please wait a moment before trying again.',
+        title: context.l10n.swErrorRateLimitTitle,
+        message: context.l10n.swErrorRateLimitMessage,
         icon: Icons.timer_off,
         color: AppColors.warning,
-        helpText: 'To prevent abuse, we limit the number of requests. Please wait a few seconds before retrying.',
+        helpText: context.l10n.swErrorRateLimitHelp,
         secondaryAction: null,
       );
     }
@@ -264,11 +265,11 @@ class ErrorView extends StatelessWidget {
         errorString.contains('invalid') ||
         errorString.contains('required')) {
       return ErrorInfo(
-        title: 'Validation Error',
-        message: 'Some information appears to be incorrect or missing. Please check your input and try again.',
+        title: context.l10n.swErrorValidationTitle,
+        message: context.l10n.swErrorValidationMessage,
         icon: Icons.error_outline,
         color: AppColors.warning,
-        helpText: 'Make sure all required fields are filled correctly.',
+        helpText: context.l10n.swErrorValidationHelp,
         secondaryAction: null,
       );
     }
@@ -277,22 +278,22 @@ class ErrorView extends StatelessWidget {
     if (errorString.contains('permission') ||
         errorString.contains('access denied')) {
       return ErrorInfo(
-        title: 'Access Denied',
-        message: 'You don\'t have permission to access this content.',
+        title: context.l10n.swErrorAccessDeniedTitle,
+        message: context.l10n.swErrorAccessDeniedMessage,
         icon: Icons.block,
         color: AppColors.error,
-        helpText: 'Contact your administrator if you believe you should have access.',
+        helpText: context.l10n.swErrorAccessDeniedHelp,
         secondaryAction: null,
       );
     }
 
     // Generic Error
     return ErrorInfo(
-      title: 'Something Went Wrong',
-      message: 'An unexpected error occurred. Please try again.',
+      title: context.l10n.swErrorGenericTitle,
+      message: context.l10n.swErrorGenericMessage,
       icon: Icons.error_outline,
       color: AppColors.error,
-      helpText: 'If this problem continues, please contact support.',
+      helpText: context.l10n.swErrorGenericHelp,
       secondaryAction: null,
     );
   }
@@ -362,7 +363,7 @@ class InlineErrorView extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              customMessage ?? 'Failed to load data',
+              customMessage ?? context.l10n.swErrorFailedToLoad,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.error,
               ),
@@ -371,7 +372,7 @@ class InlineErrorView extends StatelessWidget {
           const SizedBox(width: 12),
           TextButton(
             onPressed: onRetry,
-            child: const Text('Retry'),
+            child: Text(context.l10n.swErrorRetry),
           ),
         ],
       ),

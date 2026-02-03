@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Advanced Filter Widget
 ///
@@ -277,7 +278,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Filters',
+                      context.l10n.swFilterTitle,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -288,7 +289,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                           _filters.reset();
                         });
                       },
-                      child: const Text('Reset All'),
+                      child: Text(context.l10n.swFilterResetAll),
                     ),
                   ],
                 ),
@@ -302,7 +303,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     // Categories
-                    _buildSectionTitle('Categories'),
+                    _buildSectionTitle(context.l10n.swFilterCategories),
                     _buildChipList(
                       options: _availableCategories,
                       selected: _filters.categories,
@@ -315,7 +316,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     const SizedBox(height: 24),
 
                     // Price Range
-                    _buildSectionTitle('Price Range (USD)'),
+                    _buildSectionTitle(context.l10n.swFilterPriceRange),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Column(
@@ -354,7 +355,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     const SizedBox(height: 24),
 
                     // Level/Difficulty
-                    _buildSectionTitle('Level'),
+                    _buildSectionTitle(context.l10n.swFilterLevel),
                     _buildChipList(
                       options: _availableLevels,
                       selected: _filters.levels,
@@ -369,7 +370,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     // Country
                     if (widget.filterType == FilterType.institutions ||
                         widget.filterType == FilterType.programs) ...[
-                      _buildSectionTitle('Country'),
+                      _buildSectionTitle(context.l10n.swFilterCountry),
                       _buildChipList(
                         options: _availableCountries,
                         selected: _filters.countries,
@@ -384,7 +385,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
                     // Institution Type
                     if (widget.filterType == FilterType.programs) ...[
-                      _buildSectionTitle('Institution Type'),
+                      _buildSectionTitle(context.l10n.swFilterInstitutionType),
                       _buildChipList(
                         options: _availableInstitutionTypes,
                         selected: _filters.institutionTypes,
@@ -398,13 +399,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     ],
 
                     // Rating
-                    _buildSectionTitle('Minimum Rating'),
+                    _buildSectionTitle(context.l10n.swFilterMinimumRating),
                     _buildRatingFilter(),
                     const SizedBox(height: 24),
 
                     // Duration (for courses)
                     if (widget.filterType == FilterType.courses) ...[
-                      _buildSectionTitle('Duration (weeks)'),
+                      _buildSectionTitle(context.l10n.swFilterDuration),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Column(
@@ -416,8 +417,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                               max: 52,
                               divisions: 51,
                               labels: RangeLabels(
-                                '${(_filters.durationRange?.start ?? 1).round()} weeks',
-                                '${(_filters.durationRange?.end ?? 52).round()} weeks',
+                                context.l10n.swFilterWeeks((_filters.durationRange?.start ?? 1).round()),
+                                context.l10n.swFilterWeeks((_filters.durationRange?.end ?? 52).round()),
                               ),
                               onChanged: (values) {
                                 setState(() {
@@ -429,11 +430,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${(_filters.durationRange?.start ?? 1).round()} weeks',
+                                  context.l10n.swFilterWeeks((_filters.durationRange?.start ?? 1).round()),
                                   style: theme.textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  '${(_filters.durationRange?.end ?? 52).round()} weeks',
+                                  context.l10n.swFilterWeeks((_filters.durationRange?.end ?? 52).round()),
                                   style: theme.textTheme.bodyMedium,
                                 ),
                               ],
@@ -445,10 +446,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     ],
 
                     // Special Options
-                    _buildSectionTitle('Special Options'),
+                    _buildSectionTitle(context.l10n.swFilterSpecialOptions),
                     CheckboxListTile(
-                      title: const Text('Online Only'),
-                      subtitle: const Text('Show only online courses/programs'),
+                      title: Text(context.l10n.swFilterOnlineOnly),
+                      subtitle: Text(context.l10n.swFilterOnlineOnlySubtitle),
                       value: _filters.onlineOnly,
                       onChanged: (value) {
                         setState(() {
@@ -459,9 +460,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                       contentPadding: EdgeInsets.zero,
                     ),
                     CheckboxListTile(
-                      title: const Text('Financial Aid Available'),
+                      title: Text(context.l10n.swFilterFinancialAid),
                       subtitle:
-                          const Text('Show only items with financial aid'),
+                          Text(context.l10n.swFilterFinancialAidSubtitle),
                       value: _filters.hasFinancialAid,
                       onChanged: (value) {
                         setState(() {
@@ -494,7 +495,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Apply Filters'),
+                        Text(context.l10n.swFilterApply),
                         if (_filters.activeFilterCount > 0) ...[
                           const SizedBox(width: 8),
                           Container(
@@ -670,7 +671,7 @@ class ActiveFiltersChips extends StatelessWidget {
     // Add rating chip
     if (filters.minRating != null) {
       chips.add(_buildChip(
-        label: '${filters.minRating}+ stars',
+        label: context.l10n.swFilterStarsPlus(filters.minRating!),
         onDeleted: () {
           onFilterRemoved(filters.copyWith(minRating: null));
         },
@@ -710,7 +711,7 @@ class ActiveFiltersChips extends StatelessWidget {
               onFilterRemoved(newFilters);
             },
             icon: const Icon(Icons.clear_all, size: 16),
-            label: const Text('Clear all'),
+            label: Text(context.l10n.swFilterClearAll),
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 12),
             ),

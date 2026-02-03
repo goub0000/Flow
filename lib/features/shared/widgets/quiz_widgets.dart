@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Quizzes & Assessments Widgets
 ///
@@ -358,7 +359,7 @@ class QuestionCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Question $questionNumber of $totalQuestions',
+                    context.l10n.swQuizQuestionOf(questionNumber, totalQuestions),
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -386,7 +387,7 @@ class QuestionCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${question.points} ${question.points == 1 ? 'pt' : 'pts'}',
+                        context.l10n.swQuizPointsCount(question.points),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.w600,
@@ -435,7 +436,7 @@ class QuestionCard extends StatelessWidget {
             if (question.type == QuestionType.fillInBlank && !isReviewMode)
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Type your answer here...',
+                  hintText: context.l10n.swQuizTypeAnswerHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -469,7 +470,7 @@ class QuestionCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Explanation',
+                            context.l10n.swQuizExplanation,
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.info,
@@ -636,7 +637,7 @@ class QuizProgressIndicator extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Question $currentQuestion of $totalQuestions',
+                context.l10n.swQuizQuestionOf(currentQuestion, totalQuestions),
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -727,7 +728,7 @@ class ScoreDisplay extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            passed ? 'Congratulations!' : 'Keep Practicing!',
+            passed ? context.l10n.swQuizCongratulations : context.l10n.swQuizKeepPracticing,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -735,7 +736,7 @@ class ScoreDisplay extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'You scored',
+            context.l10n.swQuizYouScored,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: Colors.white70,
             ),
@@ -750,7 +751,7 @@ class ScoreDisplay extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '$score out of $totalPoints points',
+            context.l10n.swQuizScoreOutOf(score, totalPoints),
             style: theme.textTheme.titleMedium?.copyWith(
               color: Colors.white70,
             ),
@@ -841,7 +842,7 @@ class QuizCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${quiz.questions.length} questions',
+                    context.l10n.swQuizQuestionsCount(quiz.questions.length),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -854,7 +855,7 @@ class QuizCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${quiz.duration} min',
+                    context.l10n.swQuizDurationMin(quiz.duration),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -867,7 +868,7 @@ class QuizCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${attemptsUsed ?? 0}/${quiz.maxAttempts} attempts',
+                    context.l10n.swQuizAttemptsCount(attemptsUsed ?? 0, quiz.maxAttempts),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -895,7 +896,7 @@ class QuizCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Best Score: ${bestAttempt!.percentage.toStringAsFixed(1)}%',
+                        context.l10n.swQuizBestScore(bestAttempt!.percentage.toStringAsFixed(1)),
                         style: theme.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: bestAttempt!.passed

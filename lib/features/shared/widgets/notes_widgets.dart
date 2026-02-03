@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Notes & Study Tools Widgets
 ///
@@ -446,13 +447,13 @@ class NoteCard extends StatelessWidget {
                       }
                     },
                     itemBuilder: (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'edit',
                         child: Row(
                           children: [
-                            Icon(Icons.edit, size: 18),
-                            SizedBox(width: 12),
-                            Text('Edit'),
+                            const Icon(Icons.edit, size: 18),
+                            const SizedBox(width: 12),
+                            Text(context.l10n.swNoteEdit),
                           ],
                         ),
                       ),
@@ -465,17 +466,17 @@ class NoteCard extends StatelessWidget {
                               size: 18,
                             ),
                             const SizedBox(width: 12),
-                            Text(note.isPinned ? 'Unpin' : 'Pin'),
+                            Text(note.isPinned ? context.l10n.swNoteUnpin : context.l10n.swNotePin),
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'delete',
                         child: Row(
                           children: [
-                            Icon(Icons.delete, size: 18, color: AppColors.error),
-                            SizedBox(width: 12),
-                            Text('Delete', style: TextStyle(color: AppColors.error)),
+                            const Icon(Icons.delete, size: 18, color: AppColors.error),
+                            const SizedBox(width: 12),
+                            Text(context.l10n.swNoteDelete, style: const TextStyle(color: AppColors.error)),
                           ],
                         ),
                       ),
@@ -546,7 +547,7 @@ class NoteCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    _formatDate(note.updatedAt),
+                    _formatDate(context, note.updatedAt),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -575,18 +576,18 @@ class NoteCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inMinutes < 1) {
-      return 'Just now';
+      return context.l10n.swNoteJustNow;
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
+      return context.l10n.swNoteMinutesAgo(difference.inMinutes);
     } else if (difference.inDays < 1) {
-      return '${difference.inHours}h ago';
+      return context.l10n.swNoteHoursAgo(difference.inHours);
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return context.l10n.swNoteDaysAgo(difference.inDays);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }
@@ -645,7 +646,7 @@ class CategoryChip extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${category.noteCount} notes',
+                  context.l10n.swNoteNotesCount(category.noteCount),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -703,7 +704,7 @@ class EmptyNotesState extends StatelessWidget {
 
   const EmptyNotesState({
     super.key,
-    this.message = 'No Notes Yet',
+    this.message = '',
     this.subtitle,
     this.onCreateNote,
   });
@@ -733,7 +734,7 @@ class EmptyNotesState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              message,
+              message.isEmpty ? context.l10n.swNoteNoNotesYet : message,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -741,7 +742,7 @@ class EmptyNotesState extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              subtitle ?? 'Start taking notes to remember important information',
+              subtitle ?? context.l10n.swNoteStartTakingNotes,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -752,7 +753,7 @@ class EmptyNotesState extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onCreateNote,
                 icon: const Icon(Icons.add),
-                label: const Text('Create Note'),
+                label: Text(context.l10n.swNoteCreateNote),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -796,7 +797,7 @@ class NoteSearchBar extends StatelessWidget {
               onChanged: onChanged,
               onSubmitted: onSubmitted,
               decoration: InputDecoration(
-                hintText: hintText ?? 'Search notes...',
+                hintText: hintText ?? context.l10n.swNoteSearchNotes,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),

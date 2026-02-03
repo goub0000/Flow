@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 
 /// Dialog for filtering approval requests
@@ -41,7 +42,7 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Filter Requests'),
+      title: Text(context.l10n.adminApprovalFilterRequests),
       content: SizedBox(
         width: double.maxFinite,
         child: SingleChildScrollView(
@@ -53,8 +54,8 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
               TextField(
                 controller: _searchController,
                 decoration: const InputDecoration(
-                  labelText: 'Search',
-                  hintText: 'Search by request number or justification',
+                  labelText: context.l10n.adminApprovalSearch,
+                  hintText: context.l10n.adminApprovalSearchHint,
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(),
                 ),
@@ -64,7 +65,7 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
 
               // Status filter
               Text(
-                'Status',
+                context.l10n.adminApprovalStatus,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -95,7 +96,7 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
 
               // Priority filter
               Text(
-                'Priority',
+                context.l10n.adminApprovalPriority,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -127,7 +128,7 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
 
               // Request type filter
               Text(
-                'Request Type',
+                context.l10n.adminApprovalRequestType,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -167,15 +168,15 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
               _searchController.clear();
             });
           },
-          child: const Text('Clear All'),
+          child: Text(context.l10n.adminApprovalClearAll),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.adminApprovalCancel),
         ),
         FilledButton(
           onPressed: _applyFilter,
-          child: const Text('Apply'),
+          child: Text(context.l10n.adminApprovalApply),
         ),
       ],
     );

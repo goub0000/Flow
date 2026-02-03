@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Schedule & Calendar Widgets Library
 ///
@@ -353,7 +354,7 @@ class EventCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
-                                    'High',
+                                    context.l10n.swScheduleHighPriority,
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: AppColors.error,
                                       fontWeight: FontWeight.w600,
@@ -388,7 +389,7 @@ class EventCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  _formatDate(event.startTime),
+                                  _formatDate(event.startTime, context),
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
@@ -412,7 +413,7 @@ class EventCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'Now',
+                          context.l10n.swScheduleNow,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.success,
                             fontWeight: FontWeight.w600,
@@ -499,7 +500,7 @@ class EventCard extends StatelessWidget {
                               size: 18,
                             ),
                             label: Text(
-                              event.isCompleted ? 'Completed' : 'Mark Complete',
+                              event.isCompleted ? context.l10n.swScheduleCompleted : context.l10n.swScheduleMarkComplete,
                             ),
                           ),
                         ),
@@ -521,29 +522,29 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(DateTime date, BuildContext context) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final eventDate = DateTime(date.year, date.month, date.day);
     final difference = eventDate.difference(today).inDays;
 
-    if (difference == 0) return 'Today';
-    if (difference == 1) return 'Tomorrow';
-    if (difference == -1) return 'Yesterday';
+    if (difference == 0) return context.l10n.swScheduleToday;
+    if (difference == 1) return context.l10n.swScheduleTomorrow;
+    if (difference == -1) return context.l10n.swScheduleYesterday;
 
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      context.l10n.swScheduleMonthJan,
+      context.l10n.swScheduleMonthFeb,
+      context.l10n.swScheduleMonthMar,
+      context.l10n.swScheduleMonthApr,
+      context.l10n.swScheduleMonthMay,
+      context.l10n.swScheduleMonthJun,
+      context.l10n.swScheduleMonthJul,
+      context.l10n.swScheduleMonthAug,
+      context.l10n.swScheduleMonthSep,
+      context.l10n.swScheduleMonthOct,
+      context.l10n.swScheduleMonthNov,
+      context.l10n.swScheduleMonthDec
     ];
     return '${months[date.month - 1]} ${date.day}';
   }
@@ -744,13 +745,13 @@ class CalendarDayCell extends StatelessWidget {
 
 /// Empty Schedule State
 class EmptyScheduleState extends StatelessWidget {
-  final String message;
+  final String? message;
   final String? subtitle;
   final VoidCallback? onAddEvent;
 
-  const EmptyScheduleState({
+  EmptyScheduleState({
     super.key,
-    this.message = 'No events scheduled',
+    this.message,
     this.subtitle,
     this.onAddEvent,
   });
@@ -772,7 +773,7 @@ class EmptyScheduleState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              message,
+              message ?? context.l10n.swScheduleNoEvents,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -793,7 +794,7 @@ class EmptyScheduleState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onAddEvent,
                 icon: const Icon(Icons.add),
-                label: const Text('Add Event'),
+                label: Text(context.l10n.swScheduleAddEvent),
               ),
             ],
           ],

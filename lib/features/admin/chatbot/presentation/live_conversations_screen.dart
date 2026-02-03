@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/service_providers.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 
 /// Live Conversations Screen - Real-time monitoring of active chats
@@ -149,12 +150,12 @@ class _LiveConversationsScreenState
             child: Icon(Icons.monitor_heart, color: AppColors.success, size: 24),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Live Conversations',
+                  context.l10n.adminChatLiveTitle,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -162,7 +163,7 @@ class _LiveConversationsScreenState
                   ),
                 ),
                 Text(
-                  'Real-time monitoring of active chats',
+                  context.l10n.adminChatLiveSubtitle,
                   style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                 ),
               ],
@@ -172,7 +173,7 @@ class _LiveConversationsScreenState
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Auto-refresh',
+                context.l10n.adminChatLiveAutoRefresh,
                 style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
               Switch(
@@ -184,7 +185,7 @@ class _LiveConversationsScreenState
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadConversations,
-            tooltip: 'Refresh Now',
+            tooltip: context.l10n.adminChatRefreshNow,
           ),
         ],
       ),
@@ -205,11 +206,11 @@ class _LiveConversationsScreenState
       color: AppColors.surface,
       child: Row(
         children: [
-          _buildMiniStat('Active', activeCount.toString(), AppColors.success),
+          _buildMiniStat(context.l10n.adminChatStatusActive, activeCount.toString(), AppColors.success),
           const SizedBox(width: 24),
-          _buildMiniStat('Escalated', escalatedCount.toString(), AppColors.error),
+          _buildMiniStat(context.l10n.adminChatStatusEscalated, escalatedCount.toString(), AppColors.error),
           const SizedBox(width: 24),
-          _buildMiniStat('Active (5m)', recentCount.toString(), AppColors.info),
+          _buildMiniStat(context.l10n.adminChatLiveActiveFiveMin, recentCount.toString(), AppColors.info),
           const Spacer(),
           // Live indicator
           Container(
@@ -233,7 +234,7 @@ class _LiveConversationsScreenState
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  _autoRefresh ? 'LIVE' : 'PAUSED',
+                  _autoRefresh ? context.l10n.adminChatLiveLive : context.l10n.adminChatLivePaused,
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
@@ -350,7 +351,7 @@ class _LiveConversationsScreenState
                       children: [
                         Expanded(
                           child: Text(
-                            conv.userName ?? 'Unknown User',
+                            conv.userName ?? context.l10n.adminChatUnknownUser,
                             style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -372,7 +373,7 @@ class _LiveConversationsScreenState
                                     size: 12, color: AppColors.error),
                                 const SizedBox(width: 4),
                                 Text(
-                                  'ESCALATED',
+                                  context.l10n.adminChatStatusEscalated.toUpperCase(),
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
@@ -398,7 +399,7 @@ class _LiveConversationsScreenState
                           const Text(' • '),
                         ],
                         Text(
-                          '${conv.messageCount} messages',
+                          context.l10n.adminChatMessageCount(conv.messageCount),
                           style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -466,7 +467,7 @@ class _LiveConversationsScreenState
           Icon(Icons.chat_outlined, size: 64, color: AppColors.textSecondary),
           const SizedBox(height: 16),
           Text(
-            'No active conversations',
+            context.l10n.adminChatLiveNoActive,
             style: TextStyle(
               fontSize: 18,
               color: AppColors.textSecondary,
@@ -485,13 +486,13 @@ class _LiveConversationsScreenState
           Icon(Icons.error_outline, size: 64, color: AppColors.error),
           const SizedBox(height: 16),
           Text(
-            'Failed to load conversations',
+            context.l10n.adminChatLiveLoadFailed,
             style: TextStyle(fontSize: 16, color: AppColors.error),
           ),
           const SizedBox(height: 8),
           TextButton(
             onPressed: _loadConversations,
-            child: const Text('Retry'),
+            child: Text(context.l10n.adminChatRetry),
           ),
         ],
       ),

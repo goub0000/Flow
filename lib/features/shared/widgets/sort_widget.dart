@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Sort Options Widget
 ///
@@ -86,126 +87,126 @@ enum SortOrder {
 /// Predefined Sort Options
 class SortOptions {
   // General
-  static const relevance = SortOption(
+  static SortOption relevance(BuildContext context) => SortOption(
     id: 'relevance',
-    label: 'Relevance',
+    label: context.l10n.swSortRelevance,
     field: 'relevance',
     order: SortOrder.descending,
     icon: Icons.trending_up,
   );
 
-  static const popularity = SortOption(
+  static SortOption popularity(BuildContext context) => SortOption(
     id: 'popularity',
-    label: 'Most Popular',
+    label: context.l10n.swSortMostPopular,
     field: 'enrollmentCount',
     order: SortOrder.descending,
     icon: Icons.people,
   );
 
-  static const rating = SortOption(
+  static SortOption rating(BuildContext context) => SortOption(
     id: 'rating',
-    label: 'Highest Rated',
+    label: context.l10n.swSortHighestRated,
     field: 'rating',
     order: SortOrder.descending,
     icon: Icons.star,
   );
 
   // Date
-  static const newest = SortOption(
+  static SortOption newest(BuildContext context) => SortOption(
     id: 'newest',
-    label: 'Newest First',
+    label: context.l10n.swSortNewestFirst,
     field: 'createdAt',
     order: SortOrder.descending,
     icon: Icons.access_time,
   );
 
-  static const oldest = SortOption(
+  static SortOption oldest(BuildContext context) => SortOption(
     id: 'oldest',
-    label: 'Oldest First',
+    label: context.l10n.swSortOldestFirst,
     field: 'createdAt',
     order: SortOrder.ascending,
     icon: Icons.history,
   );
 
   // Price
-  static const priceLowToHigh = SortOption(
+  static SortOption priceLowToHigh(BuildContext context) => SortOption(
     id: 'price_asc',
-    label: 'Price: Low to High',
+    label: context.l10n.swSortPriceLowToHigh,
     field: 'price',
     order: SortOrder.ascending,
     icon: Icons.arrow_upward,
   );
 
-  static const priceHighToLow = SortOption(
+  static SortOption priceHighToLow(BuildContext context) => SortOption(
     id: 'price_desc',
-    label: 'Price: High to Low',
+    label: context.l10n.swSortPriceHighToLow,
     field: 'price',
     order: SortOrder.descending,
     icon: Icons.arrow_downward,
   );
 
   // Name
-  static const nameAZ = SortOption(
+  static SortOption nameAZ(BuildContext context) => SortOption(
     id: 'name_asc',
-    label: 'Name: A to Z',
+    label: context.l10n.swSortNameAZ,
     field: 'name',
     order: SortOrder.ascending,
     icon: Icons.sort_by_alpha,
   );
 
-  static const nameZA = SortOption(
+  static SortOption nameZA(BuildContext context) => SortOption(
     id: 'name_desc',
-    label: 'Name: Z to A',
+    label: context.l10n.swSortNameZA,
     field: 'name',
     order: SortOrder.descending,
     icon: Icons.sort_by_alpha,
   );
 
   // Duration
-  static const durationShort = SortOption(
+  static SortOption durationShort(BuildContext context) => SortOption(
     id: 'duration_asc',
-    label: 'Duration: Shortest',
+    label: context.l10n.swSortDurationShortest,
     field: 'duration',
     order: SortOrder.ascending,
     icon: Icons.schedule,
   );
 
-  static const durationLong = SortOption(
+  static SortOption durationLong(BuildContext context) => SortOption(
     id: 'duration_desc',
-    label: 'Duration: Longest',
+    label: context.l10n.swSortDurationLongest,
     field: 'duration',
     order: SortOrder.descending,
     icon: Icons.schedule,
   );
 
   // Get all course sort options
-  static List<SortOption> get courseOptions => [
-        relevance,
-        popularity,
-        rating,
-        newest,
-        priceLowToHigh,
-        priceHighToLow,
-        durationShort,
-        nameAZ,
+  static List<SortOption> courseOptions(BuildContext context) => [
+        relevance(context),
+        popularity(context),
+        rating(context),
+        newest(context),
+        priceLowToHigh(context),
+        priceHighToLow(context),
+        durationShort(context),
+        nameAZ(context),
       ];
 
   // Get all program sort options
-  static List<SortOption> get programOptions => [
-        relevance,
-        popularity,
-        rating,
-        newest,
-        priceLowToHigh,
-        priceHighToLow,
-        nameAZ,
+  static List<SortOption> programOptions(BuildContext context) => [
+        relevance(context),
+        popularity(context),
+        rating(context),
+        newest(context),
+        priceLowToHigh(context),
+        priceHighToLow(context),
+        nameAZ(context),
       ];
 
   // Get all application sort options
-  static List<SortOption> get applicationOptions => [
-        newest,
-        oldest,
-        nameAZ,
+  static List<SortOption> applicationOptions(BuildContext context) => [
+        newest(context),
+        oldest(context),
+        nameAZ(context),
       ];
 }
 
@@ -273,7 +274,7 @@ class SortBottomSheet extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              'Sort By',
+              context.l10n.swSortByTitle,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -430,7 +431,7 @@ class SortFilterBar extends StatelessWidget {
           OutlinedButton.icon(
             onPressed: onSortPressed,
             icon: Icon(currentSort.icon, size: 16),
-            label: const Text('Sort'),
+            label: Text(context.l10n.swSortLabel),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
@@ -443,7 +444,7 @@ class SortFilterBar extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: onFilterPressed,
                 icon: const Icon(Icons.filter_list, size: 16),
-                label: const Text('Filter'),
+                label: Text(context.l10n.swSortFilterLabel),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),

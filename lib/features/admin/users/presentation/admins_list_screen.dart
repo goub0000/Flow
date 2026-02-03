@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/models/admin_user_model.dart';
@@ -91,12 +92,12 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                   isProcessing: _isBulkOperationInProgress,
                   actions: [
                     BulkAction(
-                      label: 'Activate',
+                      label: context.l10n.adminUserActivate,
                       icon: Icons.check_circle,
                       onPressed: _handleBulkActivate,
                     ),
                     BulkAction(
-                      label: 'Deactivate',
+                      label: context.l10n.adminUserDeactivate,
                       icon: Icons.block,
                       onPressed: _handleBulkDeactivate,
                       isDestructive: true,
@@ -122,14 +123,14 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Admin Users',
+                context.l10n.adminUserAdminUsers,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage admin accounts and permissions',
+                context.l10n.adminUserManageAdminAccounts,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -143,7 +144,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
               ElevatedButton.icon(
                 onPressed: () => context.go('/admin/system/admins/create'),
                 icon: const Icon(Icons.add, size: 18),
-                label: const Text('Create Admin'),
+                label: Text(context.l10n.adminUserCreateAdmin),
               ),
               const SizedBox(width: 12),
               // Export button (requires permission)
@@ -154,13 +155,13 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                     final admins = _getFilteredAdmins();
                     // TODO: Implement export for admins
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Admin export feature coming soon'),
+                      SnackBar(
+                        content: Text(context.l10n.adminUserExportComingSoon),
                       ),
                     );
                   },
                   icon: const Icon(Icons.download, size: 18),
-                  label: const Text('Export'),
+                  label: Text(context.l10n.adminUserExport),
                 ),
               ),
             ],
@@ -181,7 +182,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by name or email...',
+                hintText: context.l10n.adminUserSearchByNameOrEmail,
                 prefixIcon: const Icon(Icons.search, size: 20),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -212,15 +213,15 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
               final isSuperAdmin = currentAdmin?.adminRole == UserRole.superAdmin;
 
               final roleItems = <DropdownMenuItem<String>>[
-                const DropdownMenuItem(value: 'all', child: Text('All Roles')),
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUserAllRoles)),
                 if (isSuperAdmin) ...[
-                  const DropdownMenuItem(value: 'superadmin', child: Text('Super Admin')),
-                  const DropdownMenuItem(value: 'regionaladmin', child: Text('Regional Admin')),
+                  DropdownMenuItem(value: 'superadmin', child: Text(context.l10n.adminUserSuperAdmin)),
+                  DropdownMenuItem(value: 'regionaladmin', child: Text(context.l10n.adminUserRegionalAdmin)),
                 ],
-                const DropdownMenuItem(value: 'contentadmin', child: Text('Content Admin')),
-                const DropdownMenuItem(value: 'supportadmin', child: Text('Support Admin')),
-                const DropdownMenuItem(value: 'financeadmin', child: Text('Finance Admin')),
-                const DropdownMenuItem(value: 'analyticsadmin', child: Text('Analytics Admin')),
+                DropdownMenuItem(value: 'contentadmin', child: Text(context.l10n.adminUserContentAdmin)),
+                DropdownMenuItem(value: 'supportadmin', child: Text(context.l10n.adminUserSupportAdmin)),
+                DropdownMenuItem(value: 'financeadmin', child: Text(context.l10n.adminUserFinanceAdmin)),
+                DropdownMenuItem(value: 'analyticsadmin', child: Text(context.l10n.adminUserAnalyticsAdmin)),
               ];
 
               // Reset filter if current value is no longer available
@@ -232,7 +233,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                 child: DropdownButtonFormField<String>(
                   value: effectiveRole,
                   decoration: InputDecoration(
-                    labelText: 'Admin Role',
+                    labelText: context.l10n.adminUserAdminRole,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -259,7 +260,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminUserStatus,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -268,10 +269,10 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All')),
-                DropdownMenuItem(value: 'active', child: Text('Active')),
-                DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUserAll)),
+                DropdownMenuItem(value: 'active', child: Text(context.l10n.adminUserActive)),
+                DropdownMenuItem(value: 'inactive', child: Text(context.l10n.adminUserInactive)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -291,7 +292,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
     return AdminDataTable<AdminRowData>(
       columns: [
         DataTableColumn<AdminRowData>(
-          label: 'Admin',
+          label: context.l10n.adminUserAdminColumn,
           cellBuilder: (admin) => Row(
             children: [
               LogoAvatar.user(
@@ -328,7 +329,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           ),
         ),
         DataTableColumn<AdminRowData>(
-          label: 'Role',
+          label: context.l10n.adminUserRoleColumn,
           cellBuilder: (admin) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
@@ -357,7 +358,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           ),
         ),
         DataTableColumn<AdminRowData>(
-          label: 'Status',
+          label: context.l10n.adminUserStatusColumn,
           cellBuilder: (admin) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
@@ -375,14 +376,14 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           ),
         ),
         DataTableColumn<AdminRowData>(
-          label: 'Last Login',
+          label: context.l10n.adminUserLastLogin,
           cellBuilder: (admin) => Text(
             admin.lastLogin,
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn<AdminRowData>(
-          label: 'Created',
+          label: context.l10n.adminUserCreated,
           cellBuilder: (admin) => Text(
             admin.joinedDate,
             style: const TextStyle(fontSize: 13),
@@ -398,7 +399,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
       rowActions: [
         DataTableAction<AdminRowData>(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminUserViewDetails,
           onPressed: (admin) {
             // View is allowed for all admins they can see in the list
             // Note: Admins are already filtered by hierarchy in _getFilteredAdmins()
@@ -407,7 +408,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
         ),
         DataTableAction<AdminRowData>(
           icon: Icons.edit,
-          tooltip: 'Edit Admin',
+          tooltip: context.l10n.adminUserEditAdmin,
           onPressed: (admin) {
             final currentAdmin = ref.read(currentAdminUserProvider);
             if (currentAdmin != null) {
@@ -416,7 +417,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('You do not have permission to edit this admin'),
+                    content: Text(context.l10n.adminUserNoPermissionEdit),
                     backgroundColor: AppColors.error,
                   ),
                 );
@@ -426,7 +427,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
         ),
         DataTableAction<AdminRowData>(
           icon: Icons.block,
-          tooltip: 'Deactivate',
+          tooltip: context.l10n.adminUserDeactivate,
           color: AppColors.error,
           onPressed: (admin) {
             final currentAdmin = ref.read(currentAdminUserProvider);
@@ -435,15 +436,15 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                 // TODO: Show confirmation dialog
                 // TODO: Call deactivate API
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Deactivation feature coming soon'),
+                  SnackBar(
+                    content: Text(context.l10n.adminUserDeactivationComingSoon),
                   ),
                 );
               } else {
                 // This should not happen due to list filtering, but included for safety
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('You do not have permission to deactivate this admin'),
+                    content: Text(context.l10n.adminUserNoPermissionDeactivate),
                     backgroundColor: AppColors.error,
                   ),
                 );
@@ -544,7 +545,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Cannot activate ${invalidSelections.length} admin(s) - insufficient permissions',
+              context.l10n.adminUserCannotActivateInsufficient(invalidSelections.length),
             ),
             backgroundColor: AppColors.error,
           ),
@@ -563,7 +564,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${_selectedItems.length} admin(s) activated'),
+            content: Text(context.l10n.adminUserAdminsActivated(_selectedItems.length)),
             backgroundColor: AppColors.success,
           ),
         );
@@ -592,7 +593,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Cannot deactivate ${invalidSelections.length} admin(s) - insufficient permissions',
+              context.l10n.adminUserCannotDeactivateInsufficient(invalidSelections.length),
             ),
             backgroundColor: AppColors.error,
           ),
@@ -605,14 +606,14 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deactivation'),
+        title: Text(context.l10n.adminUserConfirmDeactivation),
         content: Text(
-          'Are you sure you want to deactivate ${_selectedItems.length} admin(s)? This will revoke their admin access.',
+          context.l10n.adminUserConfirmDeactivateAdmins(_selectedItems.length),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminUserCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -620,7 +621,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
               backgroundColor: AppColors.error,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Deactivate'),
+            child: Text(context.l10n.adminUserDeactivate),
           ),
         ],
       ),
@@ -638,7 +639,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${_selectedItems.length} admin(s) deactivated'),
+            content: Text(context.l10n.adminUserAdminsDeactivated(_selectedItems.length)),
             backgroundColor: AppColors.error,
           ),
         );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
@@ -115,7 +116,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
                   Icon(Icons.replay, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Refunds Management',
+                    context.l10n.adminFinanceRefundsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -124,7 +125,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Process and track refund requests',
+                context.l10n.adminFinanceRefundsSubtitle,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -134,7 +135,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
               IconButton(
                 onPressed: () => ref.read(adminFinanceProvider.notifier).fetchTransactions(),
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh',
+                tooltip: context.l10n.adminFinanceRefresh,
               ),
               const SizedBox(width: 8),
               PermissionGuard(
@@ -142,7 +143,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () => _showNewRefundDialog(),
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('New Refund'),
+                  label: Text(context.l10n.adminFinanceNewRefund),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
@@ -161,13 +162,13 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          Expanded(child: _buildStatCard('Total Refunds', '$totalCount', 'All refund transactions', Icons.replay, AppColors.primary)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinanceTotalRefunds, '$totalCount', context.l10n.adminFinanceAllRefundTransactions, Icons.replay, AppColors.primary)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Refunded Amount', _formatCurrency(totalRefunded), 'Successfully refunded', Icons.check_circle, AppColors.success)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinanceRefundedAmount, _formatCurrency(totalRefunded), context.l10n.adminFinanceSuccessfullyRefunded, Icons.check_circle, AppColors.success)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Pending', _formatCurrency(pendingAmount), 'Awaiting processing', Icons.pending, AppColors.warning)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinancePending, _formatCurrency(pendingAmount), context.l10n.adminFinanceAwaitingProcessing, Icons.pending, AppColors.warning)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Eligible', '$eligibleCount', 'Payments eligible for refund', Icons.receipt, AppColors.info)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinanceEligible, '$eligibleCount', context.l10n.adminFinancePaymentsEligibleForRefund, Icons.receipt, AppColors.info)),
         ],
       ),
     );
@@ -210,7 +211,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by ID, user, or amount...',
+                hintText: context.l10n.adminFinanceSearchRefundsHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -223,16 +224,16 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
             child: DropdownButtonFormField<String>(
               initialValue: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminFinanceStatus,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'completed', child: Text('Completed')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                DropdownMenuItem(value: 'failed', child: Text('Failed')),
-                DropdownMenuItem(value: 'refunded', child: Text('Refunded')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminFinanceAllStatus)),
+                DropdownMenuItem(value: 'completed', child: Text(context.l10n.adminFinanceCompleted)),
+                DropdownMenuItem(value: 'pending', child: Text(context.l10n.adminFinancePending)),
+                DropdownMenuItem(value: 'failed', child: Text(context.l10n.adminFinanceFailed)),
+                DropdownMenuItem(value: 'refunded', child: Text(context.l10n.adminFinanceRefunded)),
               ],
               onChanged: (v) {
                 if (v != null) setState(() => _selectedStatus = v);
@@ -248,7 +249,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
     return AdminDataTable<Transaction>(
       columns: [
         DataTableColumn(
-          label: 'Refund ID',
+          label: context.l10n.adminFinanceRefundId,
           cellBuilder: (txn) => Text(
             txn.id,
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13, fontFamily: 'monospace'),
@@ -256,7 +257,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
           sortable: true,
         ),
         DataTableColumn(
-          label: 'User',
+          label: context.l10n.adminFinanceUser,
           cellBuilder: (txn) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -267,25 +268,25 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Amount',
+          label: context.l10n.adminFinanceAmount,
           cellBuilder: (txn) => Text(
             _formatCurrency(txn.amount),
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
           ),
         ),
         DataTableColumn(
-          label: 'Reason',
+          label: context.l10n.adminFinanceReason,
           cellBuilder: (txn) {
             final reason = txn.metadata?['reason'] ?? txn.itemName ?? '-';
             return Text(reason.toString(), style: const TextStyle(fontSize: 13));
           },
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminFinanceStatus,
           cellBuilder: (txn) => _buildStatusChip(txn.status),
         ),
         DataTableColumn(
-          label: 'Date',
+          label: context.l10n.adminFinanceDate,
           cellBuilder: (txn) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -304,7 +305,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminFinanceViewDetails,
           onPressed: (txn) => _showRefundDetails(txn),
         ),
       ],
@@ -318,15 +319,15 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
       case 'completed':
       case 'refunded':
         color = AppColors.success;
-        label = status == 'refunded' ? 'Refunded' : 'Completed';
+        label = status == 'refunded' ? context.l10n.adminFinanceRefunded : context.l10n.adminFinanceCompleted;
         break;
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending';
+        label = context.l10n.adminFinancePending;
         break;
       case 'failed':
         color = AppColors.error;
-        label = 'Failed';
+        label = context.l10n.adminFinanceFailed;
         break;
       default:
         color = AppColors.textSecondary;
@@ -350,7 +351,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
           children: [
             Icon(Icons.replay, color: AppColors.primary),
             const SizedBox(width: 12),
-            const Text('Refund Details'),
+            Text(context.l10n.adminFinanceRefundDetails),
           ],
         ),
         content: SizedBox(
@@ -358,22 +359,22 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildDetailRow('Refund ID', txn.id),
-              _buildDetailRow('User', txn.userName),
-              _buildDetailRow('User ID', txn.userId),
-              _buildDetailRow('Amount', _formatCurrency(txn.amount)),
-              _buildDetailRow('Currency', txn.currency),
-              _buildDetailRow('Status', txn.status),
+              _buildDetailRow(context.l10n.adminFinanceRefundId, txn.id),
+              _buildDetailRow(context.l10n.adminFinanceUser, txn.userName),
+              _buildDetailRow(context.l10n.adminFinanceUserId, txn.userId),
+              _buildDetailRow(context.l10n.adminFinanceAmount, _formatCurrency(txn.amount)),
+              _buildDetailRow(context.l10n.adminFinanceCurrency, txn.currency),
+              _buildDetailRow(context.l10n.adminFinanceStatus, txn.status),
               if (txn.metadata?['reason'] != null)
-                _buildDetailRow('Reason', txn.metadata!['reason'].toString()),
+                _buildDetailRow(context.l10n.adminFinanceReason, txn.metadata!['reason'].toString()),
               if (txn.metadata?['originalTransaction'] != null)
-                _buildDetailRow('Original Txn', txn.metadata!['originalTransaction'].toString()),
-              _buildDetailRow('Date', '${_formatDate(txn.createdAt)} ${_formatTime(txn.createdAt)}'),
+                _buildDetailRow(context.l10n.adminFinanceOriginalTxn, txn.metadata!['originalTransaction'].toString()),
+              _buildDetailRow(context.l10n.adminFinanceDate, '${_formatDate(txn.createdAt)} ${_formatTime(txn.createdAt)}'),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(context.l10n.adminFinanceClose)),
         ],
       ),
     );
@@ -385,7 +386,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
 
     if (candidates.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No eligible transactions for refund')),
+        SnackBar(content: Text(context.l10n.adminFinanceNoEligibleTransactions)),
       );
       return;
     }
@@ -401,7 +402,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
             children: [
               Icon(Icons.replay, color: AppColors.warning),
               const SizedBox(width: 12),
-              const Text('Process New Refund'),
+              Text(context.l10n.adminFinanceProcessNewRefund),
             ],
           ),
           content: SizedBox(
@@ -410,14 +411,14 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Select a transaction to refund:', style: TextStyle(fontWeight: FontWeight.w600)),
+                Text(context.l10n.adminFinanceSelectTransactionToRefund, style: const TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<Transaction>(
                   initialValue: selectedTxn,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                    hintText: 'Choose transaction',
+                    hintText: context.l10n.adminFinanceChooseTransaction,
                   ),
                   isExpanded: true,
                   items: candidates.take(20).map((t) {
@@ -436,23 +437,23 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
                 TextField(
                   controller: reasonController,
                   decoration: InputDecoration(
-                    labelText: 'Reason for refund',
+                    labelText: context.l10n.adminFinanceReasonForRefund,
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   maxLines: 2,
                 ),
                 if (selectedTxn != null) ...[
                   const SizedBox(height: 16),
-                  _buildDetailRow('Amount', _formatCurrency(selectedTxn!.amount)),
-                  _buildDetailRow('User', selectedTxn!.userName),
+                  _buildDetailRow(context.l10n.adminFinanceAmount, _formatCurrency(selectedTxn!.amount)),
+                  _buildDetailRow(context.l10n.adminFinanceUser, selectedTxn!.userName),
                 ],
                 const SizedBox(height: 12),
-                Text('This action cannot be undone.', style: TextStyle(color: AppColors.error, fontSize: 12, fontWeight: FontWeight.w600)),
+                Text(context.l10n.adminFinanceActionCannotBeUndone, style: TextStyle(color: AppColors.error, fontSize: 12, fontWeight: FontWeight.w600)),
               ],
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+            TextButton(onPressed: () => Navigator.pop(ctx), child: Text(context.l10n.adminFinanceCancel)),
             ElevatedButton(
               onPressed: selectedTxn != null
                   ? () async {
@@ -465,7 +466,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(success ? 'Refund processed successfully' : 'Failed to process refund'),
+                            content: Text(success ? context.l10n.adminFinanceRefundProcessedSuccess : context.l10n.adminFinanceRefundProcessedFail),
                             backgroundColor: success ? AppColors.success : AppColors.error,
                           ),
                         );
@@ -473,7 +474,7 @@ class _RefundsScreenState extends ConsumerState<RefundsScreen> {
                     }
                   : null,
               style: ElevatedButton.styleFrom(backgroundColor: AppColors.warning),
-              child: const Text('Process Refund'),
+              child: Text(context.l10n.adminFinanceProcessRefund),
             ),
           ],
         ),

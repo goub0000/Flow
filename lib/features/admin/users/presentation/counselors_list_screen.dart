@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
@@ -88,12 +89,12 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
                   isProcessing: _isBulkOperationInProgress,
                   actions: [
                     BulkAction(
-                      label: 'Activate',
+                      label: context.l10n.adminUserActivate,
                       icon: Icons.check_circle,
                       onPressed: _handleBulkActivate,
                     ),
                     BulkAction(
-                      label: 'Deactivate',
+                      label: context.l10n.adminUserDeactivate,
                       icon: Icons.block,
                       onPressed: _handleBulkDeactivate,
                       isDestructive: true,
@@ -119,14 +120,14 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Counselors',
+                context.l10n.adminUserCounselors,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage counselor accounts and student assignments',
+                context.l10n.adminUserManageCounselorAccounts,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -144,7 +145,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
                     final users = ref.read(adminCounselorsProvider);
                     await showExportDialog(
                       context: context,
-                      title: 'Export Counselors',
+                      title: context.l10n.adminUserExportCounselors,
                       onExport: (format) => ExportService.exportCounselors(
                         counselors: users,
                         format: format,
@@ -152,7 +153,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
                     );
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export'),
+                  label: Text(context.l10n.adminUserExport),
                 ),
               ),
               const SizedBox(width: 12),
@@ -162,7 +163,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () => context.go('/admin/users/counselors/create'),
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('Add Counselor'),
+                  label: Text(context.l10n.adminUserAddCounselor),
                 ),
               ),
             ],
@@ -183,7 +184,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by name, email, or counselor ID...',
+                hintText: context.l10n.adminUserSearchCounselors,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -208,7 +209,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminUserStatus,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -217,12 +218,12 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'active', child: Text('Active')),
-                DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUserAllStatus)),
+                DropdownMenuItem(value: 'active', child: Text(context.l10n.adminUserActive)),
+                DropdownMenuItem(value: 'inactive', child: Text(context.l10n.adminUserInactive)),
                 DropdownMenuItem(
-                    value: 'pending', child: Text('Pending Verification')),
+                    value: 'pending', child: Text(context.l10n.adminUserPendingVerification)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -238,7 +239,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedSpecialty,
               decoration: InputDecoration(
-                labelText: 'Specialty',
+                labelText: context.l10n.adminUserSpecialty,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -247,14 +248,14 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Specialties')),
-                DropdownMenuItem(value: 'academic', child: Text('Academic')),
-                DropdownMenuItem(value: 'career', child: Text('Career')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminUserAllSpecialties)),
+                DropdownMenuItem(value: 'academic', child: Text(context.l10n.adminUserAcademic)),
+                DropdownMenuItem(value: 'career', child: Text(context.l10n.adminUserCareer)),
                 DropdownMenuItem(
-                    value: 'college', child: Text('College Admissions')),
+                    value: 'college', child: Text(context.l10n.adminUserCollegeAdmissions)),
                 DropdownMenuItem(
-                    value: 'financial', child: Text('Financial Aid')),
+                    value: 'financial', child: Text(context.l10n.adminUserFinancialAid)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -309,7 +310,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
     return AdminDataTable<CounselorRowData>(
       columns: [
         DataTableColumn(
-          label: 'Counselor',
+          label: context.l10n.adminUserCounselorColumn,
           cellBuilder: (counselor) => Row(
             children: [
               CircleAvatar(
@@ -350,27 +351,27 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Counselor ID',
+          label: context.l10n.adminUserCounselorId,
           cellBuilder: (counselor) => Text(counselor.counselorId),
         ),
         DataTableColumn(
-          label: 'Specialty',
+          label: context.l10n.adminUserSpecialty,
           cellBuilder: (counselor) => Text(counselor.specialty),
         ),
         DataTableColumn(
-          label: 'Students',
+          label: context.l10n.adminUserStudents,
           cellBuilder: (counselor) => Text(counselor.students.toString()),
         ),
         DataTableColumn(
-          label: 'Sessions',
+          label: context.l10n.adminUserSessions,
           cellBuilder: (counselor) => Text(counselor.sessions.toString()),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminUserStatus,
           cellBuilder: (counselor) => _buildStatusChip(counselor.status),
         ),
         DataTableColumn(
-          label: 'Joined',
+          label: context.l10n.adminUserJoined,
           cellBuilder: (counselor) => Text(counselor.joinedDate),
         ),
       ],
@@ -387,7 +388,7 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminUserViewDetails,
           onPressed: (counselor) {
             // TODO: Navigate to counselor detail screen
             _showCounselorDetails(counselor);
@@ -395,14 +396,14 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
         ),
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit Counselor',
+          tooltip: context.l10n.adminUserEditCounselor,
           onPressed: (counselor) {
             // TODO: Navigate to edit counselor screen
           },
         ),
         DataTableAction(
           icon: Icons.block,
-          tooltip: 'Deactivate Account',
+          tooltip: context.l10n.adminUserDeactivateAccount,
           color: AppColors.error,
           onPressed: (counselor) {
             // TODO: Show confirmation dialog
@@ -420,15 +421,15 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
     switch (status) {
       case 'active':
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminUserActive;
         break;
       case 'inactive':
         color = AppColors.textSecondary;
-        label = 'Inactive';
+        label = context.l10n.adminUserInactive;
         break;
       case 'pending':
         color = AppColors.warning;
-        label = 'Pending';
+        label = context.l10n.adminUserPending;
         break;
       default:
         color = AppColors.textSecondary;
@@ -475,11 +476,11 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Activate Counselors'),
-        content: Text('Are you sure you want to activate ${_selectedItems.length} counselor(s)?'),
+        title: Text(context.l10n.adminUserActivateCounselors),
+        content: Text(context.l10n.adminUserConfirmActivateCounselors(_selectedItems.length)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
-          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Activate')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(context.l10n.adminUserCancel)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), child: Text(context.l10n.adminUserActivate)),
         ],
       ),
     );
@@ -503,11 +504,11 @@ class _CounselorsListScreenState extends ConsumerState<CounselorsListScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Deactivate Counselors'),
-        content: Text('Are you sure you want to deactivate ${_selectedItems.length} counselor(s)?'),
+        title: Text(context.l10n.adminUserDeactivateCounselors),
+        content: Text(context.l10n.adminUserConfirmDeactivateCounselors(_selectedItems.length)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
-          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), style: ElevatedButton.styleFrom(backgroundColor: AppColors.error), child: const Text('Deactivate')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(context.l10n.adminUserCancel)),
+          ElevatedButton(onPressed: () => Navigator.of(context).pop(true), style: ElevatedButton.styleFrom(backgroundColor: AppColors.error), child: Text(context.l10n.adminUserDeactivate)),
         ],
       ),
     );

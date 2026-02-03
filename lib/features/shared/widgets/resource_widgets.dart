@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Resources & Materials Widgets
 ///
@@ -483,8 +484,8 @@ class ResourceCard extends StatelessWidget {
                       ),
                       onPressed: onBookmark,
                       tooltip: resource.isBookmarked
-                          ? 'Remove bookmark'
-                          : 'Bookmark',
+                          ? context.l10n.swResourceRemoveBookmark
+                          : context.l10n.swResourceBookmark,
                     ),
                   if (onDownload != null && downloadProgress == null)
                     IconButton(
@@ -497,7 +498,7 @@ class ResourceCard extends StatelessWidget {
                             : AppColors.textSecondary,
                       ),
                       onPressed: onDownload,
-                      tooltip: resource.isDownloaded ? 'Downloaded' : 'Download',
+                      tooltip: resource.isDownloaded ? context.l10n.swResourceDownloaded : context.l10n.swResourceDownload,
                     ),
                 ],
               ),
@@ -619,7 +620,7 @@ class EmptyResourcesState extends StatelessWidget {
 
   const EmptyResourcesState({
     super.key,
-    this.message = 'No Resources Available',
+    this.message = '',
     this.subtitle,
   });
 
@@ -648,14 +649,14 @@ class EmptyResourcesState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              message,
+              message.isEmpty ? context.l10n.swResourceNoResourcesAvailable : message,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              subtitle ?? 'Resources will appear here when available',
+              subtitle ?? context.l10n.swResourceWillAppearHere,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -684,7 +685,7 @@ class DownloadProgressDialog extends StatelessWidget {
     final theme = Theme.of(context);
 
     return AlertDialog(
-      title: const Text('Downloading'),
+      title: Text(context.l10n.swResourceDownloading),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

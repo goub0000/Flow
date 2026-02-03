@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/providers/notification_provider.dart';
 import '../../../core/models/notification_models.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Notification bell icon with unread count badge
 class NotificationBell extends ConsumerWidget {
@@ -154,16 +155,16 @@ class NotificationBellMenu extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'No new notifications',
+                      context.l10n.swNotifBellNoNew,
                       style: TextStyle(color: Colors.grey.shade600),
                     ),
                   ],
                 ),
               ),
             ),
-            const PopupMenuItem<String>(
+            PopupMenuItem<String>(
               value: 'view_all',
-              child: Center(child: Text('View All Notifications')),
+              child: Center(child: Text(context.l10n.swNotifBellViewAll)),
             ),
           ];
         }
@@ -175,9 +176,9 @@ class NotificationBellMenu extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Notifications',
-                  style: TextStyle(
+                Text(
+                  context.l10n.swNotifBellNotifications,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -267,12 +268,12 @@ class NotificationBellMenu extends ConsumerWidget {
 
         items.addAll([
           const PopupMenuDivider(),
-          const PopupMenuItem<String>(
+          PopupMenuItem<String>(
             value: 'view_all',
             child: Center(
               child: Text(
-                'View All Notifications',
-                style: TextStyle(
+                context.l10n.swNotifBellViewAll,
+                style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
                 ),

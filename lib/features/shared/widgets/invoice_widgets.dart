@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import 'payment_widgets.dart';
 
 /// Invoice and Receipt Widgets
@@ -197,20 +198,20 @@ class InvoiceHeader extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Invoice #${invoice.number}',
+                    context.l10n.swInvoiceNumber(invoice.number),
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Issued: ${_formatDate(invoice.issueDate)}',
+                    context.l10n.swInvoiceIssued(_formatDate(invoice.issueDate)),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
                   Text(
-                    'Due: ${_formatDate(invoice.dueDate)}',
+                    context.l10n.swInvoiceDue(_formatDate(invoice.dueDate)),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -227,7 +228,7 @@ class InvoiceHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'BILL TO',
+                context.l10n.swInvoiceBillTo,
                 style: theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppColors.textSecondary,
@@ -326,7 +327,7 @@ class InvoiceLineItemsTable extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    'DESCRIPTION',
+                    context.l10n.swInvoiceDescription,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textSecondary,
@@ -336,7 +337,7 @@ class InvoiceLineItemsTable extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'QTY',
+                    context.l10n.swInvoiceQty,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textSecondary,
@@ -347,7 +348,7 @@ class InvoiceLineItemsTable extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'RATE',
+                    context.l10n.swInvoiceRate,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textSecondary,
@@ -358,7 +359,7 @@ class InvoiceLineItemsTable extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'AMOUNT',
+                    context.l10n.swInvoiceAmount,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textSecondary,
@@ -472,13 +473,13 @@ class InvoiceTotals extends StatelessWidget {
       child: Column(
         children: [
           _TotalRow(
-            label: 'Subtotal',
+            label: context.l10n.swInvoiceSubtotal,
             value: '$symbol${invoice.subtotal.toStringAsFixed(2)}',
           ),
           if (invoice.discount > 0) ...[
             const SizedBox(height: 12),
             _TotalRow(
-              label: 'Discount',
+              label: context.l10n.swInvoiceDiscount,
               value: '-$symbol${invoice.discount.toStringAsFixed(2)}',
               valueColor: AppColors.success,
             ),
@@ -486,13 +487,13 @@ class InvoiceTotals extends StatelessWidget {
           if (invoice.tax > 0) ...[
             const SizedBox(height: 12),
             _TotalRow(
-              label: 'Tax',
+              label: context.l10n.swInvoiceTax,
               value: '+$symbol${invoice.tax.toStringAsFixed(2)}',
             ),
           ],
           const Divider(height: 24),
           _TotalRow(
-            label: 'TOTAL',
+            label: context.l10n.swInvoiceTotal,
             value: invoice.formattedTotal,
             labelStyle: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
@@ -641,7 +642,7 @@ class ReceiptSummary extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Transaction ID',
+                  context.l10n.swInvoiceTransactionId,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
@@ -667,9 +668,9 @@ class ReceiptSummary extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: onDownload,
                 icon: const Icon(Icons.download, color: Colors.white),
-                label: const Text(
-                  'Download Receipt',
-                  style: TextStyle(color: Colors.white),
+                label: Text(
+                  context.l10n.swInvoiceDownloadReceipt,
+                  style: const TextStyle(color: Colors.white),
                 ),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.white),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
@@ -112,16 +113,16 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Chatbot Management',
-                style: TextStyle(
+              Text(
+                context.l10n.adminChatDashTitle,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1E293B),
                 ),
               ),
               Text(
-                'Monitor conversations, manage FAQs, and view analytics',
+                context.l10n.adminChatDashSubtitle,
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.grey[600],
@@ -133,7 +134,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
         IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: _loadData,
-          tooltip: 'Refresh',
+          tooltip: context.l10n.adminChatDashRefresh,
         ),
       ],
     );
@@ -154,7 +155,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
       children: [
         Expanded(
           child: _buildStatCard(
-            'Total Conversations',
+            context.l10n.adminChatDashTotalConversations,
             stats.totalConversations.toString(),
             Icons.forum_outlined,
             const Color(0xFF6366F1),
@@ -164,7 +165,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
         const SizedBox(width: 16),
         Expanded(
           child: _buildStatCard(
-            'Active Now',
+            context.l10n.adminChatDashActiveNow,
             stats.activeConversations.toString(),
             Icons.chat_bubble_outline,
             const Color(0xFF10B981),
@@ -174,7 +175,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
         const SizedBox(width: 16),
         Expanded(
           child: _buildStatCard(
-            'Total Messages',
+            context.l10n.adminChatDashTotalMessages,
             stats.totalMessages.toString(),
             Icons.message_outlined,
             const Color(0xFF3B82F6),
@@ -184,7 +185,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
         const SizedBox(width: 16),
         Expanded(
           child: _buildStatCard(
-            'Avg Messages/Chat',
+            context.l10n.adminChatDashAvgMessagesPerChat,
             stats.averageMessagesPerConversation.toStringAsFixed(1),
             Icons.analytics_outlined,
             const Color(0xFFF59E0B),
@@ -259,11 +260,11 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 4, bottom: 12),
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 12),
           child: Text(
-            'Quick Actions',
-            style: TextStyle(
+            context.l10n.adminChatDashQuickActions,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Color(0xFF1E293B),
@@ -274,8 +275,8 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
           children: [
             Expanded(
               child: _buildActionCard(
-                'Manage FAQs',
-                'Create, edit, and organize FAQ responses',
+                context.l10n.adminChatDashManageFaqs,
+                context.l10n.adminChatDashManageFaqsDesc,
                 Icons.quiz_outlined,
                 const Color(0xFF6366F1),
                 () => context.push('/admin/chatbot/faqs'),
@@ -284,8 +285,8 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
             const SizedBox(width: 16),
             Expanded(
               child: _buildActionCard(
-                'Conversation History',
-                'View and search all user conversations',
+                context.l10n.adminChatDashConversationHistory,
+                context.l10n.adminChatDashConversationHistoryDesc,
                 Icons.history,
                 const Color(0xFF3B82F6),
                 () => context.push('/admin/chatbot/conversations'),
@@ -294,8 +295,8 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
             const SizedBox(width: 16),
             Expanded(
               child: _buildActionCard(
-                'Support Queue',
-                'Handle escalated support requests',
+                context.l10n.adminChatDashSupportQueue,
+                context.l10n.adminChatDashSupportQueueDesc,
                 Icons.support_agent_outlined,
                 const Color(0xFFF59E0B),
                 () => context.push('/admin/chatbot/queue'),
@@ -304,8 +305,8 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
             const SizedBox(width: 16),
             Expanded(
               child: _buildActionCard(
-                'Live Monitoring',
-                'Watch active conversations in real-time',
+                context.l10n.adminChatDashLiveMonitoring,
+                context.l10n.adminChatDashLiveMonitoringDesc,
                 Icons.monitor_heart_outlined,
                 const Color(0xFF10B981),
                 () => context.push('/admin/chatbot/live'),
@@ -422,9 +423,9 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
-                      'Recent Conversations',
-                      style: TextStyle(
+                    Text(
+                      context.l10n.adminChatDashRecentConversations,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF1E293B),
@@ -437,7 +438,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
                   child: Row(
                     children: [
                       Text(
-                        'View All',
+                        context.l10n.adminChatDashViewAll,
                         style: TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w500,
@@ -488,9 +489,9 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'No conversations yet',
-            style: TextStyle(
+          Text(
+            context.l10n.adminChatDashNoConversations,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Color(0xFF64748B),
@@ -498,7 +499,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Conversations will appear here once users start chatting',
+            context.l10n.adminChatDashNoConversationsDesc,
             style: TextStyle(
               fontSize: 13,
               color: Colors.grey[500],
@@ -547,7 +548,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${conversation.messageCount} messages',
+                      context.l10n.adminChatDashMessagesCount(conversation.messageCount),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -586,17 +587,17 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
       case ConversationStatus.active:
         color = const Color(0xFF10B981);
         bgColor = const Color(0xFFECFDF5);
-        label = 'Active';
+        label = context.l10n.adminChatDashStatusActive;
         break;
       case ConversationStatus.archived:
         color = const Color(0xFF64748B);
         bgColor = const Color(0xFFF1F5F9);
-        label = 'Archived';
+        label = context.l10n.adminChatDashStatusArchived;
         break;
       case ConversationStatus.flagged:
         color = const Color(0xFFEF4444);
         bgColor = const Color(0xFFFEF2F2);
-        label = 'Flagged';
+        label = context.l10n.adminChatDashStatusFlagged;
         break;
     }
 
@@ -621,10 +622,10 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
     final now = DateTime.now();
     final diff = now.difference(time);
 
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    if (diff.inDays < 7) return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return context.l10n.adminChatDashJustNow;
+    if (diff.inHours < 1) return context.l10n.adminChatDashMinutesAgo(diff.inMinutes);
+    if (diff.inDays < 1) return context.l10n.adminChatDashHoursAgo(diff.inHours);
+    if (diff.inDays < 7) return context.l10n.adminChatDashDaysAgo(diff.inDays);
     return '${time.month}/${time.day}';
   }
 }

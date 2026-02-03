@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/l10n_extension.dart';
 
 /// A text editor widget for CMS content editing with markdown formatting toolbar.
 class RichTextContentEditor extends StatefulWidget {
@@ -192,7 +193,7 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
                     height: 1.6,
                   ),
                   decoration: InputDecoration(
-                    hintText: widget.hintText ?? 'Start typing your content here...',
+                    hintText: widget.hintText ?? context.l10n.adminContentStartTyping,
                     hintStyle: TextStyle(
                       color: AppColors.textSecondary.withValues(alpha: 0.5),
                     ),
@@ -214,11 +215,11 @@ class _RichTextContentEditorState extends State<RichTextContentEditor> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Supports Markdown formatting',
+                      context.l10n.adminContentSupportsMarkdown,
                       style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     Text(
-                      '${_textController.text.length} characters',
+                      context.l10n.adminContentCharacterCount(_textController.text.length),
                       style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                   ],
@@ -483,7 +484,7 @@ class _SectionEditorState extends State<SectionEditor> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Section ${widget.index + 1}',
+                    context.l10n.adminContentSectionIndex(widget.index + 1),
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -504,7 +505,7 @@ class _SectionEditorState extends State<SectionEditor> {
                     IconButton(
                       icon: Icon(Icons.delete_outline, color: AppColors.error),
                       onPressed: widget.onRemove,
-                      tooltip: 'Remove section',
+                      tooltip: context.l10n.adminContentRemoveSection,
                       iconSize: 20,
                     ),
                 ],
@@ -520,17 +521,17 @@ class _SectionEditorState extends State<SectionEditor> {
                 children: [
                   TextFormField(
                     controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Section Title',
-                      hintText: 'Enter section title',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminContentSectionTitle,
+                      hintText: context.l10n.adminContentEnterSectionTitle,
                     ),
                   ),
                   const SizedBox(height: 16),
                   RichTextContentEditor(
-                    label: 'Section Content',
+                    label: context.l10n.adminContentSectionContent,
                     initialContent: widget.initialContent,
                     onChanged: _onContentChanged,
-                    hintText: 'Enter section content...',
+                    hintText: context.l10n.adminContentEnterSectionContent,
                     height: 250,
                   ),
                 ],

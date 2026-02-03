@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/admin_permissions.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
 import '../../shared/providers/admin_finance_provider.dart';
@@ -106,7 +107,7 @@ class _AnalyticsDashboardScreenState
                   IconButton(
                     icon: const Icon(Icons.refresh, size: 18),
                     onPressed: _refreshAll,
-                    tooltip: 'Retry',
+                    tooltip: context.l10n.adminChatRetry,
                   ),
                 ],
               ),
@@ -146,7 +147,7 @@ class _AnalyticsDashboardScreenState
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Analytics & Reports',
+                    context.l10n.adminAnalyticsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -155,7 +156,7 @@ class _AnalyticsDashboardScreenState
               ),
               const SizedBox(height: 4),
               Text(
-                'Comprehensive platform analytics and insights',
+                context.l10n.adminAnalyticsSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -176,10 +177,10 @@ class _AnalyticsDashboardScreenState
                   underline: const SizedBox(),
                   icon: const Icon(Icons.calendar_today, size: 16),
                   items: const [
-                    DropdownMenuItem(value: '7days', child: Text('Last 7 Days')),
-                    DropdownMenuItem(value: '30days', child: Text('Last 30 Days')),
-                    DropdownMenuItem(value: '90days', child: Text('Last 90 Days')),
-                    DropdownMenuItem(value: 'year', child: Text('This Year')),
+                    DropdownMenuItem(value: '7days', child: Text(context.l10n.adminAnalyticsLast7Days)),
+                    DropdownMenuItem(value: '30days', child: Text(context.l10n.adminAnalyticsLast30Days)),
+                    DropdownMenuItem(value: '90days', child: Text(context.l10n.adminAnalyticsLast90Days)),
+                    DropdownMenuItem(value: 'year', child: Text(context.l10n.adminAnalyticsThisYear)),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -193,7 +194,7 @@ class _AnalyticsDashboardScreenState
               IconButton(
                 onPressed: _refreshAll,
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh Data',
+                tooltip: context.l10n.adminAnalyticsRefreshData,
               ),
               const SizedBox(width: 8),
               PermissionGuard(
@@ -203,7 +204,7 @@ class _AnalyticsDashboardScreenState
                     _showExportDialog();
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export Report'),
+                  label: Text(context.l10n.adminAnalyticsExportReport),
                 ),
               ),
             ],
@@ -219,12 +220,12 @@ class _AnalyticsDashboardScreenState
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          _buildTab('overview', 'Overview', Icons.dashboard),
-          _buildTab('users', 'Users', Icons.people),
-          _buildTab('applications', 'Applications', Icons.description),
-          _buildTab('financial', 'Financial', Icons.attach_money),
-          _buildTab('content', 'Content', Icons.library_books),
-          _buildTab('engagement', 'Engagement', Icons.trending_up),
+          _buildTab('overview', context.l10n.adminAnalyticsOverview, Icons.dashboard),
+          _buildTab('users', context.l10n.adminAnalyticsUsers, Icons.people),
+          _buildTab('applications', context.l10n.adminAnalyticsApplications, Icons.description),
+          _buildTab('financial', context.l10n.adminAnalyticsFinancial, Icons.attach_money),
+          _buildTab('content', context.l10n.adminAnalyticsContent, Icons.library_books),
+          _buildTab('engagement', context.l10n.adminAnalyticsEngagement, Icons.trending_up),
         ],
       ),
     );
@@ -305,15 +306,15 @@ class _AnalyticsDashboardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Key Performance Indicators'),
+        _buildSectionTitle(context.l10n.adminAnalyticsKpi),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _buildKPICard(
-                'Total Users',
+                context.l10n.adminAnalyticsTotalUsers,
                 '$totalUsers',
-                '${_formatPercent(usersChange)} vs last period',
+                '${_formatPercent(usersChange)} ${context.l10n.adminAnalyticsVsLastPeriod}',
                 Icons.people,
                 AppColors.primary,
               ),
@@ -321,9 +322,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Active Applications',
+                context.l10n.adminAnalyticsActiveApplications,
                 '$applications7d',
-                'Last 7 days',
+                context.l10n.adminAnalyticsLast7DaysShort,
                 Icons.description,
                 AppColors.success,
               ),
@@ -331,9 +332,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Revenue (MTD)',
+                context.l10n.adminAnalyticsRevenueMtd,
                 _formatCurrency(financeStats['revenueThisMonth'] ?? totalRevenue),
-                'Month to date',
+                context.l10n.adminAnalyticsMonthToDate,
                 Icons.attach_money,
                 AppColors.warning,
               ),
@@ -341,9 +342,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Success Rate',
+                context.l10n.adminAnalyticsSuccessRate,
                 '${successRate.toStringAsFixed(1)}%',
-                'Transaction success',
+                context.l10n.adminAnalyticsTransactionSuccess,
                 Icons.check_circle,
                 AppColors.error,
               ),
@@ -351,7 +352,7 @@ class _AnalyticsDashboardScreenState
           ],
         ),
         const SizedBox(height: 32),
-        _buildSectionTitle('Trends & Analytics'),
+        _buildSectionTitle(context.l10n.adminAnalyticsTrends),
         const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,23 +360,23 @@ class _AnalyticsDashboardScreenState
             Expanded(
               flex: 2,
               child: _buildChartCard(
-                'User Growth',
-                'New user registrations over time',
+                context.l10n.adminAnalyticsUserGrowth,
+                context.l10n.adminAnalyticsNewRegOverTime,
                 _buildUserGrowthChart(),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: _buildChartCard(
-                'User Distribution',
-                'By user type',
+                context.l10n.adminAnalyticsUserDistribution,
+                context.l10n.adminAnalyticsByUserType,
                 _buildRoleDistributionChart(),
               ),
             ),
           ],
         ),
         const SizedBox(height: 32),
-        _buildSectionTitle('Quick Statistics'),
+        _buildSectionTitle(context.l10n.adminAnalyticsQuickStats),
         const SizedBox(height: 16),
         _buildQuickStats(metrics),
         const SizedBox(height: 24),
@@ -393,15 +394,15 @@ class _AnalyticsDashboardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('User Analytics'),
+        _buildSectionTitle(context.l10n.adminAnalyticsUserAnalytics),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _buildKPICard(
-                'Total Users',
+                context.l10n.adminAnalyticsTotalUsers,
                 '$totalUsers',
-                'All registered users',
+                context.l10n.adminAnalyticsAllRegisteredUsers,
                 Icons.people,
                 AppColors.primary,
               ),
@@ -409,9 +410,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Active Users',
+                context.l10n.adminAnalyticsActiveUsers,
                 '$activeUsers',
-                'Last 30 days',
+                context.l10n.adminAnalyticsLast30Days,
                 Icons.person_outline,
                 AppColors.success,
               ),
@@ -419,9 +420,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'New Users',
+                context.l10n.adminAnalyticsNewUsers,
                 '$newUsers',
-                'Last 7 days',
+                context.l10n.adminAnalyticsLast7DaysShort,
                 Icons.person_add,
                 AppColors.warning,
               ),
@@ -429,9 +430,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Active Change',
+                context.l10n.adminAnalyticsActiveChange,
                 _formatPercent(activeChange),
-                '30-day active change',
+                context.l10n.adminAnalytics30DayActiveChange,
                 Icons.trending_up,
                 AppColors.error,
               ),
@@ -440,8 +441,8 @@ class _AnalyticsDashboardScreenState
         ),
         const SizedBox(height: 24),
         _buildChartCard(
-          'User Registrations',
-          'New user sign-ups over time',
+          context.l10n.adminAnalyticsUserRegistrations,
+          context.l10n.adminAnalyticsNewSignUpsOverTime,
           _buildUserGrowthChart(),
         ),
         const SizedBox(height: 16),
@@ -449,17 +450,17 @@ class _AnalyticsDashboardScreenState
           children: [
             Expanded(
               child: _buildChartCard(
-                'User Types',
-                'Distribution by role',
+                context.l10n.adminAnalyticsUserTypes,
+                context.l10n.adminAnalyticsDistributionByRole,
                 _buildRoleDistributionChart(),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: _buildChartCard(
-                'Regional Distribution',
-                'Users by region',
-                _buildPlaceholderChart('Regional data not yet available'),
+                context.l10n.adminAnalyticsRegionalDistribution,
+                context.l10n.adminAnalyticsUsersByRegion,
+                _buildPlaceholderChart(context.l10n.adminAnalyticsRegionalDataNotAvailable),
               ),
             ),
           ],
@@ -476,15 +477,15 @@ class _AnalyticsDashboardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Application Analytics'),
+        _buildSectionTitle(context.l10n.adminAnalyticsApplicationAnalytics),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _buildKPICard(
-                'Recent Applications',
+                context.l10n.adminAnalyticsRecentApplications,
                 '$applications7d',
-                'Last 7 days',
+                context.l10n.adminAnalyticsLast7DaysShort,
                 Icons.description,
                 AppColors.primary,
               ),
@@ -492,9 +493,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Approved',
+                context.l10n.adminAnalyticsApproved,
                 '${metrics['approved_applications'] ?? 0}',
-                'Total approved',
+                context.l10n.adminAnalyticsTotalApproved,
                 Icons.check_circle,
                 AppColors.success,
               ),
@@ -502,9 +503,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Pending',
+                context.l10n.adminAnalyticsPending,
                 '${metrics['pending_applications'] ?? 0}',
-                'Awaiting review',
+                context.l10n.adminAnalyticsAwaitingReview,
                 Icons.pending,
                 AppColors.warning,
               ),
@@ -512,9 +513,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Rejected',
+                context.l10n.adminAnalyticsRejected,
                 '${metrics['rejected_applications'] ?? 0}',
-                'Total rejected',
+                context.l10n.adminAnalyticsTotalRejected,
                 Icons.cancel,
                 AppColors.error,
               ),
@@ -523,9 +524,9 @@ class _AnalyticsDashboardScreenState
         ),
         const SizedBox(height: 24),
         _buildChartCard(
-          'Application Submissions',
-          'New applications over time',
-          _buildPlaceholderChart('Application trend data'),
+          context.l10n.adminAnalyticsApplicationSubmissions,
+          context.l10n.adminAnalyticsNewAppsOverTime,
+          _buildPlaceholderChart(context.l10n.adminAnalyticsAppTrendData),
         ),
         const SizedBox(height: 24),
       ],
@@ -542,15 +543,15 @@ class _AnalyticsDashboardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Financial Analytics'),
+        _buildSectionTitle(context.l10n.adminAnalyticsFinancialAnalytics),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _buildKPICard(
-                'Total Revenue',
+                context.l10n.adminAnalyticsTotalRevenue,
                 _formatCurrency(totalRevenue),
-                'All time',
+                context.l10n.adminAnalyticsAllTime,
                 Icons.attach_money,
                 AppColors.primary,
               ),
@@ -558,9 +559,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'This Month',
+                context.l10n.adminAnalyticsThisMonth,
                 _formatCurrency(revenueThisMonth),
-                'Month to date',
+                context.l10n.adminAnalyticsMonthToDate,
                 Icons.trending_up,
                 AppColors.success,
               ),
@@ -568,9 +569,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Transactions',
+                context.l10n.adminAnalyticsTransactions,
                 '$totalTransactions',
-                'Total transactions',
+                context.l10n.adminAnalyticsTotalTransactions,
                 Icons.receipt,
                 AppColors.warning,
               ),
@@ -578,9 +579,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Avg Transaction',
+                context.l10n.adminAnalyticsAvgTransaction,
                 _formatCurrency(avgTransactionValue),
-                'Average value',
+                context.l10n.adminAnalyticsAverageValue,
                 Icons.analytics,
                 AppColors.error,
               ),
@@ -589,9 +590,9 @@ class _AnalyticsDashboardScreenState
         ),
         const SizedBox(height: 24),
         _buildChartCard(
-          'Revenue Trend',
-          'Revenue breakdown',
-          _buildPlaceholderChart('Revenue trend data'),
+          context.l10n.adminAnalyticsRevenueTrend,
+          context.l10n.adminAnalyticsRevenueBreakdown,
+          _buildPlaceholderChart(context.l10n.adminAnalyticsRevenueTrendData),
         ),
         const SizedBox(height: 24),
       ],
@@ -602,15 +603,15 @@ class _AnalyticsDashboardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Content Analytics'),
+        _buildSectionTitle(context.l10n.adminAnalyticsContentAnalytics),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _buildKPICard(
-                'Total Content',
+                context.l10n.adminAnalyticsTotalContent,
                 '0',
-                'Published items',
+                context.l10n.adminAnalyticsPublishedItems,
                 Icons.library_books,
                 AppColors.primary,
               ),
@@ -618,9 +619,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Avg Completion',
+                context.l10n.adminAnalyticsAvgCompletion,
                 '0%',
-                'Content completion rate',
+                context.l10n.adminAnalyticsContentCompletionRate,
                 Icons.check_circle,
                 AppColors.success,
               ),
@@ -628,9 +629,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Engagement',
+                context.l10n.adminAnalyticsEngagementLabel,
                 '0',
-                'Total interactions',
+                context.l10n.adminAnalyticsTotalInteractions,
                 Icons.touch_app,
                 AppColors.warning,
               ),
@@ -638,9 +639,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Popular Content',
+                context.l10n.adminAnalyticsPopularContent,
                 '0',
-                'Most viewed items',
+                context.l10n.adminAnalyticsMostViewedItems,
                 Icons.visibility,
                 AppColors.error,
               ),
@@ -649,9 +650,9 @@ class _AnalyticsDashboardScreenState
         ),
         const SizedBox(height: 24),
         _buildChartCard(
-          'Content Engagement',
-          'User interactions over time',
-          _buildPlaceholderChart('Content engagement data'),
+          context.l10n.adminAnalyticsContentEngagement,
+          context.l10n.adminAnalyticsUserInteractionsOverTime,
+          _buildPlaceholderChart(context.l10n.adminAnalyticsContentEngagementData),
         ),
         const SizedBox(height: 24),
       ],
@@ -665,15 +666,15 @@ class _AnalyticsDashboardScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Platform Engagement'),
+        _buildSectionTitle(context.l10n.adminAnalyticsPlatformEngagement),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(
               child: _buildKPICard(
-                'Active Users (30d)',
+                context.l10n.adminAnalyticsActiveUsers30d,
                 '$activeUsers',
-                'Active last 30 days',
+                context.l10n.adminAnalyticsActiveLast30Days,
                 Icons.people,
                 AppColors.primary,
               ),
@@ -681,9 +682,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Session Duration',
+                context.l10n.adminAnalyticsSessionDuration,
                 '0 min',
-                'Average time',
+                context.l10n.adminAnalyticsAverageTime,
                 Icons.access_time,
                 AppColors.success,
               ),
@@ -691,9 +692,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Page Views',
+                context.l10n.adminAnalyticsPageViews,
                 '0',
-                'Total views',
+                context.l10n.adminAnalyticsTotalViews,
                 Icons.visibility,
                 AppColors.warning,
               ),
@@ -701,9 +702,9 @@ class _AnalyticsDashboardScreenState
             const SizedBox(width: 16),
             Expanded(
               child: _buildKPICard(
-                'Bounce Rate',
+                context.l10n.adminAnalyticsBounceRate,
                 '0%',
-                'Single page visits',
+                context.l10n.adminAnalyticsSinglePageVisits,
                 Icons.exit_to_app,
                 AppColors.error,
               ),
@@ -712,9 +713,9 @@ class _AnalyticsDashboardScreenState
         ),
         const SizedBox(height: 24),
         _buildChartCard(
-          'Daily Active Users',
-          'User activity over time',
-          _buildPlaceholderChart('Daily active user data'),
+          context.l10n.adminAnalyticsDailyActiveUsers,
+          context.l10n.adminAnalyticsUserActivityOverTime,
+          _buildPlaceholderChart(context.l10n.adminAnalyticsDailyActiveUserData),
         ),
         const SizedBox(height: 24),
       ],
@@ -829,7 +830,7 @@ class _AnalyticsDashboardScreenState
     }
 
     if (_userGrowthData == null) {
-      return _buildPlaceholderChart('No user growth data available');
+      return _buildPlaceholderChart(context.l10n.adminAnalyticsNoUserGrowthData);
     }
 
     final data = _userGrowthData!;
@@ -838,7 +839,7 @@ class _AnalyticsDashboardScreenState
         data['values'] as List<dynamic>? ?? [];
 
     if (labels.isEmpty || values.isEmpty) {
-      return _buildPlaceholderChart('No user growth data available');
+      return _buildPlaceholderChart(context.l10n.adminAnalyticsNoUserGrowthData);
     }
 
     final numericValues = values.map((v) => (v as num).toDouble()).toList();
@@ -905,14 +906,14 @@ class _AnalyticsDashboardScreenState
     }
 
     if (_roleDistributionData == null) {
-      return _buildPlaceholderChart('No role distribution data available');
+      return _buildPlaceholderChart(context.l10n.adminAnalyticsNoRoleDistData);
     }
 
     final data = _roleDistributionData!;
     final roles = data['roles'] as Map<String, dynamic>? ?? {};
 
     if (roles.isEmpty) {
-      return _buildPlaceholderChart('No role distribution data available');
+      return _buildPlaceholderChart(context.l10n.adminAnalyticsNoRoleDistData);
     }
 
     final total = roles.values.fold<int>(0, (sum, v) => sum + (v as int? ?? 0));
@@ -1029,15 +1030,15 @@ class _AnalyticsDashboardScreenState
       ),
       child: Column(
         children: [
-          _buildStatRow('Total Students', '${metrics['total_students'] ?? 0}', Icons.school),
+          _buildStatRow(context.l10n.adminAnalyticsTotalStudents, '${metrics['total_students'] ?? 0}', Icons.school),
           Divider(height: 24, color: AppColors.border),
-          _buildStatRow('Total Institutions', '${metrics['total_institutions'] ?? 0}', Icons.business),
+          _buildStatRow(context.l10n.adminAnalyticsTotalInstitutions, '${metrics['total_institutions'] ?? 0}', Icons.business),
           Divider(height: 24, color: AppColors.border),
-          _buildStatRow('Total Counselors', '${metrics['total_counselors'] ?? 0}', Icons.psychology),
+          _buildStatRow(context.l10n.adminAnalyticsTotalCounselors, '${metrics['total_counselors'] ?? 0}', Icons.psychology),
           Divider(height: 24, color: AppColors.border),
-          _buildStatRow('Total Recommenders', '${metrics['total_recommenders'] ?? 0}', Icons.recommend),
+          _buildStatRow(context.l10n.adminAnalyticsTotalRecommenders, '${metrics['total_recommenders'] ?? 0}', Icons.recommend),
           Divider(height: 24, color: AppColors.border),
-          _buildStatRow('Platform Uptime', '99.9%', Icons.cloud_done),
+          _buildStatRow(context.l10n.adminAnalyticsPlatformUptime, '99.9%', Icons.cloud_done),
         ],
       ),
     );
@@ -1077,19 +1078,19 @@ class _AnalyticsDashboardScreenState
           children: [
             Icon(Icons.download, color: AppColors.primary),
             const SizedBox(width: 12),
-            const Text('Export Analytics Report'),
+            Text(context.l10n.adminAnalyticsExportTitle),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Select export format:'),
+            Text(context.l10n.adminAnalyticsSelectFormat),
             const SizedBox(height: 16),
             ListTile(
               leading: const Icon(Icons.table_chart),
-              title: const Text('CSV'),
-              subtitle: const Text('Comma-separated values'),
+              title: Text(context.l10n.adminAnalyticsCsv),
+              subtitle: Text(context.l10n.adminAnalyticsCsvDesc),
               onTap: () {
                 // TODO: Export as CSV
                 Navigator.pop(context);
@@ -1097,8 +1098,8 @@ class _AnalyticsDashboardScreenState
             ),
             ListTile(
               leading: const Icon(Icons.description),
-              title: const Text('Excel'),
-              subtitle: const Text('Microsoft Excel format'),
+              title: Text(context.l10n.adminAnalyticsExcel),
+              subtitle: Text(context.l10n.adminAnalyticsExcelDesc),
               onTap: () {
                 // TODO: Export as Excel
                 Navigator.pop(context);
@@ -1106,8 +1107,8 @@ class _AnalyticsDashboardScreenState
             ),
             ListTile(
               leading: const Icon(Icons.picture_as_pdf),
-              title: const Text('PDF'),
-              subtitle: const Text('Portable document format'),
+              title: Text(context.l10n.adminAnalyticsPdf),
+              subtitle: Text(context.l10n.adminAnalyticsPdfDesc),
               onTap: () {
                 // TODO: Export as PDF
                 Navigator.pop(context);
@@ -1118,7 +1119,7 @@ class _AnalyticsDashboardScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminChatCancel),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Loading indicator widget
 class LoadingIndicator extends StatelessWidget {
@@ -24,7 +25,7 @@ class LoadingIndicator extends StatelessWidget {
           if (showMessage) ...[
             const SizedBox(height: 16),
             Text(
-              message ?? 'Loading...',
+              message ?? context.l10n.loadingIndicatorDefault,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),

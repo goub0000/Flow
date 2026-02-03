@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Help & Support Widgets Library
 ///
@@ -359,7 +360,7 @@ class HelpCategoryCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      '${category.articleCount} articles',
+                      context.l10n.swHelpSupportArticlesCount(category.articleCount),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -464,7 +465,7 @@ class HelpArticleCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${article.views} views',
+                    context.l10n.swHelpSupportViewsCount(article.views),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -477,7 +478,7 @@ class HelpArticleCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${article.helpfulCount} helpful',
+                    context.l10n.swHelpSupportHelpfulCount(article.helpfulCount),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -557,7 +558,7 @@ class FAQItemWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Was this helpful?',
+                        context.l10n.swHelpSupportWasThisHelpful,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -569,7 +570,7 @@ class FAQItemWidget extends StatelessWidget {
                         label: Text(
                           faq.helpfulCount > 0
                               ? '${faq.helpfulCount}'
-                              : 'Yes',
+                              : context.l10n.swHelpSupportYes,
                         ),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
@@ -658,7 +659,7 @@ class SupportTicketCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    _formatDate(ticket.createdAt),
+                    _formatDate(context, ticket.createdAt),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -672,13 +673,13 @@ class SupportTicketCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
-    if (difference.inDays == 0) return 'Today';
-    if (difference.inDays == 1) return 'Yesterday';
-    if (difference.inDays < 7) return '${difference.inDays} days ago';
+    if (difference.inDays == 0) return context.l10n.swHelpSupportToday;
+    if (difference.inDays == 1) return context.l10n.swHelpSupportYesterday;
+    if (difference.inDays < 7) return context.l10n.swHelpSupportDaysAgo(difference.inDays);
 
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -826,7 +827,7 @@ class TicketMessageBubble extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _formatTime(message.timestamp),
+                    _formatTime(context, message.timestamp),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                       fontSize: 11,
@@ -853,15 +854,15 @@ class TicketMessageBubble extends StatelessWidget {
     );
   }
 
-  String _formatTime(DateTime time) {
+  String _formatTime(BuildContext context, DateTime time) {
     final now = DateTime.now();
     final difference = now.difference(time);
 
-    if (difference.inMinutes < 1) return 'Just now';
-    if (difference.inMinutes < 60) return '${difference.inMinutes}m ago';
-    if (difference.inHours < 24) return '${difference.inHours}h ago';
-    if (difference.inDays == 1) return 'Yesterday';
-    if (difference.inDays < 7) return '${difference.inDays}d ago';
+    if (difference.inMinutes < 1) return context.l10n.swHelpSupportJustNow;
+    if (difference.inMinutes < 60) return context.l10n.swHelpSupportMinutesAgo(difference.inMinutes);
+    if (difference.inHours < 24) return context.l10n.swHelpSupportHoursAgo(difference.inHours);
+    if (difference.inDays == 1) return context.l10n.swHelpSupportYesterday;
+    if (difference.inDays < 7) return context.l10n.swHelpSupportDaysShortAgo(difference.inDays);
 
     return '${time.day}/${time.month}/${time.year}';
   }

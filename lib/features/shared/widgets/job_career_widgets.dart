@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Job & Career Widgets Library
 ///
@@ -427,10 +428,10 @@ class JobCard extends StatelessWidget {
                         ),
                         Text(
                           daysAgo == 0
-                              ? 'Posted today'
+                              ? context.l10n.swJobCareerPostedToday
                               : daysAgo == 1
-                                  ? 'Posted yesterday'
-                                  : 'Posted $daysAgo days ago',
+                                  ? context.l10n.swJobCareerPostedYesterday
+                                  : context.l10n.swJobCareerPostedDaysAgo(daysAgo),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -472,7 +473,7 @@ class JobCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      job.isRemote ? 'Remote' : job.location,
+                      job.isRemote ? context.l10n.swJobCareerRemote : job.location,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -546,7 +547,7 @@ class JobCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'Apply by ${_formatDate(job.applicationDeadline!)}',
+                      context.l10n.swJobCareerApplyBy(_formatDate(context, job.applicationDeadline!)),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.error,
                         fontWeight: FontWeight.w500,
@@ -562,14 +563,14 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = date.difference(now).inDays;
 
-    if (difference < 0) return 'Expired';
-    if (difference == 0) return 'Today';
-    if (difference == 1) return 'Tomorrow';
-    if (difference < 7) return 'in $difference days';
+    if (difference < 0) return context.l10n.swJobCareerExpired;
+    if (difference == 0) return context.l10n.swJobCareerToday;
+    if (difference == 1) return context.l10n.swJobCareerTomorrow;
+    if (difference < 7) return context.l10n.swJobCareerInDays(difference);
 
     final months = [
       'Jan',
@@ -726,7 +727,7 @@ class JobApplicationCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Applied ${_getRelativeTime(application.appliedDate)}',
+                    context.l10n.swJobCareerApplied(_getRelativeTime(context, application.appliedDate)),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -740,7 +741,7 @@ class JobApplicationCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'Updated ${_getRelativeTime(application.lastUpdated!)}',
+                      context.l10n.swJobCareerUpdated(_getRelativeTime(context, application.lastUpdated!)),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -755,18 +756,18 @@ class JobApplicationCard extends StatelessWidget {
     );
   }
 
-  String _getRelativeTime(DateTime date) {
+  String _getRelativeTime(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      return context.l10n.swJobCareerDaysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      return context.l10n.swJobCareerHoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return context.l10n.swJobCareerMinutesAgo(difference.inMinutes);
     } else {
-      return 'Just now';
+      return context.l10n.swJobCareerJustNow;
     }
   }
 }
@@ -892,7 +893,7 @@ class CareerResourceCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          '${resource.views} views',
+                          context.l10n.swJobCareerViewsCount(resource.views!),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -1018,7 +1019,7 @@ class CareerCounselorCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Available',
+                            context.l10n.swJobCareerAvailable,
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -1073,7 +1074,7 @@ class CareerCounselorCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${counselor.sessionsCompleted} sessions',
+                    context.l10n.swJobCareerSessionsCount(counselor.sessionsCompleted),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -1115,7 +1116,7 @@ class CareerCounselorCard extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: onBook,
                     icon: const Icon(Icons.calendar_today, size: 18),
-                    label: const Text('Book Session'),
+                    label: Text(context.l10n.swJobCareerBookSession),
                   ),
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Tasks & To-Do Lists Widgets Library
 ///
@@ -353,7 +354,7 @@ class TaskCard extends StatelessWidget {
                             if (task.dueDate != null)
                               _buildChip(
                                 icon: Icons.calendar_today,
-                                label: _formatDueDate(task.dueDate!),
+                                label: _formatDueDate(task.dueDate!, context),
                                 color: task.isOverdue
                                     ? AppColors.error
                                     : task.isDueToday
@@ -489,31 +490,31 @@ class TaskCard extends StatelessWidget {
     );
   }
 
-  String _formatDueDate(DateTime date) {
+  String _formatDueDate(DateTime date, BuildContext context) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final taskDate = DateTime(date.year, date.month, date.day);
     final difference = taskDate.difference(today).inDays;
 
-    if (difference == 0) return 'Today';
-    if (difference == 1) return 'Tomorrow';
-    if (difference == -1) return 'Yesterday';
-    if (difference < -1) return '${-difference} days ago';
-    if (difference < 7) return 'In $difference days';
+    if (difference == 0) return context.l10n.swTaskToday;
+    if (difference == 1) return context.l10n.swTaskTomorrow;
+    if (difference == -1) return context.l10n.swTaskYesterday;
+    if (difference < -1) return context.l10n.swTaskDaysAgo((-difference).toString());
+    if (difference < 7) return context.l10n.swTaskInDays(difference.toString());
 
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      context.l10n.swTaskMonthJan,
+      context.l10n.swTaskMonthFeb,
+      context.l10n.swTaskMonthMar,
+      context.l10n.swTaskMonthApr,
+      context.l10n.swTaskMonthMay,
+      context.l10n.swTaskMonthJun,
+      context.l10n.swTaskMonthJul,
+      context.l10n.swTaskMonthAug,
+      context.l10n.swTaskMonthSep,
+      context.l10n.swTaskMonthOct,
+      context.l10n.swTaskMonthNov,
+      context.l10n.swTaskMonthDec
     ];
     return '${months[date.month - 1]} ${date.day}';
   }
@@ -591,7 +592,7 @@ class TaskListItem extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          _formatDueDate(task.dueDate!),
+                          _formatDueDate(task.dueDate!, context),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: task.isOverdue
                                 ? AppColors.error
@@ -627,29 +628,29 @@ class TaskListItem extends StatelessWidget {
     );
   }
 
-  String _formatDueDate(DateTime date) {
+  String _formatDueDate(DateTime date, BuildContext context) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final taskDate = DateTime(date.year, date.month, date.day);
     final difference = taskDate.difference(today).inDays;
 
-    if (difference == 0) return 'Today';
-    if (difference == 1) return 'Tomorrow';
-    if (difference < 0) return 'Overdue';
+    if (difference == 0) return context.l10n.swTaskToday;
+    if (difference == 1) return context.l10n.swTaskTomorrow;
+    if (difference < 0) return context.l10n.swTaskOverdue;
 
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      context.l10n.swTaskMonthJan,
+      context.l10n.swTaskMonthFeb,
+      context.l10n.swTaskMonthMar,
+      context.l10n.swTaskMonthApr,
+      context.l10n.swTaskMonthMay,
+      context.l10n.swTaskMonthJun,
+      context.l10n.swTaskMonthJul,
+      context.l10n.swTaskMonthAug,
+      context.l10n.swTaskMonthSep,
+      context.l10n.swTaskMonthOct,
+      context.l10n.swTaskMonthNov,
+      context.l10n.swTaskMonthDec
     ];
     return '${months[date.month - 1]} ${date.day}';
   }
@@ -657,13 +658,13 @@ class TaskListItem extends StatelessWidget {
 
 /// Empty Tasks State
 class EmptyTasksState extends StatelessWidget {
-  final String message;
+  final String? message;
   final String? subtitle;
   final VoidCallback? onAddTask;
 
-  const EmptyTasksState({
+  EmptyTasksState({
     super.key,
-    this.message = 'No tasks yet',
+    this.message,
     this.subtitle,
     this.onAddTask,
   });
@@ -685,7 +686,7 @@ class EmptyTasksState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              message,
+              message ?? context.l10n.swTaskNoTasks,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -706,7 +707,7 @@ class EmptyTasksState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onAddTask,
                 icon: const Icon(Icons.add),
-                label: const Text('Add Task'),
+                label: Text(context.l10n.swTaskAddTask),
               ),
             ],
           ],

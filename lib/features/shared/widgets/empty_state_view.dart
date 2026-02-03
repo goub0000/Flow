@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 class EmptyStateView extends StatelessWidget {
   final IconData icon;
@@ -104,132 +105,132 @@ class EmptyStateView extends StatelessWidget {
 
 // Predefined empty states for common scenarios
 class CommonEmptyStates {
-  static Widget noApplications({
+  static Widget noApplications(BuildContext context, {
     VoidCallback? onCreateFirst,
   }) {
     return EmptyStateView(
       icon: Icons.description_outlined,
-      title: 'No Applications Yet',
-      message: 'Start your journey by exploring programs and submitting your first application.',
-      actionLabel: onCreateFirst != null ? 'Browse Programs' : null,
+      title: context.l10n.swEmptyStateNoApplicationsTitle,
+      message: context.l10n.swEmptyStateNoApplicationsMessage,
+      actionLabel: onCreateFirst != null ? context.l10n.swEmptyStateBrowsePrograms : null,
       onAction: onCreateFirst,
       iconColor: AppColors.primary,
     );
   }
 
-  static Widget noActivities() {
+  static Widget noActivities(BuildContext context) {
     return EmptyStateView(
       icon: Icons.inbox_outlined,
-      title: 'No Recent Activities',
-      message: 'Your recent activities and updates will appear here as you use the platform.',
+      title: context.l10n.swEmptyStateNoActivitiesTitle,
+      message: context.l10n.swEmptyStateNoActivitiesMessage,
       iconColor: AppColors.info,
     );
   }
 
-  static Widget noRecommendations({
+  static Widget noRecommendations(BuildContext context, {
     VoidCallback? onCompleteProfile,
   }) {
     return EmptyStateView(
       icon: Icons.lightbulb_outline,
-      title: 'No Recommendations',
-      message: 'Complete your profile to receive personalized recommendations based on your interests and goals.',
-      actionLabel: onCompleteProfile != null ? 'Complete Profile' : null,
+      title: context.l10n.swEmptyStateNoRecommendationsTitle,
+      message: context.l10n.swEmptyStateNoRecommendationsMessage,
+      actionLabel: onCompleteProfile != null ? context.l10n.swEmptyStateCompleteProfile : null,
       onAction: onCompleteProfile,
       iconColor: AppColors.warning,
     );
   }
 
-  static Widget noMessages() {
+  static Widget noMessages(BuildContext context) {
     return EmptyStateView(
       icon: Icons.message_outlined,
-      title: 'No Messages',
-      message: 'Your conversations and notifications will appear here.',
+      title: context.l10n.swEmptyStateNoMessagesTitle,
+      message: context.l10n.swEmptyStateNoMessagesMessage,
       iconColor: AppColors.info,
     );
   }
 
-  static Widget noSearchResults({
+  static Widget noSearchResults(BuildContext context, {
     VoidCallback? onClearFilters,
   }) {
     return EmptyStateView(
       icon: Icons.search_off,
-      title: 'No Results Found',
-      message: 'Try adjusting your search criteria or filters to find what you\'re looking for.',
-      actionLabel: onClearFilters != null ? 'Clear Filters' : null,
+      title: context.l10n.swEmptyStateNoResultsTitle,
+      message: context.l10n.swEmptyStateNoResultsMessage,
+      actionLabel: onClearFilters != null ? context.l10n.swEmptyStateClearFilters : null,
       onAction: onClearFilters,
       iconColor: AppColors.warning,
     );
   }
 
-  static Widget noCourses({
+  static Widget noCourses(BuildContext context, {
     VoidCallback? onBrowse,
   }) {
     return EmptyStateView(
       icon: Icons.school_outlined,
-      title: 'No Courses Available',
-      message: 'Check back later for new courses or explore other learning opportunities.',
-      actionLabel: onBrowse != null ? 'Explore Programs' : null,
+      title: context.l10n.swEmptyStateNoCoursesTitle,
+      message: context.l10n.swEmptyStateNoCoursesMessage,
+      actionLabel: onBrowse != null ? context.l10n.swEmptyStateExplorePrograms : null,
       onAction: onBrowse,
       iconColor: AppColors.primary,
     );
   }
 
-  static Widget noStudents() {
-    return const EmptyStateView(
+  static Widget noStudents(BuildContext context) {
+    return EmptyStateView(
       icon: Icons.people_outline,
-      title: 'No Students',
-      message: 'Students you\'re counseling will appear here once they\'re assigned or request your guidance.',
+      title: context.l10n.swEmptyStateNoStudentsTitle,
+      message: context.l10n.swEmptyStateNoStudentsMessage,
       iconColor: AppColors.info,
     );
   }
 
-  static Widget noSessions({
+  static Widget noSessions(BuildContext context, {
     VoidCallback? onSchedule,
   }) {
     return EmptyStateView(
       icon: Icons.calendar_today_outlined,
-      title: 'No Upcoming Sessions',
-      message: 'You don\'t have any counseling sessions scheduled.',
-      actionLabel: onSchedule != null ? 'Schedule Session' : null,
+      title: context.l10n.swEmptyStateNoSessionsTitle,
+      message: context.l10n.swEmptyStateNoSessionsMessage,
+      actionLabel: onSchedule != null ? context.l10n.swEmptyStateScheduleSession : null,
       onAction: onSchedule,
       iconColor: AppColors.success,
     );
   }
 
-  static Widget noData() {
+  static Widget noData(BuildContext context) {
     return EmptyStateView(
       icon: Icons.analytics_outlined,
-      title: 'No Data Available',
-      message: 'Data will appear here once there\'s activity to display.',
+      title: context.l10n.swEmptyStateNoDataTitle,
+      message: context.l10n.swEmptyStateNoDataMessage,
       iconColor: AppColors.info,
     );
   }
 
-  static Widget noNotifications() {
+  static Widget noNotifications(BuildContext context) {
     return EmptyStateView(
       icon: Icons.notifications_none,
-      title: 'No Notifications',
-      message: 'You\'re all caught up! New notifications will appear here.',
+      title: context.l10n.swEmptyStateNoNotificationsTitle,
+      message: context.l10n.swEmptyStateNoNotificationsMessage,
       iconColor: AppColors.success,
     );
   }
 
-  static Widget comingSoon({
+  static Widget comingSoon(BuildContext context, {
     required String feature,
   }) {
     return EmptyStateView(
       icon: Icons.construction,
-      title: 'Coming Soon',
-      message: '$feature is currently under development and will be available soon.',
+      title: context.l10n.swEmptyStateComingSoonTitle,
+      message: context.l10n.swEmptyStateComingSoonMessage(feature),
       iconColor: AppColors.warning,
     );
   }
 
-  static Widget noPermission() {
+  static Widget noPermission(BuildContext context) {
     return EmptyStateView(
       icon: Icons.lock_outline,
-      title: 'Access Restricted',
-      message: 'You don\'t have permission to view this content. Contact your administrator if you need access.',
+      title: context.l10n.swEmptyStateAccessRestrictedTitle,
+      message: context.l10n.swEmptyStateAccessRestrictedMessage,
       iconColor: AppColors.error,
     );
   }

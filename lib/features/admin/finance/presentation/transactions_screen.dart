@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
@@ -123,7 +124,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   IconButton(
                     icon: const Icon(Icons.refresh, size: 18),
                     onPressed: () => ref.read(adminFinanceProvider.notifier).fetchTransactions(),
-                    tooltip: 'Retry',
+                    tooltip: context.l10n.adminFinanceRetry,
                   ),
                 ],
               ),
@@ -164,7 +165,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Transactions',
+                    context.l10n.adminFinanceTransactionsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -173,7 +174,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Monitor and manage payment transactions',
+                context.l10n.adminFinanceTransactionsSubtitle,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -188,7 +189,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   ref.read(adminFinanceProvider.notifier).fetchTransactions();
                 },
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh Transactions',
+                tooltip: context.l10n.adminFinanceRefreshTransactions,
               ),
               const SizedBox(width: 8),
               PermissionGuard(
@@ -198,7 +199,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                     // TODO: Implement export functionality
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export Report'),
+                  label: Text(context.l10n.adminFinanceExportReport),
                 ),
               ),
             ],
@@ -223,9 +224,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Volume',
+              context.l10n.adminFinanceTotalVolume,
               _formatCurrency(totalRevenue),
-              'All completed payments',
+              context.l10n.adminFinanceAllCompletedPayments,
               Icons.trending_up,
               AppColors.success,
             ),
@@ -233,7 +234,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Successful',
+              context.l10n.adminFinanceSuccessful,
               '$successfulCount',
               '${successRate.toStringAsFixed(1)}% success rate',
               Icons.check_circle,
@@ -243,7 +244,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Failed',
+              context.l10n.adminFinanceFailed,
               '$failedCount',
               '${failureRate.toStringAsFixed(1)}% failure rate',
               Icons.error,
@@ -253,9 +254,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Pending',
+              context.l10n.adminFinancePending,
               _formatCurrency(pendingAmount),
-              'Awaiting processing',
+              context.l10n.adminFinanceAwaitingProcessing,
               Icons.pending,
               AppColors.warning,
             ),
@@ -327,7 +328,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by transaction ID, user, or amount...',
+                hintText: context.l10n.adminFinanceSearchTransactionsHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -348,7 +349,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminFinanceStatus,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -357,12 +358,12 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'completed', child: Text('Completed')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                DropdownMenuItem(value: 'failed', child: Text('Failed')),
-                DropdownMenuItem(value: 'refunded', child: Text('Refunded')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminFinanceAllStatus)),
+                DropdownMenuItem(value: 'completed', child: Text(context.l10n.adminFinanceCompleted)),
+                DropdownMenuItem(value: 'pending', child: Text(context.l10n.adminFinancePending)),
+                DropdownMenuItem(value: 'failed', child: Text(context.l10n.adminFinanceFailed)),
+                DropdownMenuItem(value: 'refunded', child: Text(context.l10n.adminFinanceRefunded)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -376,7 +377,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: InputDecoration(
-                labelText: 'Type',
+                labelText: context.l10n.adminFinanceType,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -385,11 +386,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Types')),
-                DropdownMenuItem(value: 'payment', child: Text('Payment')),
-                DropdownMenuItem(value: 'refund', child: Text('Refund')),
-                DropdownMenuItem(value: 'settlement', child: Text('Settlement')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminFinanceAllTypes)),
+                DropdownMenuItem(value: 'payment', child: Text(context.l10n.adminFinancePayment)),
+                DropdownMenuItem(value: 'refund', child: Text(context.l10n.adminFinanceRefund)),
+                DropdownMenuItem(value: 'settlement', child: Text(context.l10n.adminFinanceSettlement)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -403,7 +404,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedDateRange,
               decoration: InputDecoration(
-                labelText: 'Date Range',
+                labelText: context.l10n.adminFinanceDateRange,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -412,12 +413,12 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'today', child: Text('Today')),
-                DropdownMenuItem(value: 'yesterday', child: Text('Yesterday')),
-                DropdownMenuItem(value: 'last7days', child: Text('Last 7 Days')),
-                DropdownMenuItem(value: 'last30days', child: Text('Last 30 Days')),
-                DropdownMenuItem(value: 'all', child: Text('All Time')),
+              items: [
+                DropdownMenuItem(value: 'today', child: Text(context.l10n.adminFinanceToday)),
+                DropdownMenuItem(value: 'yesterday', child: Text(context.l10n.adminFinanceYesterday)),
+                DropdownMenuItem(value: 'last7days', child: Text(context.l10n.adminFinanceLast7Days)),
+                DropdownMenuItem(value: 'last30days', child: Text(context.l10n.adminFinanceLast30Days)),
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminFinanceAllTime)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -435,7 +436,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     return AdminDataTable<Transaction>(
       columns: [
         DataTableColumn(
-          label: 'Transaction ID',
+          label: context.l10n.adminFinanceTransactionId,
           cellBuilder: (txn) => Text(
             txn.id,
             style: const TextStyle(
@@ -447,7 +448,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           sortable: true,
         ),
         DataTableColumn(
-          label: 'User',
+          label: context.l10n.adminFinanceUser,
           cellBuilder: (txn) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -470,14 +471,14 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Type',
+          label: context.l10n.adminFinanceType,
           cellBuilder: (txn) => Text(
             txn.type,
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Amount',
+          label: context.l10n.adminFinanceAmount,
           cellBuilder: (txn) => Text(
             _formatCurrency(txn.amount),
             style: const TextStyle(
@@ -487,18 +488,18 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Description',
+          label: context.l10n.adminFinanceDescription,
           cellBuilder: (txn) => Text(
             txn.itemName ?? txn.itemType ?? '-',
             style: const TextStyle(fontSize: 13),
           ),
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminFinanceStatus,
           cellBuilder: (txn) => _buildStatusChip(txn.status),
         ),
         DataTableColumn(
-          label: 'Date',
+          label: context.l10n.adminFinanceDate,
           cellBuilder: (txn) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -531,21 +532,21 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
       rowActions: [
         DataTableAction(
           icon: Icons.visibility,
-          tooltip: 'View Details',
+          tooltip: context.l10n.adminFinanceViewDetails,
           onPressed: (txn) {
             _showTransactionDetails(txn);
           },
         ),
         DataTableAction(
           icon: Icons.receipt,
-          tooltip: 'Download Receipt',
+          tooltip: context.l10n.adminFinanceDownloadReceipt,
           onPressed: (txn) {
             // TODO: Generate and download receipt
           },
         ),
         DataTableAction(
           icon: Icons.replay,
-          tooltip: 'Process Refund',
+          tooltip: context.l10n.adminFinanceProcessRefund,
           color: AppColors.warning,
           onPressed: (txn) {
             _showRefundDialog(txn);
@@ -610,7 +611,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               color: AppColors.primary,
             ),
             const SizedBox(width: 12),
-            const Text('Transaction Details'),
+            Text(context.l10n.adminFinanceTransactionDetails),
           ],
         ),
         content: SizedBox(
@@ -619,25 +620,25 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Transaction ID', txn.id),
-              _buildDetailRow('User', txn.userName),
-              _buildDetailRow('User ID', txn.userId),
-              _buildDetailRow('Type', txn.type),
-              _buildDetailRow('Amount', _formatCurrency(txn.amount)),
-              _buildDetailRow('Currency', txn.currency),
-              _buildDetailRow('Status', txn.status),
+              _buildDetailRow(context.l10n.adminFinanceTransactionId, txn.id),
+              _buildDetailRow(context.l10n.adminFinanceUser, txn.userName),
+              _buildDetailRow(context.l10n.adminFinanceUserId, txn.userId),
+              _buildDetailRow(context.l10n.adminFinanceType, txn.type),
+              _buildDetailRow(context.l10n.adminFinanceAmount, _formatCurrency(txn.amount)),
+              _buildDetailRow(context.l10n.adminFinanceCurrency, txn.currency),
+              _buildDetailRow(context.l10n.adminFinanceStatus, txn.status),
               if (txn.itemName != null)
-                _buildDetailRow('Description', txn.itemName!),
+                _buildDetailRow(context.l10n.adminFinanceDescription, txn.itemName!),
               if (txn.itemType != null)
-                _buildDetailRow('Item Type', txn.itemType!),
-              _buildDetailRow('Date', '${_formatDate(txn.createdAt)} ${_formatTime(txn.createdAt)}'),
+                _buildDetailRow(context.l10n.adminFinanceItemType, txn.itemType!),
+              _buildDetailRow(context.l10n.adminFinanceDate, '${_formatDate(txn.createdAt)} ${_formatTime(txn.createdAt)}'),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.adminFinanceClose),
           ),
           PermissionGuard(
             permission: AdminPermission.processRefunds,
@@ -646,7 +647,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 Navigator.pop(context);
                 _showRefundDialog(txn);
               },
-              child: const Text('Process Refund'),
+              child: Text(context.l10n.adminFinanceProcessRefund),
             ),
           ),
         ],
@@ -665,24 +666,24 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               color: AppColors.warning,
             ),
             const SizedBox(width: 12),
-            const Text('Process Refund'),
+            Text(context.l10n.adminFinanceProcessRefund),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Are you sure you want to refund this transaction?',
+            Text(
+              context.l10n.adminFinanceConfirmRefund,
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 16),
-            _buildDetailRow('Transaction ID', txn.id),
-            _buildDetailRow('User', txn.userName),
-            _buildDetailRow('Amount', _formatCurrency(txn.amount)),
+            _buildDetailRow(context.l10n.adminFinanceTransactionId, txn.id),
+            _buildDetailRow(context.l10n.adminFinanceUser, txn.userName),
+            _buildDetailRow(context.l10n.adminFinanceAmount, _formatCurrency(txn.amount)),
             const SizedBox(height: 16),
             Text(
-              'This action cannot be undone.',
+              context.l10n.adminFinanceActionCannotBeUndone,
               style: TextStyle(
                 color: AppColors.error,
                 fontSize: 12,
@@ -694,7 +695,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminFinanceCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -706,8 +707,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(success
-                        ? 'Refund processed successfully'
-                        : 'Failed to process refund'),
+                        ? context.l10n.adminFinanceRefundSuccess
+                        : context.l10n.adminFinanceRefundFailed),
                     backgroundColor: success ? AppColors.success : AppColors.error,
                   ),
                 );
@@ -716,7 +717,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.warning,
             ),
-            child: const Text('Process Refund'),
+            child: Text(context.l10n.adminFinanceProcessRefund),
           ),
         ],
       ),

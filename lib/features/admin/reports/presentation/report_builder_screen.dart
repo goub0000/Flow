@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/export_service.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 
 /// Admin Report Builder Screen
@@ -43,12 +44,12 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Report Builder'),
+        title: Text(context.l10n.adminReportBuilderTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
             onPressed: _showHelpDialog,
-            tooltip: 'Help',
+            tooltip: context.l10n.adminReportHelp,
           ),
         ],
       ),
@@ -60,7 +61,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Report Information Section
-              _buildSectionHeader('Report Information'),
+              _buildSectionHeader(context.l10n.adminReportInformation),
               const SizedBox(height: 16),
               CustomCard(
                 child: Padding(
@@ -68,15 +69,15 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                   child: Column(
                     children: [
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Report Title',
-                          hintText: 'Enter report title',
-                          prefixIcon: Icon(Icons.title),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminReportTitle,
+                          hintText: context.l10n.adminReportTitleHint,
+                          prefixIcon: const Icon(Icons.title),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a report title';
+                            return context.l10n.adminReportTitleRequired;
                           }
                           return null;
                         },
@@ -84,11 +85,11 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Description (Optional)',
-                          hintText: 'Enter report description',
-                          prefixIcon: Icon(Icons.description),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminReportDescriptionOptional,
+                          hintText: context.l10n.adminReportDescriptionHint,
+                          prefixIcon: const Icon(Icons.description),
+                          border: const OutlineInputBorder(),
                         ),
                         maxLines: 3,
                         onChanged: (value) => _reportDescription = value,
@@ -101,7 +102,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
               const SizedBox(height: 32),
 
               // Date Range Section
-              _buildSectionHeader('Date Range'),
+              _buildSectionHeader(context.l10n.adminReportDateRange),
               const SizedBox(height: 16),
               CustomCard(
                 child: Padding(
@@ -110,7 +111,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                     children: [
                       Expanded(
                         child: _buildDateSelector(
-                          label: 'Start Date',
+                          label: context.l10n.adminReportStartDate,
                           date: _startDate,
                           onDateSelected: (date) {
                             setState(() => _startDate = date);
@@ -122,7 +123,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: _buildDateSelector(
-                          label: 'End Date',
+                          label: context.l10n.adminReportEndDate,
                           date: _endDate,
                           onDateSelected: (date) {
                             setState(() => _endDate = date);
@@ -137,7 +138,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
               const SizedBox(height: 32),
 
               // Metrics Selection Section
-              _buildSectionHeader('Select Metrics'),
+              _buildSectionHeader(context.l10n.adminReportSelectMetrics),
               const SizedBox(height: 16),
               CustomCard(
                 child: Padding(
@@ -147,9 +148,9 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            'Select All',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Text(
+                            context.l10n.adminReportSelectAll,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Switch(
                             value: _selectedMetrics.values.every((v) => v),
@@ -182,7 +183,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
               const SizedBox(height: 32),
 
               // Export Format Section
-              _buildSectionHeader('Export Format'),
+              _buildSectionHeader(context.l10n.adminReportExportFormat),
               const SizedBox(height: 16),
               CustomCard(
                 child: Padding(
@@ -190,14 +191,14 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                   child: Column(
                     children: [
                       RadioListTile<ExportFormat>(
-                        title: const Row(
+                        title: Row(
                           children: [
-                            Icon(Icons.picture_as_pdf, color: Colors.red),
-                            SizedBox(width: 12),
-                            Text('PDF Document'),
+                            const Icon(Icons.picture_as_pdf, color: Colors.red),
+                            const SizedBox(width: 12),
+                            Text(context.l10n.adminReportPdfDocument),
                           ],
                         ),
-                        subtitle: const Text('Professional formatted PDF report'),
+                        subtitle: Text(context.l10n.adminReportPdfDescription),
                         value: ExportFormat.pdf,
                         groupValue: _exportFormat,
                         onChanged: (value) {
@@ -205,14 +206,14 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                         },
                       ),
                       RadioListTile<ExportFormat>(
-                        title: const Row(
+                        title: Row(
                           children: [
-                            Icon(Icons.table_chart, color: Colors.green),
-                            SizedBox(width: 12),
-                            Text('CSV Spreadsheet'),
+                            const Icon(Icons.table_chart, color: Colors.green),
+                            const SizedBox(width: 12),
+                            Text(context.l10n.adminReportCsvSpreadsheet),
                           ],
                         ),
-                        subtitle: const Text('Data in comma-separated values format'),
+                        subtitle: Text(context.l10n.adminReportCsvDescription),
                         value: ExportFormat.csv,
                         groupValue: _exportFormat,
                         onChanged: (value) {
@@ -220,14 +221,14 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                         },
                       ),
                       RadioListTile<ExportFormat>(
-                        title: const Row(
+                        title: Row(
                           children: [
-                            Icon(Icons.code, color: Colors.blue),
-                            SizedBox(width: 12),
-                            Text('JSON Data'),
+                            const Icon(Icons.code, color: Colors.blue),
+                            const SizedBox(width: 12),
+                            Text(context.l10n.adminReportJsonData),
                           ],
                         ),
-                        subtitle: const Text('Raw data in JSON format'),
+                        subtitle: Text(context.l10n.adminReportJsonDescription),
                         value: ExportFormat.json,
                         groupValue: _exportFormat,
                         onChanged: (value) {
@@ -258,7 +259,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
                         )
                       : const Icon(Icons.file_download),
                   label: Text(
-                    _isGenerating ? 'Generating Report...' : 'Generate Report',
+                    _isGenerating ? context.l10n.adminReportGenerating : context.l10n.adminReportGenerate,
                     style: const TextStyle(fontSize: 16),
                   ),
                   style: ElevatedButton.styleFrom(
@@ -347,9 +348,9 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Quick Presets',
-          style: TextStyle(
+        Text(
+          context.l10n.adminReportQuickPresets,
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: AppColors.textSecondary,
@@ -360,26 +361,26 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            _buildPresetChip('Last 7 Days', () {
+            _buildPresetChip(context.l10n.adminReportLast7Days, () {
               setState(() {
                 _endDate = DateTime.now();
                 _startDate = _endDate.subtract(const Duration(days: 7));
               });
             }),
-            _buildPresetChip('Last 30 Days', () {
+            _buildPresetChip(context.l10n.adminReportLast30Days, () {
               setState(() {
                 _endDate = DateTime.now();
                 _startDate = _endDate.subtract(const Duration(days: 30));
               });
             }),
-            _buildPresetChip('This Month', () {
+            _buildPresetChip(context.l10n.adminReportThisMonth, () {
               setState(() {
                 final now = DateTime.now();
                 _startDate = DateTime(now.year, now.month, 1);
                 _endDate = now;
               });
             }),
-            _buildPresetChip('Last Month', () {
+            _buildPresetChip(context.l10n.adminReportLastMonth, () {
               setState(() {
                 final now = DateTime.now();
                 _startDate = DateTime(now.year, now.month - 1, 1);
@@ -407,15 +408,15 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
   }
 
   String _getMetricDescription(String metric) {
-    const descriptions = {
-      'total_users': 'Total number of registered users',
-      'new_registrations': 'New user registrations in date range',
-      'total_applications': 'Total applications submitted',
-      'application_acceptance_rate': 'Percentage of accepted applications',
-      'active_sessions': 'Number of active user sessions',
-      'revenue': 'Total revenue generated',
-      'user_engagement': 'User engagement metrics',
-      'conversion_rate': 'Conversion rate metrics',
+    final descriptions = {
+      'total_users': context.l10n.adminReportMetricTotalUsers,
+      'new_registrations': context.l10n.adminReportMetricNewRegistrations,
+      'total_applications': context.l10n.adminReportMetricTotalApplications,
+      'application_acceptance_rate': context.l10n.adminReportMetricAcceptanceRate,
+      'active_sessions': context.l10n.adminReportMetricActiveSessions,
+      'revenue': context.l10n.adminReportMetricRevenue,
+      'user_engagement': context.l10n.adminReportMetricEngagement,
+      'conversion_rate': context.l10n.adminReportMetricConversion,
     };
     return descriptions[metric] ?? '';
   }
@@ -427,8 +428,8 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
 
     if (!_selectedMetrics.values.any((v) => v)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select at least one metric'),
+        SnackBar(
+          content: Text(context.l10n.adminReportSelectAtLeastOneMetric),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -482,8 +483,8 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Report generated successfully'),
+          SnackBar(
+            content: Text(context.l10n.adminReportGeneratedSuccess),
             backgroundColor: AppColors.success,
           ),
         );
@@ -492,7 +493,7 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to generate report: ${e.toString()}'),
+            content: Text(context.l10n.adminReportGenerateFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -532,40 +533,40 @@ class _ReportBuilderScreenState extends ConsumerState<ReportBuilderScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Report Builder Help'),
-        content: const SingleChildScrollView(
+        title: Text(context.l10n.adminReportBuilderHelpTitle),
+        content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'How to use the Report Builder:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                context.l10n.adminReportHowToUse,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 12),
-              Text('1. Enter a title and description for your report'),
-              SizedBox(height: 8),
-              Text('2. Select the date range for your data'),
-              SizedBox(height: 8),
-              Text('3. Choose which metrics to include'),
-              SizedBox(height: 8),
-              Text('4. Select your preferred export format'),
-              SizedBox(height: 8),
-              Text('5. Click "Generate Report" to download'),
-              SizedBox(height: 16),
+              const SizedBox(height: 12),
+              Text(context.l10n.adminReportHelpStep1),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportHelpStep2),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportHelpStep3),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportHelpStep4),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportHelpStep5),
+              const SizedBox(height: 16),
               Text(
-                'Quick Presets:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                context.l10n.adminReportQuickPresets,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
-              Text('Use the preset buttons to quickly select common date ranges'),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportHelpPresetsInfo),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Got it'),
+            child: Text(context.l10n.adminReportGotIt),
           ),
         ],
       ),

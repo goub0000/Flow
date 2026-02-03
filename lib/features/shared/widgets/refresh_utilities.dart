@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Provider for tracking last refresh times per dashboard/screen
 final lastRefreshTimeProvider = StateProvider.family<DateTime?, String>((ref, key) => null);
@@ -19,12 +20,12 @@ class LastRefreshIndicator extends ConsumerWidget {
 
     if (lastRefresh == null) return const SizedBox.shrink();
 
-    final timeAgo = _formatTimeAgo(DateTime.now().difference(lastRefresh));
+    final timeAgo = _formatTimeAgo(DateTime.now().difference(lastRefresh), context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Text(
-        'Last updated: $timeAgo',
+        context.l10n.swRefreshLastUpdated(timeAgo),
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Colors.grey.shade600,
           fontSize: 12,
@@ -33,13 +34,13 @@ class LastRefreshIndicator extends ConsumerWidget {
     );
   }
 
-  String _formatTimeAgo(Duration duration) {
-    if (duration.inSeconds < 10) return 'just now';
-    if (duration.inSeconds < 60) return '${duration.inSeconds}s ago';
-    if (duration.inMinutes < 60) return '${duration.inMinutes}m ago';
-    if (duration.inHours < 24) return '${duration.inHours}h ago';
-    if (duration.inDays == 1) return 'yesterday';
-    return '${duration.inDays}d ago';
+  String _formatTimeAgo(Duration duration, BuildContext context) {
+    if (duration.inSeconds < 10) return context.l10n.swRefreshJustNow;
+    if (duration.inSeconds < 60) return context.l10n.swRefreshSecondsAgo(duration.inSeconds);
+    if (duration.inMinutes < 60) return context.l10n.swRefreshMinutesAgo(duration.inMinutes);
+    if (duration.inHours < 24) return context.l10n.swRefreshHoursAgo(duration.inHours);
+    if (duration.inDays == 1) return context.l10n.swRefreshYesterday;
+    return context.l10n.swRefreshDaysAgo(duration.inDays);
   }
 }
 
@@ -71,8 +72,8 @@ mixin RefreshableMixin {
       SnackBar(
         content: Text(
           success
-            ? message ?? 'Dashboard refreshed successfully'
-            : message ?? 'Failed to refresh dashboard',
+            ? message ?? context.l10n.swRefreshSuccess
+            : message ?? context.l10n.swRefreshFailed,
         ),
         backgroundColor: success ? Colors.green : Colors.red,
         duration: Duration(seconds: success ? 1 : 3),

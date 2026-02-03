@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/providers/admin_auth_provider.dart';
 
@@ -84,14 +85,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Settings',
+          context.l10n.adminSettingsTitle,
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         const SizedBox(height: 8),
         Text(
-          'Manage your account settings and preferences',
+          context.l10n.adminSettingsSubtitle,
           style: TextStyle(
             color: AppColors.textSecondary,
             fontSize: 16,
@@ -103,7 +104,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildProfileSection(dynamic adminUser) {
     return _buildSettingsCard(
-      title: 'Profile',
+      title: context.l10n.adminSettingsProfile,
       icon: Icons.person,
       children: [
         ListTile(
@@ -119,19 +120,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ),
           ),
-          title: Text(adminUser?.displayName ?? 'Admin User'),
+          title: Text(adminUser?.displayName ?? context.l10n.adminSettingsDefaultUser),
           subtitle: Text(adminUser?.email ?? 'admin@flow.com'),
           trailing: TextButton(
             onPressed: () {
               // TODO: Navigate to profile edit
             },
-            child: const Text('Edit'),
+            child: Text(context.l10n.adminSettingsEdit),
           ),
         ),
         const Divider(),
         ListTile(
           leading: Icon(Icons.badge, color: AppColors.textSecondary),
-          title: const Text('Role'),
+          title: Text(context.l10n.adminSettingsRole),
           trailing: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
@@ -139,7 +140,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
-              'Super Admin',
+              context.l10n.adminSettingsSuperAdmin,
               style: TextStyle(
                 color: AppColors.primary,
                 fontSize: 12,
@@ -154,20 +155,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildNotificationSettings() {
     return _buildSettingsCard(
-      title: 'Notifications',
+      title: context.l10n.adminSettingsNotifications,
       icon: Icons.notifications,
       children: [
         SwitchListTile(
-          title: const Text('Email Notifications'),
-          subtitle: const Text('Receive notifications via email'),
+          title: Text(context.l10n.adminSettingsEmailNotifications),
+          subtitle: Text(context.l10n.adminSettingsEmailNotificationsDesc),
           value: _emailNotifications,
           onChanged: (value) {
             setState(() => _emailNotifications = value);
           },
         ),
         SwitchListTile(
-          title: const Text('Push Notifications'),
-          subtitle: const Text('Receive push notifications'),
+          title: Text(context.l10n.adminSettingsPushNotifications),
+          subtitle: Text(context.l10n.adminSettingsPushNotificationsDesc),
           value: _pushNotifications,
           onChanged: (value) {
             setState(() => _pushNotifications = value);
@@ -175,16 +176,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         const Divider(),
         SwitchListTile(
-          title: const Text('User Activity Alerts'),
-          subtitle: const Text('Get notified about user registrations and activities'),
+          title: Text(context.l10n.adminSettingsUserActivityAlerts),
+          subtitle: Text(context.l10n.adminSettingsUserActivityAlertsDesc),
           value: _userActivityAlerts,
           onChanged: (value) {
             setState(() => _userActivityAlerts = value);
           },
         ),
         SwitchListTile(
-          title: const Text('System Alerts'),
-          subtitle: const Text('Get notified about system issues and updates'),
+          title: Text(context.l10n.adminSettingsSystemAlerts),
+          subtitle: Text(context.l10n.adminSettingsSystemAlertsDesc),
           value: _systemAlerts,
           onChanged: (value) {
             setState(() => _systemAlerts = value);
@@ -196,12 +197,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildDisplaySettings() {
     return _buildSettingsCard(
-      title: 'Display',
+      title: context.l10n.adminSettingsDisplay,
       icon: Icons.palette,
       children: [
         SwitchListTile(
-          title: const Text('Dark Mode'),
-          subtitle: const Text('Use dark theme'),
+          title: Text(context.l10n.adminSettingsDarkMode),
+          subtitle: Text(context.l10n.adminSettingsDarkModeDesc),
           value: _darkMode,
           onChanged: (value) {
             setState(() => _darkMode = value);
@@ -211,14 +212,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         const Divider(),
         ListTile(
           leading: Icon(Icons.language, color: AppColors.textSecondary),
-          title: const Text('Language'),
+          title: Text(context.l10n.adminSettingsLanguage),
           trailing: DropdownButton<String>(
             value: _language,
             underline: const SizedBox(),
-            items: const [
-              DropdownMenuItem(value: 'en', child: Text('English')),
-              DropdownMenuItem(value: 'sw', child: Text('Swahili')),
-              DropdownMenuItem(value: 'fr', child: Text('French')),
+            items: [
+              DropdownMenuItem(value: 'en', child: Text(context.l10n.adminSettingsLangEnglish)),
+              DropdownMenuItem(value: 'sw', child: Text(context.l10n.adminSettingsLangSwahili)),
+              DropdownMenuItem(value: 'fr', child: Text(context.l10n.adminSettingsLangFrench)),
             ],
             onChanged: (value) {
               if (value != null) {
@@ -229,7 +230,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         ListTile(
           leading: Icon(Icons.access_time, color: AppColors.textSecondary),
-          title: const Text('Timezone'),
+          title: Text(context.l10n.adminSettingsTimezone),
           trailing: DropdownButton<String>(
             value: _timezone,
             underline: const SizedBox(),
@@ -251,13 +252,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildSecuritySettings() {
     return _buildSettingsCard(
-      title: 'Security',
+      title: context.l10n.adminSettingsSecurity,
       icon: Icons.security,
       children: [
         ListTile(
           leading: Icon(Icons.lock, color: AppColors.textSecondary),
-          title: const Text('Change Password'),
-          subtitle: const Text('Last changed 30 days ago'),
+          title: Text(context.l10n.adminSettingsChangePassword),
+          subtitle: Text(context.l10n.adminSettingsChangePasswordDesc),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // TODO: Navigate to change password
@@ -265,8 +266,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ),
         ListTile(
           leading: Icon(Icons.phone_android, color: AppColors.textSecondary),
-          title: const Text('Two-Factor Authentication'),
-          subtitle: const Text('Not enabled'),
+          title: Text(context.l10n.adminSettingsTwoFactor),
+          subtitle: Text(context.l10n.adminSettingsTwoFactorDesc),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // TODO: Navigate to 2FA setup
@@ -275,8 +276,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         const Divider(),
         ListTile(
           leading: Icon(Icons.devices, color: AppColors.textSecondary),
-          title: const Text('Active Sessions'),
-          subtitle: const Text('Manage your active login sessions'),
+          title: Text(context.l10n.adminSettingsActiveSessions),
+          subtitle: Text(context.l10n.adminSettingsActiveSessionsDesc),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // TODO: Navigate to sessions management
@@ -288,20 +289,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildPrivacySettings() {
     return _buildSettingsCard(
-      title: 'Privacy',
+      title: context.l10n.adminSettingsPrivacy,
       icon: Icons.privacy_tip,
       children: [
         SwitchListTile(
-          title: const Text('Activity Logging'),
-          subtitle: const Text('Log your admin actions for audit purposes'),
+          title: Text(context.l10n.adminSettingsActivityLogging),
+          subtitle: Text(context.l10n.adminSettingsActivityLoggingDesc),
           value: _activityLogging,
           onChanged: (value) {
             setState(() => _activityLogging = value);
           },
         ),
         SwitchListTile(
-          title: const Text('Analytics Tracking'),
-          subtitle: const Text('Help improve the platform with usage data'),
+          title: Text(context.l10n.adminSettingsAnalyticsTracking),
+          subtitle: Text(context.l10n.adminSettingsAnalyticsTrackingDesc),
           value: _analyticsTracking,
           onChanged: (value) {
             setState(() => _analyticsTracking = value);
@@ -310,8 +311,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         const Divider(),
         ListTile(
           leading: Icon(Icons.download, color: AppColors.textSecondary),
-          title: const Text('Download My Data'),
-          subtitle: const Text('Export all your personal data'),
+          title: Text(context.l10n.adminSettingsDownloadData),
+          subtitle: Text(context.l10n.adminSettingsDownloadDataDesc),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // TODO: Trigger data export
@@ -323,35 +324,35 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _buildDangerZone() {
     return _buildSettingsCard(
-      title: 'Danger Zone',
+      title: context.l10n.adminSettingsDangerZone,
       icon: Icons.warning,
       iconColor: AppColors.error,
       children: [
         ListTile(
           leading: Icon(Icons.logout, color: AppColors.error),
           title: Text(
-            'Sign Out',
+            context.l10n.adminSettingsSignOut,
             style: TextStyle(color: AppColors.error),
           ),
-          subtitle: const Text('Sign out from this device'),
+          subtitle: Text(context.l10n.adminSettingsSignOutDesc),
           trailing: const Icon(Icons.chevron_right),
           onTap: () async {
             final confirmed = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Sign Out'),
-                content: const Text('Are you sure you want to sign out?'),
+                title: Text(context.l10n.adminSettingsSignOut),
+                content: Text(context.l10n.adminSettingsSignOutConfirm),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text('Cancel'),
+                    child: Text(context.l10n.adminSettingsCancel),
                   ),
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(true),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.error,
                     ),
-                    child: const Text('Sign Out'),
+                    child: Text(context.l10n.adminSettingsSignOut),
                   ),
                 ],
               ),
@@ -366,10 +367,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ListTile(
           leading: Icon(Icons.delete_forever, color: AppColors.error),
           title: Text(
-            'Delete Account',
+            context.l10n.adminSettingsDeleteAccount,
             style: TextStyle(color: AppColors.error),
           ),
-          subtitle: const Text('Permanently delete your admin account'),
+          subtitle: Text(context.l10n.adminSettingsDeleteAccountDesc),
           trailing: const Icon(Icons.chevron_right),
           onTap: () {
             // TODO: Show delete account confirmation

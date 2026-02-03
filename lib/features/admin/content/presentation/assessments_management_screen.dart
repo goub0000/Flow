@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/providers/admin_assessments_provider.dart';
 import '../../shared/providers/admin_course_list_provider.dart';
@@ -69,7 +70,7 @@ class _AssessmentsManagementScreenState
                   Icon(Icons.quiz, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Assessments Management',
+                    context.l10n.adminContentAssessmentsManagement,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -78,7 +79,7 @@ class _AssessmentsManagementScreenState
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage quizzes and assignments across all courses',
+                context.l10n.adminContentManageQuizzesAndAssignments,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -90,13 +91,13 @@ class _AssessmentsManagementScreenState
                   ref.read(adminAssessmentsProvider.notifier).fetchAssessments();
                 },
                 icon: const Icon(Icons.refresh, size: 20),
-                label: const Text('Refresh'),
+                label: Text(context.l10n.adminContentRefresh),
               ),
               const SizedBox(width: 12),
               ElevatedButton.icon(
                 onPressed: _showCreateAssessmentDialog,
                 icon: const Icon(Icons.add, size: 20),
-                label: const Text('Create Assessment'),
+                label: Text(context.l10n.adminContentCreateAssessment),
               ),
             ],
           ),
@@ -131,7 +132,7 @@ class _AssessmentsManagementScreenState
               children: [
                 Icon(Icons.add_circle, color: AppColors.primary),
                 const SizedBox(width: 12),
-                const Text('Create New Assessment'),
+                Text(context.l10n.adminContentCreateNewAssessment),
               ],
             ),
             content: SizedBox(
@@ -145,15 +146,15 @@ class _AssessmentsManagementScreenState
                     DropdownButtonFormField<String>(
                       value: selectedType,
                       decoration: InputDecoration(
-                        labelText: 'Assessment Type *',
+                        labelText: context.l10n.adminContentAssessmentTypeRequired,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'quiz', child: Text('Quiz')),
+                      items: [
+                        DropdownMenuItem(value: 'quiz', child: Text(context.l10n.adminContentQuiz)),
                         DropdownMenuItem(
-                            value: 'assignment', child: Text('Assignment')),
+                            value: 'assignment', child: Text(context.l10n.adminContentAssignment)),
                       ],
                       onChanged: (value) {
                         if (value != null) {
@@ -166,10 +167,10 @@ class _AssessmentsManagementScreenState
                     DropdownButtonFormField<String>(
                       value: selectedCourseId,
                       decoration: InputDecoration(
-                        labelText: 'Course *',
+                        labelText: context.l10n.adminContentCourseRequired,
                         hintText: courseListState.isLoading
-                            ? 'Loading courses...'
-                            : 'Select a course',
+                            ? context.l10n.adminContentLoadingCourses
+                            : context.l10n.adminContentSelectACourse,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -204,14 +205,14 @@ class _AssessmentsManagementScreenState
                     DropdownButtonFormField<String>(
                       value: selectedModuleId,
                       decoration: InputDecoration(
-                        labelText: 'Module *',
+                        labelText: context.l10n.adminContentModuleRequired,
                         hintText: isLoadingModules
-                            ? 'Loading modules...'
+                            ? context.l10n.adminContentLoadingModules
                             : selectedCourseId == null
-                                ? 'Select a course first'
+                                ? context.l10n.adminContentSelectACourseFirst
                                 : modules.isEmpty
-                                    ? 'No modules in this course'
-                                    : 'Select a module',
+                                    ? context.l10n.adminContentNoModulesInCourse
+                                    : context.l10n.adminContentSelectAModule,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -231,8 +232,8 @@ class _AssessmentsManagementScreenState
                     TextField(
                       controller: lessonTitleController,
                       decoration: InputDecoration(
-                        labelText: 'Lesson Title *',
-                        hintText: 'Enter lesson title',
+                        labelText: context.l10n.adminContentLessonTitleRequired,
+                        hintText: context.l10n.adminContentEnterLessonTitle,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -243,8 +244,8 @@ class _AssessmentsManagementScreenState
                       controller: titleController,
                       decoration: InputDecoration(
                         labelText:
-                            '${selectedType == 'quiz' ? 'Quiz' : 'Assignment'} Title *',
-                        hintText: 'Enter title',
+                            '${selectedType == 'quiz' ? context.l10n.adminContentQuiz : context.l10n.adminContentAssignment} ${context.l10n.adminContentTitleRequired}',
+                        hintText: context.l10n.adminContentEnterTitle,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -257,7 +258,7 @@ class _AssessmentsManagementScreenState
                         controller: passingScoreController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'Passing Score (%)',
+                          labelText: context.l10n.adminContentPassingScorePercent,
                           hintText: '70',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -269,8 +270,8 @@ class _AssessmentsManagementScreenState
                         controller: instructionsController,
                         maxLines: 3,
                         decoration: InputDecoration(
-                          labelText: 'Instructions *',
-                          hintText: 'Enter assignment instructions',
+                          labelText: context.l10n.adminContentInstructionsRequired,
+                          hintText: context.l10n.adminContentEnterAssignmentInstructions,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -281,7 +282,7 @@ class _AssessmentsManagementScreenState
                         controller: pointsController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'Points Possible',
+                          labelText: context.l10n.adminContentPointsPossible,
                           hintText: '100',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -292,8 +293,8 @@ class _AssessmentsManagementScreenState
                     const SizedBox(height: 16),
                     Text(
                       selectedType == 'quiz'
-                          ? 'Quiz will be created as a draft. Add questions in the Course Builder.'
-                          : 'Assignment will be created as a draft. Configure details in the Course Builder.',
+                          ? context.l10n.adminContentQuizDraftNotice
+                          : context.l10n.adminContentAssignmentDraftNotice,
                       style: TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 12,
@@ -307,7 +308,7 @@ class _AssessmentsManagementScreenState
             actions: [
               TextButton(
                 onPressed: isCreating ? null : () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                child: Text(context.l10n.adminContentCancel),
               ),
               ElevatedButton(
                 onPressed: isCreating
@@ -318,7 +319,7 @@ class _AssessmentsManagementScreenState
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content:
-                                  const Text('Please select course and module'),
+                                  Text(context.l10n.adminContentPleaseSelectCourseAndModule),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -328,8 +329,8 @@ class _AssessmentsManagementScreenState
                             titleController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text(
-                                  'Please fill in all required fields'),
+                              content: Text(
+                                  context.l10n.adminContentPleaseFillRequiredFields),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -339,8 +340,8 @@ class _AssessmentsManagementScreenState
                             instructionsController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text(
-                                  'Please enter assignment instructions'),
+                              content: Text(
+                                  context.l10n.adminContentPleaseEnterInstructions),
                               backgroundColor: AppColors.error,
                             ),
                           );
@@ -376,8 +377,8 @@ class _AssessmentsManagementScreenState
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(success
-                                  ? '${selectedType == 'quiz' ? 'Quiz' : 'Assignment'} created'
-                                  : 'Failed to create assessment'),
+                                  ? context.l10n.adminContentAssessmentCreated(selectedType == 'quiz' ? context.l10n.adminContentQuiz : context.l10n.adminContentAssignment)
+                                  : context.l10n.adminContentFailedToCreateAssessment),
                               backgroundColor:
                                   success ? AppColors.success : AppColors.error,
                             ),
@@ -393,7 +394,7 @@ class _AssessmentsManagementScreenState
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Create'),
+                    : Text(context.l10n.adminContentCreate),
               ),
             ],
           );
@@ -411,9 +412,9 @@ class _AssessmentsManagementScreenState
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Assessments',
+              context.l10n.adminContentTotalAssessments,
               stats.totalAssessments.toString(),
-              'All assessments',
+              context.l10n.adminContentAllAssessments,
               Icons.assignment,
               AppColors.primary,
             ),
@@ -421,9 +422,9 @@ class _AssessmentsManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Quizzes',
+              context.l10n.adminContentQuizzes,
               stats.quizCount.toString(),
-              'Auto-graded',
+              context.l10n.adminContentAutoGraded,
               Icons.quiz,
               Colors.blue,
             ),
@@ -431,9 +432,9 @@ class _AssessmentsManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Assignments',
+              context.l10n.adminContentAssignments,
               stats.assignmentCount.toString(),
-              'Manual grading',
+              context.l10n.adminContentManualGrading,
               Icons.edit_document,
               Colors.orange,
             ),
@@ -441,9 +442,9 @@ class _AssessmentsManagementScreenState
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Pending Grading',
+              context.l10n.adminContentPendingGrading,
               stats.pendingGrading.toString(),
-              'Awaiting review',
+              context.l10n.adminContentAwaitingReview,
               Icons.pending_actions,
               AppColors.warning,
             ),
@@ -509,7 +510,7 @@ class _AssessmentsManagementScreenState
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search assessments by title...',
+                hintText: context.l10n.adminContentSearchAssessments,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -532,7 +533,7 @@ class _AssessmentsManagementScreenState
             child: DropdownButtonFormField<String>(
               value: _selectedType,
               decoration: InputDecoration(
-                labelText: 'Assessment Type',
+                labelText: context.l10n.adminContentAssessmentType,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -541,10 +542,10 @@ class _AssessmentsManagementScreenState
                   vertical: 12,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Types')),
-                DropdownMenuItem(value: 'quiz', child: Text('Quiz')),
-                DropdownMenuItem(value: 'assignment', child: Text('Assignment')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminContentAllTypes)),
+                DropdownMenuItem(value: 'quiz', child: Text(context.l10n.adminContentQuiz)),
+                DropdownMenuItem(value: 'assignment', child: Text(context.l10n.adminContentAssignment)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -597,7 +598,7 @@ class _AssessmentsManagementScreenState
     return AdminDataTable<AssessmentRowData>(
       columns: [
         DataTableColumn(
-          label: 'Title',
+          label: context.l10n.adminContentTitleLabel,
           cellBuilder: (item) => Text(
             item.title,
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
@@ -605,11 +606,11 @@ class _AssessmentsManagementScreenState
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Type',
+          label: context.l10n.adminContentTypeLabel,
           cellBuilder: (item) => _buildTypeChip(item.assessmentType),
         ),
         DataTableColumn(
-          label: 'Course',
+          label: context.l10n.adminContentCourseLabel,
           cellBuilder: (item) => Text(
             item.courseTitle,
             style: const TextStyle(fontSize: 13),
@@ -617,29 +618,29 @@ class _AssessmentsManagementScreenState
           ),
         ),
         DataTableColumn(
-          label: 'Questions / Submissions',
+          label: context.l10n.adminContentQuestionsSubmissions,
           cellBuilder: (item) => Text(
             item.assessmentType == 'quiz'
-                ? '${item.questionCount} questions (${item.attemptCount} attempts)'
-                : '${item.submissionCount} submissions (${item.gradedCount} graded)',
+                ? context.l10n.adminContentQuestionsAttempts(item.questionCount, item.attemptCount)
+                : context.l10n.adminContentSubmissionsGraded(item.submissionCount, item.gradedCount),
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
         ),
         DataTableColumn(
-          label: 'Score / Grade',
+          label: context.l10n.adminContentScoreGrade,
           cellBuilder: (item) => Text(
             item.assessmentType == 'quiz'
                 ? item.passRate != null
-                    ? '${item.passRate!.toStringAsFixed(1)}% pass'
+                    ? context.l10n.adminContentPassRate(item.passRate!.toStringAsFixed(1))
                     : '-'
                 : item.averageGrade != null
-                    ? '${item.averageGrade!.toStringAsFixed(1)}% avg'
+                    ? context.l10n.adminContentAvgGrade(item.averageGrade!.toStringAsFixed(1))
                     : '-',
             style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
         ),
         DataTableColumn(
-          label: 'Updated',
+          label: context.l10n.adminContentUpdated,
           cellBuilder: (item) => Text(
             item.lastUpdated,
             style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
@@ -653,12 +654,12 @@ class _AssessmentsManagementScreenState
       rowActions: [
         DataTableAction(
           icon: Icons.bar_chart,
-          tooltip: 'View Stats',
+          tooltip: context.l10n.adminContentViewStats,
           onPressed: (item) => _showAssessmentDetails(item),
         ),
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit in Course Builder',
+          tooltip: context.l10n.adminContentEditInCourseBuilder,
           color: AppColors.primary,
           onPressed: (item) {
             if (item.courseId.isNotEmpty) {
@@ -674,7 +675,7 @@ class _AssessmentsManagementScreenState
     final isQuiz = type == 'quiz';
     final color = isQuiz ? Colors.blue : Colors.orange;
     final icon = isQuiz ? Icons.quiz : Icons.edit_document;
-    final label = isQuiz ? 'Quiz' : 'Assignment';
+    final label = isQuiz ? context.l10n.adminContentQuiz : context.l10n.adminContentAssignment;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -719,46 +720,46 @@ class _AssessmentsManagementScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildDetailRow(
-                'Type',
-                item.assessmentType == 'quiz' ? 'Quiz' : 'Assignment',
+                context.l10n.adminContentTypeLabel,
+                item.assessmentType == 'quiz' ? context.l10n.adminContentQuiz : context.l10n.adminContentAssignment,
               ),
-              _buildDetailRow('Course', item.courseTitle),
+              _buildDetailRow(context.l10n.adminContentCourseLabel, item.courseTitle),
               if (item.assessmentType == 'quiz') ...[
-                _buildDetailRow('Questions', item.questionCount.toString()),
-                _buildDetailRow('Attempts', item.attemptCount.toString()),
+                _buildDetailRow(context.l10n.adminContentQuestions, item.questionCount.toString()),
+                _buildDetailRow(context.l10n.adminContentAttempts, item.attemptCount.toString()),
                 if (item.averageScore != null)
                   _buildDetailRow(
-                    'Average Score',
+                    context.l10n.adminContentAverageScore,
                     '${item.averageScore!.toStringAsFixed(1)}%',
                   ),
                 if (item.passRate != null)
                   _buildDetailRow(
-                    'Pass Rate',
+                    context.l10n.adminContentPassRateLabel,
                     '${item.passRate!.toStringAsFixed(1)}%',
                   ),
               ] else ...[
-                _buildDetailRow('Submissions', item.submissionCount.toString()),
-                _buildDetailRow('Graded', item.gradedCount.toString()),
+                _buildDetailRow(context.l10n.adminContentSubmissions, item.submissionCount.toString()),
+                _buildDetailRow(context.l10n.adminContentGraded, item.gradedCount.toString()),
                 _buildDetailRow(
-                  'Pending',
+                  context.l10n.adminContentPending,
                   (item.submissionCount - item.gradedCount).toString(),
                 ),
                 if (item.averageGrade != null)
                   _buildDetailRow(
-                    'Average Grade',
+                    context.l10n.adminContentAverageGrade,
                     '${item.averageGrade!.toStringAsFixed(1)}%',
                   ),
                 if (item.dueDate != null)
-                  _buildDetailRow('Due Date', item.dueDate!),
+                  _buildDetailRow(context.l10n.adminContentDueDate, item.dueDate!),
               ],
-              _buildDetailRow('Last Updated', item.lastUpdated),
+              _buildDetailRow(context.l10n.adminContentLastUpdated, item.lastUpdated),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.adminContentClose),
           ),
           if (item.courseId.isNotEmpty)
             ElevatedButton.icon(
@@ -767,7 +768,7 @@ class _AssessmentsManagementScreenState
                 context.go('/admin/content/${item.courseId}/edit');
               },
               icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Edit in Course Builder'),
+              label: Text(context.l10n.adminContentEditInCourseBuilder),
             ),
         ],
       ),
@@ -802,12 +803,12 @@ class _AssessmentsManagementScreenState
     final now = DateTime.now();
     final diff = now.difference(date);
 
-    if (diff.inDays == 0) return 'Today';
-    if (diff.inDays == 1) return 'Yesterday';
-    if (diff.inDays < 7) return '${diff.inDays} days ago';
-    if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} weeks ago';
-    if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} months ago';
-    return '${(diff.inDays / 365).floor()} years ago';
+    if (diff.inDays == 0) return context.l10n.adminContentToday;
+    if (diff.inDays == 1) return context.l10n.adminContentYesterday;
+    if (diff.inDays < 7) return context.l10n.adminContentDaysAgo(diff.inDays);
+    if (diff.inDays < 30) return context.l10n.adminContentWeeksAgo((diff.inDays / 7).floor());
+    if (diff.inDays < 365) return context.l10n.adminContentMonthsAgo((diff.inDays / 30).floor());
+    return context.l10n.adminContentYearsAgo((diff.inDays / 365).floor());
   }
 }
 

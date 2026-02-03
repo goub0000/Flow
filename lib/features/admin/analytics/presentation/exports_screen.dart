@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/utils/export_utils_web.dart' as export_utils;
 
 /// Export data source definition
@@ -249,11 +250,11 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Data Exports',
+                  context.l10n.adminAnalyticsDataExports,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Export platform data in CSV or JSON format',
+                  context.l10n.adminAnalyticsDataExportsSubtitle,
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                 ),
               ],
@@ -275,11 +276,11 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('New Export', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(context.l10n.adminAnalyticsNewExport, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
 
           // Step 1: Select data source
-          const Text('1. Select data source', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          Text(context.l10n.adminAnalyticsSelectDataSource, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           const SizedBox(height: 12),
           Wrap(
             spacing: 10,

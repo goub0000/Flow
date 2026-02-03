@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/page_content_provider.dart';
 import '../../../../core/models/page_content_model.dart';
 
@@ -42,14 +43,14 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Page Content Management',
+                      context.l10n.adminContentPageContentManagement,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Manage footer pages content (About, Privacy, Terms, etc.)',
+                      context.l10n.adminContentManageFooterPages,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -62,7 +63,7 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
                   onPressed: () {
                     ref.read(adminPagesProvider.notifier).loadPages();
                   },
-                  tooltip: 'Refresh',
+                  tooltip: context.l10n.adminContentRefresh,
                 ),
               ],
             ),
@@ -101,7 +102,7 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Error loading pages',
+              context.l10n.adminContentErrorLoadingPages,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -122,7 +123,7 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
                 ref.read(adminPagesProvider.notifier).loadPages();
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(context.l10n.adminContentRetry),
             ),
           ],
         ),
@@ -142,8 +143,8 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
               color: AppColors.textSecondary.withOpacity(0.5),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'No pages found',
+            Text(
+              context.l10n.adminContentNoPagesFound,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -151,7 +152,7 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Run the database migration to seed initial page content.',
+              context.l10n.adminContentRunMigration,
               style: TextStyle(
                 color: AppColors.textSecondary,
               ),

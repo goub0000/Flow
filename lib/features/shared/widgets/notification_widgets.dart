@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Notification Widgets
 ///
@@ -198,7 +199,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final timeAgo = _formatTimeAgo(notification.timestamp);
+    final timeAgo = _formatTimeAgo(notification.timestamp, context);
 
     return Dismissible(
       key: Key(notification.id),
@@ -305,23 +306,23 @@ class NotificationCard extends StatelessWidget {
                   },
                   itemBuilder: (context) => [
                     if (!notification.isRead)
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'read',
                         child: Row(
                           children: [
-                            Icon(Icons.check, size: 20),
-                            SizedBox(width: 12),
-                            Text('Mark as read'),
+                            const Icon(Icons.check, size: 20),
+                            const SizedBox(width: 12),
+                            Text(context.l10n.swNotifWidgetMarkAsRead),
                           ],
                         ),
                       ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'delete',
                       child: Row(
                         children: [
-                          Icon(Icons.delete, size: 20, color: AppColors.error),
-                          SizedBox(width: 12),
-                          Text('Delete', style: TextStyle(color: AppColors.error)),
+                          const Icon(Icons.delete, size: 20, color: AppColors.error),
+                          const SizedBox(width: 12),
+                          Text(context.l10n.swNotifWidgetDelete, style: const TextStyle(color: AppColors.error)),
                         ],
                       ),
                     ),
@@ -335,30 +336,30 @@ class NotificationCard extends StatelessWidget {
     );
   }
 
-  String _formatTimeAgo(DateTime timestamp) {
+  String _formatTimeAgo(DateTime timestamp, BuildContext context) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
     if (difference.inSeconds < 60) {
-      return 'Just now';
+      return context.l10n.swNotifWidgetJustNow;
     } else if (difference.inMinutes < 60) {
       final minutes = difference.inMinutes;
-      return '$minutes ${minutes == 1 ? 'minute' : 'minutes'} ago';
+      return context.l10n.swNotifWidgetMinutesAgo(minutes);
     } else if (difference.inHours < 24) {
       final hours = difference.inHours;
-      return '$hours ${hours == 1 ? 'hour' : 'hours'} ago';
+      return context.l10n.swNotifWidgetHoursAgo(hours);
     } else if (difference.inDays < 7) {
       final days = difference.inDays;
-      return '$days ${days == 1 ? 'day' : 'days'} ago';
+      return context.l10n.swNotifWidgetDaysAgo(days);
     } else if (difference.inDays < 30) {
       final weeks = (difference.inDays / 7).floor();
-      return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
+      return context.l10n.swNotifWidgetWeeksAgo(weeks);
     } else if (difference.inDays < 365) {
       final months = (difference.inDays / 30).floor();
-      return '$months ${months == 1 ? 'month' : 'months'} ago';
+      return context.l10n.swNotifWidgetMonthsAgo(months);
     } else {
       final years = (difference.inDays / 365).floor();
-      return '$years ${years == 1 ? 'year' : 'years'} ago';
+      return context.l10n.swNotifWidgetYearsAgo(years);
     }
   }
 
@@ -659,7 +660,7 @@ class EmptyNotificationsState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'No Notifications',
+              context.l10n.swNotifWidgetNoNotifications,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -667,7 +668,7 @@ class EmptyNotificationsState extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'You\'re all caught up! Check back later for new updates.',
+              context.l10n.swNotifWidgetAllCaughtUp,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Global Search Widget with Autocomplete
 ///
@@ -110,7 +111,7 @@ import '../../../core/theme/app_colors.dart';
 
 /// Search Widget with autocomplete
 class SearchWidget extends StatefulWidget {
-  final String hint;
+  final String? hint;
   final Function(String) onSearch;
   final Function(String)? onSuggestionSelected;
   final List<String>? categories;
@@ -120,7 +121,7 @@ class SearchWidget extends StatefulWidget {
 
   const SearchWidget({
     super.key,
-    this.hint = 'Search...',
+    this.hint,
     required this.onSearch,
     this.onSuggestionSelected,
     this.categories,
@@ -279,13 +280,13 @@ class _SearchWidgetState extends State<SearchWidget> {
                   padding: const EdgeInsets.only(left: 12),
                   child: DropdownButton<String?>(
                     value: widget.selectedCategory,
-                    hint: const Text('All'),
+                    hint: Text(context.l10n.swSearchAll),
                     underline: const SizedBox.shrink(),
                     icon: const Icon(Icons.arrow_drop_down, size: 20),
                     items: [
-                      const DropdownMenuItem(
+                      DropdownMenuItem(
                         value: null,
-                        child: Text('All'),
+                        child: Text(context.l10n.swSearchAll),
                       ),
                       ...widget.categories!.map((category) {
                         return DropdownMenuItem(
@@ -320,7 +321,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   controller: _controller,
                   focusNode: _focusNode,
                   decoration: InputDecoration(
-                    hintText: widget.hint,
+                    hintText: widget.hint ?? context.l10n.swSearchHint,
                     border: InputBorder.none,
                     hintStyle: const TextStyle(
                       color: AppColors.textSecondary,
@@ -377,9 +378,9 @@ class _SearchWidgetState extends State<SearchWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Recent Searches',
-                          style: TextStyle(
+                        Text(
+                          context.l10n.swSearchRecentSearches,
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textSecondary,
@@ -398,9 +399,9 @@ class _SearchWidgetState extends State<SearchWidget> {
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: const Text(
-                            'Clear',
-                            style: TextStyle(fontSize: 12),
+                          child: Text(
+                            context.l10n.swSearchClear,
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ),
                       ],
@@ -443,11 +444,11 @@ class _SearchWidgetState extends State<SearchWidget> {
                 // Suggestions
                 if (_suggestions.isNotEmpty) ...[
                   if (_controller.text.isNotEmpty)
-                    const Padding(
-                      padding: EdgeInsets.all(12),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
                       child: Text(
-                        'Suggestions',
-                        style: TextStyle(
+                        context.l10n.swSearchSuggestions,
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textSecondary,
@@ -497,12 +498,12 @@ class _SearchWidgetState extends State<SearchWidget> {
 
 /// Compact Search Bar (for app bars)
 class CompactSearchBar extends StatelessWidget {
-  final String hint;
+  final String? hint;
   final VoidCallback onTap;
 
   const CompactSearchBar({
     super.key,
-    this.hint = 'Search...',
+    this.hint,
     required this.onTap,
   });
 
@@ -527,7 +528,7 @@ class CompactSearchBar extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                hint,
+                hint ?? context.l10n.swSearchHint,
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,

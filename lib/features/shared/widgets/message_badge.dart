@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../providers/messaging_provider.dart';
 
 /// Message icon with badge showing unread count
@@ -64,7 +65,7 @@ class MessageBadge extends ConsumerWidget {
       onPressed: () {
         context.push('/messages');
       },
-      tooltip: unreadCount > 0 ? '$unreadCount unread messages' : 'Messages',
+      tooltip: unreadCount > 0 ? context.l10n.messageBadgeUnread(unreadCount.toString()) : context.l10n.messageBadgeMessages,
     );
   }
 }

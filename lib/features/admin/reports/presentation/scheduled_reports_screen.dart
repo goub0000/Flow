@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/services/export_service.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/status_badge.dart';
@@ -57,21 +58,21 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scheduled Reports'),
+        title: Text(context.l10n.adminReportScheduledReports),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
             onPressed: _showHelpDialog,
-            tooltip: 'Help',
+            tooltip: context.l10n.adminReportHelp,
           ),
         ],
       ),
       body: _scheduledReports.isEmpty
           ? EmptyState(
               icon: Icons.schedule,
-              title: 'No Scheduled Reports',
-              message: 'Create automated reports to receive regular updates',
-              actionLabel: 'Create Schedule',
+              title: context.l10n.adminReportNoScheduledReports,
+              message: context.l10n.adminReportCreateAutomatedReports,
+              actionLabel: context.l10n.adminReportCreateSchedule,
               onAction: _createScheduledReport,
             )
           : ListView.builder(
@@ -94,7 +95,7 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _createScheduledReport,
         icon: const Icon(Icons.add),
-        label: const Text('New Schedule'),
+        label: Text(context.l10n.adminReportNewSchedule),
       ),
     );
   }
@@ -120,7 +121,7 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          value ? 'Report activated' : 'Report paused',
+          value ? context.l10n.adminReportActivated : context.l10n.adminReportPaused,
         ),
         backgroundColor: value ? AppColors.success : AppColors.warning,
       ),
@@ -131,12 +132,12 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Scheduled Report'),
+        title: Text(context.l10n.adminReportDeleteScheduledReport),
         content: Text('Are you sure you want to delete "${report.title}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminReportCancel),
           ),
           TextButton(
             onPressed: () {
@@ -145,13 +146,13 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
               });
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Scheduled report deleted'),
+                SnackBar(
+                  content: Text(context.l10n.adminReportScheduledReportDeleted),
                   backgroundColor: AppColors.success,
                 ),
               );
             },
-            child: const Text('Delete', style: TextStyle(color: AppColors.error)),
+            child: Text(context.l10n.adminReportDelete, style: const TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -160,8 +161,8 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
 
   void _runReportNow(ScheduledReport report) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Report generation started. You will receive it via email shortly.'),
+      SnackBar(
+        content: Text(context.l10n.adminReportGenerationStarted),
         backgroundColor: AppColors.info,
         duration: Duration(seconds: 4),
       ),
@@ -172,46 +173,46 @@ class _ScheduledReportsScreenState extends ConsumerState<ScheduledReportsScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Scheduled Reports Help'),
-        content: const SingleChildScrollView(
+        title: Text(context.l10n.adminReportScheduledReportsHelp),
+        content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'How to use Scheduled Reports:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                context.l10n.adminReportHowToUseScheduled,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 12),
-              Text('1. Click "New Schedule" to create an automated report'),
-              SizedBox(height: 8),
-              Text('2. Choose report frequency (daily, weekly, monthly)'),
-              SizedBox(height: 8),
-              Text('3. Select metrics to include in the report'),
-              SizedBox(height: 8),
-              Text('4. Add email recipients who will receive the report'),
-              SizedBox(height: 8),
-              Text('5. Reports will be automatically generated and emailed'),
-              SizedBox(height: 16),
+              const SizedBox(height: 12),
+              Text(context.l10n.adminReportScheduledStep1),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportScheduledStep2),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportScheduledStep3),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportScheduledStep4),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportScheduledStep5),
+              const SizedBox(height: 16),
               Text(
-                'Features:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                context.l10n.adminReportFeatures,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
-              Text('• Pause/resume schedules at any time'),
-              SizedBox(height: 4),
-              Text('• Run reports manually with "Run Now"'),
-              SizedBox(height: 4),
-              Text('• Edit existing schedules'),
-              SizedBox(height: 4),
-              Text('• Multiple export formats (PDF, CSV, JSON)'),
+              const SizedBox(height: 8),
+              Text(context.l10n.adminReportFeature1),
+              const SizedBox(height: 4),
+              Text(context.l10n.adminReportFeature2),
+              const SizedBox(height: 4),
+              Text(context.l10n.adminReportFeature3),
+              const SizedBox(height: 4),
+              Text(context.l10n.adminReportFeature4),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Got it'),
+            child: Text(context.l10n.adminReportGotIt),
           ),
         ],
       ),
@@ -315,8 +316,8 @@ class _ScheduledReportCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     report.isActive
-                        ? 'Next run: ${_formatNextRun(daysUntilNext)}'
-                        : 'Paused',
+                        ? '${context.l10n.adminReportNextRun}: ${_formatNextRun(daysUntilNext, context)}'
+                        : context.l10n.adminReportPaused,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: report.isActive ? AppColors.info : AppColors.textSecondary,
                       fontWeight: FontWeight.w600,
@@ -333,7 +334,7 @@ class _ScheduledReportCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onTap,
                   icon: const Icon(Icons.edit, size: 16),
-                  label: const Text('Edit'),
+                  label: Text(context.l10n.adminReportEdit),
                 ),
               ),
               const SizedBox(width: 8),
@@ -341,7 +342,7 @@ class _ScheduledReportCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onRunNow,
                   icon: const Icon(Icons.play_arrow, size: 16),
-                  label: const Text('Run Now'),
+                  label: Text(context.l10n.adminReportRunNow),
                 ),
               ),
               const SizedBox(width: 8),
@@ -349,7 +350,7 @@ class _ScheduledReportCard extends StatelessWidget {
                 onPressed: onDelete,
                 icon: const Icon(Icons.delete_outline),
                 color: AppColors.error,
-                tooltip: 'Delete',
+                tooltip: context.l10n.adminReportDelete,
               ),
             ],
           ),
@@ -361,18 +362,18 @@ class _ScheduledReportCard extends StatelessWidget {
   String _getFrequencyLabel(ReportFrequency frequency) {
     switch (frequency) {
       case ReportFrequency.daily:
-        return 'Daily';
+        return context.l10n.adminReportDaily;
       case ReportFrequency.weekly:
-        return 'Weekly';
+        return context.l10n.adminReportWeekly;
       case ReportFrequency.monthly:
-        return 'Monthly';
+        return context.l10n.adminReportMonthly;
     }
   }
 
-  String _formatNextRun(int days) {
-    if (days == 0) return 'Today';
-    if (days == 1) return 'Tomorrow';
-    return 'in $days days';
+  String _formatNextRun(int days, BuildContext context) {
+    if (days == 0) return context.l10n.adminReportToday;
+    if (days == 1) return context.l10n.adminReportTomorrow;
+    return context.l10n.adminReportInDays(days);
   }
 }
 
@@ -471,7 +472,7 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.report == null ? 'New Scheduled Report' : 'Edit Scheduled Report'),
+      title: Text(widget.report == null ? context.l10n.adminReportNewScheduledReport : context.l10n.adminReportEditScheduledReport),
       content: SizedBox(
         width: 500,
         child: Form(
@@ -483,13 +484,13 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
               children: [
                 TextFormField(
                   controller: _titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'Report Title',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminReportTitle,
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a title';
+                      return context.l10n.adminReportTitleRequired;
                     }
                     return null;
                   },
@@ -497,8 +498,8 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description (Optional)',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminReportDescriptionOptional,
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 2,
@@ -506,8 +507,8 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
                 const SizedBox(height: 16),
                 DropdownButtonFormField<ReportFrequency>(
                   value: _frequency,
-                  decoration: const InputDecoration(
-                    labelText: 'Frequency',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminReportFrequency,
                     border: OutlineInputBorder(),
                   ),
                   items: ReportFrequency.values.map((freq) {
@@ -521,8 +522,8 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
                 const SizedBox(height: 16),
                 DropdownButtonFormField<ExportFormat>(
                   value: _format,
-                  decoration: const InputDecoration(
-                    labelText: 'Export Format',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminReportExportFormat,
                     border: OutlineInputBorder(),
                   ),
                   items: ExportFormat.values.map((format) {
@@ -536,22 +537,22 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _recipientsController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email Recipients (comma-separated)',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminReportEmailRecipients,
                     border: OutlineInputBorder(),
                     hintText: 'admin@example.com, manager@example.com',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter at least one recipient';
+                      return context.l10n.adminReportRecipientsRequired;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Select Metrics',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  context.l10n.adminReportSelectMetrics,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 ..._selectedMetrics.keys.map((metric) {
@@ -575,7 +576,7 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.adminReportCancel),
         ),
         ElevatedButton(
           onPressed: _save,
@@ -583,7 +584,7 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
           ),
-          child: Text(widget.report == null ? 'Create' : 'Save'),
+          child: Text(widget.report == null ? context.l10n.adminReportCreate : context.l10n.adminReportSave),
         ),
       ],
     );
@@ -596,8 +597,8 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
 
     if (!_selectedMetrics.values.any((v) => v)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select at least one metric'),
+        SnackBar(
+          content: Text(context.l10n.adminReportSelectAtLeastOneMetric),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -609,8 +610,8 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
       SnackBar(
         content: Text(
           widget.report == null
-              ? 'Scheduled report created successfully'
-              : 'Scheduled report updated successfully',
+              ? context.l10n.adminReportScheduledCreated
+              : context.l10n.adminReportScheduledUpdated,
         ),
         backgroundColor: AppColors.success,
       ),
@@ -620,11 +621,11 @@ class _ScheduledReportDialogState extends State<_ScheduledReportDialog> {
   String _getFrequencyLabel(ReportFrequency frequency) {
     switch (frequency) {
       case ReportFrequency.daily:
-        return 'Daily';
+        return context.l10n.adminReportDaily;
       case ReportFrequency.weekly:
-        return 'Weekly';
+        return context.l10n.adminReportWeekly;
       case ReportFrequency.monthly:
-        return 'Monthly';
+        return context.l10n.adminReportMonthly;
     }
   }
 

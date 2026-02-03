@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Video Learning & Media Player Widgets Library
 ///
@@ -317,7 +318,7 @@ class VideoCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Completed',
+                            context.l10n.swVideoCompleted,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -351,7 +352,7 @@ class VideoCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'In Progress',
+                            context.l10n.swVideoInProgress,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -443,7 +444,7 @@ class VideoCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        _formatViews(video.viewCount),
+                        _formatViews(video.viewCount, context),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -481,7 +482,7 @@ class VideoCard extends StatelessWidget {
                                     : Icons.thumb_up_outlined,
                                 size: 18,
                               ),
-                              label: const Text('Like'),
+                              label: Text(context.l10n.swVideoLike),
                             ),
                           ),
                         if (onDownload != null)
@@ -495,7 +496,7 @@ class VideoCard extends StatelessWidget {
                                 size: 18,
                               ),
                               label: Text(
-                                video.isDownloaded ? 'Downloaded' : 'Download',
+                                video.isDownloaded ? context.l10n.swVideoDownloaded : context.l10n.swVideoDownload,
                               ),
                             ),
                           ),
@@ -517,13 +518,13 @@ class VideoCard extends StatelessWidget {
     );
   }
 
-  String _formatViews(int views) {
+  String _formatViews(int views, BuildContext context) {
     if (views >= 1000000) {
-      return '${(views / 1000000).toStringAsFixed(1)}M views';
+      return context.l10n.swVideoViewsMillions((views / 1000000).toStringAsFixed(1));
     } else if (views >= 1000) {
-      return '${(views / 1000).toStringAsFixed(1)}K views';
+      return context.l10n.swVideoViewsThousands((views / 1000).toStringAsFixed(1));
     }
-    return '$views views';
+    return context.l10n.swVideoViewsCount(views.toString());
   }
 }
 
@@ -648,7 +649,7 @@ class VideoListItem extends StatelessWidget {
                               ),
                               const SizedBox(width: 3),
                               Text(
-                                'Completed',
+                                context.l10n.swVideoCompleted,
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: AppColors.success,
                                   fontSize: 10,
@@ -660,7 +661,7 @@ class VideoListItem extends StatelessWidget {
                         )
                       else if (showProgress && video.isInProgress)
                         Text(
-                          '${(video.progressPercentage * 100).toInt()}% watched',
+                          context.l10n.swVideoPercentWatched((video.progressPercentage * 100).toInt().toString()),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.primary,
                             fontSize: 11,
@@ -794,7 +795,7 @@ class PlaylistCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${playlist.completedVideos}/${playlist.videos.length} completed',
+                        context.l10n.swVideoPlaylistCompleted(playlist.completedVideos.toString(), playlist.videos.length.toString()),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -830,13 +831,13 @@ class PlaylistCard extends StatelessWidget {
 
 /// Empty Videos State
 class EmptyVideosState extends StatelessWidget {
-  final String message;
+  final String? message;
   final String? subtitle;
   final VoidCallback? onAction;
 
-  const EmptyVideosState({
+  EmptyVideosState({
     super.key,
-    this.message = 'No videos available',
+    this.message,
     this.subtitle,
     this.onAction,
   });
@@ -858,7 +859,7 @@ class EmptyVideosState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              message,
+              message ?? context.l10n.swVideoNoVideos,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -879,7 +880,7 @@ class EmptyVideosState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onAction,
                 icon: const Icon(Icons.explore),
-                label: const Text('Browse Videos'),
+                label: Text(context.l10n.swVideoBrowseVideos),
               ),
             ],
           ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/connectivity_service.dart';
 import '../../../core/services/offline_sync_service.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Widget that displays offline status at the top of the screen
 class OfflineStatusIndicator extends ConsumerWidget {
@@ -48,9 +49,9 @@ class OfflineStatusIndicator extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'You are offline',
-                  style: TextStyle(
+                Text(
+                  context.l10n.swOfflineYouAreOffline,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -58,7 +59,7 @@ class OfflineStatusIndicator extends ConsumerWidget {
                 ),
                 if (pendingCount > 0)
                   Text(
-                    '$pendingCount ${pendingCount == 1 ? 'action' : 'actions'} pending sync',
+                    context.l10n.swOfflinePendingSync(pendingCount),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.9),
                       fontSize: 12,
@@ -74,7 +75,7 @@ class OfflineStatusIndicator extends ConsumerWidget {
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
             ),
-            child: const Text('Details'),
+            child: Text(context.l10n.swOfflineDetails),
           ),
         ],
       ),
@@ -99,7 +100,7 @@ class OfflineStatusIndicator extends ConsumerWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Syncing $pendingCount ${pendingCount == 1 ? 'action' : 'actions'}...',
+              context.l10n.swOfflineSyncing(pendingCount),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -129,16 +130,16 @@ class _OfflineDetailsDialog extends ConsumerWidget {
     final syncService = ref.watch(offlineSyncServiceProvider);
 
     return AlertDialog(
-      title: const Text('Offline Actions'),
+      title: Text(context.l10n.swOfflineActionsTitle),
       content: SizedBox(
         width: double.maxFinite,
         child: queue.when(
           data: (actions) {
             if (actions.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.all(20),
+              return Padding(
+                padding: const EdgeInsets.all(20),
                 child: Center(
-                  child: Text('No pending actions'),
+                  child: Text(context.l10n.swOfflineNoPending),
                 ),
               );
             }
@@ -155,7 +156,7 @@ class _OfflineDetailsDialog extends ConsumerWidget {
                   ),
                   title: Text(action.type),
                   subtitle: Text(
-                    '${action.method} ${action.endpoint}\n${_formatTimestamp(action.timestamp)}',
+                    '${action.method} ${action.endpoint}\n${_formatTimestamp(action.timestamp, context)}',
                     style: const TextStyle(fontSize: 12),
                   ),
                   isThreeLine: true,
@@ -170,7 +171,7 @@ class _OfflineDetailsDialog extends ConsumerWidget {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => Center(child: Text('Error: $error')),
+          error: (error, _) => Center(child: Text(context.l10n.swOfflineError(error.toString()))),
         ),
       ),
       actions: [
@@ -179,13 +180,13 @@ class _OfflineDetailsDialog extends ConsumerWidget {
             syncService.clearQueue();
             Navigator.of(context).pop();
           },
-          child: const Text('Clear All'),
+          child: Text(context.l10n.swOfflineClearAll),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close'),
+          child: Text(context.l10n.swOfflineClose),
         ),
         if (ref.watch(isOnlineProvider))
           ElevatedButton(
@@ -193,7 +194,7 @@ class _OfflineDetailsDialog extends ConsumerWidget {
               syncService.syncAll();
               Navigator.of(context).pop();
             },
-            child: const Text('Sync Now'),
+            child: Text(context.l10n.swOfflineSyncNow),
           ),
       ],
     );
@@ -214,18 +215,18 @@ class _OfflineDetailsDialog extends ConsumerWidget {
     }
   }
 
-  String _formatTimestamp(DateTime timestamp) {
+  String _formatTimestamp(DateTime timestamp, BuildContext context) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
     if (difference.inMinutes < 1) {
-      return 'Just now';
+      return context.l10n.swOfflineJustNow;
     } else if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
+      return context.l10n.swOfflineMinutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return context.l10n.swOfflineHoursAgo(difference.inHours);
     } else {
-      return '${difference.inDays}d ago';
+      return context.l10n.swOfflineDaysAgo(difference.inDays);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 import '../../providers/approvals_provider.dart';
 
@@ -47,7 +48,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.request?.requestNumber ?? 'Approval Request'),
+        title: Text(state.request?.requestNumber ?? context.l10n.adminApprovalRequest),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/admin/approvals'),
@@ -58,7 +59,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
             onPressed: () => ref
                 .read(approvalDetailProvider.notifier)
                 .loadRequest(widget.requestId),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminApprovalRefresh,
           ),
         ],
       ),
@@ -83,13 +84,13 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
               color: theme.colorScheme.error,
             ),
             const SizedBox(height: 16),
-            Text('Error: ${state.error}'),
+            Text(context.l10n.adminApprovalErrorWithMessage(state.error!)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => ref
                   .read(approvalDetailProvider.notifier)
                   .loadRequest(widget.requestId),
-              child: const Text('Retry'),
+              child: Text(context.l10n.adminApprovalRetry),
             ),
           ],
         ),
@@ -98,7 +99,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
 
     final request = state.request;
     if (request == null) {
-      return const Center(child: Text('Request not found'));
+      return Center(child: Text(context.l10n.adminApprovalRequestNotFound));
     }
 
     return SingleChildScrollView(
@@ -201,25 +202,25 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Details',
+              context.l10n.adminApprovalDetails,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            _buildDetailRow('Initiated by',
+            _buildDetailRow(context.l10n.adminApprovalInitiatedBy,
                 request.initiatorName ?? request.initiatedByRole),
-            _buildDetailRow('Role', request.initiatedByRole.replaceAll('_', ' ')),
+            _buildDetailRow(context.l10n.adminApprovalRole, request.initiatedByRole.replaceAll('_', ' ')),
             _buildDetailRow(
-                'Request Type', request.requestType.replaceAll('_', ' ')),
-            _buildDetailRow('Created', dateFormat.format(request.createdAt)),
+                context.l10n.adminApprovalRequestType, request.requestType.replaceAll('_', ' ')),
+            _buildDetailRow(context.l10n.adminApprovalCreated, dateFormat.format(request.createdAt)),
             if (request.expiresAt != null)
-              _buildDetailRow('Expires', dateFormat.format(request.expiresAt!)),
+              _buildDetailRow(context.l10n.adminApprovalExpiresLabel, dateFormat.format(request.expiresAt!)),
             _buildDetailRow(
-                'Approval Level', '${request.currentApprovalLevel} of ${request.requiredApprovalLevel}'),
+                context.l10n.adminApprovalApprovalLevel, '${request.currentApprovalLevel} of ${request.requiredApprovalLevel}'),
             const Divider(height: 24),
             Text(
-              'Justification',
+              context.l10n.adminApprovalJustification,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -264,7 +265,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Approval Chain',
+              context.l10n.adminApprovalChain,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -338,7 +339,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Actions',
+              context.l10n.adminApprovalActions,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -346,10 +347,10 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
             const SizedBox(height: 16),
             TextField(
               controller: _notesController,
-              decoration: const InputDecoration(
-                labelText: 'Notes (optional)',
-                hintText: 'Add notes for your action...',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.adminApprovalNotesOptional,
+                hintText: context.l10n.adminApprovalAddNotesHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -361,7 +362,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
                 FilledButton.icon(
                   onPressed: () => _handleApprove(request),
                   icon: const Icon(Icons.check),
-                  label: const Text('Approve'),
+                  label: Text(context.l10n.adminApprovalApprove),
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
@@ -369,7 +370,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
                 FilledButton.icon(
                   onPressed: () => _showDenyDialog(request),
                   icon: const Icon(Icons.close),
-                  label: const Text('Deny'),
+                  label: Text(context.l10n.adminApprovalDeny),
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
@@ -377,12 +378,12 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
                 OutlinedButton.icon(
                   onPressed: () => _showRequestInfoDialog(request),
                   icon: const Icon(Icons.info),
-                  label: const Text('Request Info'),
+                  label: Text(context.l10n.adminApprovalRequestInfo),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => _handleEscalate(request),
                   icon: const Icon(Icons.arrow_upward),
-                  label: const Text('Escalate'),
+                  label: Text(context.l10n.adminApprovalEscalate),
                 ),
               ],
             ),
@@ -401,7 +402,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Comments',
+              context.l10n.adminApprovalComments,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -413,9 +414,9 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
                 Expanded(
                   child: TextField(
                     controller: _commentController,
-                    decoration: const InputDecoration(
-                      hintText: 'Add a comment...',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      hintText: context.l10n.adminApprovalAddCommentHint,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
                 ),
@@ -430,10 +431,10 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
             const SizedBox(height: 16),
             // Comments list
             if (state.comments.isEmpty)
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text('No comments yet'),
+                  padding: const EdgeInsets.all(16),
+                  child: Text(context.l10n.adminApprovalNoCommentsYet),
                 ),
               )
             else
@@ -514,27 +515,27 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
     switch (status.toLowerCase()) {
       case 'pending_review':
         color = Colors.orange;
-        displayStatus = 'Pending';
+        displayStatus = context.l10n.adminApprovalStatusPending;
         icon = Icons.pending;
         break;
       case 'under_review':
         color = Colors.blue;
-        displayStatus = 'Under Review';
+        displayStatus = context.l10n.adminApprovalUnderReview;
         icon = Icons.rate_review;
         break;
       case 'approved':
         color = Colors.green;
-        displayStatus = 'Approved';
+        displayStatus = context.l10n.adminApprovalApproved;
         icon = Icons.check_circle;
         break;
       case 'denied':
         color = Colors.red;
-        displayStatus = 'Denied';
+        displayStatus = context.l10n.adminApprovalDenied;
         icon = Icons.cancel;
         break;
       case 'escalated':
         color = Colors.purple;
-        displayStatus = 'Escalated';
+        displayStatus = context.l10n.adminApprovalEscalated;
         icon = Icons.arrow_upward;
         break;
       default:
@@ -610,9 +611,9 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
       case 1:
         return 'L1';
       case 2:
-        return 'Regional';
+        return context.l10n.adminApprovalLevelRegional;
       case 3:
-        return 'Super';
+        return context.l10n.adminApprovalLevelSuper;
       default:
         return 'L$level';
     }
@@ -622,16 +623,16 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Approval'),
-        content: const Text('Are you sure you want to approve this request?'),
+        title: Text(context.l10n.adminApprovalConfirmApproval),
+        content: Text(context.l10n.adminApprovalConfirmApproveMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminApprovalCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Approve'),
+            child: Text(context.l10n.adminApprovalApprove),
           ),
         ],
       ),
@@ -654,17 +655,17 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Deny Request'),
+        title: Text(context.l10n.adminApprovalDenyRequest),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Please provide a reason for denial:'),
+            Text(context.l10n.adminApprovalProvideReasonDenial),
             const SizedBox(height: 16),
             TextField(
               controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.adminApprovalReason,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -673,7 +674,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminApprovalCancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -686,7 +687,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
               }
             },
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Deny'),
+            child: Text(context.l10n.adminApprovalDeny),
           ),
         ],
       ),
@@ -699,17 +700,17 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Request Information'),
+        title: Text(context.l10n.adminApprovalRequestInformation),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('What information do you need from the requester?'),
+            Text(context.l10n.adminApprovalWhatInfoNeeded),
             const SizedBox(height: 16),
             TextField(
               controller: questionController,
-              decoration: const InputDecoration(
-                labelText: 'Question',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.l10n.adminApprovalQuestion,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
@@ -718,7 +719,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminApprovalCancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -730,7 +731,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
                     );
               }
             },
-            child: const Text('Send'),
+            child: Text(context.l10n.adminApprovalSend),
           ),
         ],
       ),
@@ -741,17 +742,16 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Escalate Request'),
-        content: const Text(
-            'Are you sure you want to escalate this request to a higher level?'),
+        title: Text(context.l10n.adminApprovalEscalateRequest),
+        content: Text(context.l10n.adminApprovalConfirmEscalateMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminApprovalCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Escalate'),
+            child: Text(context.l10n.adminApprovalEscalate),
           ),
         ],
       ),
@@ -762,7 +762,7 @@ class _ApprovalDetailScreenState extends ConsumerState<ApprovalDetailScreen> {
             request.id,
             reason: _notesController.text.isNotEmpty
                 ? _notesController.text
-                : 'Escalated for higher review',
+                : context.l10n.adminApprovalEscalatedForReview,
           );
       _notesController.clear();
     }

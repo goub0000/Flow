@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Settings Widgets
 ///
@@ -242,22 +243,22 @@ class ThemeSelector extends StatelessWidget {
     return Column(
       children: [
         _ThemeOption(
-          title: 'Light',
-          subtitle: 'Bright and clean interface',
+          title: context.l10n.swSettingsThemeLight,
+          subtitle: context.l10n.swSettingsThemeLightSubtitle,
           icon: Icons.light_mode,
           isSelected: selectedTheme == 'light',
           onTap: () => onThemeChanged('light'),
         ),
         _ThemeOption(
-          title: 'Dark',
-          subtitle: 'Easy on the eyes in low light',
+          title: context.l10n.swSettingsThemeDark,
+          subtitle: context.l10n.swSettingsThemeDarkSubtitle,
           icon: Icons.dark_mode,
           isSelected: selectedTheme == 'dark',
           onTap: () => onThemeChanged('dark'),
         ),
         _ThemeOption(
-          title: 'System',
-          subtitle: 'Follow device settings',
+          title: context.l10n.swSettingsThemeSystem,
+          subtitle: context.l10n.swSettingsThemeSystemSubtitle,
           icon: Icons.brightness_auto,
           isSelected: selectedTheme == 'system',
           onTap: () => onThemeChanged('system'),
@@ -472,7 +473,7 @@ class DataUsageDisplay extends StatelessWidget {
         children: [
           // Total Usage
           Text(
-            'Total Data Usage',
+            context.l10n.swSettingsTotalDataUsage,
             style: theme.textTheme.titleMedium?.copyWith(
               color: Colors.white.withValues(alpha: 0.9),
             ),
@@ -574,7 +575,7 @@ class DangerZone extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Danger Zone',
+                  context.l10n.swSettingsDangerZone,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.error,
@@ -758,14 +759,14 @@ class AboutAppInfo extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Version $version${buildNumber != null ? ' ($buildNumber)' : ''}',
+            '${context.l10n.swSettingsVersion} $version${buildNumber != null ? ' ($buildNumber)' : ''}',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
           ),
           const SizedBox(height: 24),
           Text(
-            'Flow EdTech Platform',
+            context.l10n.swSettingsFlowPlatform,
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -773,7 +774,7 @@ class AboutAppInfo extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '© 2025 All rights reserved',
+            context.l10n.swSettingsCopyright,
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
             ),

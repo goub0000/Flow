@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/providers/admin_finance_provider.dart';
 
 /// Risk level for a transaction
@@ -193,14 +194,14 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
                   Icon(Icons.security, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Fraud Detection',
+                    context.l10n.adminFinanceFraudDetectionTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 4),
               Text(
-                'Monitor and prevent fraudulent activities',
+                context.l10n.adminFinanceFraudDetectionSubtitle,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -212,7 +213,7 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
                   ref.read(adminFinanceProvider.notifier).fetchTransactions();
                 },
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Re-scan Transactions',
+                tooltip: context.l10n.adminFinanceRescanTransactions,
               ),
             ],
           ),
@@ -228,9 +229,9 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total Flags',
+              context.l10n.adminFinanceTotalFlags,
               '${_flagged.length}',
-              'Flagged transactions',
+              context.l10n.adminFinanceFlaggedTransactions,
               Icons.flag,
               AppColors.warning,
             ),
@@ -238,9 +239,9 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'High Risk',
+              context.l10n.adminFinanceHighRisk,
               '$criticalCount',
-              'Critical & high risk',
+              context.l10n.adminFinanceCriticalHighRisk,
               Icons.warning_amber,
               AppColors.error,
             ),
@@ -248,9 +249,9 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Unreviewed',
+              context.l10n.adminFinanceUnreviewed,
               '$unreviewedCount',
-              'Pending review',
+              context.l10n.adminFinancePendingReview,
               Icons.pending_actions,
               AppColors.info,
             ),
@@ -258,9 +259,9 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: _buildStatCard(
-              'Reviewed',
+              context.l10n.adminFinanceReviewed,
               '${_flagged.where((f) => f.reviewed).length}',
-              'Already reviewed',
+              context.l10n.adminFinanceAlreadyReviewed,
               Icons.check_circle,
               AppColors.success,
             ),
@@ -306,16 +307,16 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
             child: DropdownButtonFormField<String>(
               initialValue: _riskFilter,
               decoration: InputDecoration(
-                labelText: 'Risk Level',
+                labelText: context.l10n.adminFinanceRiskLevel,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Levels')),
-                DropdownMenuItem(value: 'critical', child: Text('Critical')),
-                DropdownMenuItem(value: 'high', child: Text('High')),
-                DropdownMenuItem(value: 'medium', child: Text('Medium')),
-                DropdownMenuItem(value: 'low', child: Text('Low')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminFinanceAllLevels)),
+                DropdownMenuItem(value: 'critical', child: Text(context.l10n.adminFinanceCritical)),
+                DropdownMenuItem(value: 'high', child: Text(context.l10n.adminFinanceHigh)),
+                DropdownMenuItem(value: 'medium', child: Text(context.l10n.adminFinanceMedium)),
+                DropdownMenuItem(value: 'low', child: Text(context.l10n.adminFinanceLow)),
               ],
               onChanged: (v) {
                 if (v != null) setState(() => _riskFilter = v);
@@ -324,7 +325,7 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
           ),
           const SizedBox(width: 16),
           FilterChip(
-            label: const Text('Show Reviewed'),
+            label: Text(context.l10n.adminFinanceShowReviewed),
             selected: _showReviewed,
             onSelected: (v) => setState(() => _showReviewed = v),
             selectedColor: AppColors.primary.withValues(alpha: 0.15),
@@ -349,13 +350,13 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
             Icon(Icons.verified_user, size: 64, color: AppColors.success.withValues(alpha: 0.5)),
             const SizedBox(height: 16),
             Text(
-              _flagged.isEmpty ? 'No suspicious activity detected' : 'No matching alerts',
+              _flagged.isEmpty ? context.l10n.adminFinanceNoSuspiciousActivity : context.l10n.adminFinanceNoMatchingAlerts,
               style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
             ),
             if (_flagged.isEmpty) ...[
               const SizedBox(height: 8),
               Text(
-                'All transactions appear normal',
+                context.l10n.adminFinanceAllTransactionsNormal,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
               ),
             ],
@@ -479,13 +480,13 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
                       }
                     },
                     icon: const Icon(Icons.check, size: 16),
-                    label: const Text('Mark Reviewed', style: TextStyle(fontSize: 12)),
+                    label: Text(context.l10n.adminFinanceMarkReviewed, style: const TextStyle(fontSize: 12)),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
                   )
                 else
-                  Text('Reviewed', style: TextStyle(color: AppColors.success, fontSize: 12, fontWeight: FontWeight.w600)),
+                  Text(context.l10n.adminFinanceReviewed, style: TextStyle(color: AppColors.success, fontSize: 12, fontWeight: FontWeight.w600)),
               ],
             ),
           ),

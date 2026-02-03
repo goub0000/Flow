@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers/service_providers.dart';
 import '../../../core/services/enhanced_realtime_service.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Connection status indicator widget that shows real-time connection state
 class ConnectionStatusIndicator extends ConsumerWidget {
@@ -49,32 +50,32 @@ class ConnectionStatusIndicator extends ConsumerWidget {
     Widget content;
     switch (status) {
       case ConnectionStatus.connected:
-        content = _buildConnectedIndicator(activeColorFinal, isDarkMode);
+        content = _buildConnectedIndicator(activeColorFinal, isDarkMode, context);
         break;
       case ConnectionStatus.connecting:
-        content = _buildConnectingIndicator(connectingColorFinal, isDarkMode);
+        content = _buildConnectingIndicator(connectingColorFinal, isDarkMode, context);
         break;
       case ConnectionStatus.disconnected:
-        content = _buildDisconnectedIndicator(inactiveColorFinal, isDarkMode);
+        content = _buildDisconnectedIndicator(inactiveColorFinal, isDarkMode, context);
         break;
       case ConnectionStatus.error:
-        content = _buildErrorIndicator(inactiveColorFinal, isDarkMode);
+        content = _buildErrorIndicator(inactiveColorFinal, isDarkMode, context);
         break;
     }
 
     // Wrap in tooltip for additional information
     return Tooltip(
-      message: _getTooltipMessage(status),
+      message: _getTooltipMessage(status, context),
       child: content,
     );
   }
 
-  Widget _buildConnectedIndicator(Color color, bool isDarkMode) {
+  Widget _buildConnectedIndicator(Color color, bool isDarkMode, BuildContext context) {
     if (showInAppBar) {
       return _buildAppBarIndicator(
         icon: Icons.circle,
         color: color,
-        text: showText ? 'Live' : null,
+        text: showText ? context.l10n.connectionStatusLive : null,
         backgroundColor: color.withOpacity(0.1),
       );
     }
@@ -82,17 +83,17 @@ class ConnectionStatusIndicator extends ConsumerWidget {
     return _buildChipIndicator(
       icon: Icons.circle,
       color: color,
-      text: showText ? 'Live' : null,
+      text: showText ? context.l10n.connectionStatusLive : null,
       backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
     );
   }
 
-  Widget _buildConnectingIndicator(Color color, bool isDarkMode) {
+  Widget _buildConnectingIndicator(Color color, bool isDarkMode, BuildContext context) {
     if (showInAppBar) {
       return _buildAppBarIndicator(
         icon: null,
         color: color,
-        text: showText ? 'Connecting...' : null,
+        text: showText ? context.l10n.connectionStatusConnecting : null,
         backgroundColor: color.withOpacity(0.1),
         showProgress: true,
       );
@@ -101,18 +102,18 @@ class ConnectionStatusIndicator extends ConsumerWidget {
     return _buildChipIndicator(
       icon: null,
       color: color,
-      text: showText ? 'Connecting...' : null,
+      text: showText ? context.l10n.connectionStatusConnecting : null,
       backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
       showProgress: true,
     );
   }
 
-  Widget _buildDisconnectedIndicator(Color color, bool isDarkMode) {
+  Widget _buildDisconnectedIndicator(Color color, bool isDarkMode, BuildContext context) {
     if (showInAppBar) {
       return _buildAppBarIndicator(
         icon: Icons.circle,
         color: color,
-        text: showText ? 'Offline' : null,
+        text: showText ? context.l10n.connectionStatusOffline : null,
         backgroundColor: color.withOpacity(0.1),
       );
     }
@@ -120,17 +121,17 @@ class ConnectionStatusIndicator extends ConsumerWidget {
     return _buildChipIndicator(
       icon: Icons.circle,
       color: color,
-      text: showText ? 'Offline' : null,
+      text: showText ? context.l10n.connectionStatusOffline : null,
       backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
     );
   }
 
-  Widget _buildErrorIndicator(Color color, bool isDarkMode) {
+  Widget _buildErrorIndicator(Color color, bool isDarkMode, BuildContext context) {
     if (showInAppBar) {
       return _buildAppBarIndicator(
         icon: Icons.error_outline,
         color: color,
-        text: showText ? 'Error' : null,
+        text: showText ? context.l10n.connectionStatusError : null,
         backgroundColor: color.withOpacity(0.1),
       );
     }
@@ -138,7 +139,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
     return _buildChipIndicator(
       icon: Icons.error_outline,
       color: color,
-      text: showText ? 'Error' : null,
+      text: showText ? context.l10n.connectionStatusError : null,
       backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
     );
   }
@@ -228,16 +229,16 @@ class ConnectionStatusIndicator extends ConsumerWidget {
     );
   }
 
-  String _getTooltipMessage(ConnectionStatus status) {
+  String _getTooltipMessage(ConnectionStatus status, BuildContext context) {
     switch (status) {
       case ConnectionStatus.connected:
-        return 'Real-time updates are active';
+        return context.l10n.connectionStatusTooltipConnected;
       case ConnectionStatus.connecting:
-        return 'Establishing real-time connection...';
+        return context.l10n.connectionStatusTooltipConnecting;
       case ConnectionStatus.disconnected:
-        return 'Real-time updates are not available. Data will refresh periodically.';
+        return context.l10n.connectionStatusTooltipDisconnected;
       case ConnectionStatus.error:
-        return 'Connection error. Please check your internet connection.';
+        return context.l10n.connectionStatusTooltipError;
     }
   }
 }
@@ -364,7 +365,7 @@ class _AnimatedConnectionStatusIndicatorState
         if (widget.showText) ...[
           const SizedBox(height: 4),
           Text(
-            _getStatusText(status),
+            _getStatusText(status, context),
             style: TextStyle(
               fontSize: 10,
               color: color,
@@ -376,16 +377,16 @@ class _AnimatedConnectionStatusIndicatorState
     );
   }
 
-  String _getStatusText(ConnectionStatus status) {
+  String _getStatusText(ConnectionStatus status, BuildContext context) {
     switch (status) {
       case ConnectionStatus.connected:
-        return 'Live';
+        return context.l10n.connectionStatusLive;
       case ConnectionStatus.connecting:
-        return 'Connecting';
+        return context.l10n.connectionStatusConnectingShort;
       case ConnectionStatus.disconnected:
-        return 'Offline';
+        return context.l10n.connectionStatusOffline;
       case ConnectionStatus.error:
-        return 'Error';
+        return context.l10n.connectionStatusError;
     }
   }
 }

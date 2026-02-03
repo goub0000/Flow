@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Notification center widget - displays list of notifications
 class NotificationCenter extends ConsumerStatefulWidget {
@@ -46,7 +47,7 @@ class _NotificationCenterState extends ConsumerState<NotificationCenter> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(context.l10n.swNotifCenterTitle),
         actions: [
           // Mark all as read
           if (state.unreadCount > 0)
@@ -54,7 +55,7 @@ class _NotificationCenterState extends ConsumerState<NotificationCenter> {
               onPressed: () {
                 ref.read(notificationsProvider.notifier).markAllAsRead();
               },
-              child: const Text('Mark all read'),
+              child: Text(context.l10n.swNotifCenterMarkAllRead),
             ),
 
           // Filter button
@@ -78,11 +79,11 @@ class _NotificationCenterState extends ConsumerState<NotificationCenter> {
                 children: [
                   const Icon(Icons.error_outline, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
-                  Text('Error: ${state.error}'),
+                  Text(context.l10n.swNotifCenterError(state.error ?? '')),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _onRefresh,
-                    child: const Text('Retry'),
+                    child: Text(context.l10n.swNotifCenterRetry),
                   ),
                 ],
               ),
@@ -102,14 +103,14 @@ class _NotificationCenterState extends ConsumerState<NotificationCenter> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No notifications yet',
+                    context.l10n.swNotifCenterEmpty,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Colors.grey.shade600,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'We\'ll notify you when something happens',
+                    context.l10n.swNotifCenterEmptySubtitle,
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                 ],
@@ -229,19 +230,19 @@ class _NotificationCenterState extends ConsumerState<NotificationCenter> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Notification'),
-        content: const Text('Are you sure you want to delete this notification?'),
+        title: Text(context.l10n.swNotifCenterDeleteTitle),
+        content: Text(context.l10n.swNotifCenterDeleteConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.swNotifCenterCancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               ref.read(notificationsProvider.notifier).deleteNotification(id);
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(context.l10n.swNotifCenterDelete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -431,44 +432,44 @@ class NotificationTile extends StatelessWidget {
                 },
                 itemBuilder: (context) => [
                   if (notification.isUnread)
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'mark_read',
                       child: Row(
                         children: [
-                          Icon(Icons.check_circle_outline, size: 20),
-                          SizedBox(width: 8),
-                          Text('Mark as read'),
+                          const Icon(Icons.check_circle_outline, size: 20),
+                          const SizedBox(width: 8),
+                          Text(context.l10n.swNotifCenterMarkAsRead),
                         ],
                       ),
                     )
                   else
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'mark_unread',
                       child: Row(
                         children: [
-                          Icon(Icons.radio_button_unchecked, size: 20),
-                          SizedBox(width: 8),
-                          Text('Mark as unread'),
+                          const Icon(Icons.radio_button_unchecked, size: 20),
+                          const SizedBox(width: 8),
+                          Text(context.l10n.swNotifCenterMarkAsUnread),
                         ],
                       ),
                     ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'archive',
                     child: Row(
                       children: [
-                        Icon(Icons.archive_outlined, size: 20),
-                        SizedBox(width: 8),
-                        Text('Archive'),
+                        const Icon(Icons.archive_outlined, size: 20),
+                        const SizedBox(width: 8),
+                        Text(context.l10n.swNotifCenterArchive),
                       ],
                     ),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete_outline, size: 20, color: Colors.red),
-                        SizedBox(width: 8),
-                        Text('Delete', style: TextStyle(color: Colors.red)),
+                        const Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Text(context.l10n.swNotifCenterDelete, style: const TextStyle(color: Colors.red)),
                       ],
                     ),
                   ),
@@ -572,7 +573,7 @@ class _NotificationFilterSheetState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Filter Notifications',
+                context.l10n.swNotifCenterFilterTitle,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               TextButton(
@@ -582,7 +583,7 @@ class _NotificationFilterSheetState
                     _selectedTypes = [];
                   });
                 },
-                child: const Text('Clear'),
+                child: Text(context.l10n.swNotifCenterFilterClear),
               ),
             ],
           ),
@@ -591,15 +592,15 @@ class _NotificationFilterSheetState
 
           // Read status filter
           Text(
-            'Status',
+            context.l10n.swNotifCenterFilterStatus,
             style: Theme.of(context).textTheme.titleSmall,
           ),
           const SizedBox(height: 8),
           SegmentedButton<bool?>(
-            segments: const [
-              ButtonSegment(value: null, label: Text('All')),
-              ButtonSegment(value: false, label: Text('Unread')),
-              ButtonSegment(value: true, label: Text('Read')),
+            segments: [
+              ButtonSegment(value: null, label: Text(context.l10n.swNotifCenterFilterAll)),
+              ButtonSegment(value: false, label: Text(context.l10n.swNotifCenterFilterUnread)),
+              ButtonSegment(value: true, label: Text(context.l10n.swNotifCenterFilterRead)),
             ],
             selected: {_filterIsRead},
             onSelectionChanged: (Set<bool?> selected) {
@@ -621,7 +622,7 @@ class _NotificationFilterSheetState
               ref.read(applyNotificationFilterProvider)(filter);
               Navigator.pop(context);
             },
-            child: const Text('Apply Filter'),
+            child: Text(context.l10n.swNotifCenterApplyFilter),
           ),
         ],
       ),

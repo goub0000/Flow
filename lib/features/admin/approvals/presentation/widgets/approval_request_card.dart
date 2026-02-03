@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 
 /// Card widget for displaying an approval request in a list
@@ -54,7 +55,7 @@ class ApprovalRequestCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   _buildPriorityBadge(request.priority),
                   const Spacer(),
-                  _buildStatusBadge(request.status),
+                  _buildStatusBadge(context, request.status),
                 ],
               ),
 
@@ -123,7 +124,7 @@ class ApprovalRequestCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          request.initiatorName ?? 'Unknown',
+                          request.initiatorName ?? context.l10n.adminApprovalUnknown,
                           style: theme.textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
@@ -158,7 +159,7 @@ class ApprovalRequestCard extends StatelessWidget {
                       ),
                       if (request.expiresAt != null)
                         Text(
-                          _getExpiryText(request.expiresAt!),
+                          _getExpiryText(context, request.expiresAt!),
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: _isExpiringSoon(request.expiresAt!)
                                 ? Colors.red
@@ -210,7 +211,7 @@ class ApprovalRequestCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusBadge(String status) {
+  Widget _buildStatusBadge(BuildContext context, String status) {
     Color color;
     String displayStatus;
     IconData? icon;
@@ -218,57 +219,57 @@ class ApprovalRequestCard extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'draft':
         color = Colors.grey;
-        displayStatus = 'Draft';
+        displayStatus = context.l10n.adminApprovalStatusDraft;
         icon = Icons.edit;
         break;
       case 'pending_review':
         color = Colors.orange;
-        displayStatus = 'Pending';
+        displayStatus = context.l10n.adminApprovalStatusPending;
         icon = Icons.pending;
         break;
       case 'under_review':
         color = Colors.blue;
-        displayStatus = 'Under Review';
+        displayStatus = context.l10n.adminApprovalStatusUnderReview;
         icon = Icons.rate_review;
         break;
       case 'awaiting_info':
         color = Colors.amber;
-        displayStatus = 'Info Needed';
+        displayStatus = context.l10n.adminApprovalStatusInfoNeeded;
         icon = Icons.info;
         break;
       case 'escalated':
         color = Colors.purple;
-        displayStatus = 'Escalated';
+        displayStatus = context.l10n.adminApprovalStatusEscalated;
         icon = Icons.arrow_upward;
         break;
       case 'approved':
         color = Colors.green;
-        displayStatus = 'Approved';
+        displayStatus = context.l10n.adminApprovalStatusApprovedLabel;
         icon = Icons.check_circle;
         break;
       case 'denied':
         color = Colors.red;
-        displayStatus = 'Denied';
+        displayStatus = context.l10n.adminApprovalStatusDeniedLabel;
         icon = Icons.cancel;
         break;
       case 'withdrawn':
         color = Colors.grey;
-        displayStatus = 'Withdrawn';
+        displayStatus = context.l10n.adminApprovalStatusWithdrawn;
         icon = Icons.undo;
         break;
       case 'expired':
         color = Colors.grey;
-        displayStatus = 'Expired';
+        displayStatus = context.l10n.adminApprovalStatusExpired;
         icon = Icons.timer_off;
         break;
       case 'executed':
         color = Colors.teal;
-        displayStatus = 'Executed';
+        displayStatus = context.l10n.adminApprovalStatusExecuted;
         icon = Icons.done_all;
         break;
       case 'failed':
         color = Colors.red;
-        displayStatus = 'Failed';
+        displayStatus = context.l10n.adminApprovalStatusFailed;
         icon = Icons.error;
         break;
       default:
@@ -362,18 +363,18 @@ class ApprovalRequestCard extends StatelessWidget {
     }
   }
 
-  String _getExpiryText(DateTime expiresAt) {
+  String _getExpiryText(BuildContext context, DateTime expiresAt) {
     final now = DateTime.now();
     final diff = expiresAt.difference(now);
 
     if (diff.isNegative) {
-      return 'Expired';
+      return context.l10n.adminApprovalExpired;
     } else if (diff.inDays > 0) {
-      return 'Expires in ${diff.inDays}d';
+      return context.l10n.adminApprovalExpiresInDays(diff.inDays);
     } else if (diff.inHours > 0) {
-      return 'Expires in ${diff.inHours}h';
+      return context.l10n.adminApprovalExpiresInHours(diff.inHours);
     } else {
-      return 'Expires in ${diff.inMinutes}m';
+      return context.l10n.adminApprovalExpiresInMinutes(diff.inMinutes);
     }
   }
 

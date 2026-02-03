@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Data source definition for the explorer
 class _DataSource {
@@ -199,13 +200,13 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Data Explorer',
+                  context.l10n.adminAnalyticsDataExplorer,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 Text(
-                  'Browse and search platform data tables',
+                  context.l10n.adminAnalyticsDataExplorerSubtitle,
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                 ),
               ],
@@ -214,7 +215,7 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
           IconButton(
             onPressed: _fetchData,
             icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminAnalyticsRefreshData,
           ),
         ],
       ),
@@ -272,7 +273,7 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
       child: TextField(
         decoration: InputDecoration(
-          hintText: 'Search across all columns...',
+          hintText: context.l10n.adminAnalyticsSearchColumns,
           prefixIcon: const Icon(Icons.search, size: 20),
           isDense: true,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -314,7 +315,7 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
             Icon(Icons.table_rows_outlined, size: 64, color: Colors.grey[300]),
             const SizedBox(height: 16),
             Text(
-              _rows.isEmpty ? 'No data available' : 'No matching rows',
+              _rows.isEmpty ? context.l10n.adminAnalyticsNoDataAvailable : context.l10n.adminAnalyticsNoMatchingRows,
               style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
             ),
           ],
@@ -377,12 +378,12 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
           Icon(_selected.icon, size: 16, color: AppColors.textSecondary),
           const SizedBox(width: 8),
           Text(
-            '${_selected.label}  |  Showing ${filtered.length} of $_totalCount rows',
+            '${_selected.label}  |  ${context.l10n.adminAnalyticsShowingRows(filtered.length, _totalCount)}',
             style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
           ),
           const Spacer(),
           Text(
-            '${_columns.length} columns',
+            context.l10n.adminAnalyticsColumnsCount(_columns.length),
             style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
           ),
         ],
@@ -400,7 +401,7 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
           style: const TextStyle(fontSize: 14),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(context.l10n.adminAnalyticsClose)),
         ],
       ),
     );

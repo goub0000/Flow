@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 import '../../providers/approvals_provider.dart';
 
@@ -34,13 +35,13 @@ class _ApprovalConfigScreenState extends ConsumerState<ApprovalConfigScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/admin/approvals'),
         ),
-        title: const Text('Approval Configuration'),
+        title: Text(context.l10n.adminApprovalConfiguration),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () =>
                 ref.read(approvalConfigProvider.notifier).refresh(),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminApprovalRefresh,
           ),
         ],
       ),
@@ -63,7 +64,7 @@ class _ApprovalConfigScreenState extends ConsumerState<ApprovalConfigScreen> {
               Icon(Icons.error_outline,
                   size: 48, color: theme.colorScheme.error),
               const SizedBox(height: 16),
-              Text('Failed to load configurations',
+              Text(context.l10n.adminApprovalFailedToLoadConfigurations,
                   style: theme.textTheme.titleMedium),
               const SizedBox(height: 8),
               Text(state.error!,
@@ -74,7 +75,7 @@ class _ApprovalConfigScreenState extends ConsumerState<ApprovalConfigScreen> {
                 onPressed: () =>
                     ref.read(approvalConfigProvider.notifier).refresh(),
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(context.l10n.adminApprovalRetry),
               ),
             ],
           ),
@@ -90,7 +91,7 @@ class _ApprovalConfigScreenState extends ConsumerState<ApprovalConfigScreen> {
             Icon(Icons.settings_outlined,
                 size: 48, color: theme.colorScheme.outline),
             const SizedBox(height: 16),
-            Text('No configurations found',
+            Text(context.l10n.adminApprovalNoConfigurationsFound,
                 style: theme.textTheme.titleMedium),
           ],
         ),
@@ -139,13 +140,13 @@ class _ConfigCard extends ConsumerWidget {
                 const SizedBox(width: 8),
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20),
-                  tooltip: 'Edit configuration',
+                  tooltip: context.l10n.adminApprovalEditConfiguration,
                   onPressed: () => _showEditDialog(context, ref),
                 ),
               ],
             ),
             const SizedBox(height: 2),
-            Text('Type: $typeLabel',
+            Text('${context.l10n.adminApprovalType}: $typeLabel',
                 style: theme.textTheme.bodySmall
                     ?.copyWith(color: theme.colorScheme.outline)),
             if (config.description != null && config.description!.isNotEmpty) ...[
@@ -160,29 +161,29 @@ class _ConfigCard extends ConsumerWidget {
               runSpacing: 8,
               children: [
                 _InfoChip(
-                    label: 'Approval Level',
+                    label: context.l10n.adminApprovalApprovalLevel,
                     value: config.requiredApprovalLevel.toString(),
                     icon: Icons.security),
                 _InfoChip(
-                    label: 'Priority',
+                    label: context.l10n.adminApprovalPriority,
                     value: config.defaultPriority,
                     icon: Icons.flag),
                 if (config.defaultExpirationHours != null)
                   _InfoChip(
-                      label: 'Expires',
+                      label: context.l10n.adminApprovalExpires,
                       value: '${config.defaultExpirationHours}h',
                       icon: Icons.timer),
                 _InfoChip(
-                    label: 'Auto Execute',
-                    value: config.autoExecute ? 'Yes' : 'No',
+                    label: context.l10n.adminApprovalAutoExecute,
+                    value: config.autoExecute ? context.l10n.adminApprovalYes : context.l10n.adminApprovalNo,
                     icon: Icons.play_circle_outline),
                 _InfoChip(
-                    label: 'MFA Required',
-                    value: config.requiresMfa ? 'Yes' : 'No',
+                    label: context.l10n.adminApprovalMfaRequired,
+                    value: config.requiresMfa ? context.l10n.adminApprovalYes : context.l10n.adminApprovalNo,
                     icon: Icons.verified_user),
                 _InfoChip(
-                    label: 'Skip Levels',
-                    value: config.canSkipLevels ? 'Allowed' : 'No',
+                    label: context.l10n.adminApprovalSkipLevels,
+                    value: config.canSkipLevels ? context.l10n.adminApprovalAllowed : context.l10n.adminApprovalNo,
                     icon: Icons.skip_next),
               ],
             ),
@@ -190,7 +191,7 @@ class _ConfigCard extends ConsumerWidget {
             // Roles
             if (config.allowedInitiatorRoles.isNotEmpty) ...[
               const SizedBox(height: 12),
-              Text('Initiator Roles',
+              Text(context.l10n.adminApprovalInitiatorRoles,
                   style: theme.textTheme.labelSmall
                       ?.copyWith(color: theme.colorScheme.outline)),
               const SizedBox(height: 4),
@@ -207,7 +208,7 @@ class _ConfigCard extends ConsumerWidget {
             ],
             if (config.allowedApproverRoles.isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text('Approver Roles',
+              Text(context.l10n.adminApprovalApproverRoles,
                   style: theme.textTheme.labelSmall
                       ?.copyWith(color: theme.colorScheme.outline)),
               const SizedBox(height: 4),
@@ -226,7 +227,7 @@ class _ConfigCard extends ConsumerWidget {
             // Notification channels
             if (config.notificationChannels.isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text('Notifications',
+              Text(context.l10n.adminApprovalNotifications,
                   style: theme.textTheme.labelSmall
                       ?.copyWith(color: theme.colorScheme.outline)),
               const SizedBox(height: 4),
@@ -369,12 +370,12 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
     if (success) {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Configuration updated')),
+        SnackBar(content: Text(context.l10n.adminApprovalConfigurationUpdated)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to update configuration'),
+        SnackBar(
+          content: Text(context.l10n.adminApprovalFailedToUpdateConfiguration),
           backgroundColor: Colors.red,
         ),
       );
@@ -388,7 +389,7 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
         widget.config.actionType.replaceAll('_', ' ').toUpperCase();
 
     return AlertDialog(
-      title: Text('Edit: $actionLabel',
+      title: Text('${context.l10n.adminApprovalEdit}: $actionLabel',
           style: theme.textTheme.titleMedium
               ?.copyWith(fontWeight: FontWeight.bold)),
       content: SizedBox(
@@ -401,10 +402,10 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
               // Description
               TextField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  hintText: 'Describe this approval workflow',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminApprovalDescription,
+                  hintText: context.l10n.adminApprovalDescribeWorkflow,
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 2,
               ),
@@ -413,15 +414,15 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
               // Priority
               DropdownButtonFormField<String>(
                 initialValue: _defaultPriority,
-                decoration: const InputDecoration(
-                  labelText: 'Default Priority',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminApprovalDefaultPriority,
+                  border: const OutlineInputBorder(),
                 ),
-                items: const [
-                  DropdownMenuItem(value: 'low', child: Text('Low')),
-                  DropdownMenuItem(value: 'normal', child: Text('Normal')),
-                  DropdownMenuItem(value: 'high', child: Text('High')),
-                  DropdownMenuItem(value: 'urgent', child: Text('Urgent')),
+                items: [
+                  DropdownMenuItem(value: 'low', child: Text(context.l10n.adminApprovalPriorityLow)),
+                  DropdownMenuItem(value: 'normal', child: Text(context.l10n.adminApprovalPriorityNormal)),
+                  DropdownMenuItem(value: 'high', child: Text(context.l10n.adminApprovalPriorityHigh)),
+                  DropdownMenuItem(value: 'urgent', child: Text(context.l10n.adminApprovalPriorityUrgent)),
                 ],
                 onChanged: (v) => setState(() => _defaultPriority = v!),
               ),
@@ -430,47 +431,44 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
               // Expiration
               TextField(
                 controller: _expirationController,
-                decoration: const InputDecoration(
-                  labelText: 'Expiration (hours)',
-                  hintText: 'Leave empty for no expiration',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminApprovalExpirationHours,
+                  hintText: context.l10n.adminApprovalLeaveEmptyNoExpiration,
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 20),
 
               // Toggle switches
-              Text('Settings',
+              Text(context.l10n.adminApprovalSettings,
                   style: theme.textTheme.titleSmall
                       ?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               SwitchListTile(
-                title: const Text('Active'),
-                subtitle: const Text('Enable or disable this workflow'),
+                title: Text(context.l10n.adminApprovalActive),
+                subtitle: Text(context.l10n.adminApprovalEnableDisableWorkflow),
                 value: _isActive,
                 onChanged: (v) => setState(() => _isActive = v),
                 contentPadding: EdgeInsets.zero,
               ),
               SwitchListTile(
-                title: const Text('Auto Execute'),
-                subtitle: const Text(
-                    'Automatically execute action after final approval'),
+                title: Text(context.l10n.adminApprovalAutoExecuteTitle),
+                subtitle: Text(context.l10n.adminApprovalAutoExecuteSubtitle),
                 value: _autoExecute,
                 onChanged: (v) => setState(() => _autoExecute = v),
                 contentPadding: EdgeInsets.zero,
               ),
               SwitchListTile(
-                title: const Text('Require MFA'),
-                subtitle:
-                    const Text('Require multi-factor auth for approval'),
+                title: Text(context.l10n.adminApprovalRequireMfa),
+                subtitle: Text(context.l10n.adminApprovalRequireMfaSubtitle),
                 value: _requiresMfa,
                 onChanged: (v) => setState(() => _requiresMfa = v),
                 contentPadding: EdgeInsets.zero,
               ),
               SwitchListTile(
-                title: const Text('Allow Level Skipping'),
-                subtitle: const Text(
-                    'Allow higher-level admins to skip approval levels'),
+                title: Text(context.l10n.adminApprovalAllowLevelSkipping),
+                subtitle: Text(context.l10n.adminApprovalAllowLevelSkippingSubtitle),
                 value: _canSkipLevels,
                 onChanged: (v) => setState(() => _canSkipLevels = v),
                 contentPadding: EdgeInsets.zero,
@@ -478,33 +476,33 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
               const SizedBox(height: 16),
 
               // Notification channels
-              Text('Notification Channels',
+              Text(context.l10n.adminApprovalNotificationChannels,
                   style: theme.textTheme.titleSmall
                       ?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               CheckboxListTile(
-                title: const Text('In-App'),
+                title: Text(context.l10n.adminApprovalInApp),
                 value: _notifyInApp,
                 onChanged: (v) => setState(() => _notifyInApp = v!),
                 contentPadding: EdgeInsets.zero,
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               CheckboxListTile(
-                title: const Text('Email'),
+                title: Text(context.l10n.adminApprovalEmail),
                 value: _notifyEmail,
                 onChanged: (v) => setState(() => _notifyEmail = v!),
                 contentPadding: EdgeInsets.zero,
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               CheckboxListTile(
-                title: const Text('Push'),
+                title: Text(context.l10n.adminApprovalPush),
                 value: _notifyPush,
                 onChanged: (v) => setState(() => _notifyPush = v!),
                 contentPadding: EdgeInsets.zero,
                 controlAffinity: ListTileControlAffinity.leading,
               ),
               CheckboxListTile(
-                title: const Text('SMS'),
+                title: Text(context.l10n.adminApprovalSms),
                 value: _notifySms,
                 onChanged: (v) => setState(() => _notifySms = v!),
                 contentPadding: EdgeInsets.zero,
@@ -517,7 +515,7 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
       actions: [
         TextButton(
           onPressed: _saving ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.adminApprovalCancel),
         ),
         FilledButton(
           onPressed: _saving ? null : _save,
@@ -527,7 +525,7 @@ class _EditConfigDialogState extends State<_EditConfigDialog> {
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Save Changes'),
+              : Text(context.l10n.adminApprovalSaveChanges),
         ),
       ],
     );
@@ -550,7 +548,7 @@ class _StatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        isActive ? 'Active' : 'Inactive',
+        isActive ? context.l10n.adminApprovalStatusActive : context.l10n.adminApprovalStatusInactive,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: isActive ? Colors.green : Colors.grey,
               fontWeight: FontWeight.bold,

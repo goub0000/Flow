@@ -7175,4 +7175,4505 @@ class AppLocalizationsEn extends AppLocalizations {
   String biometricDescDisabled(String type) {
     return 'Use your $type to sign in quickly and securely without entering your password.';
   }
+
+  @override
+  String get adminChatDashTitle => 'Chatbot Dashboard';
+
+  @override
+  String get adminChatDashSubtitle => 'Monitor and manage chatbot interactions';
+
+  @override
+  String get adminChatDashRefresh => 'Refresh';
+
+  @override
+  String get adminChatDashTotalConversations => 'Total Conversations';
+
+  @override
+  String get adminChatDashActiveNow => 'Active Now';
+
+  @override
+  String get adminChatDashTotalMessages => 'Total Messages';
+
+  @override
+  String get adminChatDashAvgMessagesPerChat => 'Avg Messages/Chat';
+
+  @override
+  String get adminChatDashQuickActions => 'Quick Actions';
+
+  @override
+  String get adminChatDashManageFaqs => 'Manage FAQs';
+
+  @override
+  String get adminChatDashManageFaqsDesc =>
+      'Create and organize frequently asked questions';
+
+  @override
+  String get adminChatDashConversationHistory => 'Conversation History';
+
+  @override
+  String get adminChatDashConversationHistoryDesc =>
+      'Browse and review past conversations';
+
+  @override
+  String get adminChatDashSupportQueue => 'Support Queue';
+
+  @override
+  String get adminChatDashSupportQueueDesc =>
+      'Review escalated conversations needing attention';
+
+  @override
+  String get adminChatDashLiveMonitoring => 'Live Monitoring';
+
+  @override
+  String get adminChatDashLiveMonitoringDesc =>
+      'Monitor active chatbot conversations in real-time';
+
+  @override
+  String get adminChatDashRecentConversations => 'Recent Conversations';
+
+  @override
+  String get adminChatDashViewAll => 'View All';
+
+  @override
+  String get adminChatDashNoConversations => 'No conversations yet';
+
+  @override
+  String get adminChatDashNoConversationsDesc =>
+      'Chatbot conversations will appear here once users start interacting';
+
+  @override
+  String adminChatDashMessagesCount(int count) {
+    return '$count messages';
+  }
+
+  @override
+  String get adminChatDashStatusActive => 'Active';
+
+  @override
+  String get adminChatDashStatusArchived => 'Archived';
+
+  @override
+  String get adminChatDashStatusFlagged => 'Flagged';
+
+  @override
+  String get adminChatDashJustNow => 'Just now';
+
+  @override
+  String adminChatDashMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String adminChatDashHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String adminChatDashDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String get adminFeeConfigTitle => 'Fee Configuration';
+
+  @override
+  String get adminFeeConfigSubtitle => 'Manage platform fees and pricing';
+
+  @override
+  String get adminFeeConfigUnsavedChanges => 'Unsaved changes';
+
+  @override
+  String get adminFeeConfigReset => 'Reset';
+
+  @override
+  String get adminFeeConfigSaveChanges => 'Save Changes';
+
+  @override
+  String get adminFeeConfigSavedSuccess =>
+      'Fee configuration saved successfully';
+
+  @override
+  String get adminFeeConfigFeeSummary => 'Fee Summary';
+
+  @override
+  String get adminFeeConfigCategoriesActive => 'categories active';
+
+  @override
+  String get adminFeeConfigActiveFees => 'Active Fees';
+
+  @override
+  String get adminFeeConfigAvgRate => 'Avg Rate';
+
+  @override
+  String get adminFeeConfigDisabled => 'Disabled';
+
+  @override
+  String get adminFeeConfigPercentage => 'Percentage';
+
+  @override
+  String get adminFeeConfigFixedAmount => 'Fixed Amount';
+
+  @override
+  String get adminFeeConfigExample => 'Example on KES 10,000';
+
+  @override
+  String get adminSettingsTitle => 'Settings';
+
+  @override
+  String get adminSettingsSubtitle =>
+      'Manage your account and system preferences';
+
+  @override
+  String get adminSettingsProfile => 'Profile';
+
+  @override
+  String get adminSettingsDefaultUser => 'Admin';
+
+  @override
+  String get adminSettingsEdit => 'Edit';
+
+  @override
+  String get adminSettingsRole => 'Role';
+
+  @override
+  String get adminSettingsSuperAdmin => 'Super Admin';
+
+  @override
+  String get adminSettingsNotifications => 'Notifications';
+
+  @override
+  String get adminSettingsEmailNotifications => 'Email Notifications';
+
+  @override
+  String get adminSettingsEmailNotificationsDesc =>
+      'Receive important updates via email';
+
+  @override
+  String get adminSettingsPushNotifications => 'Push Notifications';
+
+  @override
+  String get adminSettingsPushNotificationsDesc =>
+      'Get real-time push notifications on your device';
+
+  @override
+  String get adminSettingsUserActivityAlerts => 'User Activity Alerts';
+
+  @override
+  String get adminSettingsUserActivityAlertsDesc =>
+      'Get notified about unusual user activity';
+
+  @override
+  String get adminSettingsSystemAlerts => 'System Alerts';
+
+  @override
+  String get adminSettingsSystemAlertsDesc =>
+      'Receive alerts about system health and issues';
+
+  @override
+  String get adminSettingsDisplay => 'Display';
+
+  @override
+  String get adminSettingsDarkMode => 'Dark Mode';
+
+  @override
+  String get adminSettingsDarkModeDesc => 'Switch to a darker color scheme';
+
+  @override
+  String get adminSettingsLanguage => 'Language';
+
+  @override
+  String get adminSettingsLangEnglish => 'English';
+
+  @override
+  String get adminSettingsLangSwahili => 'Swahili';
+
+  @override
+  String get adminSettingsLangFrench => 'French';
+
+  @override
+  String get adminSettingsTimezone => 'Timezone';
+
+  @override
+  String get adminSettingsSecurity => 'Security';
+
+  @override
+  String get adminSettingsChangePassword => 'Change Password';
+
+  @override
+  String get adminSettingsChangePasswordDesc => 'Update your account password';
+
+  @override
+  String get adminSettingsTwoFactor => 'Two-Factor Authentication';
+
+  @override
+  String get adminSettingsTwoFactorDesc =>
+      'Add an extra layer of security to your account';
+
+  @override
+  String get adminSettingsActiveSessions => 'Active Sessions';
+
+  @override
+  String get adminSettingsActiveSessionsDesc =>
+      'View and manage your active login sessions';
+
+  @override
+  String get adminSettingsPrivacy => 'Privacy';
+
+  @override
+  String get adminSettingsActivityLogging => 'Activity Logging';
+
+  @override
+  String get adminSettingsActivityLoggingDesc =>
+      'Log admin actions for audit purposes';
+
+  @override
+  String get adminSettingsAnalyticsTracking => 'Analytics Tracking';
+
+  @override
+  String get adminSettingsAnalyticsTrackingDesc =>
+      'Help improve the platform with usage analytics';
+
+  @override
+  String get adminSettingsDownloadData => 'Download My Data';
+
+  @override
+  String get adminSettingsDownloadDataDesc => 'Export all your personal data';
+
+  @override
+  String get adminSettingsDangerZone => 'Danger Zone';
+
+  @override
+  String get adminSettingsSignOut => 'Sign Out';
+
+  @override
+  String get adminSettingsSignOutDesc => 'Sign out of your admin account';
+
+  @override
+  String get adminSettingsSignOutConfirm =>
+      'Are you sure you want to sign out?';
+
+  @override
+  String get adminSettingsCancel => 'Cancel';
+
+  @override
+  String get adminSettingsDeleteAccount => 'Delete Account';
+
+  @override
+  String get adminSettingsDeleteAccountDesc =>
+      'Permanently delete your account and all data';
+
+  @override
+  String get notifPrefScreenTitle => 'Notification Preferences';
+
+  @override
+  String get notifPrefScreenNoPreferences =>
+      'No notification preferences found';
+
+  @override
+  String get notifPrefScreenCreateDefaults => 'Create Default Preferences';
+
+  @override
+  String get notifPrefScreenSettingsTitle => 'Notification Settings';
+
+  @override
+  String get notifPrefScreenDescription =>
+      'Control which notifications you want to receive. Changes are saved automatically.';
+
+  @override
+  String get notifPrefScreenCollegeApplications => 'College Applications';
+
+  @override
+  String get notifPrefScreenAcademic => 'Academic';
+
+  @override
+  String get notifPrefScreenCommunication => 'Communication';
+
+  @override
+  String get notifPrefScreenMeetingsEvents => 'Meetings & Events';
+
+  @override
+  String get notifPrefScreenAchievements => 'Achievements';
+
+  @override
+  String get notifPrefScreenSystem => 'System';
+
+  @override
+  String get notifPrefScreenEmail => 'Email';
+
+  @override
+  String get notifPrefScreenPush => 'Push';
+
+  @override
+  String get notifPrefScreenSoon => '(soon)';
+
+  @override
+  String get notifPrefScreenErrorLoading => 'Error loading preferences';
+
+  @override
+  String get notifPrefScreenRetry => 'Retry';
+
+  @override
+  String get notifPrefScreenErrorCreating => 'Error creating preferences';
+
+  @override
+  String get notifPrefScreenErrorUpdating => 'Error updating preferences';
+
+  @override
+  String get notifPrefScreenPreferencesUpdated => 'Preferences updated';
+
+  @override
+  String get notifPrefScreenDescApplicationStatus =>
+      'Get notified when your application status changes';
+
+  @override
+  String get notifPrefScreenDescGradePosted =>
+      'Receive notifications when new grades are posted';
+
+  @override
+  String get notifPrefScreenDescMessageReceived =>
+      'Get notified about new messages';
+
+  @override
+  String get notifPrefScreenDescMeetingScheduled =>
+      'Receive notifications for scheduled meetings';
+
+  @override
+  String get notifPrefScreenDescMeetingReminder =>
+      'Get reminders before your meetings';
+
+  @override
+  String get notifPrefScreenDescAchievementEarned =>
+      'Celebrate when you earn new achievements';
+
+  @override
+  String get notifPrefScreenDescDeadlineReminder =>
+      'Get reminded about upcoming deadlines';
+
+  @override
+  String get notifPrefScreenDescRecommendationReady =>
+      'Receive notifications for new recommendations';
+
+  @override
+  String get notifPrefScreenDescSystemAnnouncement =>
+      'Stay updated with system announcements';
+
+  @override
+  String get notifPrefScreenDescCommentReceived =>
+      'Get notified when someone comments on your posts';
+
+  @override
+  String get notifPrefScreenDescMention =>
+      'Receive notifications when you are mentioned';
+
+  @override
+  String get notifPrefScreenDescEventReminder =>
+      'Get reminders about upcoming events';
+
+  @override
+  String get notifPrefScreenDescApprovalRequestNew =>
+      'Get notified about new approval requests';
+
+  @override
+  String get notifPrefScreenDescApprovalRequestActionNeeded =>
+      'Get notified when an approval request needs your action';
+
+  @override
+  String get notifPrefScreenDescApprovalRequestStatusChanged =>
+      'Get notified when your approval request status changes';
+
+  @override
+  String get notifPrefScreenDescApprovalRequestEscalated =>
+      'Get notified when an approval request is escalated';
+
+  @override
+  String get notifPrefScreenDescApprovalRequestExpiring =>
+      'Get notified when an approval request is about to expire';
+
+  @override
+  String get notifPrefScreenDescApprovalRequestComment =>
+      'Get notified about comments on approval requests';
+
+  @override
+  String get homeNavFeatures => 'Features';
+
+  @override
+  String get homeNavAbout => 'About';
+
+  @override
+  String get homeNavContact => 'Contact';
+
+  @override
+  String get homeNavLogin => 'Login';
+
+  @override
+  String get homeNavSignUp => 'Sign Up';
+
+  @override
+  String get homeNavAccountTypes => 'Account Types';
+
+  @override
+  String get homeNavStudents => 'Students';
+
+  @override
+  String get homeNavInstitutions => 'Institutions';
+
+  @override
+  String get homeNavParents => 'Parents';
+
+  @override
+  String get homeNavCounselors => 'Counselors';
+
+  @override
+  String get homeNavRecommenders => 'Recommenders';
+
+  @override
+  String get homeNavBadge => 'Africa\'s Premier EdTech Platform';
+
+  @override
+  String get homeNavWelcome => 'Welcome to Flow';
+
+  @override
+  String get homeNavSubtitle =>
+      'Connect students, institutions, parents, counselors across Africa. Offline-first with mobile money.';
+
+  @override
+  String get homeNavGetStarted => 'Get Started';
+
+  @override
+  String get homeNavSignIn => 'Sign In';
+
+  @override
+  String get homeNavActiveUsers => 'Active Users';
+
+  @override
+  String get homeNavCountries => 'Countries';
+
+  @override
+  String get homeNavNew => 'NEW';
+
+  @override
+  String get homeNavFindYourPath => 'Find Your Path';
+
+  @override
+  String get homeNavFindYourPathDesc =>
+      'Answer a few questions and get personalized university recommendations.';
+
+  @override
+  String get homeNavPersonalizedRec => 'Personalized Recommendations';
+
+  @override
+  String get homeNavTopUniversities => '12+ Top Universities';
+
+  @override
+  String get homeNavSmartMatching => 'Smart Matching Algorithm';
+
+  @override
+  String get homeNavStartNow => 'Start Now';
+
+  @override
+  String get homeNavPlatformFeatures => 'Platform Features';
+
+  @override
+  String get homeNavOfflineFirst => 'Offline-First Design';
+
+  @override
+  String get homeNavOfflineFirstDesc =>
+      'Access your content even without internet connectivity';
+
+  @override
+  String get homeNavMobileMoney => 'Mobile Money Integration';
+
+  @override
+  String get homeNavMobileMoneyDesc =>
+      'Pay with M-Pesa, MTN, and other mobile money services';
+
+  @override
+  String get homeNavMultiLang => 'Multi-Language Support';
+
+  @override
+  String get homeNavMultiLangDesc =>
+      'Available in English, French, Swahili, and more';
+
+  @override
+  String get homeNavSecure => 'Secure & Private';
+
+  @override
+  String get homeNavSecureDesc => 'End-to-end encryption for all your data';
+
+  @override
+  String get homeNavUssd => 'USSD Support';
+
+  @override
+  String get homeNavUssdDesc =>
+      'Access features via basic phones without internet';
+
+  @override
+  String get homeNavCloudSync => 'Cloud Sync';
+
+  @override
+  String get homeNavCloudSyncDesc =>
+      'Automatically sync across all your devices';
+
+  @override
+  String get homeNavHowItWorks => 'How It Works';
+
+  @override
+  String get homeNavCreateAccount => 'Create Account';
+
+  @override
+  String get homeNavCreateAccountDesc =>
+      'Sign up with your role - student, institution, parent, counselor, or recommender';
+
+  @override
+  String get homeNavAccessDashboard => 'Access Dashboard';
+
+  @override
+  String get homeNavAccessDashboardDesc =>
+      'Get a personalized dashboard tailored to your needs';
+
+  @override
+  String get homeNavExploreFeatures => 'Explore Features';
+
+  @override
+  String get homeNavExploreFeaturesDesc =>
+      'Browse courses, applications, or manage your responsibilities';
+
+  @override
+  String get homeNavAchieveGoals => 'Achieve Goals';
+
+  @override
+  String get homeNavAchieveGoalsDesc =>
+      'Track progress, collaborate, and reach your educational objectives';
+
+  @override
+  String get homeNavTrustedAcrossAfrica => 'Trusted Across Africa';
+
+  @override
+  String get homeNavTestimonialRole1 => 'Student, University of Ghana';
+
+  @override
+  String get homeNavTestimonialQuote1 =>
+      'Flow made my application process so much easier. I could track everything in one place!';
+
+  @override
+  String get homeNavTestimonialRole2 => 'Dean, Ashesi University';
+
+  @override
+  String get homeNavTestimonialQuote2 =>
+      'Managing applications has never been this efficient. Flow is a game-changer for institutions.';
+
+  @override
+  String get homeNavTestimonialRole3 => 'Parent, Nigeria';
+
+  @override
+  String get homeNavTestimonialQuote3 =>
+      'I can now monitor my children\'s academic progress even when I\'m traveling. Peace of mind!';
+
+  @override
+  String get homeNavWhoCanUse => 'Who Can Use Flow?';
+
+  @override
+  String get homeNavForStudents => 'For Students';
+
+  @override
+  String get homeNavForStudentsSubtitle => 'Your gateway to academic success';
+
+  @override
+  String get homeNavForStudentsDesc =>
+      'Flow empowers students to take control of their educational journey with comprehensive tools designed for modern learners across Africa.';
+
+  @override
+  String get homeNavCourseAccess => 'Course Access';
+
+  @override
+  String get homeNavCourseAccessDesc =>
+      'Browse and enroll in thousands of courses from top institutions across Africa';
+
+  @override
+  String get homeNavAppManagement => 'Application Management';
+
+  @override
+  String get homeNavAppManagementDesc =>
+      'Apply to multiple institutions, track application status, and manage deadlines in one place';
+
+  @override
+  String get homeNavProgressTracking => 'Progress Tracking';
+
+  @override
+  String get homeNavProgressTrackingDesc =>
+      'Monitor your academic progress with detailed analytics and performance insights';
+
+  @override
+  String get homeNavDocManagement => 'Document Management';
+
+  @override
+  String get homeNavDocManagementDesc =>
+      'Store and share transcripts, certificates, and other academic documents securely';
+
+  @override
+  String get homeNavEasyPayments => 'Easy Payments';
+
+  @override
+  String get homeNavEasyPaymentsDesc =>
+      'Pay tuition and fees using mobile money services like M-Pesa, MTN Money, and more';
+
+  @override
+  String get homeNavOfflineAccess => 'Offline Access';
+
+  @override
+  String get homeNavOfflineAccessDesc =>
+      'Download course materials and access them without internet connectivity';
+
+  @override
+  String get homeNavForInstitutions => 'For Institutions';
+
+  @override
+  String get homeNavForInstitutionsSubtitle =>
+      'Streamline admissions and student management';
+
+  @override
+  String get homeNavForInstitutionsDesc =>
+      'Transform your institution\'s operations with powerful tools for admissions, student management, and program delivery.';
+
+  @override
+  String get homeNavApplicantMgmt => 'Applicant Management';
+
+  @override
+  String get homeNavApplicantMgmtDesc =>
+      'Review, process, and track applications efficiently with automated workflows';
+
+  @override
+  String get homeNavProgramMgmt => 'Program Management';
+
+  @override
+  String get homeNavProgramMgmtDesc =>
+      'Create and manage academic programs, set requirements, and track enrollments';
+
+  @override
+  String get homeNavAnalyticsDash => 'Analytics Dashboard';
+
+  @override
+  String get homeNavAnalyticsDashDesc =>
+      'Get insights into application trends, student performance, and institutional metrics';
+
+  @override
+  String get homeNavCommHub => 'Communication Hub';
+
+  @override
+  String get homeNavCommHubDesc =>
+      'Engage with students, parents, and staff through integrated messaging';
+
+  @override
+  String get homeNavDocVerification => 'Document Verification';
+
+  @override
+  String get homeNavDocVerificationDesc =>
+      'Verify student documents and credentials securely';
+
+  @override
+  String get homeNavFinancialMgmt => 'Financial Management';
+
+  @override
+  String get homeNavFinancialMgmtDesc =>
+      'Track payments, manage scholarships, and generate financial reports';
+
+  @override
+  String get homeNavForParents => 'For Parents';
+
+  @override
+  String get homeNavForParentsSubtitle =>
+      'Stay connected to your child\'s education';
+
+  @override
+  String get homeNavForParentsDesc =>
+      'Stay informed and engaged in your children\'s educational journey with real-time updates and comprehensive monitoring tools.';
+
+  @override
+  String get homeNavProgressMonitoring => 'Progress Monitoring';
+
+  @override
+  String get homeNavProgressMonitoringDesc =>
+      'Track your children\'s academic performance, attendance, and achievements';
+
+  @override
+  String get homeNavRealtimeUpdates => 'Real-time Updates';
+
+  @override
+  String get homeNavRealtimeUpdatesDesc =>
+      'Receive instant notifications about grades, assignments, and school events';
+
+  @override
+  String get homeNavTeacherComm => 'Teacher Communication';
+
+  @override
+  String get homeNavTeacherCommDesc =>
+      'Connect directly with teachers and counselors about your child\'s progress';
+
+  @override
+  String get homeNavFeeMgmt => 'Fee Management';
+
+  @override
+  String get homeNavFeeMgmtDesc =>
+      'View and pay school fees conveniently using mobile money';
+
+  @override
+  String get homeNavScheduleAccess => 'Schedule Access';
+
+  @override
+  String get homeNavScheduleAccessDesc =>
+      'View class schedules, exam dates, and school calendar events';
+
+  @override
+  String get homeNavReportCards => 'Report Cards';
+
+  @override
+  String get homeNavReportCardsDesc =>
+      'Access detailed report cards and performance summaries';
+
+  @override
+  String get homeNavForCounselors => 'For Counselors';
+
+  @override
+  String get homeNavForCounselorsSubtitle =>
+      'Guide students to their best future';
+
+  @override
+  String get homeNavForCounselorsDesc =>
+      'Empower your counseling practice with tools to manage sessions, track student progress, and provide personalized guidance.';
+
+  @override
+  String get homeNavSessionMgmt => 'Session Management';
+
+  @override
+  String get homeNavSessionMgmtDesc =>
+      'Schedule, track, and document counseling sessions with students';
+
+  @override
+  String get homeNavStudentPortfolio => 'Student Portfolio';
+
+  @override
+  String get homeNavStudentPortfolioDesc =>
+      'Maintain comprehensive profiles and notes for each student you counsel';
+
+  @override
+  String get homeNavActionPlans => 'Action Plans';
+
+  @override
+  String get homeNavActionPlansDesc =>
+      'Create and monitor personalized action plans and goals for students';
+
+  @override
+  String get homeNavCollegeGuidance => 'College Guidance';
+
+  @override
+  String get homeNavCollegeGuidanceDesc =>
+      'Help students explore programs and navigate the application process';
+
+  @override
+  String get homeNavCareerAssessment => 'Career Assessment';
+
+  @override
+  String get homeNavCareerAssessmentDesc =>
+      'Provide career assessments and recommend suitable paths';
+
+  @override
+  String get homeNavParentCollab => 'Parent Collaboration';
+
+  @override
+  String get homeNavParentCollabDesc =>
+      'Coordinate with parents to support student success';
+
+  @override
+  String get homeNavForRecommenders => 'For Recommenders';
+
+  @override
+  String get homeNavForRecommendersSubtitle =>
+      'Support students with powerful recommendations';
+
+  @override
+  String get homeNavForRecommendersDesc =>
+      'Write, manage, and submit recommendation letters efficiently while maintaining your professional network.';
+
+  @override
+  String get homeNavLetterMgmt => 'Letter Management';
+
+  @override
+  String get homeNavLetterMgmtDesc =>
+      'Write, edit, and store recommendation letters with templates';
+
+  @override
+  String get homeNavEasySubmission => 'Easy Submission';
+
+  @override
+  String get homeNavEasySubmissionDesc =>
+      'Submit recommendations directly to institutions securely';
+
+  @override
+  String get homeNavRequestTracking => 'Request Tracking';
+
+  @override
+  String get homeNavRequestTrackingDesc =>
+      'Track all recommendation requests and deadlines in one place';
+
+  @override
+  String get homeNavLetterTemplates => 'Letter Templates';
+
+  @override
+  String get homeNavLetterTemplatesDesc =>
+      'Use customizable templates to streamline your writing process';
+
+  @override
+  String get homeNavDigitalSignature => 'Digital Signature';
+
+  @override
+  String get homeNavDigitalSignatureDesc =>
+      'Sign and verify letters digitally with secure authentication';
+
+  @override
+  String get homeNavStudentHistory => 'Student History';
+
+  @override
+  String get homeNavStudentHistoryDesc =>
+      'Maintain records of students you\'ve recommended over time';
+
+  @override
+  String get homeNavReadyToStart => 'Ready to Get Started?';
+
+  @override
+  String get homeNavJoinThousands =>
+      'Join thousands transforming education with Flow.';
+
+  @override
+  String get homeNavFlowEdTech => 'Flow EdTech';
+
+  @override
+  String get homeNavPrivacy => 'Privacy';
+
+  @override
+  String get homeNavTerms => 'Terms';
+
+  @override
+  String get homeNavCopyright => '© 2025 Flow EdTech';
+
+  @override
+  String get homeNavTop => 'Top';
+
+  @override
+  String homeNavGetStartedAs(String role) {
+    return 'Get Started as $role';
+  }
+
+  @override
+  String get homeNavForPrefix => 'For ';
+
+  @override
+  String get aboutPageTitle => 'About Flow';
+
+  @override
+  String get aboutPageFlowEdTech => 'Flow EdTech';
+
+  @override
+  String get aboutPagePremierPlatform => 'Africa\'s Premier Education Platform';
+
+  @override
+  String get aboutPageOurMission => 'Our Mission';
+
+  @override
+  String get aboutPageMissionContent =>
+      'Flow is dedicated to transforming education across Africa by connecting students with universities, counselors, and resources they need to succeed.';
+
+  @override
+  String get aboutPageOurVision => 'Our Vision';
+
+  @override
+  String get aboutPageVisionContent =>
+      'We envision a future where every African student has the tools, information, and support needed to achieve their educational dreams.';
+
+  @override
+  String get aboutPageOurStory => 'Our Story';
+
+  @override
+  String get aboutPageOurValues => 'Our Values';
+
+  @override
+  String get aboutPageGetInTouch => 'Get in Touch';
+
+  @override
+  String get privacyPageTitle => 'Privacy Policy';
+
+  @override
+  String get privacyPageLastUpdated => 'Last updated: January 2026';
+
+  @override
+  String get privacyPageSection1Title => '1. Information We Collect';
+
+  @override
+  String get privacyPageSection1Content =>
+      'We collect information you provide directly to us, such as when you create an account, fill out a form, or communicate with us. This may include:\n\n- Personal information (name, email, phone number)\n- Educational information (grades, test scores, preferences)\n- Account credentials\n- Communication preferences\n- Usage data and analytics';
+
+  @override
+  String get privacyPageSection2Title => '2. How We Use Your Information';
+
+  @override
+  String get privacyPageSection2Content =>
+      'We use the information we collect to:\n\n- Provide, maintain, and improve our services\n- Match you with suitable universities and programs\n- Send you relevant notifications and updates\n- Respond to your inquiries and support requests\n- Analyze usage patterns to improve user experience\n- Comply with legal obligations';
+
+  @override
+  String get privacyPageSection3Title => '3. Information Sharing';
+
+  @override
+  String get privacyPageSection3Content =>
+      'We may share your information with:\n\n- Universities and institutions you express interest in\n- Counselors you choose to connect with\n- Parents/guardians (with your consent)\n- Service providers who assist our operations\n- Legal authorities when required by law\n\nWe do not sell your personal information to third parties.';
+
+  @override
+  String get privacyPageSection4Title => '4. Data Security';
+
+  @override
+  String get privacyPageSection4Content =>
+      'We implement industry-standard security measures to protect your data:\n\n- Encryption of data in transit and at rest\n- Regular security audits and assessments\n- Access controls and authentication\n- Secure data centers with SOC 2 compliance';
+
+  @override
+  String get privacyPageSection5Title => '5. Your Rights';
+
+  @override
+  String get privacyPageSection5Content =>
+      'You have the right to:\n\n- Access your personal data\n- Correct inaccurate information\n- Delete your account and data\n- Export your data in a portable format\n- Opt out of marketing communications\n- Withdraw consent at any time';
+
+  @override
+  String get privacyPageSection6Title => '6. Contact Us';
+
+  @override
+  String get privacyPageSection6Content =>
+      'If you have questions about this privacy policy, please contact us at:\n\nEmail: privacy@flowedtech.com\nAddress: Accra, Ghana';
+
+  @override
+  String get privacyPageContactTeam => 'Contact Privacy Team';
+
+  @override
+  String privacyPageLastUpdatedLabel(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get termsPageTitle => 'Terms of Service';
+
+  @override
+  String get termsPageLastUpdated => 'Last updated: January 2026';
+
+  @override
+  String get termsPageSection1Title => '1. Acceptance of Terms';
+
+  @override
+  String get termsPageSection1Content =>
+      'By accessing or using Flow EdTech (\"the Service\"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.';
+
+  @override
+  String get termsPageSection2Title => '2. User Accounts';
+
+  @override
+  String get termsPageSection2Content =>
+      'To use certain features, you must create an account. You agree to provide accurate and complete information, maintain the security of your account credentials, and take responsibility for all activities under your account.';
+
+  @override
+  String get termsPageSection3Title => '3. User Conduct';
+
+  @override
+  String get termsPageSection3Content =>
+      'You agree not to use the Service for any unlawful purpose, harass other users, submit false information, or attempt to gain unauthorized access to systems.';
+
+  @override
+  String get termsPageSection4Title => '4. Limitation of Liability';
+
+  @override
+  String get termsPageSection4Content =>
+      'THE SERVICE IS PROVIDED \"AS IS\" WITHOUT WARRANTIES OF ANY KIND. WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED.';
+
+  @override
+  String get termsPageSection5Title => '5. Contact';
+
+  @override
+  String get termsPageSection5Content =>
+      'For questions about these terms, contact us at: legal@flowedtech.com';
+
+  @override
+  String get termsPageAgreement => 'By using Flow, you agree to these terms';
+
+  @override
+  String get contactPageTitle => 'Contact Us';
+
+  @override
+  String get contactPageGetInTouch => 'Get in Touch';
+
+  @override
+  String get contactPageSubtitle =>
+      'Have questions? We\'d love to hear from you.';
+
+  @override
+  String get contactPageEmail => 'Email';
+
+  @override
+  String get contactPageEmailValue => 'support@flowedtech.com';
+
+  @override
+  String get contactPageEmailReply => 'We reply within 24 hours';
+
+  @override
+  String get contactPageOffice => 'Office';
+
+  @override
+  String get contactPageOfficeValue => 'Accra, Ghana';
+
+  @override
+  String get contactPageOfficeRegion => 'West Africa';
+
+  @override
+  String get contactPageHours => 'Hours';
+
+  @override
+  String get contactPageHoursValue => 'Mon - Fri: 9AM - 6PM';
+
+  @override
+  String get contactPageHoursTimezone => 'GMT timezone';
+
+  @override
+  String get contactPageSendMessage => 'Send us a message';
+
+  @override
+  String get contactPageYourName => 'Your Name';
+
+  @override
+  String get contactPageEmailAddress => 'Email Address';
+
+  @override
+  String get contactPageSubject => 'Subject';
+
+  @override
+  String get contactPageMessage => 'Message';
+
+  @override
+  String get contactPageSendButton => 'Send Message';
+
+  @override
+  String get contactPageNameRequired => 'Please enter your name';
+
+  @override
+  String get contactPageEmailRequired => 'Please enter your email';
+
+  @override
+  String get contactPageEmailInvalid => 'Please enter a valid email';
+
+  @override
+  String get contactPageSubjectRequired => 'Please enter a subject';
+
+  @override
+  String get contactPageMessageRequired => 'Please enter your message';
+
+  @override
+  String get contactPageSuccessMessage =>
+      'Thank you for your message! We will get back to you soon.';
+
+  @override
+  String get blogPageTitle => 'Flow Blog';
+
+  @override
+  String get blogPageSubtitle =>
+      'Insights, tips, and stories about education in Africa';
+
+  @override
+  String get blogPageCategories => 'Categories';
+
+  @override
+  String get blogPageAll => 'All';
+
+  @override
+  String get blogPageRecentPosts => 'Recent Posts';
+
+  @override
+  String get blogPageFeatured => 'Featured';
+
+  @override
+  String get blogPageSubscribeTitle => 'Subscribe to Our Newsletter';
+
+  @override
+  String get blogPageSubscribeSubtitle =>
+      'Get the latest articles and resources delivered to your inbox';
+
+  @override
+  String get blogPageEnterEmail => 'Enter your email';
+
+  @override
+  String get blogPageSubscribeButton => 'Subscribe';
+
+  @override
+  String get careersPageTitle => 'Careers';
+
+  @override
+  String get careersPageJoinMission => 'Join Our Mission';
+
+  @override
+  String get careersPageHeroSubtitle =>
+      'Help us transform education across Africa';
+
+  @override
+  String get careersPageWhyJoin => 'Why Join Flow?';
+
+  @override
+  String get careersPageGlobalImpact => 'Global Impact';
+
+  @override
+  String get careersPageGlobalImpactDesc =>
+      'Work on solutions that affect millions of students across Africa';
+
+  @override
+  String get careersPageGrowth => 'Growth';
+
+  @override
+  String get careersPageGrowthDesc =>
+      'Continuous learning and career development opportunities';
+
+  @override
+  String get careersPageGreatTeam => 'Great Team';
+
+  @override
+  String get careersPageGreatTeamDesc =>
+      'Collaborate with passionate and talented individuals';
+
+  @override
+  String get careersPageFlexibility => 'Flexibility';
+
+  @override
+  String get careersPageFlexibilityDesc =>
+      'Remote-friendly culture with flexible working hours';
+
+  @override
+  String get careersPageOpenPositions => 'Open Positions';
+
+  @override
+  String get careersPageApply => 'Apply';
+
+  @override
+  String get careersPageNoFit => 'Don\'t see a perfect fit?';
+
+  @override
+  String get careersPageNoFitDesc =>
+      'We\'re always looking for talented individuals. Send your resume to careers@flowedtech.com';
+
+  @override
+  String get careersPageContactUs => 'Contact Us';
+
+  @override
+  String get communityPageTitle => 'Join Our Community';
+
+  @override
+  String get communityPageSubtitle =>
+      'Connect with students, counselors, and educators';
+
+  @override
+  String get communityPageMembers => 'Members';
+
+  @override
+  String get communityPageGroups => 'Groups';
+
+  @override
+  String get communityPageDiscussions => 'Discussions';
+
+  @override
+  String get communityPageFeaturedGroups => 'Featured Groups';
+
+  @override
+  String get communityPagePopularDiscussions => 'Popular Discussions';
+
+  @override
+  String get communityPageUpcomingEvents => 'Upcoming Events';
+
+  @override
+  String get communityPageAttending => 'attending';
+
+  @override
+  String get communityPageJoin => 'Join';
+
+  @override
+  String get communityPageReadyToJoin => 'Ready to Join?';
+
+  @override
+  String get communityPageCreateAccount =>
+      'Create an account to join the community';
+
+  @override
+  String get communityPageSignUpFree => 'Sign Up Free';
+
+  @override
+  String communityPageBy(String author) {
+    return 'by $author';
+  }
+
+  @override
+  String get compliancePageTitle => 'Compliance';
+
+  @override
+  String get compliancePageHeadline => 'Compliance & Certifications';
+
+  @override
+  String get compliancePageSubtitle =>
+      'Our commitment to security, privacy, and regulatory compliance';
+
+  @override
+  String get compliancePageCertifications => 'Certifications';
+
+  @override
+  String get compliancePageSoc2 => 'SOC 2 Type II';
+
+  @override
+  String get compliancePageSoc2Desc =>
+      'Certified for security, availability, and confidentiality';
+
+  @override
+  String get compliancePageIso => 'ISO 27001';
+
+  @override
+  String get compliancePageIsoDesc =>
+      'Information security management certification';
+
+  @override
+  String get compliancePageGdpr => 'GDPR Compliant';
+
+  @override
+  String get compliancePageGdprDesc => 'EU General Data Protection Regulation';
+
+  @override
+  String get compliancePageDataProtection => 'Data Protection';
+
+  @override
+  String get compliancePageDataProtectionContent =>
+      'We implement comprehensive data protection measures to safeguard your information:\n\n• End-to-end encryption for data in transit\n• AES-256 encryption for data at rest\n• Regular security audits and penetration testing\n• Multi-factor authentication support\n• Role-based access control\n• Automated backup and disaster recovery';
+
+  @override
+  String get compliancePagePrivacyPractices => 'Privacy Practices';
+
+  @override
+  String get compliancePagePrivacyContent =>
+      'Our privacy practices are designed to protect your rights:\n\n• Transparent data collection and usage policies\n• User consent management for data processing\n• Data minimization principles\n• Right to access, rectify, and delete personal data\n• Data portability support\n• Regular privacy impact assessments';
+
+  @override
+  String get compliancePageRegulatory => 'Regulatory Compliance';
+
+  @override
+  String get compliancePageRegulatoryContent =>
+      'Flow adheres to international and regional regulations:\n\n• General Data Protection Regulation (GDPR) - EU\n• Protection of Personal Information Act (POPIA) - South Africa\n• Data Protection Act - Ghana, Kenya, Nigeria\n• Children\'s Online Privacy Protection Act (COPPA)\n• California Consumer Privacy Act (CCPA)';
+
+  @override
+  String get compliancePageThirdParty => 'Third-Party Security';
+
+  @override
+  String get compliancePageThirdPartyContent =>
+      'We carefully vet and monitor our third-party service providers:\n\n• Vendor security assessments\n• Data processing agreements\n• Subprocessor transparency\n• Regular compliance reviews\n• Incident response coordination';
+
+  @override
+  String get compliancePageSecurityPractices => 'Security Practices';
+
+  @override
+  String get compliancePageRegularUpdates => 'Regular Updates';
+
+  @override
+  String get compliancePageRegularUpdatesDesc =>
+      'Security patches and updates deployed continuously';
+
+  @override
+  String get compliancePageBugBounty => 'Bug Bounty Program';
+
+  @override
+  String get compliancePageBugBountyDesc =>
+      'Responsible disclosure program for security researchers';
+
+  @override
+  String get compliancePageMonitoring => 'Monitoring';
+
+  @override
+  String get compliancePageMonitoringDesc =>
+      '24/7 security monitoring and threat detection';
+
+  @override
+  String get compliancePageAuditLogs => 'Audit Logs';
+
+  @override
+  String get compliancePageAuditLogsDesc =>
+      'Comprehensive logging of all security events';
+
+  @override
+  String get compliancePageQuestions => 'Compliance Questions?';
+
+  @override
+  String get compliancePageContactTeam =>
+      'Contact our compliance team for inquiries';
+
+  @override
+  String compliancePageLastUpdated(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get cookiesPageTitle => 'Cookie Policy';
+
+  @override
+  String get cookiesPageLastUpdated => 'Last updated: January 2026';
+
+  @override
+  String get cookiesPageWhatAreCookies => 'What Are Cookies?';
+
+  @override
+  String get cookiesPageWhatAreCookiesContent =>
+      'Cookies are small text files that are stored on your device when you visit a website. They help the website remember information about your visit, like your preferred language and other settings, which can make your next visit easier.\n\nWe use cookies and similar technologies to provide, protect, and improve our services.';
+
+  @override
+  String get cookiesPageHowWeUse => 'How We Use Cookies';
+
+  @override
+  String get cookiesPageHowWeUseContent =>
+      'We use different types of cookies for various purposes:\n\n**Essential Cookies**\nThese cookies are necessary for the website to function properly. They enable basic features like page navigation, secure access to protected areas, and remembering your login state.\n\n**Performance Cookies**\nThese cookies help us understand how visitors interact with our website. They collect information about page visits, time spent on pages, and any error messages encountered.\n\n**Functionality Cookies**\nThese cookies enable enhanced functionality and personalization, such as remembering your preferences, language settings, and customizations.\n\n**Analytics Cookies**\nWe use analytics cookies to analyze website traffic and optimize the user experience. This data helps us improve our services.';
+
+  @override
+  String get cookiesPageTypesTitle => 'Types of Cookies We Use';
+
+  @override
+  String get cookiesPageCookieType => 'Cookie Type';
+
+  @override
+  String get cookiesPagePurpose => 'Purpose';
+
+  @override
+  String get cookiesPageDuration => 'Duration';
+
+  @override
+  String get cookiesPageSession => 'Session';
+
+  @override
+  String get cookiesPageAuthentication => 'Authentication';
+
+  @override
+  String get cookiesPagePreferences => 'Preferences';
+
+  @override
+  String get cookiesPageUserSettings => 'User settings';
+
+  @override
+  String get cookiesPageAnalytics => 'Analytics';
+
+  @override
+  String get cookiesPageUsageStatistics => 'Usage statistics';
+
+  @override
+  String get cookiesPageSecurity => 'Security';
+
+  @override
+  String get cookiesPageFraudPrevention => 'Fraud prevention';
+
+  @override
+  String get cookiesPageManaging => 'Managing Your Cookie Preferences';
+
+  @override
+  String get cookiesPageManagingContent =>
+      'You have several options for managing cookies:\n\n**Browser Settings**\nMost web browsers allow you to control cookies through their settings. You can set your browser to refuse cookies, delete existing cookies, or alert you when cookies are being sent.\n\n**Our Cookie Settings**\nYou can manage your cookie preferences for our platform by visiting Settings > Cookie Preferences in your account.\n\n**Opt-Out Links**\nFor analytics and advertising cookies, you can opt out through industry opt-out mechanisms.\n\nNote: Disabling certain cookies may impact your experience and limit some features of our platform.';
+
+  @override
+  String get cookiesPageThirdParty => 'Third-Party Cookies';
+
+  @override
+  String get cookiesPageThirdPartyContent =>
+      'Some cookies are placed by third-party services that appear on our pages. We do not control these cookies.\n\nThird-party services we use that may place cookies include:\n• Supabase (Authentication)\n• Sentry (Error Tracking)\n• Analytics services\n\nPlease refer to the privacy policies of these services for more information about their cookie practices.';
+
+  @override
+  String get cookiesPageUpdates => 'Updates to This Policy';
+
+  @override
+  String get cookiesPageUpdatesContent =>
+      'We may update this Cookie Policy from time to time. When we make changes, we will update the \"Last updated\" date at the top of this page.\n\nWe encourage you to review this policy periodically to stay informed about our use of cookies.';
+
+  @override
+  String get cookiesPageManagePreferences => 'Manage Cookie Preferences';
+
+  @override
+  String get cookiesPageCustomize => 'Customize which cookies you allow';
+
+  @override
+  String get cookiesPageManageButton => 'Manage';
+
+  @override
+  String get cookiesPageQuestionsTitle => 'Questions about cookies?';
+
+  @override
+  String get cookiesPageQuestionsContact =>
+      'Contact us at privacy@flowedtech.com';
+
+  @override
+  String get dataProtPageTitle => 'Data Protection';
+
+  @override
+  String get dataProtPageSubtitle =>
+      'How we protect and manage your personal data';
+
+  @override
+  String get dataProtPageYourRights => 'Your Data Rights';
+
+  @override
+  String get dataProtPageRightsIntro =>
+      'Under data protection laws, you have the following rights:';
+
+  @override
+  String get dataProtPageRightAccess => 'Right to Access';
+
+  @override
+  String get dataProtPageRightAccessDesc =>
+      'You can request a copy of all personal data we hold about you. We will provide this within 30 days.';
+
+  @override
+  String get dataProtPageRightRectification => 'Right to Rectification';
+
+  @override
+  String get dataProtPageRightRectificationDesc =>
+      'You can request correction of inaccurate or incomplete personal data.';
+
+  @override
+  String get dataProtPageRightErasure => 'Right to Erasure';
+
+  @override
+  String get dataProtPageRightErasureDesc =>
+      'You can request deletion of your personal data in certain circumstances.';
+
+  @override
+  String get dataProtPageRightPortability => 'Right to Data Portability';
+
+  @override
+  String get dataProtPageRightPortabilityDesc =>
+      'You can request your data in a structured, machine-readable format.';
+
+  @override
+  String get dataProtPageRightObject => 'Right to Object';
+
+  @override
+  String get dataProtPageRightObjectDesc =>
+      'You can object to processing of your personal data for certain purposes.';
+
+  @override
+  String get dataProtPageRightRestrict => 'Right to Restrict Processing';
+
+  @override
+  String get dataProtPageRightRestrictDesc =>
+      'You can request that we limit how we use your data.';
+
+  @override
+  String get dataProtPageHowWeProtect => 'How We Protect Your Data';
+
+  @override
+  String get dataProtPageHowWeProtectContent =>
+      'We implement robust security measures to protect your personal data:\n\n**Technical Measures**\n• End-to-end encryption for data transmission\n• AES-256 encryption for stored data\n• Regular security audits and penetration testing\n• Intrusion detection systems\n• Secure data centers with physical security\n\n**Organizational Measures**\n• Staff training on data protection\n• Access controls and authentication\n• Data protection impact assessments\n• Incident response procedures\n• Regular compliance reviews';
+
+  @override
+  String get dataProtPageStorage => 'Data Storage & Retention';
+
+  @override
+  String get dataProtPageStorageContent =>
+      '**Where We Store Your Data**\nYour data is stored on secure servers located in regions with strong data protection laws. We use industry-leading cloud providers with SOC 2 and ISO 27001 certifications.\n\n**How Long We Keep Your Data**\n• Account data: Until you delete your account\n• Application data: 7 years for compliance\n• Analytics data: 2 years\n• Communication logs: 3 years\n\nAfter these periods, data is securely deleted or anonymized.';
+
+  @override
+  String get dataProtPageSharing => 'Data Sharing';
+
+  @override
+  String get dataProtPageSharingContent =>
+      'We only share your data when necessary:\n\n• **With your consent**: When you explicitly agree\n• **Service providers**: Partners who help us deliver services\n• **Legal requirements**: When required by law\n• **Business transfers**: In case of merger or acquisition\n\nWe never sell your personal data to third parties.';
+
+  @override
+  String get dataProtPageExerciseRights => 'Exercise Your Rights';
+
+  @override
+  String get dataProtPageExerciseRightsDesc =>
+      'To make a data request or exercise any of your rights, contact our Data Protection Officer:';
+
+  @override
+  String get dataProtPageContactUs => 'Contact Us';
+
+  @override
+  String get dataProtPageManageData => 'Manage Data';
+
+  @override
+  String get dataProtPageRelatedInfo => 'Related Information';
+
+  @override
+  String get dataProtPagePrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get dataProtPageCookiePolicy => 'Cookie Policy';
+
+  @override
+  String get dataProtPageTermsOfService => 'Terms of Service';
+
+  @override
+  String get dataProtPageCompliance => 'Compliance';
+
+  @override
+  String get docsPageTitle => 'Documentation';
+
+  @override
+  String get docsPageSubtitle => 'Everything you need to know about using Flow';
+
+  @override
+  String get docsPageGettingStarted => 'Getting Started';
+
+  @override
+  String get docsPageGettingStartedDesc => 'Learn the basics of Flow';
+
+  @override
+  String get docsPageForStudents => 'For Students';
+
+  @override
+  String get docsPageForStudentsDesc => 'Guides for student users';
+
+  @override
+  String get docsPageForParents => 'For Parents';
+
+  @override
+  String get docsPageForParentsDesc => 'Guides for parent users';
+
+  @override
+  String get docsPageForCounselors => 'For Counselors';
+
+  @override
+  String get docsPageForCounselorsDesc => 'Guides for education counselors';
+
+  @override
+  String get docsPageForInstitutions => 'For Institutions';
+
+  @override
+  String get docsPageForInstitutionsDesc =>
+      'Guides for universities and colleges';
+
+  @override
+  String get docsPageCantFind => 'Can\'t find what you\'re looking for?';
+
+  @override
+  String get docsPageCheckHelpCenter =>
+      'Check out our Help Center or contact support';
+
+  @override
+  String get docsPageHelpCenter => 'Help Center';
+
+  @override
+  String get helpCenterPageTitle => 'Help Center';
+
+  @override
+  String get helpCenterPageHowCanWeHelp => 'How can we help?';
+
+  @override
+  String get helpCenterPageSearchHint => 'Search for help...';
+
+  @override
+  String get helpCenterPageQuickLinks => 'Quick Links';
+
+  @override
+  String get helpCenterPageUniversitySearch => 'University Search';
+
+  @override
+  String get helpCenterPageMyProfile => 'My Profile';
+
+  @override
+  String get helpCenterPageSettings => 'Settings';
+
+  @override
+  String get helpCenterPageContactSupport => 'Contact Support';
+
+  @override
+  String get helpCenterPageCategories => 'Categories';
+
+  @override
+  String get helpCenterPageFaq => 'Frequently Asked Questions';
+
+  @override
+  String get helpCenterPageNoResults => 'No results found';
+
+  @override
+  String get helpCenterPageStillNeedHelp => 'Still need help?';
+
+  @override
+  String get helpCenterPageSupportTeam =>
+      'Our support team is here to assist you';
+
+  @override
+  String get mobileAppsPageTitle => 'Flow on Mobile';
+
+  @override
+  String get mobileAppsPageSubtitle =>
+      'Take your education journey with you.\nDownload the Flow app on your favorite platform.';
+
+  @override
+  String get mobileAppsPageDownloadNow => 'Download Now';
+
+  @override
+  String get mobileAppsPageDownloadOnThe => 'Download on the';
+
+  @override
+  String get mobileAppsPageFeatures => 'Mobile App Features';
+
+  @override
+  String get mobileAppsPageOfflineMode => 'Offline Mode';
+
+  @override
+  String get mobileAppsPageOfflineModeDesc =>
+      'Access key features without internet';
+
+  @override
+  String get mobileAppsPagePushNotifications => 'Push Notifications';
+
+  @override
+  String get mobileAppsPagePushNotificationsDesc =>
+      'Stay updated on applications';
+
+  @override
+  String get mobileAppsPageBiometricLogin => 'Biometric Login';
+
+  @override
+  String get mobileAppsPageBiometricLoginDesc => 'Secure and fast access';
+
+  @override
+  String get mobileAppsPageRealtimeSync => 'Real-time Sync';
+
+  @override
+  String get mobileAppsPageRealtimeSyncDesc => 'Always up-to-date data';
+
+  @override
+  String get mobileAppsPageDarkMode => 'Dark Mode';
+
+  @override
+  String get mobileAppsPageDarkModeDesc => 'Easy on the eyes';
+
+  @override
+  String get mobileAppsPageFastLight => 'Fast & Light';
+
+  @override
+  String get mobileAppsPageFastLightDesc => 'Optimized for performance';
+
+  @override
+  String get mobileAppsPageAppPreview => 'App Preview';
+
+  @override
+  String get mobileAppsPageSystemRequirements => 'System Requirements';
+
+  @override
+  String get mobileAppsPageScanToDownload => 'Scan to Download';
+
+  @override
+  String get mobileAppsPageScanDesc =>
+      'Scan this QR code with your phone camera to download the app';
+
+  @override
+  String get partnersPageTitle => 'Partners';
+
+  @override
+  String get partnersPageHeroTitle => 'Partner With Flow';
+
+  @override
+  String get partnersPageHeroSubtitle =>
+      'Join us in transforming education across Africa';
+
+  @override
+  String get partnersPageOpportunities => 'Partnership Opportunities';
+
+  @override
+  String get partnersPageUniversities => 'Universities & Institutions';
+
+  @override
+  String get partnersPageUniversitiesDesc =>
+      'List your programs, connect with prospective students, and streamline your admissions process.';
+
+  @override
+  String get partnersPageCounselors => 'Education Counselors';
+
+  @override
+  String get partnersPageCounselorsDesc =>
+      'Join our network of counselors and help guide students to their perfect educational fit.';
+
+  @override
+  String get partnersPageCorporate => 'Corporate Partners';
+
+  @override
+  String get partnersPageCorporateDesc =>
+      'Support education initiatives through scholarships, internships, and mentorship programs.';
+
+  @override
+  String get partnersPageNgo => 'NGOs & Government';
+
+  @override
+  String get partnersPageNgoDesc =>
+      'Collaborate on initiatives to improve education access and outcomes across regions.';
+
+  @override
+  String get partnersPageOurPartners => 'Our Partners';
+
+  @override
+  String get partnersPageReadyToPartner => 'Ready to Partner?';
+
+  @override
+  String get partnersPageLetsDiscuss =>
+      'Let\'s discuss how we can work together';
+
+  @override
+  String get partnersPageContactTeam => 'Contact Partnership Team';
+
+  @override
+  String get pressPageTitle => 'Press Kit';
+
+  @override
+  String get pressPageSubtitle => 'Resources for media and press coverage';
+
+  @override
+  String get pressPageCompanyOverview => 'Company Overview';
+
+  @override
+  String get pressPageCompanyOverviewContent =>
+      'Flow EdTech is Africa\'s leading education technology platform, connecting students with universities, counselors, and educational resources. Founded with the mission to democratize access to quality education guidance across the African continent.';
+
+  @override
+  String get pressPageKeyFacts => 'Key Facts';
+
+  @override
+  String get pressPageFounded => 'Founded';
+
+  @override
+  String get pressPageHeadquarters => 'Headquarters';
+
+  @override
+  String get pressPageActiveUsers => 'Active Users';
+
+  @override
+  String get pressPagePartnerInstitutions => 'Partner Institutions';
+
+  @override
+  String get pressPageCountries => 'Countries';
+
+  @override
+  String get pressPageUniversitiesInDb => 'Universities in Database';
+
+  @override
+  String get pressPageBrandAssets => 'Brand Assets';
+
+  @override
+  String get pressPageLogoPack => 'Logo Pack';
+
+  @override
+  String get pressPageLogoPackDesc => 'PNG, SVG, and vector formats';
+
+  @override
+  String get pressPageBrandGuidelines => 'Brand Guidelines';
+
+  @override
+  String get pressPageBrandGuidelinesDesc => 'Colors, typography, usage';
+
+  @override
+  String get pressPageScreenshots => 'Screenshots';
+
+  @override
+  String get pressPageScreenshotsDesc => 'App screenshots and demos';
+
+  @override
+  String get pressPageVideoAssets => 'Video Assets';
+
+  @override
+  String get pressPageVideoAssetsDesc => 'Product videos and B-roll';
+
+  @override
+  String get pressPageDownload => 'Download';
+
+  @override
+  String get pressPageRecentNews => 'Recent News';
+
+  @override
+  String get pressPageMediaContact => 'Media Contact';
+
+  @override
+  String get pressPageMediaContactDesc =>
+      'For press inquiries, please contact:';
+
+  @override
+  String get apiDocsPageTitle => 'API Reference';
+
+  @override
+  String get apiDocsPageSubtitle => 'Integrate Flow into your applications';
+
+  @override
+  String get apiDocsPageQuickStart => 'Quick Start';
+
+  @override
+  String get apiDocsPageEndpoints => 'API Endpoints';
+
+  @override
+  String get apiDocsPageAuthentication => 'Authentication';
+
+  @override
+  String get apiDocsPageAuthDesc =>
+      'All API requests require authentication using an API key.';
+
+  @override
+  String get apiDocsPageRateLimits => 'Rate Limits';
+
+  @override
+  String get apiDocsPageFreeTier => 'Free Tier';
+
+  @override
+  String get apiDocsPageBasic => 'Basic';
+
+  @override
+  String get apiDocsPagePro => 'Pro';
+
+  @override
+  String get apiDocsPageEnterprise => 'Enterprise';
+
+  @override
+  String get apiDocsPageUnlimited => 'Unlimited';
+
+  @override
+  String get apiDocsPageNeedAccess => 'Need API Access?';
+
+  @override
+  String get apiDocsPageContactCredentials =>
+      'Contact us to get your API credentials';
+
+  @override
+  String get apiDocsPageContactUs => 'Contact Us';
+
+  @override
+  String get apiDocsPageUniversities => 'Universities';
+
+  @override
+  String get apiDocsPagePrograms => 'Programs';
+
+  @override
+  String get apiDocsPageRecommendations => 'Recommendations';
+
+  @override
+  String get apiDocsPageStudentsEndpoint => 'Students';
+
+  @override
+  String get apiDocsPageListAll => 'List all universities';
+
+  @override
+  String get apiDocsPageGetDetails => 'Get university details';
+
+  @override
+  String get apiDocsPageSearchUniversities => 'Search universities';
+
+  @override
+  String get apiDocsPageListPrograms => 'List programs';
+
+  @override
+  String get apiDocsPageListAllPrograms => 'List all programs';
+
+  @override
+  String get apiDocsPageGetProgramDetails => 'Get program details';
+
+  @override
+  String get apiDocsPageSearchPrograms => 'Search programs';
+
+  @override
+  String get apiDocsPageGenerateRec => 'Generate recommendations';
+
+  @override
+  String get apiDocsPageGetRecDetails => 'Get recommendation details';
+
+  @override
+  String get apiDocsPageGetStudentProfile => 'Get student profile';
+
+  @override
+  String get apiDocsPageUpdateStudentProfile => 'Update student profile';
+
+  @override
+  String get apiDocsPageListApplications => 'List applications';
+
+  @override
+  String get swErrorTechnicalDetails => 'Technical Details';
+
+  @override
+  String get swErrorRetry => 'Retry';
+
+  @override
+  String get swErrorConnectionTitle => 'Connection Error';
+
+  @override
+  String get swErrorConnectionMessage =>
+      'Unable to connect to our servers. Please check your internet connection and try again.';
+
+  @override
+  String get swErrorConnectionHelp =>
+      'Make sure you have a stable internet connection. If the problem persists, our servers might be temporarily unavailable.';
+
+  @override
+  String get swErrorAuthTitle => 'Authentication Required';
+
+  @override
+  String get swErrorAuthMessage =>
+      'Your session has expired or you don\'t have permission to access this content.';
+
+  @override
+  String get swErrorAuthHelp =>
+      'Try logging out and logging back in to refresh your session.';
+
+  @override
+  String get swErrorSignOut => 'Sign Out';
+
+  @override
+  String get swErrorNotFoundTitle => 'Content Not Found';
+
+  @override
+  String get swErrorNotFoundMessage =>
+      'The content you\'re looking for doesn\'t exist or has been moved.';
+
+  @override
+  String get swErrorNotFoundHelp =>
+      'The item may have been deleted or you may not have access to view it.';
+
+  @override
+  String get swErrorServerTitle => 'Server Error';
+
+  @override
+  String get swErrorServerMessage =>
+      'Something went wrong on our end. We\'re working to fix it.';
+
+  @override
+  String get swErrorServerHelp =>
+      'This is a temporary issue. Please try again in a few minutes.';
+
+  @override
+  String get swErrorRateLimitTitle => 'Too Many Requests';
+
+  @override
+  String get swErrorRateLimitMessage =>
+      'You\'ve made too many requests. Please wait a moment before trying again.';
+
+  @override
+  String get swErrorRateLimitHelp =>
+      'To prevent abuse, we limit the number of requests. Please wait a few seconds before retrying.';
+
+  @override
+  String get swErrorValidationTitle => 'Validation Error';
+
+  @override
+  String get swErrorValidationMessage =>
+      'Some information appears to be incorrect or missing. Please check your input and try again.';
+
+  @override
+  String get swErrorValidationHelp =>
+      'Make sure all required fields are filled correctly.';
+
+  @override
+  String get swErrorAccessDeniedTitle => 'Access Denied';
+
+  @override
+  String get swErrorAccessDeniedMessage =>
+      'You don\'t have permission to access this content.';
+
+  @override
+  String get swErrorAccessDeniedHelp =>
+      'Contact your administrator if you believe you should have access.';
+
+  @override
+  String get swErrorGenericTitle => 'Something Went Wrong';
+
+  @override
+  String get swErrorGenericMessage =>
+      'An unexpected error occurred. Please try again.';
+
+  @override
+  String get swErrorGenericHelp =>
+      'If this problem continues, please contact support.';
+
+  @override
+  String get swErrorFailedToLoad => 'Failed to load data';
+
+  @override
+  String get swEmptyStateNoApplicationsTitle => 'No Applications Yet';
+
+  @override
+  String get swEmptyStateNoApplicationsMessage =>
+      'Start your journey by exploring programs and submitting your first application.';
+
+  @override
+  String get swEmptyStateBrowsePrograms => 'Browse Programs';
+
+  @override
+  String get swEmptyStateNoActivitiesTitle => 'No Recent Activities';
+
+  @override
+  String get swEmptyStateNoActivitiesMessage =>
+      'Your recent activities and updates will appear here as you use the platform.';
+
+  @override
+  String get swEmptyStateNoRecommendationsTitle => 'No Recommendations';
+
+  @override
+  String get swEmptyStateNoRecommendationsMessage =>
+      'Complete your profile to receive personalized recommendations based on your interests and goals.';
+
+  @override
+  String get swEmptyStateCompleteProfile => 'Complete Profile';
+
+  @override
+  String get swEmptyStateNoMessagesTitle => 'No Messages';
+
+  @override
+  String get swEmptyStateNoMessagesMessage =>
+      'Your conversations and notifications will appear here.';
+
+  @override
+  String get swEmptyStateNoResultsTitle => 'No Results Found';
+
+  @override
+  String get swEmptyStateNoResultsMessage =>
+      'Try adjusting your search criteria or filters to find what you\'re looking for.';
+
+  @override
+  String get swEmptyStateClearFilters => 'Clear Filters';
+
+  @override
+  String get swEmptyStateNoCoursesTitle => 'No Courses Available';
+
+  @override
+  String get swEmptyStateNoCoursesMessage =>
+      'Check back later for new courses or explore other learning opportunities.';
+
+  @override
+  String get swEmptyStateExplorePrograms => 'Explore Programs';
+
+  @override
+  String get swEmptyStateNoStudentsTitle => 'No Students';
+
+  @override
+  String get swEmptyStateNoStudentsMessage =>
+      'Students you\'re counseling will appear here once they\'re assigned or request your guidance.';
+
+  @override
+  String get swEmptyStateNoSessionsTitle => 'No Upcoming Sessions';
+
+  @override
+  String get swEmptyStateNoSessionsMessage =>
+      'You don\'t have any counseling sessions scheduled.';
+
+  @override
+  String get swEmptyStateScheduleSession => 'Schedule Session';
+
+  @override
+  String get swEmptyStateNoDataTitle => 'No Data Available';
+
+  @override
+  String get swEmptyStateNoDataMessage =>
+      'Data will appear here once there\'s activity to display.';
+
+  @override
+  String get swEmptyStateNoNotificationsTitle => 'No Notifications';
+
+  @override
+  String get swEmptyStateNoNotificationsMessage =>
+      'You\'re all caught up! New notifications will appear here.';
+
+  @override
+  String get swEmptyStateComingSoonTitle => 'Coming Soon';
+
+  @override
+  String swEmptyStateComingSoonMessage(String feature) {
+    return '$feature is currently under development and will be available soon.';
+  }
+
+  @override
+  String get swEmptyStateAccessRestrictedTitle => 'Access Restricted';
+
+  @override
+  String get swEmptyStateAccessRestrictedMessage =>
+      'You don\'t have permission to view this content. Contact your administrator if you need access.';
+
+  @override
+  String get swComingSoonTitle => 'Coming Soon';
+
+  @override
+  String swComingSoonMessage(String featureName) {
+    return '$featureName is currently under development and will be available in a future update.';
+  }
+
+  @override
+  String get swComingSoonStayTuned => 'Stay tuned for updates!';
+
+  @override
+  String get swComingSoonGotIt => 'Got it';
+
+  @override
+  String get swNotifCenterTitle => 'Notifications';
+
+  @override
+  String get swNotifCenterMarkAllRead => 'Mark all read';
+
+  @override
+  String swNotifCenterError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get swNotifCenterRetry => 'Retry';
+
+  @override
+  String get swNotifCenterEmpty => 'No notifications yet';
+
+  @override
+  String get swNotifCenterEmptySubtitle =>
+      'We\'ll notify you when something happens';
+
+  @override
+  String get swNotifCenterDeleteTitle => 'Delete Notification';
+
+  @override
+  String get swNotifCenterDeleteConfirm =>
+      'Are you sure you want to delete this notification?';
+
+  @override
+  String get swNotifCenterCancel => 'Cancel';
+
+  @override
+  String get swNotifCenterDelete => 'Delete';
+
+  @override
+  String get swNotifCenterMarkAsRead => 'Mark as read';
+
+  @override
+  String get swNotifCenterMarkAsUnread => 'Mark as unread';
+
+  @override
+  String get swNotifCenterArchive => 'Archive';
+
+  @override
+  String get swNotifCenterFilterTitle => 'Filter Notifications';
+
+  @override
+  String get swNotifCenterFilterClear => 'Clear';
+
+  @override
+  String get swNotifCenterFilterStatus => 'Status';
+
+  @override
+  String get swNotifCenterFilterAll => 'All';
+
+  @override
+  String get swNotifCenterFilterUnread => 'Unread';
+
+  @override
+  String get swNotifCenterFilterRead => 'Read';
+
+  @override
+  String get swNotifCenterApplyFilter => 'Apply Filter';
+
+  @override
+  String get swNotifBellNoNew => 'No new notifications';
+
+  @override
+  String get swNotifBellViewAll => 'View All Notifications';
+
+  @override
+  String get swNotifBellNotifications => 'Notifications';
+
+  @override
+  String get swNotifWidgetMarkAsRead => 'Mark as read';
+
+  @override
+  String get swNotifWidgetDelete => 'Delete';
+
+  @override
+  String get swNotifWidgetJustNow => 'Just now';
+
+  @override
+  String swNotifWidgetMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes ago',
+      one: '1 minute ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String swNotifWidgetHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours ago',
+      one: '1 hour ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String swNotifWidgetDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String swNotifWidgetWeeksAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count weeks ago',
+      one: '1 week ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String swNotifWidgetMonthsAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count months ago',
+      one: '1 month ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String swNotifWidgetYearsAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count years ago',
+      one: '1 year ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get swNotifWidgetNoNotifications => 'No Notifications';
+
+  @override
+  String get swNotifWidgetAllCaughtUp =>
+      'You\'re all caught up! Check back later for new updates.';
+
+  @override
+  String get swOfflineYouAreOffline => 'You are offline';
+
+  @override
+  String swOfflinePendingSync(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count actions pending sync',
+      one: '1 action pending sync',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get swOfflineDetails => 'Details';
+
+  @override
+  String swOfflineSyncing(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Syncing $count actions...',
+      one: 'Syncing 1 action...',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get swOfflineActionsTitle => 'Offline Actions';
+
+  @override
+  String get swOfflineNoPending => 'No pending actions';
+
+  @override
+  String get swOfflineClearAll => 'Clear All';
+
+  @override
+  String get swOfflineClose => 'Close';
+
+  @override
+  String get swOfflineSyncNow => 'Sync Now';
+
+  @override
+  String get swOfflineJustNow => 'Just now';
+
+  @override
+  String swOfflineMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String swOfflineHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String swOfflineDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String swOfflineError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get swExportData => 'Export Data';
+
+  @override
+  String get swExportTooltip => 'Export';
+
+  @override
+  String get swExportAsPdf => 'Export as PDF';
+
+  @override
+  String get swExportAsCsv => 'Export as CSV';
+
+  @override
+  String get swExportAsJson => 'Export as JSON';
+
+  @override
+  String get swExportNoData => 'No data to export';
+
+  @override
+  String swExportSuccess(String format) {
+    return 'Exported successfully as $format';
+  }
+
+  @override
+  String get swExportOk => 'OK';
+
+  @override
+  String swExportFailed(String error) {
+    return 'Export failed: $error';
+  }
+
+  @override
+  String get swExportRetry => 'Retry';
+
+  @override
+  String get swExportCancel => 'Cancel';
+
+  @override
+  String get swFilterTitle => 'Filters';
+
+  @override
+  String get swFilterResetAll => 'Reset All';
+
+  @override
+  String get swFilterCategories => 'Categories';
+
+  @override
+  String get swFilterPriceRange => 'Price Range (USD)';
+
+  @override
+  String get swFilterLevel => 'Level';
+
+  @override
+  String get swFilterCountry => 'Country';
+
+  @override
+  String get swFilterInstitutionType => 'Institution Type';
+
+  @override
+  String get swFilterMinimumRating => 'Minimum Rating';
+
+  @override
+  String get swFilterDuration => 'Duration (weeks)';
+
+  @override
+  String get swFilterSpecialOptions => 'Special Options';
+
+  @override
+  String get swFilterOnlineOnly => 'Online Only';
+
+  @override
+  String get swFilterOnlineOnlySubtitle => 'Show only online courses/programs';
+
+  @override
+  String get swFilterFinancialAid => 'Financial Aid Available';
+
+  @override
+  String get swFilterFinancialAidSubtitle =>
+      'Show only items with financial aid';
+
+  @override
+  String get swFilterApply => 'Apply Filters';
+
+  @override
+  String get swFilterClearAll => 'Clear all';
+
+  @override
+  String swFilterStarsPlus(double rating) {
+    return '$rating+ stars';
+  }
+
+  @override
+  String swFilterWeeks(int count) {
+    return '$count weeks';
+  }
+
+  @override
+  String get swSearchHint => 'Search...';
+
+  @override
+  String get swSearchAll => 'All';
+
+  @override
+  String get swSearchRecentSearches => 'Recent Searches';
+
+  @override
+  String get swSearchClear => 'Clear';
+
+  @override
+  String get swSearchSuggestions => 'Suggestions';
+
+  @override
+  String get swSortByTitle => 'Sort By';
+
+  @override
+  String get swSortLabel => 'Sort';
+
+  @override
+  String get swSortFilterLabel => 'Filter';
+
+  @override
+  String get swSortRelevance => 'Relevance';
+
+  @override
+  String get swSortMostPopular => 'Most Popular';
+
+  @override
+  String get swSortHighestRated => 'Highest Rated';
+
+  @override
+  String get swSortNewestFirst => 'Newest First';
+
+  @override
+  String get swSortOldestFirst => 'Oldest First';
+
+  @override
+  String get swSortPriceLowToHigh => 'Price: Low to High';
+
+  @override
+  String get swSortPriceHighToLow => 'Price: High to Low';
+
+  @override
+  String get swSortNameAZ => 'Name: A to Z';
+
+  @override
+  String get swSortNameZA => 'Name: Z to A';
+
+  @override
+  String get swSortDurationShortest => 'Duration: Shortest';
+
+  @override
+  String get swSortDurationLongest => 'Duration: Longest';
+
+  @override
+  String get swStatusPending => 'Pending';
+
+  @override
+  String get swStatusApproved => 'Approved';
+
+  @override
+  String get swStatusRejected => 'Rejected';
+
+  @override
+  String get swStatusInProgress => 'In Progress';
+
+  @override
+  String get swStatusCompleted => 'Completed';
+
+  @override
+  String swRefreshLastUpdated(String timeAgo) {
+    return 'Last updated: $timeAgo';
+  }
+
+  @override
+  String get swRefreshJustNow => 'just now';
+
+  @override
+  String swRefreshSecondsAgo(int count) {
+    return '${count}s ago';
+  }
+
+  @override
+  String swRefreshMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String swRefreshHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String get swRefreshYesterday => 'yesterday';
+
+  @override
+  String swRefreshDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String get swRefreshSuccess => 'Dashboard refreshed successfully';
+
+  @override
+  String get swRefreshFailed => 'Failed to refresh dashboard';
+
+  @override
+  String get swFileUploadDropHere => 'Drop files here';
+
+  @override
+  String get swFileUploadClickToSelect =>
+      'Click to select files or drag and drop';
+
+  @override
+  String swFileUploadTooLarge(String fileName, int maxSize) {
+    return '$fileName is too large. Maximum size is ${maxSize}MB';
+  }
+
+  @override
+  String swFileUploadInvalidType(String fileName, String allowedTypes) {
+    return '$fileName has an invalid file type. Allowed: $allowedTypes';
+  }
+
+  @override
+  String swFileUploadPickFailed(String error) {
+    return 'Failed to pick files: $error';
+  }
+
+  @override
+  String swFileUploadProgress(int percent) {
+    return '$percent% uploaded';
+  }
+
+  @override
+  String get swFileUploadLabel => 'Upload File';
+
+  @override
+  String swFileUploadPickImageFailed(String error) {
+    return 'Failed to pick image: $error';
+  }
+
+  @override
+  String get swFileUploadTapToSelect => 'Tap to select image';
+
+  @override
+  String get swFileUploadImageFormats => 'JPG, PNG, GIF (max 5MB)';
+
+  @override
+  String swFileUploadAllowed(String formats) {
+    return 'Allowed: $formats';
+  }
+
+  @override
+  String swFileUploadMaxSize(int size) {
+    return 'Max ${size}MB';
+  }
+
+  @override
+  String swDocViewerLoading(String name) {
+    return 'Loading $name...';
+  }
+
+  @override
+  String get swDocViewerFailedToLoad => 'Failed to load document';
+
+  @override
+  String swDocViewerLoadError(String error) {
+    return 'Failed to load document: $error';
+  }
+
+  @override
+  String get swDocViewerRetry => 'Retry';
+
+  @override
+  String get swDocViewerPinchToZoom => 'Use pinch gesture to zoom';
+
+  @override
+  String get swDocViewerPreviewNotAvailable => 'Preview Not Available';
+
+  @override
+  String swDocViewerCannotPreview(String extension) {
+    return 'This file type ($extension) cannot be previewed';
+  }
+
+  @override
+  String swDocViewerDownloading(String name) {
+    return 'Downloading $name...';
+  }
+
+  @override
+  String get swDocViewerDownloadToView => 'Download to View';
+
+  @override
+  String get swDocViewerPdfViewer => 'PDF Viewer';
+
+  @override
+  String get swDocViewerPdfEnableMessage =>
+      'To enable PDF viewing, add one of these packages to pubspec.yaml:';
+
+  @override
+  String get swDocViewerPdfOptionCommercial => 'Full-featured, commercial';
+
+  @override
+  String get swDocViewerPdfOptionOpenSource => 'Open source, native rendering';
+
+  @override
+  String get swDocViewerPdfOptionModern => 'Modern, good performance';
+
+  @override
+  String swDocViewerPageOf(int current, int total) {
+    return 'Page $current of $total';
+  }
+
+  @override
+  String get swDocViewerFailedToLoadImage => 'Failed to load image';
+
+  @override
+  String get swScheduleHighPriority => 'High';
+
+  @override
+  String get swScheduleNow => 'Now';
+
+  @override
+  String get swScheduleCompleted => 'Completed';
+
+  @override
+  String get swScheduleMarkComplete => 'Mark Complete';
+
+  @override
+  String get swScheduleToday => 'Today';
+
+  @override
+  String get swScheduleTomorrow => 'Tomorrow';
+
+  @override
+  String get swScheduleYesterday => 'Yesterday';
+
+  @override
+  String get swScheduleMonthJan => 'Jan';
+
+  @override
+  String get swScheduleMonthFeb => 'Feb';
+
+  @override
+  String get swScheduleMonthMar => 'Mar';
+
+  @override
+  String get swScheduleMonthApr => 'Apr';
+
+  @override
+  String get swScheduleMonthMay => 'May';
+
+  @override
+  String get swScheduleMonthJun => 'Jun';
+
+  @override
+  String get swScheduleMonthJul => 'Jul';
+
+  @override
+  String get swScheduleMonthAug => 'Aug';
+
+  @override
+  String get swScheduleMonthSep => 'Sep';
+
+  @override
+  String get swScheduleMonthOct => 'Oct';
+
+  @override
+  String get swScheduleMonthNov => 'Nov';
+
+  @override
+  String get swScheduleMonthDec => 'Dec';
+
+  @override
+  String get swScheduleNoEvents => 'No events scheduled';
+
+  @override
+  String get swScheduleAddEvent => 'Add Event';
+
+  @override
+  String get swSettingsThemeLight => 'Light';
+
+  @override
+  String get swSettingsThemeLightSubtitle => 'Bright and clean interface';
+
+  @override
+  String get swSettingsThemeDark => 'Dark';
+
+  @override
+  String get swSettingsThemeDarkSubtitle => 'Easy on the eyes in low light';
+
+  @override
+  String get swSettingsThemeSystem => 'System';
+
+  @override
+  String get swSettingsThemeSystemSubtitle => 'Follow device settings';
+
+  @override
+  String get swSettingsTotalDataUsage => 'Total Data Usage';
+
+  @override
+  String get swSettingsDangerZone => 'Danger Zone';
+
+  @override
+  String get swSettingsVersion => 'Version';
+
+  @override
+  String get swSettingsFlowPlatform => 'Flow EdTech Platform';
+
+  @override
+  String get swSettingsCopyright => '© 2025 All rights reserved';
+
+  @override
+  String get swTaskToday => 'Today';
+
+  @override
+  String get swTaskTomorrow => 'Tomorrow';
+
+  @override
+  String get swTaskYesterday => 'Yesterday';
+
+  @override
+  String swTaskDaysAgo(String count) {
+    return '$count days ago';
+  }
+
+  @override
+  String swTaskInDays(String count) {
+    return 'In $count days';
+  }
+
+  @override
+  String get swTaskOverdue => 'Overdue';
+
+  @override
+  String get swTaskMonthJan => 'Jan';
+
+  @override
+  String get swTaskMonthFeb => 'Feb';
+
+  @override
+  String get swTaskMonthMar => 'Mar';
+
+  @override
+  String get swTaskMonthApr => 'Apr';
+
+  @override
+  String get swTaskMonthMay => 'May';
+
+  @override
+  String get swTaskMonthJun => 'Jun';
+
+  @override
+  String get swTaskMonthJul => 'Jul';
+
+  @override
+  String get swTaskMonthAug => 'Aug';
+
+  @override
+  String get swTaskMonthSep => 'Sep';
+
+  @override
+  String get swTaskMonthOct => 'Oct';
+
+  @override
+  String get swTaskMonthNov => 'Nov';
+
+  @override
+  String get swTaskMonthDec => 'Dec';
+
+  @override
+  String get swTaskNoTasks => 'No tasks yet';
+
+  @override
+  String get swTaskAddTask => 'Add Task';
+
+  @override
+  String get swUserProfileEditProfile => 'Edit Profile';
+
+  @override
+  String get swUserProfileSettings => 'Settings';
+
+  @override
+  String get swUserProfileJustNow => 'Just now';
+
+  @override
+  String swUserProfileMinutesAgo(String count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String swUserProfileHoursAgo(String count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String swUserProfileDaysAgo(String count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String get swUserProfileMonthJan => 'Jan';
+
+  @override
+  String get swUserProfileMonthFeb => 'Feb';
+
+  @override
+  String get swUserProfileMonthMar => 'Mar';
+
+  @override
+  String get swUserProfileMonthApr => 'Apr';
+
+  @override
+  String get swUserProfileMonthMay => 'May';
+
+  @override
+  String get swUserProfileMonthJun => 'Jun';
+
+  @override
+  String get swUserProfileMonthJul => 'Jul';
+
+  @override
+  String get swUserProfileMonthAug => 'Aug';
+
+  @override
+  String get swUserProfileMonthSep => 'Sep';
+
+  @override
+  String get swUserProfileMonthOct => 'Oct';
+
+  @override
+  String get swUserProfileMonthNov => 'Nov';
+
+  @override
+  String get swUserProfileMonthDec => 'Dec';
+
+  @override
+  String get swUserProfileGetStarted => 'Get Started';
+
+  @override
+  String get swVideoCompleted => 'Completed';
+
+  @override
+  String get swVideoInProgress => 'In Progress';
+
+  @override
+  String get swVideoLike => 'Like';
+
+  @override
+  String get swVideoDownloaded => 'Downloaded';
+
+  @override
+  String get swVideoDownload => 'Download';
+
+  @override
+  String swVideoViewsMillions(String count) {
+    return '${count}M views';
+  }
+
+  @override
+  String swVideoViewsThousands(String count) {
+    return '${count}K views';
+  }
+
+  @override
+  String swVideoViewsCount(String count) {
+    return '$count views';
+  }
+
+  @override
+  String swVideoPercentWatched(String percent) {
+    return '$percent% watched';
+  }
+
+  @override
+  String swVideoPlaylistCompleted(String completed, String total) {
+    return '$completed/$total completed';
+  }
+
+  @override
+  String get swVideoNoVideos => 'No videos available';
+
+  @override
+  String get swVideoBrowseVideos => 'Browse Videos';
+
+  @override
+  String get swStatsCurrent => 'Current';
+
+  @override
+  String get connectionStatusLive => 'Live';
+
+  @override
+  String get connectionStatusConnecting => 'Connecting...';
+
+  @override
+  String get connectionStatusConnectingShort => 'Connecting';
+
+  @override
+  String get connectionStatusOffline => 'Offline';
+
+  @override
+  String get connectionStatusError => 'Error';
+
+  @override
+  String get connectionStatusTooltipConnected => 'Real-time updates are active';
+
+  @override
+  String get connectionStatusTooltipConnecting =>
+      'Establishing real-time connection...';
+
+  @override
+  String get connectionStatusTooltipDisconnected =>
+      'Real-time updates are not available. Data will refresh periodically.';
+
+  @override
+  String get connectionStatusTooltipError =>
+      'Connection error. Please check your internet connection.';
+
+  @override
+  String get loadingIndicatorDefault => 'Loading...';
+
+  @override
+  String messageBadgeUnread(String count) {
+    return '$count unread messages';
+  }
+
+  @override
+  String get messageBadgeMessages => 'Messages';
+
+  @override
+  String notificationBadgeUnread(String count) {
+    return '$count unread notifications';
+  }
+
+  @override
+  String get notificationBadgeNotifications => 'Notifications';
+
+  @override
+  String typingIndicatorOneUser(String user) {
+    return '$user is typing';
+  }
+
+  @override
+  String typingIndicatorTwoUsers(String user1, String user2) {
+    return '$user1 and $user2 are typing';
+  }
+
+  @override
+  String typingIndicatorMultipleUsers(
+    String user1,
+    String user2,
+    String count,
+  ) {
+    return '$user1, $user2 and $count others are typing';
+  }
+
+  @override
+  String get lessonEditorEdit => 'Edit';
+
+  @override
+  String get lessonEditorSaveLesson => 'Save Lesson';
+
+  @override
+  String get lessonEditorBasicInfo => 'Basic Information';
+
+  @override
+  String get lessonEditorLessonTitle => 'Lesson Title *';
+
+  @override
+  String get lessonEditorLessonTitleHelper =>
+      'Give your lesson a clear, descriptive title';
+
+  @override
+  String get lessonEditorLessonTitleError => 'Please enter a lesson title';
+
+  @override
+  String get lessonEditorDescription => 'Description';
+
+  @override
+  String get lessonEditorDescriptionHelper =>
+      'Provide a brief overview of this lesson';
+
+  @override
+  String get lessonEditorDuration => 'Duration (minutes)';
+
+  @override
+  String get lessonEditorMandatory => 'Mandatory';
+
+  @override
+  String get lessonEditorMandatorySubtitle =>
+      'Students must complete this lesson';
+
+  @override
+  String get lessonEditorPublished => 'Published';
+
+  @override
+  String get lessonEditorPublishedSubtitle => 'Visible to students';
+
+  @override
+  String get lessonEditorLessonContent => 'Lesson Content';
+
+  @override
+  String get lessonEditorSaveSuccess => 'Lesson saved successfully';
+
+  @override
+  String get lessonEditorSaveError => 'Error saving lesson';
+
+  @override
+  String get lessonEditorVideoSavePending =>
+      'Video content will be saved (API integration pending)';
+
+  @override
+  String get lessonEditorTextSavePending =>
+      'Text content will be saved (API integration pending)';
+
+  @override
+  String get lessonEditorQuizSavePending =>
+      'Quiz content will be saved (API integration pending)';
+
+  @override
+  String get lessonEditorAssignmentSavePending =>
+      'Assignment content will be saved (API integration pending)';
+
+  @override
+  String get adminApprovalConfiguration => 'Approval Configuration';
+
+  @override
+  String get adminApprovalRefresh => 'Refresh';
+
+  @override
+  String get adminApprovalFailedToLoadConfigurations =>
+      'Failed to load configurations';
+
+  @override
+  String get adminApprovalRetry => 'Retry';
+
+  @override
+  String get adminApprovalNoConfigurationsFound => 'No configurations found';
+
+  @override
+  String get adminApprovalEditConfiguration => 'Edit configuration';
+
+  @override
+  String get adminApprovalType => 'Type';
+
+  @override
+  String get adminApprovalApprovalLevel => 'Approval Level';
+
+  @override
+  String get adminApprovalPriority => 'Priority';
+
+  @override
+  String get adminApprovalExpires => 'Expires';
+
+  @override
+  String get adminApprovalAutoExecute => 'Auto Execute';
+
+  @override
+  String get adminApprovalYes => 'Yes';
+
+  @override
+  String get adminApprovalNo => 'No';
+
+  @override
+  String get adminApprovalMfaRequired => 'MFA Required';
+
+  @override
+  String get adminApprovalSkipLevels => 'Skip Levels';
+
+  @override
+  String get adminApprovalAllowed => 'Allowed';
+
+  @override
+  String get adminApprovalInitiatorRoles => 'Initiator Roles';
+
+  @override
+  String get adminApprovalApproverRoles => 'Approver Roles';
+
+  @override
+  String get adminApprovalNotifications => 'Notifications';
+
+  @override
+  String get adminApprovalConfigurationUpdated => 'Configuration updated';
+
+  @override
+  String get adminApprovalFailedToUpdateConfiguration =>
+      'Failed to update configuration';
+
+  @override
+  String get adminApprovalEdit => 'Edit';
+
+  @override
+  String get adminApprovalDescription => 'Description';
+
+  @override
+  String get adminApprovalDescribeWorkflow => 'Describe this approval workflow';
+
+  @override
+  String get adminApprovalDefaultPriority => 'Default Priority';
+
+  @override
+  String get adminApprovalPriorityLow => 'Low';
+
+  @override
+  String get adminApprovalPriorityNormal => 'Normal';
+
+  @override
+  String get adminApprovalPriorityHigh => 'High';
+
+  @override
+  String get adminApprovalPriorityUrgent => 'Urgent';
+
+  @override
+  String get adminApprovalExpirationHours => 'Expiration (hours)';
+
+  @override
+  String get adminApprovalLeaveEmptyNoExpiration =>
+      'Leave empty for no expiration';
+
+  @override
+  String get adminApprovalSettings => 'Settings';
+
+  @override
+  String get adminApprovalActive => 'Active';
+
+  @override
+  String get adminApprovalEnableDisableWorkflow =>
+      'Enable or disable this workflow';
+
+  @override
+  String get adminApprovalAutoExecuteTitle => 'Auto Execute';
+
+  @override
+  String get adminApprovalAutoExecuteSubtitle =>
+      'Automatically execute action after final approval';
+
+  @override
+  String get adminApprovalRequireMfa => 'Require MFA';
+
+  @override
+  String get adminApprovalRequireMfaSubtitle =>
+      'Require multi-factor auth for approval';
+
+  @override
+  String get adminApprovalAllowLevelSkipping => 'Allow Level Skipping';
+
+  @override
+  String get adminApprovalAllowLevelSkippingSubtitle =>
+      'Allow higher-level admins to skip approval levels';
+
+  @override
+  String get adminApprovalNotificationChannels => 'Notification Channels';
+
+  @override
+  String get adminApprovalInApp => 'In-App';
+
+  @override
+  String get adminApprovalEmail => 'Email';
+
+  @override
+  String get adminApprovalPush => 'Push';
+
+  @override
+  String get adminApprovalSms => 'SMS';
+
+  @override
+  String get adminApprovalCancel => 'Cancel';
+
+  @override
+  String get adminApprovalSaveChanges => 'Save Changes';
+
+  @override
+  String get adminApprovalStatusActive => 'Active';
+
+  @override
+  String get adminApprovalStatusInactive => 'Inactive';
+
+  @override
+  String get adminApprovalWorkflow => 'Approval Workflow';
+
+  @override
+  String get adminApprovalViewAllRequests => 'View All Requests';
+
+  @override
+  String get adminApprovalOverview => 'Overview';
+
+  @override
+  String adminApprovalErrorLoadingStats(String error) {
+    return 'Error loading statistics: $error';
+  }
+
+  @override
+  String get adminApprovalYourPendingActions => 'Your Pending Actions';
+
+  @override
+  String adminApprovalErrorLoadingPending(String error) {
+    return 'Error loading pending actions: $error';
+  }
+
+  @override
+  String get adminApprovalQuickActions => 'Quick Actions';
+
+  @override
+  String get adminApprovalTotalRequests => 'Total Requests';
+
+  @override
+  String get adminApprovalPendingReview => 'Pending Review';
+
+  @override
+  String get adminApprovalUnderReview => 'Under Review';
+
+  @override
+  String get adminApprovalApproved => 'Approved';
+
+  @override
+  String get adminApprovalDenied => 'Denied';
+
+  @override
+  String get adminApprovalExecuted => 'Executed';
+
+  @override
+  String get adminApprovalAllCaughtUp => 'All caught up!';
+
+  @override
+  String get adminApprovalNoPendingActions => 'You have no pending actions.';
+
+  @override
+  String get adminApprovalPendingReviews => 'Pending Reviews';
+
+  @override
+  String get adminApprovalAwaitingYourResponse => 'Awaiting Your Response';
+
+  @override
+  String get adminApprovalDelegatedToYou => 'Delegated to You';
+
+  @override
+  String get adminApprovalNewRequest => 'New Request';
+
+  @override
+  String get adminApprovalAllRequests => 'All Requests';
+
+  @override
+  String get adminApprovalMyRequests => 'My Requests';
+
+  @override
+  String get adminApprovalConfigurationLabel => 'Configuration';
+
+  @override
+  String get adminApprovalRequest => 'Approval Request';
+
+  @override
+  String adminApprovalErrorWithMessage(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get adminApprovalRequestNotFound => 'Request not found';
+
+  @override
+  String get adminApprovalDetails => 'Details';
+
+  @override
+  String get adminApprovalInitiatedBy => 'Initiated by';
+
+  @override
+  String get adminApprovalRole => 'Role';
+
+  @override
+  String get adminApprovalRequestType => 'Request Type';
+
+  @override
+  String get adminApprovalCreated => 'Created';
+
+  @override
+  String get adminApprovalExpiresLabel => 'Expires';
+
+  @override
+  String get adminApprovalJustification => 'Justification';
+
+  @override
+  String get adminApprovalChain => 'Approval Chain';
+
+  @override
+  String get adminApprovalActions => 'Actions';
+
+  @override
+  String get adminApprovalNotesOptional => 'Notes (optional)';
+
+  @override
+  String get adminApprovalAddNotesHint => 'Add notes for your action...';
+
+  @override
+  String get adminApprovalApprove => 'Approve';
+
+  @override
+  String get adminApprovalDeny => 'Deny';
+
+  @override
+  String get adminApprovalRequestInfo => 'Request Info';
+
+  @override
+  String get adminApprovalEscalate => 'Escalate';
+
+  @override
+  String get adminApprovalComments => 'Comments';
+
+  @override
+  String get adminApprovalAddCommentHint => 'Add a comment...';
+
+  @override
+  String get adminApprovalNoCommentsYet => 'No comments yet';
+
+  @override
+  String get adminApprovalStatusPending => 'Pending';
+
+  @override
+  String get adminApprovalEscalated => 'Escalated';
+
+  @override
+  String get adminApprovalLevelRegional => 'Regional';
+
+  @override
+  String get adminApprovalLevelSuper => 'Super';
+
+  @override
+  String get adminApprovalConfirmApproval => 'Confirm Approval';
+
+  @override
+  String get adminApprovalConfirmApproveMessage =>
+      'Are you sure you want to approve this request?';
+
+  @override
+  String get adminApprovalDenyRequest => 'Deny Request';
+
+  @override
+  String get adminApprovalProvideReasonDenial =>
+      'Please provide a reason for denial:';
+
+  @override
+  String get adminApprovalReason => 'Reason';
+
+  @override
+  String get adminApprovalRequestInformation => 'Request Information';
+
+  @override
+  String get adminApprovalWhatInfoNeeded =>
+      'What information do you need from the requester?';
+
+  @override
+  String get adminApprovalQuestion => 'Question';
+
+  @override
+  String get adminApprovalSend => 'Send';
+
+  @override
+  String get adminApprovalEscalateRequest => 'Escalate Request';
+
+  @override
+  String get adminApprovalConfirmEscalateMessage =>
+      'Are you sure you want to escalate this request to a higher level?';
+
+  @override
+  String get adminApprovalEscalatedForReview => 'Escalated for higher review';
+
+  @override
+  String get adminApprovalRequests => 'Approval Requests';
+
+  @override
+  String get adminApprovalFilter => 'Filter';
+
+  @override
+  String get adminApprovalFiltersApplied => 'Filters applied';
+
+  @override
+  String get adminApprovalClear => 'Clear';
+
+  @override
+  String adminApprovalRequestCount(int count) {
+    return '$count requests';
+  }
+
+  @override
+  String get adminApprovalNoRequestsFound => 'No approval requests found';
+
+  @override
+  String get adminApprovalCreateNewRequest => 'Create New Request';
+
+  @override
+  String get adminApprovalCreateRequest => 'Create Approval Request';
+
+  @override
+  String get adminApprovalCategory => 'Category';
+
+  @override
+  String get adminApprovalAction => 'Action';
+
+  @override
+  String get adminApprovalTargetResource => 'Target Resource';
+
+  @override
+  String get adminApprovalResourceType => 'Resource Type';
+
+  @override
+  String get adminApprovalResourceIdOptional => 'Resource ID (optional)';
+
+  @override
+  String get adminApprovalEnterResourceId =>
+      'Enter the ID of the target resource';
+
+  @override
+  String get adminApprovalJustificationDescription =>
+      'Please provide a detailed justification for this request.';
+
+  @override
+  String get adminApprovalJustificationHint =>
+      'Explain why this action is needed and its expected impact...';
+
+  @override
+  String get adminApprovalPleaseProvideJustification =>
+      'Please provide a justification';
+
+  @override
+  String get adminApprovalJustificationMinLength =>
+      'Justification must be at least 20 characters';
+
+  @override
+  String get adminApprovalSubmitRequest => 'Submit Request';
+
+  @override
+  String get adminApprovalRequestSubmittedSuccess =>
+      'Approval request submitted successfully';
+
+  @override
+  String get adminApprovalApply => 'Apply';
+
+  @override
+  String get adminApprovalFilterRequests => 'Filter Requests';
+
+  @override
+  String get adminApprovalSearch => 'Search';
+
+  @override
+  String get adminApprovalSearchHint =>
+      'Search by request number or justification';
+
+  @override
+  String get adminApprovalStatus => 'Status';
+
+  @override
+  String get adminApprovalClearAll => 'Clear All';
+
+  @override
+  String get adminApprovalUnknown => 'Unknown';
+
+  @override
+  String get adminApprovalExpired => 'Expired';
+
+  @override
+  String adminApprovalExpiresInDays(int days) {
+    return 'Expires in ${days}d';
+  }
+
+  @override
+  String adminApprovalExpiresInHours(int hours) {
+    return 'Expires in ${hours}h';
+  }
+
+  @override
+  String adminApprovalExpiresInMinutes(int minutes) {
+    return 'Expires in ${minutes}m';
+  }
+
+  @override
+  String get adminApprovalStatusDraft => 'Draft';
+
+  @override
+  String get adminApprovalStatusUnderReview => 'Under Review';
+
+  @override
+  String get adminApprovalStatusInfoNeeded => 'Info Needed';
+
+  @override
+  String get adminApprovalStatusEscalated => 'Escalated';
+
+  @override
+  String get adminApprovalStatusApprovedLabel => 'Approved';
+
+  @override
+  String get adminApprovalStatusDeniedLabel => 'Denied';
+
+  @override
+  String get adminApprovalStatusWithdrawn => 'Withdrawn';
+
+  @override
+  String get adminApprovalStatusExpired => 'Expired';
+
+  @override
+  String get adminApprovalStatusExecuted => 'Executed';
+
+  @override
+  String get adminApprovalStatusFailed => 'Failed';
+
+  @override
+  String get adminApprovalStatusReviewing => 'Reviewing';
+
+  @override
+  String get adminApprovalNoItems => 'No items';
+
+  @override
+  String adminApprovalViewAllItems(int count) {
+    return 'View all $count items';
+  }
+
+  @override
+  String adminApprovalByName(String name) {
+    return 'By: $name';
+  }
+
+  @override
+  String get adminContentAssessmentsManagement => 'Assessments Management';
+
+  @override
+  String get adminContentManageQuizzesAndAssignments =>
+      'Manage quizzes and assignments across all courses';
+
+  @override
+  String get adminContentRefresh => 'Refresh';
+
+  @override
+  String get adminContentCreateAssessment => 'Create Assessment';
+
+  @override
+  String get adminContentCreateNewAssessment => 'Create New Assessment';
+
+  @override
+  String get adminContentAssessmentTypeRequired => 'Assessment Type *';
+
+  @override
+  String get adminContentQuiz => 'Quiz';
+
+  @override
+  String get adminContentAssignment => 'Assignment';
+
+  @override
+  String get adminContentCourseRequired => 'Course *';
+
+  @override
+  String get adminContentLoadingCourses => 'Loading courses...';
+
+  @override
+  String get adminContentSelectACourse => 'Select a course';
+
+  @override
+  String get adminContentModuleRequired => 'Module *';
+
+  @override
+  String get adminContentLoadingModules => 'Loading modules...';
+
+  @override
+  String get adminContentSelectACourseFirst => 'Select a course first';
+
+  @override
+  String get adminContentNoModulesInCourse => 'No modules in this course';
+
+  @override
+  String get adminContentSelectAModule => 'Select a module';
+
+  @override
+  String get adminContentLessonTitleRequired => 'Lesson Title *';
+
+  @override
+  String get adminContentEnterLessonTitle => 'Enter lesson title';
+
+  @override
+  String get adminContentTitleRequired => 'Title *';
+
+  @override
+  String get adminContentEnterTitle => 'Enter title';
+
+  @override
+  String get adminContentPassingScorePercent => 'Passing Score (%)';
+
+  @override
+  String get adminContentInstructionsRequired => 'Instructions *';
+
+  @override
+  String get adminContentEnterAssignmentInstructions =>
+      'Enter assignment instructions';
+
+  @override
+  String get adminContentPointsPossible => 'Points Possible';
+
+  @override
+  String get adminContentQuizDraftNotice =>
+      'Quiz will be created as a draft. Add questions in the Course Builder.';
+
+  @override
+  String get adminContentAssignmentDraftNotice =>
+      'Assignment will be created as a draft. Configure details in the Course Builder.';
+
+  @override
+  String get adminContentCancel => 'Cancel';
+
+  @override
+  String get adminContentPleaseSelectCourseAndModule =>
+      'Please select course and module';
+
+  @override
+  String get adminContentPleaseFillRequiredFields =>
+      'Please fill in all required fields';
+
+  @override
+  String get adminContentPleaseEnterInstructions =>
+      'Please enter assignment instructions';
+
+  @override
+  String adminContentAssessmentCreated(String type) {
+    return '$type created';
+  }
+
+  @override
+  String get adminContentFailedToCreateAssessment =>
+      'Failed to create assessment';
+
+  @override
+  String get adminContentCreate => 'Create';
+
+  @override
+  String get adminContentTotalAssessments => 'Total Assessments';
+
+  @override
+  String get adminContentAllAssessments => 'All assessments';
+
+  @override
+  String get adminContentQuizzes => 'Quizzes';
+
+  @override
+  String get adminContentAutoGraded => 'Auto-graded';
+
+  @override
+  String get adminContentAssignments => 'Assignments';
+
+  @override
+  String get adminContentManualGrading => 'Manual grading';
+
+  @override
+  String get adminContentPendingGrading => 'Pending Grading';
+
+  @override
+  String get adminContentAwaitingReview => 'Awaiting review';
+
+  @override
+  String get adminContentSearchAssessments => 'Search assessments by title...';
+
+  @override
+  String get adminContentAssessmentType => 'Assessment Type';
+
+  @override
+  String get adminContentAllTypes => 'All Types';
+
+  @override
+  String get adminContentTitleLabel => 'Title';
+
+  @override
+  String get adminContentTypeLabel => 'Type';
+
+  @override
+  String get adminContentCourseLabel => 'Course';
+
+  @override
+  String get adminContentQuestionsSubmissions => 'Questions / Submissions';
+
+  @override
+  String adminContentQuestionsAttempts(int questions, int attempts) {
+    return '$questions questions ($attempts attempts)';
+  }
+
+  @override
+  String adminContentSubmissionsGraded(int submissions, int graded) {
+    return '$submissions submissions ($graded graded)';
+  }
+
+  @override
+  String get adminContentScoreGrade => 'Score / Grade';
+
+  @override
+  String adminContentPassRate(String rate) {
+    return '$rate% pass';
+  }
+
+  @override
+  String adminContentAvgGrade(String grade) {
+    return '$grade% avg';
+  }
+
+  @override
+  String get adminContentUpdated => 'Updated';
+
+  @override
+  String get adminContentViewStats => 'View Stats';
+
+  @override
+  String get adminContentEditInCourseBuilder => 'Edit in Course Builder';
+
+  @override
+  String get adminContentQuestions => 'Questions';
+
+  @override
+  String get adminContentAttempts => 'Attempts';
+
+  @override
+  String get adminContentAverageScore => 'Average Score';
+
+  @override
+  String get adminContentPassRateLabel => 'Pass Rate';
+
+  @override
+  String get adminContentSubmissions => 'Submissions';
+
+  @override
+  String get adminContentGraded => 'Graded';
+
+  @override
+  String get adminContentPending => 'Pending';
+
+  @override
+  String get adminContentAverageGrade => 'Average Grade';
+
+  @override
+  String get adminContentDueDate => 'Due Date';
+
+  @override
+  String get adminContentLastUpdated => 'Last Updated';
+
+  @override
+  String get adminContentClose => 'Close';
+
+  @override
+  String get adminContentToday => 'Today';
+
+  @override
+  String get adminContentYesterday => 'Yesterday';
+
+  @override
+  String adminContentDaysAgo(int days) {
+    return '$days days ago';
+  }
+
+  @override
+  String adminContentWeeksAgo(int weeks) {
+    return '$weeks weeks ago';
+  }
+
+  @override
+  String adminContentMonthsAgo(int months) {
+    return '$months months ago';
+  }
+
+  @override
+  String adminContentYearsAgo(int years) {
+    return '$years years ago';
+  }
+
+  @override
+  String get adminContentManagement => 'Content Management';
+
+  @override
+  String get adminContentManageVideoCourses =>
+      'Manage video courses and tutorials';
+
+  @override
+  String get adminContentManageTextMaterials =>
+      'Manage text-based learning materials';
+
+  @override
+  String get adminContentManageInteractive =>
+      'Manage interactive learning content';
+
+  @override
+  String get adminContentManageLiveSessions =>
+      'Manage live sessions and webinars';
+
+  @override
+  String get adminContentManageHybrid => 'Manage hybrid learning experiences';
+
+  @override
+  String get adminContentManageEducational =>
+      'Manage educational content, courses, and curriculum';
+
+  @override
+  String get adminContentExportComingSoon => 'Export feature coming soon';
+
+  @override
+  String get adminContentExport => 'Export';
+
+  @override
+  String get adminContentCreateContent => 'Create Content';
+
+  @override
+  String get adminContentCreateNewContent => 'Create New Content';
+
+  @override
+  String get adminContentEnterContentTitle => 'Enter content title';
+
+  @override
+  String get adminContentDescription => 'Description';
+
+  @override
+  String get adminContentEnterDescription => 'Enter content description';
+
+  @override
+  String get adminContentDraftNotice =>
+      'Content will be created as a draft. You can edit and publish it later.';
+
+  @override
+  String get adminContentPleaseEnterTitle => 'Please enter a title';
+
+  @override
+  String get adminContentCurriculumManagement => 'Curriculum Management';
+
+  @override
+  String get adminContentManageModulesAndLessons =>
+      'Manage modules and lessons across all courses';
+
+  @override
+  String get adminContentCreateModule => 'Create Module';
+
+  @override
+  String get adminContentCreateNewModule => 'Create New Module';
+
+  @override
+  String get adminContentResourcesManagement => 'Resources Management';
+
+  @override
+  String get adminContentManageVideoAndText =>
+      'Manage video and text content across all courses';
+
+  @override
+  String get adminContentCreateResource => 'Create Resource';
+
+  @override
+  String get adminContentCreateNewResource => 'Create New Resource';
+
+  @override
+  String get adminContentPageContentManagement => 'Page Content Management';
+
+  @override
+  String get adminContentManageFooterPages =>
+      'Manage footer pages content (About, Privacy, Terms, etc.)';
+
+  @override
+  String get adminContentErrorLoadingPages => 'Error loading pages';
+
+  @override
+  String get adminContentRetry => 'Retry';
+
+  @override
+  String get adminContentNoPagesFound => 'No pages found';
+
+  @override
+  String get adminContentRunMigration =>
+      'Run the database migration to seed initial page content.';
+
+  @override
+  String get adminContentAtLeastOneSection =>
+      'At least one section is required';
+
+  @override
+  String get adminContentRemoveSection => 'Remove Section';
+
+  @override
+  String get adminContentConfirmRemoveSection =>
+      'Are you sure you want to remove this section?';
+
+  @override
+  String get adminContentRemove => 'Remove';
+
+  @override
+  String get adminContentInvalidJson => 'Invalid JSON in content field';
+
+  @override
+  String get adminContentPageSavedSuccessfully => 'Page saved successfully';
+
+  @override
+  String get adminContentFailedToSavePage => 'Failed to save page';
+
+  @override
+  String get adminContentPagePublishedSuccessfully =>
+      'Page published successfully';
+
+  @override
+  String get adminContentFailedToPublishPage => 'Failed to publish page';
+
+  @override
+  String get adminContentPageUnpublished => 'Page unpublished';
+
+  @override
+  String get adminContentFailedToUnpublishPage => 'Failed to unpublish page';
+
+  @override
+  String get adminContentUnsavedChanges => 'Unsaved Changes';
+
+  @override
+  String get adminContentDiscardChanges =>
+      'You have unsaved changes. Do you want to discard them?';
+
+  @override
+  String get adminContentDiscard => 'Discard';
+
+  @override
+  String get adminContentStartTyping => 'Start typing your content here...';
+
+  @override
+  String get adminContentSupportsMarkdown => 'Supports Markdown formatting';
+
+  @override
+  String adminContentCharacterCount(int count) {
+    return '$count characters';
+  }
+
+  @override
+  String adminContentSectionIndex(int index) {
+    return 'Section $index';
+  }
+
+  @override
+  String get adminContentSectionTitle => 'Section Title';
+
+  @override
+  String get adminContentEnterSectionTitle => 'Enter section title';
+
+  @override
+  String get adminContentSectionContent => 'Section Content';
+
+  @override
+  String get adminContentEnterSectionContent => 'Enter section content...';
+
+  @override
+  String get swAchievementToday => 'Today';
+
+  @override
+  String get swAchievementYesterday => 'Yesterday';
+
+  @override
+  String swAchievementDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String swAchievementWeeksAgo(int count) {
+    return '$count weeks ago';
+  }
+
+  @override
+  String get swAchievementYou => 'You';
+
+  @override
+  String get swAchievementPoints => 'points';
+
+  @override
+  String get swChartNoDataAvailable => 'No data available';
+
+  @override
+  String get swCollabPublic => 'Public';
+
+  @override
+  String swCollabMembersCount(int current, int max) {
+    return '$current/$max members';
+  }
+
+  @override
+  String swCollabOnlineCount(int count) {
+    return '$count online';
+  }
+
+  @override
+  String get swCollabGroupFull => 'Group Full';
+
+  @override
+  String get swCollabJoinGroup => 'Join Group';
+
+  @override
+  String get swCollabNoGroupsYet => 'No groups yet';
+
+  @override
+  String get swCollabCreateGroup => 'Create Group';
+
+  @override
+  String swExamQuestionsCount(int count) {
+    return '$count Questions';
+  }
+
+  @override
+  String swExamMarksCount(int count) {
+    return '$count Marks';
+  }
+
+  @override
+  String swExamScoreDisplay(int score, int total) {
+    return '$score/$total';
+  }
+
+  @override
+  String get swExamStartExam => 'Start Exam';
+
+  @override
+  String get swExamToday => 'Today';
+
+  @override
+  String get swExamTomorrow => 'Tomorrow';
+
+  @override
+  String swExamDaysCount(int count) {
+    return '$count days';
+  }
+
+  @override
+  String get swExamWriteAnswerHint => 'Write your answer here...';
+
+  @override
+  String get swExamEnterAnswerHint => 'Enter your answer...';
+
+  @override
+  String get swExamExplanation => 'Explanation';
+
+  @override
+  String get swFocusFocusMode => 'Focus Mode';
+
+  @override
+  String get swFocusPaused => 'Paused';
+
+  @override
+  String get swFocusThisWeek => 'This Week';
+
+  @override
+  String swHelpSupportArticlesCount(int count) {
+    return '$count articles';
+  }
+
+  @override
+  String swHelpSupportViewsCount(int count) {
+    return '$count views';
+  }
+
+  @override
+  String swHelpSupportHelpfulCount(int count) {
+    return '$count found helpful';
+  }
+
+  @override
+  String get swHelpSupportWasThisHelpful => 'Was this helpful?';
+
+  @override
+  String get swHelpSupportYes => 'Yes';
+
+  @override
+  String get swHelpSupportToday => 'Today';
+
+  @override
+  String get swHelpSupportYesterday => 'Yesterday';
+
+  @override
+  String swHelpSupportDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String get swHelpSupportJustNow => 'Just now';
+
+  @override
+  String swHelpSupportMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String swHelpSupportHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String swHelpSupportDaysShortAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String swInvoiceNumber(String number) {
+    return 'Invoice #$number';
+  }
+
+  @override
+  String swInvoiceIssued(String date) {
+    return 'Issued: $date';
+  }
+
+  @override
+  String swInvoiceDue(String date) {
+    return 'Due: $date';
+  }
+
+  @override
+  String get swInvoiceBillTo => 'BILL TO';
+
+  @override
+  String get swInvoiceDescription => 'DESCRIPTION';
+
+  @override
+  String get swInvoiceQty => 'QTY';
+
+  @override
+  String get swInvoiceRate => 'RATE';
+
+  @override
+  String get swInvoiceAmount => 'AMOUNT';
+
+  @override
+  String get swInvoiceSubtotal => 'Subtotal';
+
+  @override
+  String get swInvoiceDiscount => 'Discount';
+
+  @override
+  String get swInvoiceTax => 'Tax';
+
+  @override
+  String get swInvoiceTotal => 'TOTAL';
+
+  @override
+  String get swInvoiceTransactionId => 'Transaction ID';
+
+  @override
+  String get swInvoiceDownloadReceipt => 'Download Receipt';
+
+  @override
+  String get swJobCareerPostedToday => 'Posted today';
+
+  @override
+  String get swJobCareerPostedYesterday => 'Posted yesterday';
+
+  @override
+  String swJobCareerPostedDaysAgo(int count) {
+    return 'Posted $count days ago';
+  }
+
+  @override
+  String get swJobCareerRemote => 'Remote';
+
+  @override
+  String swJobCareerApplyBy(String date) {
+    return 'Apply by $date';
+  }
+
+  @override
+  String get swJobCareerExpired => 'Expired';
+
+  @override
+  String get swJobCareerToday => 'Today';
+
+  @override
+  String get swJobCareerTomorrow => 'Tomorrow';
+
+  @override
+  String swJobCareerInDays(int count) {
+    return 'in $count days';
+  }
+
+  @override
+  String get swJobCareerAvailable => 'Available';
+
+  @override
+  String swJobCareerSessionsCount(int count) {
+    return '$count sessions';
+  }
+
+  @override
+  String get swJobCareerBookSession => 'Book Session';
+
+  @override
+  String swJobCareerApplied(String time) {
+    return 'Applied $time';
+  }
+
+  @override
+  String swJobCareerUpdated(String time) {
+    return 'Updated $time';
+  }
+
+  @override
+  String swJobCareerDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String swJobCareerHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String swJobCareerMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String get swJobCareerJustNow => 'Just now';
+
+  @override
+  String swJobCareerViewsCount(int count) {
+    return '$count views';
+  }
+
+  @override
+  String get swMessageNoMessagesYet => 'No messages yet';
+
+  @override
+  String get swMessageTypeMessage => 'Type a message...';
+
+  @override
+  String get swMessageToday => 'Today';
+
+  @override
+  String get swMessageYesterday => 'Yesterday';
+
+  @override
+  String get swNoteEdit => 'Edit';
+
+  @override
+  String get swNoteUnpin => 'Unpin';
+
+  @override
+  String get swNotePin => 'Pin';
+
+  @override
+  String get swNoteDelete => 'Delete';
+
+  @override
+  String get swNoteJustNow => 'Just now';
+
+  @override
+  String swNoteMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String swNoteHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String swNoteDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String swNoteNotesCount(int count) {
+    return '$count notes';
+  }
+
+  @override
+  String get swNoteNoNotesYet => 'No Notes Yet';
+
+  @override
+  String get swNoteStartTakingNotes =>
+      'Start taking notes to remember important information';
+
+  @override
+  String get swNoteCreateNote => 'Create Note';
+
+  @override
+  String get swNoteSearchNotes => 'Search notes...';
+
+  @override
+  String swOnboardingStepOf(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get swOnboardingSkipTutorial => 'Skip Tutorial';
+
+  @override
+  String get swOnboardingNext => 'Next';
+
+  @override
+  String get swOnboardingFinish => 'Finish';
+
+  @override
+  String get swPaymentPending => 'Pending';
+
+  @override
+  String get swPaymentProcessing => 'Processing';
+
+  @override
+  String get swPaymentCompleted => 'Completed';
+
+  @override
+  String get swPaymentFailed => 'Failed';
+
+  @override
+  String get swPaymentRefunded => 'Refunded';
+
+  @override
+  String get swPaymentCancelled => 'Cancelled';
+
+  @override
+  String get swPaymentDefault => 'Default';
+
+  @override
+  String get swPaymentCard => 'Card';
+
+  @override
+  String get swPaymentBankAccount => 'Bank Account';
+
+  @override
+  String get swPaymentPaypalAccount => 'PayPal Account';
+
+  @override
+  String get swPaymentStripePayment => 'Stripe Payment';
+
+  @override
+  String get swPaymentRemoveMethod => 'Remove payment method';
+
+  @override
+  String get swPaymentToday => 'Today';
+
+  @override
+  String get swPaymentYesterday => 'Yesterday';
+
+  @override
+  String swPaymentDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String get swPaymentCardNumber => 'Card Number';
+
+  @override
+  String get swPaymentExpiryDate => 'Expiry Date';
+
+  @override
+  String get swPaymentCvv => 'CVV';
+
+  @override
+  String swQuizQuestionOf(int current, int total) {
+    return 'Question $current of $total';
+  }
+
+  @override
+  String swQuizPointsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pts',
+      one: 'pt',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get swQuizTypeAnswerHint => 'Type your answer here...';
+
+  @override
+  String get swQuizExplanation => 'Explanation';
+
+  @override
+  String get swQuizCongratulations => 'Congratulations!';
+
+  @override
+  String get swQuizKeepPracticing => 'Keep Practicing!';
+
+  @override
+  String get swQuizYouScored => 'You scored';
+
+  @override
+  String swQuizScoreOutOf(int score, int total) {
+    return '$score out of $total points';
+  }
+
+  @override
+  String swQuizQuestionsCount(int count) {
+    return '$count questions';
+  }
+
+  @override
+  String swQuizDurationMin(int count) {
+    return '$count min';
+  }
+
+  @override
+  String swQuizAttemptsCount(int used, int max) {
+    return '$used/$max attempts';
+  }
+
+  @override
+  String swQuizBestScore(String score) {
+    return 'Best Score: $score%';
+  }
+
+  @override
+  String get swResourceRemoveBookmark => 'Remove bookmark';
+
+  @override
+  String get swResourceBookmark => 'Bookmark';
+
+  @override
+  String get swResourceDownloaded => 'Downloaded';
+
+  @override
+  String get swResourceDownload => 'Download';
+
+  @override
+  String get swResourceNoResourcesAvailable => 'No Resources Available';
+
+  @override
+  String get swResourceWillAppearHere =>
+      'Resources will appear here when available';
+
+  @override
+  String get swResourceDownloading => 'Downloading';
+
+  @override
+  String swProgressLessonsCount(int completed, int total) {
+    return '$completed/$total lessons';
+  }
+
+  @override
+  String swProgressUnlocked(String date) {
+    return 'Unlocked $date';
+  }
+
+  @override
+  String get swProgressToday => 'Today';
+
+  @override
+  String get swProgressYesterday => 'Yesterday';
+
+  @override
+  String swProgressDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String get swProgressCompleted => 'Completed';
+
+  @override
+  String get swProgressOverdue => 'Overdue';
+
+  @override
+  String swProgressDaysLeft(int count) {
+    return '$count days left';
+  }
+
+  @override
+  String get swProgressDayStreak => 'day streak';
+
+  @override
+  String swProgressLongestStreak(int count) {
+    return 'Longest: $count days';
+  }
 }

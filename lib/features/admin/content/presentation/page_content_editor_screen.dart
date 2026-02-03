@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/page_content_provider.dart';
 import '../../../../core/models/page_content_model.dart';
 import 'widgets/rich_text_content_editor.dart';
@@ -196,7 +197,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     if (_sections.length <= 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('At least one section is required'),
+          content: Text(context.l10n.adminContentAtLeastOneSection),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -206,12 +207,12 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Remove Section'),
-        content: const Text('Are you sure you want to remove this section?'),
+        title: Text(context.l10n.adminContentRemoveSection),
+        content: Text(context.l10n.adminContentConfirmRemoveSection),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminContentCancel),
           ),
           TextButton(
             onPressed: () {
@@ -222,7 +223,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
               });
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Remove'),
+            child: Text(context.l10n.adminContentRemove),
           ),
         ],
       ),
@@ -265,7 +266,7 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Invalid JSON in content field'),
+          content: Text(context.l10n.adminContentInvalidJson),
           backgroundColor: AppColors.error,
         ),
       );
@@ -296,14 +297,14 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Page saved successfully'),
+            content: Text(context.l10n.adminContentPageSavedSuccessfully),
             backgroundColor: AppColors.success,
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.message ?? 'Failed to save page'),
+            content: Text(response.message ?? context.l10n.adminContentFailedToSavePage),
             backgroundColor: AppColors.error,
           ),
         );
@@ -324,12 +325,12 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         _originalPage = response.data;
         ref.invalidate(adminPagesProvider);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: const Text('Page published successfully'), backgroundColor: AppColors.success),
+          SnackBar(content: Text(context.l10n.adminContentPagePublishedSuccessfully), backgroundColor: AppColors.success),
         );
         setState(() {});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message ?? 'Failed to publish page'), backgroundColor: AppColors.error),
+          SnackBar(content: Text(response.message ?? context.l10n.adminContentFailedToPublishPage), backgroundColor: AppColors.error),
         );
       }
     }
@@ -348,12 +349,12 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
         _originalPage = response.data;
         ref.invalidate(adminPagesProvider);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: const Text('Page unpublished'), backgroundColor: AppColors.warning),
+          SnackBar(content: Text(context.l10n.adminContentPageUnpublished), backgroundColor: AppColors.warning),
         );
         setState(() {});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message ?? 'Failed to unpublish page'), backgroundColor: AppColors.error),
+          SnackBar(content: Text(response.message ?? context.l10n.adminContentFailedToUnpublishPage), backgroundColor: AppColors.error),
         );
       }
     }
@@ -365,14 +366,14 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Unsaved Changes'),
-        content: const Text('You have unsaved changes. Do you want to discard them?'),
+        title: Text(context.l10n.adminContentUnsavedChanges),
+        content: Text(context.l10n.adminContentDiscardChanges),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(context.l10n.adminContentCancel)),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Discard'),
+            child: Text(context.l10n.adminContentDiscard),
           ),
         ],
       ),

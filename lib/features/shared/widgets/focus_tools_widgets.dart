@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Focus Tools and Zen Mode Widgets
 ///
@@ -425,7 +426,7 @@ class CircularTimerDisplay extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                isRunning ? 'Focus Mode' : 'Paused',
+                isRunning ? context.l10n.swFocusFocusMode : context.l10n.swFocusPaused,
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.grey[600],
@@ -548,9 +549,9 @@ class WeeklyFocusChart extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'This Week',
-              style: TextStyle(
+            Text(
+              context.l10n.swFocusThisWeek,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),

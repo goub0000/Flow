@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/providers/admin_curriculum_provider.dart';
 import '../../shared/providers/admin_course_list_provider.dart';
@@ -69,7 +70,7 @@ class _CurriculumManagementScreenState
                   Icon(Icons.school, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Curriculum Management',
+                    context.l10n.adminContentCurriculumManagement,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -78,7 +79,7 @@ class _CurriculumManagementScreenState
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage modules and lessons across all courses',
+                context.l10n.adminContentManageModulesAndLessons,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -90,13 +91,13 @@ class _CurriculumManagementScreenState
                   ref.read(adminCurriculumProvider.notifier).fetchCurriculum();
                 },
                 icon: const Icon(Icons.refresh, size: 20),
-                label: const Text('Refresh'),
+                label: Text(context.l10n.adminContentRefresh),
               ),
               const SizedBox(width: 12),
               ElevatedButton.icon(
                 onPressed: _showCreateModuleDialog,
                 icon: const Icon(Icons.add, size: 20),
-                label: const Text('Create Module'),
+                label: Text(context.l10n.adminContentCreateModule),
               ),
             ],
           ),
@@ -125,7 +126,7 @@ class _CurriculumManagementScreenState
               children: [
                 Icon(Icons.add_circle, color: AppColors.primary),
                 const SizedBox(width: 12),
-                const Text('Create New Module'),
+                Text(context.l10n.adminContentCreateNewModule),
               ],
             ),
             content: SizedBox(

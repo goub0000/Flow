@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Whiteboard & Collaboration Widgets Library
 ///
@@ -279,7 +280,7 @@ class StudyGroupCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
-                                  'Public',
+                                  context.l10n.swCollabPublic,
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: AppColors.success,
                                     fontWeight: FontWeight.w600,
@@ -299,7 +300,7 @@ class StudyGroupCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '${group.memberCount}/${group.maxMembers} members',
+                              context.l10n.swCollabMembersCount(group.memberCount, group.maxMembers),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: AppColors.textSecondary,
                               ),
@@ -316,7 +317,7 @@ class StudyGroupCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '${group.onlineMembers} online',
+                                context.l10n.swCollabOnlineCount(group.onlineMembers),
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: AppColors.success,
                                 ),
@@ -432,7 +433,7 @@ class StudyGroupCard extends StatelessWidget {
                   child: FilledButton.icon(
                     onPressed: group.isFull ? null : onJoin,
                     icon: const Icon(Icons.person_add),
-                    label: Text(group.isFull ? 'Group Full' : 'Join Group'),
+                    label: Text(group.isFull ? context.l10n.swCollabGroupFull : context.l10n.swCollabJoinGroup),
                   ),
                 ),
               ],
@@ -689,7 +690,7 @@ class EmptyCollaborationState extends StatelessWidget {
 
   const EmptyCollaborationState({
     super.key,
-    this.message = 'No groups yet',
+    this.message = '',
     this.subtitle,
     this.onAction,
     this.actionLabel,
@@ -712,7 +713,7 @@ class EmptyCollaborationState extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              message,
+              message.isEmpty ? context.l10n.swCollabNoGroupsYet : message,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -733,7 +734,7 @@ class EmptyCollaborationState extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onAction,
                 icon: const Icon(Icons.add),
-                label: Text(actionLabel ?? 'Create Group'),
+                label: Text(actionLabel ?? context.l10n.swCollabCreateGroup),
               ),
             ],
           ],

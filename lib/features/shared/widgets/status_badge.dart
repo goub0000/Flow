@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Status badge widget for showing status indicators
 class StatusBadge extends StatelessWidget {
@@ -14,41 +15,41 @@ class StatusBadge extends StatelessWidget {
     this.icon,
   });
 
-  factory StatusBadge.pending() {
-    return const StatusBadge(
-      label: 'Pending',
+  factory StatusBadge.pending(BuildContext context) {
+    return StatusBadge(
+      label: context.l10n.swStatusPending,
       color: AppColors.warning,
       icon: Icons.pending,
     );
   }
 
-  factory StatusBadge.approved() {
-    return const StatusBadge(
-      label: 'Approved',
+  factory StatusBadge.approved(BuildContext context) {
+    return StatusBadge(
+      label: context.l10n.swStatusApproved,
       color: AppColors.success,
       icon: Icons.check_circle,
     );
   }
 
-  factory StatusBadge.rejected() {
-    return const StatusBadge(
-      label: 'Rejected',
+  factory StatusBadge.rejected(BuildContext context) {
+    return StatusBadge(
+      label: context.l10n.swStatusRejected,
       color: AppColors.error,
       icon: Icons.cancel,
     );
   }
 
-  factory StatusBadge.inProgress() {
-    return const StatusBadge(
-      label: 'In Progress',
+  factory StatusBadge.inProgress(BuildContext context) {
+    return StatusBadge(
+      label: context.l10n.swStatusInProgress,
       color: AppColors.info,
       icon: Icons.hourglass_empty,
     );
   }
 
-  factory StatusBadge.completed() {
-    return const StatusBadge(
-      label: 'Completed',
+  factory StatusBadge.completed(BuildContext context) {
+    return StatusBadge(
+      label: context.l10n.swStatusCompleted,
       color: AppColors.success,
       icon: Icons.check_circle_outline,
     );

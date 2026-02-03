@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Enhanced File Upload Widget
 ///
@@ -89,7 +90,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
       );
 
       if (result != null && result.files.isNotEmpty) {
-        final validFiles = _validateFiles(result.files);
+        final validFiles = _validateFiles(result.files, context);
 
         if (validFiles.isNotEmpty) {
           setState(() {
@@ -99,11 +100,11 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
         }
       }
     } catch (e) {
-      _showError('Failed to pick files: ${e.toString()}');
+      _showError(context.l10n.swFileUploadPickFailed(e.toString()));
     }
   }
 
-  List<PlatformFile> _validateFiles(List<PlatformFile> files) {
+  List<PlatformFile> _validateFiles(List<PlatformFile> files, BuildContext context) {
     final validFiles = <PlatformFile>[];
 
     for (final file in files) {
@@ -112,7 +113,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
         final maxBytes = widget.maxSizeInMB! * 1024 * 1024;
         if (file.size > maxBytes) {
           _showError(
-            '${file.name} is too large. Maximum size is ${widget.maxSizeInMB}MB',
+            context.l10n.swFileUploadTooLarge(file.name, widget.maxSizeInMB!),
           );
           continue;
         }
@@ -124,7 +125,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
         if (extension == null ||
             !widget.allowedExtensions!.contains(extension)) {
           _showError(
-            '${file.name} has an invalid file type. Allowed: ${widget.allowedExtensions!.join(', ')}',
+            context.l10n.swFileUploadInvalidType(file.name, widget.allowedExtensions!.join(', ')),
           );
           continue;
         }
@@ -192,8 +193,8 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
                   const SizedBox(height: 16),
                   Text(
                     _isDragging
-                        ? 'Drop files here'
-                        : 'Click to select files or drag and drop',
+                        ? context.l10n.swFileUploadDropHere
+                        : context.l10n.swFileUploadClickToSelect,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -244,11 +245,11 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
     final parts = <String>[];
 
     if (widget.allowedExtensions != null) {
-      parts.add('Allowed: ${widget.allowedExtensions!.join(', ').toUpperCase()}');
+      parts.add(context.l10n.swFileUploadAllowed(widget.allowedExtensions!.join(', ').toUpperCase()));
     }
 
     if (widget.maxSizeInMB != null) {
-      parts.add('Max ${widget.maxSizeInMB}MB');
+      parts.add(context.l10n.swFileUploadMaxSize(widget.maxSizeInMB!));
     }
 
     if (parts.isEmpty) {
@@ -352,7 +353,7 @@ class FilePreviewCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${(uploadProgress * 100).toInt()}% uploaded',
+                    context.l10n.swFileUploadProgress((uploadProgress * 100).toInt()),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.primary,
                     ),
@@ -422,7 +423,7 @@ class FilePreviewCard extends StatelessWidget {
 /// Quick File Upload Button
 class QuickFileUploadButton extends StatelessWidget {
   final Function(List<PlatformFile>) onFilesSelected;
-  final String label;
+  final String? label;
   final IconData icon;
   final List<String>? allowedExtensions;
   final bool allowMultiple;
@@ -430,7 +431,7 @@ class QuickFileUploadButton extends StatelessWidget {
   const QuickFileUploadButton({
     super.key,
     required this.onFilesSelected,
-    this.label = 'Upload File',
+    this.label,
     this.icon = Icons.upload,
     this.allowedExtensions,
     this.allowMultiple = false,
@@ -450,7 +451,7 @@ class QuickFileUploadButton extends StatelessWidget {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to pick files: ${e.toString()}'),
+          content: Text(context.l10n.swFileUploadPickFailed(e.toString())),
           backgroundColor: AppColors.error,
         ),
       );
@@ -462,7 +463,7 @@ class QuickFileUploadButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: () => _pickFiles(context),
       icon: Icon(icon),
-      label: Text(label),
+      label: Text(label ?? context.l10n.swFileUploadLabel),
     );
   }
 }
@@ -505,7 +506,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to pick image: ${e.toString()}'),
+          content: Text(context.l10n.swFileUploadPickImageFailed(e.toString())),
           backgroundColor: AppColors.error,
         ),
       );
@@ -600,17 +601,17 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
           color: AppColors.textSecondary,
         ),
         const SizedBox(height: 12),
-        const Text(
-          'Tap to select image',
-          style: TextStyle(
+        Text(
+          context.l10n.swFileUploadTapToSelect,
+          style: const TextStyle(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 4),
-        const Text(
-          'JPG, PNG, GIF (max 5MB)',
-          style: TextStyle(
+        Text(
+          context.l10n.swFileUploadImageFormats,
+          style: const TextStyle(
             color: AppColors.textSecondary,
             fontSize: 12,
           ),

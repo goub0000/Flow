@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Notification preferences screen
 class NotificationPreferencesScreen extends ConsumerStatefulWidget {
@@ -38,7 +39,7 @@ class _NotificationPreferencesScreenState
           } catch (e) {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error creating preferences: $e')),
+                SnackBar(content: Text('${context.l10n.notifPrefScreenErrorCreating}: $e')),
               );
             }
           }
@@ -59,7 +60,7 @@ class _NotificationPreferencesScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notification Preferences'),
+        title: Text(context.l10n.notifPrefScreenTitle),
       ),
       body: preferencesAsync.when(
         data: (preferences) {
@@ -74,11 +75,11 @@ class _NotificationPreferencesScreenState
                 children: [
                   const Icon(Icons.notifications_off, size: 64, color: Colors.grey),
                   const SizedBox(height: 16),
-                  const Text('No notification preferences found'),
+                  Text(context.l10n.notifPrefScreenNoPreferences),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _initializePreferences,
-                    child: const Text('Create Default Preferences'),
+                    child: Text(context.l10n.notifPrefScreenCreateDefaults),
                   ),
                 ],
               ),
@@ -123,7 +124,7 @@ class _NotificationPreferencesScreenState
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Notification Settings',
+                            context.l10n.notifPrefScreenSettingsTitle,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -133,7 +134,7 @@ class _NotificationPreferencesScreenState
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Control which notifications you want to receive. Changes are saved automatically.',
+                        context.l10n.notifPrefScreenDescription,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context)
                                   .colorScheme
@@ -150,42 +151,42 @@ class _NotificationPreferencesScreenState
 
               // Application notifications
               if (applicationPrefs.isNotEmpty) ...[
-                _buildCategoryHeader(context, 'College Applications', Icons.school),
+                _buildCategoryHeader(context, context.l10n.notifPrefScreenCollegeApplications, Icons.school),
                 ...applicationPrefs.map((pref) => _buildPreferenceItem(pref)),
                 const SizedBox(height: 16),
               ],
 
               // Academic notifications
               if (academicPrefs.isNotEmpty) ...[
-                _buildCategoryHeader(context, 'Academic', Icons.library_books),
+                _buildCategoryHeader(context, context.l10n.notifPrefScreenAcademic, Icons.library_books),
                 ...academicPrefs.map((pref) => _buildPreferenceItem(pref)),
                 const SizedBox(height: 16),
               ],
 
               // Communication notifications
               if (communicationPrefs.isNotEmpty) ...[
-                _buildCategoryHeader(context, 'Communication', Icons.chat),
+                _buildCategoryHeader(context, context.l10n.notifPrefScreenCommunication, Icons.chat),
                 ...communicationPrefs.map((pref) => _buildPreferenceItem(pref)),
                 const SizedBox(height: 16),
               ],
 
               // Meeting & events
               if (meetingPrefs.isNotEmpty) ...[
-                _buildCategoryHeader(context, 'Meetings & Events', Icons.event),
+                _buildCategoryHeader(context, context.l10n.notifPrefScreenMeetingsEvents, Icons.event),
                 ...meetingPrefs.map((pref) => _buildPreferenceItem(pref)),
                 const SizedBox(height: 16),
               ],
 
               // Achievements
               if (achievementPrefs.isNotEmpty) ...[
-                _buildCategoryHeader(context, 'Achievements', Icons.emoji_events),
+                _buildCategoryHeader(context, context.l10n.notifPrefScreenAchievements, Icons.emoji_events),
                 ...achievementPrefs.map((pref) => _buildPreferenceItem(pref)),
                 const SizedBox(height: 16),
               ],
 
               // System
               if (systemPrefs.isNotEmpty) ...[
-                _buildCategoryHeader(context, 'System', Icons.settings),
+                _buildCategoryHeader(context, context.l10n.notifPrefScreenSystem, Icons.settings),
                 ...systemPrefs.map((pref) => _buildPreferenceItem(pref)),
               ],
             ],
@@ -198,13 +199,13 @@ class _NotificationPreferencesScreenState
             children: [
               const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
-              Text('Error loading preferences: $error'),
+              Text('${context.l10n.notifPrefScreenErrorLoading}: $error'),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   ref.invalidate(notificationPreferencesProvider);
                 },
-                child: const Text('Retry'),
+                child: Text(context.l10n.notifPrefScreenRetry),
               ),
             ],
           ),
@@ -255,7 +256,7 @@ class _NotificationPreferencesScreenState
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        _getNotificationDescription(preference.notificationType),
+                        _getNotificationDescription(preference.notificationType, context),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Theme.of(context)
                                   .colorScheme
@@ -284,7 +285,7 @@ class _NotificationPreferencesScreenState
                   Expanded(
                     child: _buildToggleOption(
                       context,
-                      'Email',
+                      context.l10n.notifPrefScreenEmail,
                       Icons.email_outlined,
                       preference.emailEnabled,
                       (value) => _updatePreference(
@@ -298,7 +299,7 @@ class _NotificationPreferencesScreenState
                   Expanded(
                     child: _buildToggleOption(
                       context,
-                      'Push',
+                      context.l10n.notifPrefScreenPush,
                       Icons.notifications_outlined,
                       preference.pushEnabled,
                       (value) => _updatePreference(
@@ -366,9 +367,9 @@ class _NotificationPreferencesScreenState
               ),
               if (!enabled) ...[
                 const SizedBox(width: 4),
-                const Text(
-                  '(soon)',
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                Text(
+                  context.l10n.notifPrefScreenSoon,
+                  style: const TextStyle(fontSize: 10, color: Colors.grey),
                 ),
               ],
             ],
@@ -378,32 +379,44 @@ class _NotificationPreferencesScreenState
     );
   }
 
-  String _getNotificationDescription(NotificationType type) {
+  String _getNotificationDescription(NotificationType type, BuildContext context) {
     switch (type) {
       case NotificationType.applicationStatus:
-        return 'Get notified when your application status changes';
+        return context.l10n.notifPrefScreenDescApplicationStatus;
       case NotificationType.gradePosted:
-        return 'Receive notifications when new grades are posted';
+        return context.l10n.notifPrefScreenDescGradePosted;
       case NotificationType.messageReceived:
-        return 'Get notified about new messages';
+        return context.l10n.notifPrefScreenDescMessageReceived;
       case NotificationType.meetingScheduled:
-        return 'Receive notifications for scheduled meetings';
+        return context.l10n.notifPrefScreenDescMeetingScheduled;
       case NotificationType.meetingReminder:
-        return 'Get reminders before your meetings';
+        return context.l10n.notifPrefScreenDescMeetingReminder;
       case NotificationType.achievementEarned:
-        return 'Celebrate when you earn new achievements';
+        return context.l10n.notifPrefScreenDescAchievementEarned;
       case NotificationType.deadlineReminder:
-        return 'Get reminded about upcoming deadlines';
+        return context.l10n.notifPrefScreenDescDeadlineReminder;
       case NotificationType.recommendationReady:
-        return 'Receive notifications for new recommendations';
+        return context.l10n.notifPrefScreenDescRecommendationReady;
       case NotificationType.systemAnnouncement:
-        return 'Stay updated with system announcements';
+        return context.l10n.notifPrefScreenDescSystemAnnouncement;
       case NotificationType.commentReceived:
-        return 'Get notified when someone comments on your posts';
+        return context.l10n.notifPrefScreenDescCommentReceived;
       case NotificationType.mention:
-        return 'Receive notifications when you are mentioned';
+        return context.l10n.notifPrefScreenDescMention;
       case NotificationType.eventReminder:
-        return 'Get reminders about upcoming events';
+        return context.l10n.notifPrefScreenDescEventReminder;
+      case NotificationType.approvalRequestNew:
+        return context.l10n.notifPrefScreenDescApprovalRequestNew;
+      case NotificationType.approvalRequestActionNeeded:
+        return context.l10n.notifPrefScreenDescApprovalRequestActionNeeded;
+      case NotificationType.approvalRequestStatusChanged:
+        return context.l10n.notifPrefScreenDescApprovalRequestStatusChanged;
+      case NotificationType.approvalRequestEscalated:
+        return context.l10n.notifPrefScreenDescApprovalRequestEscalated;
+      case NotificationType.approvalRequestExpiring:
+        return context.l10n.notifPrefScreenDescApprovalRequestExpiring;
+      case NotificationType.approvalRequestComment:
+        return context.l10n.notifPrefScreenDescApprovalRequestComment;
     }
   }
 
@@ -425,9 +438,9 @@ class _NotificationPreferencesScreenState
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Preferences updated'),
-            duration: Duration(seconds: 1),
+          SnackBar(
+            content: Text(context.l10n.notifPrefScreenPreferencesUpdated),
+            duration: const Duration(seconds: 1),
           ),
         );
       }
@@ -435,7 +448,7 @@ class _NotificationPreferencesScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error updating preferences: $e'),
+            content: Text('${context.l10n.notifPrefScreenErrorUpdating}: $e'),
             backgroundColor: Colors.red,
           ),
         );

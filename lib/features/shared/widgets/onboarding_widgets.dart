@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Onboarding & Tutorial Widgets
 ///
@@ -409,7 +410,7 @@ class TutorialOverlay extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Step $currentStep of $totalSteps',
+                        context.l10n.swOnboardingStepOf(currentStep, totalSteps),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
@@ -449,12 +450,12 @@ class TutorialOverlay extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: onSkip,
-                        child: const Text('Skip Tutorial'),
+                        child: Text(context.l10n.swOnboardingSkipTutorial),
                       ),
                       FilledButton(
                         onPressed: onNext,
                         child: Text(
-                          currentStep == totalSteps ? 'Finish' : 'Next',
+                          currentStep == totalSteps ? context.l10n.swOnboardingFinish : context.l10n.swOnboardingNext,
                         ),
                       ),
                     ],

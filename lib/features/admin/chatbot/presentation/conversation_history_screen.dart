@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
@@ -158,12 +159,12 @@ class _ConversationHistoryScreenState
             child: Icon(Icons.history, color: AppColors.primary, size: 24),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Conversation History',
+                  context.l10n.adminChatConvHistoryTitle,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -171,7 +172,7 @@ class _ConversationHistoryScreenState
                   ),
                 ),
                 Text(
-                  'View and manage all chatbot conversations',
+                  context.l10n.adminChatConvHistorySubtitle,
                   style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                 ),
               ],
@@ -180,7 +181,7 @@ class _ConversationHistoryScreenState
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadConversations,
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminChatRefresh,
           ),
         ],
       ),
@@ -200,7 +201,7 @@ class _ConversationHistoryScreenState
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Search conversations...',
+              hintText: context.l10n.adminChatSearchConversations,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -224,15 +225,15 @@ class _ConversationHistoryScreenState
           // Filter chips
           Row(
             children: [
-              const Text(
-                'Filter:',
+              Text(
+                context.l10n.adminChatFilter,
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 12),
-              _buildFilterChip('All', null),
-              _buildFilterChip('Active', ConversationStatus.active),
-              _buildFilterChip('Archived', ConversationStatus.archived),
-              _buildFilterChip('Flagged', ConversationStatus.flagged),
+              _buildFilterChip(context.l10n.adminChatFilterAll, null),
+              _buildFilterChip(context.l10n.adminChatStatusActive, ConversationStatus.active),
+              _buildFilterChip(context.l10n.adminChatStatusArchived, ConversationStatus.archived),
+              _buildFilterChip(context.l10n.adminChatStatusFlagged, ConversationStatus.flagged),
             ],
           ),
         ],
@@ -316,7 +317,7 @@ class _ConversationHistoryScreenState
                       size: 14, color: AppColors.textSecondary),
                   const SizedBox(width: 4),
                   Text(
-                    '${conversation.messageCount} messages',
+                    context.l10n.adminChatMessageCount(conversation.messageCount),
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.textSecondary,
@@ -355,31 +356,30 @@ class _ConversationHistoryScreenState
                       onPressed: () => _updateStatus(
                           conversation.id, ConversationStatus.archived),
                       icon: const Icon(Icons.archive, size: 16),
-                      label: const Text('Archive'),
+                      label: Text(context.l10n.adminChatArchive),
                     ),
                   if (conversation.status != ConversationStatus.flagged)
                     TextButton.icon(
                       onPressed: () => _updateStatus(
                           conversation.id, ConversationStatus.flagged),
                       icon: const Icon(Icons.flag, size: 16),
-                      label: const Text('Flag'),
+                      label: Text(context.l10n.adminChatFlag),
                     ),
                   TextButton.icon(
                     onPressed: () async {
                       final confirmed = await showDialog<bool>(
                         context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Delete Conversation'),
-                          content: const Text(
-                              'Are you sure you want to delete this conversation?'),
+                        builder: (ctx) => AlertDialog(
+                          title: Text(context.l10n.adminChatDeleteConvTitle),
+                          content: Text(context.l10n.adminChatDeleteConvConfirm),
                           actions: [
                             TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
+                              onPressed: () => Navigator.pop(ctx, false),
+                              child: Text(context.l10n.adminChatCancel),
                             ),
                             TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Delete'),
+                              onPressed: () => Navigator.pop(ctx, true),
+                              child: Text(context.l10n.adminChatDelete),
                             ),
                           ],
                         ),
@@ -389,7 +389,7 @@ class _ConversationHistoryScreenState
                       }
                     },
                     icon: const Icon(Icons.delete, size: 16),
-                    label: const Text('Delete'),
+                    label: Text(context.l10n.adminChatDelete),
                   ),
                 ],
               ),
@@ -407,15 +407,15 @@ class _ConversationHistoryScreenState
     switch (status) {
       case ConversationStatus.active:
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminChatStatusActive;
         break;
       case ConversationStatus.archived:
         color = AppColors.textSecondary;
-        label = 'Archived';
+        label = context.l10n.adminChatStatusArchived;
         break;
       case ConversationStatus.flagged:
         color = AppColors.error;
-        label = 'Flagged';
+        label = context.l10n.adminChatStatusFlagged;
         break;
     }
 
@@ -448,7 +448,7 @@ class _ConversationHistoryScreenState
           ),
           const SizedBox(height: 16),
           Text(
-            'No conversations found',
+            context.l10n.adminChatNoConversations,
             style: TextStyle(
               fontSize: 16,
               color: AppColors.textSecondary,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../models/approval_models.dart';
 import '../../providers/approvals_provider.dart';
 import '../widgets/approval_stats_card.dart';
@@ -36,17 +37,17 @@ class _ApprovalDashboardScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Approval Workflow'),
+        title: Text(context.l10n.adminApprovalWorkflow),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _refreshAll,
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminApprovalRefresh,
           ),
           IconButton(
             icon: const Icon(Icons.list_alt),
             onPressed: () => context.go('/admin/approvals/list'),
-            tooltip: 'View All Requests',
+            tooltip: context.l10n.adminApprovalViewAllRequests,
           ),
         ],
       ),
@@ -60,7 +61,7 @@ class _ApprovalDashboardScreenState
             children: [
               // Statistics Overview
               Text(
-                'Overview',
+                context.l10n.adminApprovalOverview,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -74,7 +75,7 @@ class _ApprovalDashboardScreenState
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      'Error loading statistics: ${statsState.error}',
+                      context.l10n.adminApprovalErrorLoadingStats(statsState.error!),
                       style: TextStyle(color: theme.colorScheme.error),
                     ),
                   ),
@@ -86,7 +87,7 @@ class _ApprovalDashboardScreenState
 
               // Pending Actions
               Text(
-                'Your Pending Actions',
+                context.l10n.adminApprovalYourPendingActions,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -100,7 +101,7 @@ class _ApprovalDashboardScreenState
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      'Error loading pending actions: ${pendingState.error}',
+                      context.l10n.adminApprovalErrorLoadingPending(pendingState.error!),
                       style: TextStyle(color: theme.colorScheme.error),
                     ),
                   ),
@@ -112,7 +113,7 @@ class _ApprovalDashboardScreenState
 
               // Quick Actions
               Text(
-                'Quick Actions',
+                context.l10n.adminApprovalQuickActions,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -136,37 +137,37 @@ class _ApprovalDashboardScreenState
       childAspectRatio: 1.5,
       children: [
         ApprovalStatsCard(
-          title: 'Total Requests',
+          title: context.l10n.adminApprovalTotalRequests,
           value: stats.totalRequests.toString(),
           icon: Icons.assignment,
           color: Colors.blue,
         ),
         ApprovalStatsCard(
-          title: 'Pending Review',
+          title: context.l10n.adminApprovalPendingReview,
           value: stats.pendingRequests.toString(),
           icon: Icons.pending_actions,
           color: Colors.orange,
         ),
         ApprovalStatsCard(
-          title: 'Under Review',
+          title: context.l10n.adminApprovalUnderReview,
           value: stats.underReviewRequests.toString(),
           icon: Icons.rate_review,
           color: Colors.purple,
         ),
         ApprovalStatsCard(
-          title: 'Approved',
+          title: context.l10n.adminApprovalApproved,
           value: stats.approvedRequests.toString(),
           icon: Icons.check_circle,
           color: Colors.green,
         ),
         ApprovalStatsCard(
-          title: 'Denied',
+          title: context.l10n.adminApprovalDenied,
           value: stats.deniedRequests.toString(),
           icon: Icons.cancel,
           color: Colors.red,
         ),
         ApprovalStatsCard(
-          title: 'Executed',
+          title: context.l10n.adminApprovalExecuted,
           value: stats.executedRequests.toString(),
           icon: Icons.done_all,
           color: Colors.teal,
@@ -189,10 +190,10 @@ class _ApprovalDashboardScreenState
               ),
               const SizedBox(height: 12),
               Text(
-                'All caught up!',
+                context.l10n.adminApprovalAllCaughtUp,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const Text('You have no pending actions.'),
+              Text(context.l10n.adminApprovalNoPendingActions),
             ],
           ),
         ),
@@ -203,7 +204,7 @@ class _ApprovalDashboardScreenState
       children: [
         if (pending.pendingReviews.isNotEmpty) ...[
           PendingApprovalsCard(
-            title: 'Pending Reviews',
+            title: context.l10n.adminApprovalPendingReviews,
             items: pending.pendingReviews,
             icon: Icons.rate_review,
             color: Colors.orange,
@@ -213,7 +214,7 @@ class _ApprovalDashboardScreenState
         ],
         if (pending.awaitingMyInfo.isNotEmpty) ...[
           PendingApprovalsCard(
-            title: 'Awaiting Your Response',
+            title: context.l10n.adminApprovalAwaitingYourResponse,
             items: pending.awaitingMyInfo,
             icon: Icons.info_outline,
             color: Colors.amber,
@@ -223,7 +224,7 @@ class _ApprovalDashboardScreenState
         ],
         if (pending.delegatedToMe.isNotEmpty)
           PendingApprovalsCard(
-            title: 'Delegated to You',
+            title: context.l10n.adminApprovalDelegatedToYou,
             items: pending.delegatedToMe,
             icon: Icons.forward,
             color: Colors.purple,
@@ -244,22 +245,22 @@ class _ApprovalDashboardScreenState
       children: [
         _QuickActionCard(
           icon: Icons.add_circle,
-          label: 'New Request',
+          label: context.l10n.adminApprovalNewRequest,
           onTap: () => context.go('/admin/approvals/create'),
         ),
         _QuickActionCard(
           icon: Icons.list,
-          label: 'All Requests',
+          label: context.l10n.adminApprovalAllRequests,
           onTap: () => context.go('/admin/approvals/list'),
         ),
         _QuickActionCard(
           icon: Icons.history,
-          label: 'My Requests',
+          label: context.l10n.adminApprovalMyRequests,
           onTap: () => context.go('/admin/approvals/my-requests'),
         ),
         _QuickActionCard(
           icon: Icons.settings,
-          label: 'Configuration',
+          label: context.l10n.adminApprovalConfigurationLabel,
           onTap: () => context.go('/admin/approvals/config'),
         ),
       ],

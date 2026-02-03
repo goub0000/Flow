@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Payment Widgets for Financial Transactions
 ///
@@ -205,7 +206,7 @@ class PaymentStatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = _getStatusConfig();
+    final config = _getStatusConfig(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -234,41 +235,41 @@ class PaymentStatusBadge extends StatelessWidget {
     );
   }
 
-  Map<String, dynamic> _getStatusConfig() {
+  Map<String, dynamic> _getStatusConfig(BuildContext context) {
     switch (status) {
       case PaymentStatus.pending:
         return {
-          'label': 'Pending',
+          'label': context.l10n.swPaymentPending,
           'color': AppColors.warning,
           'icon': Icons.pending,
         };
       case PaymentStatus.processing:
         return {
-          'label': 'Processing',
+          'label': context.l10n.swPaymentProcessing,
           'color': AppColors.info,
           'icon': Icons.sync,
         };
       case PaymentStatus.completed:
         return {
-          'label': 'Completed',
+          'label': context.l10n.swPaymentCompleted,
           'color': AppColors.success,
           'icon': Icons.check_circle,
         };
       case PaymentStatus.failed:
         return {
-          'label': 'Failed',
+          'label': context.l10n.swPaymentFailed,
           'color': AppColors.error,
           'icon': Icons.error,
         };
       case PaymentStatus.refunded:
         return {
-          'label': 'Refunded',
+          'label': context.l10n.swPaymentRefunded,
           'color': AppColors.textSecondary,
           'icon': Icons.undo,
         };
       case PaymentStatus.cancelled:
         return {
-          'label': 'Cancelled',
+          'label': context.l10n.swPaymentCancelled,
           'color': AppColors.textSecondary,
           'icon': Icons.cancel,
         };
@@ -356,9 +357,9 @@ class PaymentMethodCard extends StatelessWidget {
                               color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: const Text(
-                              'Default',
-                              style: TextStyle(
+                            child: Text(
+                              context.l10n.swPaymentDefault,
+                              style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.primary,
@@ -369,7 +370,7 @@ class PaymentMethodCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _getMethodDetails(),
+                      _getMethodDetails(context),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -385,7 +386,7 @@ class PaymentMethodCard extends StatelessWidget {
                   icon: const Icon(Icons.delete_outline, size: 20),
                   color: AppColors.error,
                   onPressed: onDelete,
-                  tooltip: 'Remove payment method',
+                  tooltip: context.l10n.swPaymentRemoveMethod,
                 ),
               ],
 
@@ -433,18 +434,18 @@ class PaymentMethodCard extends StatelessWidget {
     }
   }
 
-  String _getMethodDetails() {
+  String _getMethodDetails(BuildContext context) {
     switch (method.type) {
       case PaymentMethodType.card:
-        return '${method.brand ?? 'Card'} •••• ${method.last4 ?? '****'}';
+        return '${method.brand ?? context.l10n.swPaymentCard} •••• ${method.last4 ?? '****'}';
       case PaymentMethodType.mobileMoney:
         return '••• ${method.last4 ?? '****'}';
       case PaymentMethodType.bankTransfer:
-        return 'Bank Account •••• ${method.last4 ?? '****'}';
+        return '${context.l10n.swPaymentBankAccount} •••• ${method.last4 ?? '****'}';
       case PaymentMethodType.paypal:
-        return 'PayPal Account';
+        return context.l10n.swPaymentPaypalAccount;
       case PaymentMethodType.stripe:
-        return 'Stripe Payment';
+        return context.l10n.swPaymentStripePayment;
     }
   }
 }
@@ -509,7 +510,7 @@ class TransactionTile extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          _formatDate(transaction.createdAt),
+                          _formatDate(context, transaction.createdAt),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -592,16 +593,16 @@ class TransactionTile extends StatelessWidget {
     return '$prefix${transaction.formattedAmount}';
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Today';
+      return context.l10n.swPaymentToday;
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return context.l10n.swPaymentYesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return context.l10n.swPaymentDaysAgo(difference.inDays);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }
@@ -689,7 +690,7 @@ class CardNumberField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        labelText: 'Card Number',
+        labelText: context.l10n.swPaymentCardNumber,
         hintText: '1234 5678 9012 3456',
         errorText: errorText,
         prefixIcon: const Icon(Icons.credit_card),
@@ -726,7 +727,7 @@ class CardExpiryField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        labelText: 'Expiry Date',
+        labelText: context.l10n.swPaymentExpiryDate,
         hintText: 'MM/YY',
         errorText: errorText,
         prefixIcon: const Icon(Icons.calendar_today),
@@ -763,7 +764,7 @@ class CVVField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        labelText: 'CVV',
+        labelText: context.l10n.swPaymentCvv,
         hintText: '123',
         errorText: errorText,
         prefixIcon: const Icon(Icons.lock),

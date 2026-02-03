@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../chatbot/application/services/conversation_storage_service.dart';
 import '../../../chatbot/domain/models/conversation.dart';
@@ -37,13 +38,13 @@ class _ConversationDetailScreenState
   bool _isSending = false;
   String? _selectedCannedResponse;
 
-  final List<Map<String, String>> _cannedResponses = [
-    {'label': 'Greeting', 'text': 'Hello! Thank you for reaching out. How can I assist you today?'},
-    {'label': 'Follow Up', 'text': 'Thank you for waiting. I\'m looking into this for you now.'},
-    {'label': 'More Info Needed', 'text': 'Could you please provide more details about your issue so I can better assist you?'},
-    {'label': 'Escalating', 'text': 'I\'m escalating this to our specialized team who will be better able to assist you.'},
-    {'label': 'Resolution', 'text': 'I\'m glad I could help! Is there anything else you need assistance with?'},
-    {'label': 'Closing', 'text': 'Thank you for contacting us. If you have any more questions, feel free to reach out. Have a great day!'},
+  List<Map<String, String>> _getCannedResponses(BuildContext context) => [
+    {'label': context.l10n.adminChatCannedGreetingLabel, 'text': context.l10n.adminChatCannedGreetingText},
+    {'label': context.l10n.adminChatCannedFollowUpLabel, 'text': context.l10n.adminChatCannedFollowUpText},
+    {'label': context.l10n.adminChatCannedMoreInfoLabel, 'text': context.l10n.adminChatCannedMoreInfoText},
+    {'label': context.l10n.adminChatCannedEscalatingLabel, 'text': context.l10n.adminChatCannedEscalatingText},
+    {'label': context.l10n.adminChatCannedResolutionLabel, 'text': context.l10n.adminChatCannedResolutionText},
+    {'label': context.l10n.adminChatCannedClosingLabel, 'text': context.l10n.adminChatCannedClosingText},
   ];
 
   @override
@@ -174,7 +175,7 @@ class _ConversationDetailScreenState
 
         if (mounted && resolve) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Reply sent and conversation resolved')),
+            SnackBar(content: Text(context.l10n.adminChatReplySentResolved)),
           );
         }
       } else {
@@ -183,7 +184,7 @@ class _ConversationDetailScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send reply: $e')),
+          SnackBar(content: Text(context.l10n.adminChatFailedSendReply(e.toString()))),
         );
       }
     } finally {
@@ -214,14 +215,14 @@ class _ConversationDetailScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Conversation Details'),
+        title: Text(context.l10n.adminChatConvDetailsTitle),
         backgroundColor: AppColors.surface,
         actions: [
           if (_conversation != null) ...[
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _loadConversation,
-              tooltip: 'Refresh',
+              tooltip: context.l10n.adminChatRefresh,
             ),
             PopupMenuButton(
               icon: const Icon(Icons.more_vert),
@@ -229,33 +230,33 @@ class _ConversationDetailScreenState
                 if (_conversation!.status != ConversationStatus.archived)
                   PopupMenuItem(
                     onTap: () => _updateStatus(ConversationStatus.archived),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(Icons.archive, size: 18),
                         SizedBox(width: 12),
-                        Text('Archive'),
+                        Text(context.l10n.adminChatArchive),
                       ],
                     ),
                   ),
                 if (_conversation!.status != ConversationStatus.flagged)
                   PopupMenuItem(
                     onTap: () => _updateStatus(ConversationStatus.flagged),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(Icons.flag, size: 18),
                         SizedBox(width: 12),
-                        Text('Flag'),
+                        Text(context.l10n.adminChatFlag),
                       ],
                     ),
                   ),
                 if (_conversation!.status != ConversationStatus.active)
                   PopupMenuItem(
                     onTap: () => _updateStatus(ConversationStatus.active),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(Icons.restore, size: 18),
                         SizedBox(width: 12),
-                        Text('Restore'),
+                        Text(context.l10n.adminChatRestore),
                       ],
                     ),
                   ),
@@ -335,7 +336,7 @@ class _ConversationDetailScreenState
                       ),
                     if (_conversation!.userRole != null)
                       Text(
-                        'Role: ${_conversation!.userRole}',
+                        context.l10n.adminChatRole(_conversation!.userRole!),
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
@@ -354,19 +355,19 @@ class _ConversationDetailScreenState
             children: [
               _buildInfoItem(
                 Icons.message,
-                '${_conversation!.messageCount} messages',
+                context.l10n.adminChatMessageCount(_conversation!.messageCount),
               ),
               _buildInfoItem(
                 Icons.schedule,
-                'Started ${_formatDateTime(_conversation!.startTime)}',
+                context.l10n.adminChatStarted(_formatDateTime(_conversation!.startTime)),
               ),
               _buildInfoItem(
                 Icons.update,
-                'Last message ${_formatDateTime(_conversation!.lastMessageTime)}',
+                context.l10n.adminChatLastMessage(_formatDateTime(_conversation!.lastMessageTime)),
               ),
               _buildInfoItem(
                 Icons.timer,
-                'Duration: ${_formatDuration(_conversation!.duration)}',
+                context.l10n.adminChatDuration(_formatDuration(_conversation!.duration)),
               ),
             ],
           ),
@@ -398,14 +399,14 @@ class _ConversationDetailScreenState
             child: Row(
               children: [
                 Text(
-                  'Quick replies: ',
+                  context.l10n.adminChatQuickReplies,
                   style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                   ),
                 ),
                 const SizedBox(width: 8),
-                ..._cannedResponses.map((response) => Padding(
+                ..._getCannedResponses(context).map((response) => Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ActionChip(
                         label: Text(
@@ -437,7 +438,7 @@ class _ConversationDetailScreenState
                   maxLines: 3,
                   minLines: 1,
                   decoration: InputDecoration(
-                    hintText: 'Type your reply as support agent...',
+                    hintText: context.l10n.adminChatReplyHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -469,7 +470,7 @@ class _ConversationDetailScreenState
                             ),
                           )
                         : const Icon(Icons.send),
-                    tooltip: 'Send Reply',
+                    tooltip: context.l10n.adminChatSendReply,
                     style: IconButton.styleFrom(
                       backgroundColor: AppColors.primary,
                     ),
@@ -479,7 +480,7 @@ class _ConversationDetailScreenState
                   IconButton.filled(
                     onPressed: _isSending ? null : () => _sendReply(resolve: true),
                     icon: const Icon(Icons.check_circle, size: 20),
-                    tooltip: 'Send & Resolve',
+                    tooltip: context.l10n.adminChatSendAndResolve,
                     style: IconButton.styleFrom(
                       backgroundColor: AppColors.success,
                     ),
@@ -567,7 +568,7 @@ class _ConversationDetailScreenState
                   Padding(
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text(
-                      'Support Agent',
+                      context.l10n.adminChatSupportAgent,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
@@ -658,17 +659,17 @@ class _ConversationDetailScreenState
     switch (status) {
       case ConversationStatus.active:
         color = AppColors.success;
-        label = 'Active';
+        label = context.l10n.adminChatStatusActive;
         icon = Icons.check_circle;
         break;
       case ConversationStatus.archived:
         color = AppColors.textSecondary;
-        label = 'Archived';
+        label = context.l10n.adminChatStatusArchived;
         icon = Icons.archive;
         break;
       case ConversationStatus.flagged:
         color = AppColors.error;
-        label = 'Escalated';
+        label = context.l10n.adminChatStatusEscalated;
         icon = Icons.flag;
         break;
     }
@@ -710,7 +711,7 @@ class _ConversationDetailScreenState
           ),
           const SizedBox(height: 16),
           Text(
-            'Conversation not found',
+            context.l10n.adminChatConvNotFound,
             style: TextStyle(
               fontSize: 16,
               color: AppColors.textSecondary,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
@@ -98,7 +99,7 @@ class _ContentManagementScreenState
   }
 
   Widget _buildHeader() {
-    final title = widget.pageTitle ?? 'Content Management';
+    final title = widget.pageTitle ?? context.l10n.adminContentManagement;
     final subtitle = _getSubtitle();
 
     return Padding(
@@ -143,11 +144,11 @@ class _ContentManagementScreenState
                 child: OutlinedButton.icon(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Export feature coming soon')),
+                      SnackBar(content: Text(context.l10n.adminContentExportComingSoon)),
                     );
                   },
                   icon: const Icon(Icons.download, size: 20),
-                  label: const Text('Export'),
+                  label: Text(context.l10n.adminContentExport),
                 ),
               ),
               const SizedBox(width: 12),
@@ -157,7 +158,7 @@ class _ContentManagementScreenState
                 child: ElevatedButton.icon(
                   onPressed: _showCreateContentDialog,
                   icon: const Icon(Icons.add, size: 20),
-                  label: const Text('Create Content'),
+                  label: Text(context.l10n.adminContentCreateContent),
                 ),
               ),
             ],
@@ -187,17 +188,17 @@ class _ContentManagementScreenState
   String _getSubtitle() {
     switch (widget.initialTypeFilter) {
       case 'video':
-        return 'Manage video courses and tutorials';
+        return context.l10n.adminContentManageVideoCourses;
       case 'text':
-        return 'Manage text-based learning materials';
+        return context.l10n.adminContentManageTextMaterials;
       case 'interactive':
-        return 'Manage interactive learning content';
+        return context.l10n.adminContentManageInteractive;
       case 'live':
-        return 'Manage live sessions and webinars';
+        return context.l10n.adminContentManageLiveSessions;
       case 'hybrid':
-        return 'Manage hybrid learning experiences';
+        return context.l10n.adminContentManageHybrid;
       default:
-        return 'Manage educational content, courses, and curriculum';
+        return context.l10n.adminContentManageEducational;
     }
   }
 
@@ -218,7 +219,7 @@ class _ContentManagementScreenState
             children: [
               Icon(Icons.add_circle, color: AppColors.primary),
               const SizedBox(width: 12),
-              const Text('Create New Content'),
+              Text(context.l10n.adminContentCreateNewContent),
             ],
           ),
           content: SizedBox(
@@ -230,8 +231,8 @@ class _ContentManagementScreenState
                 TextField(
                   controller: titleController,
                   decoration: InputDecoration(
-                    labelText: 'Title *',
-                    hintText: 'Enter content title',
+                    labelText: context.l10n.adminContentTitleRequired,
+                    hintText: context.l10n.adminContentEnterContentTitle,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -242,8 +243,8 @@ class _ContentManagementScreenState
                   controller: descriptionController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    labelText: 'Description',
-                    hintText: 'Enter content description',
+                    labelText: context.l10n.adminContentDescription,
+                    hintText: context.l10n.adminContentEnterDescription,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -324,7 +325,7 @@ class _ContentManagementScreenState
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Content will be created as a draft. You can edit and publish it later.',
+                  context.l10n.adminContentDraftNotice,
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,
@@ -344,7 +345,7 @@ class _ContentManagementScreenState
                 if (titleController.text.trim().isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text('Please enter a title'),
+                      content: Text(context.l10n.adminContentPleaseEnterTitle),
                       backgroundColor: AppColors.error,
                     ),
                   );

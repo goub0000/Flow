@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Settlement record
 class _Settlement {
@@ -120,7 +121,7 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
         });
       } else {
         setState(() {
-          _error = response.message ?? 'Failed to fetch settlements';
+          _error = response.message ?? 'Failed to fetch settlements'; // keep as fallback
           _loading = false;
         });
       }
@@ -188,14 +189,14 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
                   Icon(Icons.account_balance, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Settlements',
+                    context.l10n.adminFinanceSettlementsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage payment settlements and disbursements',
+                context.l10n.adminFinanceSettlementsSubtitle,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -203,7 +204,7 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
           IconButton(
             onPressed: _fetchSettlements,
             icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminFinanceRefresh,
           ),
         ],
       ),
@@ -215,13 +216,13 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          Expanded(child: _buildStatCard('Total Settled', _formatCurrency(_stats['totalSettled'] ?? 0), Icons.check_circle, AppColors.success)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinanceTotalSettled, _formatCurrency(_stats['totalSettled'] ?? 0), Icons.check_circle, AppColors.success)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Pending Settlement', _formatCurrency(_stats['pendingSettlement'] ?? 0), Icons.pending, AppColors.warning)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinancePendingSettlement, _formatCurrency(_stats['pendingSettlement'] ?? 0), Icons.pending, AppColors.warning)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Settlement Batches', '${_stats['settlementCount'] ?? 0}', Icons.layers, AppColors.primary)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinanceSettlementBatches, '${_stats['settlementCount'] ?? 0}', Icons.layers, AppColors.primary)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Avg Settlement', _formatCurrency(_stats['avgSettlement'] ?? 0), Icons.analytics, AppColors.info)),
+          Expanded(child: _buildStatCard(context.l10n.adminFinanceAvgSettlement, _formatCurrency(_stats['avgSettlement'] ?? 0), Icons.analytics, AppColors.info)),
         ],
       ),
     );
@@ -261,7 +262,7 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
             flex: 2,
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search settlements...',
+                hintText: context.l10n.adminFinanceSearchSettlementsHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -274,15 +275,15 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
             child: DropdownButtonFormField<String>(
               initialValue: _statusFilter,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminFinanceStatus,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All')),
-                DropdownMenuItem(value: 'settled', child: Text('Settled')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                DropdownMenuItem(value: 'processing', child: Text('Processing')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminFinanceAll)),
+                DropdownMenuItem(value: 'settled', child: Text(context.l10n.adminFinanceSettled)),
+                DropdownMenuItem(value: 'pending', child: Text(context.l10n.adminFinancePending)),
+                DropdownMenuItem(value: 'processing', child: Text(context.l10n.adminFinanceProcessing)),
               ],
               onChanged: (v) {
                 if (v != null) setState(() => _statusFilter = v);
@@ -311,7 +312,7 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
             ElevatedButton.icon(
               onPressed: _fetchSettlements,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(context.l10n.adminFinanceRetry),
             ),
           ],
         ),
@@ -325,7 +326,7 @@ class _SettlementsScreenState extends ConsumerState<SettlementsScreen> {
           children: [
             Icon(Icons.account_balance, size: 64, color: Colors.grey[300]),
             const SizedBox(height: 16),
-            Text('No settlements found', style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+            Text(context.l10n.adminFinanceNoSettlementsFound, style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
           ],
         ),
       );

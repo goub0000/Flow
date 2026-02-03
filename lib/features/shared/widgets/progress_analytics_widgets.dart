@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Progress & Analytics Widgets Library
 ///
@@ -412,7 +413,7 @@ class CourseProgressCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${progress.completedLessons}/${progress.totalLessons} lessons',
+                    context.l10n.swProgressLessonsCount(progress.completedLessons, progress.totalLessons),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -542,7 +543,7 @@ class AchievementBadge extends StatelessWidget {
               if (achievement.isUnlocked && achievement.unlockedAt != null) ...[
                 const SizedBox(height: 8),
                 Text(
-                  'Unlocked ${_formatDate(achievement.unlockedAt!)}',
+                  context.l10n.swProgressUnlocked(_formatDate(context, achievement.unlockedAt!)),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.success,
                     fontWeight: FontWeight.w500,
@@ -556,13 +557,13 @@ class AchievementBadge extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date).inDays;
 
-    if (difference == 0) return 'Today';
-    if (difference == 1) return 'Yesterday';
-    if (difference < 7) return '$difference days ago';
+    if (difference == 0) return context.l10n.swProgressToday;
+    if (difference == 1) return context.l10n.swProgressYesterday;
+    if (difference < 7) return context.l10n.swProgressDaysAgo(difference);
 
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -671,10 +672,10 @@ class StudyGoalCard extends StatelessWidget {
                             ),
                             Text(
                               isCompleted
-                                  ? 'Completed'
+                                  ? context.l10n.swProgressCompleted
                                   : isOverdue
-                                      ? 'Overdue'
-                                      : '$daysLeft days left',
+                                      ? context.l10n.swProgressOverdue
+                                      : context.l10n.swProgressDaysLeft(daysLeft),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: isCompleted
                                     ? AppColors.success
@@ -760,7 +761,7 @@ class StreakCounter extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'day streak',
+                      context.l10n.swProgressDayStreak,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: Colors.orange,
                       ),
@@ -769,7 +770,7 @@ class StreakCounter extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Longest: $longestStreak days',
+                  context.l10n.swProgressLongestStreak(longestStreak),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),

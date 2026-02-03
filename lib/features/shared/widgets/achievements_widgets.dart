@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Achievements and Gamification Widgets
 ///
@@ -388,7 +389,7 @@ class AchievementCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        _formatDate(achievement.unlockedAt!),
+                        _formatDate(context, achievement.unlockedAt!),
                         style: const TextStyle(
                           fontSize: 11,
                           color: AppColors.success,
@@ -478,18 +479,18 @@ class AchievementCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Today';
+      return context.l10n.swAchievementToday;
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return context.l10n.swAchievementYesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return context.l10n.swAchievementDaysAgo(difference.inDays);
     } else if (difference.inDays < 30) {
-      return '${(difference.inDays / 7).floor()} weeks ago';
+      return context.l10n.swAchievementWeeksAgo((difference.inDays / 7).floor());
     }
 
     return '${date.day}/${date.month}/${date.year}';
@@ -614,9 +615,9 @@ class LeaderboardCard extends StatelessWidget {
                               color: AppColors.primary,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text(
-                              'You',
-                              style: TextStyle(
+                            child: Text(
+                              context.l10n.swAchievementYou,
+                              style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -689,7 +690,7 @@ class LeaderboardCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'points',
+                    context.l10n.swAchievementPoints,
                     style: TextStyle(
                       fontSize: 11,
                       color: Colors.grey[600],

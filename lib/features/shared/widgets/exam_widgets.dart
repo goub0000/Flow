@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Exam and Testing Widgets
 ///
@@ -375,7 +376,7 @@ class ExamCard extends StatelessWidget {
                 children: [
                   _buildInfoChip(
                     Icons.calendar_today,
-                    _formatDate(exam.scheduledDate),
+                    _formatDate(context, exam.scheduledDate),
                   ),
                   _buildInfoChip(
                     Icons.schedule,
@@ -383,11 +384,11 @@ class ExamCard extends StatelessWidget {
                   ),
                   _buildInfoChip(
                     Icons.help_outline,
-                    '${exam.totalQuestions} Questions',
+                    context.l10n.swExamQuestionsCount(exam.totalQuestions),
                   ),
                   _buildInfoChip(
                     Icons.grade,
-                    '${exam.totalMarks} Marks',
+                    context.l10n.swExamMarksCount(exam.totalMarks),
                   ),
                 ],
               ),
@@ -415,7 +416,7 @@ class ExamCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Score: ${exam.score}/${exam.totalMarks} (${exam.scorePercentage!.toStringAsFixed(1)}%)',
+                        context.l10n.swExamScoreDisplay(exam.score!, exam.totalMarks),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: exam.scorePercentage! >= 60
@@ -446,7 +447,7 @@ class ExamCard extends StatelessWidget {
                   child: FilledButton.icon(
                     onPressed: exam.canAttempt ? onStart : null,
                     icon: const Icon(Icons.play_arrow),
-                    label: const Text('Start Exam'),
+                    label: Text(context.l10n.swExamStartExam),
                   ),
                 ),
               ],
@@ -474,16 +475,16 @@ class ExamCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = date.difference(now);
 
     if (difference.inDays == 0) {
-      return 'Today ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return '${context.l10n.swExamToday} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     } else if (difference.inDays == 1) {
-      return 'Tomorrow';
+      return context.l10n.swExamTomorrow;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days';
+      return context.l10n.swExamDaysCount(difference.inDays);
     }
 
     return '${date.day}/${date.month}/${date.year}';
@@ -709,8 +710,8 @@ class QuestionWidget extends StatelessWidget {
                 enabled: !showResults,
                 decoration: InputDecoration(
                   hintText: question.type == QuestionType.essay
-                      ? 'Write your answer here...'
-                      : 'Enter your answer...',
+                      ? context.l10n.swExamWriteAnswerHint
+                      : context.l10n.swExamEnterAnswerHint,
                   border: const OutlineInputBorder(),
                 ),
               ),
@@ -734,9 +735,9 @@ class QuestionWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Explanation',
-                            style: TextStyle(
+                          Text(
+                            context.l10n.swExamExplanation,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.blue,
                             ),

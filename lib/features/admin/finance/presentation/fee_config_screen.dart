@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/api/api_config.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -141,7 +142,7 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Fee configuration saved successfully'),
+          content: Text(context.l10n.adminFeeConfigSavedSuccess),
           backgroundColor: AppColors.success,
         ),
       );
@@ -190,14 +191,14 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
                   Icon(Icons.tune, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Fee Configuration',
+                    context.l10n.adminFeeConfigTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 4),
               Text(
-                'Configure platform fees and pricing structure',
+                context.l10n.adminFeeConfigSubtitle,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -205,7 +206,7 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
           Row(
             children: [
               if (_hasChanges) ...[
-                Text('Unsaved changes', style: TextStyle(color: AppColors.warning, fontSize: 13, fontWeight: FontWeight.w500)),
+                Text(context.l10n.adminFeeConfigUnsavedChanges, style: TextStyle(color: AppColors.warning, fontSize: 13, fontWeight: FontWeight.w500)),
                 const SizedBox(width: 12),
               ],
               OutlinedButton(
@@ -213,13 +214,13 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
                   setState(() => _hasChanges = false);
                   _loadFeeConfig();
                 },
-                child: const Text('Reset'),
+                child: Text(context.l10n.adminFeeConfigReset),
               ),
               const SizedBox(width: 8),
               ElevatedButton.icon(
                 onPressed: _hasChanges ? _saveConfig : null,
                 icon: const Icon(Icons.save, size: 20),
-                label: const Text('Save Changes'),
+                label: Text(context.l10n.adminFeeConfigSaveChanges),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -252,20 +253,20 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Fee Summary', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(context.l10n.adminFeeConfigFeeSummary, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(
-                  '${activeFees.length} of ${_fees.length} fee categories active',
+                  '${activeFees.length} of ${_fees.length} ${context.l10n.adminFeeConfigCategoriesActive}',
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                 ),
               ],
             ),
           ),
-          _buildSummaryMetric('Active Fees', '${activeFees.length}', AppColors.success),
+          _buildSummaryMetric(context.l10n.adminFeeConfigActiveFees, '${activeFees.length}', AppColors.success),
           const SizedBox(width: 24),
-          _buildSummaryMetric('Avg Rate', '${avgPercentage.toStringAsFixed(1)}%', AppColors.primary),
+          _buildSummaryMetric(context.l10n.adminFeeConfigAvgRate, '${avgPercentage.toStringAsFixed(1)}%', AppColors.primary),
           const SizedBox(width: 24),
-          _buildSummaryMetric('Disabled', '${_fees.where((f) => !f.enabled).length}', AppColors.textSecondary),
+          _buildSummaryMetric(context.l10n.adminFeeConfigDisabled, '${_fees.where((f) => !f.enabled).length}', AppColors.textSecondary),
         ],
       ),
     );
@@ -338,7 +339,7 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
               children: [
                 Expanded(
                   child: _buildFeeInput(
-                    label: 'Percentage (%)',
+                    label: context.l10n.adminFeeConfigPercentage,
                     value: fee.percentage,
                     suffix: '%',
                     onChanged: (v) {
@@ -350,7 +351,7 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
                 const SizedBox(width: 24),
                 Expanded(
                   child: _buildFeeInput(
-                    label: 'Fixed Amount (KES)',
+                    label: context.l10n.adminFeeConfigFixedAmount,
                     value: fee.fixedAmount,
                     suffix: 'KES',
                     onChanged: (v) {
@@ -370,7 +371,7 @@ class _FeeConfigScreenState extends ConsumerState<FeeConfigScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Example (KES 10,000)', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+                        Text(context.l10n.adminFeeConfigExample, style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                         const SizedBox(height: 4),
                         Text(
                           _formatCurrency(10000 * fee.percentage / 100 + fee.fixedAmount),

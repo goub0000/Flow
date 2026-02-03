@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/services/export_service.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Export button widget with dropdown menu for format selection
 class ExportButton extends StatelessWidget {
@@ -27,36 +28,36 @@ class ExportButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<ExportFormat>(
       icon: const Icon(Icons.download),
-      tooltip: 'Export Data',
+      tooltip: context.l10n.swExportData,
       onSelected: (format) => _handleExport(context, format),
       itemBuilder: (context) => [
-        const PopupMenuItem(
+        PopupMenuItem(
           value: ExportFormat.pdf,
           child: Row(
             children: [
-              Icon(Icons.picture_as_pdf, color: Colors.red),
-              SizedBox(width: 12),
-              Text('Export as PDF'),
+              const Icon(Icons.picture_as_pdf, color: Colors.red),
+              const SizedBox(width: 12),
+              Text(context.l10n.swExportAsPdf),
             ],
           ),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: ExportFormat.csv,
           child: Row(
             children: [
-              Icon(Icons.table_chart, color: Colors.green),
-              SizedBox(width: 12),
-              Text('Export as CSV'),
+              const Icon(Icons.table_chart, color: Colors.green),
+              const SizedBox(width: 12),
+              Text(context.l10n.swExportAsCsv),
             ],
           ),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: ExportFormat.json,
           child: Row(
             children: [
-              Icon(Icons.code, color: Colors.blue),
-              SizedBox(width: 12),
-              Text('Export as JSON'),
+              const Icon(Icons.code, color: Colors.blue),
+              const SizedBox(width: 12),
+              Text(context.l10n.swExportAsJson),
             ],
           ),
         ),
@@ -67,8 +68,8 @@ class ExportButton extends StatelessWidget {
   Future<void> _handleExport(BuildContext context, ExportFormat format) async {
     if (data.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No data to export'),
+        SnackBar(
+          content: Text(context.l10n.swExportNoData),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -98,10 +99,10 @@ class ExportButton extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Exported successfully as ${format.name.toUpperCase()}'),
+            content: Text(context.l10n.swExportSuccess(format.name.toUpperCase())),
             backgroundColor: AppColors.success,
             action: SnackBarAction(
-              label: 'OK',
+              label: context.l10n.swExportOk,
               textColor: Colors.white,
               onPressed: () {},
             ),
@@ -114,10 +115,10 @@ class ExportButton extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Export failed: ${e.toString()}'),
+            content: Text(context.l10n.swExportFailed(e.toString())),
             backgroundColor: AppColors.error,
             action: SnackBarAction(
-              label: 'Retry',
+              label: context.l10n.swExportRetry,
               textColor: Colors.white,
               onPressed: () => _handleExport(context, format),
             ),
@@ -224,7 +225,7 @@ class ExportIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.file_download),
-      tooltip: 'Export',
+      tooltip: context.l10n.swExportTooltip,
       onPressed: () => _showExportDialog(context),
     );
   }
@@ -233,13 +234,13 @@ class ExportIconButton extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Export Data'),
+        title: Text(context.l10n.swExportData),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Icon(Icons.picture_as_pdf, color: Colors.red),
-              title: const Text('Export as PDF'),
+              title: Text(context.l10n.swExportAsPdf),
               onTap: () {
                 Navigator.pop(context);
                 ExportButton(
@@ -252,7 +253,7 @@ class ExportIconButton extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.table_chart, color: Colors.green),
-              title: const Text('Export as CSV'),
+              title: Text(context.l10n.swExportAsCsv),
               onTap: () {
                 Navigator.pop(context);
                 ExportButton(
@@ -265,7 +266,7 @@ class ExportIconButton extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.code, color: Colors.blue),
-              title: const Text('Export as JSON'),
+              title: Text(context.l10n.swExportAsJson),
               onTap: () {
                 Navigator.pop(context);
                 ExportButton(
@@ -281,7 +282,7 @@ class ExportIconButton extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.swExportCancel),
           ),
         ],
       ),

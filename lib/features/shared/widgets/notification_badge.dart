@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 import '../providers/notifications_realtime_provider.dart';
 
 /// Notification bell icon with badge showing unread count
@@ -64,7 +65,7 @@ class NotificationBadge extends ConsumerWidget {
       onPressed: () {
         context.push('/notifications');
       },
-      tooltip: unreadCount > 0 ? '$unreadCount unread notifications' : 'Notifications',
+      tooltip: unreadCount > 0 ? context.l10n.notificationBadgeUnread(unreadCount.toString()) : context.l10n.notificationBadgeNotifications,
     );
   }
 }
@@ -85,7 +86,7 @@ class SimpleNotificationBadge extends ConsumerWidget {
         onPressed: () {
           context.push('/notifications');
         },
-        tooltip: 'Notifications',
+        tooltip: context.l10n.notificationBadgeNotifications,
       ),
     );
   }

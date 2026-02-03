@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Helper function to format time ago
 String _formatTimeAgo(DateTime timestamp) {
@@ -462,7 +463,7 @@ class ConversationTile extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          conversation.lastMessage?.content ?? 'No messages yet',
+                          conversation.lastMessage?.content ?? context.l10n.swMessageNoMessagesYet,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: conversation.unreadCount > 0
                                 ? AppColors.textPrimary
@@ -590,7 +591,7 @@ class _MessageInputFieldState extends State<MessageInputField> {
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    hintText: widget.placeholder ?? 'Type a message...',
+                    hintText: widget.placeholder ?? context.l10n.swMessageTypeMessage,
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -719,7 +720,7 @@ class EmptyMessagesState extends StatelessWidget {
 
   const EmptyMessagesState({
     super.key,
-    this.message = 'No messages yet',
+    this.message = '',
     this.icon = Icons.chat_bubble_outline,
   });
 
@@ -738,7 +739,7 @@ class EmptyMessagesState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            message,
+            message.isEmpty ? context.l10n.swMessageNoMessagesYet : message,
             style: theme.textTheme.titleMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -768,9 +769,9 @@ class MessageDateDivider extends StatelessWidget {
 
     String text;
     if (messageDate == today) {
-      text = 'Today';
+      text = context.l10n.swMessageToday;
     } else if (messageDate == yesterday) {
-      text = 'Yesterday';
+      text = context.l10n.swMessageYesterday;
     } else {
       text = '${date.day}/${date.month}/${date.year}';
     }

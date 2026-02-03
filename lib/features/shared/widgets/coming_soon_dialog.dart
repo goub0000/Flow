@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flow_edtech/core/theme/app_colors.dart';
+import '../../../core/l10n_extension.dart';
 
 /// A reusable dialog widget to show for features that are not yet implemented.
 ///
@@ -41,7 +42,7 @@ class ComingSoonDialog extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Text(
-            'Coming Soon',
+            context.l10n.swComingSoonTitle,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -53,7 +54,7 @@ class ComingSoonDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            customMessage ?? '$featureName is currently under development and will be available in a future update.',
+            customMessage ?? context.l10n.swComingSoonMessage(featureName),
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
@@ -76,7 +77,7 @@ class ComingSoonDialog extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Stay tuned for updates!',
+                    context.l10n.swComingSoonStayTuned,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: AppColors.info,
                       fontWeight: FontWeight.w500,
@@ -95,7 +96,7 @@ class ComingSoonDialog extends StatelessWidget {
             foregroundColor: AppColors.primary,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           ),
-          child: const Text('Got it'),
+          child: Text(context.l10n.swComingSoonGotIt),
         ),
       ],
     );

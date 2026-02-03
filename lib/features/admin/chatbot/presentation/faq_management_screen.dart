@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../services/faq_api_service.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 
@@ -90,17 +91,17 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete FAQ'),
-        content: Text('Are you sure you want to delete this FAQ?\n\n"${faq.question}"'),
+        title: Text(context.l10n.adminChatFaqDeleteTitle),
+        content: Text(context.l10n.adminChatFaqDeleteConfirm(faq.question)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminChatCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(context.l10n.adminChatDelete),
           ),
         ],
       ),
@@ -113,13 +114,13 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
         _loadFAQs(refresh: true);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('FAQ deleted successfully')),
+            SnackBar(content: Text(context.l10n.adminChatFaqDeleted)),
           );
         }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to delete FAQ: $e')),
+            SnackBar(content: Text(context.l10n.adminChatFaqDeleteFailed(e.toString()))),
           );
         }
       }
@@ -134,7 +135,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update FAQ: $e')),
+          SnackBar(content: Text(context.l10n.adminChatFaqUpdateFailed(e.toString()))),
         );
       }
     }
@@ -181,7 +182,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
             onPressed: () => _showFAQDialog(),
             backgroundColor: AppColors.primary,
             icon: const Icon(Icons.add, color: Colors.white),
-            label: const Text('Add FAQ', style: TextStyle(color: Colors.white)),
+            label: Text(context.l10n.adminChatFaqAdd, style: const TextStyle(color: Colors.white)),
           ),
         ),
       ],
@@ -198,7 +199,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Search FAQs...',
+              hintText: context.l10n.adminChatFaqSearch,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -225,16 +226,16 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                 child: DropdownButtonFormField<String>(
                   value: _selectedCategory,
                   decoration: InputDecoration(
-                    labelText: 'Category',
+                    labelText: context.l10n.adminChatFaqCategory,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                   ),
                   items: [
-                    const DropdownMenuItem(
+                    DropdownMenuItem(
                       value: null,
-                      child: Text('All Categories'),
+                      child: Text(context.l10n.adminChatFaqAllCategories),
                     ),
                     ..._categories.map((cat) => DropdownMenuItem(
                           value: cat,
@@ -250,7 +251,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
               const SizedBox(width: 16),
               // Show Inactive Toggle
               FilterChip(
-                label: const Text('Show Inactive'),
+                label: Text(context.l10n.adminChatFaqShowInactive),
                 selected: _showInactiveOnly,
                 onSelected: (value) {
                   setState(() => _showInactiveOnly = value);
@@ -288,7 +289,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => _loadFAQs(refresh: true),
-              child: const Text('Retry'),
+              child: Text(context.l10n.adminChatRetry),
             ),
           ],
         ),
@@ -303,7 +304,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                 size: 64, color: AppColors.textSecondary),
             const SizedBox(height: 16),
             Text(
-              'No FAQs found',
+              context.l10n.adminChatFaqNoFaqs,
               style: TextStyle(
                 fontSize: 18,
                 color: AppColors.textSecondary,
@@ -313,7 +314,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
             TextButton.icon(
               onPressed: () => _showFAQDialog(),
               icon: const Icon(Icons.add),
-              label: const Text('Create your first FAQ'),
+              label: Text(context.l10n.adminChatFaqCreateFirst),
             ),
           ],
         ),
@@ -337,7 +338,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                           _currentPage++;
                           _loadFAQs();
                         },
-                        child: const Text('Load More'),
+                        child: Text(context.l10n.adminChatFaqLoadMore),
                       ),
               ),
             );
@@ -362,12 +363,12 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
             child: Icon(Icons.quiz_outlined, color: AppColors.primary, size: 24),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'FAQ Management',
+                  context.l10n.adminChatFaqTitle,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -375,7 +376,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                   ),
                 ),
                 Text(
-                  'Create, edit, and manage FAQ responses',
+                  context.l10n.adminChatFaqSubtitle,
                   style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                 ),
               ],
@@ -384,7 +385,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => _loadFAQs(refresh: true),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminChatRefresh,
           ),
         ],
       ),
@@ -468,7 +469,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      'Inactive',
+                      context.l10n.adminChatFaqInactive,
                       style: TextStyle(
                         fontSize: 11,
                         color: AppColors.error,
@@ -482,7 +483,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                 IconButton(
                   icon: const Icon(Icons.edit_outlined, size: 20),
                   onPressed: () => _showFAQDialog(faq: faq),
-                  tooltip: 'Edit',
+                  tooltip: context.l10n.adminChatFaqEdit,
                   visualDensity: VisualDensity.compact,
                 ),
                 IconButton(
@@ -493,14 +494,14 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                     size: 20,
                   ),
                   onPressed: () => _toggleActive(faq),
-                  tooltip: faq.isActive ? 'Deactivate' : 'Activate',
+                  tooltip: faq.isActive ? context.l10n.adminChatFaqDeactivate : context.l10n.adminChatFaqActivate,
                   visualDensity: VisualDensity.compact,
                 ),
                 IconButton(
                   icon: Icon(Icons.delete_outline,
                       size: 20, color: AppColors.error),
                   onPressed: () => _deleteFAQ(faq),
-                  tooltip: 'Delete',
+                  tooltip: context.l10n.adminChatDelete,
                   visualDensity: VisualDensity.compact,
                 ),
               ],
@@ -592,13 +593,13 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
             child: Row(
               children: [
                 _buildStatItem(
-                    Icons.trending_up, '${faq.usageCount}', 'Uses'),
+                    Icons.trending_up, '${faq.usageCount}', context.l10n.adminChatFaqUses),
                 const SizedBox(width: 24),
                 _buildStatItem(Icons.thumb_up_outlined,
-                    '${faq.helpfulCount}', 'Helpful'),
+                    '${faq.helpfulCount}', context.l10n.adminChatFaqHelpful),
                 const SizedBox(width: 24),
                 _buildStatItem(Icons.thumb_down_outlined,
-                    '${faq.notHelpfulCount}', 'Not Helpful'),
+                    '${faq.notHelpfulCount}', context.l10n.adminChatFaqNotHelpful),
                 const Spacer(),
                 if (faq.helpfulCount + faq.notHelpfulCount > 0)
                   Container(
@@ -754,14 +755,14 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                widget.faq != null ? 'FAQ updated' : 'FAQ created'),
+                widget.faq != null ? context.l10n.adminChatFaqUpdated : context.l10n.adminChatFaqCreated),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save: $e')),
+          SnackBar(content: Text(context.l10n.adminChatFaqSaveFailed(e.toString()))),
         );
       }
     } finally {
@@ -794,7 +795,7 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      widget.faq != null ? 'Edit FAQ' : 'Create FAQ',
+                      widget.faq != null ? context.l10n.adminChatFaqEditTitle : context.l10n.adminChatFaqCreateTitle,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -812,15 +813,15 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                 // Question
                 TextFormField(
                   controller: _questionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Question',
-                    hintText: 'Enter the FAQ question...',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminChatFaqQuestion,
+                    hintText: context.l10n.adminChatFaqQuestionHint,
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 2,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Question is required';
+                      return context.l10n.adminChatFaqQuestionRequired;
                     }
                     return null;
                   },
@@ -830,16 +831,16 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                 // Answer
                 TextFormField(
                   controller: _answerController,
-                  decoration: const InputDecoration(
-                    labelText: 'Answer',
-                    hintText: 'Enter the answer...',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminChatFaqAnswer,
+                    hintText: context.l10n.adminChatFaqAnswerHint,
                     border: OutlineInputBorder(),
                     alignLabelWithHint: true,
                   ),
                   maxLines: 5,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Answer is required';
+                      return context.l10n.adminChatFaqAnswerRequired;
                     }
                     return null;
                   },
@@ -849,11 +850,11 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                 // Keywords
                 TextFormField(
                   controller: _keywordsController,
-                  decoration: const InputDecoration(
-                    labelText: 'Keywords',
-                    hintText: 'Enter keywords separated by commas...',
-                    border: OutlineInputBorder(),
-                    helperText: 'Used for matching user questions',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminChatFaqKeywords,
+                    hintText: context.l10n.adminChatFaqKeywordsHint,
+                    border: const OutlineInputBorder(),
+                    helperText: context.l10n.adminChatFaqKeywordsHelper,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -864,8 +865,8 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
-                        decoration: const InputDecoration(
-                          labelText: 'Category',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminChatFaqCategory,
                           border: OutlineInputBorder(),
                         ),
                         items: widget.categories
@@ -885,8 +886,8 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                     Expanded(
                       child: DropdownButtonFormField<int>(
                         value: _priority,
-                        decoration: const InputDecoration(
-                          labelText: 'Priority',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminChatFaqPriority,
                           border: OutlineInputBorder(),
                         ),
                         items: List.generate(11, (i) => i)
@@ -912,7 +913,7 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
+                      child: Text(context.l10n.adminChatCancel),
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton.icon(
@@ -924,7 +925,7 @@ class _FAQEditDialogState extends ConsumerState<_FAQEditDialog> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Icon(Icons.save),
-                      label: Text(widget.faq != null ? 'Update' : 'Create'),
+                      label: Text(widget.faq != null ? context.l10n.adminChatFaqUpdate : context.l10n.adminChatFaqCreate),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,

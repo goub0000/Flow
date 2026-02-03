@@ -6,6 +6,7 @@ import '../../../../core/constants/user_roles.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_auth_provider.dart';
@@ -94,7 +95,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.message ?? 'Failed to load admin data'),
+            content: Text(response.message ?? context.l10n.adminUserFailedLoadData),
             backgroundColor: AppColors.error,
           ),
         );
@@ -103,7 +104,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error loading admin data: ${e.toString()}'),
+          content: Text(context.l10n.adminUserErrorLoadingData(e.toString())),
           backgroundColor: AppColors.error,
         ),
       );
@@ -122,8 +123,8 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
     // Validate passwords match (create mode only)
     if (!isEditMode && _passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match'),
+        SnackBar(
+          content: Text(context.l10n.adminUserPasswordsDoNotMatch),
           backgroundColor: AppColors.error,
         ),
       );
@@ -166,8 +167,8 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
 
         if (response.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Admin account updated successfully'),
+            SnackBar(
+              content: Text(context.l10n.adminUserAccountUpdatedSuccess),
               backgroundColor: AppColors.success,
             ),
           );
@@ -175,7 +176,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Failed to update admin account'),
+              content: Text(response.message ?? context.l10n.adminUserFailedUpdateAccount),
               backgroundColor: AppColors.error,
             ),
           );
@@ -210,7 +211,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
         if (response.success) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Admin account created successfully for ${_emailController.text.trim()}'),
+              content: Text(context.l10n.adminUserAccountCreatedSuccess(_emailController.text.trim())),
               backgroundColor: AppColors.success,
             ),
           );
@@ -218,7 +219,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Failed to create admin account'),
+              content: Text(response.message ?? context.l10n.adminUserFailedCreateAccount),
               backgroundColor: AppColors.error,
             ),
           );
@@ -231,7 +232,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: ${e.toString()}'),
+          content: Text(context.l10n.adminUserError(e.toString())),
           backgroundColor: AppColors.error,
         ),
       );
@@ -245,16 +246,16 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
         children: [
           TextButton(
             onPressed: () => context.go('/admin'),
-            child: const Text('Dashboard'),
+            child: Text(context.l10n.adminUserDashboard),
           ),
           const Icon(Icons.chevron_right, size: 16),
           TextButton(
             onPressed: () => context.go('/admin/system/admins'),
-            child: const Text('Admins'),
+            child: Text(context.l10n.adminUserAdmins),
           ),
           const Icon(Icons.chevron_right, size: 16),
           Text(
-            isEditMode ? 'Edit' : 'Create',
+            isEditMode ? context.l10n.adminUserEdit : context.l10n.adminUserCreate,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
@@ -290,7 +291,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isEditMode ? 'Edit Admin Account' : 'Create Admin Account',
+                  isEditMode ? context.l10n.adminUserEditAdminAccount : context.l10n.adminUserCreateAdminAccount,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -298,8 +299,8 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
                 const SizedBox(height: 4),
                 Text(
                   isEditMode
-                      ? 'Update administrator details and permissions'
-                      : 'Add a new administrator to the platform',
+                      ? context.l10n.adminUserUpdateAdminSubtitle
+                      : context.l10n.adminUserCreateAdminSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -351,7 +352,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
           keyboardType: keyboardType,
           obscureText: obscureText,
           decoration: InputDecoration(
-            hintText: 'Enter $label',
+            hintText: label,
             suffixIcon: suffixIcon,
             helperText: helperText,
             helperMaxLines: 2,
@@ -388,9 +389,9 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
       children: [
         Row(
           children: [
-            const Text(
-              'Admin Role',
-              style: TextStyle(
+            Text(
+              context.l10n.adminUserAdminRole,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
@@ -405,9 +406,9 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
         const SizedBox(height: 8),
         DropdownButtonFormField<UserRole>(
           value: _selectedRole,
-          decoration: const InputDecoration(
-            hintText: 'Select admin role',
-            helperText: 'Choose the appropriate admin role based on responsibilities',
+          decoration: InputDecoration(
+            hintText: context.l10n.adminUserSelectAdminRole,
+            helperText: context.l10n.adminUserChooseRoleHelperText,
           ),
           items: adminRoles.map((role) {
             return DropdownMenuItem(
@@ -464,7 +465,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Account Status',
+                  context.l10n.adminUserAccountStatus,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -472,8 +473,8 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
                 ),
                 Text(
                   _isActive
-                      ? 'This admin account is active and can access the admin panel'
-                      : 'This admin account is deactivated and cannot log in',
+                      ? context.l10n.adminUserAccountActiveDesc
+                      : context.l10n.adminUserAccountInactiveDesc,
                   style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
@@ -545,44 +546,44 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
 
                       // Admin Information
                       _buildSection(
-                        'Admin Information',
+                        context.l10n.adminUserAdminInformation,
                         [
                           _buildTextField(
-                            label: 'Full Name',
+                            label: context.l10n.adminUserFullName,
                             controller: _fullNameController,
                             required: true,
                             validator: Validators.fullName,
                           ),
                           const SizedBox(height: 16),
                           _buildTextField(
-                            label: 'Email',
+                            label: context.l10n.adminUserEmail,
                             controller: _emailController,
                             required: true,
                             validator: Validators.email,
                             keyboardType: TextInputType.emailAddress,
                             helperText: isEditMode
-                                ? 'Email cannot be changed'
-                                : 'This will be used to log in to the admin panel',
+                                ? context.l10n.adminUserEmailCannotBeChanged
+                                : context.l10n.adminUserEmailLoginHelper,
                             enabled: !isEditMode,
                           ),
                           const SizedBox(height: 16),
                           _buildTextField(
-                            label: 'Phone Number',
+                            label: context.l10n.adminUserPhoneNumber,
                             controller: _phoneController,
                             keyboardType: TextInputType.phone,
-                            helperText: 'Optional - for account recovery',
+                            helperText: context.l10n.adminUserPhoneHelper,
                           ),
                           const SizedBox(height: 16),
                           _buildRoleDropdown(),
                           if (_selectedRole == UserRole.regionalAdmin) ...[
                             const SizedBox(height: 16),
                             _buildTextField(
-                              label: 'Regional Scope',
+                              label: context.l10n.adminUserRegionalScope,
                               controller: _regionalScopeController,
                               required: true,
                               validator: (value) =>
-                                  value?.isEmpty ?? true ? 'Required for regional admin' : null,
-                              helperText: 'E.g., "North America", "Europe", "APAC"',
+                                  value?.isEmpty ?? true ? context.l10n.adminUserRequiredForRegional : null,
+                              helperText: context.l10n.adminUserRegionalScopeHelper,
                             ),
                           ],
                           if (isEditMode) ...[
@@ -596,10 +597,10 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
                       if (!isEditMode) ...[
                         const SizedBox(height: 24),
                         _buildSection(
-                          'Security Settings',
+                          context.l10n.adminUserSecuritySettings,
                           [
                             _buildTextField(
-                              label: 'Password',
+                              label: context.l10n.adminUserPassword,
                               controller: _passwordController,
                               required: true,
                               validator: Validators.password,
@@ -616,20 +617,20 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
                                   });
                                 },
                               ),
-                              helperText: 'Minimum 8 characters, include uppercase, lowercase, and numbers',
+                              helperText: context.l10n.adminUserPasswordHelper,
                             ),
                             const SizedBox(height: 16),
                             _buildTextField(
-                              label: 'Confirm Password',
+                              label: context.l10n.adminUserConfirmPassword,
                               controller: _confirmPasswordController,
                               required: true,
                               obscureText: _obscureConfirmPassword,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please confirm your password';
+                                  return context.l10n.adminUserPleaseConfirmPassword;
                                 }
                                 if (value != _passwordController.text) {
-                                  return 'Passwords do not match';
+                                  return context.l10n.adminUserPasswordsDoNotMatch;
                                 }
                                 return null;
                               },
@@ -662,7 +663,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                               ),
-                              child: const Text('Cancel'),
+                              child: Text(context.l10n.adminUserCancel),
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -691,7 +692,7 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
                                       children: [
                                         Icon(isEditMode ? Icons.save : Icons.person_add, size: 20),
                                         const SizedBox(width: 8),
-                                        Text(isEditMode ? 'Save Changes' : 'Create Admin Account'),
+                                        Text(isEditMode ? context.l10n.adminUserSaveChanges : context.l10n.adminUserCreateAdminAccount),
                                       ],
                                     ),
                             ),

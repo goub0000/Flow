@@ -2450,5 +2450,2069 @@
   "biometricTypeIris": "Reconnaissance de l'iris",
   "biometricTypeGeneric": "Biométrie",
   "biometricDescEnabled": "Votre {type} est actuellement utilisé pour sécuriser votre compte. Vous pouvez vous connecter rapidement et en toute sécurité.",
-  "biometricDescDisabled": "Utilisez votre {type} pour vous connecter rapidement et en toute sécurité sans entrer votre mot de passe."
+  "biometricDescDisabled": "Utilisez votre {type} pour vous connecter rapidement et en toute sécurité sans entrer votre mot de passe.",
+  "adminChatDashTitle": "Tableau de bord du chatbot",
+  "adminChatDashSubtitle": "Surveiller et gérer les interactions du chatbot",
+  "adminChatDashRefresh": "Actualiser",
+  "adminChatDashTotalConversations": "Total des conversations",
+  "adminChatDashActiveNow": "Actives maintenant",
+  "adminChatDashTotalMessages": "Total des messages",
+  "adminChatDashAvgMessagesPerChat": "Moy. messages/chat",
+  "adminChatDashQuickActions": "Actions rapides",
+  "adminChatDashManageFaqs": "Gérer les FAQ",
+  "adminChatDashManageFaqsDesc": "Créer et organiser les questions fréquemment posées",
+  "adminChatDashConversationHistory": "Historique des conversations",
+  "adminChatDashConversationHistoryDesc": "Parcourir et consulter les conversations passées",
+  "adminChatDashSupportQueue": "File d'attente du support",
+  "adminChatDashSupportQueueDesc": "Examiner les conversations escaladées nécessitant une attention",
+  "adminChatDashLiveMonitoring": "Surveillance en direct",
+  "adminChatDashLiveMonitoringDesc": "Surveiller les conversations actives du chatbot en temps réel",
+  "adminChatDashRecentConversations": "Conversations récentes",
+  "adminChatDashViewAll": "Voir tout",
+  "adminChatDashNoConversations": "Aucune conversation pour le moment",
+  "adminChatDashNoConversationsDesc": "Les conversations du chatbot apparaîtront ici une fois que les utilisateurs commenceront à interagir",
+  "adminChatDashMessagesCount": "{count} messages",
+  "adminChatDashStatusActive": "Active",
+  "adminChatDashStatusArchived": "Archivée",
+  "adminChatDashStatusFlagged": "Signalée",
+  "adminChatDashJustNow": "À l'instant",
+  "adminChatDashMinutesAgo": "il y a {count}m",
+  "adminChatDashHoursAgo": "il y a {count}h",
+  "adminChatDashDaysAgo": "il y a {count}j",
+  "adminFeeConfigTitle": "Configuration des frais",
+  "adminFeeConfigSubtitle": "Gérer les frais et la tarification de la plateforme",
+  "adminFeeConfigUnsavedChanges": "Modifications non enregistrées",
+  "adminFeeConfigReset": "Réinitialiser",
+  "adminFeeConfigSaveChanges": "Enregistrer les modifications",
+  "adminFeeConfigSavedSuccess": "Configuration des frais enregistrée avec succès",
+  "adminFeeConfigFeeSummary": "Résumé des frais",
+  "adminFeeConfigCategoriesActive": "catégories actives",
+  "adminFeeConfigActiveFees": "Frais actifs",
+  "adminFeeConfigAvgRate": "Taux moyen",
+  "adminFeeConfigDisabled": "Désactivés",
+  "adminFeeConfigPercentage": "Pourcentage",
+  "adminFeeConfigFixedAmount": "Montant fixe",
+  "adminFeeConfigExample": "Exemple sur 10 000 KES",
+  "adminSettingsTitle": "Paramètres",
+  "adminSettingsSubtitle": "Gérer votre compte et les préférences système",
+  "adminSettingsProfile": "Profil",
+  "adminSettingsDefaultUser": "Administrateur",
+  "adminSettingsEdit": "Modifier",
+  "adminSettingsRole": "Rôle",
+  "adminSettingsSuperAdmin": "Super administrateur",
+  "adminSettingsNotifications": "Notifications",
+  "adminSettingsEmailNotifications": "Notifications par e-mail",
+  "adminSettingsEmailNotificationsDesc": "Recevoir les mises à jour importantes par e-mail",
+  "adminSettingsPushNotifications": "Notifications push",
+  "adminSettingsPushNotificationsDesc": "Recevoir des notifications push en temps réel sur votre appareil",
+  "adminSettingsUserActivityAlerts": "Alertes d'activité utilisateur",
+  "adminSettingsUserActivityAlertsDesc": "Être notifié en cas d'activité utilisateur inhabituelle",
+  "adminSettingsSystemAlerts": "Alertes système",
+  "adminSettingsSystemAlertsDesc": "Recevoir des alertes sur l'état et les problèmes du système",
+  "adminSettingsDisplay": "Affichage",
+  "adminSettingsDarkMode": "Mode sombre",
+  "adminSettingsDarkModeDesc": "Passer à un schéma de couleurs plus sombre",
+  "adminSettingsLanguage": "Langue",
+  "adminSettingsLangEnglish": "Anglais",
+  "adminSettingsLangSwahili": "Swahili",
+  "adminSettingsLangFrench": "Français",
+  "adminSettingsTimezone": "Fuseau horaire",
+  "adminSettingsSecurity": "Sécurité",
+  "adminSettingsChangePassword": "Changer le mot de passe",
+  "adminSettingsChangePasswordDesc": "Mettre à jour le mot de passe de votre compte",
+  "adminSettingsTwoFactor": "Authentification à deux facteurs",
+  "adminSettingsTwoFactorDesc": "Ajouter une couche de sécurité supplémentaire à votre compte",
+  "adminSettingsActiveSessions": "Sessions actives",
+  "adminSettingsActiveSessionsDesc": "Voir et gérer vos sessions de connexion actives",
+  "adminSettingsPrivacy": "Confidentialité",
+  "adminSettingsActivityLogging": "Journalisation des activités",
+  "adminSettingsActivityLoggingDesc": "Enregistrer les actions administrateur à des fins d'audit",
+  "adminSettingsAnalyticsTracking": "Suivi analytique",
+  "adminSettingsAnalyticsTrackingDesc": "Aider à améliorer la plateforme avec des analyses d'utilisation",
+  "adminSettingsDownloadData": "Télécharger mes données",
+  "adminSettingsDownloadDataDesc": "Exporter toutes vos données personnelles",
+  "adminSettingsDangerZone": "Zone de danger",
+  "adminSettingsSignOut": "Se déconnecter",
+  "adminSettingsSignOutDesc": "Se déconnecter de votre compte administrateur",
+  "adminSettingsSignOutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+  "adminSettingsCancel": "Annuler",
+  "adminSettingsDeleteAccount": "Supprimer le compte",
+  "adminSettingsDeleteAccountDesc": "Supprimer définitivement votre compte et toutes les données",
+  "notifPrefScreenTitle": "Préférences de notification",
+  "notifPrefScreenNoPreferences": "Aucune préférence de notification trouvée",
+  "notifPrefScreenCreateDefaults": "Créer les préférences par défaut",
+  "notifPrefScreenSettingsTitle": "Paramètres de notification",
+  "notifPrefScreenDescription": "Contrôlez les notifications que vous souhaitez recevoir. Les modifications sont enregistrées automatiquement.",
+  "notifPrefScreenCollegeApplications": "Candidatures universitaires",
+  "notifPrefScreenAcademic": "Académique",
+  "notifPrefScreenCommunication": "Communication",
+  "notifPrefScreenMeetingsEvents": "Réunions et événements",
+  "notifPrefScreenAchievements": "Réalisations",
+  "notifPrefScreenSystem": "Système",
+  "notifPrefScreenEmail": "E-mail",
+  "notifPrefScreenPush": "Push",
+  "notifPrefScreenSoon": "(bientôt)",
+  "notifPrefScreenErrorLoading": "Erreur lors du chargement des préférences",
+  "notifPrefScreenRetry": "Réessayer",
+  "notifPrefScreenErrorCreating": "Erreur lors de la création des préférences",
+  "notifPrefScreenErrorUpdating": "Erreur lors de la mise à jour des préférences",
+  "notifPrefScreenPreferencesUpdated": "Préférences mises à jour",
+  "notifPrefScreenDescApplicationStatus": "Soyez averti lorsque le statut de votre candidature change",
+  "notifPrefScreenDescGradePosted": "Recevez des notifications lorsque de nouvelles notes sont publiées",
+  "notifPrefScreenDescMessageReceived": "Soyez averti des nouveaux messages",
+  "notifPrefScreenDescMeetingScheduled": "Recevez des notifications pour les réunions planifiées",
+  "notifPrefScreenDescMeetingReminder": "Recevez des rappels avant vos réunions",
+  "notifPrefScreenDescAchievementEarned": "Célébrez lorsque vous obtenez de nouvelles réalisations",
+  "notifPrefScreenDescDeadlineReminder": "Recevez des rappels pour les échéances à venir",
+  "notifPrefScreenDescRecommendationReady": "Recevez des notifications pour les nouvelles recommandations",
+  "notifPrefScreenDescSystemAnnouncement": "Restez informé des annonces système",
+  "notifPrefScreenDescCommentReceived": "Soyez averti lorsque quelqu'un commente vos publications",
+  "notifPrefScreenDescMention": "Recevez des notifications lorsque vous êtes mentionné",
+  "notifPrefScreenDescEventReminder": "Recevez des rappels pour les événements à venir",
+  "notifPrefScreenDescApprovalRequestNew": "Soyez averti des nouvelles demandes d'approbation",
+  "notifPrefScreenDescApprovalRequestActionNeeded": "Soyez averti lorsqu'une demande d'approbation nécessite votre action",
+  "notifPrefScreenDescApprovalRequestStatusChanged": "Soyez averti lorsque le statut de votre demande d'approbation change",
+  "notifPrefScreenDescApprovalRequestEscalated": "Soyez averti lorsqu'une demande d'approbation est escaladée",
+  "notifPrefScreenDescApprovalRequestExpiring": "Soyez averti lorsqu'une demande d'approbation est sur le point d'expirer",
+  "notifPrefScreenDescApprovalRequestComment": "Soyez averti des commentaires sur les demandes d'approbation",
+  "homeNavFeatures": "Fonctionnalités",
+  "homeNavAbout": "À propos",
+  "homeNavContact": "Contact",
+  "homeNavLogin": "Connexion",
+  "homeNavSignUp": "S'inscrire",
+  "homeNavAccountTypes": "Types de comptes",
+  "homeNavStudents": "Étudiants",
+  "homeNavInstitutions": "Institutions",
+  "homeNavParents": "Parents",
+  "homeNavCounselors": "Conseillers",
+  "homeNavRecommenders": "Recommandeurs",
+  "homeNavBadge": "Première plateforme EdTech d'Afrique",
+  "homeNavWelcome": "Bienvenue sur Flow",
+  "homeNavSubtitle": "Connectez étudiants, institutions, parents et conseillers à travers l'Afrique. Conçu hors ligne avec paiement mobile.",
+  "homeNavGetStarted": "Commencer",
+  "homeNavSignIn": "Se connecter",
+  "homeNavActiveUsers": "Utilisateurs actifs",
+  "homeNavCountries": "Pays",
+  "homeNavNew": "NOUVEAU",
+  "homeNavFindYourPath": "Trouvez votre voie",
+  "homeNavFindYourPathDesc": "Répondez à quelques questions et obtenez des recommandations universitaires personnalisées.",
+  "homeNavPersonalizedRec": "Recommandations personnalisées",
+  "homeNavTopUniversities": "12+ meilleures universités",
+  "homeNavSmartMatching": "Algorithme de correspondance intelligent",
+  "homeNavStartNow": "Commencer maintenant",
+  "homeNavPlatformFeatures": "Fonctionnalités de la plateforme",
+  "homeNavOfflineFirst": "Conception hors ligne d'abord",
+  "homeNavOfflineFirstDesc": "Accédez à votre contenu même sans connexion Internet",
+  "homeNavMobileMoney": "Intégration Mobile Money",
+  "homeNavMobileMoneyDesc": "Payez avec M-Pesa, MTN et d'autres services de paiement mobile",
+  "homeNavMultiLang": "Support multilingue",
+  "homeNavMultiLangDesc": "Disponible en anglais, français, swahili et plus",
+  "homeNavSecure": "Sécurisé et privé",
+  "homeNavSecureDesc": "Chiffrement de bout en bout pour toutes vos données",
+  "homeNavUssd": "Support USSD",
+  "homeNavUssdDesc": "Accédez aux fonctionnalités via téléphones basiques sans Internet",
+  "homeNavCloudSync": "Synchronisation cloud",
+  "homeNavCloudSyncDesc": "Synchronisation automatique sur tous vos appareils",
+  "homeNavHowItWorks": "Comment ça marche",
+  "homeNavCreateAccount": "Créer un compte",
+  "homeNavCreateAccountDesc": "Inscrivez-vous avec votre rôle - étudiant, institution, parent, conseiller ou recommandeur",
+  "homeNavAccessDashboard": "Accéder au tableau de bord",
+  "homeNavAccessDashboardDesc": "Obtenez un tableau de bord personnalisé adapté à vos besoins",
+  "homeNavExploreFeatures": "Explorer les fonctionnalités",
+  "homeNavExploreFeaturesDesc": "Parcourez les cours, les candidatures ou gérez vos responsabilités",
+  "homeNavAchieveGoals": "Atteindre vos objectifs",
+  "homeNavAchieveGoalsDesc": "Suivez vos progrès, collaborez et atteignez vos objectifs éducatifs",
+  "homeNavTrustedAcrossAfrica": "Reconnu à travers l'Afrique",
+  "homeNavTestimonialRole1": "Étudiante, Université du Ghana",
+  "homeNavTestimonialQuote1": "Flow a rendu mon processus de candidature tellement plus facile. Je pouvais tout suivre en un seul endroit !",
+  "homeNavTestimonialRole2": "Doyen, Université Ashesi",
+  "homeNavTestimonialQuote2": "La gestion des candidatures n'a jamais été aussi efficace. Flow change la donne pour les institutions.",
+  "homeNavTestimonialRole3": "Parent, Nigeria",
+  "homeNavTestimonialQuote3": "Je peux désormais suivre les progrès académiques de mes enfants même lorsque je voyage. Tranquillité d'esprit !",
+  "homeNavWhoCanUse": "Qui peut utiliser Flow ?",
+  "homeNavForStudents": "Pour les étudiants",
+  "homeNavForStudentsSubtitle": "Votre passerelle vers la réussite académique",
+  "homeNavForStudentsDesc": "Flow permet aux étudiants de prendre en main leur parcours éducatif avec des outils complets conçus pour les apprenants modernes à travers l'Afrique.",
+  "homeNavCourseAccess": "Accès aux cours",
+  "homeNavCourseAccessDesc": "Parcourez et inscrivez-vous à des milliers de cours des meilleures institutions africaines",
+  "homeNavAppManagement": "Gestion des candidatures",
+  "homeNavAppManagementDesc": "Postulez à plusieurs institutions, suivez le statut et gérez les délais en un seul endroit",
+  "homeNavProgressTracking": "Suivi des progrès",
+  "homeNavProgressTrackingDesc": "Suivez vos progrès académiques avec des analyses détaillées et des aperçus de performance",
+  "homeNavDocManagement": "Gestion des documents",
+  "homeNavDocManagementDesc": "Stockez et partagez relevés, certificats et autres documents académiques en toute sécurité",
+  "homeNavEasyPayments": "Paiements faciles",
+  "homeNavEasyPaymentsDesc": "Payez les frais de scolarité via les services de paiement mobile comme M-Pesa, MTN Money, et plus",
+  "homeNavOfflineAccess": "Accès hors ligne",
+  "homeNavOfflineAccessDesc": "Téléchargez les supports de cours et accédez-y sans connexion Internet",
+  "homeNavForInstitutions": "Pour les institutions",
+  "homeNavForInstitutionsSubtitle": "Simplifiez les admissions et la gestion des étudiants",
+  "homeNavForInstitutionsDesc": "Transformez les opérations de votre institution avec des outils puissants pour les admissions, la gestion des étudiants et la prestation de programmes.",
+  "homeNavApplicantMgmt": "Gestion des candidats",
+  "homeNavApplicantMgmtDesc": "Examinez, traitez et suivez les candidatures efficacement avec des flux automatisés",
+  "homeNavProgramMgmt": "Gestion des programmes",
+  "homeNavProgramMgmtDesc": "Créez et gérez des programmes académiques, définissez des exigences et suivez les inscriptions",
+  "homeNavAnalyticsDash": "Tableau de bord analytique",
+  "homeNavAnalyticsDashDesc": "Obtenez des informations sur les tendances de candidature, la performance des étudiants et les métriques institutionnelles",
+  "homeNavCommHub": "Hub de communication",
+  "homeNavCommHubDesc": "Engagez-vous avec les étudiants, les parents et le personnel via la messagerie intégrée",
+  "homeNavDocVerification": "Vérification des documents",
+  "homeNavDocVerificationDesc": "Vérifiez les documents et les titres des étudiants en toute sécurité",
+  "homeNavFinancialMgmt": "Gestion financière",
+  "homeNavFinancialMgmtDesc": "Suivez les paiements, gérez les bourses et générez des rapports financiers",
+  "homeNavForParents": "Pour les parents",
+  "homeNavForParentsSubtitle": "Restez connecté à l'éducation de votre enfant",
+  "homeNavForParentsDesc": "Restez informé et impliqué dans le parcours éducatif de vos enfants avec des mises à jour en temps réel et des outils de suivi complets.",
+  "homeNavProgressMonitoring": "Suivi des progrès",
+  "homeNavProgressMonitoringDesc": "Suivez la performance académique, la présence et les réalisations de vos enfants",
+  "homeNavRealtimeUpdates": "Mises à jour en temps réel",
+  "homeNavRealtimeUpdatesDesc": "Recevez des notifications instantanées sur les notes, les devoirs et les événements scolaires",
+  "homeNavTeacherComm": "Communication avec les enseignants",
+  "homeNavTeacherCommDesc": "Communiquez directement avec les enseignants et conseillers sur les progrès de votre enfant",
+  "homeNavFeeMgmt": "Gestion des frais",
+  "homeNavFeeMgmtDesc": "Consultez et payez les frais scolaires facilement via le paiement mobile",
+  "homeNavScheduleAccess": "Accès aux horaires",
+  "homeNavScheduleAccessDesc": "Consultez les horaires de cours, les dates d'examens et les événements du calendrier scolaire",
+  "homeNavReportCards": "Bulletins scolaires",
+  "homeNavReportCardsDesc": "Accédez aux bulletins détaillés et aux résumés de performance",
+  "homeNavForCounselors": "Pour les conseillers",
+  "homeNavForCounselorsSubtitle": "Guidez les étudiants vers leur meilleur avenir",
+  "homeNavForCounselorsDesc": "Renforcez votre pratique de conseil avec des outils pour gérer les sessions, suivre les progrès des étudiants et fournir des conseils personnalisés.",
+  "homeNavSessionMgmt": "Gestion des sessions",
+  "homeNavSessionMgmtDesc": "Planifiez, suivez et documentez les sessions de conseil avec les étudiants",
+  "homeNavStudentPortfolio": "Portfolio étudiant",
+  "homeNavStudentPortfolioDesc": "Maintenez des profils complets et des notes pour chaque étudiant que vous conseillez",
+  "homeNavActionPlans": "Plans d'action",
+  "homeNavActionPlansDesc": "Créez et suivez des plans d'action et des objectifs personnalisés pour les étudiants",
+  "homeNavCollegeGuidance": "Orientation universitaire",
+  "homeNavCollegeGuidanceDesc": "Aidez les étudiants à explorer les programmes et à naviguer le processus de candidature",
+  "homeNavCareerAssessment": "Évaluation de carrière",
+  "homeNavCareerAssessmentDesc": "Fournissez des évaluations de carrière et recommandez des voies adaptées",
+  "homeNavParentCollab": "Collaboration avec les parents",
+  "homeNavParentCollabDesc": "Coordonnez avec les parents pour soutenir la réussite des étudiants",
+  "homeNavForRecommenders": "Pour les recommandeurs",
+  "homeNavForRecommendersSubtitle": "Soutenez les étudiants avec des recommandations puissantes",
+  "homeNavForRecommendersDesc": "Rédigez, gérez et soumettez des lettres de recommandation efficacement tout en maintenant votre réseau professionnel.",
+  "homeNavLetterMgmt": "Gestion des lettres",
+  "homeNavLetterMgmtDesc": "Rédigez, modifiez et stockez des lettres de recommandation avec des modèles",
+  "homeNavEasySubmission": "Soumission facile",
+  "homeNavEasySubmissionDesc": "Soumettez des recommandations directement aux institutions en toute sécurité",
+  "homeNavRequestTracking": "Suivi des demandes",
+  "homeNavRequestTrackingDesc": "Suivez toutes les demandes de recommandation et les délais en un seul endroit",
+  "homeNavLetterTemplates": "Modèles de lettres",
+  "homeNavLetterTemplatesDesc": "Utilisez des modèles personnalisables pour simplifier votre processus de rédaction",
+  "homeNavDigitalSignature": "Signature numérique",
+  "homeNavDigitalSignatureDesc": "Signez et vérifiez les lettres numériquement avec une authentification sécurisée",
+  "homeNavStudentHistory": "Historique des étudiants",
+  "homeNavStudentHistoryDesc": "Maintenez des dossiers des étudiants que vous avez recommandés au fil du temps",
+  "homeNavReadyToStart": "Prêt à commencer ?",
+  "homeNavJoinThousands": "Rejoignez des milliers de personnes qui transforment l'éducation avec Flow.",
+  "homeNavFlowEdTech": "Flow EdTech",
+  "homeNavPrivacy": "Confidentialité",
+  "homeNavTerms": "Conditions",
+  "homeNavCopyright": "© 2025 Flow EdTech",
+  "homeNavTop": "Haut",
+  "homeNavGetStartedAs": "Commencer en tant que {role}",
+  "@homeNavGetStartedAs": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNavForPrefix": "Pour les ",
+  "aboutPageTitle": "À propos de Flow",
+  "aboutPageFlowEdTech": "Flow EdTech",
+  "aboutPagePremierPlatform": "Première plateforme éducative d'Afrique",
+  "aboutPageOurMission": "Notre mission",
+  "aboutPageMissionContent": "Flow se consacre à transformer l'éducation à travers l'Afrique en connectant les étudiants avec les universités, les conseillers et les ressources dont ils ont besoin pour réussir.",
+  "aboutPageOurVision": "Notre vision",
+  "aboutPageVisionContent": "Nous envisageons un avenir où chaque étudiant africain dispose des outils, des informations et du soutien nécessaires pour réaliser ses rêves éducatifs.",
+  "aboutPageOurStory": "Notre histoire",
+  "aboutPageOurValues": "Nos valeurs",
+  "aboutPageGetInTouch": "Nous contacter",
+  "privacyPageTitle": "Politique de confidentialité",
+  "privacyPageLastUpdated": "Dernière mise à jour : janvier 2026",
+  "privacyPageSection1Title": "1. Informations que nous collectons",
+  "privacyPageSection1Content": "Nous collectons les informations que vous nous fournissez directement, comme lors de la création d'un compte, du remplissage d'un formulaire ou de la communication avec nous. Cela peut inclure :\n\n- Informations personnelles (nom, e-mail, numéro de téléphone)\n- Informations éducatives (notes, résultats, préférences)\n- Identifiants de compte\n- Préférences de communication\n- Données d'utilisation et d'analyse",
+  "privacyPageSection2Title": "2. Comment nous utilisons vos informations",
+  "privacyPageSection2Content": "Nous utilisons les informations collectées pour :\n\n- Fournir, maintenir et améliorer nos services\n- Vous associer à des universités et programmes adaptés\n- Vous envoyer des notifications et mises à jour pertinentes\n- Répondre à vos demandes et requêtes de support\n- Analyser les habitudes d'utilisation pour améliorer l'expérience\n- Respecter les obligations légales",
+  "privacyPageSection3Title": "3. Partage d'informations",
+  "privacyPageSection3Content": "Nous pouvons partager vos informations avec :\n\n- Les universités et institutions qui vous intéressent\n- Les conseillers avec lesquels vous choisissez de vous connecter\n- Les parents/tuteurs (avec votre consentement)\n- Les prestataires de services qui assistent nos opérations\n- Les autorités légales lorsque la loi l'exige\n\nNous ne vendons pas vos informations personnelles à des tiers.",
+  "privacyPageSection4Title": "4. Sécurité des données",
+  "privacyPageSection4Content": "Nous mettons en œuvre des mesures de sécurité conformes aux normes de l'industrie pour protéger vos données :\n\n- Chiffrement des données en transit et au repos\n- Audits et évaluations de sécurité réguliers\n- Contrôles d'accès et authentification\n- Centres de données sécurisés avec conformité SOC 2",
+  "privacyPageSection5Title": "5. Vos droits",
+  "privacyPageSection5Content": "Vous avez le droit de :\n\n- Accéder à vos données personnelles\n- Corriger les informations inexactes\n- Supprimer votre compte et vos données\n- Exporter vos données dans un format portable\n- Vous désinscrire des communications marketing\n- Retirer votre consentement à tout moment",
+  "privacyPageSection6Title": "6. Nous contacter",
+  "privacyPageSection6Content": "Si vous avez des questions sur cette politique de confidentialité, veuillez nous contacter à :\n\nE-mail : privacy@flowedtech.com\nAdresse : Accra, Ghana",
+  "privacyPageContactTeam": "Contacter l'équipe confidentialité",
+  "privacyPageLastUpdatedLabel": "Dernière mise à jour : {date}",
+  "@privacyPageLastUpdatedLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "termsPageTitle": "Conditions d'utilisation",
+  "termsPageLastUpdated": "Dernière mise à jour : janvier 2026",
+  "termsPageSection1Title": "1. Acceptation des conditions",
+  "termsPageSection1Content": "En accédant ou en utilisant Flow EdTech (« le Service »), vous acceptez d'être lié par ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre Service.",
+  "termsPageSection2Title": "2. Comptes utilisateurs",
+  "termsPageSection2Content": "Pour utiliser certaines fonctionnalités, vous devez créer un compte. Vous acceptez de fournir des informations exactes et complètes, de maintenir la sécurité de vos identifiants et d'assumer la responsabilité de toutes les activités sous votre compte.",
+  "termsPageSection3Title": "3. Conduite de l'utilisateur",
+  "termsPageSection3Content": "Vous acceptez de ne pas utiliser le Service à des fins illégales, de ne pas harcèler d'autres utilisateurs, de ne pas soumettre de fausses informations et de ne pas tenter d'obtenir un accès non autorisé aux systèmes.",
+  "termsPageSection4Title": "4. Limitation de responsabilité",
+  "termsPageSection4Content": "LE SERVICE EST FOURNI « TEL QUEL » SANS GARANTIE D'AUCUNE SORTE. NOUS DÉCLINONS TOUTES LES GARANTIES, EXPRESSES OU IMPLICITES.",
+  "termsPageSection5Title": "5. Contact",
+  "termsPageSection5Content": "Pour toute question concernant ces conditions, contactez-nous à : legal@flowedtech.com",
+  "termsPageAgreement": "En utilisant Flow, vous acceptez ces conditions",
+  "contactPageTitle": "Nous contacter",
+  "contactPageGetInTouch": "Entrer en contact",
+  "contactPageSubtitle": "Des questions ? Nous serions ravis de vous entendre.",
+  "contactPageEmail": "E-mail",
+  "contactPageEmailValue": "support@flowedtech.com",
+  "contactPageEmailReply": "Nous répondons sous 24 heures",
+  "contactPageOffice": "Bureau",
+  "contactPageOfficeValue": "Accra, Ghana",
+  "contactPageOfficeRegion": "Afrique de l'Ouest",
+  "contactPageHours": "Horaires",
+  "contactPageHoursValue": "Lun - Ven : 9h - 18h",
+  "contactPageHoursTimezone": "Fuseau horaire GMT",
+  "contactPageSendMessage": "Envoyez-nous un message",
+  "contactPageYourName": "Votre nom",
+  "contactPageEmailAddress": "Adresse e-mail",
+  "contactPageSubject": "Objet",
+  "contactPageMessage": "Message",
+  "contactPageSendButton": "Envoyer le message",
+  "contactPageNameRequired": "Veuillez entrer votre nom",
+  "contactPageEmailRequired": "Veuillez entrer votre e-mail",
+  "contactPageEmailInvalid": "Veuillez entrer un e-mail valide",
+  "contactPageSubjectRequired": "Veuillez entrer un objet",
+  "contactPageMessageRequired": "Veuillez entrer votre message",
+  "contactPageSuccessMessage": "Merci pour votre message ! Nous vous répondrons bientôt.",
+  "blogPageTitle": "Blog Flow",
+  "blogPageSubtitle": "Actualités, conseils et histoires sur l'éducation en Afrique",
+  "blogPageCategories": "Catégories",
+  "blogPageAll": "Tous",
+  "blogPageRecentPosts": "Articles récents",
+  "blogPageFeatured": "En vedette",
+  "blogPageSubscribeTitle": "Abonnez-vous à notre newsletter",
+  "blogPageSubscribeSubtitle": "Recevez les derniers articles et ressources directement dans votre boîte de réception",
+  "blogPageEnterEmail": "Entrez votre e-mail",
+  "blogPageSubscribeButton": "S'abonner",
+  "careersPageTitle": "Carrières",
+  "careersPageJoinMission": "Rejoignez notre mission",
+  "careersPageHeroSubtitle": "Aidez-nous à transformer l'éducation à travers l'Afrique",
+  "careersPageWhyJoin": "Pourquoi rejoindre Flow ?",
+  "careersPageGlobalImpact": "Impact mondial",
+  "careersPageGlobalImpactDesc": "Travaillez sur des solutions qui touchent des millions d'étudiants à travers l'Afrique",
+  "careersPageGrowth": "Croissance",
+  "careersPageGrowthDesc": "Opportunités d'apprentissage continu et de développement de carrière",
+  "careersPageGreatTeam": "Super équipe",
+  "careersPageGreatTeamDesc": "Collaborez avec des personnes passionnées et talentueuses",
+  "careersPageFlexibility": "Flexibilité",
+  "careersPageFlexibilityDesc": "Culture favorable au télétravail avec des horaires flexibles",
+  "careersPageOpenPositions": "Postes ouverts",
+  "careersPageApply": "Postuler",
+  "careersPageNoFit": "Vous ne trouvez pas le poste idéal ?",
+  "careersPageNoFitDesc": "Nous sommes toujours à la recherche de personnes talentueuses. Envoyez votre CV à careers@flowedtech.com",
+  "careersPageContactUs": "Nous contacter",
+  "communityPageTitle": "Rejoignez notre communauté",
+  "communityPageSubtitle": "Connectez-vous avec des étudiants, conseillers et éducateurs",
+  "communityPageMembers": "Membres",
+  "communityPageGroups": "Groupes",
+  "communityPageDiscussions": "Discussions",
+  "communityPageFeaturedGroups": "Groupes en vedette",
+  "communityPagePopularDiscussions": "Discussions populaires",
+  "communityPageUpcomingEvents": "Événements à venir",
+  "communityPageAttending": "participants",
+  "communityPageJoin": "Rejoindre",
+  "communityPageReadyToJoin": "Prêt à rejoindre ?",
+  "communityPageCreateAccount": "Créez un compte pour rejoindre la communauté",
+  "communityPageSignUpFree": "S'inscrire gratuitement",
+  "communityPageBy": "par {author}",
+  "@communityPageBy": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "compliancePageTitle": "Conformité",
+  "compliancePageHeadline": "Conformité et certifications",
+  "compliancePageSubtitle": "Notre engagement envers la sécurité, la confidentialité et la conformité réglementaire",
+  "compliancePageCertifications": "Certifications",
+  "compliancePageSoc2": "SOC 2 Type II",
+  "compliancePageSoc2Desc": "Certifié pour la sécurité, la disponibilité et la confidentialité",
+  "compliancePageIso": "ISO 27001",
+  "compliancePageIsoDesc": "Certification de gestion de la sécurité de l'information",
+  "compliancePageGdpr": "Conforme au RGPD",
+  "compliancePageGdprDesc": "Règlement général sur la protection des données de l'UE",
+  "compliancePageDataProtection": "Protection des données",
+  "compliancePageDataProtectionContent": "Nous mettons en œuvre des mesures complètes de protection des données pour protéger vos informations :\n\n• Chiffrement de bout en bout pour les données en transit\n• Chiffrement AES-256 pour les données au repos\n• Audits de sécurité réguliers et tests de pénétration\n• Support d'authentification multi-facteurs\n• Contrôle d'accès basé sur les rôles\n• Sauvegarde automatisée et récupération après sinistre",
+  "compliancePagePrivacyPractices": "Pratiques de confidentialité",
+  "compliancePagePrivacyContent": "Nos pratiques de confidentialité sont conçues pour protéger vos droits :\n\n• Politiques transparentes de collecte et d'utilisation des données\n• Gestion du consentement pour le traitement des données\n• Principes de minimisation des données\n• Droit d'accès, de rectification et de suppression des données\n• Support de portabilité des données\n• Évaluations régulières d'impact sur la vie privée",
+  "compliancePageRegulatory": "Conformité réglementaire",
+  "compliancePageRegulatoryContent": "Flow respecte les réglementations internationales et régionales :\n\n• Règlement général sur la protection des données (RGPD) - UE\n• Loi sur la protection des informations personnelles (POPIA) - Afrique du Sud\n• Loi sur la protection des données - Ghana, Kenya, Nigeria\n• Loi sur la protection de la vie privée des enfants en ligne (COPPA)\n• Loi californienne sur la protection des consommateurs (CCPA)",
+  "compliancePageThirdParty": "Sécurité des tiers",
+  "compliancePageThirdPartyContent": "Nous vérifions et surveillons attentivement nos prestataires de services tiers :\n\n• Évaluations de sécurité des fournisseurs\n• Accords de traitement des données\n• Transparence des sous-traitants\n• Revues de conformité régulières\n• Coordination de la réponse aux incidents",
+  "compliancePageSecurityPractices": "Pratiques de sécurité",
+  "compliancePageRegularUpdates": "Mises à jour régulières",
+  "compliancePageRegularUpdatesDesc": "Correctifs de sécurité et mises à jour déployés en continu",
+  "compliancePageBugBounty": "Programme Bug Bounty",
+  "compliancePageBugBountyDesc": "Programme de divulgation responsable pour les chercheurs en sécurité",
+  "compliancePageMonitoring": "Surveillance",
+  "compliancePageMonitoringDesc": "Surveillance de la sécurité et détection des menaces 24h/24 7j/7",
+  "compliancePageAuditLogs": "Journaux d'audit",
+  "compliancePageAuditLogsDesc": "Journalisation complète de tous les événements de sécurité",
+  "compliancePageQuestions": "Questions de conformité ?",
+  "compliancePageContactTeam": "Contactez notre équipe de conformité pour vos demandes",
+  "compliancePageLastUpdated": "Dernière mise à jour : {date}",
+  "@compliancePageLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "cookiesPageTitle": "Politique de cookies",
+  "cookiesPageLastUpdated": "Dernière mise à jour : janvier 2026",
+  "cookiesPageWhatAreCookies": "Que sont les cookies ?",
+  "cookiesPageWhatAreCookiesContent": "Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitez un site web. Ils aident le site à mémoriser les informations de votre visite, comme votre langue préférée et d'autres paramètres, ce qui peut faciliter votre prochaine visite.\n\nNous utilisons des cookies et des technologies similaires pour fournir, protéger et améliorer nos services.",
+  "cookiesPageHowWeUse": "Comment nous utilisons les cookies",
+  "cookiesPageHowWeUseContent": "Nous utilisons différents types de cookies à des fins variées :\n\n**Cookies essentiels**\nCes cookies sont nécessaires au bon fonctionnement du site web. Ils activent les fonctionnalités de base comme la navigation, l'accès sécurisé aux zones protégées et la mémorisation de votre état de connexion.\n\n**Cookies de performance**\nCes cookies nous aident à comprendre comment les visiteurs interagissent avec notre site web. Ils collectent des informations sur les visites de pages et les messages d'erreur rencontrés.\n\n**Cookies de fonctionnalité**\nCes cookies permettent des fonctionnalités améliorées et la personnalisation, comme la mémorisation de vos préférences et paramètres linguistiques.\n\n**Cookies analytiques**\nNous utilisons des cookies analytiques pour analyser le trafic du site web et optimiser l'expérience utilisateur.",
+  "cookiesPageTypesTitle": "Types de cookies que nous utilisons",
+  "cookiesPageCookieType": "Type de cookie",
+  "cookiesPagePurpose": "Objectif",
+  "cookiesPageDuration": "Durée",
+  "cookiesPageSession": "Session",
+  "cookiesPageAuthentication": "Authentification",
+  "cookiesPagePreferences": "Préférences",
+  "cookiesPageUserSettings": "Paramètres utilisateur",
+  "cookiesPageAnalytics": "Analytique",
+  "cookiesPageUsageStatistics": "Statistiques d'utilisation",
+  "cookiesPageSecurity": "Sécurité",
+  "cookiesPageFraudPrevention": "Prévention de la fraude",
+  "cookiesPageManaging": "Gérer vos préférences de cookies",
+  "cookiesPageManagingContent": "Vous avez plusieurs options pour gérer les cookies :\n\n**Paramètres du navigateur**\nLa plupart des navigateurs web vous permettent de contrôler les cookies via leurs paramètres. Vous pouvez configurer votre navigateur pour refuser les cookies ou vous alerter lorsque des cookies sont envoyés.\n\n**Nos paramètres de cookies**\nVous pouvez gérer vos préférences de cookies pour notre plateforme en visitant Paramètres > Préférences de cookies dans votre compte.\n\n**Liens de désinscription**\nPour les cookies analytiques et publicitaires, vous pouvez vous désinscrire via les mécanismes de désinscription de l'industrie.\n\nNote : La désactivation de certains cookies peut affecter votre expérience et limiter certaines fonctionnalités.",
+  "cookiesPageThirdParty": "Cookies tiers",
+  "cookiesPageThirdPartyContent": "Certains cookies sont placés par des services tiers qui apparaissent sur nos pages. Nous ne contrôlons pas ces cookies.\n\nLes services tiers que nous utilisons et qui peuvent placer des cookies incluent :\n• Supabase (Authentification)\n• Sentry (Suivi des erreurs)\n• Services d'analyse\n\nVeuillez consulter les politiques de confidentialité de ces services pour plus d'informations.",
+  "cookiesPageUpdates": "Mises à jour de cette politique",
+  "cookiesPageUpdatesContent": "Nous pouvons mettre à jour cette politique de cookies de temps en temps. Lorsque nous apportons des modifications, nous mettrons à jour la date de « Dernière mise à jour » en haut de cette page.\n\nNous vous encourageons à consulter cette politique périodiquement.",
+  "cookiesPageManagePreferences": "Gérer les préférences de cookies",
+  "cookiesPageCustomize": "Personnalisez les cookies que vous autorisez",
+  "cookiesPageManageButton": "Gérer",
+  "cookiesPageQuestionsTitle": "Questions sur les cookies ?",
+  "cookiesPageQuestionsContact": "Contactez-nous à privacy@flowedtech.com",
+  "dataProtPageTitle": "Protection des données",
+  "dataProtPageSubtitle": "Comment nous protégeons et gérons vos données personnelles",
+  "dataProtPageYourRights": "Vos droits sur les données",
+  "dataProtPageRightsIntro": "En vertu des lois sur la protection des données, vous disposez des droits suivants :",
+  "dataProtPageRightAccess": "Droit d'accès",
+  "dataProtPageRightAccessDesc": "Vous pouvez demander une copie de toutes les données personnelles que nous détenons sur vous. Nous vous la fournirons sous 30 jours.",
+  "dataProtPageRightRectification": "Droit de rectification",
+  "dataProtPageRightRectificationDesc": "Vous pouvez demander la correction de données personnelles inexactes ou incomplètes.",
+  "dataProtPageRightErasure": "Droit à l'effacement",
+  "dataProtPageRightErasureDesc": "Vous pouvez demander la suppression de vos données personnelles dans certaines circonstances.",
+  "dataProtPageRightPortability": "Droit à la portabilité des données",
+  "dataProtPageRightPortabilityDesc": "Vous pouvez demander vos données dans un format structuré et lisible par machine.",
+  "dataProtPageRightObject": "Droit d'opposition",
+  "dataProtPageRightObjectDesc": "Vous pouvez vous opposer au traitement de vos données personnelles à certaines fins.",
+  "dataProtPageRightRestrict": "Droit à la limitation du traitement",
+  "dataProtPageRightRestrictDesc": "Vous pouvez demander que nous limitions l'utilisation de vos données.",
+  "dataProtPageHowWeProtect": "Comment nous protégeons vos données",
+  "dataProtPageHowWeProtectContent": "Nous mettons en œuvre des mesures de sécurité robustes pour protéger vos données personnelles :\n\n**Mesures techniques**\n• Chiffrement de bout en bout pour la transmission des données\n• Chiffrement AES-256 pour les données stockées\n• Audits de sécurité réguliers et tests de pénétration\n• Systèmes de détection d'intrusion\n• Centres de données sécurisés avec sécurité physique\n\n**Mesures organisationnelles**\n• Formation du personnel sur la protection des données\n• Contrôles d'accès et authentification\n• Évaluations d'impact sur la protection des données\n• Procédures de réponse aux incidents\n• Revues de conformité régulières",
+  "dataProtPageStorage": "Stockage et conservation des données",
+  "dataProtPageStorageContent": "**Où nous stockons vos données**\nVos données sont stockées sur des serveurs sécurisés situés dans des régions disposant de lois strictes sur la protection des données. Nous utilisons des fournisseurs cloud de premier plan avec des certifications SOC 2 et ISO 27001.\n\n**Durée de conservation de vos données**\n• Données de compte : jusqu'à la suppression de votre compte\n• Données de candidature : 7 ans pour la conformité\n• Données analytiques : 2 ans\n• Journaux de communication : 3 ans\n\nAprès ces périodes, les données sont supprimées en toute sécurité ou anonymisées.",
+  "dataProtPageSharing": "Partage des données",
+  "dataProtPageSharingContent": "Nous ne partageons vos données que lorsque c'est nécessaire :\n\n• **Avec votre consentement** : Lorsque vous acceptez explicitement\n• **Prestataires de services** : Partenaires qui nous aident à fournir nos services\n• **Exigences légales** : Lorsque la loi l'exige\n• **Transferts d'entreprise** : En cas de fusion ou d'acquisition\n\nNous ne vendons jamais vos données personnelles à des tiers.",
+  "dataProtPageExerciseRights": "Exercez vos droits",
+  "dataProtPageExerciseRightsDesc": "Pour effectuer une demande de données ou exercer l'un de vos droits, contactez notre Délégué à la Protection des Données :",
+  "dataProtPageContactUs": "Nous contacter",
+  "dataProtPageManageData": "Gérer les données",
+  "dataProtPageRelatedInfo": "Informations connexes",
+  "dataProtPagePrivacyPolicy": "Politique de confidentialité",
+  "dataProtPageCookiePolicy": "Politique de cookies",
+  "dataProtPageTermsOfService": "Conditions d'utilisation",
+  "dataProtPageCompliance": "Conformité",
+  "docsPageTitle": "Documentation",
+  "docsPageSubtitle": "Tout ce que vous devez savoir sur l'utilisation de Flow",
+  "docsPageGettingStarted": "Pour commencer",
+  "docsPageGettingStartedDesc": "Apprenez les bases de Flow",
+  "docsPageForStudents": "Pour les étudiants",
+  "docsPageForStudentsDesc": "Guides pour les étudiants",
+  "docsPageForParents": "Pour les parents",
+  "docsPageForParentsDesc": "Guides pour les parents",
+  "docsPageForCounselors": "Pour les conseillers",
+  "docsPageForCounselorsDesc": "Guides pour les conseillers en éducation",
+  "docsPageForInstitutions": "Pour les institutions",
+  "docsPageForInstitutionsDesc": "Guides pour les universités et collèges",
+  "docsPageCantFind": "Vous ne trouvez pas ce que vous cherchez ?",
+  "docsPageCheckHelpCenter": "Consultez notre Centre d'aide ou contactez le support",
+  "docsPageHelpCenter": "Centre d'aide",
+  "helpCenterPageTitle": "Centre d'aide",
+  "helpCenterPageHowCanWeHelp": "Comment pouvons-nous vous aider ?",
+  "helpCenterPageSearchHint": "Rechercher de l'aide...",
+  "helpCenterPageQuickLinks": "Liens rapides",
+  "helpCenterPageUniversitySearch": "Recherche d'universités",
+  "helpCenterPageMyProfile": "Mon profil",
+  "helpCenterPageSettings": "Paramètres",
+  "helpCenterPageContactSupport": "Contacter le support",
+  "helpCenterPageCategories": "Catégories",
+  "helpCenterPageFaq": "Questions fréquemment posées",
+  "helpCenterPageNoResults": "Aucun résultat trouvé",
+  "helpCenterPageStillNeedHelp": "Besoin d'aide supplémentaire ?",
+  "helpCenterPageSupportTeam": "Notre équipe de support est là pour vous aider",
+  "mobileAppsPageTitle": "Flow sur mobile",
+  "mobileAppsPageSubtitle": "Emportez votre parcours éducatif avec vous.\nTéléchargez l'application Flow sur votre plateforme préférée.",
+  "mobileAppsPageDownloadNow": "Télécharger maintenant",
+  "mobileAppsPageDownloadOnThe": "Télécharger sur",
+  "mobileAppsPageFeatures": "Fonctionnalités de l'application mobile",
+  "mobileAppsPageOfflineMode": "Mode hors ligne",
+  "mobileAppsPageOfflineModeDesc": "Accédez aux fonctionnalités clés sans Internet",
+  "mobileAppsPagePushNotifications": "Notifications push",
+  "mobileAppsPagePushNotificationsDesc": "Restez informé sur vos candidatures",
+  "mobileAppsPageBiometricLogin": "Connexion biométrique",
+  "mobileAppsPageBiometricLoginDesc": "Accès sécurisé et rapide",
+  "mobileAppsPageRealtimeSync": "Synchronisation en temps réel",
+  "mobileAppsPageRealtimeSyncDesc": "Données toujours à jour",
+  "mobileAppsPageDarkMode": "Mode sombre",
+  "mobileAppsPageDarkModeDesc": "Confortable pour les yeux",
+  "mobileAppsPageFastLight": "Rapide et léger",
+  "mobileAppsPageFastLightDesc": "Optimisé pour la performance",
+  "mobileAppsPageAppPreview": "Aperçu de l'application",
+  "mobileAppsPageSystemRequirements": "Configuration requise",
+  "mobileAppsPageScanToDownload": "Scanner pour télécharger",
+  "mobileAppsPageScanDesc": "Scannez ce code QR avec l'appareil photo de votre téléphone pour télécharger l'application",
+  "partnersPageTitle": "Partenaires",
+  "partnersPageHeroTitle": "Devenez partenaire de Flow",
+  "partnersPageHeroSubtitle": "Rejoignez-nous pour transformer l'éducation à travers l'Afrique",
+  "partnersPageOpportunities": "Opportunités de partenariat",
+  "partnersPageUniversities": "Universités et institutions",
+  "partnersPageUniversitiesDesc": "Listez vos programmes, connectez-vous avec des étudiants potentiels et simplifiez votre processus d'admission.",
+  "partnersPageCounselors": "Conseillers en éducation",
+  "partnersPageCounselorsDesc": "Rejoignez notre réseau de conseillers et aidez à guider les étudiants vers le parcours éducatif idéal.",
+  "partnersPageCorporate": "Partenaires corporatifs",
+  "partnersPageCorporateDesc": "Soutenez les initiatives éducatives par des bourses, des stages et des programmes de mentorat.",
+  "partnersPageNgo": "ONG et gouvernements",
+  "partnersPageNgoDesc": "Collaborez sur des initiatives pour améliorer l'accès et les résultats en éducation dans les régions.",
+  "partnersPageOurPartners": "Nos partenaires",
+  "partnersPageReadyToPartner": "Prêt à devenir partenaire ?",
+  "partnersPageLetsDiscuss": "Discutons de comment nous pouvons travailler ensemble",
+  "partnersPageContactTeam": "Contacter l'équipe partenariats",
+  "pressPageTitle": "Dossier de presse",
+  "pressPageSubtitle": "Ressources pour les médias et la couverture presse",
+  "pressPageCompanyOverview": "Présentation de l'entreprise",
+  "pressPageCompanyOverviewContent": "Flow EdTech est la première plateforme de technologie éducative en Afrique, connectant les étudiants aux universités, conseillers et ressources éducatives. Fondée avec la mission de démocratiser l'accès à des conseils éducatifs de qualité à travers le continent africain.",
+  "pressPageKeyFacts": "Faits clés",
+  "pressPageFounded": "Fondée",
+  "pressPageHeadquarters": "Siège social",
+  "pressPageActiveUsers": "Utilisateurs actifs",
+  "pressPagePartnerInstitutions": "Institutions partenaires",
+  "pressPageCountries": "Pays",
+  "pressPageUniversitiesInDb": "Universités dans la base de données",
+  "pressPageBrandAssets": "Ressources de marque",
+  "pressPageLogoPack": "Pack de logos",
+  "pressPageLogoPackDesc": "Formats PNG, SVG et vectoriels",
+  "pressPageBrandGuidelines": "Charte graphique",
+  "pressPageBrandGuidelinesDesc": "Couleurs, typographie, utilisation",
+  "pressPageScreenshots": "Captures d'écran",
+  "pressPageScreenshotsDesc": "Captures d'écran et démos de l'application",
+  "pressPageVideoAssets": "Ressources vidéo",
+  "pressPageVideoAssetsDesc": "Vidéos produit et images d'archives",
+  "pressPageDownload": "Télécharger",
+  "pressPageRecentNews": "Actualités récentes",
+  "pressPageMediaContact": "Contact médias",
+  "pressPageMediaContactDesc": "Pour les demandes presse, veuillez contacter :",
+  "apiDocsPageTitle": "Référence API",
+  "apiDocsPageSubtitle": "Intégrez Flow dans vos applications",
+  "apiDocsPageQuickStart": "Démarrage rapide",
+  "apiDocsPageEndpoints": "Points de terminaison API",
+  "apiDocsPageAuthentication": "Authentification",
+  "apiDocsPageAuthDesc": "Toutes les requêtes API nécessitent une authentification avec une clé API.",
+  "apiDocsPageRateLimits": "Limites de débit",
+  "apiDocsPageFreeTier": "Gratuit",
+  "apiDocsPageBasic": "Basique",
+  "apiDocsPagePro": "Pro",
+  "apiDocsPageEnterprise": "Entreprise",
+  "apiDocsPageUnlimited": "Illimité",
+  "apiDocsPageNeedAccess": "Besoin d'accès API ?",
+  "apiDocsPageContactCredentials": "Contactez-nous pour obtenir vos identifiants API",
+  "apiDocsPageContactUs": "Nous contacter",
+  "apiDocsPageUniversities": "Universités",
+  "apiDocsPagePrograms": "Programmes",
+  "apiDocsPageRecommendations": "Recommandations",
+  "apiDocsPageStudentsEndpoint": "Étudiants",
+  "apiDocsPageListAll": "Lister toutes les universités",
+  "apiDocsPageGetDetails": "Obtenir les détails d'une université",
+  "apiDocsPageSearchUniversities": "Rechercher des universités",
+  "apiDocsPageListPrograms": "Lister les programmes",
+  "apiDocsPageListAllPrograms": "Lister tous les programmes",
+  "apiDocsPageGetProgramDetails": "Obtenir les détails d'un programme",
+  "apiDocsPageSearchPrograms": "Rechercher des programmes",
+  "apiDocsPageGenerateRec": "Générer des recommandations",
+  "apiDocsPageGetRecDetails": "Obtenir les détails d'une recommandation",
+  "apiDocsPageGetStudentProfile": "Obtenir le profil étudiant",
+  "apiDocsPageUpdateStudentProfile": "Mettre à jour le profil étudiant",
+  "apiDocsPageListApplications": "Lister les candidatures",
+  "swErrorTechnicalDetails": "Details techniques",
+  "swErrorRetry": "Reessayer",
+  "swErrorConnectionTitle": "Erreur de connexion",
+  "swErrorConnectionMessage": "Impossible de se connecter a nos serveurs. Veuillez verifier votre connexion internet et reessayer.",
+  "swErrorConnectionHelp": "Assurez-vous d'avoir une connexion internet stable. Si le probleme persiste, nos serveurs sont peut-etre temporairement indisponibles.",
+  "swErrorAuthTitle": "Authentification requise",
+  "swErrorAuthMessage": "Votre session a expire ou vous n'avez pas la permission d'acceder a ce contenu.",
+  "swErrorAuthHelp": "Essayez de vous deconnecter puis de vous reconnecter pour actualiser votre session.",
+  "swErrorSignOut": "Se deconnecter",
+  "swErrorNotFoundTitle": "Contenu introuvable",
+  "swErrorNotFoundMessage": "Le contenu que vous recherchez n'existe pas ou a ete deplace.",
+  "swErrorNotFoundHelp": "L'element a peut-etre ete supprime ou vous n'avez pas acces pour le consulter.",
+  "swErrorServerTitle": "Erreur serveur",
+  "swErrorServerMessage": "Un probleme est survenu de notre cote. Nous travaillons a le resoudre.",
+  "swErrorServerHelp": "Il s'agit d'un probleme temporaire. Veuillez reessayer dans quelques minutes.",
+  "swErrorRateLimitTitle": "Trop de requetes",
+  "swErrorRateLimitMessage": "Vous avez effectue trop de requetes. Veuillez patienter un instant avant de reessayer.",
+  "swErrorRateLimitHelp": "Pour prevenir les abus, nous limitons le nombre de requetes. Veuillez patienter quelques secondes avant de reessayer.",
+  "swErrorValidationTitle": "Erreur de validation",
+  "swErrorValidationMessage": "Certaines informations semblent incorrectes ou manquantes. Veuillez verifier votre saisie et reessayer.",
+  "swErrorValidationHelp": "Assurez-vous que tous les champs obligatoires sont correctement remplis.",
+  "swErrorAccessDeniedTitle": "Acces refuse",
+  "swErrorAccessDeniedMessage": "Vous n'avez pas la permission d'acceder a ce contenu.",
+  "swErrorAccessDeniedHelp": "Contactez votre administrateur si vous pensez devoir avoir acces.",
+  "swErrorGenericTitle": "Un probleme est survenu",
+  "swErrorGenericMessage": "Une erreur inattendue s'est produite. Veuillez reessayer.",
+  "swErrorGenericHelp": "Si ce probleme persiste, veuillez contacter le support.",
+  "swErrorFailedToLoad": "Echec du chargement des donnees",
+  "swEmptyStateNoApplicationsTitle": "Aucune candidature",
+  "swEmptyStateNoApplicationsMessage": "Commencez votre parcours en explorant les programmes et en soumettant votre premiere candidature.",
+  "swEmptyStateBrowsePrograms": "Parcourir les programmes",
+  "swEmptyStateNoActivitiesTitle": "Aucune activite recente",
+  "swEmptyStateNoActivitiesMessage": "Vos activites recentes et mises a jour apparaitront ici au fur et a mesure que vous utilisez la plateforme.",
+  "swEmptyStateNoRecommendationsTitle": "Aucune recommandation",
+  "swEmptyStateNoRecommendationsMessage": "Completez votre profil pour recevoir des recommandations personnalisees basees sur vos interets et objectifs.",
+  "swEmptyStateCompleteProfile": "Completer le profil",
+  "swEmptyStateNoMessagesTitle": "Aucun message",
+  "swEmptyStateNoMessagesMessage": "Vos conversations et notifications apparaitront ici.",
+  "swEmptyStateNoResultsTitle": "Aucun resultat",
+  "swEmptyStateNoResultsMessage": "Essayez d'ajuster vos criteres de recherche ou vos filtres pour trouver ce que vous cherchez.",
+  "swEmptyStateClearFilters": "Effacer les filtres",
+  "swEmptyStateNoCoursesTitle": "Aucun cours disponible",
+  "swEmptyStateNoCoursesMessage": "Revenez plus tard pour decouvrir de nouveaux cours ou explorez d'autres opportunites d'apprentissage.",
+  "swEmptyStateExplorePrograms": "Explorer les programmes",
+  "swEmptyStateNoStudentsTitle": "Aucun etudiant",
+  "swEmptyStateNoStudentsMessage": "Les etudiants que vous conseillez apparaitront ici une fois qu'ils seront assignes ou qu'ils demanderont votre accompagnement.",
+  "swEmptyStateNoSessionsTitle": "Aucune session a venir",
+  "swEmptyStateNoSessionsMessage": "Vous n'avez aucune session de conseil planifiee.",
+  "swEmptyStateScheduleSession": "Planifier une session",
+  "swEmptyStateNoDataTitle": "Aucune donnee disponible",
+  "swEmptyStateNoDataMessage": "Les donnees apparaitront ici des qu'il y aura de l'activite a afficher.",
+  "swEmptyStateNoNotificationsTitle": "Aucune notification",
+  "swEmptyStateNoNotificationsMessage": "Vous etes a jour ! Les nouvelles notifications apparaitront ici.",
+  "swEmptyStateComingSoonTitle": "Bientot disponible",
+  "swEmptyStateComingSoonMessage": "{feature} est actuellement en cours de developpement et sera bientot disponible.",
+  "@swEmptyStateComingSoonMessage": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "swEmptyStateAccessRestrictedTitle": "Acces restreint",
+  "swEmptyStateAccessRestrictedMessage": "Vous n'avez pas la permission de consulter ce contenu. Contactez votre administrateur si vous avez besoin d'un acces.",
+  "swComingSoonTitle": "Bientot disponible",
+  "swComingSoonMessage": "{featureName} est actuellement en cours de developpement et sera disponible dans une prochaine mise a jour.",
+  "@swComingSoonMessage": {
+    "placeholders": {
+      "featureName": {
+        "type": "String"
+      }
+    }
+  },
+  "swComingSoonStayTuned": "Restez a l'ecoute des mises a jour !",
+  "swComingSoonGotIt": "Compris",
+  "swNotifCenterTitle": "Notifications",
+  "swNotifCenterMarkAllRead": "Tout marquer comme lu",
+  "swNotifCenterError": "Erreur : {error}",
+  "@swNotifCenterError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "swNotifCenterRetry": "Reessayer",
+  "swNotifCenterEmpty": "Aucune notification",
+  "swNotifCenterEmptySubtitle": "Nous vous avertirons quand quelque chose se passera",
+  "swNotifCenterDeleteTitle": "Supprimer la notification",
+  "swNotifCenterDeleteConfirm": "Etes-vous sur de vouloir supprimer cette notification ?",
+  "swNotifCenterCancel": "Annuler",
+  "swNotifCenterDelete": "Supprimer",
+  "swNotifCenterMarkAsRead": "Marquer comme lu",
+  "swNotifCenterMarkAsUnread": "Marquer comme non lu",
+  "swNotifCenterArchive": "Archiver",
+  "swNotifCenterFilterTitle": "Filtrer les notifications",
+  "swNotifCenterFilterClear": "Effacer",
+  "swNotifCenterFilterStatus": "Statut",
+  "swNotifCenterFilterAll": "Tous",
+  "swNotifCenterFilterUnread": "Non lus",
+  "swNotifCenterFilterRead": "Lus",
+  "swNotifCenterApplyFilter": "Appliquer le filtre",
+  "swNotifBellNoNew": "Aucune nouvelle notification",
+  "swNotifBellViewAll": "Voir toutes les notifications",
+  "swNotifBellNotifications": "Notifications",
+  "swNotifWidgetMarkAsRead": "Marquer comme lu",
+  "swNotifWidgetDelete": "Supprimer",
+  "swNotifWidgetJustNow": "A l'instant",
+  "swNotifWidgetMinutesAgo": "{count, plural, =1{Il y a 1 minute} other{Il y a {count} minutes}}",
+  "@swNotifWidgetMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNotifWidgetHoursAgo": "{count, plural, =1{Il y a 1 heure} other{Il y a {count} heures}}",
+  "@swNotifWidgetHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNotifWidgetDaysAgo": "{count, plural, =1{Il y a 1 jour} other{Il y a {count} jours}}",
+  "@swNotifWidgetDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNotifWidgetWeeksAgo": "{count, plural, =1{Il y a 1 semaine} other{Il y a {count} semaines}}",
+  "@swNotifWidgetWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNotifWidgetMonthsAgo": "{count, plural, =1{Il y a 1 mois} other{Il y a {count} mois}}",
+  "@swNotifWidgetMonthsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNotifWidgetYearsAgo": "{count, plural, =1{Il y a 1 an} other{Il y a {count} ans}}",
+  "@swNotifWidgetYearsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNotifWidgetNoNotifications": "Aucune notification",
+  "swNotifWidgetAllCaughtUp": "Vous etes a jour ! Revenez plus tard pour les nouvelles mises a jour.",
+  "swOfflineYouAreOffline": "Vous etes hors ligne",
+  "swOfflinePendingSync": "{count, plural, =1{1 action en attente de synchronisation} other{{count} actions en attente de synchronisation}}",
+  "@swOfflinePendingSync": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swOfflineDetails": "Details",
+  "swOfflineSyncing": "{count, plural, =1{Synchronisation de 1 action...} other{Synchronisation de {count} actions...}}",
+  "@swOfflineSyncing": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swOfflineActionsTitle": "Actions hors ligne",
+  "swOfflineNoPending": "Aucune action en attente",
+  "swOfflineClearAll": "Tout effacer",
+  "swOfflineClose": "Fermer",
+  "swOfflineSyncNow": "Synchroniser maintenant",
+  "swOfflineJustNow": "A l'instant",
+  "swOfflineMinutesAgo": "Il y a {count} min",
+  "@swOfflineMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swOfflineHoursAgo": "Il y a {count} h",
+  "@swOfflineHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swOfflineDaysAgo": "Il y a {count} j",
+  "@swOfflineDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swOfflineError": "Erreur : {error}",
+  "@swOfflineError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "swExportData": "Exporter les donnees",
+  "swExportTooltip": "Exporter",
+  "swExportAsPdf": "Exporter en PDF",
+  "swExportAsCsv": "Exporter en CSV",
+  "swExportAsJson": "Exporter en JSON",
+  "swExportNoData": "Aucune donnee a exporter",
+  "swExportSuccess": "Exportation reussie au format {format}",
+  "@swExportSuccess": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "swExportOk": "OK",
+  "swExportFailed": "Echec de l'exportation : {error}",
+  "@swExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "swExportRetry": "Reessayer",
+  "swExportCancel": "Annuler",
+  "swFilterTitle": "Filtres",
+  "swFilterResetAll": "Tout reinitialiser",
+  "swFilterCategories": "Categories",
+  "swFilterPriceRange": "Fourchette de prix (USD)",
+  "swFilterLevel": "Niveau",
+  "swFilterCountry": "Pays",
+  "swFilterInstitutionType": "Type d'etablissement",
+  "swFilterMinimumRating": "Note minimale",
+  "swFilterDuration": "Duree (semaines)",
+  "swFilterSpecialOptions": "Options speciales",
+  "swFilterOnlineOnly": "En ligne uniquement",
+  "swFilterOnlineOnlySubtitle": "Afficher uniquement les cours/programmes en ligne",
+  "swFilterFinancialAid": "Aide financiere disponible",
+  "swFilterFinancialAidSubtitle": "Afficher uniquement les elements avec aide financiere",
+  "swFilterApply": "Appliquer les filtres",
+  "swFilterClearAll": "Tout effacer",
+  "swFilterStarsPlus": "{rating}+ etoiles",
+  "@swFilterStarsPlus": {
+    "placeholders": {
+      "rating": {
+        "type": "double"
+      }
+    }
+  },
+  "swFilterWeeks": "{count} semaines",
+  "@swFilterWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swSearchHint": "Rechercher...",
+  "swSearchAll": "Tous",
+  "swSearchRecentSearches": "Recherches recentes",
+  "swSearchClear": "Effacer",
+  "swSearchSuggestions": "Suggestions",
+  "swSortByTitle": "Trier par",
+  "swSortLabel": "Trier",
+  "swSortFilterLabel": "Filtrer",
+  "swSortRelevance": "Pertinence",
+  "swSortMostPopular": "Plus populaires",
+  "swSortHighestRated": "Mieux notes",
+  "swSortNewestFirst": "Plus recents",
+  "swSortOldestFirst": "Plus anciens",
+  "swSortPriceLowToHigh": "Prix : croissant",
+  "swSortPriceHighToLow": "Prix : decroissant",
+  "swSortNameAZ": "Nom : A a Z",
+  "swSortNameZA": "Nom : Z a A",
+  "swSortDurationShortest": "Duree : plus courte",
+  "swSortDurationLongest": "Duree : plus longue",
+  "swStatusPending": "En attente",
+  "swStatusApproved": "Approuve",
+  "swStatusRejected": "Rejete",
+  "swStatusInProgress": "En cours",
+  "swStatusCompleted": "Termine",
+  "swRefreshLastUpdated": "Derniere mise a jour : {timeAgo}",
+  "@swRefreshLastUpdated": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      }
+    }
+  },
+  "swRefreshJustNow": "a l'instant",
+  "swRefreshSecondsAgo": "Il y a {count} s",
+  "@swRefreshSecondsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swRefreshMinutesAgo": "Il y a {count} min",
+  "@swRefreshMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swRefreshHoursAgo": "Il y a {count} h",
+  "@swRefreshHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swRefreshYesterday": "hier",
+  "swRefreshDaysAgo": "Il y a {count} j",
+  "@swRefreshDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swRefreshSuccess": "Tableau de bord actualise avec succes",
+  "swRefreshFailed": "Echec de l'actualisation du tableau de bord",
+  "swFileUploadDropHere": "Deposez les fichiers ici",
+  "swFileUploadClickToSelect": "Cliquez pour selectionner des fichiers ou glissez-deposez",
+  "swFileUploadTooLarge": "{fileName} est trop volumineux. La taille maximale est de {maxSize} Mo",
+  "@swFileUploadTooLarge": {
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      },
+      "maxSize": {
+        "type": "int"
+      }
+    }
+  },
+  "swFileUploadInvalidType": "{fileName} a un type de fichier invalide. Autorises : {allowedTypes}",
+  "@swFileUploadInvalidType": {
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      },
+      "allowedTypes": {
+        "type": "String"
+      }
+    }
+  },
+  "swFileUploadPickFailed": "Echec de la selection des fichiers : {error}",
+  "@swFileUploadPickFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "swFileUploadProgress": "{percent} % telecharge",
+  "@swFileUploadProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "swFileUploadLabel": "Telecharger un fichier",
+  "swFileUploadPickImageFailed": "Echec de la selection de l'image : {error}",
+  "@swFileUploadPickImageFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "swFileUploadTapToSelect": "Appuyez pour selectionner une image",
+  "swFileUploadImageFormats": "JPG, PNG, GIF (max 5 Mo)",
+  "swFileUploadAllowed": "Autorises : {formats}",
+  "@swFileUploadAllowed": {
+    "placeholders": {
+      "formats": {
+        "type": "String"
+      }
+    }
+  },
+  "swFileUploadMaxSize": "Max {size} Mo",
+  "@swFileUploadMaxSize": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "swDocViewerLoading": "Chargement de {name}...",
+  "@swDocViewerLoading": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "swDocViewerFailedToLoad": "Echec du chargement du document",
+  "swDocViewerLoadError": "Echec du chargement du document : {error}",
+  "@swDocViewerLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "swDocViewerRetry": "Reessayer",
+  "swDocViewerPinchToZoom": "Pincez pour zoomer",
+  "swDocViewerPreviewNotAvailable": "Apercu non disponible",
+  "swDocViewerCannotPreview": "Ce type de fichier ({extension}) ne peut pas etre previsualise",
+  "@swDocViewerCannotPreview": {
+    "placeholders": {
+      "extension": {
+        "type": "String"
+      }
+    }
+  },
+  "swDocViewerDownloading": "Telechargement de {name}...",
+  "@swDocViewerDownloading": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "swDocViewerDownloadToView": "Telecharger pour voir",
+  "swDocViewerPdfViewer": "Visionneuse PDF",
+  "swDocViewerPdfEnableMessage": "Pour activer la visualisation PDF, ajoutez l'un de ces packages au pubspec.yaml :",
+  "swDocViewerPdfOptionCommercial": "Complet, commercial",
+  "swDocViewerPdfOptionOpenSource": "Open source, rendu natif",
+  "swDocViewerPdfOptionModern": "Moderne, bonnes performances",
+  "swDocViewerPageOf": "Page {current} sur {total}",
+  "@swDocViewerPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "swDocViewerFailedToLoadImage": "Echec du chargement de l'image",
+  "swScheduleHighPriority": "Haute",
+  "swScheduleNow": "En cours",
+  "swScheduleCompleted": "Terminé",
+  "swScheduleMarkComplete": "Marquer comme terminé",
+  "swScheduleToday": "Aujourd'hui",
+  "swScheduleTomorrow": "Demain",
+  "swScheduleYesterday": "Hier",
+  "swScheduleMonthJan": "Janv",
+  "swScheduleMonthFeb": "Févr",
+  "swScheduleMonthMar": "Mars",
+  "swScheduleMonthApr": "Avr",
+  "swScheduleMonthMay": "Mai",
+  "swScheduleMonthJun": "Juin",
+  "swScheduleMonthJul": "Juil",
+  "swScheduleMonthAug": "Août",
+  "swScheduleMonthSep": "Sept",
+  "swScheduleMonthOct": "Oct",
+  "swScheduleMonthNov": "Nov",
+  "swScheduleMonthDec": "Déc",
+  "swScheduleNoEvents": "Aucun événement prévu",
+  "swScheduleAddEvent": "Ajouter un événement",
+  "swSettingsThemeLight": "Clair",
+  "swSettingsThemeLightSubtitle": "Interface lumineuse et épurée",
+  "swSettingsThemeDark": "Sombre",
+  "swSettingsThemeDarkSubtitle": "Confortable en faible luminosité",
+  "swSettingsThemeSystem": "Système",
+  "swSettingsThemeSystemSubtitle": "Suivre les paramètres de l'appareil",
+  "swSettingsTotalDataUsage": "Utilisation totale des données",
+  "swSettingsDangerZone": "Zone de danger",
+  "swSettingsVersion": "Version",
+  "swSettingsFlowPlatform": "Plateforme Flow EdTech",
+  "swSettingsCopyright": "© 2025 Tous droits réservés",
+  "swTaskToday": "Aujourd'hui",
+  "swTaskTomorrow": "Demain",
+  "swTaskYesterday": "Hier",
+  "swTaskDaysAgo": "Il y a {count} jours",
+  "@swTaskDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swTaskInDays": "Dans {count} jours",
+  "@swTaskInDays": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swTaskOverdue": "En retard",
+  "swTaskMonthJan": "Janv",
+  "swTaskMonthFeb": "Févr",
+  "swTaskMonthMar": "Mars",
+  "swTaskMonthApr": "Avr",
+  "swTaskMonthMay": "Mai",
+  "swTaskMonthJun": "Juin",
+  "swTaskMonthJul": "Juil",
+  "swTaskMonthAug": "Août",
+  "swTaskMonthSep": "Sept",
+  "swTaskMonthOct": "Oct",
+  "swTaskMonthNov": "Nov",
+  "swTaskMonthDec": "Déc",
+  "swTaskNoTasks": "Aucune tâche pour le moment",
+  "swTaskAddTask": "Ajouter une tâche",
+  "swUserProfileEditProfile": "Modifier le profil",
+  "swUserProfileSettings": "Paramètres",
+  "swUserProfileJustNow": "À l'instant",
+  "swUserProfileMinutesAgo": "Il y a {count} min",
+  "@swUserProfileMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swUserProfileHoursAgo": "Il y a {count} h",
+  "@swUserProfileHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swUserProfileDaysAgo": "Il y a {count} j",
+  "@swUserProfileDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swUserProfileMonthJan": "Janv",
+  "swUserProfileMonthFeb": "Févr",
+  "swUserProfileMonthMar": "Mars",
+  "swUserProfileMonthApr": "Avr",
+  "swUserProfileMonthMay": "Mai",
+  "swUserProfileMonthJun": "Juin",
+  "swUserProfileMonthJul": "Juil",
+  "swUserProfileMonthAug": "Août",
+  "swUserProfileMonthSep": "Sept",
+  "swUserProfileMonthOct": "Oct",
+  "swUserProfileMonthNov": "Nov",
+  "swUserProfileMonthDec": "Déc",
+  "swUserProfileGetStarted": "Commencer",
+  "swVideoCompleted": "Terminé",
+  "swVideoInProgress": "En cours",
+  "swVideoLike": "J'aime",
+  "swVideoDownloaded": "Téléchargé",
+  "swVideoDownload": "Télécharger",
+  "swVideoViewsMillions": "{count}M de vues",
+  "@swVideoViewsMillions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swVideoViewsThousands": "{count}K de vues",
+  "@swVideoViewsThousands": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swVideoViewsCount": "{count} vues",
+  "@swVideoViewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "swVideoPercentWatched": "{percent}% regardé",
+  "@swVideoPercentWatched": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "swVideoPlaylistCompleted": "{completed}/{total} terminé(s)",
+  "@swVideoPlaylistCompleted": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "swVideoNoVideos": "Aucune vidéo disponible",
+  "swVideoBrowseVideos": "Parcourir les vidéos",
+  "swStatsCurrent": "Actuel",
+  "connectionStatusLive": "En direct",
+  "connectionStatusConnecting": "Connexion...",
+  "connectionStatusConnectingShort": "Connexion",
+  "connectionStatusOffline": "Hors ligne",
+  "connectionStatusError": "Erreur",
+  "connectionStatusTooltipConnected": "Les mises à jour en temps réel sont actives",
+  "connectionStatusTooltipConnecting": "Établissement de la connexion en temps réel...",
+  "connectionStatusTooltipDisconnected": "Les mises à jour en temps réel ne sont pas disponibles. Les données seront actualisées périodiquement.",
+  "connectionStatusTooltipError": "Erreur de connexion. Veuillez vérifier votre connexion Internet.",
+  "loadingIndicatorDefault": "Chargement...",
+  "messageBadgeUnread": "{count} messages non lus",
+  "@messageBadgeUnread": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "messageBadgeMessages": "Messages",
+  "notificationBadgeUnread": "{count} notifications non lues",
+  "@notificationBadgeUnread": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationBadgeNotifications": "Notifications",
+  "typingIndicatorOneUser": "{user} est en train d'écrire",
+  "@typingIndicatorOneUser": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "typingIndicatorTwoUsers": "{user1} et {user2} sont en train d'écrire",
+  "@typingIndicatorTwoUsers": {
+    "placeholders": {
+      "user1": {
+        "type": "String"
+      },
+      "user2": {
+        "type": "String"
+      }
+    }
+  },
+  "typingIndicatorMultipleUsers": "{user1}, {user2} et {count} autres sont en train d'écrire",
+  "@typingIndicatorMultipleUsers": {
+    "placeholders": {
+      "user1": {
+        "type": "String"
+      },
+      "user2": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "lessonEditorEdit": "Modifier",
+  "lessonEditorSaveLesson": "Enregistrer la leçon",
+  "lessonEditorBasicInfo": "Informations de base",
+  "lessonEditorLessonTitle": "Titre de la leçon *",
+  "lessonEditorLessonTitleHelper": "Donnez à votre leçon un titre clair et descriptif",
+  "lessonEditorLessonTitleError": "Veuillez saisir un titre de leçon",
+  "lessonEditorDescription": "Description",
+  "lessonEditorDescriptionHelper": "Fournissez un bref aperçu de cette leçon",
+  "lessonEditorDuration": "Durée (minutes)",
+  "lessonEditorMandatory": "Obligatoire",
+  "lessonEditorMandatorySubtitle": "Les étudiants doivent compléter cette leçon",
+  "lessonEditorPublished": "Publié",
+  "lessonEditorPublishedSubtitle": "Visible par les étudiants",
+  "lessonEditorLessonContent": "Contenu de la leçon",
+  "lessonEditorSaveSuccess": "Leçon enregistrée avec succès",
+  "lessonEditorSaveError": "Erreur lors de l'enregistrement de la leçon",
+  "lessonEditorVideoSavePending": "Le contenu vidéo sera enregistré (intégration API en attente)",
+  "lessonEditorTextSavePending": "Le contenu texte sera enregistré (intégration API en attente)",
+  "lessonEditorQuizSavePending": "Le contenu du quiz sera enregistré (intégration API en attente)",
+  "lessonEditorAssignmentSavePending": "Le contenu du devoir sera enregistré (intégration API en attente)",
+  "adminApprovalConfiguration": "Configuration des approbations",
+  "adminApprovalRefresh": "Actualiser",
+  "adminApprovalFailedToLoadConfigurations": "Impossible de charger les configurations",
+  "adminApprovalRetry": "Reessayer",
+  "adminApprovalNoConfigurationsFound": "Aucune configuration trouvee",
+  "adminApprovalEditConfiguration": "Modifier la configuration",
+  "adminApprovalType": "Type",
+  "adminApprovalApprovalLevel": "Niveau d'approbation",
+  "adminApprovalPriority": "Priorite",
+  "adminApprovalExpires": "Expire",
+  "adminApprovalAutoExecute": "Execution auto",
+  "adminApprovalYes": "Oui",
+  "adminApprovalNo": "Non",
+  "adminApprovalMfaRequired": "MFA requis",
+  "adminApprovalSkipLevels": "Sauter les niveaux",
+  "adminApprovalAllowed": "Autorise",
+  "adminApprovalInitiatorRoles": "Roles initiateurs",
+  "adminApprovalApproverRoles": "Roles approbateurs",
+  "adminApprovalNotifications": "Notifications",
+  "adminApprovalConfigurationUpdated": "Configuration mise a jour",
+  "adminApprovalFailedToUpdateConfiguration": "Impossible de mettre a jour la configuration",
+  "adminApprovalEdit": "Modifier",
+  "adminApprovalDescription": "Description",
+  "adminApprovalDescribeWorkflow": "Decrivez ce flux d'approbation",
+  "adminApprovalDefaultPriority": "Priorite par defaut",
+  "adminApprovalPriorityLow": "Basse",
+  "adminApprovalPriorityNormal": "Normale",
+  "adminApprovalPriorityHigh": "Haute",
+  "adminApprovalPriorityUrgent": "Urgente",
+  "adminApprovalExpirationHours": "Expiration (heures)",
+  "adminApprovalLeaveEmptyNoExpiration": "Laisser vide pour pas d'expiration",
+  "adminApprovalSettings": "Parametres",
+  "adminApprovalActive": "Actif",
+  "adminApprovalEnableDisableWorkflow": "Activer ou desactiver ce flux",
+  "adminApprovalAutoExecuteTitle": "Execution auto",
+  "adminApprovalAutoExecuteSubtitle": "Executer automatiquement l'action apres l'approbation finale",
+  "adminApprovalRequireMfa": "Exiger le MFA",
+  "adminApprovalRequireMfaSubtitle": "Exiger l'authentification multi-facteurs pour l'approbation",
+  "adminApprovalAllowLevelSkipping": "Autoriser le saut de niveau",
+  "adminApprovalAllowLevelSkippingSubtitle": "Permettre aux admins de niveau superieur de sauter des niveaux",
+  "adminApprovalNotificationChannels": "Canaux de notification",
+  "adminApprovalInApp": "In-App",
+  "adminApprovalEmail": "E-mail",
+  "adminApprovalPush": "Push",
+  "adminApprovalSms": "SMS",
+  "adminApprovalCancel": "Annuler",
+  "adminApprovalSaveChanges": "Enregistrer",
+  "adminApprovalStatusActive": "Actif",
+  "adminApprovalStatusInactive": "Inactif",
+  "adminApprovalWorkflow": "Flux d'approbation",
+  "adminApprovalViewAllRequests": "Voir toutes les demandes",
+  "adminApprovalOverview": "Vue d'ensemble",
+  "adminApprovalErrorLoadingStats": "Erreur de chargement des statistiques : {error}",
+  "adminApprovalYourPendingActions": "Vos actions en attente",
+  "adminApprovalErrorLoadingPending": "Erreur de chargement des actions en attente : {error}",
+  "adminApprovalQuickActions": "Actions rapides",
+  "adminApprovalTotalRequests": "Total des demandes",
+  "adminApprovalPendingReview": "En attente de revision",
+  "adminApprovalUnderReview": "En cours de revision",
+  "adminApprovalApproved": "Approuve",
+  "adminApprovalDenied": "Refuse",
+  "adminApprovalExecuted": "Execute",
+  "adminApprovalAllCaughtUp": "Tout est a jour !",
+  "adminApprovalNoPendingActions": "Vous n'avez aucune action en attente.",
+  "adminApprovalPendingReviews": "Revisions en attente",
+  "adminApprovalAwaitingYourResponse": "En attente de votre reponse",
+  "adminApprovalDelegatedToYou": "Deleguees a vous",
+  "adminApprovalNewRequest": "Nouvelle demande",
+  "adminApprovalAllRequests": "Toutes les demandes",
+  "adminApprovalMyRequests": "Mes demandes",
+  "adminApprovalConfigurationLabel": "Configuration",
+  "adminApprovalRequest": "Demande d'approbation",
+  "adminApprovalErrorWithMessage": "Erreur : {error}",
+  "adminApprovalRequestNotFound": "Demande introuvable",
+  "adminApprovalDetails": "Details",
+  "adminApprovalInitiatedBy": "Initie par",
+  "adminApprovalRole": "Role",
+  "adminApprovalRequestType": "Type de demande",
+  "adminApprovalCreated": "Cree le",
+  "adminApprovalExpiresLabel": "Expire le",
+  "adminApprovalJustification": "Justification",
+  "adminApprovalChain": "Chaine d'approbation",
+  "adminApprovalActions": "Actions",
+  "adminApprovalNotesOptional": "Notes (facultatif)",
+  "adminApprovalAddNotesHint": "Ajoutez des notes pour votre action...",
+  "adminApprovalApprove": "Approuver",
+  "adminApprovalDeny": "Refuser",
+  "adminApprovalRequestInfo": "Demander des infos",
+  "adminApprovalEscalate": "Escalader",
+  "adminApprovalComments": "Commentaires",
+  "adminApprovalAddCommentHint": "Ajouter un commentaire...",
+  "adminApprovalNoCommentsYet": "Aucun commentaire",
+  "adminApprovalStatusPending": "En attente",
+  "adminApprovalEscalated": "Esclade",
+  "adminApprovalLevelRegional": "Regional",
+  "adminApprovalLevelSuper": "Super",
+  "adminApprovalConfirmApproval": "Confirmer l'approbation",
+  "adminApprovalConfirmApproveMessage": "Etes-vous sur de vouloir approuver cette demande ?",
+  "adminApprovalDenyRequest": "Refuser la demande",
+  "adminApprovalProvideReasonDenial": "Veuillez fournir une raison pour le refus :",
+  "adminApprovalReason": "Raison",
+  "adminApprovalRequestInformation": "Demande d'information",
+  "adminApprovalWhatInfoNeeded": "De quelles informations avez-vous besoin du demandeur ?",
+  "adminApprovalQuestion": "Question",
+  "adminApprovalSend": "Envoyer",
+  "adminApprovalEscalateRequest": "Escalader la demande",
+  "adminApprovalConfirmEscalateMessage": "Etes-vous sur de vouloir escalader cette demande a un niveau superieur ?",
+  "adminApprovalEscalatedForReview": "Escaladee pour revision superieure",
+  "adminApprovalRequests": "Demandes d'approbation",
+  "adminApprovalFilter": "Filtrer",
+  "adminApprovalFiltersApplied": "Filtres appliques",
+  "adminApprovalClear": "Effacer",
+  "adminApprovalRequestCount": "{count} demandes",
+  "adminApprovalNoRequestsFound": "Aucune demande d'approbation trouvee",
+  "adminApprovalCreateNewRequest": "Creer une nouvelle demande",
+  "adminApprovalCreateRequest": "Creer une demande d'approbation",
+  "adminApprovalCategory": "Categorie",
+  "adminApprovalAction": "Action",
+  "adminApprovalTargetResource": "Ressource cible",
+  "adminApprovalResourceType": "Type de ressource",
+  "adminApprovalResourceIdOptional": "ID de ressource (facultatif)",
+  "adminApprovalEnterResourceId": "Entrez l'ID de la ressource cible",
+  "adminApprovalJustificationDescription": "Veuillez fournir une justification detaillee pour cette demande.",
+  "adminApprovalJustificationHint": "Expliquez pourquoi cette action est necessaire et son impact attendu...",
+  "adminApprovalPleaseProvideJustification": "Veuillez fournir une justification",
+  "adminApprovalJustificationMinLength": "La justification doit comporter au moins 20 caracteres",
+  "adminApprovalSubmitRequest": "Soumettre la demande",
+  "adminApprovalRequestSubmittedSuccess": "Demande d'approbation soumise avec succes",
+  "adminApprovalApply": "Appliquer",
+  "adminApprovalFilterRequests": "Filtrer les demandes",
+  "adminApprovalSearch": "Rechercher",
+  "adminApprovalSearchHint": "Rechercher par numero de demande ou justification",
+  "adminApprovalStatus": "Statut",
+  "adminApprovalClearAll": "Tout effacer",
+  "adminApprovalUnknown": "Inconnu",
+  "adminApprovalExpired": "Expire",
+  "adminApprovalExpiresInDays": "Expire dans {days}j",
+  "adminApprovalExpiresInHours": "Expire dans {hours}h",
+  "adminApprovalExpiresInMinutes": "Expire dans {minutes}m",
+  "adminApprovalStatusDraft": "Brouillon",
+  "adminApprovalStatusUnderReview": "En cours de revision",
+  "adminApprovalStatusInfoNeeded": "Infos requises",
+  "adminApprovalStatusEscalated": "Escalade",
+  "adminApprovalStatusApprovedLabel": "Approuve",
+  "adminApprovalStatusDeniedLabel": "Refuse",
+  "adminApprovalStatusWithdrawn": "Retire",
+  "adminApprovalStatusExpired": "Expire",
+  "adminApprovalStatusExecuted": "Execute",
+  "adminApprovalStatusFailed": "Echoue",
+  "adminApprovalStatusReviewing": "En revision",
+  "adminApprovalNoItems": "Aucun element",
+  "adminApprovalViewAllItems": "Voir les {count} elements",
+  "adminApprovalByName": "Par : {name}",
+  "adminContentAssessmentsManagement": "Gestion des evaluations",
+  "adminContentManageQuizzesAndAssignments": "Gerer les quiz et devoirs de tous les cours",
+  "adminContentRefresh": "Actualiser",
+  "adminContentCreateAssessment": "Creer une evaluation",
+  "adminContentCreateNewAssessment": "Creer une nouvelle evaluation",
+  "adminContentAssessmentTypeRequired": "Type d'evaluation *",
+  "adminContentQuiz": "Quiz",
+  "adminContentAssignment": "Devoir",
+  "adminContentCourseRequired": "Cours *",
+  "adminContentLoadingCourses": "Chargement des cours...",
+  "adminContentSelectACourse": "Selectionner un cours",
+  "adminContentModuleRequired": "Module *",
+  "adminContentLoadingModules": "Chargement des modules...",
+  "adminContentSelectACourseFirst": "Selectionner d'abord un cours",
+  "adminContentNoModulesInCourse": "Aucun module dans ce cours",
+  "adminContentSelectAModule": "Selectionner un module",
+  "adminContentLessonTitleRequired": "Titre de la lecon *",
+  "adminContentEnterLessonTitle": "Entrez le titre de la lecon",
+  "adminContentTitleRequired": "Titre *",
+  "adminContentEnterTitle": "Entrez le titre",
+  "adminContentPassingScorePercent": "Note de passage (%)",
+  "adminContentInstructionsRequired": "Instructions *",
+  "adminContentEnterAssignmentInstructions": "Entrez les instructions du devoir",
+  "adminContentPointsPossible": "Points possibles",
+  "adminContentQuizDraftNotice": "Le quiz sera cree en brouillon. Ajoutez des questions dans le constructeur de cours.",
+  "adminContentAssignmentDraftNotice": "Le devoir sera cree en brouillon. Configurez les details dans le constructeur de cours.",
+  "adminContentCancel": "Annuler",
+  "adminContentPleaseSelectCourseAndModule": "Veuillez selectionner un cours et un module",
+  "adminContentPleaseFillRequiredFields": "Veuillez remplir tous les champs obligatoires",
+  "adminContentPleaseEnterInstructions": "Veuillez entrer les instructions du devoir",
+  "adminContentAssessmentCreated": "{type} cree(e)",
+  "adminContentFailedToCreateAssessment": "Impossible de creer l'evaluation",
+  "adminContentCreate": "Creer",
+  "adminContentTotalAssessments": "Total des evaluations",
+  "adminContentAllAssessments": "Toutes les evaluations",
+  "adminContentQuizzes": "Quiz",
+  "adminContentAutoGraded": "Correction auto",
+  "adminContentAssignments": "Devoirs",
+  "adminContentManualGrading": "Correction manuelle",
+  "adminContentPendingGrading": "Correction en attente",
+  "adminContentAwaitingReview": "En attente de revision",
+  "adminContentSearchAssessments": "Rechercher des evaluations par titre...",
+  "adminContentAssessmentType": "Type d'evaluation",
+  "adminContentAllTypes": "Tous les types",
+  "adminContentTitleLabel": "Titre",
+  "adminContentTypeLabel": "Type",
+  "adminContentCourseLabel": "Cours",
+  "adminContentQuestionsSubmissions": "Questions / Soumissions",
+  "adminContentQuestionsAttempts": "{questions} questions ({attempts} tentatives)",
+  "adminContentSubmissionsGraded": "{submissions} soumissions ({graded} corrigees)",
+  "adminContentScoreGrade": "Score / Note",
+  "adminContentPassRate": "{rate}% reussite",
+  "adminContentAvgGrade": "{grade}% moy.",
+  "adminContentUpdated": "Mis a jour",
+  "adminContentViewStats": "Voir les stats",
+  "adminContentEditInCourseBuilder": "Modifier dans le constructeur",
+  "adminContentQuestions": "Questions",
+  "adminContentAttempts": "Tentatives",
+  "adminContentAverageScore": "Score moyen",
+  "adminContentPassRateLabel": "Taux de reussite",
+  "adminContentSubmissions": "Soumissions",
+  "adminContentGraded": "Corrigees",
+  "adminContentPending": "En attente",
+  "adminContentAverageGrade": "Note moyenne",
+  "adminContentDueDate": "Date limite",
+  "adminContentLastUpdated": "Derniere mise a jour",
+  "adminContentClose": "Fermer",
+  "adminContentToday": "Aujourd'hui",
+  "adminContentYesterday": "Hier",
+  "adminContentDaysAgo": "Il y a {days} jours",
+  "adminContentWeeksAgo": "Il y a {weeks} semaines",
+  "adminContentMonthsAgo": "Il y a {months} mois",
+  "adminContentYearsAgo": "Il y a {years} ans",
+  "adminContentManagement": "Gestion du contenu",
+  "adminContentManageVideoCourses": "Gerer les cours video et tutoriels",
+  "adminContentManageTextMaterials": "Gerer les supports d'apprentissage textuels",
+  "adminContentManageInteractive": "Gerer le contenu d'apprentissage interactif",
+  "adminContentManageLiveSessions": "Gerer les sessions en direct et webinaires",
+  "adminContentManageHybrid": "Gerer les experiences d'apprentissage hybrides",
+  "adminContentManageEducational": "Gerer le contenu educatif, les cours et les programmes",
+  "adminContentExportComingSoon": "Fonctionnalite d'exportation bientot disponible",
+  "adminContentExport": "Exporter",
+  "adminContentCreateContent": "Creer du contenu",
+  "adminContentCreateNewContent": "Creer un nouveau contenu",
+  "adminContentEnterContentTitle": "Entrez le titre du contenu",
+  "adminContentDescription": "Description",
+  "adminContentEnterDescription": "Entrez la description du contenu",
+  "adminContentDraftNotice": "Le contenu sera cree en brouillon. Vous pourrez le modifier et le publier plus tard.",
+  "adminContentPleaseEnterTitle": "Veuillez entrer un titre",
+  "adminContentCurriculumManagement": "Gestion du programme",
+  "adminContentManageModulesAndLessons": "Gerer les modules et lecons de tous les cours",
+  "adminContentCreateModule": "Creer un module",
+  "adminContentCreateNewModule": "Creer un nouveau module",
+  "adminContentResourcesManagement": "Gestion des ressources",
+  "adminContentManageVideoAndText": "Gerer le contenu video et texte de tous les cours",
+  "adminContentCreateResource": "Creer une ressource",
+  "adminContentCreateNewResource": "Creer une nouvelle ressource",
+  "adminContentPageContentManagement": "Gestion du contenu des pages",
+  "adminContentManageFooterPages": "Gerer le contenu des pages du pied de page (A propos, Confidentialite, Conditions, etc.)",
+  "adminContentErrorLoadingPages": "Erreur de chargement des pages",
+  "adminContentRetry": "Reessayer",
+  "adminContentNoPagesFound": "Aucune page trouvee",
+  "adminContentRunMigration": "Executez la migration de base de donnees pour initialiser le contenu des pages.",
+  "adminContentAtLeastOneSection": "Au moins une section est requise",
+  "adminContentRemoveSection": "Supprimer la section",
+  "adminContentConfirmRemoveSection": "Etes-vous sur de vouloir supprimer cette section ?",
+  "adminContentRemove": "Supprimer",
+  "adminContentInvalidJson": "JSON invalide dans le champ de contenu",
+  "adminContentPageSavedSuccessfully": "Page enregistree avec succes",
+  "adminContentFailedToSavePage": "Impossible d'enregistrer la page",
+  "adminContentPagePublishedSuccessfully": "Page publiee avec succes",
+  "adminContentFailedToPublishPage": "Impossible de publier la page",
+  "adminContentPageUnpublished": "Page depubliee",
+  "adminContentFailedToUnpublishPage": "Impossible de depublier la page",
+  "adminContentUnsavedChanges": "Modifications non enregistrees",
+  "adminContentDiscardChanges": "Vous avez des modifications non enregistrees. Voulez-vous les abandonner ?",
+  "adminContentDiscard": "Abandonner",
+  "adminContentStartTyping": "Commencez a saisir votre contenu ici...",
+  "adminContentSupportsMarkdown": "Prend en charge le formatage Markdown",
+  "adminContentCharacterCount": "{count} caracteres",
+  "adminContentSectionIndex": "Section {index}",
+  "adminContentSectionTitle": "Titre de la section",
+  "adminContentEnterSectionTitle": "Entrez le titre de la section",
+  "adminContentSectionContent": "Contenu de la section",
+  "adminContentEnterSectionContent": "Entrez le contenu de la section...",
+  "swAchievementToday": "Aujourd'hui",
+  "swAchievementYesterday": "Hier",
+  "swAchievementDaysAgo": "il y a {count} jours",
+  "@swAchievementDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swAchievementWeeksAgo": "il y a {count} semaines",
+  "@swAchievementWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swAchievementYou": "Vous",
+  "swAchievementPoints": "points",
+  "swChartNoDataAvailable": "Aucune donnée disponible",
+  "swCollabPublic": "Public",
+  "swCollabMembersCount": "{current}/{max} membres",
+  "@swCollabMembersCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "swCollabOnlineCount": "{count} en ligne",
+  "@swCollabOnlineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swCollabGroupFull": "Groupe complet",
+  "swCollabJoinGroup": "Rejoindre le groupe",
+  "swCollabNoGroupsYet": "Aucun groupe pour le moment",
+  "swCollabCreateGroup": "Créer un groupe",
+  "swExamQuestionsCount": "{count} Questions",
+  "@swExamQuestionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swExamMarksCount": "{count} Points",
+  "@swExamMarksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swExamScoreDisplay": "{score}/{total}",
+  "@swExamScoreDisplay": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "swExamStartExam": "Commencer l'examen",
+  "swExamToday": "Aujourd'hui",
+  "swExamTomorrow": "Demain",
+  "swExamDaysCount": "{count} jours",
+  "@swExamDaysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swExamWriteAnswerHint": "Écrivez votre réponse ici...",
+  "swExamEnterAnswerHint": "Entrez votre réponse...",
+  "swExamExplanation": "Explication",
+  "swFocusFocusMode": "Mode Concentration",
+  "swFocusPaused": "En pause",
+  "swFocusThisWeek": "Cette semaine",
+  "swHelpSupportArticlesCount": "{count} articles",
+  "@swHelpSupportArticlesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swHelpSupportViewsCount": "{count} vues",
+  "@swHelpSupportViewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swHelpSupportHelpfulCount": "{count} ont trouvé utile",
+  "@swHelpSupportHelpfulCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swHelpSupportWasThisHelpful": "Cela vous a-t-il été utile ?",
+  "swHelpSupportYes": "Oui",
+  "swHelpSupportToday": "Aujourd'hui",
+  "swHelpSupportYesterday": "Hier",
+  "swHelpSupportDaysAgo": "il y a {count} jours",
+  "@swHelpSupportDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swHelpSupportJustNow": "À l'instant",
+  "swHelpSupportMinutesAgo": "il y a {count}m",
+  "@swHelpSupportMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swHelpSupportHoursAgo": "il y a {count}h",
+  "@swHelpSupportHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swHelpSupportDaysShortAgo": "il y a {count}j",
+  "@swHelpSupportDaysShortAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swInvoiceNumber": "Facture #{number}",
+  "@swInvoiceNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "swInvoiceIssued": "Émise le : {date}",
+  "@swInvoiceIssued": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "swInvoiceDue": "Échéance : {date}",
+  "@swInvoiceDue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "swInvoiceBillTo": "FACTURER À",
+  "swInvoiceDescription": "DESCRIPTION",
+  "swInvoiceQty": "QTÉ",
+  "swInvoiceRate": "TARIF",
+  "swInvoiceAmount": "MONTANT",
+  "swInvoiceSubtotal": "Sous-total",
+  "swInvoiceDiscount": "Remise",
+  "swInvoiceTax": "Taxe",
+  "swInvoiceTotal": "TOTAL",
+  "swInvoiceTransactionId": "ID de transaction",
+  "swInvoiceDownloadReceipt": "Télécharger le reçu",
+  "swJobCareerPostedToday": "Publié aujourd'hui",
+  "swJobCareerPostedYesterday": "Publié hier",
+  "swJobCareerPostedDaysAgo": "Publié il y a {count} jours",
+  "@swJobCareerPostedDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swJobCareerRemote": "À distance",
+  "swJobCareerApplyBy": "Postuler avant le {date}",
+  "@swJobCareerApplyBy": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "swJobCareerExpired": "Expiré",
+  "swJobCareerToday": "Aujourd'hui",
+  "swJobCareerTomorrow": "Demain",
+  "swJobCareerInDays": "dans {count} jours",
+  "@swJobCareerInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swJobCareerAvailable": "Disponible",
+  "swJobCareerSessionsCount": "{count} séances",
+  "@swJobCareerSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swJobCareerBookSession": "Réserver une séance",
+  "swJobCareerApplied": "Postulé {time}",
+  "@swJobCareerApplied": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "swJobCareerUpdated": "Mis à jour {time}",
+  "@swJobCareerUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "swJobCareerDaysAgo": "il y a {count}j",
+  "@swJobCareerDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swJobCareerHoursAgo": "il y a {count}h",
+  "@swJobCareerHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swJobCareerMinutesAgo": "il y a {count}m",
+  "@swJobCareerMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swJobCareerJustNow": "À l'instant",
+  "swJobCareerViewsCount": "{count} vues",
+  "@swJobCareerViewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swMessageNoMessagesYet": "Aucun message pour le moment",
+  "swMessageTypeMessage": "Tapez un message...",
+  "swMessageToday": "Aujourd'hui",
+  "swMessageYesterday": "Hier",
+  "swNoteEdit": "Modifier",
+  "swNoteUnpin": "Désépingler",
+  "swNotePin": "Épingler",
+  "swNoteDelete": "Supprimer",
+  "swNoteJustNow": "À l'instant",
+  "swNoteMinutesAgo": "il y a {count}m",
+  "@swNoteMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNoteHoursAgo": "il y a {count}h",
+  "@swNoteHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNoteDaysAgo": "il y a {count}j",
+  "@swNoteDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNoteNotesCount": "{count} notes",
+  "@swNoteNotesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swNoteNoNotesYet": "Aucune note pour le moment",
+  "swNoteStartTakingNotes": "Commencez à prendre des notes pour retenir les informations importantes",
+  "swNoteCreateNote": "Créer une note",
+  "swNoteSearchNotes": "Rechercher des notes...",
+  "swOnboardingStepOf": "Étape {current} sur {total}",
+  "@swOnboardingStepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "swOnboardingSkipTutorial": "Passer le tutoriel",
+  "swOnboardingNext": "Suivant",
+  "swOnboardingFinish": "Terminer",
+  "swPaymentPending": "En attente",
+  "swPaymentProcessing": "En cours",
+  "swPaymentCompleted": "Terminé",
+  "swPaymentFailed": "Échoué",
+  "swPaymentRefunded": "Remboursé",
+  "swPaymentCancelled": "Annulé",
+  "swPaymentDefault": "Par défaut",
+  "swPaymentCard": "Carte",
+  "swPaymentBankAccount": "Compte bancaire",
+  "swPaymentPaypalAccount": "Compte PayPal",
+  "swPaymentStripePayment": "Paiement Stripe",
+  "swPaymentRemoveMethod": "Supprimer le moyen de paiement",
+  "swPaymentToday": "Aujourd'hui",
+  "swPaymentYesterday": "Hier",
+  "swPaymentDaysAgo": "il y a {count} jours",
+  "@swPaymentDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swPaymentCardNumber": "Numéro de carte",
+  "swPaymentExpiryDate": "Date d'expiration",
+  "swPaymentCvv": "CVV",
+  "swQuizQuestionOf": "Question {current} sur {total}",
+  "@swQuizQuestionOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "swQuizPointsCount": "{count} {count, plural, =1{pt} other{pts}}",
+  "@swQuizPointsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swQuizTypeAnswerHint": "Tapez votre réponse ici...",
+  "swQuizExplanation": "Explication",
+  "swQuizCongratulations": "Félicitations !",
+  "swQuizKeepPracticing": "Continuez à vous entraîner !",
+  "swQuizYouScored": "Vous avez obtenu",
+  "swQuizScoreOutOf": "{score} sur {total} points",
+  "@swQuizScoreOutOf": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "swQuizQuestionsCount": "{count} questions",
+  "@swQuizQuestionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swQuizDurationMin": "{count} min",
+  "@swQuizDurationMin": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swQuizAttemptsCount": "{used}/{max} tentatives",
+  "@swQuizAttemptsCount": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "swQuizBestScore": "Meilleur score : {score}%",
+  "@swQuizBestScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "swResourceRemoveBookmark": "Retirer le signet",
+  "swResourceBookmark": "Ajouter un signet",
+  "swResourceDownloaded": "Téléchargé",
+  "swResourceDownload": "Télécharger",
+  "swResourceNoResourcesAvailable": "Aucune ressource disponible",
+  "swResourceWillAppearHere": "Les ressources apparaîtront ici lorsqu'elles seront disponibles",
+  "swResourceDownloading": "Téléchargement",
+  "swProgressLessonsCount": "{completed}/{total} leçons",
+  "@swProgressLessonsCount": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "swProgressUnlocked": "Débloqué {date}",
+  "@swProgressUnlocked": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "swProgressToday": "Aujourd'hui",
+  "swProgressYesterday": "Hier",
+  "swProgressDaysAgo": "il y a {count} jours",
+  "@swProgressDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swProgressCompleted": "Terminé",
+  "swProgressOverdue": "En retard",
+  "swProgressDaysLeft": "{count} jours restants",
+  "@swProgressDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "swProgressDayStreak": "jours consécutifs",
+  "swProgressLongestStreak": "Record : {count} jours",
+  "@swProgressLongestStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

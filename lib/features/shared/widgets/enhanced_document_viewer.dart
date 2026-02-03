@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/models/document_model.dart';
+import '../../../core/l10n_extension.dart';
 
 /// Enhanced Document Viewer Widget
 ///
@@ -74,7 +75,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = 'Failed to load document: ${e.toString()}';
+        _error = e.toString();
       });
     }
   }
@@ -108,7 +109,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
             Text(
-              'Loading ${widget.document.name}...',
+              context.l10n.swDocViewerLoading(widget.document.name),
               style: const TextStyle(
                 color: AppColors.textSecondary,
               ),
@@ -135,7 +136,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
               ),
               const SizedBox(height: 16),
               Text(
-                _error ?? 'Failed to load document',
+                _error != null ? context.l10n.swDocViewerLoadError(_error!) : context.l10n.swDocViewerFailedToLoad,
                 style: const TextStyle(
                   color: AppColors.error,
                   fontSize: 16,
@@ -146,7 +147,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
               ElevatedButton.icon(
                 onPressed: _loadDocument,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(context.l10n.swDocViewerRetry),
               ),
             ],
           ),
@@ -236,7 +237,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
               onPressed: () {
                 // TODO: Implement zoom in
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Use pinch gesture to zoom')),
+                  SnackBar(content: Text(context.l10n.swDocViewerPinchToZoom)),
                 );
               },
             ),
@@ -315,16 +316,16 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
               color: AppColors.textSecondary.withOpacity(0.5),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Preview Not Available',
-              style: TextStyle(
+            Text(
+              context.l10n.swDocViewerPreviewNotAvailable,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'This file type (${widget.document.fileExtension}) cannot be previewed',
+              context.l10n.swDocViewerCannotPreview(widget.document.fileExtension),
               style: const TextStyle(
                 color: AppColors.textSecondary,
               ),
@@ -336,12 +337,12 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
                 // TODO: Implement download
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Downloading ${widget.document.name}...'),
+                    content: Text(context.l10n.swDocViewerDownloading(widget.document.name)),
                   ),
                 );
               },
               icon: const Icon(Icons.download),
-              label: const Text('Download to View'),
+              label: Text(context.l10n.swDocViewerDownloadToView),
             ),
           ],
         ),
@@ -452,15 +453,15 @@ class _ZoomableImageViewerState extends State<ZoomableImageViewer> {
       },
       errorBuilder: (context, error, stackTrace) {
         widget.onLoadError?.call(error.toString());
-        return const Center(
+        return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.broken_image, size: 48, color: AppColors.error),
-              SizedBox(height: 8),
+              const Icon(Icons.broken_image, size: 48, color: AppColors.error),
+              const SizedBox(height: 8),
               Text(
-                'Failed to load image',
-                style: TextStyle(color: AppColors.error),
+                context.l10n.swDocViewerFailedToLoadImage,
+                style: const TextStyle(color: AppColors.error),
               ),
             ],
           ),
@@ -549,33 +550,33 @@ class PDFDocumentViewer extends StatelessWidget {
                 color: AppColors.error,
               ),
               const SizedBox(height: 24),
-              const Text(
-                'PDF Viewer',
-                style: TextStyle(
+              Text(
+                context.l10n.swDocViewerPdfViewer,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'To enable PDF viewing, add one of these packages to pubspec.yaml:',
+              Text(
+                context.l10n.swDocViewerPdfEnableMessage,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textSecondary),
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
               const SizedBox(height: 16),
               _buildPackageOption(
                 'syncfusion_flutter_pdfviewer',
-                'Full-featured, commercial',
+                context.l10n.swDocViewerPdfOptionCommercial,
               ),
               const SizedBox(height: 8),
               _buildPackageOption(
                 'flutter_pdfview',
-                'Open source, native rendering',
+                context.l10n.swDocViewerPdfOptionOpenSource,
               ),
               const SizedBox(height: 8),
               _buildPackageOption(
                 'pdfx',
-                'Modern, good performance',
+                context.l10n.swDocViewerPdfOptionModern,
               ),
               const SizedBox(height: 24),
               Container(
@@ -591,7 +592,7 @@ class PDFDocumentViewer extends StatelessWidget {
                     const SizedBox(width: 8),
                     Flexible(
                       child: Text(
-                        'Page $initialPage of ${initialPage + 4}',
+                        context.l10n.swDocViewerPageOf(initialPage, initialPage + 4),
                         style: const TextStyle(color: AppColors.info),
                       ),
                     ),

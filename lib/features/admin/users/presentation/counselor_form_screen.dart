@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
@@ -88,8 +89,8 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
       SnackBar(
         content: Text(
           widget.counselorId == null
-              ? 'Counselor created successfully'
-              : 'Counselor updated successfully',
+              ? context.l10n.adminUserCounselorCreatedSuccess
+              : context.l10n.adminUserCounselorUpdatedSuccess,
         ),
         backgroundColor: AppColors.success,
       ),
@@ -121,27 +122,27 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                       _buildHeader(isEditMode),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Personal Information',
+                        context.l10n.adminUserPersonalInformation,
                         [
                           Row(
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'First Name',
+                                  label: context.l10n.adminUserFirstName,
                                   controller: _firstNameController,
                                   required: true,
                                   validator: (value) =>
-                                      value?.isEmpty ?? true ? 'Required' : null,
+                                      value?.isEmpty ?? true ? context.l10n.adminUserRequired : null,
                                 ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Last Name',
+                                  label: context.l10n.adminUserLastName,
                                   controller: _lastNameController,
                                   required: true,
                                   validator: (value) =>
-                                      value?.isEmpty ?? true ? 'Required' : null,
+                                      value?.isEmpty ?? true ? context.l10n.adminUserRequired : null,
                                 ),
                               ),
                             ],
@@ -151,15 +152,15 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Email',
+                                  label: context.l10n.adminUserEmail,
                                   controller: _emailController,
                                   required: true,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    if (value?.isEmpty ?? true) return 'Required';
+                                    if (value?.isEmpty ?? true) return context.l10n.adminUserRequired;
                                     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                         .hasMatch(value!)) {
-                                      return 'Invalid email';
+                                      return context.l10n.adminUserInvalidEmail;
                                     }
                                     return null;
                                   },
@@ -168,7 +169,7 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Phone',
+                                  label: context.l10n.adminUserPhone,
                                   controller: _phoneController,
                                   keyboardType: TextInputType.phone,
                                 ),
@@ -179,31 +180,31 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                       ),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Professional Information',
+                        context.l10n.adminUserProfessionalInformation,
                         [
                           Row(
                             children: [
                               Expanded(
                                 child: _buildDropdown(
-                                  label: 'Specialty',
+                                  label: context.l10n.adminUserSpecialty,
                                   value: _selectedSpecialty,
                                   required: true,
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
                                         value: 'academic',
-                                        child: Text('Academic Counseling')),
+                                        child: Text(context.l10n.adminUserAcademicCounseling)),
                                     DropdownMenuItem(
                                         value: 'career',
-                                        child: Text('Career Guidance')),
+                                        child: Text(context.l10n.adminUserCareerGuidance)),
                                     DropdownMenuItem(
                                         value: 'college',
-                                        child: Text('College Admissions')),
+                                        child: Text(context.l10n.adminUserCollegeAdmissions)),
                                     DropdownMenuItem(
                                         value: 'mental',
-                                        child: Text('Mental Health')),
+                                        child: Text(context.l10n.adminUserMentalHealth)),
                                     DropdownMenuItem(
                                         value: 'study',
-                                        child: Text('Study Skills')),
+                                        child: Text(context.l10n.adminUserStudySkills)),
                                   ],
                                   onChanged: (value) {
                                     if (value != null) {
@@ -215,7 +216,7 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Years of Experience',
+                                  label: context.l10n.adminUserYearsOfExperience,
                                   controller: _experienceController,
                                   keyboardType: TextInputType.number,
                                 ),
@@ -227,15 +228,15 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Credentials',
+                                  label: context.l10n.adminUserCredentials,
                                   controller: _credentialsController,
-                                  hintText: 'e.g., M.A. Counseling Psychology',
+                                  hintText: context.l10n.adminUserCredentialsHint,
                                 ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'License Number',
+                                  label: context.l10n.adminUserLicenseNumber,
                                   controller: _licenseController,
                                 ),
                               ),
@@ -245,35 +246,35 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                       ),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Contact & Availability',
+                        context.l10n.adminUserContactAndAvailability,
                         [
                           _buildTextField(
-                            label: 'Office Location',
+                            label: context.l10n.adminUserOfficeLocation,
                             controller: _officeLocationController,
-                            hintText: 'e.g., Building A, Room 203',
+                            hintText: context.l10n.adminUserOfficeLocationHint,
                           ),
                           const SizedBox(height: 16),
                           _buildTextField(
-                            label: 'Availability',
+                            label: context.l10n.adminUserAvailability,
                             controller: _availabilityController,
-                            hintText: 'e.g., Mon-Fri, 9AM-5PM',
+                            hintText: context.l10n.adminUserAvailabilityHint,
                           ),
                         ],
                       ),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Account Settings',
+                        context.l10n.adminUserAccountSettings,
                         [
                           _buildDropdown(
-                            label: 'Status',
+                            label: context.l10n.adminUserStatus,
                             value: _selectedStatus,
                             required: true,
-                            items: const [
-                              DropdownMenuItem(value: 'active', child: Text('Active')),
+                            items: [
+                              DropdownMenuItem(value: 'active', child: Text(context.l10n.adminUserActive)),
                               DropdownMenuItem(
-                                  value: 'inactive', child: Text('Inactive')),
+                                  value: 'inactive', child: Text(context.l10n.adminUserInactive)),
                               DropdownMenuItem(
-                                  value: 'suspended', child: Text('Suspended')),
+                                  value: 'suspended', child: Text(context.l10n.adminUserSuspended)),
                             ],
                             onChanged: (value) {
                               if (value != null) {
@@ -304,7 +305,7 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
           TextButton.icon(
             onPressed: () => context.go('/admin/users/counselors'),
             icon: const Icon(Icons.arrow_back, size: 16),
-            label: const Text('Back to Counselors'),
+            label: Text(context.l10n.adminUserBackToCounselors),
           ),
         ],
       ),
@@ -316,14 +317,14 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isEditMode ? 'Edit Counselor' : 'Add New Counselor',
+          isEditMode ? context.l10n.adminUserEditCounselor : context.l10n.adminUserAddNewCounselor,
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
           isEditMode
-              ? 'Update counselor account information'
-              : 'Create a new counselor account',
+              ? context.l10n.adminUserUpdateCounselorSubtitle
+              : context.l10n.adminUserCreateCounselorSubtitle,
           style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
         ),
       ],
@@ -430,7 +431,7 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                 _isLoading ? null : () => context.go('/admin/users/counselors'),
             style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16)),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminUserCancel),
           ),
         ),
         const SizedBox(width: 16),
@@ -447,7 +448,7 @@ class _CounselorFormScreenState extends ConsumerState<CounselorFormScreen> {
                       width: 20,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white))
-                  : Text(isEditMode ? 'Update Counselor' : 'Create Counselor'),
+                  : Text(isEditMode ? context.l10n.adminUserUpdateCounselor : context.l10n.adminUserCreateCounselor),
             ),
           ),
         ),

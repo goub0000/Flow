@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/providers/admin_analytics_provider.dart';
 import '../../shared/providers/admin_finance_provider.dart';
 
@@ -78,11 +79,11 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Custom Dashboards',
+                  context.l10n.adminAnalyticsCustomDashboards,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Configure and view your analytics dashboard',
+                  context.l10n.adminAnalyticsDashboardSubtitle,
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                 ),
               ],
@@ -91,7 +92,7 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
           IconButton(
             onPressed: _refreshAll,
             icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh All',
+            tooltip: context.l10n.adminAnalyticsRefreshAll,
           ),
         ],
       ),
@@ -103,7 +104,7 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          const Text('Widgets:', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 13)),
+          Text(context.l10n.adminAnalyticsWidgets, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13)),
           const SizedBox(width: 12),
           ..._widgets.map((w) {
             return Padding(
@@ -134,9 +135,9 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
             children: [
               Icon(Icons.widgets_outlined, size: 64, color: Colors.grey[300]),
               const SizedBox(height: 16),
-              Text('No widgets selected', style: TextStyle(color: AppColors.textSecondary)),
+              Text(context.l10n.adminAnalyticsNoWidgets, style: TextStyle(color: AppColors.textSecondary)),
               const SizedBox(height: 8),
-              const Text('Use the chips above to toggle dashboard widgets'),
+              Text(context.l10n.adminAnalyticsToggleWidgets),
             ],
           ),
         ),
@@ -205,13 +206,13 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
 
     return Row(
       children: [
-        _buildMiniKpi('Total Users', '${metrics['total_users'] ?? 0}', Icons.people, AppColors.primary),
+        _buildMiniKpi(context.l10n.adminAnalyticsTotalUsers, '${metrics['total_users'] ?? 0}', Icons.people, AppColors.primary),
         const SizedBox(width: 12),
-        _buildMiniKpi('Active (30d)', '${metrics['active_users_30days'] ?? 0}', Icons.person, AppColors.success),
+        _buildMiniKpi(context.l10n.adminAnalyticsActive30d, '${metrics['active_users_30days'] ?? 0}', Icons.person, AppColors.success),
         const SizedBox(width: 12),
-        _buildMiniKpi('New (7d)', '${metrics['new_registrations_7days'] ?? 0}', Icons.person_add, Color(0xFFFAA61A)),
+        _buildMiniKpi(context.l10n.adminAnalyticsNew7d, '${metrics['new_registrations_7days'] ?? 0}', Icons.person_add, Color(0xFFFAA61A)),
         const SizedBox(width: 12),
-        _buildMiniKpi('Apps (7d)', '${metrics['applications_7days'] ?? 0}', Icons.description, AppColors.secondary),
+        _buildMiniKpi(context.l10n.adminAnalyticsApps7d, '${metrics['applications_7days'] ?? 0}', Icons.description, AppColors.secondary),
       ],
     );
   }
@@ -244,10 +245,10 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
     if (analyticsState.isLoading) return _buildLoading();
 
     final roles = <MapEntry<String, int>>[
-      MapEntry('Students', (metrics['total_students'] as int?) ?? 0),
-      MapEntry('Institutions', (metrics['total_institutions'] as int?) ?? 0),
-      MapEntry('Counselors', (metrics['total_counselors'] as int?) ?? 0),
-      MapEntry('Recommenders', (metrics['total_recommenders'] as int?) ?? 0),
+      MapEntry(context.l10n.adminAnalyticsStudents, (metrics['total_students'] as int?) ?? 0),
+      MapEntry(context.l10n.adminAnalyticsInstitutions, (metrics['total_institutions'] as int?) ?? 0),
+      MapEntry(context.l10n.adminAnalyticsCounselors, (metrics['total_counselors'] as int?) ?? 0),
+      MapEntry(context.l10n.adminAnalyticsRecommenders, (metrics['total_recommenders'] as int?) ?? 0),
     ];
     final total = roles.fold<int>(0, (sum, e) => sum + e.value);
 
@@ -296,10 +297,10 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
 
     return Column(
       children: [
-        _buildFinanceRow('Total Revenue', formatCurrency(stats['totalRevenue'] ?? 0), AppColors.success),
-        _buildFinanceRow('This Month', formatCurrency(stats['revenueThisMonth'] ?? 0), AppColors.primary),
-        _buildFinanceRow('Transactions', '${stats['totalTransactions'] ?? 0}', Color(0xFFFAA61A)),
-        _buildFinanceRow('Success Rate', '${(stats['successRate'] ?? 0).toStringAsFixed(1)}%', AppColors.success),
+        _buildFinanceRow(context.l10n.adminAnalyticsTotalRevenue, formatCurrency(stats['totalRevenue'] ?? 0), AppColors.success),
+        _buildFinanceRow(context.l10n.adminAnalyticsThisMonth, formatCurrency(stats['revenueThisMonth'] ?? 0), AppColors.primary),
+        _buildFinanceRow(context.l10n.adminAnalyticsTransactions, '${stats['totalTransactions'] ?? 0}', Color(0xFFFAA61A)),
+        _buildFinanceRow(context.l10n.adminAnalyticsSuccessRate, '${(stats['successRate'] ?? 0).toStringAsFixed(1)}%', AppColors.success),
       ],
     );
   }
@@ -324,9 +325,9 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
     if (analyticsState.isLoading) return _buildLoading();
 
     if (activity.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(child: Text('No recent activity')),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Center(child: Text(context.l10n.adminAnalyticsNoRecentActivity)),
       );
     }
 
@@ -365,11 +366,11 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
 
     return Row(
       children: [
-        _buildMiniKpi('Courses', '${metrics['total_courses'] ?? 0}', Icons.school, AppColors.primary),
+        _buildMiniKpi(context.l10n.adminAnalyticsCourses, '${metrics['total_courses'] ?? 0}', Icons.school, AppColors.primary),
         const SizedBox(width: 12),
-        _buildMiniKpi('Programs', '${metrics['total_programs'] ?? 0}', Icons.category, AppColors.success),
+        _buildMiniKpi(context.l10n.adminAnalyticsPrograms, '${metrics['total_programs'] ?? 0}', Icons.category, AppColors.success),
         const SizedBox(width: 12),
-        _buildMiniKpi('Universities', '${metrics['total_universities'] ?? 0}', Icons.business, Color(0xFFFAA61A)),
+        _buildMiniKpi(context.l10n.adminAnalyticsUniversities, '${metrics['total_universities'] ?? 0}', Icons.business, Color(0xFFFAA61A)),
       ],
     );
   }
@@ -403,7 +404,7 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
               ),
             ),
             Text(
-              'User growth vs previous period',
+              context.l10n.adminAnalyticsUserGrowthVsPrevious,
               style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
           ],
@@ -413,7 +414,7 @@ class _DashboardsScreenState extends ConsumerState<DashboardsScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text('${metrics['new_registrations_7days'] ?? 0}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            Text('New users this week', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+            Text(context.l10n.adminAnalyticsNewUsersThisWeek, style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
           ],
         ),
       ],

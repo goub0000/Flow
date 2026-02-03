@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/l10n_extension.dart';
 import '../../providers/approvals_provider.dart';
 import '../widgets/approval_request_card.dart';
 import '../widgets/approval_filter_dialog.dart';
@@ -46,18 +47,18 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Approval Requests'),
+        title: Text(context.l10n.adminApprovalRequests),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: _showFilterDialog,
-            tooltip: 'Filter',
+            tooltip: context.l10n.adminApprovalFilter,
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () =>
                 ref.read(approvalsListProvider.notifier).refresh(),
-            tooltip: 'Refresh',
+            tooltip: context.l10n.adminApprovalRefresh,
           ),
         ],
       ),
@@ -78,7 +79,7 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Filters applied',
+                    context.l10n.adminApprovalFiltersApplied,
                     style: TextStyle(
                       color: theme.colorScheme.onPrimaryContainer,
                     ),
@@ -87,7 +88,7 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
                   TextButton(
                     onPressed: () =>
                         ref.read(approvalsListProvider.notifier).clearFilter(),
-                    child: const Text('Clear'),
+                    child: Text(context.l10n.adminApprovalClear),
                   ),
                 ],
               ),
@@ -99,7 +100,7 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
             child: Row(
               children: [
                 Text(
-                  '${state.total} request${state.total != 1 ? 's' : ''}',
+                  context.l10n.adminApprovalRequestCount(state.total),
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -117,7 +118,7 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.go('/admin/approvals/create'),
         icon: const Icon(Icons.add),
-        label: const Text('New Request'),
+        label: Text(context.l10n.adminApprovalNewRequest),
       ),
     );
   }
@@ -138,12 +139,12 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
               color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: 16),
-            Text('Error: ${state.error}'),
+            Text(context.l10n.adminApprovalErrorWithMessage(state.error!)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () =>
                   ref.read(approvalsListProvider.notifier).refresh(),
-              child: const Text('Retry'),
+              child: Text(context.l10n.adminApprovalRetry),
             ),
           ],
         ),
@@ -161,11 +162,11 @@ class _ApprovalListScreenState extends ConsumerState<ApprovalListScreen> {
               color: Colors.grey.shade400,
             ),
             const SizedBox(height: 16),
-            const Text('No approval requests found'),
+            Text(context.l10n.adminApprovalNoRequestsFound),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => context.go('/admin/approvals/create'),
-              child: const Text('Create New Request'),
+              child: Text(context.l10n.adminApprovalCreateNewRequest),
             ),
           ],
         ),

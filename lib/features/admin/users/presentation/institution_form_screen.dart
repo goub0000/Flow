@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/permission_guard.dart';
@@ -94,8 +95,8 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
       SnackBar(
         content: Text(
           widget.institutionId == null
-              ? 'Institution created successfully'
-              : 'Institution updated successfully',
+              ? context.l10n.adminUserInstitutionCreatedSuccess
+              : context.l10n.adminUserInstitutionUpdatedSuccess,
         ),
         backgroundColor: AppColors.success,
       ),
@@ -127,34 +128,34 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                       _buildHeader(isEditMode),
                       const SizedBox(height: 32),
                       _buildSection(
-                        'Institution Information',
+                        context.l10n.adminUserInstitutionInformation,
                         [
                           _buildTextField(
-                            label: 'Institution Name',
+                            label: context.l10n.adminUserInstitutionName,
                             controller: _institutionNameController,
                             required: true,
                             validator: (value) =>
-                                value?.isEmpty ?? true ? 'Required' : null,
+                                value?.isEmpty ?? true ? context.l10n.adminUserRequired : null,
                           ),
                           const SizedBox(height: 16),
                           Row(
                             children: [
                               Expanded(
                                 child: _buildDropdown(
-                                  label: 'Type',
+                                  label: context.l10n.adminUserType,
                                   value: _selectedType,
                                   required: true,
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
-                                        value: 'university', child: Text('University')),
+                                        value: 'university', child: Text(context.l10n.adminUserUniversity)),
                                     DropdownMenuItem(
-                                        value: 'college', child: Text('College')),
+                                        value: 'college', child: Text(context.l10n.adminUserCollege)),
                                     DropdownMenuItem(
                                         value: 'vocational',
-                                        child: Text('Vocational School')),
+                                        child: Text(context.l10n.adminUserVocationalSchool)),
                                     DropdownMenuItem(
                                         value: 'language',
-                                        child: Text('Language School')),
+                                        child: Text(context.l10n.adminUserLanguageSchool)),
                                   ],
                                   onChanged: (value) {
                                     if (value != null) {
@@ -166,18 +167,18 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildDropdown(
-                                  label: 'Status',
+                                  label: context.l10n.adminUserStatus,
                                   value: _selectedStatus,
                                   required: true,
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
-                                        value: 'pending', child: Text('Pending Approval')),
+                                        value: 'pending', child: Text(context.l10n.adminUserPendingApproval)),
                                     DropdownMenuItem(
-                                        value: 'verified', child: Text('Verified')),
+                                        value: 'verified', child: Text(context.l10n.adminUserVerified)),
                                     DropdownMenuItem(
-                                        value: 'active', child: Text('Active')),
+                                        value: 'active', child: Text(context.l10n.adminUserActive)),
                                     DropdownMenuItem(
-                                        value: 'rejected', child: Text('Rejected')),
+                                        value: 'rejected', child: Text(context.l10n.adminUserRejected)),
                                   ],
                                   onChanged: (value) {
                                     if (value != null) {
@@ -193,15 +194,15 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Email',
+                                  label: context.l10n.adminUserEmail,
                                   controller: _emailController,
                                   required: true,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    if (value?.isEmpty ?? true) return 'Required';
+                                    if (value?.isEmpty ?? true) return context.l10n.adminUserRequired;
                                     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                         .hasMatch(value!)) {
-                                      return 'Invalid email';
+                                      return context.l10n.adminUserInvalidEmail;
                                     }
                                     return null;
                                   },
@@ -210,7 +211,7 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: _buildTextField(
-                                  label: 'Phone',
+                                  label: context.l10n.adminUserPhone,
                                   controller: _phoneController,
                                   keyboardType: TextInputType.phone,
                                 ),
@@ -219,7 +220,7 @@ class _InstitutionFormScreenState extends ConsumerState<InstitutionFormScreen> {
                           ),
                           const SizedBox(height: 16),
                           _buildTextField(
-                            label: 'Website',
+                            label: context.l10n.adminUserWebsite,
                             controller: _websiteController,
                             keyboardType: TextInputType.url,
                           ),

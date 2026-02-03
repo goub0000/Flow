@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/providers/admin_knowledge_base_provider.dart';
 import '../../chatbot/services/faq_api_service.dart';
@@ -120,7 +121,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                   Icon(Icons.menu_book, size: 32, color: AppColors.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Knowledge Base',
+                    context.l10n.adminSupportKnowledgeBase,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -129,7 +130,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage FAQ articles and help documentation',
+                context.l10n.adminSupportKnowledgeBaseSubtitle,
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
             ],
@@ -139,7 +140,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
               ElevatedButton.icon(
                 onPressed: () => _showCreateDialog(),
                 icon: const Icon(Icons.add, size: 20),
-                label: const Text('Create FAQ'),
+                label: Text(context.l10n.adminSupportCreateFaq),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.textOnPrimary,
@@ -149,7 +150,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
               IconButton(
                 onPressed: () => ref.read(adminKnowledgeBaseProvider.notifier).fetchFAQs(),
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh',
+                tooltip: context.l10n.adminSupportRefresh,
               ),
             ],
           ),
@@ -167,13 +168,13 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
-          Expanded(child: _buildStatCard('Total Articles', '${kbState.totalCount}', 'FAQ entries', Icons.article, AppColors.primary)),
+          Expanded(child: _buildStatCard(context.l10n.adminSupportTotalArticles, '${kbState.totalCount}', context.l10n.adminSupportFaqEntries, Icons.article, AppColors.primary)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Active', '${kbState.activeCount}', 'Published articles', Icons.check_circle, AppColors.success)),
+          Expanded(child: _buildStatCard(context.l10n.adminSupportActive, '${kbState.activeCount}', context.l10n.adminSupportPublishedArticles, Icons.check_circle, AppColors.success)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Inactive', '${kbState.inactiveCount}', 'Draft articles', Icons.pause_circle, AppColors.warning)),
+          Expanded(child: _buildStatCard(context.l10n.adminSupportInactive, '${kbState.inactiveCount}', context.l10n.adminSupportDraftArticles, Icons.pause_circle, AppColors.warning)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatCard('Most Helpful', '$mostHelpful', 'Highest helpful votes', Icons.thumb_up, AppColors.info)),
+          Expanded(child: _buildStatCard(context.l10n.adminSupportMostHelpful, '$mostHelpful', context.l10n.adminSupportHighestHelpfulVotes, Icons.thumb_up, AppColors.info)),
         ],
       ),
     );
@@ -216,7 +217,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by question, answer, or keyword...',
+                hintText: context.l10n.adminSupportSearchFaqHint,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: AppColors.border)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -229,17 +230,17 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedCategory,
               decoration: InputDecoration(
-                labelText: 'Category',
+                labelText: context.l10n.adminSupportCategory,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Categories')),
-                DropdownMenuItem(value: 'general', child: Text('General')),
-                DropdownMenuItem(value: 'academic', child: Text('Academic')),
-                DropdownMenuItem(value: 'technical', child: Text('Technical')),
-                DropdownMenuItem(value: 'billing', child: Text('Billing')),
-                DropdownMenuItem(value: 'account', child: Text('Account')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminSupportAllCategories)),
+                DropdownMenuItem(value: 'general', child: Text(context.l10n.adminSupportGeneral)),
+                DropdownMenuItem(value: 'academic', child: Text(context.l10n.adminSupportAcademic)),
+                DropdownMenuItem(value: 'technical', child: Text(context.l10n.adminSupportTechnical)),
+                DropdownMenuItem(value: 'billing', child: Text(context.l10n.adminSupportBilling)),
+                DropdownMenuItem(value: 'account', child: Text(context.l10n.adminSupportAccount)),
               ],
               onChanged: (value) {
                 if (value != null) setState(() => _selectedCategory = value);
@@ -251,14 +252,14 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
             child: DropdownButtonFormField<String>(
               value: _selectedStatus,
               decoration: InputDecoration(
-                labelText: 'Status',
+                labelText: context.l10n.adminSupportStatus,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Status')),
-                DropdownMenuItem(value: 'active', child: Text('Active')),
-                DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
+              items: [
+                DropdownMenuItem(value: 'all', child: Text(context.l10n.adminSupportAllStatus)),
+                DropdownMenuItem(value: 'active', child: Text(context.l10n.adminSupportActive)),
+                DropdownMenuItem(value: 'inactive', child: Text(context.l10n.adminSupportInactive)),
               ],
               onChanged: (value) {
                 if (value != null) setState(() => _selectedStatus = value);
@@ -274,7 +275,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
     return AdminDataTable<FAQ>(
       columns: [
         DataTableColumn(
-          label: 'Question',
+          label: context.l10n.adminSupportQuestion,
           cellBuilder: (faq) => SizedBox(
             width: 250,
             child: Text(
@@ -286,30 +287,30 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
           ),
         ),
         DataTableColumn(
-          label: 'Category',
+          label: context.l10n.adminSupportCategory,
           cellBuilder: (faq) => _buildCategoryBadge(faq.category),
         ),
         DataTableColumn(
-          label: 'Priority',
+          label: context.l10n.adminSupportPriority,
           cellBuilder: (faq) => Text('${faq.priority}', style: const TextStyle(fontSize: 13)),
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Status',
+          label: context.l10n.adminSupportStatus,
           cellBuilder: (faq) => _buildStatusBadge(faq.isActive),
         ),
         DataTableColumn(
-          label: 'Uses',
+          label: context.l10n.adminSupportUses,
           cellBuilder: (faq) => Text('${faq.usageCount}', style: const TextStyle(fontSize: 13)),
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Helpful',
+          label: context.l10n.adminSupportHelpful,
           cellBuilder: (faq) => Text('${faq.helpfulCount}', style: TextStyle(fontSize: 13, color: AppColors.success)),
           sortable: true,
         ),
         DataTableColumn(
-          label: 'Not Helpful',
+          label: context.l10n.adminSupportNotHelpful,
           cellBuilder: (faq) => Text('${faq.notHelpfulCount}', style: TextStyle(fontSize: 13, color: AppColors.error)),
           sortable: true,
         ),
@@ -320,12 +321,12 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
       rowActions: [
         DataTableAction(
           icon: Icons.edit,
-          tooltip: 'Edit',
+          tooltip: context.l10n.adminSupportEdit,
           onPressed: (faq) => _showEditDialog(faq),
         ),
         DataTableAction(
           icon: Icons.toggle_on,
-          tooltip: 'Toggle Active',
+          tooltip: context.l10n.adminSupportToggleActive,
           color: AppColors.primary,
           onPressed: (faq) {
             ref.read(adminKnowledgeBaseProvider.notifier).toggleActive(faq.id, !faq.isActive);
@@ -333,7 +334,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
         ),
         DataTableAction(
           icon: Icons.delete,
-          tooltip: 'Delete',
+          tooltip: context.l10n.adminSupportDelete,
           color: AppColors.error,
           onPressed: (faq) => _showDeleteConfirm(faq),
         ),
@@ -365,7 +366,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        isActive ? 'Active' : 'Inactive',
+        isActive ? context.l10n.adminSupportActive : context.l10n.adminSupportInactive,
         style: TextStyle(
           fontSize: 12,
           color: isActive ? AppColors.success : AppColors.textSecondary,
@@ -395,7 +396,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: Text(isEditing ? 'Edit FAQ' : 'Create FAQ'),
+          title: Text(isEditing ? context.l10n.adminSupportEditFaq : context.l10n.adminSupportCreateFaq),
           content: SizedBox(
             width: 500,
             child: SingleChildScrollView(
@@ -405,8 +406,8 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                 children: [
                   TextField(
                     controller: questionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Question',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminSupportQuestion,
                       border: OutlineInputBorder(),
                     ),
                     maxLines: 2,
@@ -414,8 +415,8 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                   const SizedBox(height: 16),
                   TextField(
                     controller: answerController,
-                    decoration: const InputDecoration(
-                      labelText: 'Answer',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminSupportAnswer,
                       border: OutlineInputBorder(),
                     ),
                     maxLines: 5,
@@ -423,8 +424,8 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                   const SizedBox(height: 16),
                   TextField(
                     controller: keywordsController,
-                    decoration: const InputDecoration(
-                      labelText: 'Keywords (comma-separated)',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.adminSupportKeywords,
                       border: OutlineInputBorder(),
                       hintText: 'e.g. login, password, reset',
                     ),
@@ -475,7 +476,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.adminSupportCancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -512,7 +513,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                 if (success && context.mounted) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(isEditing ? 'FAQ updated' : 'FAQ created')),
+                    SnackBar(content: Text(isEditing ? context.l10n.adminSupportFaqUpdated : context.l10n.adminSupportFaqCreated)),
                   );
                 }
               },
@@ -520,7 +521,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.textOnPrimary,
               ),
-              child: Text(isEditing ? 'Update' : 'Create'),
+              child: Text(isEditing ? context.l10n.adminSupportUpdate : context.l10n.adminSupportCreateAction),
             ),
           ],
         ),
@@ -532,12 +533,12 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete FAQ'),
+        title: Text(context.l10n.adminSupportDeleteFaq),
         content: Text('Are you sure you want to delete "${faq.question}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.adminSupportCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -545,7 +546,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen> {
               if (success && context.mounted) {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('FAQ deleted')),
+                  SnackBar(content: Text(context.l10n.adminSupportFaqDeleted)),
                 );
               }
             },
