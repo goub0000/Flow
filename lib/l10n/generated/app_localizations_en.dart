@@ -18971,4 +18971,698 @@ class AppLocalizationsEn extends AppLocalizations {
   String adminRecommenderDetailRequestsCount(int count) {
     return '$count Requests';
   }
+
+  @override
+  String get paymentFailureTitle => 'Payment Failed';
+
+  @override
+  String get paymentFailureDefaultMessage =>
+      'We could not process your payment. Please try again.';
+
+  @override
+  String get paymentFailureTransactionDetails => 'Transaction Details';
+
+  @override
+  String get paymentFailureTransactionId => 'Transaction ID';
+
+  @override
+  String get paymentFailureNotAvailable => 'N/A';
+
+  @override
+  String get paymentFailureReference => 'Reference';
+
+  @override
+  String get paymentFailurePaymentMethod => 'Payment Method';
+
+  @override
+  String get paymentFailureAmount => 'Amount';
+
+  @override
+  String get paymentFailureReason => 'Failure Reason';
+
+  @override
+  String get paymentFailureCommonIssues => 'Common Issues';
+
+  @override
+  String get paymentFailureInsufficientFunds => 'Insufficient Funds';
+
+  @override
+  String get paymentFailureInsufficientFundsDesc =>
+      'Ensure you have sufficient balance in your account';
+
+  @override
+  String get paymentFailureCardDeclined => 'Card Declined';
+
+  @override
+  String get paymentFailureCardDeclinedDesc =>
+      'Check with your bank or try a different card';
+
+  @override
+  String get paymentFailureNetworkIssues => 'Network Issues';
+
+  @override
+  String get paymentFailureNetworkIssuesDesc =>
+      'Ensure you have a stable internet connection';
+
+  @override
+  String get paymentFailureIncorrectDetails => 'Incorrect Details';
+
+  @override
+  String get paymentFailureIncorrectDetailsDesc =>
+      'Verify your payment information is correct';
+
+  @override
+  String get paymentFailureContactSupportNotice =>
+      'If the problem persists, please contact support';
+
+  @override
+  String get paymentFailureTryAgain => 'Try Again';
+
+  @override
+  String get paymentFailureContactSupport => 'Contact Support';
+
+  @override
+  String get paymentFailureBackToHome => 'Back to Home';
+
+  @override
+  String get paymentHistoryTitle => 'Payment History';
+
+  @override
+  String get paymentHistoryBack => 'Back';
+
+  @override
+  String paymentHistoryTabAll(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String paymentHistoryTabCompleted(int count) {
+    return 'Completed ($count)';
+  }
+
+  @override
+  String paymentHistoryTabProcessing(int count) {
+    return 'Processing ($count)';
+  }
+
+  @override
+  String paymentHistoryTabFailed(int count) {
+    return 'Failed ($count)';
+  }
+
+  @override
+  String get paymentHistoryRetry => 'Retry';
+
+  @override
+  String get paymentHistoryLoading => 'Loading payment history...';
+
+  @override
+  String get paymentHistoryNoPayments => 'No Payments';
+
+  @override
+  String get paymentHistoryNoPaymentsFound => 'No payments found';
+
+  @override
+  String get paymentHistoryTransactionId => 'Transaction ID';
+
+  @override
+  String get paymentHistoryReference => 'Reference';
+
+  @override
+  String get paymentHistoryPaymentMethod => 'Payment Method';
+
+  @override
+  String get paymentHistoryDate => 'Date';
+
+  @override
+  String get paymentHistoryCompletedAt => 'Completed At';
+
+  @override
+  String get paymentHistoryDownloadReceipt => 'Download Receipt';
+
+  @override
+  String get paymentHistoryRetryPayment => 'Retry Payment';
+
+  @override
+  String get paymentHistoryReceiptOptions => 'Receipt Options';
+
+  @override
+  String get paymentHistoryDownloadAsPdf => 'Download as PDF';
+
+  @override
+  String get paymentHistorySaveToDevice => 'Save receipt to device';
+
+  @override
+  String get paymentHistoryEmailReceipt => 'Email Receipt';
+
+  @override
+  String get paymentHistorySendToEmail => 'Send to your email address';
+
+  @override
+  String get paymentHistoryShareReceipt => 'Share Receipt';
+
+  @override
+  String get paymentHistoryShareViaApps => 'Share via other apps';
+
+  @override
+  String get paymentHistoryDownloading => 'Downloading receipt...';
+
+  @override
+  String get paymentHistorySendingEmail => 'Sending receipt via email...';
+
+  @override
+  String get paymentHistoryOpeningShare => 'Opening share options...';
+
+  @override
+  String get paymentHistoryCourseEnrollment => 'Course Enrollment';
+
+  @override
+  String get paymentHistoryProgramApplication => 'Program Application';
+
+  @override
+  String get paymentHistoryCounselingSession => 'Counseling Session';
+
+  @override
+  String get paymentMethodTitle => 'Select Payment Method';
+
+  @override
+  String get paymentMethodBack => 'Back';
+
+  @override
+  String get paymentMethodRetry => 'Retry';
+
+  @override
+  String get paymentMethodLoading => 'Loading payment methods...';
+
+  @override
+  String get paymentMethodSummary => 'Payment Summary';
+
+  @override
+  String get paymentMethodItem => 'Item';
+
+  @override
+  String get paymentMethodType => 'Type';
+
+  @override
+  String get paymentMethodTotalAmount => 'Total Amount';
+
+  @override
+  String get paymentMethodChoose => 'Choose Payment Method';
+
+  @override
+  String get paymentMethodSecureNotice =>
+      'Your payment information is secure and encrypted';
+
+  @override
+  String get paymentMethodContinue => 'Continue to Payment';
+
+  @override
+  String get paymentMethodCourseEnrollment => 'Course Enrollment';
+
+  @override
+  String get paymentMethodProgramApplication => 'Program Application';
+
+  @override
+  String get paymentMethodCounselingSession => 'Counseling Session';
+
+  @override
+  String paymentProcessingPayWith(String method) {
+    return 'Pay with $method';
+  }
+
+  @override
+  String get paymentProcessingAmountToPay => 'Amount to Pay';
+
+  @override
+  String get paymentProcessingSecureNotice =>
+      'Your payment is secured with end-to-end encryption';
+
+  @override
+  String get paymentProcessingStatus => 'Processing...';
+
+  @override
+  String paymentProcessingPayAmount(String currency, String amount) {
+    return 'Pay $currency $amount';
+  }
+
+  @override
+  String get paymentProcessingMpesaTitle => 'M-Pesa Payment';
+
+  @override
+  String get paymentProcessingMpesaPhoneLabel => 'M-Pesa Phone Number';
+
+  @override
+  String get paymentProcessingMpesaPhoneHint => '254712345678';
+
+  @override
+  String get paymentProcessingMpesaPhoneRequired =>
+      'Please enter your M-Pesa phone number';
+
+  @override
+  String get paymentProcessingMpesaPhoneInvalid =>
+      'Please enter a valid Kenyan phone number (254...)';
+
+  @override
+  String get paymentProcessingMpesaHowToPay => 'How to pay';
+
+  @override
+  String get paymentProcessingMpesaStep1 =>
+      'You will receive an M-Pesa prompt on your phone';
+
+  @override
+  String get paymentProcessingMpesaStep2 =>
+      'Enter your M-Pesa PIN to confirm payment';
+
+  @override
+  String get paymentProcessingMpesaStep3 => 'Wait for confirmation SMS';
+
+  @override
+  String get paymentProcessingCardTitle => 'Card Details';
+
+  @override
+  String get paymentProcessingCardholderName => 'Cardholder Name';
+
+  @override
+  String get paymentProcessingCardholderHint => 'JOHN DOE';
+
+  @override
+  String get paymentProcessingCardholderRequired =>
+      'Please enter cardholder name';
+
+  @override
+  String get paymentProcessingCardNumber => 'Card Number';
+
+  @override
+  String get paymentProcessingCardNumberHint => '1234 5678 9012 3456';
+
+  @override
+  String get paymentProcessingCardNumberRequired => 'Please enter card number';
+
+  @override
+  String get paymentProcessingCardNumberInvalid =>
+      'Please enter a valid card number';
+
+  @override
+  String get paymentProcessingExpiryDate => 'Expiry Date';
+
+  @override
+  String get paymentProcessingExpiryHint => 'MM/YY';
+
+  @override
+  String get paymentProcessingRequired => 'Required';
+
+  @override
+  String get paymentProcessingInvalidFormat => 'Invalid format';
+
+  @override
+  String get paymentProcessingCvv => 'CVV';
+
+  @override
+  String get paymentProcessingCvvHint => '123';
+
+  @override
+  String get paymentProcessingCvvInvalid => 'Invalid CVV';
+
+  @override
+  String get paymentProcessingFlutterwaveTitle => 'Flutterwave Payment';
+
+  @override
+  String get paymentProcessingFlutterwaveOptions => 'Payment Options';
+
+  @override
+  String get paymentProcessingFlutterwaveCard => 'Card Payment';
+
+  @override
+  String get paymentProcessingFlutterwaveCardDesc =>
+      'Pay with debit or credit card';
+
+  @override
+  String get paymentProcessingFlutterwaveMobile => 'Mobile Money';
+
+  @override
+  String get paymentProcessingFlutterwaveMobileDesc =>
+      'Pay with mobile money (M-Pesa, Airtel, etc.)';
+
+  @override
+  String get paymentProcessingFlutterwaveBank => 'Bank Transfer';
+
+  @override
+  String get paymentProcessingFlutterwaveBankDesc => 'Direct bank transfer';
+
+  @override
+  String get paymentProcessingFlutterwaveRedirect =>
+      'You will be redirected to Flutterwave secure payment page';
+
+  @override
+  String get browseInstitutionsTitle => 'Browse Institutions';
+
+  @override
+  String get browseInstitutionsSelectTitle => 'Select Institution';
+
+  @override
+  String get browseInstitutionsBack => 'Back';
+
+  @override
+  String get browseInstitutionsClearFilters => 'Clear filters';
+
+  @override
+  String get browseInstitutionsSearchHint =>
+      'Search by institution name or email...';
+
+  @override
+  String get browseInstitutionsSortBy => 'Sort by: ';
+
+  @override
+  String get browseInstitutionsSortName => 'Name (A-Z)';
+
+  @override
+  String get browseInstitutionsSortOfferings => 'Total Offerings';
+
+  @override
+  String get browseInstitutionsSortPrograms => 'Programs';
+
+  @override
+  String get browseInstitutionsSortCourses => 'Courses';
+
+  @override
+  String get browseInstitutionsSortNewest => 'Newest';
+
+  @override
+  String get browseInstitutionsAscending => 'Ascending';
+
+  @override
+  String get browseInstitutionsDescending => 'Descending';
+
+  @override
+  String get browseInstitutionsShowVerifiedOnly => 'Show verified only';
+
+  @override
+  String browseInstitutionsResultCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'institutions',
+      one: 'institution',
+    );
+    return '$count registered $_temp0';
+  }
+
+  @override
+  String get browseInstitutionsTapToSelect => 'Tap to select';
+
+  @override
+  String get browseInstitutionsNoResults => 'No institutions found';
+
+  @override
+  String get browseInstitutionsNoResultsHint =>
+      'Try adjusting your search or filters';
+
+  @override
+  String get browseInstitutionsRetry => 'Retry';
+
+  @override
+  String get browseInstitutionsVerified => 'Verified';
+
+  @override
+  String get browseInstitutionsNoOfferings => 'No offerings yet';
+
+  @override
+  String browseInstitutionsSelected(String name) {
+    return 'Selected: $name';
+  }
+
+  @override
+  String get browseUniversitiesTitle => 'Browse Universities';
+
+  @override
+  String get browseUniversitiesSelectTitle => 'Select University';
+
+  @override
+  String get browseUniversitiesBack => 'Back';
+
+  @override
+  String get browseUniversitiesClearFilters => 'Clear filters';
+
+  @override
+  String get browseUniversitiesSearchHint =>
+      'Search by name, city, or state...';
+
+  @override
+  String get browseUniversitiesSortBy => 'Sort by: ';
+
+  @override
+  String get browseUniversitiesSortName => 'Name (A-Z)';
+
+  @override
+  String get browseUniversitiesSortAcceptanceRate => 'Acceptance Rate';
+
+  @override
+  String get browseUniversitiesSortTuition => 'Tuition Cost';
+
+  @override
+  String get browseUniversitiesSortRanking => 'Ranking';
+
+  @override
+  String get browseUniversitiesAscending => 'Ascending';
+
+  @override
+  String get browseUniversitiesDescending => 'Descending';
+
+  @override
+  String browseUniversitiesResultCount(int count) {
+    return '$count universities found';
+  }
+
+  @override
+  String get browseUniversitiesNoResults => 'No universities found';
+
+  @override
+  String get browseUniversitiesNoResultsHint =>
+      'Try adjusting your search or filters';
+
+  @override
+  String get browseUniversitiesRetry => 'Retry';
+
+  @override
+  String browseUniversitiesSelected(String name) {
+    return 'Selected: $name';
+  }
+
+  @override
+  String get privacyPolicyTitle => 'Privacy Policy';
+
+  @override
+  String get privacyPolicyShare => 'Share';
+
+  @override
+  String get privacyPolicyShareComingSoon => 'Share functionality coming soon';
+
+  @override
+  String get privacyPolicyHeaderTitle => 'Flow EdTech Privacy Policy';
+
+  @override
+  String get privacyPolicyLastUpdated => 'Last Updated: October 28, 2025';
+
+  @override
+  String get privacyPolicyHeaderDescription =>
+      'This Privacy Policy describes how Flow EdTech collects, uses, and protects your personal information.';
+
+  @override
+  String get privacyPolicySection1Title => '1. Information We Collect';
+
+  @override
+  String get privacyPolicySection1Content =>
+      'We collect information that you provide directly to us, including:\n\n• Personal Information: Name, email address, phone number, and profile information\n• Educational Data: Course enrollments, grades, assignments, and learning progress\n• Usage Data: How you interact with our platform, including pages visited and features used\n• Device Information: Device type, operating system, and browser information\n• Location Data: General location information to provide relevant content\n\nWe collect this information when you:\n• Create an account or update your profile\n• Enroll in courses or complete assignments\n• Communicate with us or other users\n• Use our services and features';
+
+  @override
+  String get privacyPolicySection2Title => '2. How We Use Your Information';
+
+  @override
+  String get privacyPolicySection2Content =>
+      'We use the information we collect to:\n\n• Provide and improve our educational services\n• Personalize your learning experience\n• Process your enrollments and track your progress\n• Communicate with you about courses, updates, and support\n• Analyze usage patterns to enhance our platform\n• Ensure security and prevent fraud\n• Comply with legal obligations\n• Send promotional materials (with your consent)\n\nWe do not sell your personal information to third parties.';
+
+  @override
+  String get privacyPolicySection3Title =>
+      '3. Information Sharing and Disclosure';
+
+  @override
+  String get privacyPolicySection3Content =>
+      'We may share your information in the following circumstances:\n\n• Educational Institutions: With schools or institutions you\'re affiliated with\n• Instructors: Course instructors can see your progress and submissions\n• Service Providers: Third-party providers who assist in operating our platform\n• Legal Requirements: When required by law or to protect our rights\n• Business Transfers: In connection with a merger or acquisition\n• With Your Consent: When you explicitly authorize sharing\n\nWe require all third parties to respect the security of your data and treat it in accordance with the law.';
+
+  @override
+  String get privacyPolicySection4Title => '4. Data Security';
+
+  @override
+  String get privacyPolicySection4Content =>
+      'We implement appropriate technical and organizational measures to protect your information:\n\n• Encryption of data in transit and at rest\n• Regular security assessments and audits\n• Access controls and authentication measures\n• Secure data storage and backup systems\n• Employee training on data protection\n\nHowever, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.';
+
+  @override
+  String get privacyPolicySection5Title => '5. Your Rights and Choices';
+
+  @override
+  String get privacyPolicySection5Content =>
+      'You have the following rights regarding your personal information:\n\n• Access: Request a copy of your personal data\n• Correction: Update or correct inaccurate information\n• Deletion: Request deletion of your personal data\n• Portability: Receive your data in a portable format\n• Opt-Out: Unsubscribe from marketing communications\n• Restriction: Limit how we process your data\n\nTo exercise these rights, contact us at privacy@flowedtech.com.';
+
+  @override
+  String get privacyPolicySection6Title =>
+      '6. Cookies and Tracking Technologies';
+
+  @override
+  String get privacyPolicySection6Content =>
+      'We use cookies and similar technologies to:\n\n• Remember your preferences and settings\n• Authenticate your account\n• Analyze platform usage and performance\n• Provide personalized content and recommendations\n\nYou can control cookies through your browser settings. However, disabling cookies may limit some functionality.';
+
+  @override
+  String get privacyPolicySection7Title => '7. Children\'s Privacy';
+
+  @override
+  String get privacyPolicySection7Content =>
+      'Our services are intended for users 13 years and older. For users under 18:\n\n• Parental consent may be required\n• Additional protections are in place\n• Special handling of educational records (FERPA compliance)\n\nWe do not knowingly collect information from children under 13 without parental consent.';
+
+  @override
+  String get privacyPolicySection8Title => '8. International Data Transfers';
+
+  @override
+  String get privacyPolicySection8Content =>
+      'Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place, including:\n\n• Standard contractual clauses\n• Adequacy decisions by relevant authorities\n• Your explicit consent when required';
+
+  @override
+  String get privacyPolicySection9Title => '9. Changes to This Privacy Policy';
+
+  @override
+  String get privacyPolicySection9Content =>
+      'We may update this Privacy Policy from time to time. We will:\n\n• Notify you of material changes via email or platform notification\n• Update the \"Last Updated\" date at the top of this policy\n• Obtain your consent for significant changes if required by law\n\nYour continued use of our services after changes constitutes acceptance of the updated policy.';
+
+  @override
+  String get privacyPolicySection10Title => '10. Contact Us';
+
+  @override
+  String get privacyPolicySection10Content =>
+      'If you have questions or concerns about this Privacy Policy or our data practices, please contact us:\n\nEmail: privacy@flowedtech.com\nPhone: +1 (555) 123-4567\nAddress: Flow EdTech, 123 Education Lane, Tech City, TC 12345\n\nData Protection Officer: dpo@flowedtech.com';
+
+  @override
+  String get termsOfServiceTitle => 'Terms of Service';
+
+  @override
+  String get termsOfServiceShare => 'Share';
+
+  @override
+  String get termsOfServiceShareComingSoon => 'Share functionality coming soon';
+
+  @override
+  String get termsOfServiceHeaderTitle => 'Flow EdTech Terms of Service';
+
+  @override
+  String get termsOfServiceEffectiveDate => 'Effective Date: October 28, 2025';
+
+  @override
+  String get termsOfServiceHeaderDescription =>
+      'Please read these Terms of Service carefully before using our platform. By accessing or using our services, you agree to be bound by these terms.';
+
+  @override
+  String get termsOfServiceSection1Title => '1. Acceptance of Terms';
+
+  @override
+  String get termsOfServiceSection1Content =>
+      'By creating an account and using Flow EdTech, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy.\n\nIf you do not agree to these terms, you may not access or use our services.\n\nThese terms constitute a legally binding agreement between you and Flow EdTech.';
+
+  @override
+  String get termsOfServiceSection2Title =>
+      '2. Account Registration and Eligibility';
+
+  @override
+  String get termsOfServiceSection2Content =>
+      'To use certain features, you must create an account and provide:\n\n• Accurate and complete information\n• Valid email address\n• Secure password\n• Proof of age (must be 13 or older)\n\nYou are responsible for:\n• Maintaining the confidentiality of your account credentials\n• All activities that occur under your account\n• Notifying us immediately of any unauthorized access\n\nWe reserve the right to refuse service, terminate accounts, or cancel orders at our discretion.';
+
+  @override
+  String get termsOfServiceSection3Title =>
+      '3. User Conduct and Responsibilities';
+
+  @override
+  String get termsOfServiceSection3Content =>
+      'You agree not to:\n\n• Violate any laws or regulations\n• Infringe on intellectual property rights\n• Upload malicious code or viruses\n• Harass, abuse, or harm other users\n• Impersonate others or provide false information\n• Attempt to gain unauthorized access to our systems\n• Use automated tools to access our services\n• Sell or transfer your account to others\n• Post inappropriate or offensive content\n• Engage in academic dishonesty or plagiarism\n\nViolation of these terms may result in suspension or termination of your account.';
+
+  @override
+  String get termsOfServiceSection4Title => '4. Intellectual Property Rights';
+
+  @override
+  String get termsOfServiceSection4Content =>
+      'All content on Flow EdTech, including:\n\n• Course materials and lectures\n• Text, graphics, logos, and images\n• Software and technology\n• Trademarks and branding\n\nIs owned by Flow EdTech or its licensors and is protected by copyright, trademark, and other intellectual property laws.\n\nUser-Generated Content:\n• You retain ownership of content you create\n• You grant us a license to use, display, and distribute your content\n• You represent that you have rights to any content you upload\n• We may remove content that violates these terms\n\nYou may not copy, modify, distribute, or create derivative works without our explicit permission.';
+
+  @override
+  String get termsOfServiceSection5Title =>
+      '5. Subscriptions, Payments, and Refunds';
+
+  @override
+  String get termsOfServiceSection5Content =>
+      'Subscription Plans:\n• Pricing is subject to change with notice\n• Subscriptions automatically renew unless cancelled\n• You can cancel at any time through your account settings\n• Cancellation takes effect at the end of the billing period\n\nPayment Terms:\n• All fees are in USD unless otherwise stated\n• Payment is due at the time of purchase\n• We accept major credit cards and other payment methods\n• Failed payments may result in service suspension\n\nRefund Policy:\n• 7-day money-back guarantee for new subscriptions\n• Refunds are processed within 5-10 business days\n• Course-specific refund policies may apply\n• Contact support@flowedtech.com for refund requests';
+
+  @override
+  String get termsOfServiceSection6Title =>
+      '6. Course Access and Educational Content';
+
+  @override
+  String get termsOfServiceSection6Content =>
+      'Course Enrollment:\n• Access is granted upon successful payment\n• Courses may have prerequisites or requirements\n• Some courses have limited enrollment periods\n• Completion certificates are awarded based on performance\n\nContent Availability:\n• We strive to maintain continuous access to courses\n• Content may be updated or modified without notice\n• Some courses may be retired or archived\n• No guarantee of specific educational outcomes\n\nAcademic Integrity:\n• You must complete your own work\n• Collaboration is only allowed where explicitly permitted\n• Plagiarism and cheating will result in account termination\n• Certificates may be revoked for academic misconduct';
+
+  @override
+  String get termsOfServiceSection7Title => '7. Privacy and Data Protection';
+
+  @override
+  String get termsOfServiceSection7Content =>
+      'We are committed to protecting your privacy. Our collection and use of personal information is governed by our Privacy Policy.\n\nBy using our services, you consent to:\n• Collection of personal and usage data\n• Processing data for service provision\n• Sharing data as described in our Privacy Policy\n• Use of cookies and tracking technologies\n\nYour Rights:\n• Access your personal data\n• Request data correction or deletion\n• Opt-out of marketing communications\n• Data portability\n\nSee our Privacy Policy for complete details.';
+
+  @override
+  String get termsOfServiceSection8Title =>
+      '8. Disclaimers and Limitations of Liability';
+
+  @override
+  String get termsOfServiceSection8Content =>
+      'Services Provided \"AS IS\":\n• No warranty of uninterrupted or error-free service\n• No guarantee of specific results or outcomes\n• Educational content for informational purposes only\n• Not a substitute for professional advice\n\nLimitation of Liability:\n• We are not liable for indirect, incidental, or consequential damages\n• Maximum liability limited to fees paid in the last 12 months\n• No liability for third-party content or actions\n• No liability for data loss or service interruptions\n\nYou use our services at your own risk.';
+
+  @override
+  String get termsOfServiceSection9Title => '9. Third-Party Services and Links';
+
+  @override
+  String get termsOfServiceSection9Content =>
+      'Our platform may contain links to third-party websites or integrate with third-party services:\n\n• We do not control third-party content\n• We are not responsible for third-party practices\n• Third-party terms and privacy policies apply\n• Use third-party services at your own risk\n\nIntegration examples include:\n• Payment processors\n• Video hosting platforms\n• Analytics services\n• Social media platforms';
+
+  @override
+  String get termsOfServiceSection10Title => '10. Termination';
+
+  @override
+  String get termsOfServiceSection10Content =>
+      'We may terminate or suspend your account:\n\n• For violation of these terms\n• For fraudulent or illegal activity\n• For prolonged inactivity\n• At our discretion with or without notice\n\nUpon termination:\n• Your access to services will cease\n• You may lose access to course materials\n• Certain provisions survive termination\n• Outstanding fees remain due\n\nYou may terminate your account at any time through account settings.';
+
+  @override
+  String get termsOfServiceSection11Title =>
+      '11. Dispute Resolution and Arbitration';
+
+  @override
+  String get termsOfServiceSection11Content =>
+      'For any disputes arising from these terms:\n\nInformal Resolution:\n• Contact us first to resolve disputes informally\n• Email: legal@flowedtech.com\n• 30-day period to reach resolution\n\nArbitration Agreement:\n• Disputes resolved through binding arbitration\n• Individual basis only (no class actions)\n• Governed by American Arbitration Association rules\n• Located in Tech City, TC\n\nExceptions:\n• Small claims court disputes\n• Intellectual property disputes\n• Emergency injunctive relief';
+
+  @override
+  String get termsOfServiceSection12Title => '12. Governing Law';
+
+  @override
+  String get termsOfServiceSection12Content =>
+      'These Terms are governed by:\n\n• Laws of the State of [Your State]\n• United States federal law\n• Without regard to conflict of law provisions\n\nJurisdiction:\n• Courts of [Your State]\n• Tech City, TC county courts\n\nInternational Users:\n• Additional local laws may apply\n• You are responsible for compliance with local laws';
+
+  @override
+  String get termsOfServiceSection13Title => '13. Changes to Terms of Service';
+
+  @override
+  String get termsOfServiceSection13Content =>
+      'We may modify these terms at any time:\n\n• Changes effective upon posting\n• Material changes will be notified via email\n• Continued use constitutes acceptance\n• You can review current terms anytime\n\nIf you do not agree to modified terms:\n• Discontinue use of our services\n• Contact us to close your account\n• No refunds for remaining subscription period';
+
+  @override
+  String get termsOfServiceSection14Title => '14. Contact Information';
+
+  @override
+  String get termsOfServiceSection14Content =>
+      'For questions about these Terms of Service:\n\nGeneral Inquiries:\nEmail: support@flowedtech.com\nPhone: +1 (555) 123-4567\n\nLegal Department:\nEmail: legal@flowedtech.com\n\nMailing Address:\nFlow EdTech\n123 Education Lane\nTech City, TC 12345\nUnited States\n\nBusiness Hours: Monday-Friday, 9am-5pm EST';
+
+  @override
+  String get termsOfServiceAcknowledgment =>
+      'By using Flow EdTech, you acknowledge that you have read and understood these Terms of Service.';
 }

@@ -6808,5 +6808,290 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "paymentFailureTitle": "Echec du paiement",
+  "paymentFailureDefaultMessage": "Nous n'avons pas pu traiter votre paiement. Veuillez reessayer.",
+  "paymentFailureTransactionDetails": "Details de la transaction",
+  "paymentFailureTransactionId": "ID de transaction",
+  "paymentFailureNotAvailable": "N/D",
+  "paymentFailureReference": "Reference",
+  "paymentFailurePaymentMethod": "Mode de paiement",
+  "paymentFailureAmount": "Montant",
+  "paymentFailureReason": "Raison de l'echec",
+  "paymentFailureCommonIssues": "Problemes courants",
+  "paymentFailureInsufficientFunds": "Fonds insuffisants",
+  "paymentFailureInsufficientFundsDesc": "Assurez-vous d'avoir un solde suffisant sur votre compte",
+  "paymentFailureCardDeclined": "Carte refusee",
+  "paymentFailureCardDeclinedDesc": "Verifiez aupres de votre banque ou essayez une autre carte",
+  "paymentFailureNetworkIssues": "Problemes de reseau",
+  "paymentFailureNetworkIssuesDesc": "Assurez-vous d'avoir une connexion Internet stable",
+  "paymentFailureIncorrectDetails": "Informations incorrectes",
+  "paymentFailureIncorrectDetailsDesc": "Verifiez que vos informations de paiement sont correctes",
+  "paymentFailureContactSupportNotice": "Si le probleme persiste, veuillez contacter le support",
+  "paymentFailureTryAgain": "Reessayer",
+  "paymentFailureContactSupport": "Contacter le support",
+  "paymentFailureBackToHome": "Retour a l'accueil",
+
+  "paymentHistoryTitle": "Historique des paiements",
+  "paymentHistoryBack": "Retour",
+  "paymentHistoryTabAll": "Tous ({count})",
+  "@paymentHistoryTabAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentHistoryTabCompleted": "Termines ({count})",
+  "@paymentHistoryTabCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentHistoryTabProcessing": "En cours ({count})",
+  "@paymentHistoryTabProcessing": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentHistoryTabFailed": "Echoues ({count})",
+  "@paymentHistoryTabFailed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentHistoryRetry": "Reessayer",
+  "paymentHistoryLoading": "Chargement de l'historique des paiements...",
+  "paymentHistoryNoPayments": "Aucun paiement",
+  "paymentHistoryNoPaymentsFound": "Aucun paiement trouve",
+  "paymentHistoryTransactionId": "ID de transaction",
+  "paymentHistoryReference": "Reference",
+  "paymentHistoryPaymentMethod": "Mode de paiement",
+  "paymentHistoryDate": "Date",
+  "paymentHistoryCompletedAt": "Complete le",
+  "paymentHistoryDownloadReceipt": "Telecharger le recu",
+  "paymentHistoryRetryPayment": "Reessayer le paiement",
+  "paymentHistoryReceiptOptions": "Options du recu",
+  "paymentHistoryDownloadAsPdf": "Telecharger en PDF",
+  "paymentHistorySaveToDevice": "Enregistrer le recu sur l'appareil",
+  "paymentHistoryEmailReceipt": "Envoyer le recu par e-mail",
+  "paymentHistorySendToEmail": "Envoyer a votre adresse e-mail",
+  "paymentHistoryShareReceipt": "Partager le recu",
+  "paymentHistoryShareViaApps": "Partager via d'autres applications",
+  "paymentHistoryDownloading": "Telechargement du recu...",
+  "paymentHistorySendingEmail": "Envoi du recu par e-mail...",
+  "paymentHistoryOpeningShare": "Ouverture des options de partage...",
+  "paymentHistoryCourseEnrollment": "Inscription au cours",
+  "paymentHistoryProgramApplication": "Candidature au programme",
+  "paymentHistoryCounselingSession": "Seance de conseil",
+
+  "paymentMethodTitle": "Selectionner le mode de paiement",
+  "paymentMethodBack": "Retour",
+  "paymentMethodRetry": "Reessayer",
+  "paymentMethodLoading": "Chargement des modes de paiement...",
+  "paymentMethodSummary": "Resume du paiement",
+  "paymentMethodItem": "Article",
+  "paymentMethodType": "Type",
+  "paymentMethodTotalAmount": "Montant total",
+  "paymentMethodChoose": "Choisir le mode de paiement",
+  "paymentMethodSecureNotice": "Vos informations de paiement sont securisees et chiffrees",
+  "paymentMethodContinue": "Continuer vers le paiement",
+  "paymentMethodCourseEnrollment": "Inscription au cours",
+  "paymentMethodProgramApplication": "Candidature au programme",
+  "paymentMethodCounselingSession": "Seance de conseil",
+
+  "paymentProcessingPayWith": "Payer avec {method}",
+  "@paymentProcessingPayWith": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentProcessingAmountToPay": "Montant a payer",
+  "paymentProcessingSecureNotice": "Votre paiement est securise avec un chiffrement de bout en bout",
+  "paymentProcessingStatus": "Traitement en cours...",
+  "paymentProcessingPayAmount": "Payer {currency} {amount}",
+  "@paymentProcessingPayAmount": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentProcessingMpesaTitle": "Paiement M-Pesa",
+  "paymentProcessingMpesaPhoneLabel": "Numero de telephone M-Pesa",
+  "paymentProcessingMpesaPhoneHint": "254712345678",
+  "paymentProcessingMpesaPhoneRequired": "Veuillez entrer votre numero de telephone M-Pesa",
+  "paymentProcessingMpesaPhoneInvalid": "Veuillez entrer un numero de telephone kenyan valide (254...)",
+  "paymentProcessingMpesaHowToPay": "Comment payer",
+  "paymentProcessingMpesaStep1": "Vous recevrez une invite M-Pesa sur votre telephone",
+  "paymentProcessingMpesaStep2": "Entrez votre code PIN M-Pesa pour confirmer le paiement",
+  "paymentProcessingMpesaStep3": "Attendez le SMS de confirmation",
+  "paymentProcessingCardTitle": "Details de la carte",
+  "paymentProcessingCardholderName": "Nom du titulaire de la carte",
+  "paymentProcessingCardholderHint": "JEAN DUPONT",
+  "paymentProcessingCardholderRequired": "Veuillez entrer le nom du titulaire de la carte",
+  "paymentProcessingCardNumber": "Numero de carte",
+  "paymentProcessingCardNumberHint": "1234 5678 9012 3456",
+  "paymentProcessingCardNumberRequired": "Veuillez entrer le numero de carte",
+  "paymentProcessingCardNumberInvalid": "Veuillez entrer un numero de carte valide",
+  "paymentProcessingExpiryDate": "Date d'expiration",
+  "paymentProcessingExpiryHint": "MM/AA",
+  "paymentProcessingRequired": "Requis",
+  "paymentProcessingInvalidFormat": "Format invalide",
+  "paymentProcessingCvv": "CVV",
+  "paymentProcessingCvvHint": "123",
+  "paymentProcessingCvvInvalid": "CVV invalide",
+  "paymentProcessingFlutterwaveTitle": "Paiement Flutterwave",
+  "paymentProcessingFlutterwaveOptions": "Options de paiement",
+  "paymentProcessingFlutterwaveCard": "Paiement par carte",
+  "paymentProcessingFlutterwaveCardDesc": "Payer avec une carte de debit ou de credit",
+  "paymentProcessingFlutterwaveMobile": "Mobile Money",
+  "paymentProcessingFlutterwaveMobileDesc": "Payer avec Mobile Money (M-Pesa, Airtel, etc.)",
+  "paymentProcessingFlutterwaveBank": "Virement bancaire",
+  "paymentProcessingFlutterwaveBankDesc": "Virement bancaire direct",
+  "paymentProcessingFlutterwaveRedirect": "Vous serez redirige vers la page de paiement securisee Flutterwave",
+
+  "browseInstitutionsTitle": "Parcourir les etablissements",
+  "browseInstitutionsSelectTitle": "Selectionner un etablissement",
+  "browseInstitutionsBack": "Retour",
+  "browseInstitutionsClearFilters": "Effacer les filtres",
+  "browseInstitutionsSearchHint": "Rechercher par nom ou email de l'etablissement...",
+  "browseInstitutionsSortBy": "Trier par : ",
+  "browseInstitutionsSortName": "Nom (A-Z)",
+  "browseInstitutionsSortOfferings": "Total des offres",
+  "browseInstitutionsSortPrograms": "Programmes",
+  "browseInstitutionsSortCourses": "Cours",
+  "browseInstitutionsSortNewest": "Plus recents",
+  "browseInstitutionsAscending": "Croissant",
+  "browseInstitutionsDescending": "Decroissant",
+  "browseInstitutionsShowVerifiedOnly": "Afficher uniquement les verifies",
+  "browseInstitutionsResultCount": "{count} {count, plural, =1{etablissement inscrit} other{etablissements inscrits}}",
+  "@browseInstitutionsResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "browseInstitutionsTapToSelect": "Appuyez pour selectionner",
+  "browseInstitutionsNoResults": "Aucun etablissement trouve",
+  "browseInstitutionsNoResultsHint": "Essayez d'ajuster votre recherche ou vos filtres",
+  "browseInstitutionsRetry": "Reessayer",
+  "browseInstitutionsVerified": "Verifie",
+  "browseInstitutionsNoOfferings": "Aucune offre pour le moment",
+  "browseInstitutionsSelected": "Selectionne : {name}",
+  "@browseInstitutionsSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+
+  "browseUniversitiesTitle": "Parcourir les universites",
+  "browseUniversitiesSelectTitle": "Selectionner une universite",
+  "browseUniversitiesBack": "Retour",
+  "browseUniversitiesClearFilters": "Effacer les filtres",
+  "browseUniversitiesSearchHint": "Rechercher par nom, ville ou region...",
+  "browseUniversitiesSortBy": "Trier par : ",
+  "browseUniversitiesSortName": "Nom (A-Z)",
+  "browseUniversitiesSortAcceptanceRate": "Taux d'acceptation",
+  "browseUniversitiesSortTuition": "Frais de scolarite",
+  "browseUniversitiesSortRanking": "Classement",
+  "browseUniversitiesAscending": "Croissant",
+  "browseUniversitiesDescending": "Decroissant",
+  "browseUniversitiesResultCount": "{count} universites trouvees",
+  "@browseUniversitiesResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "browseUniversitiesNoResults": "Aucune universite trouvee",
+  "browseUniversitiesNoResultsHint": "Essayez d'ajuster votre recherche ou vos filtres",
+  "browseUniversitiesRetry": "Reessayer",
+  "browseUniversitiesSelected": "Selectionne : {name}",
+  "@browseUniversitiesSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+
+  "privacyPolicyTitle": "Politique de confidentialite",
+  "privacyPolicyShare": "Partager",
+  "privacyPolicyShareComingSoon": "Fonctionnalite de partage bientot disponible",
+  "privacyPolicyHeaderTitle": "Politique de confidentialite Flow EdTech",
+  "privacyPolicyLastUpdated": "Derniere mise a jour : 28 octobre 2025",
+  "privacyPolicyHeaderDescription": "Cette politique de confidentialite decrit comment Flow EdTech collecte, utilise et protege vos informations personnelles.",
+  "privacyPolicySection1Title": "1. Informations que nous collectons",
+  "privacyPolicySection1Content": "Nous collectons les informations que vous nous fournissez directement, notamment :\n\n• Informations personnelles : Nom, adresse e-mail, numero de telephone et informations de profil\n• Donnees educatives : Inscriptions aux cours, notes, devoirs et progression de l'apprentissage\n• Donnees d'utilisation : Comment vous interagissez avec notre plateforme, y compris les pages visitees et les fonctionnalites utilisees\n• Informations sur l'appareil : Type d'appareil, systeme d'exploitation et informations du navigateur\n• Donnees de localisation : Informations de localisation generales pour fournir un contenu pertinent\n\nNous collectons ces informations lorsque vous :\n• Creez un compte ou mettez a jour votre profil\n• Vous inscrivez a des cours ou completez des devoirs\n• Communiquez avec nous ou d'autres utilisateurs\n• Utilisez nos services et fonctionnalites",
+  "privacyPolicySection2Title": "2. Comment nous utilisons vos informations",
+  "privacyPolicySection2Content": "Nous utilisons les informations que nous collectons pour :\n\n• Fournir et ameliorer nos services educatifs\n• Personnaliser votre experience d'apprentissage\n• Traiter vos inscriptions et suivre vos progres\n• Communiquer avec vous concernant les cours, mises a jour et support\n• Analyser les modeles d'utilisation pour ameliorer notre plateforme\n• Assurer la securite et prevenir la fraude\n• Respecter les obligations legales\n• Envoyer des documents promotionnels (avec votre consentement)\n\nNous ne vendons pas vos informations personnelles a des tiers.",
+  "privacyPolicySection3Title": "3. Partage et divulgation des informations",
+  "privacyPolicySection3Content": "Nous pouvons partager vos informations dans les circonstances suivantes :\n\n• Etablissements d'enseignement : Avec les ecoles ou etablissements auxquels vous etes affilie\n• Instructeurs : Les instructeurs de cours peuvent voir vos progres et soumissions\n• Fournisseurs de services : Fournisseurs tiers qui aident a exploiter notre plateforme\n• Exigences legales : Lorsque la loi l'exige ou pour proteger nos droits\n• Transferts d'entreprise : Dans le cadre d'une fusion ou acquisition\n• Avec votre consentement : Lorsque vous autorisez explicitement le partage\n\nNous exigeons que tous les tiers respectent la securite de vos donnees et les traitent conformement a la loi.",
+  "privacyPolicySection4Title": "4. Securite des donnees",
+  "privacyPolicySection4Content": "Nous mettons en oeuvre des mesures techniques et organisationnelles appropriees pour proteger vos informations :\n\n• Chiffrement des donnees en transit et au repos\n• Evaluations et audits de securite reguliers\n• Controles d'acces et mesures d'authentification\n• Stockage de donnees securise et systemes de sauvegarde\n• Formation des employes sur la protection des donnees\n\nCependant, aucune methode de transmission sur Internet n'est securisee a 100 %, et nous ne pouvons pas garantir une securite absolue.",
+  "privacyPolicySection5Title": "5. Vos droits et choix",
+  "privacyPolicySection5Content": "Vous disposez des droits suivants concernant vos informations personnelles :\n\n• Acces : Demander une copie de vos donnees personnelles\n• Correction : Mettre a jour ou corriger les informations inexactes\n• Suppression : Demander la suppression de vos donnees personnelles\n• Portabilite : Recevoir vos donnees dans un format portable\n• Desinscription : Se desabonner des communications marketing\n• Restriction : Limiter la facon dont nous traitons vos donnees\n\nPour exercer ces droits, contactez-nous a privacy@flowedtech.com.",
+  "privacyPolicySection6Title": "6. Cookies et technologies de suivi",
+  "privacyPolicySection6Content": "Nous utilisons des cookies et des technologies similaires pour :\n\n• Memoriser vos preferences et parametres\n• Authentifier votre compte\n• Analyser l'utilisation et les performances de la plateforme\n• Fournir du contenu et des recommandations personnalises\n\nVous pouvez controler les cookies via les parametres de votre navigateur. Cependant, la desactivation des cookies peut limiter certaines fonctionnalites.",
+  "privacyPolicySection7Title": "7. Confidentialite des enfants",
+  "privacyPolicySection7Content": "Nos services sont destines aux utilisateurs de 13 ans et plus. Pour les utilisateurs de moins de 18 ans :\n\n• Le consentement parental peut etre requis\n• Des protections supplementaires sont en place\n• Traitement special des dossiers educatifs (conformite FERPA)\n\nNous ne collectons pas sciemment d'informations aupres d'enfants de moins de 13 ans sans le consentement parental.",
+  "privacyPolicySection8Title": "8. Transferts internationaux de donnees",
+  "privacyPolicySection8Content": "Vos informations peuvent etre transferees et traitees dans des pays autres que le votre. Nous veillons a ce que des mesures de protection appropriees soient en place, notamment :\n\n• Clauses contractuelles types\n• Decisions d'adequation des autorites competentes\n• Votre consentement explicite lorsque requis",
+  "privacyPolicySection9Title": "9. Modifications de cette politique de confidentialite",
+  "privacyPolicySection9Content": "Nous pouvons mettre a jour cette politique de confidentialite de temps en temps. Nous :\n\n• Vous informerons des changements importants par e-mail ou notification sur la plateforme\n• Mettrons a jour la date de « Derniere mise a jour » en haut de cette politique\n• Obtiendrons votre consentement pour les changements importants si la loi l'exige\n\nVotre utilisation continue de nos services apres les modifications constitue une acceptation de la politique mise a jour.",
+  "privacyPolicySection10Title": "10. Nous contacter",
+  "privacyPolicySection10Content": "Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou nos pratiques en matiere de donnees, veuillez nous contacter :\n\nE-mail : privacy@flowedtech.com\nTelephone : +1 (555) 123-4567\nAdresse : Flow EdTech, 123 Education Lane, Tech City, TC 12345\n\nDelegue a la protection des donnees : dpo@flowedtech.com",
+
+  "termsOfServiceTitle": "Conditions d'utilisation",
+  "termsOfServiceShare": "Partager",
+  "termsOfServiceShareComingSoon": "Fonctionnalite de partage bientot disponible",
+  "termsOfServiceHeaderTitle": "Conditions d'utilisation Flow EdTech",
+  "termsOfServiceEffectiveDate": "Date d'entree en vigueur : 28 octobre 2025",
+  "termsOfServiceHeaderDescription": "Veuillez lire attentivement ces conditions d'utilisation avant d'utiliser notre plateforme. En accedant ou en utilisant nos services, vous acceptez d'etre lie par ces conditions.",
+  "termsOfServiceSection1Title": "1. Acceptation des conditions",
+  "termsOfServiceSection1Content": "En creant un compte et en utilisant Flow EdTech, vous reconnaissez avoir lu, compris et accepte d'etre lie par ces conditions d'utilisation et notre politique de confidentialite.\n\nSi vous n'acceptez pas ces conditions, vous ne pouvez pas acceder ou utiliser nos services.\n\nCes conditions constituent un accord juridiquement contraignant entre vous et Flow EdTech.",
+  "termsOfServiceSection2Title": "2. Inscription au compte et eligibilite",
+  "termsOfServiceSection2Content": "Pour utiliser certaines fonctionnalites, vous devez creer un compte et fournir :\n\n• Des informations exactes et completes\n• Une adresse e-mail valide\n• Un mot de passe securise\n• Une preuve d'age (vous devez avoir 13 ans ou plus)\n\nVous etes responsable de :\n• Maintenir la confidentialite de vos identifiants de compte\n• Toutes les activites qui se produisent sous votre compte\n• Nous informer immediatement de tout acces non autorise\n\nNous nous reservons le droit de refuser le service, de resilier des comptes ou d'annuler des commandes a notre discretion.",
+  "termsOfServiceSection3Title": "3. Conduite et responsabilites de l'utilisateur",
+  "termsOfServiceSection3Content": "Vous acceptez de ne pas :\n\n• Violer des lois ou reglements\n• Porter atteinte aux droits de propriete intellectuelle\n• Telecharger du code malveillant ou des virus\n• Harceler, abuser ou nuire a d'autres utilisateurs\n• Usurper l'identite d'autrui ou fournir de fausses informations\n• Tenter d'obtenir un acces non autorise a nos systemes\n• Utiliser des outils automatises pour acceder a nos services\n• Vendre ou transferer votre compte a d'autres personnes\n• Publier du contenu inapproprie ou offensant\n• Vous livrer a la malhonnetete academique ou au plagiat\n\nLa violation de ces conditions peut entrainer la suspension ou la resiliation de votre compte.",
+  "termsOfServiceSection4Title": "4. Droits de propriete intellectuelle",
+  "termsOfServiceSection4Content": "Tout le contenu sur Flow EdTech, y compris :\n\n• Les supports de cours et les conferences\n• Le texte, les graphiques, les logos et les images\n• Les logiciels et la technologie\n• Les marques et l'image de marque\n\nEst la propriete de Flow EdTech ou de ses concedants de licence et est protege par le droit d'auteur, les marques et d'autres lois sur la propriete intellectuelle.\n\nContenu genere par l'utilisateur :\n• Vous conservez la propriete du contenu que vous creez\n• Vous nous accordez une licence pour utiliser, afficher et distribuer votre contenu\n• Vous declarez que vous avez des droits sur tout contenu que vous televersez\n• Nous pouvons supprimer le contenu qui viole ces conditions\n\nVous ne pouvez pas copier, modifier, distribuer ou creer des oeuvres derivees sans notre permission explicite.",
+  "termsOfServiceSection5Title": "5. Abonnements, paiements et remboursements",
+  "termsOfServiceSection5Content": "Plans d'abonnement :\n• Les prix sont susceptibles de changer avec preavis\n• Les abonnements se renouvellent automatiquement sauf annulation\n• Vous pouvez annuler a tout moment via les parametres de votre compte\n• L'annulation prend effet a la fin de la periode de facturation\n\nConditions de paiement :\n• Tous les frais sont en USD sauf indication contraire\n• Le paiement est du au moment de l'achat\n• Nous acceptons les principales cartes de credit et autres methodes de paiement\n• Les paiements echoues peuvent entrainer la suspension du service\n\nPolitique de remboursement :\n• Garantie de remboursement de 7 jours pour les nouveaux abonnements\n• Les remboursements sont traites dans les 5 a 10 jours ouvrables\n• Des politiques de remboursement specifiques aux cours peuvent s'appliquer\n• Contactez support@flowedtech.com pour les demandes de remboursement",
+  "termsOfServiceSection6Title": "6. Acces aux cours et contenu educatif",
+  "termsOfServiceSection6Content": "Inscription aux cours :\n• L'acces est accorde apres un paiement reussi\n• Les cours peuvent avoir des prerequis ou des exigences\n• Certains cours ont des periodes d'inscription limitees\n• Les certificats d'achevement sont decernes en fonction des performances\n\nDisponibilite du contenu :\n• Nous nous efforcons de maintenir un acces continu aux cours\n• Le contenu peut etre mis a jour ou modifie sans preavis\n• Certains cours peuvent etre retires ou archives\n• Aucune garantie de resultats educatifs specifiques\n\nIntegrite academique :\n• Vous devez completer votre propre travail\n• La collaboration n'est autorisee que lorsqu'elle est explicitement permise\n• Le plagiat et la triche entraineront la resiliation du compte\n• Les certificats peuvent etre revoques pour faute academique",
+  "termsOfServiceSection7Title": "7. Confidentialite et protection des donnees",
+  "termsOfServiceSection7Content": "Nous nous engageons a proteger votre vie privee. Notre collecte et utilisation d'informations personnelles sont regies par notre politique de confidentialite.\n\nEn utilisant nos services, vous consentez a :\n• La collecte de donnees personnelles et d'utilisation\n• Le traitement des donnees pour la prestation de services\n• Le partage des donnees tel que decrit dans notre politique de confidentialite\n• L'utilisation de cookies et de technologies de suivi\n\nVos droits :\n• Acceder a vos donnees personnelles\n• Demander la correction ou la suppression des donnees\n• Se desinscrire des communications marketing\n• Portabilite des donnees\n\nConsultez notre politique de confidentialite pour plus de details.",
+  "termsOfServiceSection8Title": "8. Avertissements et limitations de responsabilite",
+  "termsOfServiceSection8Content": "Services fournis « EN L'ETAT » :\n• Aucune garantie de service ininterrompu ou sans erreur\n• Aucune garantie de resultats specifiques\n• Contenu educatif a titre informatif uniquement\n• Ne remplace pas les conseils professionnels\n\nLimitation de responsabilite :\n• Nous ne sommes pas responsables des dommages indirects, accessoires ou consecutifs\n• Responsabilite maximale limitee aux frais payes au cours des 12 derniers mois\n• Aucune responsabilite pour le contenu ou les actions de tiers\n• Aucune responsabilite pour la perte de donnees ou les interruptions de service\n\nVous utilisez nos services a vos propres risques.",
+  "termsOfServiceSection9Title": "9. Services et liens tiers",
+  "termsOfServiceSection9Content": "Notre plateforme peut contenir des liens vers des sites web tiers ou s'integrer a des services tiers :\n\n• Nous ne controlons pas le contenu tiers\n• Nous ne sommes pas responsables des pratiques des tiers\n• Les conditions et politiques de confidentialite des tiers s'appliquent\n• Utilisez les services tiers a vos propres risques\n\nExemples d'integration :\n• Processeurs de paiement\n• Plateformes d'hebergement video\n• Services d'analyse\n• Plateformes de medias sociaux",
+  "termsOfServiceSection10Title": "10. Resiliation",
+  "termsOfServiceSection10Content": "Nous pouvons resilier ou suspendre votre compte :\n\n• Pour violation de ces conditions\n• Pour activite frauduleuse ou illegale\n• Pour inactivite prolongee\n• A notre discretion avec ou sans preavis\n\nEn cas de resiliation :\n• Votre acces aux services cessera\n• Vous pouvez perdre l'acces aux supports de cours\n• Certaines dispositions survivent a la resiliation\n• Les frais impayes restent dus\n\nVous pouvez resilier votre compte a tout moment via les parametres du compte.",
+  "termsOfServiceSection11Title": "11. Resolution des litiges et arbitrage",
+  "termsOfServiceSection11Content": "Pour tout litige decoulant de ces conditions :\n\nResolution informelle :\n• Contactez-nous d'abord pour resoudre les litiges de maniere informelle\n• E-mail : legal@flowedtech.com\n• Periode de 30 jours pour parvenir a une resolution\n\nAccord d'arbitrage :\n• Litiges resolus par arbitrage contraignant\n• Sur une base individuelle uniquement (pas d'actions collectives)\n• Regi par les regles de l'American Arbitration Association\n• Situe a Tech City, TC\n\nExceptions :\n• Litiges devant les tribunaux de petites creances\n• Litiges de propriete intellectuelle\n• Mesures injonctives d'urgence",
+  "termsOfServiceSection12Title": "12. Droit applicable",
+  "termsOfServiceSection12Content": "Ces conditions sont regies par :\n\n• Les lois de l'Etat de [Votre Etat]\n• La loi federale des Etats-Unis\n• Sans egard aux dispositions relatives aux conflits de lois\n\nJuridiction :\n• Tribunaux de [Votre Etat]\n• Tribunaux du comte de Tech City, TC\n\nUtilisateurs internationaux :\n• Des lois locales supplementaires peuvent s'appliquer\n• Vous etes responsable du respect des lois locales",
+  "termsOfServiceSection13Title": "13. Modifications des conditions d'utilisation",
+  "termsOfServiceSection13Content": "Nous pouvons modifier ces conditions a tout moment :\n\n• Les modifications prennent effet des leur publication\n• Les modifications importantes seront notifiees par e-mail\n• L'utilisation continue constitue une acceptation\n• Vous pouvez consulter les conditions actuelles a tout moment\n\nSi vous n'acceptez pas les conditions modifiees :\n• Cessez d'utiliser nos services\n• Contactez-nous pour fermer votre compte\n• Pas de remboursement pour la periode d'abonnement restante",
+  "termsOfServiceSection14Title": "14. Informations de contact",
+  "termsOfServiceSection14Content": "Pour des questions concernant ces conditions d'utilisation :\n\nDemandes generales :\nE-mail : support@flowedtech.com\nTelephone : +1 (555) 123-4567\n\nDepartement juridique :\nE-mail : legal@flowedtech.com\n\nAdresse postale :\nFlow EdTech\n123 Education Lane\nTech City, TC 12345\nEtats-Unis\n\nHeures d'ouverture : Lundi-Vendredi, 9h-17h EST",
+  "termsOfServiceAcknowledgment": "En utilisant Flow EdTech, vous reconnaissez avoir lu et compris ces conditions d'utilisation."
 }

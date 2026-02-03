@@ -34397,6 +34397,1230 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} Requests'**
   String adminRecommenderDetailRequestsCount(int count);
+
+  /// No description provided for @paymentFailureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Failed'**
+  String get paymentFailureTitle;
+
+  /// No description provided for @paymentFailureDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not process your payment. Please try again.'**
+  String get paymentFailureDefaultMessage;
+
+  /// No description provided for @paymentFailureTransactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get paymentFailureTransactionDetails;
+
+  /// No description provided for @paymentFailureTransactionId.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get paymentFailureTransactionId;
+
+  /// No description provided for @paymentFailureNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get paymentFailureNotAvailable;
+
+  /// No description provided for @paymentFailureReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get paymentFailureReference;
+
+  /// No description provided for @paymentFailurePaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentFailurePaymentMethod;
+
+  /// No description provided for @paymentFailureAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get paymentFailureAmount;
+
+  /// No description provided for @paymentFailureReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Failure Reason'**
+  String get paymentFailureReason;
+
+  /// No description provided for @paymentFailureCommonIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Common Issues'**
+  String get paymentFailureCommonIssues;
+
+  /// No description provided for @paymentFailureInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient Funds'**
+  String get paymentFailureInsufficientFunds;
+
+  /// No description provided for @paymentFailureInsufficientFundsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure you have sufficient balance in your account'**
+  String get paymentFailureInsufficientFundsDesc;
+
+  /// No description provided for @paymentFailureCardDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Declined'**
+  String get paymentFailureCardDeclined;
+
+  /// No description provided for @paymentFailureCardDeclinedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Check with your bank or try a different card'**
+  String get paymentFailureCardDeclinedDesc;
+
+  /// No description provided for @paymentFailureNetworkIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Network Issues'**
+  String get paymentFailureNetworkIssues;
+
+  /// No description provided for @paymentFailureNetworkIssuesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure you have a stable internet connection'**
+  String get paymentFailureNetworkIssuesDesc;
+
+  /// No description provided for @paymentFailureIncorrectDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect Details'**
+  String get paymentFailureIncorrectDetails;
+
+  /// No description provided for @paymentFailureIncorrectDetailsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your payment information is correct'**
+  String get paymentFailureIncorrectDetailsDesc;
+
+  /// No description provided for @paymentFailureContactSupportNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'If the problem persists, please contact support'**
+  String get paymentFailureContactSupportNotice;
+
+  /// No description provided for @paymentFailureTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get paymentFailureTryAgain;
+
+  /// No description provided for @paymentFailureContactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get paymentFailureContactSupport;
+
+  /// No description provided for @paymentFailureBackToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get paymentFailureBackToHome;
+
+  /// No description provided for @paymentHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment History'**
+  String get paymentHistoryTitle;
+
+  /// No description provided for @paymentHistoryBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get paymentHistoryBack;
+
+  /// No description provided for @paymentHistoryTabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All ({count})'**
+  String paymentHistoryTabAll(int count);
+
+  /// No description provided for @paymentHistoryTabCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed ({count})'**
+  String paymentHistoryTabCompleted(int count);
+
+  /// No description provided for @paymentHistoryTabProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing ({count})'**
+  String paymentHistoryTabProcessing(int count);
+
+  /// No description provided for @paymentHistoryTabFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed ({count})'**
+  String paymentHistoryTabFailed(int count);
+
+  /// No description provided for @paymentHistoryRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get paymentHistoryRetry;
+
+  /// No description provided for @paymentHistoryLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading payment history...'**
+  String get paymentHistoryLoading;
+
+  /// No description provided for @paymentHistoryNoPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'No Payments'**
+  String get paymentHistoryNoPayments;
+
+  /// No description provided for @paymentHistoryNoPaymentsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments found'**
+  String get paymentHistoryNoPaymentsFound;
+
+  /// No description provided for @paymentHistoryTransactionId.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get paymentHistoryTransactionId;
+
+  /// No description provided for @paymentHistoryReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get paymentHistoryReference;
+
+  /// No description provided for @paymentHistoryPaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentHistoryPaymentMethod;
+
+  /// No description provided for @paymentHistoryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get paymentHistoryDate;
+
+  /// No description provided for @paymentHistoryCompletedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed At'**
+  String get paymentHistoryCompletedAt;
+
+  /// No description provided for @paymentHistoryDownloadReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Receipt'**
+  String get paymentHistoryDownloadReceipt;
+
+  /// No description provided for @paymentHistoryRetryPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Payment'**
+  String get paymentHistoryRetryPayment;
+
+  /// No description provided for @paymentHistoryReceiptOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt Options'**
+  String get paymentHistoryReceiptOptions;
+
+  /// No description provided for @paymentHistoryDownloadAsPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download as PDF'**
+  String get paymentHistoryDownloadAsPdf;
+
+  /// No description provided for @paymentHistorySaveToDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Save receipt to device'**
+  String get paymentHistorySaveToDevice;
+
+  /// No description provided for @paymentHistoryEmailReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Receipt'**
+  String get paymentHistoryEmailReceipt;
+
+  /// No description provided for @paymentHistorySendToEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to your email address'**
+  String get paymentHistorySendToEmail;
+
+  /// No description provided for @paymentHistoryShareReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Receipt'**
+  String get paymentHistoryShareReceipt;
+
+  /// No description provided for @paymentHistoryShareViaApps.
+  ///
+  /// In en, this message translates to:
+  /// **'Share via other apps'**
+  String get paymentHistoryShareViaApps;
+
+  /// No description provided for @paymentHistoryDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading receipt...'**
+  String get paymentHistoryDownloading;
+
+  /// No description provided for @paymentHistorySendingEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending receipt via email...'**
+  String get paymentHistorySendingEmail;
+
+  /// No description provided for @paymentHistoryOpeningShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening share options...'**
+  String get paymentHistoryOpeningShare;
+
+  /// No description provided for @paymentHistoryCourseEnrollment.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Enrollment'**
+  String get paymentHistoryCourseEnrollment;
+
+  /// No description provided for @paymentHistoryProgramApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Application'**
+  String get paymentHistoryProgramApplication;
+
+  /// No description provided for @paymentHistoryCounselingSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling Session'**
+  String get paymentHistoryCounselingSession;
+
+  /// No description provided for @paymentMethodTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Payment Method'**
+  String get paymentMethodTitle;
+
+  /// No description provided for @paymentMethodBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get paymentMethodBack;
+
+  /// No description provided for @paymentMethodRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get paymentMethodRetry;
+
+  /// No description provided for @paymentMethodLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading payment methods...'**
+  String get paymentMethodLoading;
+
+  /// No description provided for @paymentMethodSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Summary'**
+  String get paymentMethodSummary;
+
+  /// No description provided for @paymentMethodItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get paymentMethodItem;
+
+  /// No description provided for @paymentMethodType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get paymentMethodType;
+
+  /// No description provided for @paymentMethodTotalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get paymentMethodTotalAmount;
+
+  /// No description provided for @paymentMethodChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Payment Method'**
+  String get paymentMethodChoose;
+
+  /// No description provided for @paymentMethodSecureNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment information is secure and encrypted'**
+  String get paymentMethodSecureNotice;
+
+  /// No description provided for @paymentMethodContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Payment'**
+  String get paymentMethodContinue;
+
+  /// No description provided for @paymentMethodCourseEnrollment.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Enrollment'**
+  String get paymentMethodCourseEnrollment;
+
+  /// No description provided for @paymentMethodProgramApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Application'**
+  String get paymentMethodProgramApplication;
+
+  /// No description provided for @paymentMethodCounselingSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Counseling Session'**
+  String get paymentMethodCounselingSession;
+
+  /// No description provided for @paymentProcessingPayWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with {method}'**
+  String paymentProcessingPayWith(String method);
+
+  /// No description provided for @paymentProcessingAmountToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to Pay'**
+  String get paymentProcessingAmountToPay;
+
+  /// No description provided for @paymentProcessingSecureNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment is secured with end-to-end encryption'**
+  String get paymentProcessingSecureNotice;
+
+  /// No description provided for @paymentProcessingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get paymentProcessingStatus;
+
+  /// No description provided for @paymentProcessingPayAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {currency} {amount}'**
+  String paymentProcessingPayAmount(String currency, String amount);
+
+  /// No description provided for @paymentProcessingMpesaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'M-Pesa Payment'**
+  String get paymentProcessingMpesaTitle;
+
+  /// No description provided for @paymentProcessingMpesaPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'M-Pesa Phone Number'**
+  String get paymentProcessingMpesaPhoneLabel;
+
+  /// No description provided for @paymentProcessingMpesaPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'254712345678'**
+  String get paymentProcessingMpesaPhoneHint;
+
+  /// No description provided for @paymentProcessingMpesaPhoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your M-Pesa phone number'**
+  String get paymentProcessingMpesaPhoneRequired;
+
+  /// No description provided for @paymentProcessingMpesaPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid Kenyan phone number (254...)'**
+  String get paymentProcessingMpesaPhoneInvalid;
+
+  /// No description provided for @paymentProcessingMpesaHowToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'How to pay'**
+  String get paymentProcessingMpesaHowToPay;
+
+  /// No description provided for @paymentProcessingMpesaStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'You will receive an M-Pesa prompt on your phone'**
+  String get paymentProcessingMpesaStep1;
+
+  /// No description provided for @paymentProcessingMpesaStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your M-Pesa PIN to confirm payment'**
+  String get paymentProcessingMpesaStep2;
+
+  /// No description provided for @paymentProcessingMpesaStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait for confirmation SMS'**
+  String get paymentProcessingMpesaStep3;
+
+  /// No description provided for @paymentProcessingCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Details'**
+  String get paymentProcessingCardTitle;
+
+  /// No description provided for @paymentProcessingCardholderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardholder Name'**
+  String get paymentProcessingCardholderName;
+
+  /// No description provided for @paymentProcessingCardholderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'JOHN DOE'**
+  String get paymentProcessingCardholderHint;
+
+  /// No description provided for @paymentProcessingCardholderRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter cardholder name'**
+  String get paymentProcessingCardholderRequired;
+
+  /// No description provided for @paymentProcessingCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Number'**
+  String get paymentProcessingCardNumber;
+
+  /// No description provided for @paymentProcessingCardNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1234 5678 9012 3456'**
+  String get paymentProcessingCardNumberHint;
+
+  /// No description provided for @paymentProcessingCardNumberRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter card number'**
+  String get paymentProcessingCardNumberRequired;
+
+  /// No description provided for @paymentProcessingCardNumberInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid card number'**
+  String get paymentProcessingCardNumberInvalid;
+
+  /// No description provided for @paymentProcessingExpiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Date'**
+  String get paymentProcessingExpiryDate;
+
+  /// No description provided for @paymentProcessingExpiryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'MM/YY'**
+  String get paymentProcessingExpiryHint;
+
+  /// No description provided for @paymentProcessingRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get paymentProcessingRequired;
+
+  /// No description provided for @paymentProcessingInvalidFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid format'**
+  String get paymentProcessingInvalidFormat;
+
+  /// No description provided for @paymentProcessingCvv.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV'**
+  String get paymentProcessingCvv;
+
+  /// No description provided for @paymentProcessingCvvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'123'**
+  String get paymentProcessingCvvHint;
+
+  /// No description provided for @paymentProcessingCvvInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid CVV'**
+  String get paymentProcessingCvvInvalid;
+
+  /// No description provided for @paymentProcessingFlutterwaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flutterwave Payment'**
+  String get paymentProcessingFlutterwaveTitle;
+
+  /// No description provided for @paymentProcessingFlutterwaveOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Options'**
+  String get paymentProcessingFlutterwaveOptions;
+
+  /// No description provided for @paymentProcessingFlutterwaveCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Payment'**
+  String get paymentProcessingFlutterwaveCard;
+
+  /// No description provided for @paymentProcessingFlutterwaveCardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with debit or credit card'**
+  String get paymentProcessingFlutterwaveCardDesc;
+
+  /// No description provided for @paymentProcessingFlutterwaveMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Money'**
+  String get paymentProcessingFlutterwaveMobile;
+
+  /// No description provided for @paymentProcessingFlutterwaveMobileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with mobile money (M-Pesa, Airtel, etc.)'**
+  String get paymentProcessingFlutterwaveMobileDesc;
+
+  /// No description provided for @paymentProcessingFlutterwaveBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Transfer'**
+  String get paymentProcessingFlutterwaveBank;
+
+  /// No description provided for @paymentProcessingFlutterwaveBankDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct bank transfer'**
+  String get paymentProcessingFlutterwaveBankDesc;
+
+  /// No description provided for @paymentProcessingFlutterwaveRedirect.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be redirected to Flutterwave secure payment page'**
+  String get paymentProcessingFlutterwaveRedirect;
+
+  /// No description provided for @browseInstitutionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Institutions'**
+  String get browseInstitutionsTitle;
+
+  /// No description provided for @browseInstitutionsSelectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Institution'**
+  String get browseInstitutionsSelectTitle;
+
+  /// No description provided for @browseInstitutionsBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get browseInstitutionsBack;
+
+  /// No description provided for @browseInstitutionsClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get browseInstitutionsClearFilters;
+
+  /// No description provided for @browseInstitutionsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by institution name or email...'**
+  String get browseInstitutionsSearchHint;
+
+  /// No description provided for @browseInstitutionsSortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by: '**
+  String get browseInstitutionsSortBy;
+
+  /// No description provided for @browseInstitutionsSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A-Z)'**
+  String get browseInstitutionsSortName;
+
+  /// No description provided for @browseInstitutionsSortOfferings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Offerings'**
+  String get browseInstitutionsSortOfferings;
+
+  /// No description provided for @browseInstitutionsSortPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get browseInstitutionsSortPrograms;
+
+  /// No description provided for @browseInstitutionsSortCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get browseInstitutionsSortCourses;
+
+  /// No description provided for @browseInstitutionsSortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get browseInstitutionsSortNewest;
+
+  /// No description provided for @browseInstitutionsAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get browseInstitutionsAscending;
+
+  /// No description provided for @browseInstitutionsDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get browseInstitutionsDescending;
+
+  /// No description provided for @browseInstitutionsShowVerifiedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Show verified only'**
+  String get browseInstitutionsShowVerifiedOnly;
+
+  /// No description provided for @browseInstitutionsResultCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} registered {count, plural, =1{institution} other{institutions}}'**
+  String browseInstitutionsResultCount(int count);
+
+  /// No description provided for @browseInstitutionsTapToSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select'**
+  String get browseInstitutionsTapToSelect;
+
+  /// No description provided for @browseInstitutionsNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No institutions found'**
+  String get browseInstitutionsNoResults;
+
+  /// No description provided for @browseInstitutionsNoResultsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search or filters'**
+  String get browseInstitutionsNoResultsHint;
+
+  /// No description provided for @browseInstitutionsRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get browseInstitutionsRetry;
+
+  /// No description provided for @browseInstitutionsVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get browseInstitutionsVerified;
+
+  /// No description provided for @browseInstitutionsNoOfferings.
+  ///
+  /// In en, this message translates to:
+  /// **'No offerings yet'**
+  String get browseInstitutionsNoOfferings;
+
+  /// No description provided for @browseInstitutionsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {name}'**
+  String browseInstitutionsSelected(String name);
+
+  /// No description provided for @browseUniversitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Universities'**
+  String get browseUniversitiesTitle;
+
+  /// No description provided for @browseUniversitiesSelectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select University'**
+  String get browseUniversitiesSelectTitle;
+
+  /// No description provided for @browseUniversitiesBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get browseUniversitiesBack;
+
+  /// No description provided for @browseUniversitiesClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get browseUniversitiesClearFilters;
+
+  /// No description provided for @browseUniversitiesSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name, city, or state...'**
+  String get browseUniversitiesSearchHint;
+
+  /// No description provided for @browseUniversitiesSortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by: '**
+  String get browseUniversitiesSortBy;
+
+  /// No description provided for @browseUniversitiesSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A-Z)'**
+  String get browseUniversitiesSortName;
+
+  /// No description provided for @browseUniversitiesSortAcceptanceRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance Rate'**
+  String get browseUniversitiesSortAcceptanceRate;
+
+  /// No description provided for @browseUniversitiesSortTuition.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuition Cost'**
+  String get browseUniversitiesSortTuition;
+
+  /// No description provided for @browseUniversitiesSortRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking'**
+  String get browseUniversitiesSortRanking;
+
+  /// No description provided for @browseUniversitiesAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get browseUniversitiesAscending;
+
+  /// No description provided for @browseUniversitiesDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get browseUniversitiesDescending;
+
+  /// No description provided for @browseUniversitiesResultCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} universities found'**
+  String browseUniversitiesResultCount(int count);
+
+  /// No description provided for @browseUniversitiesNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No universities found'**
+  String get browseUniversitiesNoResults;
+
+  /// No description provided for @browseUniversitiesNoResultsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search or filters'**
+  String get browseUniversitiesNoResultsHint;
+
+  /// No description provided for @browseUniversitiesRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get browseUniversitiesRetry;
+
+  /// No description provided for @browseUniversitiesSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {name}'**
+  String browseUniversitiesSelected(String name);
+
+  /// No description provided for @privacyPolicyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicyTitle;
+
+  /// No description provided for @privacyPolicyShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get privacyPolicyShare;
+
+  /// No description provided for @privacyPolicyShareComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Share functionality coming soon'**
+  String get privacyPolicyShareComingSoon;
+
+  /// No description provided for @privacyPolicyHeaderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow EdTech Privacy Policy'**
+  String get privacyPolicyHeaderTitle;
+
+  /// No description provided for @privacyPolicyLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated: October 28, 2025'**
+  String get privacyPolicyLastUpdated;
+
+  /// No description provided for @privacyPolicyHeaderDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This Privacy Policy describes how Flow EdTech collects, uses, and protects your personal information.'**
+  String get privacyPolicyHeaderDescription;
+
+  /// No description provided for @privacyPolicySection1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Information We Collect'**
+  String get privacyPolicySection1Title;
+
+  /// No description provided for @privacyPolicySection1Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We collect information that you provide directly to us, including:\n\n• Personal Information: Name, email address, phone number, and profile information\n• Educational Data: Course enrollments, grades, assignments, and learning progress\n• Usage Data: How you interact with our platform, including pages visited and features used\n• Device Information: Device type, operating system, and browser information\n• Location Data: General location information to provide relevant content\n\nWe collect this information when you:\n• Create an account or update your profile\n• Enroll in courses or complete assignments\n• Communicate with us or other users\n• Use our services and features'**
+  String get privacyPolicySection1Content;
+
+  /// No description provided for @privacyPolicySection2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. How We Use Your Information'**
+  String get privacyPolicySection2Title;
+
+  /// No description provided for @privacyPolicySection2Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We use the information we collect to:\n\n• Provide and improve our educational services\n• Personalize your learning experience\n• Process your enrollments and track your progress\n• Communicate with you about courses, updates, and support\n• Analyze usage patterns to enhance our platform\n• Ensure security and prevent fraud\n• Comply with legal obligations\n• Send promotional materials (with your consent)\n\nWe do not sell your personal information to third parties.'**
+  String get privacyPolicySection2Content;
+
+  /// No description provided for @privacyPolicySection3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Information Sharing and Disclosure'**
+  String get privacyPolicySection3Title;
+
+  /// No description provided for @privacyPolicySection3Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We may share your information in the following circumstances:\n\n• Educational Institutions: With schools or institutions you\'re affiliated with\n• Instructors: Course instructors can see your progress and submissions\n• Service Providers: Third-party providers who assist in operating our platform\n• Legal Requirements: When required by law or to protect our rights\n• Business Transfers: In connection with a merger or acquisition\n• With Your Consent: When you explicitly authorize sharing\n\nWe require all third parties to respect the security of your data and treat it in accordance with the law.'**
+  String get privacyPolicySection3Content;
+
+  /// No description provided for @privacyPolicySection4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Data Security'**
+  String get privacyPolicySection4Title;
+
+  /// No description provided for @privacyPolicySection4Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We implement appropriate technical and organizational measures to protect your information:\n\n• Encryption of data in transit and at rest\n• Regular security assessments and audits\n• Access controls and authentication measures\n• Secure data storage and backup systems\n• Employee training on data protection\n\nHowever, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.'**
+  String get privacyPolicySection4Content;
+
+  /// No description provided for @privacyPolicySection5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Your Rights and Choices'**
+  String get privacyPolicySection5Title;
+
+  /// No description provided for @privacyPolicySection5Content.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the following rights regarding your personal information:\n\n• Access: Request a copy of your personal data\n• Correction: Update or correct inaccurate information\n• Deletion: Request deletion of your personal data\n• Portability: Receive your data in a portable format\n• Opt-Out: Unsubscribe from marketing communications\n• Restriction: Limit how we process your data\n\nTo exercise these rights, contact us at privacy@flowedtech.com.'**
+  String get privacyPolicySection5Content;
+
+  /// No description provided for @privacyPolicySection6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Cookies and Tracking Technologies'**
+  String get privacyPolicySection6Title;
+
+  /// No description provided for @privacyPolicySection6Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We use cookies and similar technologies to:\n\n• Remember your preferences and settings\n• Authenticate your account\n• Analyze platform usage and performance\n• Provide personalized content and recommendations\n\nYou can control cookies through your browser settings. However, disabling cookies may limit some functionality.'**
+  String get privacyPolicySection6Content;
+
+  /// No description provided for @privacyPolicySection7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Children\'s Privacy'**
+  String get privacyPolicySection7Title;
+
+  /// No description provided for @privacyPolicySection7Content.
+  ///
+  /// In en, this message translates to:
+  /// **'Our services are intended for users 13 years and older. For users under 18:\n\n• Parental consent may be required\n• Additional protections are in place\n• Special handling of educational records (FERPA compliance)\n\nWe do not knowingly collect information from children under 13 without parental consent.'**
+  String get privacyPolicySection7Content;
+
+  /// No description provided for @privacyPolicySection8Title.
+  ///
+  /// In en, this message translates to:
+  /// **'8. International Data Transfers'**
+  String get privacyPolicySection8Title;
+
+  /// No description provided for @privacyPolicySection8Content.
+  ///
+  /// In en, this message translates to:
+  /// **'Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place, including:\n\n• Standard contractual clauses\n• Adequacy decisions by relevant authorities\n• Your explicit consent when required'**
+  String get privacyPolicySection8Content;
+
+  /// No description provided for @privacyPolicySection9Title.
+  ///
+  /// In en, this message translates to:
+  /// **'9. Changes to This Privacy Policy'**
+  String get privacyPolicySection9Title;
+
+  /// No description provided for @privacyPolicySection9Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We may update this Privacy Policy from time to time. We will:\n\n• Notify you of material changes via email or platform notification\n• Update the \"Last Updated\" date at the top of this policy\n• Obtain your consent for significant changes if required by law\n\nYour continued use of our services after changes constitutes acceptance of the updated policy.'**
+  String get privacyPolicySection9Content;
+
+  /// No description provided for @privacyPolicySection10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'10. Contact Us'**
+  String get privacyPolicySection10Title;
+
+  /// No description provided for @privacyPolicySection10Content.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have questions or concerns about this Privacy Policy or our data practices, please contact us:\n\nEmail: privacy@flowedtech.com\nPhone: +1 (555) 123-4567\nAddress: Flow EdTech, 123 Education Lane, Tech City, TC 12345\n\nData Protection Officer: dpo@flowedtech.com'**
+  String get privacyPolicySection10Content;
+
+  /// No description provided for @termsOfServiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfServiceTitle;
+
+  /// No description provided for @termsOfServiceShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get termsOfServiceShare;
+
+  /// No description provided for @termsOfServiceShareComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Share functionality coming soon'**
+  String get termsOfServiceShareComingSoon;
+
+  /// No description provided for @termsOfServiceHeaderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow EdTech Terms of Service'**
+  String get termsOfServiceHeaderTitle;
+
+  /// No description provided for @termsOfServiceEffectiveDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective Date: October 28, 2025'**
+  String get termsOfServiceEffectiveDate;
+
+  /// No description provided for @termsOfServiceHeaderDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Please read these Terms of Service carefully before using our platform. By accessing or using our services, you agree to be bound by these terms.'**
+  String get termsOfServiceHeaderDescription;
+
+  /// No description provided for @termsOfServiceSection1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Acceptance of Terms'**
+  String get termsOfServiceSection1Title;
+
+  /// No description provided for @termsOfServiceSection1Content.
+  ///
+  /// In en, this message translates to:
+  /// **'By creating an account and using Flow EdTech, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy.\n\nIf you do not agree to these terms, you may not access or use our services.\n\nThese terms constitute a legally binding agreement between you and Flow EdTech.'**
+  String get termsOfServiceSection1Content;
+
+  /// No description provided for @termsOfServiceSection2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Account Registration and Eligibility'**
+  String get termsOfServiceSection2Title;
+
+  /// No description provided for @termsOfServiceSection2Content.
+  ///
+  /// In en, this message translates to:
+  /// **'To use certain features, you must create an account and provide:\n\n• Accurate and complete information\n• Valid email address\n• Secure password\n• Proof of age (must be 13 or older)\n\nYou are responsible for:\n• Maintaining the confidentiality of your account credentials\n• All activities that occur under your account\n• Notifying us immediately of any unauthorized access\n\nWe reserve the right to refuse service, terminate accounts, or cancel orders at our discretion.'**
+  String get termsOfServiceSection2Content;
+
+  /// No description provided for @termsOfServiceSection3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. User Conduct and Responsibilities'**
+  String get termsOfServiceSection3Title;
+
+  /// No description provided for @termsOfServiceSection3Content.
+  ///
+  /// In en, this message translates to:
+  /// **'You agree not to:\n\n• Violate any laws or regulations\n• Infringe on intellectual property rights\n• Upload malicious code or viruses\n• Harass, abuse, or harm other users\n• Impersonate others or provide false information\n• Attempt to gain unauthorized access to our systems\n• Use automated tools to access our services\n• Sell or transfer your account to others\n• Post inappropriate or offensive content\n• Engage in academic dishonesty or plagiarism\n\nViolation of these terms may result in suspension or termination of your account.'**
+  String get termsOfServiceSection3Content;
+
+  /// No description provided for @termsOfServiceSection4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Intellectual Property Rights'**
+  String get termsOfServiceSection4Title;
+
+  /// No description provided for @termsOfServiceSection4Content.
+  ///
+  /// In en, this message translates to:
+  /// **'All content on Flow EdTech, including:\n\n• Course materials and lectures\n• Text, graphics, logos, and images\n• Software and technology\n• Trademarks and branding\n\nIs owned by Flow EdTech or its licensors and is protected by copyright, trademark, and other intellectual property laws.\n\nUser-Generated Content:\n• You retain ownership of content you create\n• You grant us a license to use, display, and distribute your content\n• You represent that you have rights to any content you upload\n• We may remove content that violates these terms\n\nYou may not copy, modify, distribute, or create derivative works without our explicit permission.'**
+  String get termsOfServiceSection4Content;
+
+  /// No description provided for @termsOfServiceSection5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Subscriptions, Payments, and Refunds'**
+  String get termsOfServiceSection5Title;
+
+  /// No description provided for @termsOfServiceSection5Content.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Plans:\n• Pricing is subject to change with notice\n• Subscriptions automatically renew unless cancelled\n• You can cancel at any time through your account settings\n• Cancellation takes effect at the end of the billing period\n\nPayment Terms:\n• All fees are in USD unless otherwise stated\n• Payment is due at the time of purchase\n• We accept major credit cards and other payment methods\n• Failed payments may result in service suspension\n\nRefund Policy:\n• 7-day money-back guarantee for new subscriptions\n• Refunds are processed within 5-10 business days\n• Course-specific refund policies may apply\n• Contact support@flowedtech.com for refund requests'**
+  String get termsOfServiceSection5Content;
+
+  /// No description provided for @termsOfServiceSection6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Course Access and Educational Content'**
+  String get termsOfServiceSection6Title;
+
+  /// No description provided for @termsOfServiceSection6Content.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Enrollment:\n• Access is granted upon successful payment\n• Courses may have prerequisites or requirements\n• Some courses have limited enrollment periods\n• Completion certificates are awarded based on performance\n\nContent Availability:\n• We strive to maintain continuous access to courses\n• Content may be updated or modified without notice\n• Some courses may be retired or archived\n• No guarantee of specific educational outcomes\n\nAcademic Integrity:\n• You must complete your own work\n• Collaboration is only allowed where explicitly permitted\n• Plagiarism and cheating will result in account termination\n• Certificates may be revoked for academic misconduct'**
+  String get termsOfServiceSection6Content;
+
+  /// No description provided for @termsOfServiceSection7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Privacy and Data Protection'**
+  String get termsOfServiceSection7Title;
+
+  /// No description provided for @termsOfServiceSection7Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We are committed to protecting your privacy. Our collection and use of personal information is governed by our Privacy Policy.\n\nBy using our services, you consent to:\n• Collection of personal and usage data\n• Processing data for service provision\n• Sharing data as described in our Privacy Policy\n• Use of cookies and tracking technologies\n\nYour Rights:\n• Access your personal data\n• Request data correction or deletion\n• Opt-out of marketing communications\n• Data portability\n\nSee our Privacy Policy for complete details.'**
+  String get termsOfServiceSection7Content;
+
+  /// No description provided for @termsOfServiceSection8Title.
+  ///
+  /// In en, this message translates to:
+  /// **'8. Disclaimers and Limitations of Liability'**
+  String get termsOfServiceSection8Title;
+
+  /// No description provided for @termsOfServiceSection8Content.
+  ///
+  /// In en, this message translates to:
+  /// **'Services Provided \"AS IS\":\n• No warranty of uninterrupted or error-free service\n• No guarantee of specific results or outcomes\n• Educational content for informational purposes only\n• Not a substitute for professional advice\n\nLimitation of Liability:\n• We are not liable for indirect, incidental, or consequential damages\n• Maximum liability limited to fees paid in the last 12 months\n• No liability for third-party content or actions\n• No liability for data loss or service interruptions\n\nYou use our services at your own risk.'**
+  String get termsOfServiceSection8Content;
+
+  /// No description provided for @termsOfServiceSection9Title.
+  ///
+  /// In en, this message translates to:
+  /// **'9. Third-Party Services and Links'**
+  String get termsOfServiceSection9Title;
+
+  /// No description provided for @termsOfServiceSection9Content.
+  ///
+  /// In en, this message translates to:
+  /// **'Our platform may contain links to third-party websites or integrate with third-party services:\n\n• We do not control third-party content\n• We are not responsible for third-party practices\n• Third-party terms and privacy policies apply\n• Use third-party services at your own risk\n\nIntegration examples include:\n• Payment processors\n• Video hosting platforms\n• Analytics services\n• Social media platforms'**
+  String get termsOfServiceSection9Content;
+
+  /// No description provided for @termsOfServiceSection10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'10. Termination'**
+  String get termsOfServiceSection10Title;
+
+  /// No description provided for @termsOfServiceSection10Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We may terminate or suspend your account:\n\n• For violation of these terms\n• For fraudulent or illegal activity\n• For prolonged inactivity\n• At our discretion with or without notice\n\nUpon termination:\n• Your access to services will cease\n• You may lose access to course materials\n• Certain provisions survive termination\n• Outstanding fees remain due\n\nYou may terminate your account at any time through account settings.'**
+  String get termsOfServiceSection10Content;
+
+  /// No description provided for @termsOfServiceSection11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'11. Dispute Resolution and Arbitration'**
+  String get termsOfServiceSection11Title;
+
+  /// No description provided for @termsOfServiceSection11Content.
+  ///
+  /// In en, this message translates to:
+  /// **'For any disputes arising from these terms:\n\nInformal Resolution:\n• Contact us first to resolve disputes informally\n• Email: legal@flowedtech.com\n• 30-day period to reach resolution\n\nArbitration Agreement:\n• Disputes resolved through binding arbitration\n• Individual basis only (no class actions)\n• Governed by American Arbitration Association rules\n• Located in Tech City, TC\n\nExceptions:\n• Small claims court disputes\n• Intellectual property disputes\n• Emergency injunctive relief'**
+  String get termsOfServiceSection11Content;
+
+  /// No description provided for @termsOfServiceSection12Title.
+  ///
+  /// In en, this message translates to:
+  /// **'12. Governing Law'**
+  String get termsOfServiceSection12Title;
+
+  /// No description provided for @termsOfServiceSection12Content.
+  ///
+  /// In en, this message translates to:
+  /// **'These Terms are governed by:\n\n• Laws of the State of [Your State]\n• United States federal law\n• Without regard to conflict of law provisions\n\nJurisdiction:\n• Courts of [Your State]\n• Tech City, TC county courts\n\nInternational Users:\n• Additional local laws may apply\n• You are responsible for compliance with local laws'**
+  String get termsOfServiceSection12Content;
+
+  /// No description provided for @termsOfServiceSection13Title.
+  ///
+  /// In en, this message translates to:
+  /// **'13. Changes to Terms of Service'**
+  String get termsOfServiceSection13Title;
+
+  /// No description provided for @termsOfServiceSection13Content.
+  ///
+  /// In en, this message translates to:
+  /// **'We may modify these terms at any time:\n\n• Changes effective upon posting\n• Material changes will be notified via email\n• Continued use constitutes acceptance\n• You can review current terms anytime\n\nIf you do not agree to modified terms:\n• Discontinue use of our services\n• Contact us to close your account\n• No refunds for remaining subscription period'**
+  String get termsOfServiceSection13Content;
+
+  /// No description provided for @termsOfServiceSection14Title.
+  ///
+  /// In en, this message translates to:
+  /// **'14. Contact Information'**
+  String get termsOfServiceSection14Title;
+
+  /// No description provided for @termsOfServiceSection14Content.
+  ///
+  /// In en, this message translates to:
+  /// **'For questions about these Terms of Service:\n\nGeneral Inquiries:\nEmail: support@flowedtech.com\nPhone: +1 (555) 123-4567\n\nLegal Department:\nEmail: legal@flowedtech.com\n\nMailing Address:\nFlow EdTech\n123 Education Lane\nTech City, TC 12345\nUnited States\n\nBusiness Hours: Monday-Friday, 9am-5pm EST'**
+  String get termsOfServiceSection14Content;
+
+  /// No description provided for @termsOfServiceAcknowledgment.
+  ///
+  /// In en, this message translates to:
+  /// **'By using Flow EdTech, you acknowledge that you have read and understood these Terms of Service.'**
+  String get termsOfServiceAcknowledgment;
 }
 
 class _AppLocalizationsDelegate

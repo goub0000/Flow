@@ -19245,4 +19245,717 @@ class AppLocalizationsFr extends AppLocalizations {
   String adminRecommenderDetailRequestsCount(int count) {
     return '$count demandes';
   }
+
+  @override
+  String get paymentFailureTitle => 'Echec du paiement';
+
+  @override
+  String get paymentFailureDefaultMessage =>
+      'Nous n\'avons pas pu traiter votre paiement. Veuillez reessayer.';
+
+  @override
+  String get paymentFailureTransactionDetails => 'Details de la transaction';
+
+  @override
+  String get paymentFailureTransactionId => 'ID de transaction';
+
+  @override
+  String get paymentFailureNotAvailable => 'N/D';
+
+  @override
+  String get paymentFailureReference => 'Reference';
+
+  @override
+  String get paymentFailurePaymentMethod => 'Mode de paiement';
+
+  @override
+  String get paymentFailureAmount => 'Montant';
+
+  @override
+  String get paymentFailureReason => 'Raison de l\'echec';
+
+  @override
+  String get paymentFailureCommonIssues => 'Problemes courants';
+
+  @override
+  String get paymentFailureInsufficientFunds => 'Fonds insuffisants';
+
+  @override
+  String get paymentFailureInsufficientFundsDesc =>
+      'Assurez-vous d\'avoir un solde suffisant sur votre compte';
+
+  @override
+  String get paymentFailureCardDeclined => 'Carte refusee';
+
+  @override
+  String get paymentFailureCardDeclinedDesc =>
+      'Verifiez aupres de votre banque ou essayez une autre carte';
+
+  @override
+  String get paymentFailureNetworkIssues => 'Problemes de reseau';
+
+  @override
+  String get paymentFailureNetworkIssuesDesc =>
+      'Assurez-vous d\'avoir une connexion Internet stable';
+
+  @override
+  String get paymentFailureIncorrectDetails => 'Informations incorrectes';
+
+  @override
+  String get paymentFailureIncorrectDetailsDesc =>
+      'Verifiez que vos informations de paiement sont correctes';
+
+  @override
+  String get paymentFailureContactSupportNotice =>
+      'Si le probleme persiste, veuillez contacter le support';
+
+  @override
+  String get paymentFailureTryAgain => 'Reessayer';
+
+  @override
+  String get paymentFailureContactSupport => 'Contacter le support';
+
+  @override
+  String get paymentFailureBackToHome => 'Retour a l\'accueil';
+
+  @override
+  String get paymentHistoryTitle => 'Historique des paiements';
+
+  @override
+  String get paymentHistoryBack => 'Retour';
+
+  @override
+  String paymentHistoryTabAll(int count) {
+    return 'Tous ($count)';
+  }
+
+  @override
+  String paymentHistoryTabCompleted(int count) {
+    return 'Termines ($count)';
+  }
+
+  @override
+  String paymentHistoryTabProcessing(int count) {
+    return 'En cours ($count)';
+  }
+
+  @override
+  String paymentHistoryTabFailed(int count) {
+    return 'Echoues ($count)';
+  }
+
+  @override
+  String get paymentHistoryRetry => 'Reessayer';
+
+  @override
+  String get paymentHistoryLoading =>
+      'Chargement de l\'historique des paiements...';
+
+  @override
+  String get paymentHistoryNoPayments => 'Aucun paiement';
+
+  @override
+  String get paymentHistoryNoPaymentsFound => 'Aucun paiement trouve';
+
+  @override
+  String get paymentHistoryTransactionId => 'ID de transaction';
+
+  @override
+  String get paymentHistoryReference => 'Reference';
+
+  @override
+  String get paymentHistoryPaymentMethod => 'Mode de paiement';
+
+  @override
+  String get paymentHistoryDate => 'Date';
+
+  @override
+  String get paymentHistoryCompletedAt => 'Complete le';
+
+  @override
+  String get paymentHistoryDownloadReceipt => 'Telecharger le recu';
+
+  @override
+  String get paymentHistoryRetryPayment => 'Reessayer le paiement';
+
+  @override
+  String get paymentHistoryReceiptOptions => 'Options du recu';
+
+  @override
+  String get paymentHistoryDownloadAsPdf => 'Telecharger en PDF';
+
+  @override
+  String get paymentHistorySaveToDevice =>
+      'Enregistrer le recu sur l\'appareil';
+
+  @override
+  String get paymentHistoryEmailReceipt => 'Envoyer le recu par e-mail';
+
+  @override
+  String get paymentHistorySendToEmail => 'Envoyer a votre adresse e-mail';
+
+  @override
+  String get paymentHistoryShareReceipt => 'Partager le recu';
+
+  @override
+  String get paymentHistoryShareViaApps =>
+      'Partager via d\'autres applications';
+
+  @override
+  String get paymentHistoryDownloading => 'Telechargement du recu...';
+
+  @override
+  String get paymentHistorySendingEmail => 'Envoi du recu par e-mail...';
+
+  @override
+  String get paymentHistoryOpeningShare =>
+      'Ouverture des options de partage...';
+
+  @override
+  String get paymentHistoryCourseEnrollment => 'Inscription au cours';
+
+  @override
+  String get paymentHistoryProgramApplication => 'Candidature au programme';
+
+  @override
+  String get paymentHistoryCounselingSession => 'Seance de conseil';
+
+  @override
+  String get paymentMethodTitle => 'Selectionner le mode de paiement';
+
+  @override
+  String get paymentMethodBack => 'Retour';
+
+  @override
+  String get paymentMethodRetry => 'Reessayer';
+
+  @override
+  String get paymentMethodLoading => 'Chargement des modes de paiement...';
+
+  @override
+  String get paymentMethodSummary => 'Resume du paiement';
+
+  @override
+  String get paymentMethodItem => 'Article';
+
+  @override
+  String get paymentMethodType => 'Type';
+
+  @override
+  String get paymentMethodTotalAmount => 'Montant total';
+
+  @override
+  String get paymentMethodChoose => 'Choisir le mode de paiement';
+
+  @override
+  String get paymentMethodSecureNotice =>
+      'Vos informations de paiement sont securisees et chiffrees';
+
+  @override
+  String get paymentMethodContinue => 'Continuer vers le paiement';
+
+  @override
+  String get paymentMethodCourseEnrollment => 'Inscription au cours';
+
+  @override
+  String get paymentMethodProgramApplication => 'Candidature au programme';
+
+  @override
+  String get paymentMethodCounselingSession => 'Seance de conseil';
+
+  @override
+  String paymentProcessingPayWith(String method) {
+    return 'Payer avec $method';
+  }
+
+  @override
+  String get paymentProcessingAmountToPay => 'Montant a payer';
+
+  @override
+  String get paymentProcessingSecureNotice =>
+      'Votre paiement est securise avec un chiffrement de bout en bout';
+
+  @override
+  String get paymentProcessingStatus => 'Traitement en cours...';
+
+  @override
+  String paymentProcessingPayAmount(String currency, String amount) {
+    return 'Payer $currency $amount';
+  }
+
+  @override
+  String get paymentProcessingMpesaTitle => 'Paiement M-Pesa';
+
+  @override
+  String get paymentProcessingMpesaPhoneLabel => 'Numero de telephone M-Pesa';
+
+  @override
+  String get paymentProcessingMpesaPhoneHint => '254712345678';
+
+  @override
+  String get paymentProcessingMpesaPhoneRequired =>
+      'Veuillez entrer votre numero de telephone M-Pesa';
+
+  @override
+  String get paymentProcessingMpesaPhoneInvalid =>
+      'Veuillez entrer un numero de telephone kenyan valide (254...)';
+
+  @override
+  String get paymentProcessingMpesaHowToPay => 'Comment payer';
+
+  @override
+  String get paymentProcessingMpesaStep1 =>
+      'Vous recevrez une invite M-Pesa sur votre telephone';
+
+  @override
+  String get paymentProcessingMpesaStep2 =>
+      'Entrez votre code PIN M-Pesa pour confirmer le paiement';
+
+  @override
+  String get paymentProcessingMpesaStep3 => 'Attendez le SMS de confirmation';
+
+  @override
+  String get paymentProcessingCardTitle => 'Details de la carte';
+
+  @override
+  String get paymentProcessingCardholderName => 'Nom du titulaire de la carte';
+
+  @override
+  String get paymentProcessingCardholderHint => 'JEAN DUPONT';
+
+  @override
+  String get paymentProcessingCardholderRequired =>
+      'Veuillez entrer le nom du titulaire de la carte';
+
+  @override
+  String get paymentProcessingCardNumber => 'Numero de carte';
+
+  @override
+  String get paymentProcessingCardNumberHint => '1234 5678 9012 3456';
+
+  @override
+  String get paymentProcessingCardNumberRequired =>
+      'Veuillez entrer le numero de carte';
+
+  @override
+  String get paymentProcessingCardNumberInvalid =>
+      'Veuillez entrer un numero de carte valide';
+
+  @override
+  String get paymentProcessingExpiryDate => 'Date d\'expiration';
+
+  @override
+  String get paymentProcessingExpiryHint => 'MM/AA';
+
+  @override
+  String get paymentProcessingRequired => 'Requis';
+
+  @override
+  String get paymentProcessingInvalidFormat => 'Format invalide';
+
+  @override
+  String get paymentProcessingCvv => 'CVV';
+
+  @override
+  String get paymentProcessingCvvHint => '123';
+
+  @override
+  String get paymentProcessingCvvInvalid => 'CVV invalide';
+
+  @override
+  String get paymentProcessingFlutterwaveTitle => 'Paiement Flutterwave';
+
+  @override
+  String get paymentProcessingFlutterwaveOptions => 'Options de paiement';
+
+  @override
+  String get paymentProcessingFlutterwaveCard => 'Paiement par carte';
+
+  @override
+  String get paymentProcessingFlutterwaveCardDesc =>
+      'Payer avec une carte de debit ou de credit';
+
+  @override
+  String get paymentProcessingFlutterwaveMobile => 'Mobile Money';
+
+  @override
+  String get paymentProcessingFlutterwaveMobileDesc =>
+      'Payer avec Mobile Money (M-Pesa, Airtel, etc.)';
+
+  @override
+  String get paymentProcessingFlutterwaveBank => 'Virement bancaire';
+
+  @override
+  String get paymentProcessingFlutterwaveBankDesc => 'Virement bancaire direct';
+
+  @override
+  String get paymentProcessingFlutterwaveRedirect =>
+      'Vous serez redirige vers la page de paiement securisee Flutterwave';
+
+  @override
+  String get browseInstitutionsTitle => 'Parcourir les etablissements';
+
+  @override
+  String get browseInstitutionsSelectTitle => 'Selectionner un etablissement';
+
+  @override
+  String get browseInstitutionsBack => 'Retour';
+
+  @override
+  String get browseInstitutionsClearFilters => 'Effacer les filtres';
+
+  @override
+  String get browseInstitutionsSearchHint =>
+      'Rechercher par nom ou email de l\'etablissement...';
+
+  @override
+  String get browseInstitutionsSortBy => 'Trier par : ';
+
+  @override
+  String get browseInstitutionsSortName => 'Nom (A-Z)';
+
+  @override
+  String get browseInstitutionsSortOfferings => 'Total des offres';
+
+  @override
+  String get browseInstitutionsSortPrograms => 'Programmes';
+
+  @override
+  String get browseInstitutionsSortCourses => 'Cours';
+
+  @override
+  String get browseInstitutionsSortNewest => 'Plus recents';
+
+  @override
+  String get browseInstitutionsAscending => 'Croissant';
+
+  @override
+  String get browseInstitutionsDescending => 'Decroissant';
+
+  @override
+  String get browseInstitutionsShowVerifiedOnly =>
+      'Afficher uniquement les verifies';
+
+  @override
+  String browseInstitutionsResultCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'etablissements inscrits',
+      one: 'etablissement inscrit',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get browseInstitutionsTapToSelect => 'Appuyez pour selectionner';
+
+  @override
+  String get browseInstitutionsNoResults => 'Aucun etablissement trouve';
+
+  @override
+  String get browseInstitutionsNoResultsHint =>
+      'Essayez d\'ajuster votre recherche ou vos filtres';
+
+  @override
+  String get browseInstitutionsRetry => 'Reessayer';
+
+  @override
+  String get browseInstitutionsVerified => 'Verifie';
+
+  @override
+  String get browseInstitutionsNoOfferings => 'Aucune offre pour le moment';
+
+  @override
+  String browseInstitutionsSelected(String name) {
+    return 'Selectionne : $name';
+  }
+
+  @override
+  String get browseUniversitiesTitle => 'Parcourir les universites';
+
+  @override
+  String get browseUniversitiesSelectTitle => 'Selectionner une universite';
+
+  @override
+  String get browseUniversitiesBack => 'Retour';
+
+  @override
+  String get browseUniversitiesClearFilters => 'Effacer les filtres';
+
+  @override
+  String get browseUniversitiesSearchHint =>
+      'Rechercher par nom, ville ou region...';
+
+  @override
+  String get browseUniversitiesSortBy => 'Trier par : ';
+
+  @override
+  String get browseUniversitiesSortName => 'Nom (A-Z)';
+
+  @override
+  String get browseUniversitiesSortAcceptanceRate => 'Taux d\'acceptation';
+
+  @override
+  String get browseUniversitiesSortTuition => 'Frais de scolarite';
+
+  @override
+  String get browseUniversitiesSortRanking => 'Classement';
+
+  @override
+  String get browseUniversitiesAscending => 'Croissant';
+
+  @override
+  String get browseUniversitiesDescending => 'Decroissant';
+
+  @override
+  String browseUniversitiesResultCount(int count) {
+    return '$count universites trouvees';
+  }
+
+  @override
+  String get browseUniversitiesNoResults => 'Aucune universite trouvee';
+
+  @override
+  String get browseUniversitiesNoResultsHint =>
+      'Essayez d\'ajuster votre recherche ou vos filtres';
+
+  @override
+  String get browseUniversitiesRetry => 'Reessayer';
+
+  @override
+  String browseUniversitiesSelected(String name) {
+    return 'Selectionne : $name';
+  }
+
+  @override
+  String get privacyPolicyTitle => 'Politique de confidentialite';
+
+  @override
+  String get privacyPolicyShare => 'Partager';
+
+  @override
+  String get privacyPolicyShareComingSoon =>
+      'Fonctionnalite de partage bientot disponible';
+
+  @override
+  String get privacyPolicyHeaderTitle =>
+      'Politique de confidentialite Flow EdTech';
+
+  @override
+  String get privacyPolicyLastUpdated =>
+      'Derniere mise a jour : 28 octobre 2025';
+
+  @override
+  String get privacyPolicyHeaderDescription =>
+      'Cette politique de confidentialite decrit comment Flow EdTech collecte, utilise et protege vos informations personnelles.';
+
+  @override
+  String get privacyPolicySection1Title =>
+      '1. Informations que nous collectons';
+
+  @override
+  String get privacyPolicySection1Content =>
+      'Nous collectons les informations que vous nous fournissez directement, notamment :\n\n• Informations personnelles : Nom, adresse e-mail, numero de telephone et informations de profil\n• Donnees educatives : Inscriptions aux cours, notes, devoirs et progression de l\'apprentissage\n• Donnees d\'utilisation : Comment vous interagissez avec notre plateforme, y compris les pages visitees et les fonctionnalites utilisees\n• Informations sur l\'appareil : Type d\'appareil, systeme d\'exploitation et informations du navigateur\n• Donnees de localisation : Informations de localisation generales pour fournir un contenu pertinent\n\nNous collectons ces informations lorsque vous :\n• Creez un compte ou mettez a jour votre profil\n• Vous inscrivez a des cours ou completez des devoirs\n• Communiquez avec nous ou d\'autres utilisateurs\n• Utilisez nos services et fonctionnalites';
+
+  @override
+  String get privacyPolicySection2Title =>
+      '2. Comment nous utilisons vos informations';
+
+  @override
+  String get privacyPolicySection2Content =>
+      'Nous utilisons les informations que nous collectons pour :\n\n• Fournir et ameliorer nos services educatifs\n• Personnaliser votre experience d\'apprentissage\n• Traiter vos inscriptions et suivre vos progres\n• Communiquer avec vous concernant les cours, mises a jour et support\n• Analyser les modeles d\'utilisation pour ameliorer notre plateforme\n• Assurer la securite et prevenir la fraude\n• Respecter les obligations legales\n• Envoyer des documents promotionnels (avec votre consentement)\n\nNous ne vendons pas vos informations personnelles a des tiers.';
+
+  @override
+  String get privacyPolicySection3Title =>
+      '3. Partage et divulgation des informations';
+
+  @override
+  String get privacyPolicySection3Content =>
+      'Nous pouvons partager vos informations dans les circonstances suivantes :\n\n• Etablissements d\'enseignement : Avec les ecoles ou etablissements auxquels vous etes affilie\n• Instructeurs : Les instructeurs de cours peuvent voir vos progres et soumissions\n• Fournisseurs de services : Fournisseurs tiers qui aident a exploiter notre plateforme\n• Exigences legales : Lorsque la loi l\'exige ou pour proteger nos droits\n• Transferts d\'entreprise : Dans le cadre d\'une fusion ou acquisition\n• Avec votre consentement : Lorsque vous autorisez explicitement le partage\n\nNous exigeons que tous les tiers respectent la securite de vos donnees et les traitent conformement a la loi.';
+
+  @override
+  String get privacyPolicySection4Title => '4. Securite des donnees';
+
+  @override
+  String get privacyPolicySection4Content =>
+      'Nous mettons en oeuvre des mesures techniques et organisationnelles appropriees pour proteger vos informations :\n\n• Chiffrement des donnees en transit et au repos\n• Evaluations et audits de securite reguliers\n• Controles d\'acces et mesures d\'authentification\n• Stockage de donnees securise et systemes de sauvegarde\n• Formation des employes sur la protection des donnees\n\nCependant, aucune methode de transmission sur Internet n\'est securisee a 100 %, et nous ne pouvons pas garantir une securite absolue.';
+
+  @override
+  String get privacyPolicySection5Title => '5. Vos droits et choix';
+
+  @override
+  String get privacyPolicySection5Content =>
+      'Vous disposez des droits suivants concernant vos informations personnelles :\n\n• Acces : Demander une copie de vos donnees personnelles\n• Correction : Mettre a jour ou corriger les informations inexactes\n• Suppression : Demander la suppression de vos donnees personnelles\n• Portabilite : Recevoir vos donnees dans un format portable\n• Desinscription : Se desabonner des communications marketing\n• Restriction : Limiter la facon dont nous traitons vos donnees\n\nPour exercer ces droits, contactez-nous a privacy@flowedtech.com.';
+
+  @override
+  String get privacyPolicySection6Title =>
+      '6. Cookies et technologies de suivi';
+
+  @override
+  String get privacyPolicySection6Content =>
+      'Nous utilisons des cookies et des technologies similaires pour :\n\n• Memoriser vos preferences et parametres\n• Authentifier votre compte\n• Analyser l\'utilisation et les performances de la plateforme\n• Fournir du contenu et des recommandations personnalises\n\nVous pouvez controler les cookies via les parametres de votre navigateur. Cependant, la desactivation des cookies peut limiter certaines fonctionnalites.';
+
+  @override
+  String get privacyPolicySection7Title => '7. Confidentialite des enfants';
+
+  @override
+  String get privacyPolicySection7Content =>
+      'Nos services sont destines aux utilisateurs de 13 ans et plus. Pour les utilisateurs de moins de 18 ans :\n\n• Le consentement parental peut etre requis\n• Des protections supplementaires sont en place\n• Traitement special des dossiers educatifs (conformite FERPA)\n\nNous ne collectons pas sciemment d\'informations aupres d\'enfants de moins de 13 ans sans le consentement parental.';
+
+  @override
+  String get privacyPolicySection8Title =>
+      '8. Transferts internationaux de donnees';
+
+  @override
+  String get privacyPolicySection8Content =>
+      'Vos informations peuvent etre transferees et traitees dans des pays autres que le votre. Nous veillons a ce que des mesures de protection appropriees soient en place, notamment :\n\n• Clauses contractuelles types\n• Decisions d\'adequation des autorites competentes\n• Votre consentement explicite lorsque requis';
+
+  @override
+  String get privacyPolicySection9Title =>
+      '9. Modifications de cette politique de confidentialite';
+
+  @override
+  String get privacyPolicySection9Content =>
+      'Nous pouvons mettre a jour cette politique de confidentialite de temps en temps. Nous :\n\n• Vous informerons des changements importants par e-mail ou notification sur la plateforme\n• Mettrons a jour la date de « Derniere mise a jour » en haut de cette politique\n• Obtiendrons votre consentement pour les changements importants si la loi l\'exige\n\nVotre utilisation continue de nos services apres les modifications constitue une acceptation de la politique mise a jour.';
+
+  @override
+  String get privacyPolicySection10Title => '10. Nous contacter';
+
+  @override
+  String get privacyPolicySection10Content =>
+      'Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou nos pratiques en matiere de donnees, veuillez nous contacter :\n\nE-mail : privacy@flowedtech.com\nTelephone : +1 (555) 123-4567\nAdresse : Flow EdTech, 123 Education Lane, Tech City, TC 12345\n\nDelegue a la protection des donnees : dpo@flowedtech.com';
+
+  @override
+  String get termsOfServiceTitle => 'Conditions d\'utilisation';
+
+  @override
+  String get termsOfServiceShare => 'Partager';
+
+  @override
+  String get termsOfServiceShareComingSoon =>
+      'Fonctionnalite de partage bientot disponible';
+
+  @override
+  String get termsOfServiceHeaderTitle =>
+      'Conditions d\'utilisation Flow EdTech';
+
+  @override
+  String get termsOfServiceEffectiveDate =>
+      'Date d\'entree en vigueur : 28 octobre 2025';
+
+  @override
+  String get termsOfServiceHeaderDescription =>
+      'Veuillez lire attentivement ces conditions d\'utilisation avant d\'utiliser notre plateforme. En accedant ou en utilisant nos services, vous acceptez d\'etre lie par ces conditions.';
+
+  @override
+  String get termsOfServiceSection1Title => '1. Acceptation des conditions';
+
+  @override
+  String get termsOfServiceSection1Content =>
+      'En creant un compte et en utilisant Flow EdTech, vous reconnaissez avoir lu, compris et accepte d\'etre lie par ces conditions d\'utilisation et notre politique de confidentialite.\n\nSi vous n\'acceptez pas ces conditions, vous ne pouvez pas acceder ou utiliser nos services.\n\nCes conditions constituent un accord juridiquement contraignant entre vous et Flow EdTech.';
+
+  @override
+  String get termsOfServiceSection2Title =>
+      '2. Inscription au compte et eligibilite';
+
+  @override
+  String get termsOfServiceSection2Content =>
+      'Pour utiliser certaines fonctionnalites, vous devez creer un compte et fournir :\n\n• Des informations exactes et completes\n• Une adresse e-mail valide\n• Un mot de passe securise\n• Une preuve d\'age (vous devez avoir 13 ans ou plus)\n\nVous etes responsable de :\n• Maintenir la confidentialite de vos identifiants de compte\n• Toutes les activites qui se produisent sous votre compte\n• Nous informer immediatement de tout acces non autorise\n\nNous nous reservons le droit de refuser le service, de resilier des comptes ou d\'annuler des commandes a notre discretion.';
+
+  @override
+  String get termsOfServiceSection3Title =>
+      '3. Conduite et responsabilites de l\'utilisateur';
+
+  @override
+  String get termsOfServiceSection3Content =>
+      'Vous acceptez de ne pas :\n\n• Violer des lois ou reglements\n• Porter atteinte aux droits de propriete intellectuelle\n• Telecharger du code malveillant ou des virus\n• Harceler, abuser ou nuire a d\'autres utilisateurs\n• Usurper l\'identite d\'autrui ou fournir de fausses informations\n• Tenter d\'obtenir un acces non autorise a nos systemes\n• Utiliser des outils automatises pour acceder a nos services\n• Vendre ou transferer votre compte a d\'autres personnes\n• Publier du contenu inapproprie ou offensant\n• Vous livrer a la malhonnetete academique ou au plagiat\n\nLa violation de ces conditions peut entrainer la suspension ou la resiliation de votre compte.';
+
+  @override
+  String get termsOfServiceSection4Title =>
+      '4. Droits de propriete intellectuelle';
+
+  @override
+  String get termsOfServiceSection4Content =>
+      'Tout le contenu sur Flow EdTech, y compris :\n\n• Les supports de cours et les conferences\n• Le texte, les graphiques, les logos et les images\n• Les logiciels et la technologie\n• Les marques et l\'image de marque\n\nEst la propriete de Flow EdTech ou de ses concedants de licence et est protege par le droit d\'auteur, les marques et d\'autres lois sur la propriete intellectuelle.\n\nContenu genere par l\'utilisateur :\n• Vous conservez la propriete du contenu que vous creez\n• Vous nous accordez une licence pour utiliser, afficher et distribuer votre contenu\n• Vous declarez que vous avez des droits sur tout contenu que vous televersez\n• Nous pouvons supprimer le contenu qui viole ces conditions\n\nVous ne pouvez pas copier, modifier, distribuer ou creer des oeuvres derivees sans notre permission explicite.';
+
+  @override
+  String get termsOfServiceSection5Title =>
+      '5. Abonnements, paiements et remboursements';
+
+  @override
+  String get termsOfServiceSection5Content =>
+      'Plans d\'abonnement :\n• Les prix sont susceptibles de changer avec preavis\n• Les abonnements se renouvellent automatiquement sauf annulation\n• Vous pouvez annuler a tout moment via les parametres de votre compte\n• L\'annulation prend effet a la fin de la periode de facturation\n\nConditions de paiement :\n• Tous les frais sont en USD sauf indication contraire\n• Le paiement est du au moment de l\'achat\n• Nous acceptons les principales cartes de credit et autres methodes de paiement\n• Les paiements echoues peuvent entrainer la suspension du service\n\nPolitique de remboursement :\n• Garantie de remboursement de 7 jours pour les nouveaux abonnements\n• Les remboursements sont traites dans les 5 a 10 jours ouvrables\n• Des politiques de remboursement specifiques aux cours peuvent s\'appliquer\n• Contactez support@flowedtech.com pour les demandes de remboursement';
+
+  @override
+  String get termsOfServiceSection6Title =>
+      '6. Acces aux cours et contenu educatif';
+
+  @override
+  String get termsOfServiceSection6Content =>
+      'Inscription aux cours :\n• L\'acces est accorde apres un paiement reussi\n• Les cours peuvent avoir des prerequis ou des exigences\n• Certains cours ont des periodes d\'inscription limitees\n• Les certificats d\'achevement sont decernes en fonction des performances\n\nDisponibilite du contenu :\n• Nous nous efforcons de maintenir un acces continu aux cours\n• Le contenu peut etre mis a jour ou modifie sans preavis\n• Certains cours peuvent etre retires ou archives\n• Aucune garantie de resultats educatifs specifiques\n\nIntegrite academique :\n• Vous devez completer votre propre travail\n• La collaboration n\'est autorisee que lorsqu\'elle est explicitement permise\n• Le plagiat et la triche entraineront la resiliation du compte\n• Les certificats peuvent etre revoques pour faute academique';
+
+  @override
+  String get termsOfServiceSection7Title =>
+      '7. Confidentialite et protection des donnees';
+
+  @override
+  String get termsOfServiceSection7Content =>
+      'Nous nous engageons a proteger votre vie privee. Notre collecte et utilisation d\'informations personnelles sont regies par notre politique de confidentialite.\n\nEn utilisant nos services, vous consentez a :\n• La collecte de donnees personnelles et d\'utilisation\n• Le traitement des donnees pour la prestation de services\n• Le partage des donnees tel que decrit dans notre politique de confidentialite\n• L\'utilisation de cookies et de technologies de suivi\n\nVos droits :\n• Acceder a vos donnees personnelles\n• Demander la correction ou la suppression des donnees\n• Se desinscrire des communications marketing\n• Portabilite des donnees\n\nConsultez notre politique de confidentialite pour plus de details.';
+
+  @override
+  String get termsOfServiceSection8Title =>
+      '8. Avertissements et limitations de responsabilite';
+
+  @override
+  String get termsOfServiceSection8Content =>
+      'Services fournis « EN L\'ETAT » :\n• Aucune garantie de service ininterrompu ou sans erreur\n• Aucune garantie de resultats specifiques\n• Contenu educatif a titre informatif uniquement\n• Ne remplace pas les conseils professionnels\n\nLimitation de responsabilite :\n• Nous ne sommes pas responsables des dommages indirects, accessoires ou consecutifs\n• Responsabilite maximale limitee aux frais payes au cours des 12 derniers mois\n• Aucune responsabilite pour le contenu ou les actions de tiers\n• Aucune responsabilite pour la perte de donnees ou les interruptions de service\n\nVous utilisez nos services a vos propres risques.';
+
+  @override
+  String get termsOfServiceSection9Title => '9. Services et liens tiers';
+
+  @override
+  String get termsOfServiceSection9Content =>
+      'Notre plateforme peut contenir des liens vers des sites web tiers ou s\'integrer a des services tiers :\n\n• Nous ne controlons pas le contenu tiers\n• Nous ne sommes pas responsables des pratiques des tiers\n• Les conditions et politiques de confidentialite des tiers s\'appliquent\n• Utilisez les services tiers a vos propres risques\n\nExemples d\'integration :\n• Processeurs de paiement\n• Plateformes d\'hebergement video\n• Services d\'analyse\n• Plateformes de medias sociaux';
+
+  @override
+  String get termsOfServiceSection10Title => '10. Resiliation';
+
+  @override
+  String get termsOfServiceSection10Content =>
+      'Nous pouvons resilier ou suspendre votre compte :\n\n• Pour violation de ces conditions\n• Pour activite frauduleuse ou illegale\n• Pour inactivite prolongee\n• A notre discretion avec ou sans preavis\n\nEn cas de resiliation :\n• Votre acces aux services cessera\n• Vous pouvez perdre l\'acces aux supports de cours\n• Certaines dispositions survivent a la resiliation\n• Les frais impayes restent dus\n\nVous pouvez resilier votre compte a tout moment via les parametres du compte.';
+
+  @override
+  String get termsOfServiceSection11Title =>
+      '11. Resolution des litiges et arbitrage';
+
+  @override
+  String get termsOfServiceSection11Content =>
+      'Pour tout litige decoulant de ces conditions :\n\nResolution informelle :\n• Contactez-nous d\'abord pour resoudre les litiges de maniere informelle\n• E-mail : legal@flowedtech.com\n• Periode de 30 jours pour parvenir a une resolution\n\nAccord d\'arbitrage :\n• Litiges resolus par arbitrage contraignant\n• Sur une base individuelle uniquement (pas d\'actions collectives)\n• Regi par les regles de l\'American Arbitration Association\n• Situe a Tech City, TC\n\nExceptions :\n• Litiges devant les tribunaux de petites creances\n• Litiges de propriete intellectuelle\n• Mesures injonctives d\'urgence';
+
+  @override
+  String get termsOfServiceSection12Title => '12. Droit applicable';
+
+  @override
+  String get termsOfServiceSection12Content =>
+      'Ces conditions sont regies par :\n\n• Les lois de l\'Etat de [Votre Etat]\n• La loi federale des Etats-Unis\n• Sans egard aux dispositions relatives aux conflits de lois\n\nJuridiction :\n• Tribunaux de [Votre Etat]\n• Tribunaux du comte de Tech City, TC\n\nUtilisateurs internationaux :\n• Des lois locales supplementaires peuvent s\'appliquer\n• Vous etes responsable du respect des lois locales';
+
+  @override
+  String get termsOfServiceSection13Title =>
+      '13. Modifications des conditions d\'utilisation';
+
+  @override
+  String get termsOfServiceSection13Content =>
+      'Nous pouvons modifier ces conditions a tout moment :\n\n• Les modifications prennent effet des leur publication\n• Les modifications importantes seront notifiees par e-mail\n• L\'utilisation continue constitue une acceptation\n• Vous pouvez consulter les conditions actuelles a tout moment\n\nSi vous n\'acceptez pas les conditions modifiees :\n• Cessez d\'utiliser nos services\n• Contactez-nous pour fermer votre compte\n• Pas de remboursement pour la periode d\'abonnement restante';
+
+  @override
+  String get termsOfServiceSection14Title => '14. Informations de contact';
+
+  @override
+  String get termsOfServiceSection14Content =>
+      'Pour des questions concernant ces conditions d\'utilisation :\n\nDemandes generales :\nE-mail : support@flowedtech.com\nTelephone : +1 (555) 123-4567\n\nDepartement juridique :\nE-mail : legal@flowedtech.com\n\nAdresse postale :\nFlow EdTech\n123 Education Lane\nTech City, TC 12345\nEtats-Unis\n\nHeures d\'ouverture : Lundi-Vendredi, 9h-17h EST';
+
+  @override
+  String get termsOfServiceAcknowledgment =>
+      'En utilisant Flow EdTech, vous reconnaissez avoir lu et compris ces conditions d\'utilisation.';
 }
