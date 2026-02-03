@@ -17726,7 +17726,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminCounselorDetailBio => 'Bio';
 
   @override
-  String get adminCounselorDetailAssignedStudents => 'Assigned Students';
+  String adminCounselorDetailAssignedStudents(int count) {
+    return '$count Assigned Students';
+  }
 
   @override
   String get adminCounselorDetailNoStudents => 'No students assigned';
@@ -17826,6 +17828,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminCounselorDetailCancelled => 'Cancelled';
+
+  @override
+  String get adminCounselorDetailUpload => 'Upload';
+
+  @override
+  String get adminCounselorDetailView => 'View';
+
+  @override
+  String get adminCounselorDetailDownload => 'Download';
+
+  @override
+  String get adminCounselorDetailActivityTimeline => 'Activity Timeline';
+
+  @override
+  String get adminCounselorDetailCounselorId => 'Counselor ID';
+
+  @override
+  String get adminCounselorDetailSpecialty => 'Specialty';
+
+  @override
+  String get adminCounselorDetailStatusActive => 'Active';
+
+  @override
+  String get adminCounselorDetailStatusInactive => 'Inactive';
+
+  @override
+  String get adminCounselorDetailStatusSuspended => 'Suspended';
+
+  @override
+  String get adminCounselorDetailEditCounselor => 'Edit Counselor';
+
+  @override
+  String get adminCounselorDetailSendMessage => 'Send Message';
+
+  @override
+  String get adminCounselorDetailSuspendAccount => 'Suspend Account';
+
+  @override
+  String get adminCounselorDetailActivateAccount => 'Activate Account';
+
+  @override
+  String get adminCounselorDetailDeleteCounselor => 'Delete Counselor';
+
+  @override
+  String get adminCounselorDetailFullName => 'Full Name';
+
+  @override
+  String get adminCounselorDetailCredentials => 'Credentials';
+
+  @override
+  String get adminCounselorDetailLicenseNumber => 'License Number';
+
+  @override
+  String get adminCounselorDetailYearsExperience => 'Years of Experience';
+
+  @override
+  String get adminCounselorDetailYearsValue => '8+ years';
+
+  @override
+  String get adminCounselorDetailContactInfo => 'Contact Information';
+
+  @override
+  String get adminCounselorDetailOfficeLocation => 'Office Location';
+
+  @override
+  String get adminCounselorDetailAvailability => 'Availability';
+
+  @override
+  String get adminCounselorDetailAccountInfo => 'Account Information';
+
+  @override
+  String get adminCounselorDetailAccountCreated => 'Account Created';
+
+  @override
+  String get adminCounselorDetailLastLogin => 'Last Login';
+
+  @override
+  String get adminCounselorDetailHoursAgo => '2 hours ago';
+
+  @override
+  String get adminCounselorDetailEmailVerified => 'Email Verified';
+
+  @override
+  String get adminCounselorDetailYes => 'Yes';
+
+  @override
+  String adminCounselorDetailSessionsCount(int count) {
+    return '$count sessions';
+  }
+
+  @override
+  String get adminCounselorDetailViewDetails => 'View Details';
+
+  @override
+  String adminCounselorDetailRecentSessions(int count) {
+    return '$count Recent Sessions';
+  }
+
+  @override
+  String get adminCounselorDetailWeeklySchedule => 'Weekly Schedule';
+
+  @override
+  String get adminCounselorDetailScheduleCalendar => 'Schedule Calendar';
+
+  @override
+  String get adminCounselorDetailCalendarComingSoon =>
+      'Calendar view coming soon';
+
+  @override
+  String get adminCounselorDetailProfessionalDocuments =>
+      'Professional Documents';
 
   @override
   String get adminInstitutionDetailBackToInstitutions => 'Back to Institutions';
@@ -17936,7 +18049,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminInstitutionDetailNoPrograms => 'No programs offered';
 
   @override
-  String get adminInstitutionDetailRecentApplicants => 'Recent Applicants';
+  String adminInstitutionDetailRecentApplicants(int count) {
+    return '$count Recent Applicants';
+  }
 
   @override
   String get adminInstitutionDetailNoApplicants => 'No applicants';
@@ -18087,6 +18202,161 @@ class AppLocalizationsEn extends AppLocalizations {
   String adminInstitutionDetailGpa(String gpa) {
     return 'GPA: $gpa';
   }
+
+  @override
+  String get adminInstitutionDetailInstitutionId => 'Institution ID';
+
+  @override
+  String get adminInstitutionDetailStudents => 'Students';
+
+  @override
+  String get adminInstitutionDetailStatusVerified => 'Verified';
+
+  @override
+  String get adminInstitutionDetailStatusPending => 'Pending Verification';
+
+  @override
+  String get adminInstitutionDetailStatusRejected => 'Rejected';
+
+  @override
+  String get adminInstitutionDetailStatusActive => 'Active';
+
+  @override
+  String get adminInstitutionDetailEditInstitution => 'Edit Institution';
+
+  @override
+  String get adminInstitutionDetailSendMessage => 'Send Message';
+
+  @override
+  String get adminInstitutionDetailDeactivate => 'Deactivate';
+
+  @override
+  String get adminInstitutionDetailDeleteInstitution => 'Delete Institution';
+
+  @override
+  String get adminInstitutionDetailInstitutionInfo => 'Institution Information';
+
+  @override
+  String get adminInstitutionDetailFullName => 'Full Name';
+
+  @override
+  String get adminInstitutionDetailInstitutionType => 'Institution Type';
+
+  @override
+  String get adminInstitutionDetailContactPerson => 'Contact Person';
+
+  @override
+  String get adminInstitutionDetailName => 'Name';
+
+  @override
+  String get adminInstitutionDetailPosition => 'Position';
+
+  @override
+  String get adminInstitutionDetailAdmissionsDirector => 'Admissions Director';
+
+  @override
+  String get adminInstitutionDetailAccountInfo => 'Account Information';
+
+  @override
+  String get adminInstitutionDetailAccountCreated => 'Account Created';
+
+  @override
+  String get adminInstitutionDetailLastUpdated => 'Last Updated';
+
+  @override
+  String get adminInstitutionDetailWeeksAgo => '2 weeks ago';
+
+  @override
+  String get adminInstitutionDetailLastLogin => 'Last Login';
+
+  @override
+  String get adminInstitutionDetailHoursAgo => '3 hours ago';
+
+  @override
+  String get adminInstitutionDetailVerificationDate => 'Verification Date';
+
+  @override
+  String get adminInstitutionDetailMonthAgo => '1 month ago';
+
+  @override
+  String adminInstitutionDetailProgramsCount(int count) {
+    return '$count Programs';
+  }
+
+  @override
+  String get adminInstitutionDetailAddProgram => 'Add Program';
+
+  @override
+  String adminInstitutionDetailRecentApplicantsCount(int count) {
+    return '$count Recent Applicants';
+  }
+
+  @override
+  String get adminInstitutionDetailStatistics => 'Statistics';
+
+  @override
+  String get adminInstitutionDetailTotalApplicants => 'Total Applicants';
+
+  @override
+  String get adminInstitutionDetailFromLastMonth => '+15% from last month';
+
+  @override
+  String get adminInstitutionDetailAboveAverage => '+5% above average';
+
+  @override
+  String get adminInstitutionDetailActivePrograms => 'Active Programs';
+
+  @override
+  String get adminInstitutionDetailNewThisYear => '2 new this year';
+
+  @override
+  String get adminInstitutionDetailEnrolledStudents => 'Enrolled Students';
+
+  @override
+  String get adminInstitutionDetailFromLastYear => '+8% from last year';
+
+  @override
+  String get adminInstitutionDetailApplicationTrends => 'Application Trends';
+
+  @override
+  String get adminInstitutionDetailChartComingSoon =>
+      'Chart visualization coming soon';
+
+  @override
+  String get adminInstitutionDetailVerificationDocuments =>
+      'Verification Documents';
+
+  @override
+  String get adminInstitutionDetailUpload => 'Upload';
+
+  @override
+  String get adminInstitutionDetailView => 'View';
+
+  @override
+  String get adminInstitutionDetailDownload => 'Download';
+
+  @override
+  String get adminInstitutionDetailActivityTimeline => 'Activity Timeline';
+
+  @override
+  String adminInstitutionDetailRejectConfirm(String name) {
+    return 'Are you sure you want to reject $name?';
+  }
+
+  @override
+  String get adminInstitutionDetailReasonForRejection => 'Reason for rejection';
+
+  @override
+  String get adminInstitutionDetailDeactivateTitle => 'Deactivate Institution';
+
+  @override
+  String adminInstitutionDetailDeactivateMessage(String name) {
+    return 'Are you sure you want to deactivate $name?';
+  }
+
+  @override
+  String get adminInstitutionDetailDeactivateSuccess =>
+      'Institution deactivated successfully';
 
   @override
   String get adminParentDetailBackToParents => 'Back to Parents';
@@ -18276,6 +18546,109 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminParentDetailFailed => 'Failed';
 
   @override
+  String get adminParentDetailParentId => 'Parent ID';
+
+  @override
+  String get adminParentDetailMessages => 'Messages';
+
+  @override
+  String get adminParentDetailStatusActive => 'Active';
+
+  @override
+  String get adminParentDetailStatusInactive => 'Inactive';
+
+  @override
+  String get adminParentDetailStatusSuspended => 'Suspended';
+
+  @override
+  String get adminParentDetailEditParent => 'Edit Parent';
+
+  @override
+  String get adminParentDetailSendMessage => 'Send Message';
+
+  @override
+  String get adminParentDetailSuspendAccount => 'Suspend Account';
+
+  @override
+  String get adminParentDetailActivateAccount => 'Activate Account';
+
+  @override
+  String get adminParentDetailDeleteParent => 'Delete Parent';
+
+  @override
+  String get adminParentDetailPersonalInfo => 'Personal Information';
+
+  @override
+  String get adminParentDetailFullName => 'Full Name';
+
+  @override
+  String get adminParentDetailLocation => 'Location';
+
+  @override
+  String get adminParentDetailOccupation => 'Occupation';
+
+  @override
+  String get adminParentDetailBusinessOwner => 'Business Owner';
+
+  @override
+  String get adminParentDetailAccountInfo => 'Account Information';
+
+  @override
+  String get adminParentDetailAccountCreated => 'Account Created';
+
+  @override
+  String get adminParentDetailLastLogin => 'Last Login';
+
+  @override
+  String get adminParentDetailHoursAgo => '2 hours ago';
+
+  @override
+  String get adminParentDetailEmailVerified => 'Email Verified';
+
+  @override
+  String get adminParentDetailYes => 'Yes';
+
+  @override
+  String get adminParentDetailPhoneVerified => 'Phone Verified';
+
+  @override
+  String adminParentDetailChildrenCount(int count) {
+    return '$count Children';
+  }
+
+  @override
+  String get adminParentDetailLinkChild => 'Link Child';
+
+  @override
+  String get adminParentDetailViewDetails => 'View Details';
+
+  @override
+  String adminParentDetailApplicationsFromChildren(int count) {
+    return '$count Applications from Children';
+  }
+
+  @override
+  String get adminParentDetailUpload => 'Upload';
+
+  @override
+  String get adminParentDetailView => 'View';
+
+  @override
+  String get adminParentDetailDownload => 'Download';
+
+  @override
+  String get adminParentDetailPaymentSummary => 'Payment Summary';
+
+  @override
+  String get adminParentDetailTotalPaid => 'Total Paid';
+
+  @override
+  String get adminParentDetailTransactions => 'Transactions';
+
+  @override
+  String get adminParentDetailActivityTimeline => 'Activity Timeline';
+
+  @override
   String get adminRecommenderDetailBackToRecommenders => 'Back to Recommenders';
 
   @override
@@ -18352,6 +18725,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminRecommenderDetailLastActive => 'Last Active';
+
+  @override
+  String get adminRecommenderDetailLastLogin => 'Last Login';
 
   @override
   String get adminRecommenderDetailProfessionalInfo =>
@@ -18492,4 +18868,107 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminRecommenderDetailActivityTimeline => 'Activity Timeline';
+
+  @override
+  String adminRecommenderDetailCompletedRecommendations(int count) {
+    return '$count Completed Recommendations';
+  }
+
+  @override
+  String get adminRecommenderDetailSubmitted => 'Submitted';
+
+  @override
+  String get adminRecommenderDetailStatistics => 'Statistics';
+
+  @override
+  String get adminRecommenderDetailTotalRequests => 'Total Requests';
+
+  @override
+  String get adminRecommenderDetailAvgResponseTime => 'Avg Response Time';
+
+  @override
+  String adminRecommenderDetailDaysValue(int days) {
+    return '$days days';
+  }
+
+  @override
+  String get adminRecommenderDetailRecommendationTrends =>
+      'Recommendation Trends';
+
+  @override
+  String get adminRecommenderDetailRecommenderId => 'Recommender ID';
+
+  @override
+  String get adminRecommenderDetailType => 'Type';
+
+  @override
+  String get adminRecommenderDetailOrganization => 'Organization';
+
+  @override
+  String get adminRecommenderDetailCompletionRate => 'Completion Rate';
+
+  @override
+  String get adminRecommenderDetailStatusActive => 'Active';
+
+  @override
+  String get adminRecommenderDetailStatusInactive => 'Inactive';
+
+  @override
+  String get adminRecommenderDetailStatusSuspended => 'Suspended';
+
+  @override
+  String get adminRecommenderDetailEditRecommender => 'Edit Recommender';
+
+  @override
+  String get adminRecommenderDetailSendMessage => 'Send Message';
+
+  @override
+  String get adminRecommenderDetailSuspendAccount => 'Suspend Account';
+
+  @override
+  String get adminRecommenderDetailActivateAccount => 'Activate Account';
+
+  @override
+  String get adminRecommenderDetailDeleteRecommender => 'Delete Recommender';
+
+  @override
+  String get adminRecommenderDetailFullName => 'Full Name';
+
+  @override
+  String get adminRecommenderDetailSenior => 'Senior';
+
+  @override
+  String get adminRecommenderDetailYearsAtOrg => 'Years at Organization';
+
+  @override
+  String get adminRecommenderDetailYearsValue => '5+ years';
+
+  @override
+  String get adminRecommenderDetailContactInfo => 'Contact Information';
+
+  @override
+  String get adminRecommenderDetailOffice => 'Office';
+
+  @override
+  String get adminRecommenderDetailPreferredContact => 'Preferred Contact';
+
+  @override
+  String get adminRecommenderDetailAccountInfo => 'Account Information';
+
+  @override
+  String get adminRecommenderDetailAccountCreated => 'Account Created';
+
+  @override
+  String get adminRecommenderDetailDayAgo => '1 day ago';
+
+  @override
+  String get adminRecommenderDetailEmailVerified => 'Email Verified';
+
+  @override
+  String get adminRecommenderDetailYes => 'Yes';
+
+  @override
+  String adminRecommenderDetailRequestsCount(int count) {
+    return '$count Requests';
+  }
 }

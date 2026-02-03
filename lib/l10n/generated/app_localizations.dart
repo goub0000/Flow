@@ -32127,8 +32127,8 @@ abstract class AppLocalizations {
   /// No description provided for @adminCounselorDetailAssignedStudents.
   ///
   /// In en, this message translates to:
-  /// **'Assigned Students'**
-  String get adminCounselorDetailAssignedStudents;
+  /// **'{count} Assigned Students'**
+  String adminCounselorDetailAssignedStudents(int count);
 
   /// No description provided for @adminCounselorDetailNoStudents.
   ///
@@ -32297,6 +32297,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancelled'**
   String get adminCounselorDetailCancelled;
+
+  /// No description provided for @adminCounselorDetailUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get adminCounselorDetailUpload;
+
+  /// No description provided for @adminCounselorDetailView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get adminCounselorDetailView;
+
+  /// No description provided for @adminCounselorDetailDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get adminCounselorDetailDownload;
+
+  /// No description provided for @adminCounselorDetailActivityTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Timeline'**
+  String get adminCounselorDetailActivityTimeline;
+
+  /// No description provided for @adminCounselorDetailCounselorId.
+  ///
+  /// In en, this message translates to:
+  /// **'Counselor ID'**
+  String get adminCounselorDetailCounselorId;
+
+  /// No description provided for @adminCounselorDetailSpecialty.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialty'**
+  String get adminCounselorDetailSpecialty;
+
+  /// No description provided for @adminCounselorDetailStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminCounselorDetailStatusActive;
+
+  /// No description provided for @adminCounselorDetailStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get adminCounselorDetailStatusInactive;
+
+  /// No description provided for @adminCounselorDetailStatusSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get adminCounselorDetailStatusSuspended;
+
+  /// No description provided for @adminCounselorDetailEditCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Counselor'**
+  String get adminCounselorDetailEditCounselor;
+
+  /// No description provided for @adminCounselorDetailSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get adminCounselorDetailSendMessage;
+
+  /// No description provided for @adminCounselorDetailSuspendAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend Account'**
+  String get adminCounselorDetailSuspendAccount;
+
+  /// No description provided for @adminCounselorDetailActivateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Account'**
+  String get adminCounselorDetailActivateAccount;
+
+  /// No description provided for @adminCounselorDetailDeleteCounselor.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Counselor'**
+  String get adminCounselorDetailDeleteCounselor;
+
+  /// No description provided for @adminCounselorDetailFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get adminCounselorDetailFullName;
+
+  /// No description provided for @adminCounselorDetailCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Credentials'**
+  String get adminCounselorDetailCredentials;
+
+  /// No description provided for @adminCounselorDetailLicenseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'License Number'**
+  String get adminCounselorDetailLicenseNumber;
+
+  /// No description provided for @adminCounselorDetailYearsExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Years of Experience'**
+  String get adminCounselorDetailYearsExperience;
+
+  /// No description provided for @adminCounselorDetailYearsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'8+ years'**
+  String get adminCounselorDetailYearsValue;
+
+  /// No description provided for @adminCounselorDetailContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Information'**
+  String get adminCounselorDetailContactInfo;
+
+  /// No description provided for @adminCounselorDetailOfficeLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Office Location'**
+  String get adminCounselorDetailOfficeLocation;
+
+  /// No description provided for @adminCounselorDetailAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get adminCounselorDetailAvailability;
+
+  /// No description provided for @adminCounselorDetailAccountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get adminCounselorDetailAccountInfo;
+
+  /// No description provided for @adminCounselorDetailAccountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Created'**
+  String get adminCounselorDetailAccountCreated;
+
+  /// No description provided for @adminCounselorDetailLastLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Login'**
+  String get adminCounselorDetailLastLogin;
+
+  /// No description provided for @adminCounselorDetailHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'2 hours ago'**
+  String get adminCounselorDetailHoursAgo;
+
+  /// No description provided for @adminCounselorDetailEmailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Verified'**
+  String get adminCounselorDetailEmailVerified;
+
+  /// No description provided for @adminCounselorDetailYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get adminCounselorDetailYes;
+
+  /// No description provided for @adminCounselorDetailSessionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sessions'**
+  String adminCounselorDetailSessionsCount(int count);
+
+  /// No description provided for @adminCounselorDetailViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get adminCounselorDetailViewDetails;
+
+  /// No description provided for @adminCounselorDetailRecentSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Recent Sessions'**
+  String adminCounselorDetailRecentSessions(int count);
+
+  /// No description provided for @adminCounselorDetailWeeklySchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Schedule'**
+  String get adminCounselorDetailWeeklySchedule;
+
+  /// No description provided for @adminCounselorDetailScheduleCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule Calendar'**
+  String get adminCounselorDetailScheduleCalendar;
+
+  /// No description provided for @adminCounselorDetailCalendarComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar view coming soon'**
+  String get adminCounselorDetailCalendarComingSoon;
+
+  /// No description provided for @adminCounselorDetailProfessionalDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional Documents'**
+  String get adminCounselorDetailProfessionalDocuments;
 
   /// No description provided for @adminInstitutionDetailBackToInstitutions.
   ///
@@ -32517,8 +32727,8 @@ abstract class AppLocalizations {
   /// No description provided for @adminInstitutionDetailRecentApplicants.
   ///
   /// In en, this message translates to:
-  /// **'Recent Applicants'**
-  String get adminInstitutionDetailRecentApplicants;
+  /// **'{count} Recent Applicants'**
+  String adminInstitutionDetailRecentApplicants(int count);
 
   /// No description provided for @adminInstitutionDetailNoApplicants.
   ///
@@ -32765,6 +32975,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'GPA: {gpa}'**
   String adminInstitutionDetailGpa(String gpa);
+
+  /// No description provided for @adminInstitutionDetailInstitutionId.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution ID'**
+  String get adminInstitutionDetailInstitutionId;
+
+  /// No description provided for @adminInstitutionDetailStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get adminInstitutionDetailStudents;
+
+  /// No description provided for @adminInstitutionDetailStatusVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get adminInstitutionDetailStatusVerified;
+
+  /// No description provided for @adminInstitutionDetailStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Verification'**
+  String get adminInstitutionDetailStatusPending;
+
+  /// No description provided for @adminInstitutionDetailStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get adminInstitutionDetailStatusRejected;
+
+  /// No description provided for @adminInstitutionDetailStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminInstitutionDetailStatusActive;
+
+  /// No description provided for @adminInstitutionDetailEditInstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Institution'**
+  String get adminInstitutionDetailEditInstitution;
+
+  /// No description provided for @adminInstitutionDetailSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get adminInstitutionDetailSendMessage;
+
+  /// No description provided for @adminInstitutionDetailDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get adminInstitutionDetailDeactivate;
+
+  /// No description provided for @adminInstitutionDetailDeleteInstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Institution'**
+  String get adminInstitutionDetailDeleteInstitution;
+
+  /// No description provided for @adminInstitutionDetailInstitutionInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution Information'**
+  String get adminInstitutionDetailInstitutionInfo;
+
+  /// No description provided for @adminInstitutionDetailFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get adminInstitutionDetailFullName;
+
+  /// No description provided for @adminInstitutionDetailInstitutionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution Type'**
+  String get adminInstitutionDetailInstitutionType;
+
+  /// No description provided for @adminInstitutionDetailContactPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Person'**
+  String get adminInstitutionDetailContactPerson;
+
+  /// No description provided for @adminInstitutionDetailName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get adminInstitutionDetailName;
+
+  /// No description provided for @adminInstitutionDetailPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Position'**
+  String get adminInstitutionDetailPosition;
+
+  /// No description provided for @adminInstitutionDetailAdmissionsDirector.
+  ///
+  /// In en, this message translates to:
+  /// **'Admissions Director'**
+  String get adminInstitutionDetailAdmissionsDirector;
+
+  /// No description provided for @adminInstitutionDetailAccountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get adminInstitutionDetailAccountInfo;
+
+  /// No description provided for @adminInstitutionDetailAccountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Created'**
+  String get adminInstitutionDetailAccountCreated;
+
+  /// No description provided for @adminInstitutionDetailLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated'**
+  String get adminInstitutionDetailLastUpdated;
+
+  /// No description provided for @adminInstitutionDetailWeeksAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'2 weeks ago'**
+  String get adminInstitutionDetailWeeksAgo;
+
+  /// No description provided for @adminInstitutionDetailLastLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Login'**
+  String get adminInstitutionDetailLastLogin;
+
+  /// No description provided for @adminInstitutionDetailHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'3 hours ago'**
+  String get adminInstitutionDetailHoursAgo;
+
+  /// No description provided for @adminInstitutionDetailVerificationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Date'**
+  String get adminInstitutionDetailVerificationDate;
+
+  /// No description provided for @adminInstitutionDetailMonthAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'1 month ago'**
+  String get adminInstitutionDetailMonthAgo;
+
+  /// No description provided for @adminInstitutionDetailProgramsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Programs'**
+  String adminInstitutionDetailProgramsCount(int count);
+
+  /// No description provided for @adminInstitutionDetailAddProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Program'**
+  String get adminInstitutionDetailAddProgram;
+
+  /// No description provided for @adminInstitutionDetailRecentApplicantsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Recent Applicants'**
+  String adminInstitutionDetailRecentApplicantsCount(int count);
+
+  /// No description provided for @adminInstitutionDetailStatistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get adminInstitutionDetailStatistics;
+
+  /// No description provided for @adminInstitutionDetailTotalApplicants.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Applicants'**
+  String get adminInstitutionDetailTotalApplicants;
+
+  /// No description provided for @adminInstitutionDetailFromLastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'+15% from last month'**
+  String get adminInstitutionDetailFromLastMonth;
+
+  /// No description provided for @adminInstitutionDetailAboveAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'+5% above average'**
+  String get adminInstitutionDetailAboveAverage;
+
+  /// No description provided for @adminInstitutionDetailActivePrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Programs'**
+  String get adminInstitutionDetailActivePrograms;
+
+  /// No description provided for @adminInstitutionDetailNewThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'2 new this year'**
+  String get adminInstitutionDetailNewThisYear;
+
+  /// No description provided for @adminInstitutionDetailEnrolledStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrolled Students'**
+  String get adminInstitutionDetailEnrolledStudents;
+
+  /// No description provided for @adminInstitutionDetailFromLastYear.
+  ///
+  /// In en, this message translates to:
+  /// **'+8% from last year'**
+  String get adminInstitutionDetailFromLastYear;
+
+  /// No description provided for @adminInstitutionDetailApplicationTrends.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Trends'**
+  String get adminInstitutionDetailApplicationTrends;
+
+  /// No description provided for @adminInstitutionDetailChartComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart visualization coming soon'**
+  String get adminInstitutionDetailChartComingSoon;
+
+  /// No description provided for @adminInstitutionDetailVerificationDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Documents'**
+  String get adminInstitutionDetailVerificationDocuments;
+
+  /// No description provided for @adminInstitutionDetailUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get adminInstitutionDetailUpload;
+
+  /// No description provided for @adminInstitutionDetailView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get adminInstitutionDetailView;
+
+  /// No description provided for @adminInstitutionDetailDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get adminInstitutionDetailDownload;
+
+  /// No description provided for @adminInstitutionDetailActivityTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Timeline'**
+  String get adminInstitutionDetailActivityTimeline;
+
+  /// No description provided for @adminInstitutionDetailRejectConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to reject {name}?'**
+  String adminInstitutionDetailRejectConfirm(String name);
+
+  /// No description provided for @adminInstitutionDetailReasonForRejection.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for rejection'**
+  String get adminInstitutionDetailReasonForRejection;
+
+  /// No description provided for @adminInstitutionDetailDeactivateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Institution'**
+  String get adminInstitutionDetailDeactivateTitle;
+
+  /// No description provided for @adminInstitutionDetailDeactivateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to deactivate {name}?'**
+  String adminInstitutionDetailDeactivateMessage(String name);
+
+  /// No description provided for @adminInstitutionDetailDeactivateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Institution deactivated successfully'**
+  String get adminInstitutionDetailDeactivateSuccess;
 
   /// No description provided for @adminParentDetailBackToParents.
   ///
@@ -33114,6 +33612,204 @@ abstract class AppLocalizations {
   /// **'Failed'**
   String get adminParentDetailFailed;
 
+  /// No description provided for @adminParentDetailParentId.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent ID'**
+  String get adminParentDetailParentId;
+
+  /// No description provided for @adminParentDetailMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get adminParentDetailMessages;
+
+  /// No description provided for @adminParentDetailStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminParentDetailStatusActive;
+
+  /// No description provided for @adminParentDetailStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get adminParentDetailStatusInactive;
+
+  /// No description provided for @adminParentDetailStatusSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get adminParentDetailStatusSuspended;
+
+  /// No description provided for @adminParentDetailEditParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Parent'**
+  String get adminParentDetailEditParent;
+
+  /// No description provided for @adminParentDetailSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get adminParentDetailSendMessage;
+
+  /// No description provided for @adminParentDetailSuspendAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend Account'**
+  String get adminParentDetailSuspendAccount;
+
+  /// No description provided for @adminParentDetailActivateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Account'**
+  String get adminParentDetailActivateAccount;
+
+  /// No description provided for @adminParentDetailDeleteParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Parent'**
+  String get adminParentDetailDeleteParent;
+
+  /// No description provided for @adminParentDetailPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get adminParentDetailPersonalInfo;
+
+  /// No description provided for @adminParentDetailFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get adminParentDetailFullName;
+
+  /// No description provided for @adminParentDetailLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get adminParentDetailLocation;
+
+  /// No description provided for @adminParentDetailOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation'**
+  String get adminParentDetailOccupation;
+
+  /// No description provided for @adminParentDetailBusinessOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Owner'**
+  String get adminParentDetailBusinessOwner;
+
+  /// No description provided for @adminParentDetailAccountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get adminParentDetailAccountInfo;
+
+  /// No description provided for @adminParentDetailAccountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Created'**
+  String get adminParentDetailAccountCreated;
+
+  /// No description provided for @adminParentDetailLastLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Login'**
+  String get adminParentDetailLastLogin;
+
+  /// No description provided for @adminParentDetailHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'2 hours ago'**
+  String get adminParentDetailHoursAgo;
+
+  /// No description provided for @adminParentDetailEmailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Verified'**
+  String get adminParentDetailEmailVerified;
+
+  /// No description provided for @adminParentDetailYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get adminParentDetailYes;
+
+  /// No description provided for @adminParentDetailPhoneVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Verified'**
+  String get adminParentDetailPhoneVerified;
+
+  /// No description provided for @adminParentDetailChildrenCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Children'**
+  String adminParentDetailChildrenCount(int count);
+
+  /// No description provided for @adminParentDetailLinkChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Child'**
+  String get adminParentDetailLinkChild;
+
+  /// No description provided for @adminParentDetailViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get adminParentDetailViewDetails;
+
+  /// No description provided for @adminParentDetailApplicationsFromChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Applications from Children'**
+  String adminParentDetailApplicationsFromChildren(int count);
+
+  /// No description provided for @adminParentDetailUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get adminParentDetailUpload;
+
+  /// No description provided for @adminParentDetailView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get adminParentDetailView;
+
+  /// No description provided for @adminParentDetailDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get adminParentDetailDownload;
+
+  /// No description provided for @adminParentDetailPaymentSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Summary'**
+  String get adminParentDetailPaymentSummary;
+
+  /// No description provided for @adminParentDetailTotalPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Paid'**
+  String get adminParentDetailTotalPaid;
+
+  /// No description provided for @adminParentDetailTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get adminParentDetailTransactions;
+
+  /// No description provided for @adminParentDetailActivityTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Timeline'**
+  String get adminParentDetailActivityTimeline;
+
   /// No description provided for @adminRecommenderDetailBackToRecommenders.
   ///
   /// In en, this message translates to:
@@ -33269,6 +33965,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last Active'**
   String get adminRecommenderDetailLastActive;
+
+  /// No description provided for @adminRecommenderDetailLastLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Login'**
+  String get adminRecommenderDetailLastLogin;
 
   /// No description provided for @adminRecommenderDetailProfessionalInfo.
   ///
@@ -33503,6 +34205,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Activity Timeline'**
   String get adminRecommenderDetailActivityTimeline;
+
+  /// No description provided for @adminRecommenderDetailCompletedRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Completed Recommendations'**
+  String adminRecommenderDetailCompletedRecommendations(int count);
+
+  /// No description provided for @adminRecommenderDetailSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get adminRecommenderDetailSubmitted;
+
+  /// No description provided for @adminRecommenderDetailStatistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get adminRecommenderDetailStatistics;
+
+  /// No description provided for @adminRecommenderDetailTotalRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Requests'**
+  String get adminRecommenderDetailTotalRequests;
+
+  /// No description provided for @adminRecommenderDetailAvgResponseTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Response Time'**
+  String get adminRecommenderDetailAvgResponseTime;
+
+  /// No description provided for @adminRecommenderDetailDaysValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String adminRecommenderDetailDaysValue(int days);
+
+  /// No description provided for @adminRecommenderDetailRecommendationTrends.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendation Trends'**
+  String get adminRecommenderDetailRecommendationTrends;
+
+  /// No description provided for @adminRecommenderDetailRecommenderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommender ID'**
+  String get adminRecommenderDetailRecommenderId;
+
+  /// No description provided for @adminRecommenderDetailType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get adminRecommenderDetailType;
+
+  /// No description provided for @adminRecommenderDetailOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get adminRecommenderDetailOrganization;
+
+  /// No description provided for @adminRecommenderDetailCompletionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion Rate'**
+  String get adminRecommenderDetailCompletionRate;
+
+  /// No description provided for @adminRecommenderDetailStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminRecommenderDetailStatusActive;
+
+  /// No description provided for @adminRecommenderDetailStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get adminRecommenderDetailStatusInactive;
+
+  /// No description provided for @adminRecommenderDetailStatusSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get adminRecommenderDetailStatusSuspended;
+
+  /// No description provided for @adminRecommenderDetailEditRecommender.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Recommender'**
+  String get adminRecommenderDetailEditRecommender;
+
+  /// No description provided for @adminRecommenderDetailSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get adminRecommenderDetailSendMessage;
+
+  /// No description provided for @adminRecommenderDetailSuspendAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend Account'**
+  String get adminRecommenderDetailSuspendAccount;
+
+  /// No description provided for @adminRecommenderDetailActivateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Account'**
+  String get adminRecommenderDetailActivateAccount;
+
+  /// No description provided for @adminRecommenderDetailDeleteRecommender.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Recommender'**
+  String get adminRecommenderDetailDeleteRecommender;
+
+  /// No description provided for @adminRecommenderDetailFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get adminRecommenderDetailFullName;
+
+  /// No description provided for @adminRecommenderDetailSenior.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior'**
+  String get adminRecommenderDetailSenior;
+
+  /// No description provided for @adminRecommenderDetailYearsAtOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Years at Organization'**
+  String get adminRecommenderDetailYearsAtOrg;
+
+  /// No description provided for @adminRecommenderDetailYearsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'5+ years'**
+  String get adminRecommenderDetailYearsValue;
+
+  /// No description provided for @adminRecommenderDetailContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Information'**
+  String get adminRecommenderDetailContactInfo;
+
+  /// No description provided for @adminRecommenderDetailOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Office'**
+  String get adminRecommenderDetailOffice;
+
+  /// No description provided for @adminRecommenderDetailPreferredContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Contact'**
+  String get adminRecommenderDetailPreferredContact;
+
+  /// No description provided for @adminRecommenderDetailAccountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get adminRecommenderDetailAccountInfo;
+
+  /// No description provided for @adminRecommenderDetailAccountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Created'**
+  String get adminRecommenderDetailAccountCreated;
+
+  /// No description provided for @adminRecommenderDetailDayAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day ago'**
+  String get adminRecommenderDetailDayAgo;
+
+  /// No description provided for @adminRecommenderDetailEmailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Verified'**
+  String get adminRecommenderDetailEmailVerified;
+
+  /// No description provided for @adminRecommenderDetailYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get adminRecommenderDetailYes;
+
+  /// No description provided for @adminRecommenderDetailRequestsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Requests'**
+  String adminRecommenderDetailRequestsCount(int count);
 }
 
 class _AppLocalizationsDelegate

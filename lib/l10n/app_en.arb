@@ -8120,6 +8120,63 @@
   "adminCounselorDetailCompleted": "Completed",
   "adminCounselorDetailScheduled": "Scheduled",
   "adminCounselorDetailCancelled": "Cancelled",
+  "adminCounselorDetailUpload": "Upload",
+  "adminCounselorDetailView": "View",
+  "adminCounselorDetailDownload": "Download",
+  "adminCounselorDetailActivityTimeline": "Activity Timeline",
+  "adminCounselorDetailCounselorId": "Counselor ID",
+  "adminCounselorDetailSpecialty": "Specialty",
+  "adminCounselorDetailStatusActive": "Active",
+  "adminCounselorDetailStatusInactive": "Inactive",
+  "adminCounselorDetailStatusSuspended": "Suspended",
+  "adminCounselorDetailEditCounselor": "Edit Counselor",
+  "adminCounselorDetailSendMessage": "Send Message",
+  "adminCounselorDetailSuspendAccount": "Suspend Account",
+  "adminCounselorDetailActivateAccount": "Activate Account",
+  "adminCounselorDetailDeleteCounselor": "Delete Counselor",
+  "adminCounselorDetailFullName": "Full Name",
+  "adminCounselorDetailCredentials": "Credentials",
+  "adminCounselorDetailLicenseNumber": "License Number",
+  "adminCounselorDetailYearsExperience": "Years of Experience",
+  "adminCounselorDetailYearsValue": "8+ years",
+  "adminCounselorDetailContactInfo": "Contact Information",
+  "adminCounselorDetailOfficeLocation": "Office Location",
+  "adminCounselorDetailAvailability": "Availability",
+  "adminCounselorDetailAccountInfo": "Account Information",
+  "adminCounselorDetailAccountCreated": "Account Created",
+  "adminCounselorDetailLastLogin": "Last Login",
+  "adminCounselorDetailHoursAgo": "2 hours ago",
+  "adminCounselorDetailEmailVerified": "Email Verified",
+  "adminCounselorDetailYes": "Yes",
+  "adminCounselorDetailAssignedStudents": "{count} Assigned Students",
+  "@adminCounselorDetailAssignedStudents": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailSessionsCount": "{count} sessions",
+  "@adminCounselorDetailSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailViewDetails": "View Details",
+  "adminCounselorDetailRecentSessions": "{count} Recent Sessions",
+  "@adminCounselorDetailRecentSessions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailWeeklySchedule": "Weekly Schedule",
+  "adminCounselorDetailScheduleCalendar": "Schedule Calendar",
+  "adminCounselorDetailCalendarComingSoon": "Calendar view coming soon",
+  "adminCounselorDetailProfessionalDocuments": "Professional Documents",
 
   "adminInstitutionDetailBackToInstitutions": "Back to Institutions",
   "adminInstitutionDetailTitle": "Institution Details",
@@ -8157,7 +8214,14 @@
   "adminInstitutionDetailAcceptanceRate": "Acceptance Rate",
   "adminInstitutionDetailOfferedPrograms": "Offered Programs",
   "adminInstitutionDetailNoPrograms": "No programs offered",
-  "adminInstitutionDetailRecentApplicants": "Recent Applicants",
+  "adminInstitutionDetailRecentApplicants": "{count} Recent Applicants",
+  "@adminInstitutionDetailRecentApplicants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "adminInstitutionDetailNoApplicants": "No applicants",
   "adminInstitutionDetailInstitutionStatistics": "Institution Statistics",
   "adminInstitutionDetailApplicationsTrend": "Applications trend over time",
@@ -8272,6 +8336,82 @@
       }
     }
   },
+  "adminInstitutionDetailInstitutionId": "Institution ID",
+  "adminInstitutionDetailStudents": "Students",
+  "adminInstitutionDetailStatusVerified": "Verified",
+  "adminInstitutionDetailStatusPending": "Pending Verification",
+  "adminInstitutionDetailStatusRejected": "Rejected",
+  "adminInstitutionDetailStatusActive": "Active",
+  "adminInstitutionDetailEditInstitution": "Edit Institution",
+  "adminInstitutionDetailSendMessage": "Send Message",
+  "adminInstitutionDetailDeactivate": "Deactivate",
+  "adminInstitutionDetailDeleteInstitution": "Delete Institution",
+  "adminInstitutionDetailInstitutionInfo": "Institution Information",
+  "adminInstitutionDetailFullName": "Full Name",
+  "adminInstitutionDetailInstitutionType": "Institution Type",
+  "adminInstitutionDetailContactPerson": "Contact Person",
+  "adminInstitutionDetailName": "Name",
+  "adminInstitutionDetailPosition": "Position",
+  "adminInstitutionDetailAdmissionsDirector": "Admissions Director",
+  "adminInstitutionDetailAccountInfo": "Account Information",
+  "adminInstitutionDetailAccountCreated": "Account Created",
+  "adminInstitutionDetailLastUpdated": "Last Updated",
+  "adminInstitutionDetailWeeksAgo": "2 weeks ago",
+  "adminInstitutionDetailLastLogin": "Last Login",
+  "adminInstitutionDetailHoursAgo": "3 hours ago",
+  "adminInstitutionDetailVerificationDate": "Verification Date",
+  "adminInstitutionDetailMonthAgo": "1 month ago",
+  "adminInstitutionDetailProgramsCount": "{count} Programs",
+  "@adminInstitutionDetailProgramsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminInstitutionDetailAddProgram": "Add Program",
+  "adminInstitutionDetailRecentApplicantsCount": "{count} Recent Applicants",
+  "@adminInstitutionDetailRecentApplicantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminInstitutionDetailStatistics": "Statistics",
+  "adminInstitutionDetailTotalApplicants": "Total Applicants",
+  "adminInstitutionDetailFromLastMonth": "+15% from last month",
+  "adminInstitutionDetailAboveAverage": "+5% above average",
+  "adminInstitutionDetailActivePrograms": "Active Programs",
+  "adminInstitutionDetailNewThisYear": "2 new this year",
+  "adminInstitutionDetailEnrolledStudents": "Enrolled Students",
+  "adminInstitutionDetailFromLastYear": "+8% from last year",
+  "adminInstitutionDetailApplicationTrends": "Application Trends",
+  "adminInstitutionDetailChartComingSoon": "Chart visualization coming soon",
+  "adminInstitutionDetailVerificationDocuments": "Verification Documents",
+  "adminInstitutionDetailUpload": "Upload",
+  "adminInstitutionDetailView": "View",
+  "adminInstitutionDetailDownload": "Download",
+  "adminInstitutionDetailActivityTimeline": "Activity Timeline",
+  "adminInstitutionDetailRejectConfirm": "Are you sure you want to reject {name}?",
+  "@adminInstitutionDetailRejectConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailReasonForRejection": "Reason for rejection",
+  "adminInstitutionDetailDeactivateTitle": "Deactivate Institution",
+  "adminInstitutionDetailDeactivateMessage": "Are you sure you want to deactivate {name}?",
+  "@adminInstitutionDetailDeactivateMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailDeactivateSuccess": "Institution deactivated successfully",
 
   "adminParentDetailBackToParents": "Back to Parents",
   "adminParentDetailTitle": "Parent Details",
@@ -8373,6 +8513,53 @@
   },
   "adminParentDetailCompleted": "Completed",
   "adminParentDetailFailed": "Failed",
+  "adminParentDetailParentId": "Parent ID",
+  "adminParentDetailMessages": "Messages",
+  "adminParentDetailStatusActive": "Active",
+  "adminParentDetailStatusInactive": "Inactive",
+  "adminParentDetailStatusSuspended": "Suspended",
+  "adminParentDetailEditParent": "Edit Parent",
+  "adminParentDetailSendMessage": "Send Message",
+  "adminParentDetailSuspendAccount": "Suspend Account",
+  "adminParentDetailActivateAccount": "Activate Account",
+  "adminParentDetailDeleteParent": "Delete Parent",
+  "adminParentDetailPersonalInfo": "Personal Information",
+  "adminParentDetailFullName": "Full Name",
+  "adminParentDetailLocation": "Location",
+  "adminParentDetailOccupation": "Occupation",
+  "adminParentDetailBusinessOwner": "Business Owner",
+  "adminParentDetailAccountInfo": "Account Information",
+  "adminParentDetailAccountCreated": "Account Created",
+  "adminParentDetailLastLogin": "Last Login",
+  "adminParentDetailHoursAgo": "2 hours ago",
+  "adminParentDetailEmailVerified": "Email Verified",
+  "adminParentDetailYes": "Yes",
+  "adminParentDetailPhoneVerified": "Phone Verified",
+  "adminParentDetailChildrenCount": "{count} Children",
+  "@adminParentDetailChildrenCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminParentDetailLinkChild": "Link Child",
+  "adminParentDetailViewDetails": "View Details",
+  "adminParentDetailApplicationsFromChildren": "{count} Applications from Children",
+  "@adminParentDetailApplicationsFromChildren": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminParentDetailUpload": "Upload",
+  "adminParentDetailView": "View",
+  "adminParentDetailDownload": "Download",
+  "adminParentDetailPaymentSummary": "Payment Summary",
+  "adminParentDetailTotalPaid": "Total Paid",
+  "adminParentDetailTransactions": "Transactions",
+  "adminParentDetailActivityTimeline": "Activity Timeline",
 
   "adminRecommenderDetailBackToRecommenders": "Back to Recommenders",
   "adminRecommenderDetailTitle": "Recommender Details",
@@ -8400,6 +8587,7 @@
   "adminRecommenderDetailPosition": "Position",
   "adminRecommenderDetailJoined": "Joined",
   "adminRecommenderDetailLastActive": "Last Active",
+  "adminRecommenderDetailLastLogin": "Last Login",
   "adminRecommenderDetailProfessionalInfo": "Professional Information",
   "adminRecommenderDetailDepartment": "Department",
   "adminRecommenderDetailYearsExperience": "Years of Experience",
@@ -8487,5 +8675,58 @@
   "adminRecommenderDetailUpload": "Upload",
   "adminRecommenderDetailView": "View",
   "adminRecommenderDetailDownload": "Download",
-  "adminRecommenderDetailActivityTimeline": "Activity Timeline"
+  "adminRecommenderDetailActivityTimeline": "Activity Timeline",
+  "adminRecommenderDetailCompletedRecommendations": "{count} Completed Recommendations",
+  "@adminRecommenderDetailCompletedRecommendations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminRecommenderDetailSubmitted": "Submitted",
+  "adminRecommenderDetailStatistics": "Statistics",
+  "adminRecommenderDetailTotalRequests": "Total Requests",
+  "adminRecommenderDetailAvgResponseTime": "Avg Response Time",
+  "adminRecommenderDetailDaysValue": "{days} days",
+  "@adminRecommenderDetailDaysValue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "adminRecommenderDetailRecommendationTrends": "Recommendation Trends",
+  "adminRecommenderDetailRecommenderId": "Recommender ID",
+  "adminRecommenderDetailType": "Type",
+  "adminRecommenderDetailOrganization": "Organization",
+  "adminRecommenderDetailCompletionRate": "Completion Rate",
+  "adminRecommenderDetailStatusActive": "Active",
+  "adminRecommenderDetailStatusInactive": "Inactive",
+  "adminRecommenderDetailStatusSuspended": "Suspended",
+  "adminRecommenderDetailEditRecommender": "Edit Recommender",
+  "adminRecommenderDetailSendMessage": "Send Message",
+  "adminRecommenderDetailSuspendAccount": "Suspend Account",
+  "adminRecommenderDetailActivateAccount": "Activate Account",
+  "adminRecommenderDetailDeleteRecommender": "Delete Recommender",
+  "adminRecommenderDetailFullName": "Full Name",
+  "adminRecommenderDetailSenior": "Senior",
+  "adminRecommenderDetailYearsAtOrg": "Years at Organization",
+  "adminRecommenderDetailYearsValue": "5+ years",
+  "adminRecommenderDetailContactInfo": "Contact Information",
+  "adminRecommenderDetailOffice": "Office",
+  "adminRecommenderDetailPreferredContact": "Preferred Contact",
+  "adminRecommenderDetailAccountInfo": "Account Information",
+  "adminRecommenderDetailAccountCreated": "Account Created",
+  "adminRecommenderDetailDayAgo": "1 day ago",
+  "adminRecommenderDetailEmailVerified": "Email Verified",
+  "adminRecommenderDetailYes": "Yes",
+  "adminRecommenderDetailRequestsCount": "{count} Requests",
+  "@adminRecommenderDetailRequestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

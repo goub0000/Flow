@@ -6378,6 +6378,63 @@
   "adminCounselorDetailCompleted": "Terminée",
   "adminCounselorDetailScheduled": "Planifiée",
   "adminCounselorDetailCancelled": "Annulée",
+  "adminCounselorDetailUpload": "Télécharger",
+  "adminCounselorDetailView": "Voir",
+  "adminCounselorDetailDownload": "Télécharger",
+  "adminCounselorDetailActivityTimeline": "Chronologie d'activité",
+  "adminCounselorDetailCounselorId": "ID du conseiller",
+  "adminCounselorDetailSpecialty": "Spécialité",
+  "adminCounselorDetailStatusActive": "Actif",
+  "adminCounselorDetailStatusInactive": "Inactif",
+  "adminCounselorDetailStatusSuspended": "Suspendu",
+  "adminCounselorDetailEditCounselor": "Modifier le conseiller",
+  "adminCounselorDetailSendMessage": "Envoyer un message",
+  "adminCounselorDetailSuspendAccount": "Suspendre le compte",
+  "adminCounselorDetailActivateAccount": "Activer le compte",
+  "adminCounselorDetailDeleteCounselor": "Supprimer le conseiller",
+  "adminCounselorDetailFullName": "Nom complet",
+  "adminCounselorDetailCredentials": "Diplômes",
+  "adminCounselorDetailLicenseNumber": "Numéro de licence",
+  "adminCounselorDetailYearsExperience": "Années d'expérience",
+  "adminCounselorDetailYearsValue": "8+ ans",
+  "adminCounselorDetailContactInfo": "Coordonnées",
+  "adminCounselorDetailOfficeLocation": "Emplacement du bureau",
+  "adminCounselorDetailAvailability": "Disponibilité",
+  "adminCounselorDetailAccountInfo": "Informations du compte",
+  "adminCounselorDetailAccountCreated": "Compte créé",
+  "adminCounselorDetailLastLogin": "Dernière connexion",
+  "adminCounselorDetailHoursAgo": "il y a 2 heures",
+  "adminCounselorDetailEmailVerified": "Email vérifié",
+  "adminCounselorDetailYes": "Oui",
+  "adminCounselorDetailAssignedStudents": "{count} étudiants assignés",
+  "@adminCounselorDetailAssignedStudents": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailSessionsCount": "{count} sessions",
+  "@adminCounselorDetailSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailViewDetails": "Voir les détails",
+  "adminCounselorDetailRecentSessions": "{count} sessions récentes",
+  "@adminCounselorDetailRecentSessions": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminCounselorDetailWeeklySchedule": "Horaire hebdomadaire",
+  "adminCounselorDetailScheduleCalendar": "Calendrier des horaires",
+  "adminCounselorDetailCalendarComingSoon": "Vue calendrier bientôt disponible",
+  "adminCounselorDetailProfessionalDocuments": "Documents professionnels",
 
   "adminInstitutionDetailBackToInstitutions": "Retour aux établissements",
   "adminInstitutionDetailTitle": "Détails de l'établissement",
@@ -6415,7 +6472,14 @@
   "adminInstitutionDetailAcceptanceRate": "Taux d'admission",
   "adminInstitutionDetailOfferedPrograms": "Programmes proposés",
   "adminInstitutionDetailNoPrograms": "Aucun programme proposé",
-  "adminInstitutionDetailRecentApplicants": "Candidats récents",
+  "adminInstitutionDetailRecentApplicants": "{count} candidats récents",
+  "@adminInstitutionDetailRecentApplicants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "adminInstitutionDetailNoApplicants": "Aucun candidat",
   "adminInstitutionDetailInstitutionStatistics": "Statistiques de l'établissement",
   "adminInstitutionDetailApplicationsTrend": "Évolution des candidatures dans le temps",
@@ -6457,6 +6521,82 @@
   "adminInstitutionDetailViewDetails": "Voir les détails",
   "adminInstitutionDetailAccepted": "Accepté",
   "adminInstitutionDetailGpa": "Moyenne : {gpa}",
+  "adminInstitutionDetailInstitutionId": "ID de l'établissement",
+  "adminInstitutionDetailStudents": "Étudiants",
+  "adminInstitutionDetailStatusVerified": "Vérifié",
+  "adminInstitutionDetailStatusPending": "Vérification en cours",
+  "adminInstitutionDetailStatusRejected": "Rejeté",
+  "adminInstitutionDetailStatusActive": "Actif",
+  "adminInstitutionDetailEditInstitution": "Modifier l'établissement",
+  "adminInstitutionDetailSendMessage": "Envoyer un message",
+  "adminInstitutionDetailDeactivate": "Désactiver",
+  "adminInstitutionDetailDeleteInstitution": "Supprimer l'établissement",
+  "adminInstitutionDetailInstitutionInfo": "Informations de l'établissement",
+  "adminInstitutionDetailFullName": "Nom complet",
+  "adminInstitutionDetailInstitutionType": "Type d'établissement",
+  "adminInstitutionDetailContactPerson": "Personne de contact",
+  "adminInstitutionDetailName": "Nom",
+  "adminInstitutionDetailPosition": "Poste",
+  "adminInstitutionDetailAdmissionsDirector": "Directeur des admissions",
+  "adminInstitutionDetailAccountInfo": "Informations du compte",
+  "adminInstitutionDetailAccountCreated": "Compte créé",
+  "adminInstitutionDetailLastUpdated": "Dernière mise à jour",
+  "adminInstitutionDetailWeeksAgo": "il y a 2 semaines",
+  "adminInstitutionDetailLastLogin": "Dernière connexion",
+  "adminInstitutionDetailHoursAgo": "il y a 3 heures",
+  "adminInstitutionDetailVerificationDate": "Date de vérification",
+  "adminInstitutionDetailMonthAgo": "il y a 1 mois",
+  "adminInstitutionDetailProgramsCount": "{count} programmes",
+  "@adminInstitutionDetailProgramsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminInstitutionDetailAddProgram": "Ajouter un programme",
+  "adminInstitutionDetailRecentApplicantsCount": "{count} candidats récents",
+  "@adminInstitutionDetailRecentApplicantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminInstitutionDetailStatistics": "Statistiques",
+  "adminInstitutionDetailTotalApplicants": "Total des candidats",
+  "adminInstitutionDetailFromLastMonth": "+15% par rapport au mois dernier",
+  "adminInstitutionDetailAboveAverage": "+5% au-dessus de la moyenne",
+  "adminInstitutionDetailActivePrograms": "Programmes actifs",
+  "adminInstitutionDetailNewThisYear": "2 nouveaux cette année",
+  "adminInstitutionDetailEnrolledStudents": "Étudiants inscrits",
+  "adminInstitutionDetailFromLastYear": "+8% par rapport à l'an dernier",
+  "adminInstitutionDetailApplicationTrends": "Tendances des candidatures",
+  "adminInstitutionDetailChartComingSoon": "Graphique bientôt disponible",
+  "adminInstitutionDetailVerificationDocuments": "Documents de vérification",
+  "adminInstitutionDetailUpload": "Télécharger",
+  "adminInstitutionDetailView": "Voir",
+  "adminInstitutionDetailDownload": "Télécharger",
+  "adminInstitutionDetailActivityTimeline": "Chronologie d'activité",
+  "adminInstitutionDetailRejectConfirm": "Êtes-vous sûr de vouloir rejeter {name} ?",
+  "@adminInstitutionDetailRejectConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailReasonForRejection": "Raison du rejet",
+  "adminInstitutionDetailDeactivateTitle": "Désactiver l'établissement",
+  "adminInstitutionDetailDeactivateMessage": "Êtes-vous sûr de vouloir désactiver {name} ?",
+  "@adminInstitutionDetailDeactivateMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminInstitutionDetailDeactivateSuccess": "Établissement désactivé avec succès",
 
   "adminParentDetailBackToParents": "Retour aux parents",
   "adminParentDetailTitle": "Détails du parent",
@@ -6516,6 +6656,53 @@
   "adminParentDetailPaymentAmount": "{amount} $",
   "adminParentDetailCompleted": "Effectué",
   "adminParentDetailFailed": "Échoué",
+  "adminParentDetailParentId": "ID du parent",
+  "adminParentDetailMessages": "Messages",
+  "adminParentDetailStatusActive": "Actif",
+  "adminParentDetailStatusInactive": "Inactif",
+  "adminParentDetailStatusSuspended": "Suspendu",
+  "adminParentDetailEditParent": "Modifier le parent",
+  "adminParentDetailSendMessage": "Envoyer un message",
+  "adminParentDetailSuspendAccount": "Suspendre le compte",
+  "adminParentDetailActivateAccount": "Activer le compte",
+  "adminParentDetailDeleteParent": "Supprimer le parent",
+  "adminParentDetailPersonalInfo": "Informations personnelles",
+  "adminParentDetailFullName": "Nom complet",
+  "adminParentDetailLocation": "Localisation",
+  "adminParentDetailOccupation": "Profession",
+  "adminParentDetailBusinessOwner": "Chef d'entreprise",
+  "adminParentDetailAccountInfo": "Informations du compte",
+  "adminParentDetailAccountCreated": "Compte créé",
+  "adminParentDetailLastLogin": "Dernière connexion",
+  "adminParentDetailHoursAgo": "il y a 2 heures",
+  "adminParentDetailEmailVerified": "Email vérifié",
+  "adminParentDetailYes": "Oui",
+  "adminParentDetailPhoneVerified": "Téléphone vérifié",
+  "adminParentDetailChildrenCount": "{count} enfants",
+  "@adminParentDetailChildrenCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminParentDetailLinkChild": "Lier un enfant",
+  "adminParentDetailViewDetails": "Voir les détails",
+  "adminParentDetailApplicationsFromChildren": "{count} candidatures des enfants",
+  "@adminParentDetailApplicationsFromChildren": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminParentDetailUpload": "Télécharger",
+  "adminParentDetailView": "Voir",
+  "adminParentDetailDownload": "Télécharger",
+  "adminParentDetailPaymentSummary": "Résumé des paiements",
+  "adminParentDetailTotalPaid": "Total payé",
+  "adminParentDetailTransactions": "Transactions",
+  "adminParentDetailActivityTimeline": "Chronologie d'activité",
 
   "adminRecommenderDetailBackToRecommenders": "Retour aux recommandataires",
   "adminRecommenderDetailTitle": "Détails du recommandataire",
@@ -6543,6 +6730,7 @@
   "adminRecommenderDetailPosition": "Poste",
   "adminRecommenderDetailJoined": "Inscrit le",
   "adminRecommenderDetailLastActive": "Dernière activité",
+  "adminRecommenderDetailLastLogin": "Dernière connexion",
   "adminRecommenderDetailProfessionalInfo": "Informations professionnelles",
   "adminRecommenderDetailDepartment": "Département",
   "adminRecommenderDetailYearsExperience": "Années d'expérience",
@@ -6581,5 +6769,44 @@
   "adminRecommenderDetailUpload": "Téléverser",
   "adminRecommenderDetailView": "Voir",
   "adminRecommenderDetailDownload": "Télécharger",
-  "adminRecommenderDetailActivityTimeline": "Chronologie d'activité"
+  "adminRecommenderDetailActivityTimeline": "Chronologie d'activité",
+  "adminRecommenderDetailCompletedRecommendations": "{count} recommandations complétées",
+  "adminRecommenderDetailSubmitted": "Soumis",
+  "adminRecommenderDetailStatistics": "Statistiques",
+  "adminRecommenderDetailTotalRequests": "Total des demandes",
+  "adminRecommenderDetailAvgResponseTime": "Temps de réponse moyen",
+  "adminRecommenderDetailDaysValue": "{days} jours",
+  "adminRecommenderDetailRecommendationTrends": "Tendances des recommandations",
+  "adminRecommenderDetailRecommenderId": "ID du recommandeur",
+  "adminRecommenderDetailType": "Type",
+  "adminRecommenderDetailOrganization": "Organisation",
+  "adminRecommenderDetailCompletionRate": "Taux de complétion",
+  "adminRecommenderDetailStatusActive": "Actif",
+  "adminRecommenderDetailStatusInactive": "Inactif",
+  "adminRecommenderDetailStatusSuspended": "Suspendu",
+  "adminRecommenderDetailEditRecommender": "Modifier le recommandeur",
+  "adminRecommenderDetailSendMessage": "Envoyer un message",
+  "adminRecommenderDetailSuspendAccount": "Suspendre le compte",
+  "adminRecommenderDetailActivateAccount": "Activer le compte",
+  "adminRecommenderDetailDeleteRecommender": "Supprimer le recommandeur",
+  "adminRecommenderDetailFullName": "Nom complet",
+  "adminRecommenderDetailSenior": "Senior",
+  "adminRecommenderDetailYearsAtOrg": "Années dans l'organisation",
+  "adminRecommenderDetailYearsValue": "5+ ans",
+  "adminRecommenderDetailContactInfo": "Coordonnées",
+  "adminRecommenderDetailOffice": "Bureau",
+  "adminRecommenderDetailPreferredContact": "Contact préféré",
+  "adminRecommenderDetailAccountInfo": "Informations du compte",
+  "adminRecommenderDetailAccountCreated": "Compte créé",
+  "adminRecommenderDetailDayAgo": "il y a 1 jour",
+  "adminRecommenderDetailEmailVerified": "Email vérifié",
+  "adminRecommenderDetailYes": "Oui",
+  "adminRecommenderDetailRequestsCount": "{count} demandes",
+  "@adminRecommenderDetailRequestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
