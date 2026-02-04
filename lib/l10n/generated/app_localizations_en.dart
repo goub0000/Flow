@@ -20389,4 +20389,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyTermsOfServiceComingSoon => 'Terms of service coming soon';
+
+  @override
+  String get browseInstitutionsBrowseTitle => 'Browse Institutions';
+
+  @override
+  String get browseInstitutionsSortNameAZ => 'Name (A-Z)';
+
+  @override
+  String get browseInstitutionsSortTotalOfferings => 'Total Offerings';
+
+  @override
+  String get browseInstitutionsSortAscending => 'Ascending';
+
+  @override
+  String get browseInstitutionsSortDescending => 'Descending';
+
+  @override
+  String browseInstitutionsRegisteredCount(int count) {
+    return '$count registered institution(s)';
+  }
+
+  @override
+  String get browseInstitutionsNoInstitutionsFound => 'No institutions found';
+
+  @override
+  String get browseInstitutionsTryAdjusting =>
+      'Try adjusting your search or filters';
+
+  @override
+  String get browseInstitutionsNoOfferingsYet => 'No offerings yet';
 }

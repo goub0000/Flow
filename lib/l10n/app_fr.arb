@@ -7406,5 +7406,41 @@
   "privacyDeleteAccountBackendRequired": "Suppression de compte - Intégration backend requise",
   "privacyPleaseTypeDelete": "Veuillez taper DELETE pour confirmer",
   "privacyPrivacyPolicyComingSoon": "Politique de confidentialité à venir",
-  "privacyTermsOfServiceComingSoon": "Conditions d'utilisation à venir"
+  "privacyTermsOfServiceComingSoon": "Conditions d'utilisation à venir",
+  "browseInstitutionsBack": "Retour",
+  "browseInstitutionsSelectTitle": "Sélectionner une institution",
+  "browseInstitutionsBrowseTitle": "Parcourir les institutions",
+  "browseInstitutionsClearFilters": "Effacer les filtres",
+  "browseInstitutionsSearchHint": "Rechercher par nom d'institution ou e-mail...",
+  "browseInstitutionsSortBy": "Trier par : ",
+  "browseInstitutionsSortNameAZ": "Nom (A-Z)",
+  "browseInstitutionsSortTotalOfferings": "Total des offres",
+  "browseInstitutionsSortPrograms": "Programmes",
+  "browseInstitutionsSortCourses": "Cours",
+  "browseInstitutionsSortNewest": "Plus récent",
+  "browseInstitutionsSortAscending": "Croissant",
+  "browseInstitutionsSortDescending": "Décroissant",
+  "browseInstitutionsShowVerifiedOnly": "Afficher uniquement les institutions vérifiées",
+  "browseInstitutionsRegisteredCount": "{count} institution(s) inscrite(s)",
+  "@browseInstitutionsRegisteredCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "browseInstitutionsTapToSelect": "Appuyez pour sélectionner",
+  "browseInstitutionsRetry": "Réessayer",
+  "browseInstitutionsNoInstitutionsFound": "Aucune institution trouvée",
+  "browseInstitutionsTryAdjusting": "Essayez d'ajuster votre recherche ou vos filtres",
+  "browseInstitutionsVerified": "Vérifié",
+  "browseInstitutionsNoOfferingsYet": "Aucune offre pour le moment",
+  "browseInstitutionsSelected": "Sélectionné : {name}",
+  "@browseInstitutionsSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -36941,6 +36941,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terms of service coming soon'**
   String get privacyTermsOfServiceComingSoon;
+
+  /// No description provided for @browseInstitutionsBrowseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Institutions'**
+  String get browseInstitutionsBrowseTitle;
+
+  /// No description provided for @browseInstitutionsSortNameAZ.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A-Z)'**
+  String get browseInstitutionsSortNameAZ;
+
+  /// No description provided for @browseInstitutionsSortTotalOfferings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Offerings'**
+  String get browseInstitutionsSortTotalOfferings;
+
+  /// No description provided for @browseInstitutionsSortAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get browseInstitutionsSortAscending;
+
+  /// No description provided for @browseInstitutionsSortDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get browseInstitutionsSortDescending;
+
+  /// No description provided for @browseInstitutionsRegisteredCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} registered institution(s)'**
+  String browseInstitutionsRegisteredCount(int count);
+
+  /// No description provided for @browseInstitutionsNoInstitutionsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No institutions found'**
+  String get browseInstitutionsNoInstitutionsFound;
+
+  /// No description provided for @browseInstitutionsTryAdjusting.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search or filters'**
+  String get browseInstitutionsTryAdjusting;
+
+  /// No description provided for @browseInstitutionsNoOfferingsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No offerings yet'**
+  String get browseInstitutionsNoOfferingsYet;
 }
 
 class _AppLocalizationsDelegate

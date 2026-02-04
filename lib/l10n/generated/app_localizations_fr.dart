@@ -19596,7 +19596,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get browseInstitutionsTitle => 'Parcourir les etablissements';
 
   @override
-  String get browseInstitutionsSelectTitle => 'Selectionner un etablissement';
+  String get browseInstitutionsSelectTitle => 'Sélectionner une institution';
 
   @override
   String get browseInstitutionsBack => 'Retour';
@@ -19606,7 +19606,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get browseInstitutionsSearchHint =>
-      'Rechercher par nom ou email de l\'etablissement...';
+      'Rechercher par nom d\'institution ou e-mail...';
 
   @override
   String get browseInstitutionsSortBy => 'Trier par : ';
@@ -19624,7 +19624,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get browseInstitutionsSortCourses => 'Cours';
 
   @override
-  String get browseInstitutionsSortNewest => 'Plus recents';
+  String get browseInstitutionsSortNewest => 'Plus récent';
 
   @override
   String get browseInstitutionsAscending => 'Croissant';
@@ -19634,7 +19634,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get browseInstitutionsShowVerifiedOnly =>
-      'Afficher uniquement les verifies';
+      'Afficher uniquement les institutions vérifiées';
 
   @override
   String browseInstitutionsResultCount(int count) {
@@ -19648,7 +19648,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get browseInstitutionsTapToSelect => 'Appuyez pour selectionner';
+  String get browseInstitutionsTapToSelect => 'Appuyez pour sélectionner';
 
   @override
   String get browseInstitutionsNoResults => 'Aucun etablissement trouve';
@@ -19658,17 +19658,17 @@ class AppLocalizationsFr extends AppLocalizations {
       'Essayez d\'ajuster votre recherche ou vos filtres';
 
   @override
-  String get browseInstitutionsRetry => 'Reessayer';
+  String get browseInstitutionsRetry => 'Réessayer';
 
   @override
-  String get browseInstitutionsVerified => 'Verifie';
+  String get browseInstitutionsVerified => 'Vérifié';
 
   @override
   String get browseInstitutionsNoOfferings => 'Aucune offre pour le moment';
 
   @override
   String browseInstitutionsSelected(String name) {
-    return 'Selectionne : $name';
+    return 'Sélectionné : $name';
   }
 
   @override
@@ -20704,4 +20704,35 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get privacyTermsOfServiceComingSoon =>
       'Conditions d\'utilisation à venir';
+
+  @override
+  String get browseInstitutionsBrowseTitle => 'Parcourir les institutions';
+
+  @override
+  String get browseInstitutionsSortNameAZ => 'Nom (A-Z)';
+
+  @override
+  String get browseInstitutionsSortTotalOfferings => 'Total des offres';
+
+  @override
+  String get browseInstitutionsSortAscending => 'Croissant';
+
+  @override
+  String get browseInstitutionsSortDescending => 'Décroissant';
+
+  @override
+  String browseInstitutionsRegisteredCount(int count) {
+    return '$count institution(s) inscrite(s)';
+  }
+
+  @override
+  String get browseInstitutionsNoInstitutionsFound =>
+      'Aucune institution trouvée';
+
+  @override
+  String get browseInstitutionsTryAdjusting =>
+      'Essayez d\'ajuster votre recherche ou vos filtres';
+
+  @override
+  String get browseInstitutionsNoOfferingsYet => 'Aucune offre pour le moment';
 }

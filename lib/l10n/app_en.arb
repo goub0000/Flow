@@ -9326,5 +9326,41 @@
   "privacyDeleteAccountBackendRequired": "Account deletion - Backend integration required",
   "privacyPleaseTypeDelete": "Please type DELETE to confirm",
   "privacyPrivacyPolicyComingSoon": "Privacy policy coming soon",
-  "privacyTermsOfServiceComingSoon": "Terms of service coming soon"
+  "privacyTermsOfServiceComingSoon": "Terms of service coming soon",
+  "browseInstitutionsBack": "Back",
+  "browseInstitutionsSelectTitle": "Select Institution",
+  "browseInstitutionsBrowseTitle": "Browse Institutions",
+  "browseInstitutionsClearFilters": "Clear filters",
+  "browseInstitutionsSearchHint": "Search by institution name or email...",
+  "browseInstitutionsSortBy": "Sort by: ",
+  "browseInstitutionsSortNameAZ": "Name (A-Z)",
+  "browseInstitutionsSortTotalOfferings": "Total Offerings",
+  "browseInstitutionsSortPrograms": "Programs",
+  "browseInstitutionsSortCourses": "Courses",
+  "browseInstitutionsSortNewest": "Newest",
+  "browseInstitutionsSortAscending": "Ascending",
+  "browseInstitutionsSortDescending": "Descending",
+  "browseInstitutionsShowVerifiedOnly": "Show verified only",
+  "browseInstitutionsRegisteredCount": "{count} registered institution(s)",
+  "@browseInstitutionsRegisteredCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "browseInstitutionsTapToSelect": "Tap to select",
+  "browseInstitutionsRetry": "Retry",
+  "browseInstitutionsNoInstitutionsFound": "No institutions found",
+  "browseInstitutionsTryAdjusting": "Try adjusting your search or filters",
+  "browseInstitutionsVerified": "Verified",
+  "browseInstitutionsNoOfferingsYet": "No offerings yet",
+  "browseInstitutionsSelected": "Selected: {name}",
+  "@browseInstitutionsSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
