@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/providers/page_content_provider.dart';
 import '../../../../core/models/page_content_model.dart';
+import '../../../../core/l10n_extension.dart';
 import '../widgets/dynamic_page_wrapper.dart';
 
 /// Terms of Service page - fetches content from CMS
@@ -14,7 +15,7 @@ class TermsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return DynamicPageWrapper(
       pageSlug: 'terms',
-      fallbackTitle: 'Terms of Service',
+      fallbackTitle: context.l10n.termsPageTitle,
       builder: (context, content) => _buildDynamicPage(context, content),
       fallbackBuilder: (context) => _buildStaticPage(context),
     );
@@ -33,7 +34,7 @@ class TermsPage extends ConsumerWidget {
         children: [
           if (lastUpdated.isNotEmpty) ...[
             Text(
-              'Last updated: $lastUpdated',
+              context.l10n.privacyPageLastUpdatedLabel(lastUpdated),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -54,7 +55,7 @@ class TermsPage extends ConsumerWidget {
                 Icon(Icons.gavel, color: AppColors.primary, size: 32),
                 const SizedBox(height: 12),
                 Text(
-                  'By using Flow, you agree to these terms',
+                  context.l10n.termsPageAgreement,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -77,7 +78,7 @@ class TermsPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Terms of Service'),
+        title: Text(context.l10n.termsPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -90,34 +91,24 @@ class TermsPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Terms of Service',
+                  context.l10n.termsPageTitle,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Last updated: January 2026',
+                  context.l10n.termsPageLastUpdated,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 32),
-                _buildSection(theme, title: '1. Acceptance of Terms', content: '''
-By accessing or using Flow EdTech ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
-                '''),
-                _buildSection(theme, title: '2. User Accounts', content: '''
-To use certain features, you must create an account. You agree to provide accurate and complete information, maintain the security of your account credentials, and take responsibility for all activities under your account.
-                '''),
-                _buildSection(theme, title: '3. User Conduct', content: '''
-You agree not to use the Service for any unlawful purpose, harass other users, submit false information, or attempt to gain unauthorized access to systems.
-                '''),
-                _buildSection(theme, title: '4. Limitation of Liability', content: '''
-THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND. WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED.
-                '''),
-                _buildSection(theme, title: '5. Contact', content: '''
-For questions about these terms, contact us at: legal@flowedtech.com
-                '''),
+                _buildSection(theme, title: context.l10n.termsPageSection1Title, content: context.l10n.termsPageSection1Content),
+                _buildSection(theme, title: context.l10n.termsPageSection2Title, content: context.l10n.termsPageSection2Content),
+                _buildSection(theme, title: context.l10n.termsPageSection3Title, content: context.l10n.termsPageSection3Content),
+                _buildSection(theme, title: context.l10n.termsPageSection4Title, content: context.l10n.termsPageSection4Content),
+                _buildSection(theme, title: context.l10n.termsPageSection5Title, content: context.l10n.termsPageSection5Content),
                 const SizedBox(height: 32),
                 Container(
                   width: double.infinity,
@@ -131,7 +122,7 @@ For questions about these terms, contact us at: legal@flowedtech.com
                       Icon(Icons.gavel, color: AppColors.primary, size: 32),
                       const SizedBox(height: 12),
                       Text(
-                        'By using Flow, you agree to these terms',
+                        context.l10n.termsPageAgreement,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),

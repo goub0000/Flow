@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/skeletons/shimmer_effect.dart';
 import '../../../../core/providers/page_content_provider.dart';
 import '../../../../core/models/page_content_model.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// A reusable wrapper for footer pages that fetches content from CMS
 /// Falls back to static content if API fails or content is not available
@@ -159,7 +159,7 @@ class ContentSectionsWidget extends StatelessWidget {
       children: [
         if (lastUpdated != null) ...[
           Text(
-            'Last updated: $lastUpdated',
+            context.l10n.privacyPageLastUpdatedLabel(lastUpdated!),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
