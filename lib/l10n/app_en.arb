@@ -142,7 +142,7 @@
   "quizDescription": "Take our quick quiz to discover universities and programs that match your interests, goals, and academic profile.",
   "quizDuration": "2 minutes",
   "quizAIPowered": "AI-Powered",
-  "featuresTitle": "Everything you need",
+  "featuresTitle": "Features",
   "featuresSubtitle": "A complete educational ecosystem designed for modern Africa",
   "featureLearningTitle": "Comprehensive Learning",
   "featureLearningDesc": "Access courses, track progress, and manage applications all in one place",
@@ -1862,45 +1862,45 @@
   "instCourseEditCourse": "Edit Course",
   "instCourseCreateCourse": "Create Course",
   "instCourseBasicInfo": "Basic Information",
-  "instCourseTitleLabel": "Course Title *",
-  "instCourseTitleHint": "e.g., Introduction to Programming",
+  "instCourseTitleLabel": "Title",
+  "instCourseTitleHint": "e.g., Introduction to Web Development",
   "instCourseTitleRequired": "Title is required",
   "instCourseTitleMinLength": "Title must be at least 3 characters",
   "instCourseTitleMaxLength": "Title must be less than 200 characters",
-  "instCourseDescriptionLabel": "Description *",
-  "instCourseDescriptionHint": "Describe what students will learn...",
+  "instCourseDescriptionLabel": "Description",
+  "instCourseDescriptionHint": "Describe what students will learn in this course",
   "instCourseDescriptionRequired": "Description is required",
   "instCourseDescriptionMinLength": "Description must be at least 10 characters",
   "instCourseCourseDetails": "Course Details",
-  "instCourseCourseType": "Course Type *",
-  "instCourseDifficultyLevel": "Difficulty Level *",
-  "instCourseDurationHours": "Duration (hours)",
+  "instCourseCourseType": "Course Type",
+  "instCourseDifficultyLevel": "Difficulty Level",
+  "instCourseDurationHours": "Duration (Hours)",
   "instCourseCategory": "Category",
-  "instCourseCategoryHint": "Computer Science",
+  "instCourseCategoryHint": "e.g., Programming, Design, Business",
   "instCoursePricing": "Pricing",
-  "instCoursePriceLabel": "Price *",
+  "instCoursePriceLabel": "Price",
   "instCoursePriceRequired": "Price is required",
   "instCourseInvalidPrice": "Invalid price",
   "instCourseCurrency": "Currency",
-  "instCourseMaxStudents": "Max Students (optional)",
+  "instCourseMaxStudents": "Maximum Students",
   "instCourseMaxStudentsHint": "Leave empty for unlimited",
   "instCourseMedia": "Media",
-  "instCourseThumbnailUrl": "Thumbnail URL (optional)",
+  "instCourseThumbnailUrl": "Thumbnail URL",
   "instCourseTags": "Tags",
-  "instCourseAddTagHint": "Add tag (e.g., programming, python)",
+  "instCourseAddTagHint": "Add a tag (e.g., JavaScript, React)",
   "instCourseLearningOutcomes": "Learning Outcomes",
-  "instCourseOutcomeHint": "What will students learn?",
+  "instCourseOutcomeHint": "What will students be able to do after this course?",
   "instCoursePrerequisites": "Prerequisites",
-  "instCoursePrerequisiteHint": "What do students need to know?",
+  "instCoursePrerequisiteHint": "What should students know before taking this course?",
   "instCourseUpdateCourse": "Update Course",
   "instCourseCreatedSuccess": "Course created successfully!",
-  "instCourseUpdatedSuccess": "Course updated successfully!",
-  "instCourseFailedToSave": "Failed to save course. Please try again.",
+  "instCourseUpdatedSuccess": "Course updated successfully",
+  "instCourseFailedToSave": "Failed to save course",
   "instCourseCourseRoster": "Course Roster",
   "instCourseRefresh": "Refresh",
   "instCourseRetry": "Retry",
-  "instCourseNoEnrolledStudents": "No enrolled students yet",
-  "instCourseApprovedStudentsAppearHere": "Students with approved permissions will appear here",
+  "instCourseNoEnrolledStudents": "No students enrolled yet",
+  "instCourseApprovedStudentsAppearHere": "Students who have been approved will appear here",
   "instCourseEnrolledStudents": "Enrolled Students",
   "instCourseMaxCapacity": "Max Capacity",
   "instCourseEnrolledDate": "Enrolled: {date}",
@@ -1912,7 +1912,7 @@
     }
   },
   "instCourseEnrollmentPermissions": "Enrollment Permissions",
-  "instCoursePendingRequests": "Pending Requests",
+  "instCoursePendingRequests": "Pending",
   "instCourseApproved": "Approved",
   "instCourseAllStudents": "All Students",
   "instCourseGrantPermission": "Grant Permission",
@@ -1934,7 +1934,7 @@
     }
   },
   "instCourseGrantEnrollmentPermission": "Grant Enrollment Permission",
-  "instCourseSelectStudentsGrant": "Select students to grant access to this course",
+  "instCourseSelectStudentsGrant": "Select students to grant enrollment permission",
   "instCourseSearchStudents": "Search students...",
   "instCourseSelectedCount": "{count} selected",
   "@instCourseSelectedCount": {
@@ -1947,7 +1947,7 @@
   "instCourseClear": "Clear",
   "instCourseCancel": "Cancel",
   "instCourseSelectStudents": "Select Students",
-  "instCourseGrantToStudents": "Grant to {count} Student(s)",
+  "instCourseGrantToStudents": "Grant to {count} Students",
   "@instCourseGrantToStudents": {
     "placeholders": {
       "count": {
@@ -1956,11 +1956,11 @@
     }
   },
   "instCourseNoStudentsAvailable": "No students available",
-  "instCourseAllStudentsHavePermissions": "All admitted students already have permissions",
-  "instCourseNoMatchingStudents": "No matching students",
+  "instCourseAllStudentsHavePermissions": "All students already have permissions or pending requests",
+  "instCourseNoMatchingStudents": "No students match your search",
   "instCourseNoPendingRequests": "No pending requests",
   "instCourseStudentsCanRequest": "Students can request enrollment permission",
-  "instCourseMessage": "Message:",
+  "instCourseMessage": "Message",
   "instCourseRequested": "Requested: {date}",
   "@instCourseRequested": {
     "placeholders": {
@@ -1971,7 +1971,7 @@
   },
   "instCourseDeny": "Deny",
   "instCourseApprove": "Approve",
-  "instCourseApprovedStudent": "Approved {name}",
+  "instCourseApprovedStudent": "Approved {name} successfully",
   "@instCourseApprovedStudent": {
     "placeholders": {
       "name": {
@@ -1979,9 +1979,9 @@
       }
     }
   },
-  "instCourseFailedToApprove": "Failed to approve",
+  "instCourseFailedToApprove": "Failed to approve request",
   "instCourseDenyPermissionRequest": "Deny Permission Request",
-  "instCourseDenyStudent": "Deny {name}?",
+  "instCourseDenyStudent": "Are you sure you want to deny permission for {name}?",
   "@instCourseDenyStudent": {
     "placeholders": {
       "name": {
@@ -1989,10 +1989,10 @@
       }
     }
   },
-  "instCourseReasonForDenial": "Reason for denial",
-  "instCourseEnterReason": "Enter reason...",
-  "instCoursePleaseProvideReason": "Please provide a reason",
-  "instCourseDeniedStudent": "Denied {name}",
+  "instCourseReasonForDenial": "Reason for Denial",
+  "instCourseEnterReason": "Enter reason for denial",
+  "instCoursePleaseProvideReason": "Please provide a reason for denial",
+  "instCourseDeniedStudent": "Denied permission for {name}",
   "@instCourseDeniedStudent": {
     "placeholders": {
       "name": {
@@ -2011,7 +2011,7 @@
       }
     }
   },
-  "instCourseReasonOptional": "Reason (optional)",
+  "instCourseReasonOptional": "Reason (Optional)",
   "instCourseRevoke": "Revoke",
   "instCourseRevokedPermissionFor": "Revoked permission for {name}",
   "@instCourseRevokedPermissionFor": {
@@ -2022,13 +2022,13 @@
     }
   },
   "instCourseNoAdmittedStudents": "No admitted students",
-  "instCourseAcceptedStudentsAppearHere": "Students with accepted applications will appear here",
+  "instCourseAcceptedStudentsAppearHere": "Students accepted to your institution will appear here",
   "instCourseRequestPending": "Request Pending",
   "instCourseAccessGranted": "Access Granted",
   "instCourseDenied": "Denied",
   "instCourseRevoked": "Revoked",
   "instCourseGrantAccess": "Grant Access",
-  "instCourseGrantStudentPermission": "Grant {name} permission to enroll in this course?",
+  "instCourseGrantStudentPermission": "Grant enrollment permission to {name}?",
   "@instCourseGrantStudentPermission": {
     "placeholders": {
       "name": {
@@ -2036,8 +2036,8 @@
       }
     }
   },
-  "instCourseNotesOptional": "Notes (optional)",
-  "instCourseAddNotes": "Add any notes...",
+  "instCourseNotesOptional": "Notes (Optional)",
+  "instCourseAddNotes": "Add notes (optional)",
   "instCourseGrant": "Grant",
   "instCourseGrantedPermissionTo": "Granted permission to {name}",
   "@instCourseGrantedPermissionTo": {
@@ -2048,7 +2048,7 @@
     }
   },
   "instCourseFailedToGrantPermission": "Failed to grant permission",
-  "instCourseRequestApproved": "Request approved",
+  "instCourseRequestApproved": "Request approved successfully",
   "instCourseFailedToApproveRequest": "Failed to approve request",
   "instCourseContentBuilder": "Course Content Builder",
   "instCoursePreviewCourse": "Preview Course",
@@ -2076,14 +2076,14 @@
   },
   "instCourseEditModule": "Edit Module",
   "instCourseDeleteModule": "Delete Module",
-  "instCourseLearningObjectives": "Learning Objectives:",
+  "instCourseLearningObjectives": "Learning Objectives",
   "instCourseLessons": "Lessons",
   "instCourseAddLesson": "Add Lesson",
-  "instCourseNoLessonsInModule": "No lessons in this module",
+  "instCourseNoLessonsInModule": "No lessons in this module yet",
   "instCourseEditLesson": "Edit Lesson",
   "instCourseDeleteLesson": "Delete Lesson",
   "instCourseError": "Error",
-  "instCourseModuleCreatedSuccess": "Module \"{title}\" created successfully",
+  "instCourseModuleCreatedSuccess": "Module '{title}' created successfully",
   "@instCourseModuleCreatedSuccess": {
     "placeholders": {
       "title": {
@@ -2091,7 +2091,7 @@
       }
     }
   },
-  "instCourseModuleUpdatedSuccess": "Module \"{title}\" updated successfully",
+  "instCourseModuleUpdatedSuccess": "Module '{title}' updated successfully",
   "@instCourseModuleUpdatedSuccess": {
     "placeholders": {
       "title": {
@@ -2106,7 +2106,7 @@
   "instCourseDescription": "Description",
   "instCourseLessonCreatedSuccess": "Lesson created successfully",
   "instCourseCreate": "Create",
-  "instCourseDeleteModuleConfirm": "Are you sure you want to delete this module? This will also delete all lessons in the module.",
+  "instCourseDeleteModuleConfirm": "Are you sure you want to delete this module? All lessons will be deleted.",
   "instCourseDelete": "Delete",
   "instCourseModuleDeletedSuccess": "Module deleted successfully",
   "instCourseDeleteLessonConfirm": "Are you sure you want to delete this lesson?",
@@ -2115,24 +2115,24 @@
   "instCourseEnterTitle": "Enter course title",
   "instCourseEnterDescription": "Enter course description",
   "instCourseLevel": "Level",
-  "instCourseInfoUpdatedSuccess": "Course info updated successfully",
+  "instCourseInfoUpdatedSuccess": "Course information updated successfully",
   "instCourseSaving": "Saving...",
   "instCourseSaveChanges": "Save Changes",
   "instProgramCreateProgram": "Create Program",
-  "instProgramNameLabel": "Program Name *",
-  "instProgramNameHint": "e.g., Bachelor of Computer Science",
-  "instProgramDescriptionLabel": "Description *",
-  "instProgramDescriptionHint": "Describe the program...",
-  "instProgramCategoryLabel": "Category *",
-  "instProgramLevelLabel": "Level *",
+  "instProgramNameLabel": "Program Name",
+  "instProgramNameHint": "e.g., Bachelor of Science in Computer Science",
+  "instProgramDescriptionLabel": "Description",
+  "instProgramDescriptionHint": "Describe the program, its goals, and what makes it unique",
+  "instProgramCategoryLabel": "Category",
+  "instProgramLevelLabel": "Level",
   "instProgramDuration": "Duration",
-  "instProgramFeeLabel": "Program Fee (USD) *",
-  "instProgramMaxStudentsLabel": "Maximum Students *",
+  "instProgramFeeLabel": "Fee",
+  "instProgramMaxStudentsLabel": "Maximum Students",
   "instProgramMaxStudentsHint": "e.g., 100",
   "instProgramStartDate": "Start Date",
   "instProgramApplicationDeadline": "Application Deadline",
   "instProgramRequirements": "Requirements",
-  "instProgramAddRequirementHint": "Add a requirement...",
+  "instProgramAddRequirementHint": "e.g., High school diploma with minimum GPA of 3.0",
   "instProgramAddAtLeastOneRequirement": "Please add at least one requirement",
   "instProgramDeadlineBeforeStart": "Application deadline must be before start date",
   "instProgramCreatedSuccess": "Program created successfully!",
@@ -2174,13 +2174,13 @@
   },
   "instProgramDeactivateQuestion": "Deactivate Program?",
   "instProgramActivateQuestion": "Activate Program?",
-  "instProgramStopAccepting": "This program will stop accepting new applications.",
-  "instProgramStartAccepting": "This program will start accepting new applications.",
+  "instProgramStopAccepting": "This will stop accepting new applications. You can reactivate it later.",
+  "instProgramStartAccepting": "This will start accepting new applications again.",
   "instProgramCancel": "Cancel",
   "instProgramConfirm": "Confirm",
-  "instProgramActivated": "Program activated",
-  "instProgramDeactivated": "Program deactivated",
-  "instProgramErrorUpdatingStatus": "Error updating program status: {error}",
+  "instProgramActivated": "Program activated successfully",
+  "instProgramDeactivated": "Program deactivated successfully",
+  "instProgramErrorUpdatingStatus": "Error updating status: {error}",
   "@instProgramErrorUpdatingStatus": {
     "placeholders": {
       "error": {
@@ -2189,7 +2189,7 @@
     }
   },
   "instProgramDeleteProgramQuestion": "Delete Program?",
-  "instProgramDeleteConfirm": "This action cannot be undone. All data associated with this program will be permanently deleted.",
+  "instProgramDeleteConfirm": "This action cannot be undone. All program data will be permanently deleted.",
   "instProgramDelete": "Delete",
   "instProgramDeletedSuccess": "Program deleted successfully",
   "instProgramFailedToDelete": "Failed to delete program",
@@ -2206,14 +2206,14 @@
   "instProgramLoading": "Loading programs...",
   "instProgramActiveOnly": "Active Only",
   "instProgramShowAll": "Show All",
-  "instProgramSearchHint": "Search programs...",
+  "instProgramSearchHint": "Search programs by name or category",
   "instProgramNewProgram": "New Program",
-  "instProgramNoProgramsFound": "No Programs Found",
-  "instProgramTryAdjustingSearch": "Try adjusting your search",
-  "instProgramCreateFirstProgram": "Create your first program",
+  "instProgramNoProgramsFound": "No programs found",
+  "instProgramTryAdjustingSearch": "Try adjusting your search or filters",
+  "instProgramCreateFirstProgram": "Create your first program to get started",
   "instProgramInactive": "INACTIVE",
   "instProgramEnrollment": "Enrollment",
-  "instProgramFull": "Full",
+  "instProgramFull": "FULL",
   "instProgramSlotsAvailable": "{count} slots available",
   "@instProgramSlotsAvailable": {
     "placeholders": {
@@ -6619,11 +6619,11 @@
   "adminKbPriorityHigh": "2 - High",
   "adminKbPriorityCritical": "3 - Critical",
   "adminKbDeleteConfirmMessage": "Are you sure you want to delete \"{question}\"?",
-  "instCounselorsSearchHint": "Search counselors...",
+  "instCounselorsSearchHint": "Search counselors by name or email",
   "instCounselorsRetry": "Retry",
   "instCounselorsNoCounselorsFound": "No Counselors Found",
   "instCounselorsNoMatchSearch": "No counselors match your search",
-  "instCounselorsAddToInstitution": "Add counselors to your institution",
+  "instCounselorsAddToInstitution": "Add counselors to your institution to get started",
   "instCounselorsPageOf": "Page {current} of {total}",
   "instCounselorsCounselingOverview": "Counseling Overview",
   "instCounselorsCounselors": "Counselors",
@@ -7188,14 +7188,14 @@
   "instCourseUpdateModule": "Inst Course Update Module",
   "instCourseUpdateModuleSubtitle": "Inst Course Update Module Subtitle",
   "instCourseValidationErrors": "Inst Course Validation Errors",
-  "instCoursesDescription": "Inst Courses Description",
-  "instCoursesEditCourse": "Inst Courses Edit Course",
-  "instCoursesEnrolledCount": "Inst Courses Enrolled Count: {count}",
-  "instCoursesLearningOutcomes": "Inst Courses Learning Outcomes",
-  "instCoursesPrerequisites": "Inst Courses Prerequisites",
-  "instCoursesPublished": "Inst Courses Published",
-  "instCoursesQuickActions": "Inst Courses Quick Actions",
-  "instCoursesStatistics": "Inst Courses Statistics",
+  "instCoursesDescription": "Description",
+  "instCoursesEditCourse": "Edit Course",
+  "instCoursesEnrolledCount": "{count} Enrolled",
+  "instCoursesLearningOutcomes": "What You'll Learn",
+  "instCoursesPrerequisites": "Prerequisites",
+  "instCoursesPublished": "PUBLISHED",
+  "instCoursesQuickActions": "Quick Actions",
+  "instCoursesStatistics": "Statistics",
   "instDebugAuthInfo": "Inst Debug Auth Info",
   "instDebugError": "Inst Debug Error",
   "instDebugRetry": "Inst Debug Retry",
@@ -8017,7 +8017,6 @@
   "studySessionsFocusLevel": "Focus Level",
   "studySessionsDistractions": "Distractions",
   "studySessionsClose": "Close",
-
   "adminCounselorDetailBackToCounselors": "Back to Counselors",
   "adminCounselorDetailTitle": "Counselor Details",
   "adminCounselorDetailStudents": "Students",
@@ -8049,7 +8048,7 @@
   "adminCounselorDetailCertifications": "Certifications",
   "adminCounselorDetailHourlyRate": "Hourly Rate",
   "adminCounselorDetailBio": "Bio",
-  "adminCounselorDetailAssignedStudents": "Assigned Students",
+  "adminCounselorDetailAssignedStudents": "{count} Assigned Students",
   "adminCounselorDetailNoStudents": "No students assigned",
   "adminCounselorDetailCounselingSessions": "Counseling Sessions",
   "adminCounselorDetailNoSessions": "No sessions found",
@@ -8148,7 +8147,6 @@
   "adminCounselorDetailHoursAgo": "2 hours ago",
   "adminCounselorDetailEmailVerified": "Email Verified",
   "adminCounselorDetailYes": "Yes",
-  "adminCounselorDetailAssignedStudents": "{count} Assigned Students",
   "@adminCounselorDetailAssignedStudents": {
     "placeholders": {
       "count": {
@@ -8177,7 +8175,6 @@
   "adminCounselorDetailScheduleCalendar": "Schedule Calendar",
   "adminCounselorDetailCalendarComingSoon": "Calendar view coming soon",
   "adminCounselorDetailProfessionalDocuments": "Professional Documents",
-
   "adminInstitutionDetailBackToInstitutions": "Back to Institutions",
   "adminInstitutionDetailTitle": "Institution Details",
   "adminInstitutionDetailPrograms": "Programs",
@@ -8412,7 +8409,6 @@
     }
   },
   "adminInstitutionDetailDeactivateSuccess": "Institution deactivated successfully",
-
   "adminParentDetailBackToParents": "Back to Parents",
   "adminParentDetailTitle": "Parent Details",
   "adminParentDetailChildren": "Children",
@@ -8560,7 +8556,6 @@
   "adminParentDetailTotalPaid": "Total Paid",
   "adminParentDetailTransactions": "Transactions",
   "adminParentDetailActivityTimeline": "Activity Timeline",
-
   "adminRecommenderDetailBackToRecommenders": "Back to Recommenders",
   "adminRecommenderDetailTitle": "Recommender Details",
   "adminRecommenderDetailRequests": "Requests",
@@ -8729,7 +8724,6 @@
       }
     }
   },
-
   "paymentFailureTitle": "Payment Failed",
   "paymentFailureDefaultMessage": "We could not process your payment. Please try again.",
   "paymentFailureTransactionDetails": "Transaction Details",
@@ -8752,7 +8746,6 @@
   "paymentFailureTryAgain": "Try Again",
   "paymentFailureContactSupport": "Contact Support",
   "paymentFailureBackToHome": "Back to Home",
-
   "paymentHistoryTitle": "Payment History",
   "paymentHistoryBack": "Back",
   "paymentHistoryTabAll": "All ({count})",
@@ -8811,7 +8804,6 @@
   "paymentHistoryCourseEnrollment": "Course Enrollment",
   "paymentHistoryProgramApplication": "Program Application",
   "paymentHistoryCounselingSession": "Counseling Session",
-
   "paymentMethodTitle": "Select Payment Method",
   "paymentMethodBack": "Back",
   "paymentMethodRetry": "Retry",
@@ -8826,7 +8818,6 @@
   "paymentMethodCourseEnrollment": "Course Enrollment",
   "paymentMethodProgramApplication": "Program Application",
   "paymentMethodCounselingSession": "Counseling Session",
-
   "paymentProcessingPayWith": "Pay with {method}",
   "@paymentProcessingPayWith": {
     "placeholders": {
@@ -8882,7 +8873,6 @@
   "paymentProcessingFlutterwaveBank": "Bank Transfer",
   "paymentProcessingFlutterwaveBankDesc": "Direct bank transfer",
   "paymentProcessingFlutterwaveRedirect": "You will be redirected to Flutterwave secure payment page",
-
   "browseInstitutionsTitle": "Browse Institutions",
   "browseInstitutionsSelectTitle": "Select Institution",
   "browseInstitutionsBack": "Back",
@@ -8919,7 +8909,6 @@
       }
     }
   },
-
   "browseUniversitiesTitle": "Browse Universities",
   "browseUniversitiesSelectTitle": "Select University",
   "browseUniversitiesBack": "Back",
@@ -8951,7 +8940,6 @@
       }
     }
   },
-
   "privacyPolicyTitle": "Privacy Policy",
   "privacyPolicyShare": "Share",
   "privacyPolicyShareComingSoon": "Share functionality coming soon",
@@ -8978,7 +8966,6 @@
   "privacyPolicySection9Content": "We may update this Privacy Policy from time to time. We will:\n\n• Notify you of material changes via email or platform notification\n• Update the \"Last Updated\" date at the top of this policy\n• Obtain your consent for significant changes if required by law\n\nYour continued use of our services after changes constitutes acceptance of the updated policy.",
   "privacyPolicySection10Title": "10. Contact Us",
   "privacyPolicySection10Content": "If you have questions or concerns about this Privacy Policy or our data practices, please contact us:\n\nEmail: privacy@flowedtech.com\nPhone: +1 (555) 123-4567\nAddress: Flow EdTech, 123 Education Lane, Tech City, TC 12345\n\nData Protection Officer: dpo@flowedtech.com",
-
   "termsOfServiceTitle": "Terms of Service",
   "termsOfServiceShare": "Share",
   "termsOfServiceShareComingSoon": "Share functionality coming soon",
@@ -9063,7 +9050,6 @@
   "addTime": "Add time",
   "noStudyTimeSet": "No study time set",
   "studyScheduleSavedSuccessfully": "Study schedule saved successfully",
-
   "notificationDetailsTitle": "Notification Details",
   "markAsRead": "Mark as read",
   "delete": "Delete",
@@ -9138,8 +9124,6 @@
   "openConversation": "Open Conversation",
   "viewAchievement": "View Achievement",
   "viewDetails": "View Details",
-
-  "featuresTitle": "Features",
   "gotIt": "Got It!",
   "howToUse": "How to use:",
   "close": "Close",
@@ -9153,72 +9137,55 @@
     }
   },
   "exploreFeature": "Explore the app to discover this feature!",
-
   "featureCategoryCoreFeatures": "Core Features",
   "featureCategoryStudyTools": "Study Tools",
   "featureCategoryProductivity": "Productivity",
   "featureCategoryCollaboration": "Collaboration",
-
   "featureCourseDiscoveryTitle": "Course Discovery",
   "featureCourseDiscoveryDesc": "Browse and search thousands of courses from top institutions worldwide",
   "featureCourseDiscoveryInstructions": "Navigate to the Explore tab and use the search bar or browse categories.",
-
   "featureApplicationTrackingTitle": "Application Tracking",
   "featureApplicationTrackingDesc": "Manage all your course applications and track their status in real-time",
   "featureApplicationTrackingInstructions": "Go to Applications tab to view and manage all your applications.",
-
   "featureLearningDashboardTitle": "Learning Dashboard",
   "featureLearningDashboardDesc": "Track your progress, view enrolled courses, and access learning materials",
   "featureLearningDashboardInstructions": "Access your dashboard from the Home tab to see your progress.",
-
   "featureMessagingTitle": "Messaging",
   "featureMessagingDesc": "Communicate directly with institutions and counselors",
   "featureMessagingInstructions": "Open the Messages tab to chat with institutions and counselors.",
-
   "featureNotesTitle": "Notes",
   "featureNotesDesc": "Take, organize, and sync notes across all your devices",
   "featureNotesInstructions": "Tap the Notes icon to create and organize your study notes.",
-
   "featureBookmarksTitle": "Bookmarks",
   "featureBookmarksDesc": "Save courses and resources for quick access later",
   "featureBookmarksInstructions": "Save items by tapping the bookmark icon on courses or resources.",
-
   "featureAchievementsTitle": "Achievements",
   "featureAchievementsDesc": "Earn badges and track milestones as you progress",
   "featureAchievementsInstructions": "View your achievements in the Profile section under Progress.",
-
   "featureProgressAnalyticsTitle": "Progress Analytics",
   "featureProgressAnalyticsDesc": "Visualize your learning journey with detailed statistics",
   "featureProgressAnalyticsInstructions": "Check detailed analytics in your Profile > Progress section.",
-
   "featureCalendarTitle": "Calendar",
   "featureCalendarDesc": "Track deadlines, events, and important dates",
   "featureCalendarInstructions": "Access the Calendar from the bottom navigation or menu.",
-
   "featureSmartNotificationsTitle": "Smart Notifications",
   "featureSmartNotificationsDesc": "Get timely reminders and updates about your applications",
   "featureSmartNotificationsInstructions": "Enable notifications in Settings > Notifications.",
-
   "featureStudySchedulerTitle": "Study Scheduler",
   "featureStudySchedulerDesc": "Plan and optimize your study time",
   "featureStudySchedulerInstructions": "Create study schedules in Tools > Study Planner.",
-
   "featureGoalsMilestonesTitle": "Goals & Milestones",
   "featureGoalsMilestonesDesc": "Set and track your learning goals",
   "featureGoalsMilestonesInstructions": "Set goals in Profile > Progress > Goals.",
-
   "featureStudyGroupsTitle": "Study Groups",
   "featureStudyGroupsDesc": "Connect and collaborate with fellow learners",
   "featureStudyGroupsInstructions": "Join or create study groups from Community > Groups.",
-
   "featureDiscussionForumsTitle": "Discussion Forums",
   "featureDiscussionForumsDesc": "Participate in course discussions and Q&A",
   "featureDiscussionForumsInstructions": "Participate in forums from Community > Discussions.",
-
   "featureResourceSharingTitle": "Resource Sharing",
   "featureResourceSharingDesc": "Share notes, links, and study materials",
   "featureResourceSharingInstructions": "Share resources using the share button on any content.",
-
   "featureLiveSessionsTitle": "Live Sessions",
   "featureLiveSessionsDesc": "Join virtual classes and webinars",
   "featureLiveSessionsInstructions": "Join live sessions from the Schedule or Courses section.",
@@ -9327,20 +9294,11 @@
   "privacyPleaseTypeDelete": "Please type DELETE to confirm",
   "privacyPrivacyPolicyComingSoon": "Privacy policy coming soon",
   "privacyTermsOfServiceComingSoon": "Terms of service coming soon",
-  "browseInstitutionsBack": "Back",
-  "browseInstitutionsSelectTitle": "Select Institution",
   "browseInstitutionsBrowseTitle": "Browse Institutions",
-  "browseInstitutionsClearFilters": "Clear filters",
-  "browseInstitutionsSearchHint": "Search by institution name or email...",
-  "browseInstitutionsSortBy": "Sort by: ",
   "browseInstitutionsSortNameAZ": "Name (A-Z)",
   "browseInstitutionsSortTotalOfferings": "Total Offerings",
-  "browseInstitutionsSortPrograms": "Programs",
-  "browseInstitutionsSortCourses": "Courses",
-  "browseInstitutionsSortNewest": "Newest",
   "browseInstitutionsSortAscending": "Ascending",
   "browseInstitutionsSortDescending": "Descending",
-  "browseInstitutionsShowVerifiedOnly": "Show verified only",
   "browseInstitutionsRegisteredCount": "{count} registered institution(s)",
   "@browseInstitutionsRegisteredCount": {
     "placeholders": {
@@ -9349,16 +9307,29 @@
       }
     }
   },
-  "browseInstitutionsTapToSelect": "Tap to select",
-  "browseInstitutionsRetry": "Retry",
   "browseInstitutionsNoInstitutionsFound": "No institutions found",
   "browseInstitutionsTryAdjusting": "Try adjusting your search or filters",
-  "browseInstitutionsVerified": "Verified",
   "browseInstitutionsNoOfferingsYet": "No offerings yet",
-  "browseInstitutionsSelected": "Selected: {name}",
-  "@browseInstitutionsSelected": {
+  "@instCounselorsPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@instCounselorsAssignStudentTo": {
     "placeholders": {
       "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@instCounselorsError": {
+    "placeholders": {
+      "error": {
         "type": "String"
       }
     }

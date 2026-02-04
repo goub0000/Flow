@@ -121,7 +121,7 @@
   "quizDescription": "Répondez à notre quiz rapide pour découvrir les universités et programmes qui correspondent à vos intérêts, objectifs et profil académique.",
   "quizDuration": "2 minutes",
   "quizAIPowered": "Propulsé par l'IA",
-  "featuresTitle": "Tout ce dont vous avez besoin",
+  "featuresTitle": "Fonctionnalités",
   "featuresSubtitle": "Un écosystème éducatif complet conçu pour l'Afrique moderne",
   "featureLearningTitle": "Apprentissage complet",
   "featureLearningDesc": "Accédez aux cours, suivez votre progression et gérez vos candidatures en un seul endroit",
@@ -431,14 +431,14 @@
   "dashAdminUserGrowthDesc": "Nouvelles inscriptions au cours des 6 derniers mois",
   "dashAdminUserDistribution": "Répartition des utilisateurs",
   "dashAdminByUserType": "Par type d'utilisateur",
-  "dashInstTitle": "Tableau de bord institution",
-  "dashInstDebugPanel": "Panneau de débogage",
+  "dashInstTitle": "Tableau de Bord Institution",
+  "dashInstDebugPanel": "Panneau de Débogage",
   "dashInstApplicants": "Candidats",
   "dashInstPrograms": "Programmes",
   "dashInstCourses": "Cours",
   "dashInstCounselors": "Conseillers",
-  "dashInstNewProgram": "Nouveau programme",
-  "dashInstNewCourse": "Nouveau cours",
+  "dashInstNewProgram": "Nouveau Programme",
+  "dashInstNewCourse": "Nouveau Cours",
   "dashInstTotalApplicants": "Total des candidats",
   "dashInstPendingReview": "En attente d'examen",
   "dashInstActivePrograms": "Programmes actifs",
@@ -468,7 +468,7 @@
   "dashInstProcessingTime": "Temps de traitement des candidatures",
   "dashInstAverageTime": "Temps moyen",
   "dashInstDaysValue": "{count} jours",
-  "dashRecTitle": "Tableau de bord recommandeur",
+  "dashRecTitle": "Tableau de Bord Recommandeur",
   "dashRecRecommendations": "Recommandations",
   "dashRecTotal": "Total",
   "dashRecUrgent": "Urgent",
@@ -1322,51 +1322,51 @@
   },
   "instApplicantChipPending": "En attente",
   "instApplicantChipReviewing": "En examen",
-  "instCourseEditCourse": "Modifier le cours",
-  "instCourseCreateCourse": "Creer un cours",
-  "instCourseBasicInfo": "Informations de base",
-  "instCourseTitleLabel": "Titre du cours *",
-  "instCourseTitleHint": "ex., Introduction a la programmation",
-  "instCourseTitleRequired": "Le titre est obligatoire",
-  "instCourseTitleMinLength": "Le titre doit comporter au moins 3 caracteres",
-  "instCourseTitleMaxLength": "Le titre doit comporter moins de 200 caracteres",
-  "instCourseDescriptionLabel": "Description *",
-  "instCourseDescriptionHint": "Decrivez ce que les etudiants apprendront...",
-  "instCourseDescriptionRequired": "La description est obligatoire",
-  "instCourseDescriptionMinLength": "La description doit comporter au moins 10 caracteres",
-  "instCourseCourseDetails": "Details du cours",
-  "instCourseCourseType": "Type de cours *",
-  "instCourseDifficultyLevel": "Niveau de difficulte *",
-  "instCourseDurationHours": "Duree (heures)",
-  "instCourseCategory": "Categorie",
-  "instCourseCategoryHint": "Informatique",
+  "instCourseEditCourse": "Modifier le Cours",
+  "instCourseCreateCourse": "Créer un Cours",
+  "instCourseBasicInfo": "Informations de Base",
+  "instCourseTitleLabel": "Titre",
+  "instCourseTitleHint": "par ex., Introduction au Développement Web",
+  "instCourseTitleRequired": "Le titre est requis",
+  "instCourseTitleMinLength": "Le titre doit comporter au moins 3 caractères",
+  "instCourseTitleMaxLength": "Le titre doit comporter moins de 200 caractères",
+  "instCourseDescriptionLabel": "Description",
+  "instCourseDescriptionHint": "Décrivez ce que les étudiants apprendront dans ce cours",
+  "instCourseDescriptionRequired": "La description est requise",
+  "instCourseDescriptionMinLength": "La description doit comporter au moins 10 caractères",
+  "instCourseCourseDetails": "Détails du Cours",
+  "instCourseCourseType": "Type de Cours",
+  "instCourseDifficultyLevel": "Niveau de Difficulté",
+  "instCourseDurationHours": "Durée (Heures)",
+  "instCourseCategory": "Catégorie",
+  "instCourseCategoryHint": "par ex., Programmation, Design, Business",
   "instCoursePricing": "Tarification",
-  "instCoursePriceLabel": "Prix *",
-  "instCoursePriceRequired": "Le prix est obligatoire",
+  "instCoursePriceLabel": "Prix",
+  "instCoursePriceRequired": "Le prix est requis",
   "instCourseInvalidPrice": "Prix invalide",
   "instCourseCurrency": "Devise",
-  "instCourseMaxStudents": "Nombre max d'etudiants (facultatif)",
-  "instCourseMaxStudentsHint": "Laisser vide pour illimite",
-  "instCourseMedia": "Medias",
-  "instCourseThumbnailUrl": "URL de la miniature (facultatif)",
+  "instCourseMaxStudents": "Nombre Maximum d'Étudiants",
+  "instCourseMaxStudentsHint": "Laisser vide pour illimité",
+  "instCourseMedia": "Médias",
+  "instCourseThumbnailUrl": "URL de la Miniature",
   "instCourseTags": "Tags",
-  "instCourseAddTagHint": "Ajouter un tag (ex., programmation, python)",
-  "instCourseLearningOutcomes": "Resultats d'apprentissage",
-  "instCourseOutcomeHint": "Qu'apprendront les etudiants ?",
-  "instCoursePrerequisites": "Prerequis",
-  "instCoursePrerequisiteHint": "Que doivent savoir les etudiants ?",
-  "instCourseUpdateCourse": "Mettre a jour le cours",
-  "instCourseCreatedSuccess": "Cours cree avec succes !",
-  "instCourseUpdatedSuccess": "Cours mis a jour avec succes !",
-  "instCourseFailedToSave": "Echec de l'enregistrement du cours. Veuillez reessayer.",
-  "instCourseCourseRoster": "Liste des inscrits",
+  "instCourseAddTagHint": "Ajouter un tag (par ex., JavaScript, React)",
+  "instCourseLearningOutcomes": "Résultats d'Apprentissage",
+  "instCourseOutcomeHint": "Que pourront faire les étudiants après ce cours ?",
+  "instCoursePrerequisites": "Prérequis",
+  "instCoursePrerequisiteHint": "Que doivent savoir les étudiants avant de suivre ce cours ?",
+  "instCourseUpdateCourse": "Mettre à Jour le Cours",
+  "instCourseCreatedSuccess": "Cours créé avec succès !",
+  "instCourseUpdatedSuccess": "Cours mis à jour avec succès",
+  "instCourseFailedToSave": "Échec de l'enregistrement du cours",
+  "instCourseCourseRoster": "Liste des Étudiants du Cours",
   "instCourseRefresh": "Actualiser",
-  "instCourseRetry": "Reessayer",
-  "instCourseNoEnrolledStudents": "Aucun etudiant inscrit pour le moment",
-  "instCourseApprovedStudentsAppearHere": "Les etudiants avec des autorisations approuvees apparaitront ici",
-  "instCourseEnrolledStudents": "Etudiants inscrits",
-  "instCourseMaxCapacity": "Capacite maximale",
-  "instCourseEnrolledDate": "Inscrit : {date}",
+  "instCourseRetry": "Réessayer",
+  "instCourseNoEnrolledStudents": "Aucun étudiant inscrit pour l'instant",
+  "instCourseApprovedStudentsAppearHere": "Les étudiants approuvés apparaîtront ici",
+  "instCourseEnrolledStudents": "Étudiants Inscrits",
+  "instCourseMaxCapacity": "Capacité Max",
+  "instCourseEnrolledDate": "Inscrit: {date}",
   "@instCourseEnrolledDate": {
     "placeholders": {
       "date": {
@@ -1374,13 +1374,13 @@
       }
     }
   },
-  "instCourseEnrollmentPermissions": "Autorisations d'inscription",
-  "instCoursePendingRequests": "Demandes en attente",
-  "instCourseApproved": "Approuve",
-  "instCourseAllStudents": "Tous les etudiants",
-  "instCourseGrantPermission": "Accorder l'autorisation",
-  "instCourseSelectAtLeastOne": "Veuillez selectionner au moins un etudiant",
-  "instCourseGrantedPermission": "Autorisation accordee a {count} etudiant(s)",
+  "instCourseEnrollmentPermissions": "Permissions d'Inscription",
+  "instCoursePendingRequests": "En attente",
+  "instCourseApproved": "Approuvées",
+  "instCourseAllStudents": "Tous les Étudiants",
+  "instCourseGrantPermission": "Accorder une Permission",
+  "instCourseSelectAtLeastOne": "Veuillez sélectionner au moins un étudiant",
+  "instCourseGrantedPermission": "Permission accordée à {count} étudiant(s)",
   "@instCourseGrantedPermission": {
     "placeholders": {
       "count": {
@@ -1388,7 +1388,7 @@
       }
     }
   },
-  "instCourseFailedGrantPermission": "Echec de l'autorisation pour {count} etudiant(s)",
+  "instCourseFailedGrantPermission": "Échec de l'octroi de permission à {count} étudiant(s)",
   "@instCourseFailedGrantPermission": {
     "placeholders": {
       "count": {
@@ -1396,10 +1396,10 @@
       }
     }
   },
-  "instCourseGrantEnrollmentPermission": "Accorder l'autorisation d'inscription",
-  "instCourseSelectStudentsGrant": "Selectionnez les etudiants pour accorder l'acces a ce cours",
-  "instCourseSearchStudents": "Rechercher des etudiants...",
-  "instCourseSelectedCount": "{count} selectionne(s)",
+  "instCourseGrantEnrollmentPermission": "Accorder une Permission d'Inscription",
+  "instCourseSelectStudentsGrant": "Sélectionnez les étudiants pour accorder une permission d'inscription",
+  "instCourseSearchStudents": "Rechercher des étudiants...",
+  "instCourseSelectedCount": "{count} sélectionné(s)",
   "@instCourseSelectedCount": {
     "placeholders": {
       "count": {
@@ -1409,8 +1409,8 @@
   },
   "instCourseClear": "Effacer",
   "instCourseCancel": "Annuler",
-  "instCourseSelectStudents": "Selectionner des etudiants",
-  "instCourseGrantToStudents": "Accorder a {count} etudiant(s)",
+  "instCourseSelectStudents": "Sélectionner des Étudiants",
+  "instCourseGrantToStudents": "Accorder à {count} Étudiants",
   "@instCourseGrantToStudents": {
     "placeholders": {
       "count": {
@@ -1418,13 +1418,13 @@
       }
     }
   },
-  "instCourseNoStudentsAvailable": "Aucun etudiant disponible",
-  "instCourseAllStudentsHavePermissions": "Tous les etudiants admis ont deja des autorisations",
-  "instCourseNoMatchingStudents": "Aucun etudiant correspondant",
+  "instCourseNoStudentsAvailable": "Aucun étudiant disponible",
+  "instCourseAllStudentsHavePermissions": "Tous les étudiants ont déjà des permissions ou des demandes en attente",
+  "instCourseNoMatchingStudents": "Aucun étudiant ne correspond à votre recherche",
   "instCourseNoPendingRequests": "Aucune demande en attente",
-  "instCourseStudentsCanRequest": "Les etudiants peuvent demander l'autorisation d'inscription",
-  "instCourseMessage": "Message :",
-  "instCourseRequested": "Demande : {date}",
+  "instCourseStudentsCanRequest": "Les étudiants peuvent demander une permission d'inscription",
+  "instCourseMessage": "Message",
+  "instCourseRequested": "Demandé: {date}",
   "@instCourseRequested": {
     "placeholders": {
       "date": {
@@ -1434,7 +1434,7 @@
   },
   "instCourseDeny": "Refuser",
   "instCourseApprove": "Approuver",
-  "instCourseApprovedStudent": "{name} approuve",
+  "instCourseApprovedStudent": "{name} approuvé avec succès",
   "@instCourseApprovedStudent": {
     "placeholders": {
       "name": {
@@ -1442,9 +1442,9 @@
       }
     }
   },
-  "instCourseFailedToApprove": "Echec de l'approbation",
-  "instCourseDenyPermissionRequest": "Refuser la demande d'autorisation",
-  "instCourseDenyStudent": "Refuser {name} ?",
+  "instCourseFailedToApprove": "Échec de l'approbation de la demande",
+  "instCourseDenyPermissionRequest": "Refuser la Demande de Permission",
+  "instCourseDenyStudent": "Êtes-vous sûr de vouloir refuser la permission pour {name} ?",
   "@instCourseDenyStudent": {
     "placeholders": {
       "name": {
@@ -1452,10 +1452,10 @@
       }
     }
   },
-  "instCourseReasonForDenial": "Raison du refus",
-  "instCourseEnterReason": "Saisir la raison...",
-  "instCoursePleaseProvideReason": "Veuillez fournir une raison",
-  "instCourseDeniedStudent": "{name} refuse",
+  "instCourseReasonForDenial": "Raison du Refus",
+  "instCourseEnterReason": "Entrez la raison du refus",
+  "instCoursePleaseProvideReason": "Veuillez fournir une raison pour le refus",
+  "instCourseDeniedStudent": "Permission refusée pour {name}",
   "@instCourseDeniedStudent": {
     "placeholders": {
       "name": {
@@ -1463,10 +1463,10 @@
       }
     }
   },
-  "instCourseNoApprovedPermissions": "Aucune autorisation approuvee",
-  "instCourseGrantToAllowEnroll": "Accordez des autorisations pour permettre aux etudiants de s'inscrire",
-  "instCourseRevokePermission": "Revoquer l'autorisation",
-  "instCourseRevokePermissionFor": "Revoquer l'autorisation pour {name} ?",
+  "instCourseNoApprovedPermissions": "Aucune permission approuvée pour l'instant",
+  "instCourseGrantToAllowEnroll": "Accordez des permissions pour permettre aux étudiants de s'inscrire",
+  "instCourseRevokePermission": "Révoquer la Permission",
+  "instCourseRevokePermissionFor": "Révoquer la permission pour {name} ?",
   "@instCourseRevokePermissionFor": {
     "placeholders": {
       "name": {
@@ -1474,9 +1474,9 @@
       }
     }
   },
-  "instCourseReasonOptional": "Raison (facultatif)",
-  "instCourseRevoke": "Revoquer",
-  "instCourseRevokedPermissionFor": "Autorisation revoquee pour {name}",
+  "instCourseReasonOptional": "Raison (Optionnel)",
+  "instCourseRevoke": "Révoquer",
+  "instCourseRevokedPermissionFor": "Permission révoquée pour {name}",
   "@instCourseRevokedPermissionFor": {
     "placeholders": {
       "name": {
@@ -1484,14 +1484,14 @@
       }
     }
   },
-  "instCourseNoAdmittedStudents": "Aucun etudiant admis",
-  "instCourseAcceptedStudentsAppearHere": "Les etudiants avec des candidatures acceptees apparaitront ici",
-  "instCourseRequestPending": "Demande en attente",
-  "instCourseAccessGranted": "Acces accorde",
-  "instCourseDenied": "Refuse",
-  "instCourseRevoked": "Revoque",
-  "instCourseGrantAccess": "Accorder l'acces",
-  "instCourseGrantStudentPermission": "Accorder a {name} l'autorisation de s'inscrire a ce cours ?",
+  "instCourseNoAdmittedStudents": "Aucun étudiant admis",
+  "instCourseAcceptedStudentsAppearHere": "Les étudiants acceptés dans votre institution apparaîtront ici",
+  "instCourseRequestPending": "Demande en Attente",
+  "instCourseAccessGranted": "Accès Accordé",
+  "instCourseDenied": "Refusé",
+  "instCourseRevoked": "Révoqué",
+  "instCourseGrantAccess": "Accorder l'Accès",
+  "instCourseGrantStudentPermission": "Accorder une permission d'inscription à {name} ?",
   "@instCourseGrantStudentPermission": {
     "placeholders": {
       "name": {
@@ -1499,10 +1499,10 @@
       }
     }
   },
-  "instCourseNotesOptional": "Notes (facultatif)",
-  "instCourseAddNotes": "Ajouter des notes...",
+  "instCourseNotesOptional": "Notes (Optionnel)",
+  "instCourseAddNotes": "Ajouter des notes (optionnel)",
   "instCourseGrant": "Accorder",
-  "instCourseGrantedPermissionTo": "Autorisation accordee a {name}",
+  "instCourseGrantedPermissionTo": "Permission accordée à {name}",
   "@instCourseGrantedPermissionTo": {
     "placeholders": {
       "name": {
@@ -1510,17 +1510,17 @@
       }
     }
   },
-  "instCourseFailedToGrantPermission": "Echec de l'accord de l'autorisation",
-  "instCourseRequestApproved": "Demande approuvee",
-  "instCourseFailedToApproveRequest": "Echec de l'approbation de la demande",
-  "instCourseContentBuilder": "Constructeur de contenu de cours",
-  "instCoursePreviewCourse": "Apercu du cours",
-  "instCourseAddModule": "Ajouter un module",
-  "instCourseCourseTitle": "Titre du cours",
-  "instCourseEditInfo": "Modifier les infos",
-  "instCourseCourseModules": "Modules du cours",
-  "instCourseNoModulesYet": "Aucun module pour le moment",
-  "instCourseStartBuildingModules": "Commencez a construire votre cours en ajoutant des modules",
+  "instCourseFailedToGrantPermission": "Échec de l'octroi de permission",
+  "instCourseRequestApproved": "Demande approuvée avec succès",
+  "instCourseFailedToApproveRequest": "Échec de l'approbation de la demande",
+  "instCourseContentBuilder": "Constructeur de Contenu de Cours",
+  "instCoursePreviewCourse": "Aperçu du Cours",
+  "instCourseAddModule": "Ajouter un Module",
+  "instCourseCourseTitle": "Titre du Cours",
+  "instCourseEditInfo": "Modifier les Infos",
+  "instCourseCourseModules": "Modules du Cours",
+  "instCourseNoModulesYet": "Aucun module pour l'instant",
+  "instCourseStartBuildingModules": "Commencez à construire votre cours en ajoutant des modules",
   "instCourseModuleIndex": "Module {index}",
   "@instCourseModuleIndex": {
     "placeholders": {
@@ -1529,7 +1529,7 @@
       }
     }
   },
-  "instCourseLessonsCount": "{count} lecons",
+  "instCourseLessonsCount": "{count} leçons",
   "@instCourseLessonsCount": {
     "placeholders": {
       "count": {
@@ -1537,16 +1537,16 @@
       }
     }
   },
-  "instCourseEditModule": "Modifier le module",
-  "instCourseDeleteModule": "Supprimer le module",
-  "instCourseLearningObjectives": "Objectifs d'apprentissage :",
-  "instCourseLessons": "Lecons",
-  "instCourseAddLesson": "Ajouter une lecon",
-  "instCourseNoLessonsInModule": "Aucune lecon dans ce module",
-  "instCourseEditLesson": "Modifier la lecon",
-  "instCourseDeleteLesson": "Supprimer la lecon",
+  "instCourseEditModule": "Modifier le Module",
+  "instCourseDeleteModule": "Supprimer le Module",
+  "instCourseLearningObjectives": "Objectifs d'Apprentissage",
+  "instCourseLessons": "Leçons",
+  "instCourseAddLesson": "Ajouter une Leçon",
+  "instCourseNoLessonsInModule": "Aucune leçon dans ce module pour l'instant",
+  "instCourseEditLesson": "Modifier la Leçon",
+  "instCourseDeleteLesson": "Supprimer la Leçon",
   "instCourseError": "Erreur",
-  "instCourseModuleCreatedSuccess": "Module \"{title}\" cree avec succes",
+  "instCourseModuleCreatedSuccess": "Module '{title}' créé avec succès",
   "@instCourseModuleCreatedSuccess": {
     "placeholders": {
       "title": {
@@ -1554,7 +1554,7 @@
       }
     }
   },
-  "instCourseModuleUpdatedSuccess": "Module \"{title}\" mis a jour avec succes",
+  "instCourseModuleUpdatedSuccess": "Module '{title}' mis à jour avec succès",
   "@instCourseModuleUpdatedSuccess": {
     "placeholders": {
       "title": {
@@ -1562,45 +1562,45 @@
       }
     }
   },
-  "instCourseAddNewLesson": "Ajouter une nouvelle lecon",
-  "instCourseLessonType": "Type de lecon",
-  "instCourseLessonTitle": "Titre de la lecon",
-  "instCoursePleaseEnterTitle": "Veuillez saisir un titre",
+  "instCourseAddNewLesson": "Ajouter une Nouvelle Leçon",
+  "instCourseLessonType": "Type de Leçon",
+  "instCourseLessonTitle": "Titre de la Leçon",
+  "instCoursePleaseEnterTitle": "Veuillez entrer un titre",
   "instCourseDescription": "Description",
-  "instCourseLessonCreatedSuccess": "Lecon creee avec succes",
-  "instCourseCreate": "Creer",
-  "instCourseDeleteModuleConfirm": "Etes-vous sur de vouloir supprimer ce module ? Cela supprimera egalement toutes les lecons du module.",
+  "instCourseLessonCreatedSuccess": "Leçon créée avec succès",
+  "instCourseCreate": "Créer",
+  "instCourseDeleteModuleConfirm": "Êtes-vous sûr de vouloir supprimer ce module ? Toutes les leçons seront supprimées.",
   "instCourseDelete": "Supprimer",
-  "instCourseModuleDeletedSuccess": "Module supprime avec succes",
-  "instCourseDeleteLessonConfirm": "Etes-vous sur de vouloir supprimer cette lecon ?",
-  "instCourseLessonDeletedSuccess": "Lecon supprimee avec succes",
-  "instCourseEditCourseInfo": "Modifier les infos du cours",
-  "instCourseEnterTitle": "Saisir le titre du cours",
-  "instCourseEnterDescription": "Saisir la description du cours",
+  "instCourseModuleDeletedSuccess": "Module supprimé avec succès",
+  "instCourseDeleteLessonConfirm": "Êtes-vous sûr de vouloir supprimer cette leçon ?",
+  "instCourseLessonDeletedSuccess": "Leçon supprimée avec succès",
+  "instCourseEditCourseInfo": "Modifier les Informations du Cours",
+  "instCourseEnterTitle": "Entrez le titre du cours",
+  "instCourseEnterDescription": "Entrez la description du cours",
   "instCourseLevel": "Niveau",
-  "instCourseInfoUpdatedSuccess": "Informations du cours mises a jour avec succes",
+  "instCourseInfoUpdatedSuccess": "Informations du cours mises à jour avec succès",
   "instCourseSaving": "Enregistrement...",
-  "instCourseSaveChanges": "Enregistrer les modifications",
-  "instProgramCreateProgram": "Creer un programme",
-  "instProgramNameLabel": "Nom du programme *",
-  "instProgramNameHint": "ex., Licence en informatique",
-  "instProgramDescriptionLabel": "Description *",
-  "instProgramDescriptionHint": "Decrivez le programme...",
-  "instProgramCategoryLabel": "Categorie *",
-  "instProgramLevelLabel": "Niveau *",
-  "instProgramDuration": "Duree",
-  "instProgramFeeLabel": "Frais du programme (USD) *",
-  "instProgramMaxStudentsLabel": "Nombre maximum d'etudiants *",
-  "instProgramMaxStudentsHint": "ex., 100",
-  "instProgramStartDate": "Date de debut",
-  "instProgramApplicationDeadline": "Date limite de candidature",
-  "instProgramRequirements": "Conditions requises",
-  "instProgramAddRequirementHint": "Ajouter une condition...",
-  "instProgramAddAtLeastOneRequirement": "Veuillez ajouter au moins une condition",
-  "instProgramDeadlineBeforeStart": "La date limite de candidature doit etre avant la date de debut",
-  "instProgramCreatedSuccess": "Programme cree avec succes !",
-  "instProgramFailedToCreate": "Echec de la creation du programme",
-  "instProgramErrorCreating": "Erreur lors de la creation du programme : {error}",
+  "instCourseSaveChanges": "Enregistrer les Modifications",
+  "instProgramCreateProgram": "Créer un Programme",
+  "instProgramNameLabel": "Nom du Programme",
+  "instProgramNameHint": "par ex., Licence en Informatique",
+  "instProgramDescriptionLabel": "Description",
+  "instProgramDescriptionHint": "Décrivez le programme, ses objectifs et ce qui le rend unique",
+  "instProgramCategoryLabel": "Catégorie",
+  "instProgramLevelLabel": "Niveau",
+  "instProgramDuration": "Durée",
+  "instProgramFeeLabel": "Frais",
+  "instProgramMaxStudentsLabel": "Nombre Maximum d'Étudiants",
+  "instProgramMaxStudentsHint": "par ex., 100",
+  "instProgramStartDate": "Date de Début",
+  "instProgramApplicationDeadline": "Date Limite de Candidature",
+  "instProgramRequirements": "Exigences",
+  "instProgramAddRequirementHint": "par ex., Diplôme d'études secondaires avec un GPA minimum de 3,0",
+  "instProgramAddAtLeastOneRequirement": "Veuillez ajouter au moins une exigence",
+  "instProgramDeadlineBeforeStart": "La date limite de candidature doit être avant la date de début",
+  "instProgramCreatedSuccess": "Programme créé avec succès !",
+  "instProgramFailedToCreate": "Échec de la création du programme",
+  "instProgramErrorCreating": "Erreur lors de la création du programme: {error}",
   "@instProgramErrorCreating": {
     "placeholders": {
       "error": {
@@ -1608,24 +1608,24 @@
       }
     }
   },
-  "instProgramDetails": "Details du programme",
+  "instProgramDetails": "Détails du Programme",
   "instProgramBack": "Retour",
-  "instProgramEditComingSoon": "Fonction de modification bientot disponible",
-  "instProgramEditProgram": "Modifier le programme",
-  "instProgramDeactivate": "Desactiver",
+  "instProgramEditComingSoon": "Fonctionnalité de modification à venir",
+  "instProgramEditProgram": "Modifier le Programme",
+  "instProgramDeactivate": "Désactiver",
   "instProgramActivate": "Activer",
-  "instProgramDeleteProgram": "Supprimer le programme",
+  "instProgramDeleteProgram": "Supprimer le Programme",
   "instProgramInactiveMessage": "Ce programme est actuellement inactif et n'accepte pas de candidatures",
   "instProgramEnrolled": "Inscrits",
-  "instProgramAvailable": "Disponible",
+  "instProgramAvailable": "Disponibles",
   "instProgramFee": "Frais",
   "instProgramDescription": "Description",
-  "instProgramProgramDetails": "Details du programme",
-  "instProgramCategory": "Categorie",
+  "instProgramProgramDetails": "Détails du Programme",
+  "instProgramCategory": "Catégorie",
   "instProgramInstitution": "Institution",
-  "instProgramMaxStudents": "Nombre maximum d'etudiants",
-  "instProgramEnrollmentStatus": "Statut d'inscription",
-  "instProgramFillRate": "Taux de remplissage",
+  "instProgramMaxStudents": "Nombre Maximum d'Étudiants",
+  "instProgramEnrollmentStatus": "Statut des Inscriptions",
+  "instProgramFillRate": "Taux de Remplissage",
   "instProgramIsFull": "Le programme est complet",
   "instProgramSlotsRemaining": "{count} places restantes",
   "@instProgramSlotsRemaining": {
@@ -1635,15 +1635,15 @@
       }
     }
   },
-  "instProgramDeactivateQuestion": "Desactiver le programme ?",
-  "instProgramActivateQuestion": "Activer le programme ?",
-  "instProgramStopAccepting": "Ce programme cessera d'accepter de nouvelles candidatures.",
-  "instProgramStartAccepting": "Ce programme commencera a accepter de nouvelles candidatures.",
+  "instProgramDeactivateQuestion": "Désactiver le Programme ?",
+  "instProgramActivateQuestion": "Activer le Programme ?",
+  "instProgramStopAccepting": "Cela arrêtera d'accepter de nouvelles candidatures. Vous pourrez le réactiver plus tard.",
+  "instProgramStartAccepting": "Cela recommencera à accepter de nouvelles candidatures.",
   "instProgramCancel": "Annuler",
   "instProgramConfirm": "Confirmer",
-  "instProgramActivated": "Programme active",
-  "instProgramDeactivated": "Programme desactive",
-  "instProgramErrorUpdatingStatus": "Erreur de mise a jour du statut du programme : {error}",
+  "instProgramActivated": "Programme activé avec succès",
+  "instProgramDeactivated": "Programme désactivé avec succès",
+  "instProgramErrorUpdatingStatus": "Erreur lors de la mise à jour du statut: {error}",
   "@instProgramErrorUpdatingStatus": {
     "placeholders": {
       "error": {
@@ -1651,12 +1651,12 @@
       }
     }
   },
-  "instProgramDeleteProgramQuestion": "Supprimer le programme ?",
-  "instProgramDeleteConfirm": "Cette action est irreversible. Toutes les donnees associees a ce programme seront definitivement supprimees.",
+  "instProgramDeleteProgramQuestion": "Supprimer le Programme ?",
+  "instProgramDeleteConfirm": "Cette action ne peut pas être annulée. Toutes les données du programme seront définitivement supprimées.",
   "instProgramDelete": "Supprimer",
-  "instProgramDeletedSuccess": "Programme supprime avec succes",
-  "instProgramFailedToDelete": "Echec de la suppression du programme",
-  "instProgramErrorDeleting": "Erreur lors de la suppression du programme : {error}",
+  "instProgramDeletedSuccess": "Programme supprimé avec succès",
+  "instProgramFailedToDelete": "Échec de la suppression du programme",
+  "instProgramErrorDeleting": "Erreur lors de la suppression du programme: {error}",
   "@instProgramErrorDeleting": {
     "placeholders": {
       "error": {
@@ -1665,18 +1665,18 @@
     }
   },
   "instProgramPrograms": "Programmes",
-  "instProgramRetry": "Reessayer",
+  "instProgramRetry": "Réessayer",
   "instProgramLoading": "Chargement des programmes...",
-  "instProgramActiveOnly": "Actifs uniquement",
-  "instProgramShowAll": "Afficher tout",
-  "instProgramSearchHint": "Rechercher des programmes...",
-  "instProgramNewProgram": "Nouveau programme",
-  "instProgramNoProgramsFound": "Aucun programme trouve",
-  "instProgramTryAdjustingSearch": "Essayez d'ajuster votre recherche",
-  "instProgramCreateFirstProgram": "Creez votre premier programme",
+  "instProgramActiveOnly": "Actifs Uniquement",
+  "instProgramShowAll": "Tout Afficher",
+  "instProgramSearchHint": "Rechercher des programmes par nom ou catégorie",
+  "instProgramNewProgram": "Nouveau Programme",
+  "instProgramNoProgramsFound": "Aucun programme trouvé",
+  "instProgramTryAdjustingSearch": "Essayez d'ajuster votre recherche ou vos filtres",
+  "instProgramCreateFirstProgram": "Créez votre premier programme pour commencer",
   "instProgramInactive": "INACTIF",
   "instProgramEnrollment": "Inscription",
-  "instProgramFull": "Complet",
+  "instProgramFull": "COMPLET",
   "instProgramSlotsAvailable": "{count} places disponibles",
   "@instProgramSlotsAvailable": {
     "placeholders": {
@@ -5410,26 +5410,26 @@
   "adminKbPriorityHigh": "2 - Haute",
   "adminKbPriorityCritical": "3 - Critique",
   "adminKbDeleteConfirmMessage": "Etes-vous sur de vouloir supprimer \"{question}\" ?",
-  "instCounselorsSearchHint": "Rechercher des conseillers...",
-  "instCounselorsRetry": "Reessayer",
-  "instCounselorsNoCounselorsFound": "Aucun conseiller trouve",
-  "instCounselorsNoMatchSearch": "Aucun conseiller ne correspond a votre recherche",
-  "instCounselorsAddToInstitution": "Ajoutez des conseillers a votre institution",
+  "instCounselorsSearchHint": "Rechercher des conseillers par nom ou email",
+  "instCounselorsRetry": "Réessayer",
+  "instCounselorsNoCounselorsFound": "Aucun Conseiller Trouvé",
+  "instCounselorsNoMatchSearch": "Aucun conseiller ne correspond à votre recherche",
+  "instCounselorsAddToInstitution": "Ajoutez des conseillers à votre institution pour commencer",
   "instCounselorsPageOf": "Page {current} sur {total}",
-  "instCounselorsCounselingOverview": "Apercu du conseil",
+  "instCounselorsCounselingOverview": "Aperçu du Counseling",
   "instCounselorsCounselors": "Conseillers",
-  "instCounselorsStudents": "Etudiants",
-  "instCounselorsSessions": "Seances",
-  "instCounselorsCompleted": "Terminees",
-  "instCounselorsUpcoming": "A venir",
-  "instCounselorsAvgRating": "Note moy.",
-  "instCounselorsStudentAssigned": "Etudiant assigne avec succes",
+  "instCounselorsStudents": "Étudiants",
+  "instCounselorsSessions": "Sessions",
+  "instCounselorsCompleted": "Terminées",
+  "instCounselorsUpcoming": "À venir",
+  "instCounselorsAvgRating": "Note Moy.",
+  "instCounselorsStudentAssigned": "Étudiant assigné avec succès",
   "instCounselorsAssign": "Assigner",
-  "instCounselorsTotalSessions": "Total seances",
-  "instCounselorsAssignStudents": "Assigner des etudiants",
-  "instCounselorsAssignStudentTo": "Assigner un etudiant a {name}",
-  "instCounselorsSearchStudents": "Rechercher des etudiants...",
-  "instCounselorsNoStudentsFound": "Aucun etudiant trouve",
+  "instCounselorsTotalSessions": "Total Sessions",
+  "instCounselorsAssignStudents": "Assigner des Étudiants",
+  "instCounselorsAssignStudentTo": "Assigner un étudiant à {name}",
+  "instCounselorsSearchStudents": "Rechercher des étudiants...",
+  "instCounselorsNoStudentsFound": "Aucun étudiant trouvé",
   "instCounselorsUnknown": "Inconnu",
   "instCounselorsError": "Erreur: {error}",
   "instCounselorsCancel": "Annuler",
@@ -5979,14 +5979,14 @@
   "instCourseUpdateModule": "Inst Course Update Module",
   "instCourseUpdateModuleSubtitle": "Inst Course Update Module Subtitle",
   "instCourseValidationErrors": "Inst Course Validation Errors",
-  "instCoursesDescription": "Inst Courses Description",
-  "instCoursesEditCourse": "Inst Courses Edit Course",
-  "instCoursesEnrolledCount": "Inst Courses Enrolled Count: {count}",
-  "instCoursesLearningOutcomes": "Inst Courses Learning Outcomes",
-  "instCoursesPrerequisites": "Inst Courses Prerequisites",
-  "instCoursesPublished": "Inst Courses Published",
-  "instCoursesQuickActions": "Inst Courses Quick Actions",
-  "instCoursesStatistics": "Inst Courses Statistics",
+  "instCoursesDescription": "Description",
+  "instCoursesEditCourse": "Modifier le Cours",
+  "instCoursesEnrolledCount": "{count} Inscrit(s)",
+  "instCoursesLearningOutcomes": "Ce que Vous Apprendrez",
+  "instCoursesPrerequisites": "Prérequis",
+  "instCoursesPublished": "PUBLIÉ",
+  "instCoursesQuickActions": "Actions Rapides",
+  "instCoursesStatistics": "Statistiques",
   "instDebugAuthInfo": "Inst Debug Auth Info",
   "instDebugError": "Inst Debug Error",
   "instDebugRetry": "Inst Debug Retry",
@@ -6317,7 +6317,6 @@
   "studySessionsFocusLevel": "Niveau de concentration",
   "studySessionsDistractions": "Distractions",
   "studySessionsClose": "Fermer",
-
   "adminCounselorDetailBackToCounselors": "Retour aux conseillers",
   "adminCounselorDetailTitle": "Détails du conseiller",
   "adminCounselorDetailStudents": "Étudiants",
@@ -6349,7 +6348,7 @@
   "adminCounselorDetailCertifications": "Certifications",
   "adminCounselorDetailHourlyRate": "Tarif horaire",
   "adminCounselorDetailBio": "Biographie",
-  "adminCounselorDetailAssignedStudents": "Étudiants assignés",
+  "adminCounselorDetailAssignedStudents": "{count} étudiants assignés",
   "adminCounselorDetailNoStudents": "Aucun étudiant assigné",
   "adminCounselorDetailCounselingSessions": "Sessions de conseil",
   "adminCounselorDetailNoSessions": "Aucune session trouvée",
@@ -6406,7 +6405,6 @@
   "adminCounselorDetailHoursAgo": "il y a 2 heures",
   "adminCounselorDetailEmailVerified": "Email vérifié",
   "adminCounselorDetailYes": "Oui",
-  "adminCounselorDetailAssignedStudents": "{count} étudiants assignés",
   "@adminCounselorDetailAssignedStudents": {
     "placeholders": {
       "count": {
@@ -6435,7 +6433,6 @@
   "adminCounselorDetailScheduleCalendar": "Calendrier des horaires",
   "adminCounselorDetailCalendarComingSoon": "Vue calendrier bientôt disponible",
   "adminCounselorDetailProfessionalDocuments": "Documents professionnels",
-
   "adminInstitutionDetailBackToInstitutions": "Retour aux établissements",
   "adminInstitutionDetailTitle": "Détails de l'établissement",
   "adminInstitutionDetailPrograms": "Programmes",
@@ -6597,7 +6594,6 @@
     }
   },
   "adminInstitutionDetailDeactivateSuccess": "Établissement désactivé avec succès",
-
   "adminParentDetailBackToParents": "Retour aux parents",
   "adminParentDetailTitle": "Détails du parent",
   "adminParentDetailChildren": "Enfants",
@@ -6703,7 +6699,6 @@
   "adminParentDetailTotalPaid": "Total payé",
   "adminParentDetailTransactions": "Transactions",
   "adminParentDetailActivityTimeline": "Chronologie d'activité",
-
   "adminRecommenderDetailBackToRecommenders": "Retour aux recommandataires",
   "adminRecommenderDetailTitle": "Détails du recommandataire",
   "adminRecommenderDetailRequests": "Demandes",
@@ -6809,7 +6804,6 @@
       }
     }
   },
-
   "paymentFailureTitle": "Echec du paiement",
   "paymentFailureDefaultMessage": "Nous n'avons pas pu traiter votre paiement. Veuillez reessayer.",
   "paymentFailureTransactionDetails": "Details de la transaction",
@@ -6832,7 +6826,6 @@
   "paymentFailureTryAgain": "Reessayer",
   "paymentFailureContactSupport": "Contacter le support",
   "paymentFailureBackToHome": "Retour a l'accueil",
-
   "paymentHistoryTitle": "Historique des paiements",
   "paymentHistoryBack": "Retour",
   "paymentHistoryTabAll": "Tous ({count})",
@@ -6891,7 +6884,6 @@
   "paymentHistoryCourseEnrollment": "Inscription au cours",
   "paymentHistoryProgramApplication": "Candidature au programme",
   "paymentHistoryCounselingSession": "Seance de conseil",
-
   "paymentMethodTitle": "Selectionner le mode de paiement",
   "paymentMethodBack": "Retour",
   "paymentMethodRetry": "Reessayer",
@@ -6906,7 +6898,6 @@
   "paymentMethodCourseEnrollment": "Inscription au cours",
   "paymentMethodProgramApplication": "Candidature au programme",
   "paymentMethodCounselingSession": "Seance de conseil",
-
   "paymentProcessingPayWith": "Payer avec {method}",
   "@paymentProcessingPayWith": {
     "placeholders": {
@@ -6962,21 +6953,20 @@
   "paymentProcessingFlutterwaveBank": "Virement bancaire",
   "paymentProcessingFlutterwaveBankDesc": "Virement bancaire direct",
   "paymentProcessingFlutterwaveRedirect": "Vous serez redirige vers la page de paiement securisee Flutterwave",
-
   "browseInstitutionsTitle": "Parcourir les etablissements",
-  "browseInstitutionsSelectTitle": "Selectionner un etablissement",
+  "browseInstitutionsSelectTitle": "Sélectionner une institution",
   "browseInstitutionsBack": "Retour",
   "browseInstitutionsClearFilters": "Effacer les filtres",
-  "browseInstitutionsSearchHint": "Rechercher par nom ou email de l'etablissement...",
+  "browseInstitutionsSearchHint": "Rechercher par nom d'institution ou e-mail...",
   "browseInstitutionsSortBy": "Trier par : ",
   "browseInstitutionsSortName": "Nom (A-Z)",
   "browseInstitutionsSortOfferings": "Total des offres",
   "browseInstitutionsSortPrograms": "Programmes",
   "browseInstitutionsSortCourses": "Cours",
-  "browseInstitutionsSortNewest": "Plus recents",
+  "browseInstitutionsSortNewest": "Plus récent",
   "browseInstitutionsAscending": "Croissant",
   "browseInstitutionsDescending": "Decroissant",
-  "browseInstitutionsShowVerifiedOnly": "Afficher uniquement les verifies",
+  "browseInstitutionsShowVerifiedOnly": "Afficher uniquement les institutions vérifiées",
   "browseInstitutionsResultCount": "{count} {count, plural, =1{etablissement inscrit} other{etablissements inscrits}}",
   "@browseInstitutionsResultCount": {
     "placeholders": {
@@ -6985,13 +6975,13 @@
       }
     }
   },
-  "browseInstitutionsTapToSelect": "Appuyez pour selectionner",
+  "browseInstitutionsTapToSelect": "Appuyez pour sélectionner",
   "browseInstitutionsNoResults": "Aucun etablissement trouve",
   "browseInstitutionsNoResultsHint": "Essayez d'ajuster votre recherche ou vos filtres",
-  "browseInstitutionsRetry": "Reessayer",
-  "browseInstitutionsVerified": "Verifie",
+  "browseInstitutionsRetry": "Réessayer",
+  "browseInstitutionsVerified": "Vérifié",
   "browseInstitutionsNoOfferings": "Aucune offre pour le moment",
-  "browseInstitutionsSelected": "Selectionne : {name}",
+  "browseInstitutionsSelected": "Sélectionné : {name}",
   "@browseInstitutionsSelected": {
     "placeholders": {
       "name": {
@@ -6999,7 +6989,6 @@
       }
     }
   },
-
   "browseUniversitiesTitle": "Parcourir les universites",
   "browseUniversitiesSelectTitle": "Selectionner une universite",
   "browseUniversitiesBack": "Retour",
@@ -7031,7 +7020,6 @@
       }
     }
   },
-
   "privacyPolicyTitle": "Politique de confidentialite",
   "privacyPolicyShare": "Partager",
   "privacyPolicyShareComingSoon": "Fonctionnalite de partage bientot disponible",
@@ -7058,7 +7046,6 @@
   "privacyPolicySection9Content": "Nous pouvons mettre a jour cette politique de confidentialite de temps en temps. Nous :\n\n• Vous informerons des changements importants par e-mail ou notification sur la plateforme\n• Mettrons a jour la date de « Derniere mise a jour » en haut de cette politique\n• Obtiendrons votre consentement pour les changements importants si la loi l'exige\n\nVotre utilisation continue de nos services apres les modifications constitue une acceptation de la politique mise a jour.",
   "privacyPolicySection10Title": "10. Nous contacter",
   "privacyPolicySection10Content": "Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou nos pratiques en matiere de donnees, veuillez nous contacter :\n\nE-mail : privacy@flowedtech.com\nTelephone : +1 (555) 123-4567\nAdresse : Flow EdTech, 123 Education Lane, Tech City, TC 12345\n\nDelegue a la protection des donnees : dpo@flowedtech.com",
-
   "termsOfServiceTitle": "Conditions d'utilisation",
   "termsOfServiceShare": "Partager",
   "termsOfServiceShareComingSoon": "Fonctionnalite de partage bientot disponible",
@@ -7143,7 +7130,6 @@
   "addTime": "Ajouter une heure",
   "noStudyTimeSet": "Aucune heure d'étude définie",
   "studyScheduleSavedSuccessfully": "Horaire d'étude enregistré avec succès",
-
   "notificationDetailsTitle": "Détails de la notification",
   "markAsRead": "Marquer comme lu",
   "delete": "Supprimer",
@@ -7218,8 +7204,6 @@
   "openConversation": "Ouvrir la conversation",
   "viewAchievement": "Voir la réussite",
   "viewDetails": "Voir les détails",
-
-  "featuresTitle": "Fonctionnalités",
   "gotIt": "Compris!",
   "howToUse": "Comment utiliser:",
   "close": "Fermer",
@@ -7233,72 +7217,55 @@
     }
   },
   "exploreFeature": "Explorez l'application pour découvrir cette fonctionnalité!",
-
   "featureCategoryCoreFeatures": "Fonctionnalités principales",
   "featureCategoryStudyTools": "Outils d'étude",
   "featureCategoryProductivity": "Productivité",
   "featureCategoryCollaboration": "Collaboration",
-
   "featureCourseDiscoveryTitle": "Découverte de cours",
   "featureCourseDiscoveryDesc": "Parcourez et recherchez des milliers de cours provenant d'institutions de premier plan dans le monde entier",
   "featureCourseDiscoveryInstructions": "Accédez à l'onglet Explorer et utilisez la barre de recherche ou parcourez les catégories.",
-
   "featureApplicationTrackingTitle": "Suivi des candidatures",
   "featureApplicationTrackingDesc": "Gérez toutes vos candidatures de cours et suivez leur statut en temps réel",
   "featureApplicationTrackingInstructions": "Accédez à l'onglet Candidatures pour voir et gérer toutes vos candidatures.",
-
   "featureLearningDashboardTitle": "Tableau de bord d'apprentissage",
   "featureLearningDashboardDesc": "Suivez votre progression, consultez les cours inscrits et accédez aux supports d'apprentissage",
   "featureLearningDashboardInstructions": "Accédez à votre tableau de bord depuis l'onglet Accueil pour voir votre progression.",
-
   "featureMessagingTitle": "Messagerie",
   "featureMessagingDesc": "Communiquez directement avec les institutions et les conseillers",
   "featureMessagingInstructions": "Ouvrez l'onglet Messages pour discuter avec les institutions et les conseillers.",
-
   "featureNotesTitle": "Notes",
   "featureNotesDesc": "Prenez, organisez et synchronisez des notes sur tous vos appareils",
   "featureNotesInstructions": "Appuyez sur l'icône Notes pour créer et organiser vos notes d'étude.",
-
   "featureBookmarksTitle": "Favoris",
   "featureBookmarksDesc": "Enregistrez des cours et des ressources pour un accès rapide ultérieur",
   "featureBookmarksInstructions": "Enregistrez des éléments en appuyant sur l'icône de favori sur les cours ou les ressources.",
-
   "featureAchievementsTitle": "Réussites",
   "featureAchievementsDesc": "Gagnez des badges et suivez les jalons au fur et à mesure de votre progression",
   "featureAchievementsInstructions": "Consultez vos réussites dans la section Profil sous Progression.",
-
   "featureProgressAnalyticsTitle": "Analyses de progression",
   "featureProgressAnalyticsDesc": "Visualisez votre parcours d'apprentissage avec des statistiques détaillées",
   "featureProgressAnalyticsInstructions": "Consultez les analyses détaillées dans votre section Profil > Progression.",
-
   "featureCalendarTitle": "Calendrier",
   "featureCalendarDesc": "Suivez les échéances, les événements et les dates importantes",
   "featureCalendarInstructions": "Accédez au Calendrier depuis la navigation en bas ou le menu.",
-
   "featureSmartNotificationsTitle": "Notifications intelligentes",
   "featureSmartNotificationsDesc": "Recevez des rappels et des mises à jour opportuns concernant vos candidatures",
   "featureSmartNotificationsInstructions": "Activez les notifications dans Paramètres > Notifications.",
-
   "featureStudySchedulerTitle": "Planificateur d'étude",
   "featureStudySchedulerDesc": "Planifiez et optimisez votre temps d'étude",
   "featureStudySchedulerInstructions": "Créez des horaires d'étude dans Outils > Planificateur d'étude.",
-
   "featureGoalsMilestonesTitle": "Objectifs et jalons",
   "featureGoalsMilestonesDesc": "Définissez et suivez vos objectifs d'apprentissage",
   "featureGoalsMilestonesInstructions": "Définissez des objectifs dans Profil > Progression > Objectifs.",
-
   "featureStudyGroupsTitle": "Groupes d'étude",
   "featureStudyGroupsDesc": "Connectez-vous et collaborez avec d'autres apprenants",
   "featureStudyGroupsInstructions": "Rejoignez ou créez des groupes d'étude depuis Communauté > Groupes.",
-
   "featureDiscussionForumsTitle": "Forums de discussion",
   "featureDiscussionForumsDesc": "Participez aux discussions de cours et aux questions-réponses",
   "featureDiscussionForumsInstructions": "Participez aux forums depuis Communauté > Discussions.",
-
   "featureResourceSharingTitle": "Partage de ressources",
   "featureResourceSharingDesc": "Partagez des notes, des liens et des supports d'étude",
   "featureResourceSharingInstructions": "Partagez des ressources en utilisant le bouton de partage sur n'importe quel contenu.",
-
   "featureLiveSessionsTitle": "Sessions en direct",
   "featureLiveSessionsDesc": "Rejoignez des cours virtuels et des webinaires",
   "featureLiveSessionsInstructions": "Rejoignez des sessions en direct depuis la section Horaire ou Cours.",
@@ -7407,20 +7374,11 @@
   "privacyPleaseTypeDelete": "Veuillez taper DELETE pour confirmer",
   "privacyPrivacyPolicyComingSoon": "Politique de confidentialité à venir",
   "privacyTermsOfServiceComingSoon": "Conditions d'utilisation à venir",
-  "browseInstitutionsBack": "Retour",
-  "browseInstitutionsSelectTitle": "Sélectionner une institution",
   "browseInstitutionsBrowseTitle": "Parcourir les institutions",
-  "browseInstitutionsClearFilters": "Effacer les filtres",
-  "browseInstitutionsSearchHint": "Rechercher par nom d'institution ou e-mail...",
-  "browseInstitutionsSortBy": "Trier par : ",
   "browseInstitutionsSortNameAZ": "Nom (A-Z)",
   "browseInstitutionsSortTotalOfferings": "Total des offres",
-  "browseInstitutionsSortPrograms": "Programmes",
-  "browseInstitutionsSortCourses": "Cours",
-  "browseInstitutionsSortNewest": "Plus récent",
   "browseInstitutionsSortAscending": "Croissant",
   "browseInstitutionsSortDescending": "Décroissant",
-  "browseInstitutionsShowVerifiedOnly": "Afficher uniquement les institutions vérifiées",
   "browseInstitutionsRegisteredCount": "{count} institution(s) inscrite(s)",
   "@browseInstitutionsRegisteredCount": {
     "placeholders": {
@@ -7429,17 +7387,37 @@
       }
     }
   },
-  "browseInstitutionsTapToSelect": "Appuyez pour sélectionner",
-  "browseInstitutionsRetry": "Réessayer",
   "browseInstitutionsNoInstitutionsFound": "Aucune institution trouvée",
   "browseInstitutionsTryAdjusting": "Essayez d'ajuster votre recherche ou vos filtres",
-  "browseInstitutionsVerified": "Vérifié",
   "browseInstitutionsNoOfferingsYet": "Aucune offre pour le moment",
-  "browseInstitutionsSelected": "Sélectionné : {name}",
-  "@browseInstitutionsSelected": {
+  "@instCounselorsPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@instCounselorsAssignStudentTo": {
     "placeholders": {
       "name": {
         "type": "String"
+      }
+    }
+  },
+  "@instCounselorsError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@instCoursesEnrolledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
     }
   }

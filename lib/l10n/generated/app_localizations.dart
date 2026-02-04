@@ -7505,13 +7505,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseTitleLabel.
   ///
   /// In en, this message translates to:
-  /// **'Course Title *'**
+  /// **'Title'**
   String get instCourseTitleLabel;
 
   /// No description provided for @instCourseTitleHint.
   ///
   /// In en, this message translates to:
-  /// **'e.g., Introduction to Programming'**
+  /// **'e.g., Introduction to Web Development'**
   String get instCourseTitleHint;
 
   /// No description provided for @instCourseTitleRequired.
@@ -7535,13 +7535,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseDescriptionLabel.
   ///
   /// In en, this message translates to:
-  /// **'Description *'**
+  /// **'Description'**
   String get instCourseDescriptionLabel;
 
   /// No description provided for @instCourseDescriptionHint.
   ///
   /// In en, this message translates to:
-  /// **'Describe what students will learn...'**
+  /// **'Describe what students will learn in this course'**
   String get instCourseDescriptionHint;
 
   /// No description provided for @instCourseDescriptionRequired.
@@ -7565,19 +7565,19 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseCourseType.
   ///
   /// In en, this message translates to:
-  /// **'Course Type *'**
+  /// **'Course Type'**
   String get instCourseCourseType;
 
   /// No description provided for @instCourseDifficultyLevel.
   ///
   /// In en, this message translates to:
-  /// **'Difficulty Level *'**
+  /// **'Difficulty Level'**
   String get instCourseDifficultyLevel;
 
   /// No description provided for @instCourseDurationHours.
   ///
   /// In en, this message translates to:
-  /// **'Duration (hours)'**
+  /// **'Duration (Hours)'**
   String get instCourseDurationHours;
 
   /// No description provided for @instCourseCategory.
@@ -7589,7 +7589,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseCategoryHint.
   ///
   /// In en, this message translates to:
-  /// **'Computer Science'**
+  /// **'e.g., Programming, Design, Business'**
   String get instCourseCategoryHint;
 
   /// No description provided for @instCoursePricing.
@@ -7601,7 +7601,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCoursePriceLabel.
   ///
   /// In en, this message translates to:
-  /// **'Price *'**
+  /// **'Price'**
   String get instCoursePriceLabel;
 
   /// No description provided for @instCoursePriceRequired.
@@ -7625,7 +7625,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseMaxStudents.
   ///
   /// In en, this message translates to:
-  /// **'Max Students (optional)'**
+  /// **'Maximum Students'**
   String get instCourseMaxStudents;
 
   /// No description provided for @instCourseMaxStudentsHint.
@@ -7643,7 +7643,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseThumbnailUrl.
   ///
   /// In en, this message translates to:
-  /// **'Thumbnail URL (optional)'**
+  /// **'Thumbnail URL'**
   String get instCourseThumbnailUrl;
 
   /// No description provided for @instCourseTags.
@@ -7655,7 +7655,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseAddTagHint.
   ///
   /// In en, this message translates to:
-  /// **'Add tag (e.g., programming, python)'**
+  /// **'Add a tag (e.g., JavaScript, React)'**
   String get instCourseAddTagHint;
 
   /// No description provided for @instCourseLearningOutcomes.
@@ -7667,7 +7667,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseOutcomeHint.
   ///
   /// In en, this message translates to:
-  /// **'What will students learn?'**
+  /// **'What will students be able to do after this course?'**
   String get instCourseOutcomeHint;
 
   /// No description provided for @instCoursePrerequisites.
@@ -7679,7 +7679,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCoursePrerequisiteHint.
   ///
   /// In en, this message translates to:
-  /// **'What do students need to know?'**
+  /// **'What should students know before taking this course?'**
   String get instCoursePrerequisiteHint;
 
   /// No description provided for @instCourseUpdateCourse.
@@ -7697,13 +7697,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseUpdatedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Course updated successfully!'**
+  /// **'Course updated successfully'**
   String get instCourseUpdatedSuccess;
 
   /// No description provided for @instCourseFailedToSave.
   ///
   /// In en, this message translates to:
-  /// **'Failed to save course. Please try again.'**
+  /// **'Failed to save course'**
   String get instCourseFailedToSave;
 
   /// No description provided for @instCourseCourseRoster.
@@ -7727,13 +7727,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseNoEnrolledStudents.
   ///
   /// In en, this message translates to:
-  /// **'No enrolled students yet'**
+  /// **'No students enrolled yet'**
   String get instCourseNoEnrolledStudents;
 
   /// No description provided for @instCourseApprovedStudentsAppearHere.
   ///
   /// In en, this message translates to:
-  /// **'Students with approved permissions will appear here'**
+  /// **'Students who have been approved will appear here'**
   String get instCourseApprovedStudentsAppearHere;
 
   /// No description provided for @instCourseEnrolledStudents.
@@ -7763,7 +7763,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCoursePendingRequests.
   ///
   /// In en, this message translates to:
-  /// **'Pending Requests'**
+  /// **'Pending'**
   String get instCoursePendingRequests;
 
   /// No description provided for @instCourseApproved.
@@ -7811,7 +7811,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseSelectStudentsGrant.
   ///
   /// In en, this message translates to:
-  /// **'Select students to grant access to this course'**
+  /// **'Select students to grant enrollment permission'**
   String get instCourseSelectStudentsGrant;
 
   /// No description provided for @instCourseSearchStudents.
@@ -7847,7 +7847,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseGrantToStudents.
   ///
   /// In en, this message translates to:
-  /// **'Grant to {count} Student(s)'**
+  /// **'Grant to {count} Students'**
   String instCourseGrantToStudents(int count);
 
   /// No description provided for @instCourseNoStudentsAvailable.
@@ -7859,13 +7859,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseAllStudentsHavePermissions.
   ///
   /// In en, this message translates to:
-  /// **'All admitted students already have permissions'**
+  /// **'All students already have permissions or pending requests'**
   String get instCourseAllStudentsHavePermissions;
 
   /// No description provided for @instCourseNoMatchingStudents.
   ///
   /// In en, this message translates to:
-  /// **'No matching students'**
+  /// **'No students match your search'**
   String get instCourseNoMatchingStudents;
 
   /// No description provided for @instCourseNoPendingRequests.
@@ -7883,7 +7883,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseMessage.
   ///
   /// In en, this message translates to:
-  /// **'Message:'**
+  /// **'Message'**
   String get instCourseMessage;
 
   /// No description provided for @instCourseRequested.
@@ -7907,13 +7907,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseApprovedStudent.
   ///
   /// In en, this message translates to:
-  /// **'Approved {name}'**
+  /// **'Approved {name} successfully'**
   String instCourseApprovedStudent(String name);
 
   /// No description provided for @instCourseFailedToApprove.
   ///
   /// In en, this message translates to:
-  /// **'Failed to approve'**
+  /// **'Failed to approve request'**
   String get instCourseFailedToApprove;
 
   /// No description provided for @instCourseDenyPermissionRequest.
@@ -7925,31 +7925,31 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseDenyStudent.
   ///
   /// In en, this message translates to:
-  /// **'Deny {name}?'**
+  /// **'Are you sure you want to deny permission for {name}?'**
   String instCourseDenyStudent(String name);
 
   /// No description provided for @instCourseReasonForDenial.
   ///
   /// In en, this message translates to:
-  /// **'Reason for denial'**
+  /// **'Reason for Denial'**
   String get instCourseReasonForDenial;
 
   /// No description provided for @instCourseEnterReason.
   ///
   /// In en, this message translates to:
-  /// **'Enter reason...'**
+  /// **'Enter reason for denial'**
   String get instCourseEnterReason;
 
   /// No description provided for @instCoursePleaseProvideReason.
   ///
   /// In en, this message translates to:
-  /// **'Please provide a reason'**
+  /// **'Please provide a reason for denial'**
   String get instCoursePleaseProvideReason;
 
   /// No description provided for @instCourseDeniedStudent.
   ///
   /// In en, this message translates to:
-  /// **'Denied {name}'**
+  /// **'Denied permission for {name}'**
   String instCourseDeniedStudent(String name);
 
   /// No description provided for @instCourseNoApprovedPermissions.
@@ -7979,7 +7979,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseReasonOptional.
   ///
   /// In en, this message translates to:
-  /// **'Reason (optional)'**
+  /// **'Reason (Optional)'**
   String get instCourseReasonOptional;
 
   /// No description provided for @instCourseRevoke.
@@ -8003,7 +8003,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseAcceptedStudentsAppearHere.
   ///
   /// In en, this message translates to:
-  /// **'Students with accepted applications will appear here'**
+  /// **'Students accepted to your institution will appear here'**
   String get instCourseAcceptedStudentsAppearHere;
 
   /// No description provided for @instCourseRequestPending.
@@ -8039,19 +8039,19 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseGrantStudentPermission.
   ///
   /// In en, this message translates to:
-  /// **'Grant {name} permission to enroll in this course?'**
+  /// **'Grant enrollment permission to {name}?'**
   String instCourseGrantStudentPermission(String name);
 
   /// No description provided for @instCourseNotesOptional.
   ///
   /// In en, this message translates to:
-  /// **'Notes (optional)'**
+  /// **'Notes (Optional)'**
   String get instCourseNotesOptional;
 
   /// No description provided for @instCourseAddNotes.
   ///
   /// In en, this message translates to:
-  /// **'Add any notes...'**
+  /// **'Add notes (optional)'**
   String get instCourseAddNotes;
 
   /// No description provided for @instCourseGrant.
@@ -8075,7 +8075,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseRequestApproved.
   ///
   /// In en, this message translates to:
-  /// **'Request approved'**
+  /// **'Request approved successfully'**
   String get instCourseRequestApproved;
 
   /// No description provided for @instCourseFailedToApproveRequest.
@@ -8159,7 +8159,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseLearningObjectives.
   ///
   /// In en, this message translates to:
-  /// **'Learning Objectives:'**
+  /// **'Learning Objectives'**
   String get instCourseLearningObjectives;
 
   /// No description provided for @instCourseLessons.
@@ -8177,7 +8177,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseNoLessonsInModule.
   ///
   /// In en, this message translates to:
-  /// **'No lessons in this module'**
+  /// **'No lessons in this module yet'**
   String get instCourseNoLessonsInModule;
 
   /// No description provided for @instCourseEditLesson.
@@ -8201,13 +8201,13 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseModuleCreatedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Module \"{title}\" created successfully'**
+  /// **'Module \'{title}\' created successfully'**
   String instCourseModuleCreatedSuccess(String title);
 
   /// No description provided for @instCourseModuleUpdatedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Module \"{title}\" updated successfully'**
+  /// **'Module \'{title}\' updated successfully'**
   String instCourseModuleUpdatedSuccess(String title);
 
   /// No description provided for @instCourseAddNewLesson.
@@ -8255,7 +8255,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseDeleteModuleConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to delete this module? This will also delete all lessons in the module.'**
+  /// **'Are you sure you want to delete this module? All lessons will be deleted.'**
   String get instCourseDeleteModuleConfirm;
 
   /// No description provided for @instCourseDelete.
@@ -8309,7 +8309,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCourseInfoUpdatedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Course info updated successfully'**
+  /// **'Course information updated successfully'**
   String get instCourseInfoUpdatedSuccess;
 
   /// No description provided for @instCourseSaving.
@@ -8333,37 +8333,37 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramNameLabel.
   ///
   /// In en, this message translates to:
-  /// **'Program Name *'**
+  /// **'Program Name'**
   String get instProgramNameLabel;
 
   /// No description provided for @instProgramNameHint.
   ///
   /// In en, this message translates to:
-  /// **'e.g., Bachelor of Computer Science'**
+  /// **'e.g., Bachelor of Science in Computer Science'**
   String get instProgramNameHint;
 
   /// No description provided for @instProgramDescriptionLabel.
   ///
   /// In en, this message translates to:
-  /// **'Description *'**
+  /// **'Description'**
   String get instProgramDescriptionLabel;
 
   /// No description provided for @instProgramDescriptionHint.
   ///
   /// In en, this message translates to:
-  /// **'Describe the program...'**
+  /// **'Describe the program, its goals, and what makes it unique'**
   String get instProgramDescriptionHint;
 
   /// No description provided for @instProgramCategoryLabel.
   ///
   /// In en, this message translates to:
-  /// **'Category *'**
+  /// **'Category'**
   String get instProgramCategoryLabel;
 
   /// No description provided for @instProgramLevelLabel.
   ///
   /// In en, this message translates to:
-  /// **'Level *'**
+  /// **'Level'**
   String get instProgramLevelLabel;
 
   /// No description provided for @instProgramDuration.
@@ -8375,13 +8375,13 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramFeeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Program Fee (USD) *'**
+  /// **'Fee'**
   String get instProgramFeeLabel;
 
   /// No description provided for @instProgramMaxStudentsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Maximum Students *'**
+  /// **'Maximum Students'**
   String get instProgramMaxStudentsLabel;
 
   /// No description provided for @instProgramMaxStudentsHint.
@@ -8411,7 +8411,7 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramAddRequirementHint.
   ///
   /// In en, this message translates to:
-  /// **'Add a requirement...'**
+  /// **'e.g., High school diploma with minimum GPA of 3.0'**
   String get instProgramAddRequirementHint;
 
   /// No description provided for @instProgramAddAtLeastOneRequirement.
@@ -8579,13 +8579,13 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramStopAccepting.
   ///
   /// In en, this message translates to:
-  /// **'This program will stop accepting new applications.'**
+  /// **'This will stop accepting new applications. You can reactivate it later.'**
   String get instProgramStopAccepting;
 
   /// No description provided for @instProgramStartAccepting.
   ///
   /// In en, this message translates to:
-  /// **'This program will start accepting new applications.'**
+  /// **'This will start accepting new applications again.'**
   String get instProgramStartAccepting;
 
   /// No description provided for @instProgramCancel.
@@ -8603,19 +8603,19 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramActivated.
   ///
   /// In en, this message translates to:
-  /// **'Program activated'**
+  /// **'Program activated successfully'**
   String get instProgramActivated;
 
   /// No description provided for @instProgramDeactivated.
   ///
   /// In en, this message translates to:
-  /// **'Program deactivated'**
+  /// **'Program deactivated successfully'**
   String get instProgramDeactivated;
 
   /// No description provided for @instProgramErrorUpdatingStatus.
   ///
   /// In en, this message translates to:
-  /// **'Error updating program status: {error}'**
+  /// **'Error updating status: {error}'**
   String instProgramErrorUpdatingStatus(String error);
 
   /// No description provided for @instProgramDeleteProgramQuestion.
@@ -8627,7 +8627,7 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramDeleteConfirm.
   ///
   /// In en, this message translates to:
-  /// **'This action cannot be undone. All data associated with this program will be permanently deleted.'**
+  /// **'This action cannot be undone. All program data will be permanently deleted.'**
   String get instProgramDeleteConfirm;
 
   /// No description provided for @instProgramDelete.
@@ -8687,7 +8687,7 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search programs...'**
+  /// **'Search programs by name or category'**
   String get instProgramSearchHint;
 
   /// No description provided for @instProgramNewProgram.
@@ -8699,19 +8699,19 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramNoProgramsFound.
   ///
   /// In en, this message translates to:
-  /// **'No Programs Found'**
+  /// **'No programs found'**
   String get instProgramNoProgramsFound;
 
   /// No description provided for @instProgramTryAdjustingSearch.
   ///
   /// In en, this message translates to:
-  /// **'Try adjusting your search'**
+  /// **'Try adjusting your search or filters'**
   String get instProgramTryAdjustingSearch;
 
   /// No description provided for @instProgramCreateFirstProgram.
   ///
   /// In en, this message translates to:
-  /// **'Create your first program'**
+  /// **'Create your first program to get started'**
   String get instProgramCreateFirstProgram;
 
   /// No description provided for @instProgramInactive.
@@ -8729,7 +8729,7 @@ abstract class AppLocalizations {
   /// No description provided for @instProgramFull.
   ///
   /// In en, this message translates to:
-  /// **'Full'**
+  /// **'FULL'**
   String get instProgramFull;
 
   /// No description provided for @instProgramSlotsAvailable.
@@ -26495,7 +26495,7 @@ abstract class AppLocalizations {
   /// No description provided for @instCounselorsSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search counselors...'**
+  /// **'Search counselors by name or email'**
   String get instCounselorsSearchHint;
 
   /// No description provided for @instCounselorsRetry.
@@ -26519,14 +26519,14 @@ abstract class AppLocalizations {
   /// No description provided for @instCounselorsAddToInstitution.
   ///
   /// In en, this message translates to:
-  /// **'Add counselors to your institution'**
+  /// **'Add counselors to your institution to get started'**
   String get instCounselorsAddToInstitution;
 
   /// No description provided for @instCounselorsPageOf.
   ///
   /// In en, this message translates to:
   /// **'Page {current} of {total}'**
-  String instCounselorsPageOf(Object current, Object total);
+  String instCounselorsPageOf(int current, int total);
 
   /// No description provided for @instCounselorsCounselingOverview.
   ///
@@ -26598,7 +26598,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Assign Student to {name}'**
-  String instCounselorsAssignStudentTo(Object name);
+  String instCounselorsAssignStudentTo(String name);
 
   /// No description provided for @instCounselorsSearchStudents.
   ///
@@ -26622,7 +26622,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Error: {error}'**
-  String instCounselorsError(Object error);
+  String instCounselorsError(String error);
 
   /// No description provided for @instCounselorsCancel.
   ///
@@ -29913,49 +29913,49 @@ abstract class AppLocalizations {
   /// No description provided for @instCoursesDescription.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Description'**
+  /// **'Description'**
   String get instCoursesDescription;
 
   /// No description provided for @instCoursesEditCourse.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Edit Course'**
+  /// **'Edit Course'**
   String get instCoursesEditCourse;
 
   /// No description provided for @instCoursesEnrolledCount.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Enrolled Count: {count}'**
+  /// **'{count} Enrolled'**
   String instCoursesEnrolledCount(int count);
 
   /// No description provided for @instCoursesLearningOutcomes.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Learning Outcomes'**
+  /// **'What You\'ll Learn'**
   String get instCoursesLearningOutcomes;
 
   /// No description provided for @instCoursesPrerequisites.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Prerequisites'**
+  /// **'Prerequisites'**
   String get instCoursesPrerequisites;
 
   /// No description provided for @instCoursesPublished.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Published'**
+  /// **'PUBLISHED'**
   String get instCoursesPublished;
 
   /// No description provided for @instCoursesQuickActions.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Quick Actions'**
+  /// **'Quick Actions'**
   String get instCoursesQuickActions;
 
   /// No description provided for @instCoursesStatistics.
   ///
   /// In en, this message translates to:
-  /// **'Inst Courses Statistics'**
+  /// **'Statistics'**
   String get instCoursesStatistics;
 
   /// No description provided for @instDebugAuthInfo.

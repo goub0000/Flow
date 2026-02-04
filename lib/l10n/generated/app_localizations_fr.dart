@@ -1412,10 +1412,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashAdminByUserType => 'Par type d\'utilisateur';
 
   @override
-  String get dashInstTitle => 'Tableau de bord institution';
+  String get dashInstTitle => 'Tableau de Bord Institution';
 
   @override
-  String get dashInstDebugPanel => 'Panneau de débogage';
+  String get dashInstDebugPanel => 'Panneau de Débogage';
 
   @override
   String get dashInstApplicants => 'Candidats';
@@ -1430,10 +1430,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashInstCounselors => 'Conseillers';
 
   @override
-  String get dashInstNewProgram => 'Nouveau programme';
+  String get dashInstNewProgram => 'Nouveau Programme';
 
   @override
-  String get dashInstNewCourse => 'Nouveau cours';
+  String get dashInstNewCourse => 'Nouveau Cours';
 
   @override
   String get dashInstTotalApplicants => 'Total des candidats';
@@ -1537,7 +1537,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get dashRecTitle => 'Tableau de bord recommandeur';
+  String get dashRecTitle => 'Tableau de Bord Recommandeur';
 
   @override
   String get dashRecRecommendations => 'Recommandations';
@@ -4061,71 +4061,73 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instApplicantChipReviewing => 'En examen';
 
   @override
-  String get instCourseEditCourse => 'Modifier le cours';
+  String get instCourseEditCourse => 'Modifier le Cours';
 
   @override
-  String get instCourseCreateCourse => 'Creer un cours';
+  String get instCourseCreateCourse => 'Créer un Cours';
 
   @override
-  String get instCourseBasicInfo => 'Informations de base';
+  String get instCourseBasicInfo => 'Informations de Base';
 
   @override
-  String get instCourseTitleLabel => 'Titre du cours *';
+  String get instCourseTitleLabel => 'Titre';
 
   @override
-  String get instCourseTitleHint => 'ex., Introduction a la programmation';
+  String get instCourseTitleHint =>
+      'par ex., Introduction au Développement Web';
 
   @override
-  String get instCourseTitleRequired => 'Le titre est obligatoire';
+  String get instCourseTitleRequired => 'Le titre est requis';
 
   @override
   String get instCourseTitleMinLength =>
-      'Le titre doit comporter au moins 3 caracteres';
+      'Le titre doit comporter au moins 3 caractères';
 
   @override
   String get instCourseTitleMaxLength =>
-      'Le titre doit comporter moins de 200 caracteres';
+      'Le titre doit comporter moins de 200 caractères';
 
   @override
-  String get instCourseDescriptionLabel => 'Description *';
+  String get instCourseDescriptionLabel => 'Description';
 
   @override
   String get instCourseDescriptionHint =>
-      'Decrivez ce que les etudiants apprendront...';
+      'Décrivez ce que les étudiants apprendront dans ce cours';
 
   @override
-  String get instCourseDescriptionRequired => 'La description est obligatoire';
+  String get instCourseDescriptionRequired => 'La description est requise';
 
   @override
   String get instCourseDescriptionMinLength =>
-      'La description doit comporter au moins 10 caracteres';
+      'La description doit comporter au moins 10 caractères';
 
   @override
-  String get instCourseCourseDetails => 'Details du cours';
+  String get instCourseCourseDetails => 'Détails du Cours';
 
   @override
-  String get instCourseCourseType => 'Type de cours *';
+  String get instCourseCourseType => 'Type de Cours';
 
   @override
-  String get instCourseDifficultyLevel => 'Niveau de difficulte *';
+  String get instCourseDifficultyLevel => 'Niveau de Difficulté';
 
   @override
-  String get instCourseDurationHours => 'Duree (heures)';
+  String get instCourseDurationHours => 'Durée (Heures)';
 
   @override
-  String get instCourseCategory => 'Categorie';
+  String get instCourseCategory => 'Catégorie';
 
   @override
-  String get instCourseCategoryHint => 'Informatique';
+  String get instCourseCategoryHint =>
+      'par ex., Programmation, Design, Business';
 
   @override
   String get instCoursePricing => 'Tarification';
 
   @override
-  String get instCoursePriceLabel => 'Prix *';
+  String get instCoursePriceLabel => 'Prix';
 
   @override
-  String get instCoursePriceRequired => 'Le prix est obligatoire';
+  String get instCoursePriceRequired => 'Le prix est requis';
 
   @override
   String get instCourseInvalidPrice => 'Prix invalide';
@@ -4134,120 +4136,121 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instCourseCurrency => 'Devise';
 
   @override
-  String get instCourseMaxStudents => 'Nombre max d\'etudiants (facultatif)';
+  String get instCourseMaxStudents => 'Nombre Maximum d\'Étudiants';
 
   @override
-  String get instCourseMaxStudentsHint => 'Laisser vide pour illimite';
+  String get instCourseMaxStudentsHint => 'Laisser vide pour illimité';
 
   @override
-  String get instCourseMedia => 'Medias';
+  String get instCourseMedia => 'Médias';
 
   @override
-  String get instCourseThumbnailUrl => 'URL de la miniature (facultatif)';
+  String get instCourseThumbnailUrl => 'URL de la Miniature';
 
   @override
   String get instCourseTags => 'Tags';
 
   @override
   String get instCourseAddTagHint =>
-      'Ajouter un tag (ex., programmation, python)';
+      'Ajouter un tag (par ex., JavaScript, React)';
 
   @override
-  String get instCourseLearningOutcomes => 'Resultats d\'apprentissage';
+  String get instCourseLearningOutcomes => 'Résultats d\'Apprentissage';
 
   @override
-  String get instCourseOutcomeHint => 'Qu\'apprendront les etudiants ?';
+  String get instCourseOutcomeHint =>
+      'Que pourront faire les étudiants après ce cours ?';
 
   @override
-  String get instCoursePrerequisites => 'Prerequis';
+  String get instCoursePrerequisites => 'Prérequis';
 
   @override
-  String get instCoursePrerequisiteHint => 'Que doivent savoir les etudiants ?';
+  String get instCoursePrerequisiteHint =>
+      'Que doivent savoir les étudiants avant de suivre ce cours ?';
 
   @override
-  String get instCourseUpdateCourse => 'Mettre a jour le cours';
+  String get instCourseUpdateCourse => 'Mettre à Jour le Cours';
 
   @override
-  String get instCourseCreatedSuccess => 'Cours cree avec succes !';
+  String get instCourseCreatedSuccess => 'Cours créé avec succès !';
 
   @override
-  String get instCourseUpdatedSuccess => 'Cours mis a jour avec succes !';
+  String get instCourseUpdatedSuccess => 'Cours mis à jour avec succès';
 
   @override
-  String get instCourseFailedToSave =>
-      'Echec de l\'enregistrement du cours. Veuillez reessayer.';
+  String get instCourseFailedToSave => 'Échec de l\'enregistrement du cours';
 
   @override
-  String get instCourseCourseRoster => 'Liste des inscrits';
+  String get instCourseCourseRoster => 'Liste des Étudiants du Cours';
 
   @override
   String get instCourseRefresh => 'Actualiser';
 
   @override
-  String get instCourseRetry => 'Reessayer';
+  String get instCourseRetry => 'Réessayer';
 
   @override
   String get instCourseNoEnrolledStudents =>
-      'Aucun etudiant inscrit pour le moment';
+      'Aucun étudiant inscrit pour l\'instant';
 
   @override
   String get instCourseApprovedStudentsAppearHere =>
-      'Les etudiants avec des autorisations approuvees apparaitront ici';
+      'Les étudiants approuvés apparaîtront ici';
 
   @override
-  String get instCourseEnrolledStudents => 'Etudiants inscrits';
+  String get instCourseEnrolledStudents => 'Étudiants Inscrits';
 
   @override
-  String get instCourseMaxCapacity => 'Capacite maximale';
+  String get instCourseMaxCapacity => 'Capacité Max';
 
   @override
   String instCourseEnrolledDate(String date) {
-    return 'Inscrit : $date';
+    return 'Inscrit: $date';
   }
 
   @override
-  String get instCourseEnrollmentPermissions => 'Autorisations d\'inscription';
+  String get instCourseEnrollmentPermissions => 'Permissions d\'Inscription';
 
   @override
-  String get instCoursePendingRequests => 'Demandes en attente';
+  String get instCoursePendingRequests => 'En attente';
 
   @override
-  String get instCourseApproved => 'Approuve';
+  String get instCourseApproved => 'Approuvées';
 
   @override
-  String get instCourseAllStudents => 'Tous les etudiants';
+  String get instCourseAllStudents => 'Tous les Étudiants';
 
   @override
-  String get instCourseGrantPermission => 'Accorder l\'autorisation';
+  String get instCourseGrantPermission => 'Accorder une Permission';
 
   @override
   String get instCourseSelectAtLeastOne =>
-      'Veuillez selectionner au moins un etudiant';
+      'Veuillez sélectionner au moins un étudiant';
 
   @override
   String instCourseGrantedPermission(int count) {
-    return 'Autorisation accordee a $count etudiant(s)';
+    return 'Permission accordée à $count étudiant(s)';
   }
 
   @override
   String instCourseFailedGrantPermission(int count) {
-    return 'Echec de l\'autorisation pour $count etudiant(s)';
+    return 'Échec de l\'octroi de permission à $count étudiant(s)';
   }
 
   @override
   String get instCourseGrantEnrollmentPermission =>
-      'Accorder l\'autorisation d\'inscription';
+      'Accorder une Permission d\'Inscription';
 
   @override
   String get instCourseSelectStudentsGrant =>
-      'Selectionnez les etudiants pour accorder l\'acces a ce cours';
+      'Sélectionnez les étudiants pour accorder une permission d\'inscription';
 
   @override
-  String get instCourseSearchStudents => 'Rechercher des etudiants...';
+  String get instCourseSearchStudents => 'Rechercher des étudiants...';
 
   @override
   String instCourseSelectedCount(int count) {
-    return '$count selectionne(s)';
+    return '$count sélectionné(s)';
   }
 
   @override
@@ -4257,36 +4260,37 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instCourseCancel => 'Annuler';
 
   @override
-  String get instCourseSelectStudents => 'Selectionner des etudiants';
+  String get instCourseSelectStudents => 'Sélectionner des Étudiants';
 
   @override
   String instCourseGrantToStudents(int count) {
-    return 'Accorder a $count etudiant(s)';
+    return 'Accorder à $count Étudiants';
   }
 
   @override
-  String get instCourseNoStudentsAvailable => 'Aucun etudiant disponible';
+  String get instCourseNoStudentsAvailable => 'Aucun étudiant disponible';
 
   @override
   String get instCourseAllStudentsHavePermissions =>
-      'Tous les etudiants admis ont deja des autorisations';
+      'Tous les étudiants ont déjà des permissions ou des demandes en attente';
 
   @override
-  String get instCourseNoMatchingStudents => 'Aucun etudiant correspondant';
+  String get instCourseNoMatchingStudents =>
+      'Aucun étudiant ne correspond à votre recherche';
 
   @override
   String get instCourseNoPendingRequests => 'Aucune demande en attente';
 
   @override
   String get instCourseStudentsCanRequest =>
-      'Les etudiants peuvent demander l\'autorisation d\'inscription';
+      'Les étudiants peuvent demander une permission d\'inscription';
 
   @override
-  String get instCourseMessage => 'Message :';
+  String get instCourseMessage => 'Message';
 
   @override
   String instCourseRequested(String date) {
-    return 'Demande : $date';
+    return 'Demandé: $date';
   }
 
   @override
@@ -4297,137 +4301,140 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String instCourseApprovedStudent(String name) {
-    return '$name approuve';
+    return '$name approuvé avec succès';
   }
 
   @override
-  String get instCourseFailedToApprove => 'Echec de l\'approbation';
+  String get instCourseFailedToApprove =>
+      'Échec de l\'approbation de la demande';
 
   @override
   String get instCourseDenyPermissionRequest =>
-      'Refuser la demande d\'autorisation';
+      'Refuser la Demande de Permission';
 
   @override
   String instCourseDenyStudent(String name) {
-    return 'Refuser $name ?';
+    return 'Êtes-vous sûr de vouloir refuser la permission pour $name ?';
   }
 
   @override
-  String get instCourseReasonForDenial => 'Raison du refus';
+  String get instCourseReasonForDenial => 'Raison du Refus';
 
   @override
-  String get instCourseEnterReason => 'Saisir la raison...';
+  String get instCourseEnterReason => 'Entrez la raison du refus';
 
   @override
-  String get instCoursePleaseProvideReason => 'Veuillez fournir une raison';
+  String get instCoursePleaseProvideReason =>
+      'Veuillez fournir une raison pour le refus';
 
   @override
   String instCourseDeniedStudent(String name) {
-    return '$name refuse';
+    return 'Permission refusée pour $name';
   }
 
   @override
-  String get instCourseNoApprovedPermissions => 'Aucune autorisation approuvee';
+  String get instCourseNoApprovedPermissions =>
+      'Aucune permission approuvée pour l\'instant';
 
   @override
   String get instCourseGrantToAllowEnroll =>
-      'Accordez des autorisations pour permettre aux etudiants de s\'inscrire';
+      'Accordez des permissions pour permettre aux étudiants de s\'inscrire';
 
   @override
-  String get instCourseRevokePermission => 'Revoquer l\'autorisation';
+  String get instCourseRevokePermission => 'Révoquer la Permission';
 
   @override
   String instCourseRevokePermissionFor(String name) {
-    return 'Revoquer l\'autorisation pour $name ?';
+    return 'Révoquer la permission pour $name ?';
   }
 
   @override
-  String get instCourseReasonOptional => 'Raison (facultatif)';
+  String get instCourseReasonOptional => 'Raison (Optionnel)';
 
   @override
-  String get instCourseRevoke => 'Revoquer';
+  String get instCourseRevoke => 'Révoquer';
 
   @override
   String instCourseRevokedPermissionFor(String name) {
-    return 'Autorisation revoquee pour $name';
+    return 'Permission révoquée pour $name';
   }
 
   @override
-  String get instCourseNoAdmittedStudents => 'Aucun etudiant admis';
+  String get instCourseNoAdmittedStudents => 'Aucun étudiant admis';
 
   @override
   String get instCourseAcceptedStudentsAppearHere =>
-      'Les etudiants avec des candidatures acceptees apparaitront ici';
+      'Les étudiants acceptés dans votre institution apparaîtront ici';
 
   @override
-  String get instCourseRequestPending => 'Demande en attente';
+  String get instCourseRequestPending => 'Demande en Attente';
 
   @override
-  String get instCourseAccessGranted => 'Acces accorde';
+  String get instCourseAccessGranted => 'Accès Accordé';
 
   @override
-  String get instCourseDenied => 'Refuse';
+  String get instCourseDenied => 'Refusé';
 
   @override
-  String get instCourseRevoked => 'Revoque';
+  String get instCourseRevoked => 'Révoqué';
 
   @override
-  String get instCourseGrantAccess => 'Accorder l\'acces';
+  String get instCourseGrantAccess => 'Accorder l\'Accès';
 
   @override
   String instCourseGrantStudentPermission(String name) {
-    return 'Accorder a $name l\'autorisation de s\'inscrire a ce cours ?';
+    return 'Accorder une permission d\'inscription à $name ?';
   }
 
   @override
-  String get instCourseNotesOptional => 'Notes (facultatif)';
+  String get instCourseNotesOptional => 'Notes (Optionnel)';
 
   @override
-  String get instCourseAddNotes => 'Ajouter des notes...';
+  String get instCourseAddNotes => 'Ajouter des notes (optionnel)';
 
   @override
   String get instCourseGrant => 'Accorder';
 
   @override
   String instCourseGrantedPermissionTo(String name) {
-    return 'Autorisation accordee a $name';
+    return 'Permission accordée à $name';
   }
 
   @override
   String get instCourseFailedToGrantPermission =>
-      'Echec de l\'accord de l\'autorisation';
+      'Échec de l\'octroi de permission';
 
   @override
-  String get instCourseRequestApproved => 'Demande approuvee';
+  String get instCourseRequestApproved => 'Demande approuvée avec succès';
 
   @override
   String get instCourseFailedToApproveRequest =>
-      'Echec de l\'approbation de la demande';
+      'Échec de l\'approbation de la demande';
 
   @override
-  String get instCourseContentBuilder => 'Constructeur de contenu de cours';
+  String get instCourseContentBuilder => 'Constructeur de Contenu de Cours';
 
   @override
-  String get instCoursePreviewCourse => 'Apercu du cours';
+  String get instCoursePreviewCourse => 'Aperçu du Cours';
 
   @override
-  String get instCourseAddModule => 'Ajouter un module';
+  String get instCourseAddModule => 'Ajouter un Module';
 
   @override
-  String get instCourseCourseTitle => 'Titre du cours';
+  String get instCourseCourseTitle => 'Titre du Cours';
 
   @override
-  String get instCourseEditInfo => 'Modifier les infos';
+  String get instCourseEditInfo => 'Modifier les Infos';
 
   @override
-  String get instCourseCourseModules => 'Modules du cours';
+  String get instCourseCourseModules => 'Modules du Cours';
 
   @override
-  String get instCourseNoModulesYet => 'Aucun module pour le moment';
+  String get instCourseNoModulesYet => 'Aucun module pour l\'instant';
 
   @override
   String get instCourseStartBuildingModules =>
-      'Commencez a construire votre cours en ajoutant des modules';
+      'Commencez à construire votre cours en ajoutant des modules';
 
   @override
   String instCourseModuleIndex(int index) {
@@ -4436,191 +4443,194 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String instCourseLessonsCount(int count) {
-    return '$count lecons';
+    return '$count leçons';
   }
 
   @override
-  String get instCourseEditModule => 'Modifier le module';
+  String get instCourseEditModule => 'Modifier le Module';
 
   @override
-  String get instCourseDeleteModule => 'Supprimer le module';
+  String get instCourseDeleteModule => 'Supprimer le Module';
 
   @override
-  String get instCourseLearningObjectives => 'Objectifs d\'apprentissage :';
+  String get instCourseLearningObjectives => 'Objectifs d\'Apprentissage';
 
   @override
-  String get instCourseLessons => 'Lecons';
+  String get instCourseLessons => 'Leçons';
 
   @override
-  String get instCourseAddLesson => 'Ajouter une lecon';
+  String get instCourseAddLesson => 'Ajouter une Leçon';
 
   @override
-  String get instCourseNoLessonsInModule => 'Aucune lecon dans ce module';
+  String get instCourseNoLessonsInModule =>
+      'Aucune leçon dans ce module pour l\'instant';
 
   @override
-  String get instCourseEditLesson => 'Modifier la lecon';
+  String get instCourseEditLesson => 'Modifier la Leçon';
 
   @override
-  String get instCourseDeleteLesson => 'Supprimer la lecon';
+  String get instCourseDeleteLesson => 'Supprimer la Leçon';
 
   @override
   String get instCourseError => 'Erreur';
 
   @override
   String instCourseModuleCreatedSuccess(String title) {
-    return 'Module \"$title\" cree avec succes';
+    return 'Module \'$title\' créé avec succès';
   }
 
   @override
   String instCourseModuleUpdatedSuccess(String title) {
-    return 'Module \"$title\" mis a jour avec succes';
+    return 'Module \'$title\' mis à jour avec succès';
   }
 
   @override
-  String get instCourseAddNewLesson => 'Ajouter une nouvelle lecon';
+  String get instCourseAddNewLesson => 'Ajouter une Nouvelle Leçon';
 
   @override
-  String get instCourseLessonType => 'Type de lecon';
+  String get instCourseLessonType => 'Type de Leçon';
 
   @override
-  String get instCourseLessonTitle => 'Titre de la lecon';
+  String get instCourseLessonTitle => 'Titre de la Leçon';
 
   @override
-  String get instCoursePleaseEnterTitle => 'Veuillez saisir un titre';
+  String get instCoursePleaseEnterTitle => 'Veuillez entrer un titre';
 
   @override
   String get instCourseDescription => 'Description';
 
   @override
-  String get instCourseLessonCreatedSuccess => 'Lecon creee avec succes';
+  String get instCourseLessonCreatedSuccess => 'Leçon créée avec succès';
 
   @override
-  String get instCourseCreate => 'Creer';
+  String get instCourseCreate => 'Créer';
 
   @override
   String get instCourseDeleteModuleConfirm =>
-      'Etes-vous sur de vouloir supprimer ce module ? Cela supprimera egalement toutes les lecons du module.';
+      'Êtes-vous sûr de vouloir supprimer ce module ? Toutes les leçons seront supprimées.';
 
   @override
   String get instCourseDelete => 'Supprimer';
 
   @override
-  String get instCourseModuleDeletedSuccess => 'Module supprime avec succes';
+  String get instCourseModuleDeletedSuccess => 'Module supprimé avec succès';
 
   @override
   String get instCourseDeleteLessonConfirm =>
-      'Etes-vous sur de vouloir supprimer cette lecon ?';
+      'Êtes-vous sûr de vouloir supprimer cette leçon ?';
 
   @override
-  String get instCourseLessonDeletedSuccess => 'Lecon supprimee avec succes';
+  String get instCourseLessonDeletedSuccess => 'Leçon supprimée avec succès';
 
   @override
-  String get instCourseEditCourseInfo => 'Modifier les infos du cours';
+  String get instCourseEditCourseInfo => 'Modifier les Informations du Cours';
 
   @override
-  String get instCourseEnterTitle => 'Saisir le titre du cours';
+  String get instCourseEnterTitle => 'Entrez le titre du cours';
 
   @override
-  String get instCourseEnterDescription => 'Saisir la description du cours';
+  String get instCourseEnterDescription => 'Entrez la description du cours';
 
   @override
   String get instCourseLevel => 'Niveau';
 
   @override
   String get instCourseInfoUpdatedSuccess =>
-      'Informations du cours mises a jour avec succes';
+      'Informations du cours mises à jour avec succès';
 
   @override
   String get instCourseSaving => 'Enregistrement...';
 
   @override
-  String get instCourseSaveChanges => 'Enregistrer les modifications';
+  String get instCourseSaveChanges => 'Enregistrer les Modifications';
 
   @override
-  String get instProgramCreateProgram => 'Creer un programme';
+  String get instProgramCreateProgram => 'Créer un Programme';
 
   @override
-  String get instProgramNameLabel => 'Nom du programme *';
+  String get instProgramNameLabel => 'Nom du Programme';
 
   @override
-  String get instProgramNameHint => 'ex., Licence en informatique';
+  String get instProgramNameHint => 'par ex., Licence en Informatique';
 
   @override
-  String get instProgramDescriptionLabel => 'Description *';
+  String get instProgramDescriptionLabel => 'Description';
 
   @override
-  String get instProgramDescriptionHint => 'Decrivez le programme...';
+  String get instProgramDescriptionHint =>
+      'Décrivez le programme, ses objectifs et ce qui le rend unique';
 
   @override
-  String get instProgramCategoryLabel => 'Categorie *';
+  String get instProgramCategoryLabel => 'Catégorie';
 
   @override
-  String get instProgramLevelLabel => 'Niveau *';
+  String get instProgramLevelLabel => 'Niveau';
 
   @override
-  String get instProgramDuration => 'Duree';
+  String get instProgramDuration => 'Durée';
 
   @override
-  String get instProgramFeeLabel => 'Frais du programme (USD) *';
+  String get instProgramFeeLabel => 'Frais';
 
   @override
-  String get instProgramMaxStudentsLabel => 'Nombre maximum d\'etudiants *';
+  String get instProgramMaxStudentsLabel => 'Nombre Maximum d\'Étudiants';
 
   @override
-  String get instProgramMaxStudentsHint => 'ex., 100';
+  String get instProgramMaxStudentsHint => 'par ex., 100';
 
   @override
-  String get instProgramStartDate => 'Date de debut';
+  String get instProgramStartDate => 'Date de Début';
 
   @override
-  String get instProgramApplicationDeadline => 'Date limite de candidature';
+  String get instProgramApplicationDeadline => 'Date Limite de Candidature';
 
   @override
-  String get instProgramRequirements => 'Conditions requises';
+  String get instProgramRequirements => 'Exigences';
 
   @override
-  String get instProgramAddRequirementHint => 'Ajouter une condition...';
+  String get instProgramAddRequirementHint =>
+      'par ex., Diplôme d\'études secondaires avec un GPA minimum de 3,0';
 
   @override
   String get instProgramAddAtLeastOneRequirement =>
-      'Veuillez ajouter au moins une condition';
+      'Veuillez ajouter au moins une exigence';
 
   @override
   String get instProgramDeadlineBeforeStart =>
-      'La date limite de candidature doit etre avant la date de debut';
+      'La date limite de candidature doit être avant la date de début';
 
   @override
-  String get instProgramCreatedSuccess => 'Programme cree avec succes !';
+  String get instProgramCreatedSuccess => 'Programme créé avec succès !';
 
   @override
-  String get instProgramFailedToCreate => 'Echec de la creation du programme';
+  String get instProgramFailedToCreate => 'Échec de la création du programme';
 
   @override
   String instProgramErrorCreating(String error) {
-    return 'Erreur lors de la creation du programme : $error';
+    return 'Erreur lors de la création du programme: $error';
   }
 
   @override
-  String get instProgramDetails => 'Details du programme';
+  String get instProgramDetails => 'Détails du Programme';
 
   @override
   String get instProgramBack => 'Retour';
 
   @override
   String get instProgramEditComingSoon =>
-      'Fonction de modification bientot disponible';
+      'Fonctionnalité de modification à venir';
 
   @override
-  String get instProgramEditProgram => 'Modifier le programme';
+  String get instProgramEditProgram => 'Modifier le Programme';
 
   @override
-  String get instProgramDeactivate => 'Desactiver';
+  String get instProgramDeactivate => 'Désactiver';
 
   @override
   String get instProgramActivate => 'Activer';
 
   @override
-  String get instProgramDeleteProgram => 'Supprimer le programme';
+  String get instProgramDeleteProgram => 'Supprimer le Programme';
 
   @override
   String get instProgramInactiveMessage =>
@@ -4630,7 +4640,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instProgramEnrolled => 'Inscrits';
 
   @override
-  String get instProgramAvailable => 'Disponible';
+  String get instProgramAvailable => 'Disponibles';
 
   @override
   String get instProgramFee => 'Frais';
@@ -4639,22 +4649,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instProgramDescription => 'Description';
 
   @override
-  String get instProgramProgramDetails => 'Details du programme';
+  String get instProgramProgramDetails => 'Détails du Programme';
 
   @override
-  String get instProgramCategory => 'Categorie';
+  String get instProgramCategory => 'Catégorie';
 
   @override
   String get instProgramInstitution => 'Institution';
 
   @override
-  String get instProgramMaxStudents => 'Nombre maximum d\'etudiants';
+  String get instProgramMaxStudents => 'Nombre Maximum d\'Étudiants';
 
   @override
-  String get instProgramEnrollmentStatus => 'Statut d\'inscription';
+  String get instProgramEnrollmentStatus => 'Statut des Inscriptions';
 
   @override
-  String get instProgramFillRate => 'Taux de remplissage';
+  String get instProgramFillRate => 'Taux de Remplissage';
 
   @override
   String get instProgramIsFull => 'Le programme est complet';
@@ -4665,18 +4675,18 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get instProgramDeactivateQuestion => 'Desactiver le programme ?';
+  String get instProgramDeactivateQuestion => 'Désactiver le Programme ?';
 
   @override
-  String get instProgramActivateQuestion => 'Activer le programme ?';
+  String get instProgramActivateQuestion => 'Activer le Programme ?';
 
   @override
   String get instProgramStopAccepting =>
-      'Ce programme cessera d\'accepter de nouvelles candidatures.';
+      'Cela arrêtera d\'accepter de nouvelles candidatures. Vous pourrez le réactiver plus tard.';
 
   @override
   String get instProgramStartAccepting =>
-      'Ce programme commencera a accepter de nouvelles candidatures.';
+      'Cela recommencera à accepter de nouvelles candidatures.';
 
   @override
   String get instProgramCancel => 'Annuler';
@@ -4685,68 +4695,70 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instProgramConfirm => 'Confirmer';
 
   @override
-  String get instProgramActivated => 'Programme active';
+  String get instProgramActivated => 'Programme activé avec succès';
 
   @override
-  String get instProgramDeactivated => 'Programme desactive';
+  String get instProgramDeactivated => 'Programme désactivé avec succès';
 
   @override
   String instProgramErrorUpdatingStatus(String error) {
-    return 'Erreur de mise a jour du statut du programme : $error';
+    return 'Erreur lors de la mise à jour du statut: $error';
   }
 
   @override
-  String get instProgramDeleteProgramQuestion => 'Supprimer le programme ?';
+  String get instProgramDeleteProgramQuestion => 'Supprimer le Programme ?';
 
   @override
   String get instProgramDeleteConfirm =>
-      'Cette action est irreversible. Toutes les donnees associees a ce programme seront definitivement supprimees.';
+      'Cette action ne peut pas être annulée. Toutes les données du programme seront définitivement supprimées.';
 
   @override
   String get instProgramDelete => 'Supprimer';
 
   @override
-  String get instProgramDeletedSuccess => 'Programme supprime avec succes';
+  String get instProgramDeletedSuccess => 'Programme supprimé avec succès';
 
   @override
   String get instProgramFailedToDelete =>
-      'Echec de la suppression du programme';
+      'Échec de la suppression du programme';
 
   @override
   String instProgramErrorDeleting(String error) {
-    return 'Erreur lors de la suppression du programme : $error';
+    return 'Erreur lors de la suppression du programme: $error';
   }
 
   @override
   String get instProgramPrograms => 'Programmes';
 
   @override
-  String get instProgramRetry => 'Reessayer';
+  String get instProgramRetry => 'Réessayer';
 
   @override
   String get instProgramLoading => 'Chargement des programmes...';
 
   @override
-  String get instProgramActiveOnly => 'Actifs uniquement';
+  String get instProgramActiveOnly => 'Actifs Uniquement';
 
   @override
-  String get instProgramShowAll => 'Afficher tout';
+  String get instProgramShowAll => 'Tout Afficher';
 
   @override
-  String get instProgramSearchHint => 'Rechercher des programmes...';
+  String get instProgramSearchHint =>
+      'Rechercher des programmes par nom ou catégorie';
 
   @override
-  String get instProgramNewProgram => 'Nouveau programme';
+  String get instProgramNewProgram => 'Nouveau Programme';
 
   @override
-  String get instProgramNoProgramsFound => 'Aucun programme trouve';
+  String get instProgramNoProgramsFound => 'Aucun programme trouvé';
 
   @override
   String get instProgramTryAdjustingSearch =>
-      'Essayez d\'ajuster votre recherche';
+      'Essayez d\'ajuster votre recherche ou vos filtres';
 
   @override
-  String get instProgramCreateFirstProgram => 'Creez votre premier programme';
+  String get instProgramCreateFirstProgram =>
+      'Créez votre premier programme pour commencer';
 
   @override
   String get instProgramInactive => 'INACTIF';
@@ -4755,7 +4767,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instProgramEnrollment => 'Inscription';
 
   @override
-  String get instProgramFull => 'Complet';
+  String get instProgramFull => 'COMPLET';
 
   @override
   String instProgramSlotsAvailable(int count) {
@@ -14793,76 +14805,77 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get instCounselorsSearchHint => 'Rechercher des conseillers...';
+  String get instCounselorsSearchHint =>
+      'Rechercher des conseillers par nom ou email';
 
   @override
-  String get instCounselorsRetry => 'Reessayer';
+  String get instCounselorsRetry => 'Réessayer';
 
   @override
-  String get instCounselorsNoCounselorsFound => 'Aucun conseiller trouve';
+  String get instCounselorsNoCounselorsFound => 'Aucun Conseiller Trouvé';
 
   @override
   String get instCounselorsNoMatchSearch =>
-      'Aucun conseiller ne correspond a votre recherche';
+      'Aucun conseiller ne correspond à votre recherche';
 
   @override
   String get instCounselorsAddToInstitution =>
-      'Ajoutez des conseillers a votre institution';
+      'Ajoutez des conseillers à votre institution pour commencer';
 
   @override
-  String instCounselorsPageOf(Object current, Object total) {
+  String instCounselorsPageOf(int current, int total) {
     return 'Page $current sur $total';
   }
 
   @override
-  String get instCounselorsCounselingOverview => 'Apercu du conseil';
+  String get instCounselorsCounselingOverview => 'Aperçu du Counseling';
 
   @override
   String get instCounselorsCounselors => 'Conseillers';
 
   @override
-  String get instCounselorsStudents => 'Etudiants';
+  String get instCounselorsStudents => 'Étudiants';
 
   @override
-  String get instCounselorsSessions => 'Seances';
+  String get instCounselorsSessions => 'Sessions';
 
   @override
-  String get instCounselorsCompleted => 'Terminees';
+  String get instCounselorsCompleted => 'Terminées';
 
   @override
-  String get instCounselorsUpcoming => 'A venir';
+  String get instCounselorsUpcoming => 'À venir';
 
   @override
-  String get instCounselorsAvgRating => 'Note moy.';
+  String get instCounselorsAvgRating => 'Note Moy.';
 
   @override
-  String get instCounselorsStudentAssigned => 'Etudiant assigne avec succes';
+  String get instCounselorsStudentAssigned => 'Étudiant assigné avec succès';
 
   @override
   String get instCounselorsAssign => 'Assigner';
 
   @override
-  String get instCounselorsTotalSessions => 'Total seances';
+  String get instCounselorsTotalSessions => 'Total Sessions';
 
   @override
-  String get instCounselorsAssignStudents => 'Assigner des etudiants';
+  String get instCounselorsAssignStudents => 'Assigner des Étudiants';
 
   @override
-  String instCounselorsAssignStudentTo(Object name) {
-    return 'Assigner un etudiant a $name';
+  String instCounselorsAssignStudentTo(String name) {
+    return 'Assigner un étudiant à $name';
   }
 
   @override
-  String get instCounselorsSearchStudents => 'Rechercher des etudiants...';
+  String get instCounselorsSearchStudents => 'Rechercher des étudiants...';
 
   @override
-  String get instCounselorsNoStudentsFound => 'Aucun etudiant trouve';
+  String get instCounselorsNoStudentsFound => 'Aucun étudiant trouvé';
 
   @override
   String get instCounselorsUnknown => 'Inconnu';
 
   @override
-  String instCounselorsError(Object error) {
+  String instCounselorsError(String error) {
     return 'Erreur: $error';
   }
 
@@ -16717,30 +16730,30 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instCourseValidationErrors => 'Inst Course Validation Errors';
 
   @override
-  String get instCoursesDescription => 'Inst Courses Description';
+  String get instCoursesDescription => 'Description';
 
   @override
-  String get instCoursesEditCourse => 'Inst Courses Edit Course';
+  String get instCoursesEditCourse => 'Modifier le Cours';
 
   @override
   String instCoursesEnrolledCount(int count) {
-    return 'Inst Courses Enrolled Count: $count';
+    return '$count Inscrit(s)';
   }
 
   @override
-  String get instCoursesLearningOutcomes => 'Inst Courses Learning Outcomes';
+  String get instCoursesLearningOutcomes => 'Ce que Vous Apprendrez';
 
   @override
-  String get instCoursesPrerequisites => 'Inst Courses Prerequisites';
+  String get instCoursesPrerequisites => 'Prérequis';
 
   @override
-  String get instCoursesPublished => 'Inst Courses Published';
+  String get instCoursesPublished => 'PUBLIÉ';
 
   @override
-  String get instCoursesQuickActions => 'Inst Courses Quick Actions';
+  String get instCoursesQuickActions => 'Actions Rapides';
 
   @override
-  String get instCoursesStatistics => 'Inst Courses Statistics';
+  String get instCoursesStatistics => 'Statistiques';
 
   @override
   String get instDebugAuthInfo => 'Inst Debug Auth Info';

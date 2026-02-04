@@ -4006,10 +4006,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseBasicInfo => 'Basic Information';
 
   @override
-  String get instCourseTitleLabel => 'Course Title *';
+  String get instCourseTitleLabel => 'Title';
 
   @override
-  String get instCourseTitleHint => 'e.g., Introduction to Programming';
+  String get instCourseTitleHint => 'e.g., Introduction to Web Development';
 
   @override
   String get instCourseTitleRequired => 'Title is required';
@@ -4022,11 +4022,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Title must be less than 200 characters';
 
   @override
-  String get instCourseDescriptionLabel => 'Description *';
+  String get instCourseDescriptionLabel => 'Description';
 
   @override
   String get instCourseDescriptionHint =>
-      'Describe what students will learn...';
+      'Describe what students will learn in this course';
 
   @override
   String get instCourseDescriptionRequired => 'Description is required';
@@ -4039,25 +4039,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseCourseDetails => 'Course Details';
 
   @override
-  String get instCourseCourseType => 'Course Type *';
+  String get instCourseCourseType => 'Course Type';
 
   @override
-  String get instCourseDifficultyLevel => 'Difficulty Level *';
+  String get instCourseDifficultyLevel => 'Difficulty Level';
 
   @override
-  String get instCourseDurationHours => 'Duration (hours)';
+  String get instCourseDurationHours => 'Duration (Hours)';
 
   @override
   String get instCourseCategory => 'Category';
 
   @override
-  String get instCourseCategoryHint => 'Computer Science';
+  String get instCourseCategoryHint => 'e.g., Programming, Design, Business';
 
   @override
   String get instCoursePricing => 'Pricing';
 
   @override
-  String get instCoursePriceLabel => 'Price *';
+  String get instCoursePriceLabel => 'Price';
 
   @override
   String get instCoursePriceRequired => 'Price is required';
@@ -4069,7 +4069,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseCurrency => 'Currency';
 
   @override
-  String get instCourseMaxStudents => 'Max Students (optional)';
+  String get instCourseMaxStudents => 'Maximum Students';
 
   @override
   String get instCourseMaxStudentsHint => 'Leave empty for unlimited';
@@ -4078,25 +4078,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseMedia => 'Media';
 
   @override
-  String get instCourseThumbnailUrl => 'Thumbnail URL (optional)';
+  String get instCourseThumbnailUrl => 'Thumbnail URL';
 
   @override
   String get instCourseTags => 'Tags';
 
   @override
-  String get instCourseAddTagHint => 'Add tag (e.g., programming, python)';
+  String get instCourseAddTagHint => 'Add a tag (e.g., JavaScript, React)';
 
   @override
   String get instCourseLearningOutcomes => 'Learning Outcomes';
 
   @override
-  String get instCourseOutcomeHint => 'What will students learn?';
+  String get instCourseOutcomeHint =>
+      'What will students be able to do after this course?';
 
   @override
   String get instCoursePrerequisites => 'Prerequisites';
 
   @override
-  String get instCoursePrerequisiteHint => 'What do students need to know?';
+  String get instCoursePrerequisiteHint =>
+      'What should students know before taking this course?';
 
   @override
   String get instCourseUpdateCourse => 'Update Course';
@@ -4105,11 +4107,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseCreatedSuccess => 'Course created successfully!';
 
   @override
-  String get instCourseUpdatedSuccess => 'Course updated successfully!';
+  String get instCourseUpdatedSuccess => 'Course updated successfully';
 
   @override
-  String get instCourseFailedToSave =>
-      'Failed to save course. Please try again.';
+  String get instCourseFailedToSave => 'Failed to save course';
 
   @override
   String get instCourseCourseRoster => 'Course Roster';
@@ -4121,11 +4122,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseRetry => 'Retry';
 
   @override
-  String get instCourseNoEnrolledStudents => 'No enrolled students yet';
+  String get instCourseNoEnrolledStudents => 'No students enrolled yet';
 
   @override
   String get instCourseApprovedStudentsAppearHere =>
-      'Students with approved permissions will appear here';
+      'Students who have been approved will appear here';
 
   @override
   String get instCourseEnrolledStudents => 'Enrolled Students';
@@ -4142,7 +4143,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseEnrollmentPermissions => 'Enrollment Permissions';
 
   @override
-  String get instCoursePendingRequests => 'Pending Requests';
+  String get instCoursePendingRequests => 'Pending';
 
   @override
   String get instCourseApproved => 'Approved';
@@ -4172,7 +4173,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instCourseSelectStudentsGrant =>
-      'Select students to grant access to this course';
+      'Select students to grant enrollment permission';
 
   @override
   String get instCourseSearchStudents => 'Search students...';
@@ -4193,7 +4194,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String instCourseGrantToStudents(int count) {
-    return 'Grant to $count Student(s)';
+    return 'Grant to $count Students';
   }
 
   @override
@@ -4201,10 +4202,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instCourseAllStudentsHavePermissions =>
-      'All admitted students already have permissions';
+      'All students already have permissions or pending requests';
 
   @override
-  String get instCourseNoMatchingStudents => 'No matching students';
+  String get instCourseNoMatchingStudents => 'No students match your search';
 
   @override
   String get instCourseNoPendingRequests => 'No pending requests';
@@ -4214,7 +4215,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Students can request enrollment permission';
 
   @override
-  String get instCourseMessage => 'Message:';
+  String get instCourseMessage => 'Message';
 
   @override
   String instCourseRequested(String date) {
@@ -4229,32 +4230,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String instCourseApprovedStudent(String name) {
-    return 'Approved $name';
+    return 'Approved $name successfully';
   }
 
   @override
-  String get instCourseFailedToApprove => 'Failed to approve';
+  String get instCourseFailedToApprove => 'Failed to approve request';
 
   @override
   String get instCourseDenyPermissionRequest => 'Deny Permission Request';
 
   @override
   String instCourseDenyStudent(String name) {
-    return 'Deny $name?';
+    return 'Are you sure you want to deny permission for $name?';
   }
 
   @override
-  String get instCourseReasonForDenial => 'Reason for denial';
+  String get instCourseReasonForDenial => 'Reason for Denial';
 
   @override
-  String get instCourseEnterReason => 'Enter reason...';
+  String get instCourseEnterReason => 'Enter reason for denial';
 
   @override
-  String get instCoursePleaseProvideReason => 'Please provide a reason';
+  String get instCoursePleaseProvideReason =>
+      'Please provide a reason for denial';
 
   @override
   String instCourseDeniedStudent(String name) {
-    return 'Denied $name';
+    return 'Denied permission for $name';
   }
 
   @override
@@ -4273,7 +4275,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get instCourseReasonOptional => 'Reason (optional)';
+  String get instCourseReasonOptional => 'Reason (Optional)';
 
   @override
   String get instCourseRevoke => 'Revoke';
@@ -4288,7 +4290,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instCourseAcceptedStudentsAppearHere =>
-      'Students with accepted applications will appear here';
+      'Students accepted to your institution will appear here';
 
   @override
   String get instCourseRequestPending => 'Request Pending';
@@ -4307,14 +4309,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String instCourseGrantStudentPermission(String name) {
-    return 'Grant $name permission to enroll in this course?';
+    return 'Grant enrollment permission to $name?';
   }
 
   @override
-  String get instCourseNotesOptional => 'Notes (optional)';
+  String get instCourseNotesOptional => 'Notes (Optional)';
 
   @override
-  String get instCourseAddNotes => 'Add any notes...';
+  String get instCourseAddNotes => 'Add notes (optional)';
 
   @override
   String get instCourseGrant => 'Grant';
@@ -4328,7 +4330,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseFailedToGrantPermission => 'Failed to grant permission';
 
   @override
-  String get instCourseRequestApproved => 'Request approved';
+  String get instCourseRequestApproved => 'Request approved successfully';
 
   @override
   String get instCourseFailedToApproveRequest => 'Failed to approve request';
@@ -4375,7 +4377,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseDeleteModule => 'Delete Module';
 
   @override
-  String get instCourseLearningObjectives => 'Learning Objectives:';
+  String get instCourseLearningObjectives => 'Learning Objectives';
 
   @override
   String get instCourseLessons => 'Lessons';
@@ -4384,7 +4386,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseAddLesson => 'Add Lesson';
 
   @override
-  String get instCourseNoLessonsInModule => 'No lessons in this module';
+  String get instCourseNoLessonsInModule => 'No lessons in this module yet';
 
   @override
   String get instCourseEditLesson => 'Edit Lesson';
@@ -4397,12 +4399,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String instCourseModuleCreatedSuccess(String title) {
-    return 'Module \"$title\" created successfully';
+    return 'Module \'$title\' created successfully';
   }
 
   @override
   String instCourseModuleUpdatedSuccess(String title) {
-    return 'Module \"$title\" updated successfully';
+    return 'Module \'$title\' updated successfully';
   }
 
   @override
@@ -4428,7 +4430,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instCourseDeleteModuleConfirm =>
-      'Are you sure you want to delete this module? This will also delete all lessons in the module.';
+      'Are you sure you want to delete this module? All lessons will be deleted.';
 
   @override
   String get instCourseDelete => 'Delete';
@@ -4456,7 +4458,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseLevel => 'Level';
 
   @override
-  String get instCourseInfoUpdatedSuccess => 'Course info updated successfully';
+  String get instCourseInfoUpdatedSuccess =>
+      'Course information updated successfully';
 
   @override
   String get instCourseSaving => 'Saving...';
@@ -4468,31 +4471,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instProgramCreateProgram => 'Create Program';
 
   @override
-  String get instProgramNameLabel => 'Program Name *';
+  String get instProgramNameLabel => 'Program Name';
 
   @override
-  String get instProgramNameHint => 'e.g., Bachelor of Computer Science';
+  String get instProgramNameHint =>
+      'e.g., Bachelor of Science in Computer Science';
 
   @override
-  String get instProgramDescriptionLabel => 'Description *';
+  String get instProgramDescriptionLabel => 'Description';
 
   @override
-  String get instProgramDescriptionHint => 'Describe the program...';
+  String get instProgramDescriptionHint =>
+      'Describe the program, its goals, and what makes it unique';
 
   @override
-  String get instProgramCategoryLabel => 'Category *';
+  String get instProgramCategoryLabel => 'Category';
 
   @override
-  String get instProgramLevelLabel => 'Level *';
+  String get instProgramLevelLabel => 'Level';
 
   @override
   String get instProgramDuration => 'Duration';
 
   @override
-  String get instProgramFeeLabel => 'Program Fee (USD) *';
+  String get instProgramFeeLabel => 'Fee';
 
   @override
-  String get instProgramMaxStudentsLabel => 'Maximum Students *';
+  String get instProgramMaxStudentsLabel => 'Maximum Students';
 
   @override
   String get instProgramMaxStudentsHint => 'e.g., 100';
@@ -4507,7 +4512,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instProgramRequirements => 'Requirements';
 
   @override
-  String get instProgramAddRequirementHint => 'Add a requirement...';
+  String get instProgramAddRequirementHint =>
+      'e.g., High school diploma with minimum GPA of 3.0';
 
   @override
   String get instProgramAddAtLeastOneRequirement =>
@@ -4599,11 +4605,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instProgramStopAccepting =>
-      'This program will stop accepting new applications.';
+      'This will stop accepting new applications. You can reactivate it later.';
 
   @override
   String get instProgramStartAccepting =>
-      'This program will start accepting new applications.';
+      'This will start accepting new applications again.';
 
   @override
   String get instProgramCancel => 'Cancel';
@@ -4612,14 +4618,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instProgramConfirm => 'Confirm';
 
   @override
-  String get instProgramActivated => 'Program activated';
+  String get instProgramActivated => 'Program activated successfully';
 
   @override
-  String get instProgramDeactivated => 'Program deactivated';
+  String get instProgramDeactivated => 'Program deactivated successfully';
 
   @override
   String instProgramErrorUpdatingStatus(String error) {
-    return 'Error updating program status: $error';
+    return 'Error updating status: $error';
   }
 
   @override
@@ -4627,7 +4633,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instProgramDeleteConfirm =>
-      'This action cannot be undone. All data associated with this program will be permanently deleted.';
+      'This action cannot be undone. All program data will be permanently deleted.';
 
   @override
   String get instProgramDelete => 'Delete';
@@ -4659,19 +4665,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instProgramShowAll => 'Show All';
 
   @override
-  String get instProgramSearchHint => 'Search programs...';
+  String get instProgramSearchHint => 'Search programs by name or category';
 
   @override
   String get instProgramNewProgram => 'New Program';
 
   @override
-  String get instProgramNoProgramsFound => 'No Programs Found';
+  String get instProgramNoProgramsFound => 'No programs found';
 
   @override
-  String get instProgramTryAdjustingSearch => 'Try adjusting your search';
+  String get instProgramTryAdjustingSearch =>
+      'Try adjusting your search or filters';
 
   @override
-  String get instProgramCreateFirstProgram => 'Create your first program';
+  String get instProgramCreateFirstProgram =>
+      'Create your first program to get started';
 
   @override
   String get instProgramInactive => 'INACTIVE';
@@ -4680,7 +4688,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instProgramEnrollment => 'Enrollment';
 
   @override
-  String get instProgramFull => 'Full';
+  String get instProgramFull => 'FULL';
 
   @override
   String instProgramSlotsAvailable(int count) {
@@ -14547,7 +14555,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get instCounselorsSearchHint => 'Search counselors...';
+  String get instCounselorsSearchHint => 'Search counselors by name or email';
 
   @override
   String get instCounselorsRetry => 'Retry';
@@ -14560,10 +14568,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instCounselorsAddToInstitution =>
-      'Add counselors to your institution';
+      'Add counselors to your institution to get started';
 
   @override
-  String instCounselorsPageOf(Object current, Object total) {
+  String instCounselorsPageOf(int current, int total) {
     return 'Page $current of $total';
   }
 
@@ -14601,7 +14609,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCounselorsAssignStudents => 'Assign Students';
 
   @override
-  String instCounselorsAssignStudentTo(Object name) {
+  String instCounselorsAssignStudentTo(String name) {
     return 'Assign Student to $name';
   }
 
@@ -14615,7 +14623,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCounselorsUnknown => 'Unknown';
 
   @override
-  String instCounselorsError(Object error) {
+  String instCounselorsError(String error) {
     return 'Error: $error';
   }
 
@@ -16470,30 +16478,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instCourseValidationErrors => 'Inst Course Validation Errors';
 
   @override
-  String get instCoursesDescription => 'Inst Courses Description';
+  String get instCoursesDescription => 'Description';
 
   @override
-  String get instCoursesEditCourse => 'Inst Courses Edit Course';
+  String get instCoursesEditCourse => 'Edit Course';
 
   @override
   String instCoursesEnrolledCount(int count) {
-    return 'Inst Courses Enrolled Count: $count';
+    return '$count Enrolled';
   }
 
   @override
-  String get instCoursesLearningOutcomes => 'Inst Courses Learning Outcomes';
+  String get instCoursesLearningOutcomes => 'What You\'ll Learn';
 
   @override
-  String get instCoursesPrerequisites => 'Inst Courses Prerequisites';
+  String get instCoursesPrerequisites => 'Prerequisites';
 
   @override
-  String get instCoursesPublished => 'Inst Courses Published';
+  String get instCoursesPublished => 'PUBLISHED';
 
   @override
-  String get instCoursesQuickActions => 'Inst Courses Quick Actions';
+  String get instCoursesQuickActions => 'Quick Actions';
 
   @override
-  String get instCoursesStatistics => 'Inst Courses Statistics';
+  String get instCoursesStatistics => 'Statistics';
 
   @override
   String get instDebugAuthInfo => 'Inst Debug Auth Info';
