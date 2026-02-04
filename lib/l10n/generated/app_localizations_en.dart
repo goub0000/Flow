@@ -312,7 +312,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingFeatureAnalytics => 'Performance analytics';
 
   @override
-  String get onboardingFeatureAchievements => 'Achievement system';
+  String get onboardingFeatureAchievements => 'Achievements';
 
   @override
   String get heroTrustBadge => 'Trusted by 200+ Universities';
@@ -20427,4 +20427,1632 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get browseInstitutionsNoOfferingsYet => 'No offerings yet';
+
+  @override
+  String get subscriptionsFree => 'Free';
+
+  @override
+  String get subscriptionsActive => 'Active';
+
+  @override
+  String get subscriptionsStatus => 'Status';
+
+  @override
+  String get subscriptionsPlan => 'Plan';
+
+  @override
+  String get subscriptionsStarted => 'Started';
+
+  @override
+  String get subscriptionsBasicFree => 'Basic (Free)';
+
+  @override
+  String get subscriptionsBasicFeature1 => 'Access to basic courses';
+
+  @override
+  String get subscriptionsBasicFeature2 => 'Limited storage';
+
+  @override
+  String get subscriptionsBasicFeature3 => 'Email support';
+
+  @override
+  String get subscriptionsPremiumFeature1 => 'Access to all courses';
+
+  @override
+  String get subscriptionsPremiumFeature2 => 'Unlimited storage';
+
+  @override
+  String get subscriptionsPremiumFeature3 => 'Priority support';
+
+  @override
+  String get subscriptionsPremiumFeature4 => 'Offline downloads';
+
+  @override
+  String get subscriptionsPremiumFeature5 => 'Certificate of completion';
+
+  @override
+  String get subscriptionsInstitutionFeature1 => 'Everything in Premium';
+
+  @override
+  String get subscriptionsInstitutionFeature2 => 'Multi-user management';
+
+  @override
+  String get subscriptionsInstitutionFeature3 => 'Analytics dashboard';
+
+  @override
+  String get subscriptionsInstitutionFeature4 => 'Custom branding';
+
+  @override
+  String get subscriptionsInstitutionFeature5 => 'API access';
+
+  @override
+  String get studyScheduleSave => 'Save';
+
+  @override
+  String get studyScheduleDailyGoal => 'Daily Study Goal';
+
+  @override
+  String studyScheduleMinutesPerDay(int minutes) {
+    return '$minutes minutes per day';
+  }
+
+  @override
+  String get studyScheduleReminders => 'Study Reminders';
+
+  @override
+  String get studyScheduleRemindersSubtitle =>
+      'Get notified at scheduled times';
+
+  @override
+  String get studyScheduleWeeklySchedule => 'Weekly Schedule';
+
+  @override
+  String get studyScheduleSetPreferred => 'Set your preferred study times';
+
+  @override
+  String get studyScheduleAddTime => 'Add time';
+
+  @override
+  String get studyScheduleNoTime => 'No study time set';
+
+  @override
+  String get studyScheduleSaved => 'Study schedule saved successfully';
+
+  @override
+  String get progressReportsExport => 'Export Report';
+
+  @override
+  String get progressReportsOverview => 'Overview';
+
+  @override
+  String get progressReportsCourses => 'Courses';
+
+  @override
+  String get progressReportsSkills => 'Skills';
+
+  @override
+  String get progressReportsStudyTime => 'Study Time';
+
+  @override
+  String get progressReportsAchievements => 'Achievements';
+
+  @override
+  String get progressReportsAvgScore => 'Avg. Score';
+
+  @override
+  String get progressReportsWeeklyActivity => 'Weekly Activity';
+
+  @override
+  String get progressReportsActivityChart =>
+      'Activity chart will be displayed here';
+
+  @override
+  String get progressReportsCompleted => 'Completed';
+
+  @override
+  String progressReportsOfLessons(int completed, int total) {
+    return '$completed of $total lessons completed';
+  }
+
+  @override
+  String get progressReportsExported => 'Report exported successfully';
+
+  @override
+  String get privacyPolicyShareSoon => 'Share functionality coming soon';
+
+  @override
+  String get privacyPolicyFlowTitle => 'Flow EdTech Privacy Policy';
+
+  @override
+  String get privacyPolicyIntro =>
+      'This Privacy Policy describes how Flow EdTech collects, uses, and protects your personal information.';
+
+  @override
+  String get privacyPolicySection1 => '1. Information We Collect';
+
+  @override
+  String get privacyPolicySection2 => '2. How We Use Your Information';
+
+  @override
+  String get privacyPolicySection3 => '3. Information Sharing and Disclosure';
+
+  @override
+  String get privacyPolicySection4 => '4. Data Security';
+
+  @override
+  String get privacyPolicySection5 => '5. Your Rights and Choices';
+
+  @override
+  String get privacyPolicySection6 => '6. Cookies and Tracking Technologies';
+
+  @override
+  String get privacyPolicySection7 => '7. Children\'s Privacy';
+
+  @override
+  String get privacyPolicySection8 => '8. International Data Transfers';
+
+  @override
+  String get privacyPolicySection9 => '9. Changes to This Privacy Policy';
+
+  @override
+  String get privacyPolicySection10 => '10. Contact Us';
+
+  @override
+  String get termsOfServiceShareSoon => 'Share functionality coming soon';
+
+  @override
+  String get termsOfServiceFlowTitle => 'Flow EdTech Terms of Service';
+
+  @override
+  String get termsOfServiceEffective => 'Effective Date: October 28, 2025';
+
+  @override
+  String get termsOfServiceIntro =>
+      'Please read these Terms of Service carefully before using our platform. By accessing or using our services, you agree to be bound by these terms.';
+
+  @override
+  String get termsOfServiceSection1 => '1. Acceptance of Terms';
+
+  @override
+  String get termsOfServiceSection2 =>
+      '2. Account Registration and Eligibility';
+
+  @override
+  String get termsOfServiceSection3 => '3. User Conduct and Responsibilities';
+
+  @override
+  String get termsOfServiceSection4 => '4. Intellectual Property Rights';
+
+  @override
+  String get termsOfServiceSection5 =>
+      '5. Subscriptions, Payments, and Refunds';
+
+  @override
+  String get termsOfServiceSection6 =>
+      '6. Course Access and Educational Content';
+
+  @override
+  String get termsOfServiceSection7 => '7. Privacy and Data Protection';
+
+  @override
+  String get termsOfServiceSection8 =>
+      '8. Disclaimers and Limitations of Liability';
+
+  @override
+  String get termsOfServiceSection9 => '9. Third-Party Services and Links';
+
+  @override
+  String get termsOfServiceSection10 => '10. Termination';
+
+  @override
+  String get termsOfServiceSection11 =>
+      '11. Dispute Resolution and Arbitration';
+
+  @override
+  String get termsOfServiceSection12 => '12. Governing Law';
+
+  @override
+  String get termsOfServiceSection13 => '13. Changes to Terms of Service';
+
+  @override
+  String get termsOfServiceSection14 => '14. Contact Information';
+
+  @override
+  String get appearanceTitle => 'Appearance';
+
+  @override
+  String get appearanceBack => 'Back';
+
+  @override
+  String get appearanceRefreshApp => 'Refresh App';
+
+  @override
+  String get appearanceRefreshed => 'App refreshed! Changes applied.';
+
+  @override
+  String get appearanceInfoBanner =>
+      'Theme and accent changes apply automatically. For other changes, tap the refresh button above.';
+
+  @override
+  String get appearanceThemeSection => 'THEME';
+
+  @override
+  String get appearanceThemeSubtitle => 'Choose how Flow looks to you';
+
+  @override
+  String get appearanceTextSizeSection => 'TEXT SIZE';
+
+  @override
+  String get appearanceTextSizeSubtitle =>
+      'Adjust the size of text throughout the app';
+
+  @override
+  String get appearancePreview => 'Preview';
+
+  @override
+  String get appearancePreviewText =>
+      'The quick brown fox jumps over the lazy dog';
+
+  @override
+  String get appearanceFontFamilySection => 'FONT FAMILY';
+
+  @override
+  String get appearanceFontFamilySubtitle => 'Choose your preferred font';
+
+  @override
+  String get appearanceDisplayOptions => 'DISPLAY OPTIONS';
+
+  @override
+  String get appearanceCompactMode => 'Compact Mode';
+
+  @override
+  String get appearanceCompactModeSubtitle => 'Show more content on screen';
+
+  @override
+  String get appearanceColorAccent => 'COLOR ACCENT';
+
+  @override
+  String get appearanceColorAccentSubtitle => 'Customize app colors';
+
+  @override
+  String get appearanceChooseAccent => 'Choose your accent color';
+
+  @override
+  String get bugReportTitle => 'Report a Bug';
+
+  @override
+  String get bugReportHelp =>
+      'Help us improve by reporting bugs and issues you encounter.';
+
+  @override
+  String get bugReportTitleField => 'Bug Title';
+
+  @override
+  String get bugReportTitleHint => 'Brief description of the issue';
+
+  @override
+  String get bugReportTitleRequired => 'Please enter a bug title';
+
+  @override
+  String get bugReportSeverity => 'Severity';
+
+  @override
+  String get bugReportSeverityLow => 'Low - Minor inconvenience';
+
+  @override
+  String get bugReportSeverityMedium => 'Medium - Affects functionality';
+
+  @override
+  String get bugReportSeverityHigh => 'High - App unusable';
+
+  @override
+  String get bugReportDescription => 'Description';
+
+  @override
+  String get bugReportDescriptionHint => 'What happened?';
+
+  @override
+  String get bugReportDescriptionRequired => 'Please describe the bug';
+
+  @override
+  String get bugReportSteps => 'Steps to Reproduce';
+
+  @override
+  String get bugReportStepsHint => '1. Go to...\n2. Click on...\n3. See error';
+
+  @override
+  String get bugReportStepsRequired => 'Please provide steps to reproduce';
+
+  @override
+  String get bugReportAttachScreenshot => 'Attach Screenshot';
+
+  @override
+  String get bugReportScreenshotHelp => 'Help us understand the issue better';
+
+  @override
+  String get bugReportScreenshotSoon => 'Screenshot attachment coming soon';
+
+  @override
+  String get bugReportIncludeDevice => 'Include Device Information';
+
+  @override
+  String get bugReportDeviceInfo => 'OS version, app version, device model';
+
+  @override
+  String get bugReportSubmit => 'Submit Bug Report';
+
+  @override
+  String get bugReportSubmitted =>
+      'Bug report submitted successfully! Thank you for helping us improve.';
+
+  @override
+  String get contactSupportTitle => 'Contact Support';
+
+  @override
+  String get contactSupportGetInTouch => 'Get in Touch';
+
+  @override
+  String get contactSupportEmail => 'Email';
+
+  @override
+  String get contactSupportEmailAddress => 'support@flowedtech.com';
+
+  @override
+  String get contactSupportLiveChat => 'Live Chat';
+
+  @override
+  String get contactSupportLiveChatAvailable => 'Available 24/7';
+
+  @override
+  String get contactSupportPhone => 'Phone';
+
+  @override
+  String get contactSupportPhoneNumber => '+1 (555) 123-4567';
+
+  @override
+  String get contactSupportHours => 'Support Hours';
+
+  @override
+  String get contactSupportHoursText =>
+      'Monday - Friday: 9am - 5pm EST\nWeekends: 10am - 4pm EST';
+
+  @override
+  String get contactSupportSendMessage => 'Send us a Message';
+
+  @override
+  String get contactSupportCategory => 'Category';
+
+  @override
+  String get contactSupportCategoryGeneral => 'General Inquiry';
+
+  @override
+  String get contactSupportCategoryTechnical => 'Technical Issue';
+
+  @override
+  String get contactSupportCategoryBilling => 'Billing Question';
+
+  @override
+  String get contactSupportCategoryFeedback => 'Feedback';
+
+  @override
+  String get contactSupportSubject => 'Subject';
+
+  @override
+  String get contactSupportSubjectRequired => 'Please enter a subject';
+
+  @override
+  String get contactSupportMessage => 'Message';
+
+  @override
+  String get contactSupportMessageRequired => 'Please enter your message';
+
+  @override
+  String get contactSupportSend => 'Send Message';
+
+  @override
+  String get contactSupportSent =>
+      'Message sent successfully! We\'ll get back to you soon.';
+
+  @override
+  String get dataStorageTitle => 'Data & Storage';
+
+  @override
+  String get dataStorageBack => 'Back';
+
+  @override
+  String get dataStorageUsageSection => 'STORAGE USAGE';
+
+  @override
+  String get dataStorageUsageSubtitle => 'Manage your app storage';
+
+  @override
+  String get dataStorageClearCache => 'Clear Cache';
+
+  @override
+  String get dataStorageDownloadSection => 'DOWNLOAD SETTINGS';
+
+  @override
+  String get dataStorageDownloadSubtitle => 'Control how content is downloaded';
+
+  @override
+  String get dataStorageAutoDownload => 'Auto-Download Videos';
+
+  @override
+  String get dataStorageAutoDownloadSubtitle =>
+      'Automatically download enrolled course videos';
+
+  @override
+  String get dataStorageWifiOnly => 'Download on Wi-Fi Only';
+
+  @override
+  String get dataStorageWifiOnlySubtitle =>
+      'Prevent mobile data usage for downloads';
+
+  @override
+  String get dataStorageAutoDelete => 'Auto-Delete Watched Videos';
+
+  @override
+  String get dataStorageAutoDeleteSubtitle =>
+      'Free up space by removing watched content';
+
+  @override
+  String get dataStorageVideoQualitySection => 'VIDEO QUALITY';
+
+  @override
+  String get dataStorageVideoQualitySubtitle => 'Choose default video quality';
+
+  @override
+  String get dataStorageSelectQuality => 'Select Quality';
+
+  @override
+  String get dataStorageQualityAuto => 'Auto';
+
+  @override
+  String get dataStorageQualityAutoDesc => 'Adjust quality based on connection';
+
+  @override
+  String get dataStorageQualityAutoData => 'Varies';
+
+  @override
+  String get dataStorageQuality1080p => '1080p HD';
+
+  @override
+  String get dataStorageQuality1080pDesc => 'Best quality, larger file size';
+
+  @override
+  String get dataStorageQuality1080pData => '~3 GB/hour';
+
+  @override
+  String get dataStorageQuality720p => '720p';
+
+  @override
+  String get dataStorageQuality720pDesc => 'Good quality, moderate file size';
+
+  @override
+  String get dataStorageQuality720pData => '~1.5 GB/hour';
+
+  @override
+  String get dataStorageQuality480p => '480p';
+
+  @override
+  String get dataStorageQuality480pDesc =>
+      'Standard quality, smaller file size';
+
+  @override
+  String get dataStorageQuality480pData => '~700 MB/hour';
+
+  @override
+  String get dataStorageQuality360p => '360p';
+
+  @override
+  String get dataStorageQuality360pDesc => 'Lower quality, minimal data';
+
+  @override
+  String get dataStorageQuality360pData => '~400 MB/hour';
+
+  @override
+  String get dataStorageOfflineSection => 'OFFLINE CONTENT';
+
+  @override
+  String get dataStorageOfflineSubtitle => 'Manage downloaded content';
+
+  @override
+  String get dataStorageOfflineMode => 'Offline Mode';
+
+  @override
+  String get dataStorageOfflineModeSubtitle => 'Use only downloaded content';
+
+  @override
+  String get dataStorageManageDownloads => 'Manage Downloads';
+
+  @override
+  String dataStorageManageDownloadsSubtitle(int count, int size) {
+    return '$count videos, $size MB';
+  }
+
+  @override
+  String get dataStorageDeleteAll => 'Delete All Downloads';
+
+  @override
+  String get dataStorageDeleteAllSubtitle => 'Free up storage space';
+
+  @override
+  String get dataStorageDataUsageSection => 'DATA USAGE';
+
+  @override
+  String get dataStorageDataUsageSubtitle => 'Track your data consumption';
+
+  @override
+  String get dataStorageWifiUsage => 'Wi-Fi Usage (This Month)';
+
+  @override
+  String get dataStorageMobileUsage => 'Mobile Data (This Month)';
+
+  @override
+  String get dataStorageTotalUsage => 'Total Usage (This Month)';
+
+  @override
+  String get dataStorageAdvancedSection => 'ADVANCED';
+
+  @override
+  String get dataStorageSyncNow => 'Sync Now';
+
+  @override
+  String get dataStorageSyncNowSubtitle => 'Sync all data with server';
+
+  @override
+  String get dataStorageLocation => 'Storage Location';
+
+  @override
+  String get dataStorageLocationInternal => 'Internal Storage';
+
+  @override
+  String get dataStorageLocationSoon =>
+      'Storage location management coming soon';
+
+  @override
+  String get dataStorageTip => 'Storage Tip';
+
+  @override
+  String get dataStorageTipText =>
+      'To save mobile data, enable \"Download on Wi-Fi Only\" and download content when connected to Wi-Fi. Clear cache regularly to free up space.';
+
+  @override
+  String get dataStorageClearCacheTitle => 'Clear Cache';
+
+  @override
+  String dataStorageClearCacheMessage(String size) {
+    return 'This will clear $size MB of cached data. This may slow down the app temporarily while data is re-cached.';
+  }
+
+  @override
+  String get dataStorageClearCacheButton => 'Clear';
+
+  @override
+  String get dataStorageCacheCleared => 'Cache cleared successfully';
+
+  @override
+  String get dataStorageDeleteAllTitle => 'Delete All Downloads';
+
+  @override
+  String dataStorageDeleteAllMessage(int size) {
+    return 'Are you sure you want to delete all downloaded content? This will free up approximately $size MB of storage.';
+  }
+
+  @override
+  String get dataStorageAllDeleted => 'All downloads deleted';
+
+  @override
+  String get dataStorageSyncing => 'Syncing data...';
+
+  @override
+  String get dataStorageSyncCompleted => 'Sync completed';
+
+  @override
+  String get languageSettingsTitle => 'Language & Region';
+
+  @override
+  String get languageSettingsBack => 'Back';
+
+  @override
+  String get languageSettingsAppLanguage => 'APP LANGUAGE';
+
+  @override
+  String get languageSettingsAppLanguageSubtitle =>
+      'Choose your preferred language';
+
+  @override
+  String languageSettingsChanged(String language) {
+    return 'Language changed to $language';
+  }
+
+  @override
+  String get languageSettingsDateTime => 'DATE & TIME';
+
+  @override
+  String get languageSettingsDateTimeSubtitle =>
+      'Customize date and time display';
+
+  @override
+  String get languageSettingsDateFormat => 'Date Format';
+
+  @override
+  String get languageSettingsDateFormatDefault => 'System Default';
+
+  @override
+  String get languageSettingsDateFormatMDY => 'MM/DD/YYYY (12/31/2024)';
+
+  @override
+  String get languageSettingsDateFormatDMY => 'DD/MM/YYYY (31/12/2024)';
+
+  @override
+  String get languageSettingsDateFormatYMD => 'YYYY/MM/DD (2024/12/31)';
+
+  @override
+  String get languageSettingsDateFormatLong => 'December 31, 2024';
+
+  @override
+  String get languageSettingsTimeFormat => 'Time Format';
+
+  @override
+  String get languageSettingsTimeFormat12h => '12-hour (2:30 PM)';
+
+  @override
+  String get languageSettingsTimeFormat24h => '24-hour (14:30)';
+
+  @override
+  String get languageSettingsNumberFormat => 'NUMBER FORMAT';
+
+  @override
+  String get languageSettingsNumberFormatSubtitle =>
+      'Currency and number display';
+
+  @override
+  String get languageSettingsNumberFormatDefault => 'System Default';
+
+  @override
+  String get languageSettingsNumberFormatComma => '1,234,567.89';
+
+  @override
+  String get languageSettingsNumberFormatPeriod => '1.234.567,89';
+
+  @override
+  String get languageSettingsNumberFormatSpace => '1 234 567,89';
+
+  @override
+  String get languageSettingsTranslation => 'CONTENT TRANSLATION';
+
+  @override
+  String get languageSettingsTranslationSubtitle =>
+      'Automatic translation preferences';
+
+  @override
+  String get languageSettingsAutoTranslate => 'Auto-Translate Content';
+
+  @override
+  String get languageSettingsAutoTranslateSubtitle =>
+      'Automatically translate content to your language';
+
+  @override
+  String get languageSettingsShowOriginal => 'Show Original Text';
+
+  @override
+  String get languageSettingsShowOriginalSubtitle =>
+      'Display original language alongside translation';
+
+  @override
+  String get languageSettingsRegional => 'REGIONAL SETTINGS';
+
+  @override
+  String get languageSettingsRegionalSubtitle => 'Location-based preferences';
+
+  @override
+  String get languageSettingsRegion => 'Region';
+
+  @override
+  String get languageSettingsRegionKenya => 'Kenya (East Africa)';
+
+  @override
+  String get languageSettingsFirstDay => 'First Day of Week';
+
+  @override
+  String get languageSettingsFirstDayMonday => 'Monday';
+
+  @override
+  String get languageSettingsContent => 'CONTENT PREFERENCES';
+
+  @override
+  String get languageSettingsContentSubtitle =>
+      'Languages for courses and materials';
+
+  @override
+  String get languageSettingsCourseLanguages => 'Preferred Course Languages';
+
+  @override
+  String get languageSettingsCourseLanguagesValue => 'English, Kiswahili';
+
+  @override
+  String get languageSettingsInfoTitle => 'Language Settings';
+
+  @override
+  String get languageSettingsInfoText =>
+      'Changing your language will update all menus, buttons, and system messages. Course content may still appear in its original language.';
+
+  @override
+  String get languageSettingsSelectRegion => 'Select Region';
+
+  @override
+  String languageSettingsRegionChanged(String region) {
+    return 'Region changed to $region';
+  }
+
+  @override
+  String get languageSettingsFirstDayTitle => 'First Day of Week';
+
+  @override
+  String languageSettingsFirstDaySet(String day) {
+    return 'First day set to $day';
+  }
+
+  @override
+  String get languageSettingsCourseLanguagesSaved =>
+      'Course language preferences saved';
+
+  @override
+  String get sendFeedbackTitle => 'Send Feedback';
+
+  @override
+  String get sendFeedbackHelp =>
+      'Your feedback helps us improve and serve you better.';
+
+  @override
+  String get sendFeedbackType => 'Feedback Type';
+
+  @override
+  String get sendFeedbackTypeGeneral => 'General Feedback';
+
+  @override
+  String get sendFeedbackTypeFeature => 'Feature Request';
+
+  @override
+  String get sendFeedbackTypeImprovement => 'Improvement Suggestion';
+
+  @override
+  String get sendFeedbackTypeComplaint => 'Complaint';
+
+  @override
+  String get sendFeedbackTypePraise => 'Praise';
+
+  @override
+  String get sendFeedbackExperience => 'Overall Experience';
+
+  @override
+  String get sendFeedbackRatingPoor => 'Poor';
+
+  @override
+  String get sendFeedbackRatingFair => 'Fair';
+
+  @override
+  String get sendFeedbackRatingGood => 'Good';
+
+  @override
+  String get sendFeedbackRatingVeryGood => 'Very Good';
+
+  @override
+  String get sendFeedbackRatingExcellent => 'Excellent';
+
+  @override
+  String get sendFeedbackYourFeedback => 'Your Feedback';
+
+  @override
+  String get sendFeedbackPlaceholder => 'Tell us what you think...';
+
+  @override
+  String get sendFeedbackRequired => 'Please enter your feedback';
+
+  @override
+  String get sendFeedbackTooShort => 'Feedback must be at least 10 characters';
+
+  @override
+  String get sendFeedbackAttachScreenshot => 'Attach Screenshot';
+
+  @override
+  String get sendFeedbackScreenshotHelp =>
+      'Optional - helps us understand the issue';
+
+  @override
+  String get sendFeedbackScreenshotAttached => 'Screenshot attached';
+
+  @override
+  String get sendFeedbackScreenshotTooLarge =>
+      'Image is too large. Please select an image under 5MB.';
+
+  @override
+  String get sendFeedbackScreenshotSuccess =>
+      'Screenshot attached successfully';
+
+  @override
+  String sendFeedbackScreenshotError(String error) {
+    return 'Error selecting image: $error';
+  }
+
+  @override
+  String get sendFeedbackAnonymous => 'Submit Anonymously';
+
+  @override
+  String get sendFeedbackAnonymousSubtitle =>
+      'Your identity will not be shared';
+
+  @override
+  String get sendFeedbackSubmit => 'Submit Feedback';
+
+  @override
+  String get sendFeedbackThankYou => 'Thank you for your feedback!';
+
+  @override
+  String get sendFeedbackThankYouWithScreenshot =>
+      'Thank you for your feedback! (Screenshot attached)';
+
+  @override
+  String get settingsQuickSettings => 'QUICK SETTINGS';
+
+  @override
+  String get settingsQuickSettingsSubtitle => 'Frequently used settings';
+
+  @override
+  String get settingsPushNotifications => 'Push Notifications';
+
+  @override
+  String get settingsPushNotificationsSubtitle => 'Receive app notifications';
+
+  @override
+  String get settingsEmailNotifications => 'Email Notifications';
+
+  @override
+  String get settingsEmailNotificationsSubtitle => 'Receive updates via email';
+
+  @override
+  String get settingsSmsNotifications => 'SMS Notifications';
+
+  @override
+  String get settingsSmsNotificationsSubtitle => 'Receive SMS alerts';
+
+  @override
+  String get settingsPreferences => 'PREFERENCES';
+
+  @override
+  String get settingsPreferencesSubtitle => 'Customize your experience';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsAppearanceSubtitle => 'Theme, colors, and display';
+
+  @override
+  String get settingsLanguageRegion => 'Language & Region';
+
+  @override
+  String get settingsLanguageRegionValue => 'English, Kenya';
+
+  @override
+  String get settingsDataStorage => 'Data & Storage';
+
+  @override
+  String get settingsDataStorageSubtitle => 'Manage downloads and cache';
+
+  @override
+  String get settingsAccount => 'ACCOUNT';
+
+  @override
+  String get settingsAccountSubtitle => 'Manage your account settings';
+
+  @override
+  String get settingsEditProfile => 'Edit Profile';
+
+  @override
+  String get settingsEditProfileSubtitle => 'Update your personal information';
+
+  @override
+  String get settingsPrivacySecurity => 'Privacy & Security';
+
+  @override
+  String get settingsPrivacySecuritySubtitle => 'Control your privacy settings';
+
+  @override
+  String get settingsPaymentMethods => 'Payment Methods';
+
+  @override
+  String get settingsPaymentMethodsSubtitle => 'Manage payment options';
+
+  @override
+  String get settingsSubscriptions => 'Subscriptions';
+
+  @override
+  String get settingsSubscriptionsSubtitle => 'View and manage subscriptions';
+
+  @override
+  String get settingsLearning => 'LEARNING';
+
+  @override
+  String get settingsLearningSubtitle => 'Customize your learning experience';
+
+  @override
+  String get settingsStudySchedule => 'Study Schedule';
+
+  @override
+  String get settingsStudyScheduleSubtitle => 'Set reminders and goals';
+
+  @override
+  String get settingsProgressReports => 'Progress Reports';
+
+  @override
+  String get settingsProgressReportsSubtitle => 'View your learning analytics';
+
+  @override
+  String get settingsSupport => 'SUPPORT';
+
+  @override
+  String get settingsSupportSubtitle => 'Get help and provide feedback';
+
+  @override
+  String get settingsHelpCenter => 'Help Center';
+
+  @override
+  String get settingsHelpCenterSubtitle => 'Browse help articles';
+
+  @override
+  String get settingsContactSupport => 'Contact Support';
+
+  @override
+  String get settingsContactSupportSubtitle => 'Get in touch with our team';
+
+  @override
+  String get settingsReportBug => 'Report a Bug';
+
+  @override
+  String get settingsReportBugSubtitle => 'Help us improve';
+
+  @override
+  String get settingsSendFeedback => 'Send Feedback';
+
+  @override
+  String get settingsSendFeedbackSubtitle => 'Share your thoughts';
+
+  @override
+  String get settingsLegal => 'LEGAL';
+
+  @override
+  String get settingsPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get settingsCookieSettings => 'Cookie Settings';
+
+  @override
+  String get settingsCookieSettingsSubtitle => 'Manage cookie preferences';
+
+  @override
+  String get settingsTermsOfService => 'Terms of Service';
+
+  @override
+  String get settingsLicenses => 'Licenses';
+
+  @override
+  String get settingsLicensesSubtitle => 'Open source licenses';
+
+  @override
+  String get settingsAbout => 'ABOUT';
+
+  @override
+  String get settingsLogout => 'Logout';
+
+  @override
+  String get settingsLogoutConfirm => 'Are you sure you want to logout?';
+
+  @override
+  String get onboardingFeaturesTitle => 'Features';
+
+  @override
+  String get onboardingGotIt => 'Got It!';
+
+  @override
+  String get onboardingClose => 'Close';
+
+  @override
+  String get onboardingTryIt => 'Try It';
+
+  @override
+  String onboardingOpeningFeature(String feature) {
+    return 'Opening $feature...';
+  }
+
+  @override
+  String get onboardingWelcomeDescription =>
+      'Your all-in-one platform for discovering courses, managing applications, and achieving your educational goals.';
+
+  @override
+  String get onboardingDiscoverCoursesTitle => 'Discover Courses';
+
+  @override
+  String get onboardingDiscoverCoursesDescription =>
+      'Browse thousands of courses from top institutions. Filter by subject, level, duration, and more to find the perfect fit.';
+
+  @override
+  String get onboardingTrackApplicationsTitle => 'Track Applications';
+
+  @override
+  String get onboardingTrackApplicationsDescription =>
+      'Manage all your course applications in one place. Get real-time updates and never miss a deadline.';
+
+  @override
+  String get onboardingStudySmarterTitle => 'Study Smarter';
+
+  @override
+  String get onboardingStudySmarterDescription =>
+      'Take notes, set goals, and track your progress. Stay organized with our powerful study tools.';
+
+  @override
+  String get onboardingStayConnectedTitle => 'Stay Connected';
+
+  @override
+  String get onboardingStayConnectedDescription =>
+      'Message institutions directly, get personalized counseling, and receive instant notifications for important updates.';
+
+  @override
+  String get onboardingWelcomeToFlow => 'Welcome to Flow!';
+
+  @override
+  String get onboardingFeatureCategoryCore => 'Core Features';
+
+  @override
+  String get onboardingFeatureCategoryStudyTools => 'Study Tools';
+
+  @override
+  String get onboardingFeatureCategoryProductivity => 'Productivity';
+
+  @override
+  String get onboardingFeatureCategoryCollaboration => 'Collaboration';
+
+  @override
+  String get onboardingFeatureCourseDiscovery => 'Course Discovery';
+
+  @override
+  String get onboardingFeatureCourseDiscoveryDesc =>
+      'Browse and search thousands of courses from top institutions worldwide';
+
+  @override
+  String get onboardingFeatureApplicationTracking => 'Application Tracking';
+
+  @override
+  String get onboardingFeatureApplicationTrackingDesc =>
+      'Manage all your course applications and track their status in real-time';
+
+  @override
+  String get onboardingFeatureLearningDashboard => 'Learning Dashboard';
+
+  @override
+  String get onboardingFeatureLearningDashboardDesc =>
+      'Track your progress, view enrolled courses, and access learning materials';
+
+  @override
+  String get onboardingFeatureMessaging => 'Messaging';
+
+  @override
+  String get onboardingFeatureMessagingDesc =>
+      'Communicate directly with institutions and counselors';
+
+  @override
+  String get onboardingFeatureNotes => 'Notes';
+
+  @override
+  String get onboardingFeatureNotesDesc =>
+      'Take, organize, and sync notes across all your devices';
+
+  @override
+  String get onboardingFeatureBookmarks => 'Bookmarks';
+
+  @override
+  String get onboardingFeatureBookmarksDesc =>
+      'Save courses and resources for quick access later';
+
+  @override
+  String get onboardingFeatureAchievementsDesc =>
+      'Earn badges and track milestones as you progress';
+
+  @override
+  String get onboardingFeatureProgressAnalytics => 'Progress Analytics';
+
+  @override
+  String get onboardingFeatureProgressAnalyticsDesc =>
+      'Visualize your learning journey with detailed statistics';
+
+  @override
+  String get onboardingFeatureCalendar => 'Calendar';
+
+  @override
+  String get onboardingFeatureCalendarDesc =>
+      'Track deadlines, events, and important dates';
+
+  @override
+  String get onboardingFeatureSmartNotifications => 'Smart Notifications';
+
+  @override
+  String get onboardingFeatureSmartNotificationsDesc =>
+      'Get timely reminders and updates about your applications';
+
+  @override
+  String get onboardingFeatureStudyScheduler => 'Study Scheduler';
+
+  @override
+  String get onboardingFeatureStudySchedulerDesc =>
+      'Plan and optimize your study time';
+
+  @override
+  String get onboardingFeatureGoalsMilestones => 'Goals & Milestones';
+
+  @override
+  String get onboardingFeatureGoalsMilestonesDesc =>
+      'Set and track your learning goals';
+
+  @override
+  String get onboardingFeatureStudyGroups => 'Study Groups';
+
+  @override
+  String get onboardingFeatureStudyGroupsDesc =>
+      'Connect and collaborate with fellow learners';
+
+  @override
+  String get onboardingFeatureDiscussionForums => 'Discussion Forums';
+
+  @override
+  String get onboardingFeatureDiscussionForumsDesc =>
+      'Participate in course discussions and Q&A';
+
+  @override
+  String get onboardingFeatureResourceSharing => 'Resource Sharing';
+
+  @override
+  String get onboardingFeatureResourceSharingDesc =>
+      'Share notes, links, and study materials';
+
+  @override
+  String get onboardingFeatureLiveSessions => 'Live Sessions';
+
+  @override
+  String get onboardingFeatureLiveSessionsDesc =>
+      'Join virtual classes and webinars';
+
+  @override
+  String get onboardingHowToUse => 'How to use:';
+
+  @override
+  String get onboardingInstructionsCourseDiscovery =>
+      'Navigate to the Explore tab and use the search bar or browse categories.';
+
+  @override
+  String get onboardingInstructionsApplicationTracking =>
+      'Go to Applications tab to view and manage all your applications.';
+
+  @override
+  String get onboardingInstructionsLearningDashboard =>
+      'Access your dashboard from the Home tab to see your progress.';
+
+  @override
+  String get onboardingInstructionsMessaging =>
+      'Open the Messages tab to chat with institutions and counselors.';
+
+  @override
+  String get onboardingInstructionsNotes =>
+      'Tap the Notes icon to create and organize your study notes.';
+
+  @override
+  String get onboardingInstructionsBookmarks =>
+      'Save items by tapping the bookmark icon on courses or resources.';
+
+  @override
+  String get onboardingInstructionsAchievements =>
+      'View your achievements in the Profile section under Progress.';
+
+  @override
+  String get onboardingInstructionsProgressAnalytics =>
+      'Check detailed analytics in your Profile > Progress section.';
+
+  @override
+  String get onboardingInstructionsCalendar =>
+      'Access the Calendar from the bottom navigation or menu.';
+
+  @override
+  String get onboardingInstructionsSmartNotifications =>
+      'Enable notifications in Settings > Notifications.';
+
+  @override
+  String get onboardingInstructionsStudyScheduler =>
+      'Create study schedules in Tools > Study Planner.';
+
+  @override
+  String get onboardingInstructionsGoalsMilestones =>
+      'Set goals in Profile > Progress > Goals.';
+
+  @override
+  String get onboardingInstructionsStudyGroups =>
+      'Join or create study groups from Community > Groups.';
+
+  @override
+  String get onboardingInstructionsDiscussionForums =>
+      'Participate in forums from Community > Discussions.';
+
+  @override
+  String get onboardingInstructionsResourceSharing =>
+      'Share resources using the share button on any content.';
+
+  @override
+  String get onboardingInstructionsLiveSessions =>
+      'Join live sessions from the Schedule or Courses section.';
+
+  @override
+  String get onboardingInstructionsDefault =>
+      'Explore the app to discover this feature!';
+
+  @override
+  String get onboardingTutorialCompleted => 'Tutorial completed!';
+
+  @override
+  String get onboardingTutorialExample => 'Tutorial Example';
+
+  @override
+  String get onboardingTutorialSearchFeature => 'Search Feature';
+
+  @override
+  String get onboardingTutorialSearchFeatureDesc =>
+      'Use the search bar to find courses, institutions, or content.';
+
+  @override
+  String get onboardingTutorialFilterOptions => 'Filter Options';
+
+  @override
+  String get onboardingTutorialFilterOptionsDesc =>
+      'Apply filters to narrow down your search results.';
+
+  @override
+  String get onboardingTutorialNotifications => 'Notifications';
+
+  @override
+  String get onboardingTutorialNotificationsDesc =>
+      'Check your notifications for important updates and messages.';
+
+  @override
+  String get onboardingTutorialYourProfile => 'Your Profile';
+
+  @override
+  String get onboardingTutorialYourProfileDesc =>
+      'Access your profile, settings, and preferences here.';
+
+  @override
+  String get onboardingTutorialSearchHint => 'Search...';
+
+  @override
+  String get onboardingTutorialRestartTutorial => 'Restart Tutorial';
+
+  @override
+  String get paymentsFailedTitle => 'Payment Failed';
+
+  @override
+  String get paymentsFailedHeading => 'Payment Failed';
+
+  @override
+  String get paymentsFailedDefaultMessage =>
+      'We could not process your payment. Please try again.';
+
+  @override
+  String get paymentsTransactionDetails => 'Transaction Details';
+
+  @override
+  String get paymentsTransactionId => 'Transaction ID';
+
+  @override
+  String get paymentsReference => 'Reference';
+
+  @override
+  String get paymentsPaymentMethod => 'Payment Method';
+
+  @override
+  String get paymentsAmount => 'Amount';
+
+  @override
+  String get paymentsFailureReason => 'Failure Reason';
+
+  @override
+  String get paymentsCommonIssues => 'Common Issues';
+
+  @override
+  String get paymentsInsufficientFunds => 'Insufficient Funds';
+
+  @override
+  String get paymentsInsufficientFundsDesc =>
+      'Ensure you have sufficient balance in your account';
+
+  @override
+  String get paymentsCardDeclined => 'Card Declined';
+
+  @override
+  String get paymentsCardDeclinedDesc =>
+      'Check with your bank or try a different card';
+
+  @override
+  String get paymentsNetworkIssues => 'Network Issues';
+
+  @override
+  String get paymentsNetworkIssuesDesc =>
+      'Ensure you have a stable internet connection';
+
+  @override
+  String get paymentsIncorrectDetails => 'Incorrect Details';
+
+  @override
+  String get paymentsIncorrectDetailsDesc =>
+      'Verify your payment information is correct';
+
+  @override
+  String get paymentsHelpNotice =>
+      'If the problem persists, please contact support';
+
+  @override
+  String get paymentsTryAgain => 'Try Again';
+
+  @override
+  String get paymentsContactSupport => 'Contact Support';
+
+  @override
+  String get paymentsBackToHome => 'Back to Home';
+
+  @override
+  String get paymentsHistoryTitle => 'Payment History';
+
+  @override
+  String get paymentsHistoryRetry => 'Retry';
+
+  @override
+  String get paymentsNoPaymentsTitle => 'No Payments';
+
+  @override
+  String get paymentsDownloadReceipt => 'Download Receipt';
+
+  @override
+  String get paymentsRetryPayment => 'Retry Payment';
+
+  @override
+  String get paymentsDownloadAsPdf => 'Download as PDF';
+
+  @override
+  String get paymentsSaveReceiptToDevice => 'Save receipt to device';
+
+  @override
+  String get paymentsDownloadingReceipt => 'Downloading receipt...';
+
+  @override
+  String get paymentsEmailReceipt => 'Email Receipt';
+
+  @override
+  String get paymentsSendToEmail => 'Send to your email address';
+
+  @override
+  String get paymentsSendingReceiptViaEmail => 'Sending receipt via email...';
+
+  @override
+  String get paymentsShareReceipt => 'Share Receipt';
+
+  @override
+  String get paymentsShareViaOtherApps => 'Share via other apps';
+
+  @override
+  String get paymentsOpeningShareOptions => 'Opening share options...';
+
+  @override
+  String get paymentsSelectPaymentMethodTitle => 'Select Payment Method';
+
+  @override
+  String get paymentsItem => 'Item';
+
+  @override
+  String get paymentsType => 'Type';
+
+  @override
+  String get paymentsTotalAmount => 'Total Amount';
+
+  @override
+  String paymentsPayWith(String method) {
+    return 'Pay with $method';
+  }
+
+  @override
+  String get paymentsMpesaPhoneNumber => 'M-Pesa Phone Number';
+
+  @override
+  String get paymentsMpesaPhoneHint => '254712345678';
+
+  @override
+  String get paymentsCardholderName => 'Cardholder Name';
+
+  @override
+  String get paymentsCardholderNameHint => 'JOHN DOE';
+
+  @override
+  String get paymentsCardNumber => 'Card Number';
+
+  @override
+  String get paymentsCardNumberHint => '1234 5678 9012 3456';
+
+  @override
+  String get paymentsExpiryDate => 'Expiry Date';
+
+  @override
+  String get paymentsExpiryDateHint => 'MM/YY';
+
+  @override
+  String get paymentsCvv => 'CVV';
+
+  @override
+  String get paymentsCvvHint => '123';
+
+  @override
+  String get paymentsPayNow => 'Pay Now';
+
+  @override
+  String get paymentsProcessing => 'Processing';
+
+  @override
+  String get paymentsProcessingPayment => 'Processing your payment...';
+
+  @override
+  String get paymentsReceiptOptions => 'Receipt Options';
+
+  @override
+  String get paymentsPurchaseDetails => 'Purchase Details';
+
+  @override
+  String get paymentsSuccessTitle => 'Payment Successful!';
+
+  @override
+  String get paymentsSuccessMessage =>
+      'Your payment has been processed successfully';
+
+  @override
+  String get paymentsPaymentDetails => 'Payment Details';
+
+  @override
+  String get paymentsDateAndTime => 'Date & Time';
+
+  @override
+  String get paymentsAmountPaid => 'Amount Paid';
+
+  @override
+  String get paymentsReceiptSentToEmail =>
+      'A receipt has been sent to your email address';
+
+  @override
+  String get paymentsCompletedAt => 'Completed At';
+
+  @override
+  String get paymentsDate => 'Date';
+
+  @override
+  String get profileChangePasswordTitle => 'Change Password';
+
+  @override
+  String get profileChangePasswordButton => 'Change Password';
+
+  @override
+  String get profilePasswordRequirements =>
+      'Your password must be at least 8 characters long and include letters and numbers';
+
+  @override
+  String get profileCurrentPassword => 'Current Password';
+
+  @override
+  String get profileNewPassword => 'New Password';
+
+  @override
+  String get profileConfirmNewPassword => 'Confirm New Password';
+
+  @override
+  String get profileEnterCurrentPassword =>
+      'Please enter your current password';
+
+  @override
+  String get profileEnterNewPassword => 'Please enter a new password';
+
+  @override
+  String get profilePasswordMinLength =>
+      'Password must be at least 8 characters';
+
+  @override
+  String get profilePasswordMustContainLettersNumbers =>
+      'Password must contain letters and numbers';
+
+  @override
+  String get profileNewPasswordMustDiffer =>
+      'New password must be different from current';
+
+  @override
+  String get profileConfirmNewPasswordPrompt =>
+      'Please confirm your new password';
+
+  @override
+  String get profilePasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get profilePasswordStrength => 'Password Strength';
+
+  @override
+  String get profilePasswordStrengthTooWeak => 'Too weak';
+
+  @override
+  String get profilePasswordStrengthWeak => 'Weak';
+
+  @override
+  String get profilePasswordStrengthFair => 'Fair';
+
+  @override
+  String get profilePasswordStrengthGood => 'Good';
+
+  @override
+  String get profilePasswordStrengthStrong => 'Strong';
+
+  @override
+  String get profileForgotCurrentPassword => 'Forgot your current password?';
+
+  @override
+  String get profilePasswordChangedSuccess => 'Password changed successfully!';
+
+  @override
+  String get profileResetPasswordTitle => 'Reset Password';
+
+  @override
+  String get profileResetPasswordMessage =>
+      'We\'ll send you a password reset link to your registered email address.';
+
+  @override
+  String get profilePasswordResetEmailSent => 'Password reset email sent';
+
+  @override
+  String get profileSendResetLink => 'Send Reset Link';
+
+  @override
+  String get profileBack => 'Back';
+
+  @override
+  String get profileNoUserFound => 'No user found';
+
+  @override
+  String get profilePhotoSelected =>
+      'Photo selected! Save your changes to upload.';
+
+  @override
+  String profileErrorSelectingPhoto(String error) {
+    return 'Error selecting photo: $error';
+  }
+
+  @override
+  String get profileDocumentUploadComingSoon => 'Document upload coming soon';
+
+  @override
+  String get profileUploadCredentialDocuments => 'Upload Credential Documents';
+
+  @override
+  String get profileUnsavedChangesTitle => 'Unsaved Changes';
+
+  @override
+  String get profileUnsavedChangesMessage =>
+      'You have unsaved changes. Do you want to discard them?';
+
+  @override
+  String get profileDiscard => 'Discard';
+
+  @override
+  String get profileUpdatedSuccess => 'Profile updated successfully!';
+
+  @override
+  String profileErrorSaving(String error) {
+    return 'Error saving profile: $error';
+  }
 }

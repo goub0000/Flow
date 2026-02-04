@@ -323,7 +323,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingFeatureAnalytics => 'Analyses de performance';
 
   @override
-  String get onboardingFeatureAchievements => 'Système de récompenses';
+  String get onboardingFeatureAchievements => 'Réalisations';
 
   @override
   String get heroTrustBadge => 'Approuvé par plus de 200 universités';
@@ -19742,7 +19742,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get privacyPolicyTitle => 'Politique de confidentialite';
+  String get privacyPolicyTitle => 'Politique de confidentialité';
 
   @override
   String get privacyPolicyShare => 'Partager';
@@ -19757,7 +19757,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get privacyPolicyLastUpdated =>
-      'Derniere mise a jour : 28 octobre 2025';
+      'Dernière mise à jour : 28 octobre 2025';
 
   @override
   String get privacyPolicyHeaderDescription =>
@@ -19973,7 +19973,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'En utilisant Flow EdTech, vous reconnaissez avoir lu et compris ces conditions d\'utilisation.';
 
   @override
-  String get progressReportsTitle => 'Rapports de Progrès';
+  String get progressReportsTitle => 'Rapports de progression';
 
   @override
   String get exportReport => 'Exporter le Rapport';
@@ -20015,7 +20015,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reportExportedSuccessfully => 'Rapport exporté avec succès';
 
   @override
-  String get studyScheduleTitle => 'Horaire d\'Étude';
+  String get studyScheduleTitle => 'Horaire d\'étude';
 
   @override
   String get save => 'Enregistrer';
@@ -20399,16 +20399,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionsTitle => 'Abonnements';
 
   @override
-  String get subscriptionsAvailablePlans => 'Plans disponibles';
+  String get subscriptionsAvailablePlans => 'Forfaits disponibles';
 
   @override
-  String get subscriptionsBasicPlan => 'Plan de base';
+  String get subscriptionsBasicPlan => 'Forfait de base';
 
   @override
-  String get subscriptionsPremiumPlan => 'Plan Premium';
+  String get subscriptionsPremiumPlan => 'Forfait Premium';
 
   @override
-  String get subscriptionsInstitutionPlan => 'Plan Institution';
+  String get subscriptionsInstitutionPlan => 'Forfait Institution';
 
   @override
   String get subscriptionsPriceFree => 'Gratuit';
@@ -20480,13 +20480,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionsStartedDate => '1er janvier 2025';
 
   @override
-  String get subscriptionsUpgradePlan => 'Mettre à niveau le plan';
+  String get subscriptionsUpgradePlan => 'Mettre à niveau';
 
   @override
   String get subscriptionsCurrent => 'Actuel';
 
   @override
-  String get subscriptionsSelectPlan => 'Sélectionner le plan';
+  String get subscriptionsSelectPlan => 'Sélectionner un forfait';
 
   @override
   String get privacySecurityTitle => 'Confidentialité et sécurité';
@@ -20748,4 +20748,1688 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get browseInstitutionsNoOfferingsYet => 'Aucune offre pour le moment';
+
+  @override
+  String get subscriptionsFree => 'Gratuit';
+
+  @override
+  String get subscriptionsActive => 'Actif';
+
+  @override
+  String get subscriptionsStatus => 'Statut';
+
+  @override
+  String get subscriptionsPlan => 'Forfait';
+
+  @override
+  String get subscriptionsStarted => 'Commencé';
+
+  @override
+  String get subscriptionsBasicFree => 'De base (Gratuit)';
+
+  @override
+  String get subscriptionsBasicFeature1 => 'Accès aux cours de base';
+
+  @override
+  String get subscriptionsBasicFeature2 => 'Stockage limité';
+
+  @override
+  String get subscriptionsBasicFeature3 => 'Support par e-mail';
+
+  @override
+  String get subscriptionsPremiumFeature1 => 'Accès à tous les cours';
+
+  @override
+  String get subscriptionsPremiumFeature2 => 'Stockage illimité';
+
+  @override
+  String get subscriptionsPremiumFeature3 => 'Support prioritaire';
+
+  @override
+  String get subscriptionsPremiumFeature4 => 'Téléchargements hors ligne';
+
+  @override
+  String get subscriptionsPremiumFeature5 => 'Certificat d\'achèvement';
+
+  @override
+  String get subscriptionsInstitutionFeature1 => 'Tout du Premium';
+
+  @override
+  String get subscriptionsInstitutionFeature2 => 'Gestion multi-utilisateurs';
+
+  @override
+  String get subscriptionsInstitutionFeature3 => 'Tableau de bord analytique';
+
+  @override
+  String get subscriptionsInstitutionFeature4 =>
+      'Image de marque personnalisée';
+
+  @override
+  String get subscriptionsInstitutionFeature5 => 'Accès API';
+
+  @override
+  String get studyScheduleSave => 'Enregistrer';
+
+  @override
+  String get studyScheduleDailyGoal => 'Objectif d\'étude quotidien';
+
+  @override
+  String studyScheduleMinutesPerDay(int minutes) {
+    return '$minutes minutes par jour';
+  }
+
+  @override
+  String get studyScheduleReminders => 'Rappels d\'étude';
+
+  @override
+  String get studyScheduleRemindersSubtitle =>
+      'Recevoir des notifications aux heures prévues';
+
+  @override
+  String get studyScheduleWeeklySchedule => 'Horaire hebdomadaire';
+
+  @override
+  String get studyScheduleSetPreferred =>
+      'Définissez vos heures d\'étude préférées';
+
+  @override
+  String get studyScheduleAddTime => 'Ajouter une heure';
+
+  @override
+  String get studyScheduleNoTime => 'Aucune heure d\'étude définie';
+
+  @override
+  String get studyScheduleSaved => 'Horaire d\'étude enregistré avec succès';
+
+  @override
+  String get progressReportsExport => 'Exporter le rapport';
+
+  @override
+  String get progressReportsOverview => 'Aperçu';
+
+  @override
+  String get progressReportsCourses => 'Cours';
+
+  @override
+  String get progressReportsSkills => 'Compétences';
+
+  @override
+  String get progressReportsStudyTime => 'Temps d\'étude';
+
+  @override
+  String get progressReportsAchievements => 'Réalisations';
+
+  @override
+  String get progressReportsAvgScore => 'Score moyen';
+
+  @override
+  String get progressReportsWeeklyActivity => 'Activité hebdomadaire';
+
+  @override
+  String get progressReportsActivityChart =>
+      'Le graphique d\'activité sera affiché ici';
+
+  @override
+  String get progressReportsCompleted => 'Terminé';
+
+  @override
+  String progressReportsOfLessons(int completed, int total) {
+    return '$completed de $total leçons terminées';
+  }
+
+  @override
+  String get progressReportsExported => 'Rapport exporté avec succès';
+
+  @override
+  String get privacyPolicyShareSoon =>
+      'Fonctionnalité de partage bientôt disponible';
+
+  @override
+  String get privacyPolicyFlowTitle =>
+      'Politique de confidentialité Flow EdTech';
+
+  @override
+  String get privacyPolicyIntro =>
+      'Cette politique de confidentialité décrit comment Flow EdTech collecte, utilise et protège vos informations personnelles.';
+
+  @override
+  String get privacyPolicySection1 => '1. Informations que nous collectons';
+
+  @override
+  String get privacyPolicySection2 =>
+      '2. Comment nous utilisons vos informations';
+
+  @override
+  String get privacyPolicySection3 =>
+      '3. Partage et divulgation d\'informations';
+
+  @override
+  String get privacyPolicySection4 => '4. Sécurité des données';
+
+  @override
+  String get privacyPolicySection5 => '5. Vos droits et choix';
+
+  @override
+  String get privacyPolicySection6 => '6. Cookies et technologies de suivi';
+
+  @override
+  String get privacyPolicySection7 => '7. Confidentialité des enfants';
+
+  @override
+  String get privacyPolicySection8 => '8. Transferts internationaux de données';
+
+  @override
+  String get privacyPolicySection9 =>
+      '9. Modifications de cette politique de confidentialité';
+
+  @override
+  String get privacyPolicySection10 => '10. Nous contacter';
+
+  @override
+  String get termsOfServiceShareSoon =>
+      'Fonctionnalité de partage bientôt disponible';
+
+  @override
+  String get termsOfServiceFlowTitle => 'Conditions d\'utilisation Flow EdTech';
+
+  @override
+  String get termsOfServiceEffective => 'Date d\'effet : 28 octobre 2025';
+
+  @override
+  String get termsOfServiceIntro =>
+      'Veuillez lire attentivement ces conditions d\'utilisation avant d\'utiliser notre plateforme. En accédant ou en utilisant nos services, vous acceptez d\'être lié par ces conditions.';
+
+  @override
+  String get termsOfServiceSection1 => '1. Acceptation des conditions';
+
+  @override
+  String get termsOfServiceSection2 =>
+      '2. Inscription au compte et éligibilité';
+
+  @override
+  String get termsOfServiceSection3 =>
+      '3. Conduite et responsabilités de l\'utilisateur';
+
+  @override
+  String get termsOfServiceSection4 => '4. Droits de propriété intellectuelle';
+
+  @override
+  String get termsOfServiceSection5 =>
+      '5. Abonnements, paiements et remboursements';
+
+  @override
+  String get termsOfServiceSection6 => '6. Accès aux cours et contenu éducatif';
+
+  @override
+  String get termsOfServiceSection7 =>
+      '7. Confidentialité et protection des données';
+
+  @override
+  String get termsOfServiceSection8 =>
+      '8. Clauses de non-responsabilité et limitations de responsabilité';
+
+  @override
+  String get termsOfServiceSection9 => '9. Services et liens tiers';
+
+  @override
+  String get termsOfServiceSection10 => '10. Résiliation';
+
+  @override
+  String get termsOfServiceSection11 =>
+      '11. Résolution des litiges et arbitrage';
+
+  @override
+  String get termsOfServiceSection12 => '12. Loi applicable';
+
+  @override
+  String get termsOfServiceSection13 =>
+      '13. Modifications des conditions d\'utilisation';
+
+  @override
+  String get termsOfServiceSection14 => '14. Informations de contact';
+
+  @override
+  String get appearanceTitle => 'Apparence';
+
+  @override
+  String get appearanceBack => 'Retour';
+
+  @override
+  String get appearanceRefreshApp => 'Actualiser l\'application';
+
+  @override
+  String get appearanceRefreshed =>
+      'Application actualisée ! Modifications appliquées.';
+
+  @override
+  String get appearanceInfoBanner =>
+      'Les modifications de thème et de couleur s\'appliquent automatiquement. Pour les autres modifications, appuyez sur le bouton d\'actualisation ci-dessus.';
+
+  @override
+  String get appearanceThemeSection => 'THÈME';
+
+  @override
+  String get appearanceThemeSubtitle => 'Choisissez l\'apparence de Flow';
+
+  @override
+  String get appearanceTextSizeSection => 'TAILLE DU TEXTE';
+
+  @override
+  String get appearanceTextSizeSubtitle =>
+      'Ajustez la taille du texte dans l\'application';
+
+  @override
+  String get appearancePreview => 'Aperçu';
+
+  @override
+  String get appearancePreviewText =>
+      'Portez ce vieux whisky au juge blond qui fume';
+
+  @override
+  String get appearanceFontFamilySection => 'FAMILLE DE POLICE';
+
+  @override
+  String get appearanceFontFamilySubtitle => 'Choisissez votre police préférée';
+
+  @override
+  String get appearanceDisplayOptions => 'OPTIONS D\'AFFICHAGE';
+
+  @override
+  String get appearanceCompactMode => 'Mode compact';
+
+  @override
+  String get appearanceCompactModeSubtitle =>
+      'Afficher plus de contenu à l\'écran';
+
+  @override
+  String get appearanceColorAccent => 'COULEUR D\'ACCENT';
+
+  @override
+  String get appearanceColorAccentSubtitle =>
+      'Personnaliser les couleurs de l\'application';
+
+  @override
+  String get appearanceChooseAccent => 'Choisissez votre couleur d\'accent';
+
+  @override
+  String get bugReportTitle => 'Signaler un bug';
+
+  @override
+  String get bugReportHelp =>
+      'Aidez-nous à améliorer en signalant les bugs et problèmes que vous rencontrez.';
+
+  @override
+  String get bugReportTitleField => 'Titre du bug';
+
+  @override
+  String get bugReportTitleHint => 'Description brève du problème';
+
+  @override
+  String get bugReportTitleRequired => 'Veuillez entrer un titre de bug';
+
+  @override
+  String get bugReportSeverity => 'Gravité';
+
+  @override
+  String get bugReportSeverityLow => 'Faible - Inconvénient mineur';
+
+  @override
+  String get bugReportSeverityMedium => 'Moyenne - Affecte la fonctionnalité';
+
+  @override
+  String get bugReportSeverityHigh => 'Élevée - Application inutilisable';
+
+  @override
+  String get bugReportDescription => 'Description';
+
+  @override
+  String get bugReportDescriptionHint => 'Que s\'est-il passé ?';
+
+  @override
+  String get bugReportDescriptionRequired => 'Veuillez décrire le bug';
+
+  @override
+  String get bugReportSteps => 'Étapes pour reproduire';
+
+  @override
+  String get bugReportStepsHint =>
+      '1. Allez à...\n2. Cliquez sur...\n3. Voir l\'erreur';
+
+  @override
+  String get bugReportStepsRequired =>
+      'Veuillez fournir les étapes pour reproduire';
+
+  @override
+  String get bugReportAttachScreenshot => 'Joindre une capture d\'écran';
+
+  @override
+  String get bugReportScreenshotHelp =>
+      'Aidez-nous à mieux comprendre le problème';
+
+  @override
+  String get bugReportScreenshotSoon =>
+      'Pièce jointe de capture d\'écran bientôt disponible';
+
+  @override
+  String get bugReportIncludeDevice =>
+      'Inclure les informations de l\'appareil';
+
+  @override
+  String get bugReportDeviceInfo =>
+      'Version du système d\'exploitation, version de l\'application, modèle de l\'appareil';
+
+  @override
+  String get bugReportSubmit => 'Soumettre le rapport de bug';
+
+  @override
+  String get bugReportSubmitted =>
+      'Rapport de bug soumis avec succès ! Merci de nous aider à améliorer.';
+
+  @override
+  String get contactSupportTitle => 'Contacter le support';
+
+  @override
+  String get contactSupportGetInTouch => 'Contactez-nous';
+
+  @override
+  String get contactSupportEmail => 'E-mail';
+
+  @override
+  String get contactSupportEmailAddress => 'support@flowedtech.com';
+
+  @override
+  String get contactSupportLiveChat => 'Chat en direct';
+
+  @override
+  String get contactSupportLiveChatAvailable => 'Disponible 24h/24 et 7j/7';
+
+  @override
+  String get contactSupportPhone => 'Téléphone';
+
+  @override
+  String get contactSupportPhoneNumber => '+1 (555) 123-4567';
+
+  @override
+  String get contactSupportHours => 'Heures de support';
+
+  @override
+  String get contactSupportHoursText =>
+      'Lundi - Vendredi : 9h - 17h EST\nWeek-ends : 10h - 16h EST';
+
+  @override
+  String get contactSupportSendMessage => 'Envoyez-nous un message';
+
+  @override
+  String get contactSupportCategory => 'Catégorie';
+
+  @override
+  String get contactSupportCategoryGeneral => 'Demande générale';
+
+  @override
+  String get contactSupportCategoryTechnical => 'Problème technique';
+
+  @override
+  String get contactSupportCategoryBilling => 'Question de facturation';
+
+  @override
+  String get contactSupportCategoryFeedback => 'Commentaires';
+
+  @override
+  String get contactSupportSubject => 'Sujet';
+
+  @override
+  String get contactSupportSubjectRequired => 'Veuillez entrer un sujet';
+
+  @override
+  String get contactSupportMessage => 'Message';
+
+  @override
+  String get contactSupportMessageRequired => 'Veuillez entrer votre message';
+
+  @override
+  String get contactSupportSend => 'Envoyer le message';
+
+  @override
+  String get contactSupportSent =>
+      'Message envoyé avec succès ! Nous vous répondrons bientôt.';
+
+  @override
+  String get dataStorageTitle => 'Données et stockage';
+
+  @override
+  String get dataStorageBack => 'Retour';
+
+  @override
+  String get dataStorageUsageSection => 'UTILISATION DU STOCKAGE';
+
+  @override
+  String get dataStorageUsageSubtitle =>
+      'Gérez le stockage de votre application';
+
+  @override
+  String get dataStorageClearCache => 'Vider le cache';
+
+  @override
+  String get dataStorageDownloadSection => 'PARAMÈTRES DE TÉLÉCHARGEMENT';
+
+  @override
+  String get dataStorageDownloadSubtitle =>
+      'Contrôlez comment le contenu est téléchargé';
+
+  @override
+  String get dataStorageAutoDownload => 'Téléchargement automatique des vidéos';
+
+  @override
+  String get dataStorageAutoDownloadSubtitle =>
+      'Télécharger automatiquement les vidéos de cours inscrits';
+
+  @override
+  String get dataStorageWifiOnly => 'Télécharger uniquement en Wi-Fi';
+
+  @override
+  String get dataStorageWifiOnlySubtitle =>
+      'Éviter l\'utilisation de données mobiles pour les téléchargements';
+
+  @override
+  String get dataStorageAutoDelete =>
+      'Supprimer automatiquement les vidéos regardées';
+
+  @override
+  String get dataStorageAutoDeleteSubtitle =>
+      'Libérez de l\'espace en supprimant le contenu regardé';
+
+  @override
+  String get dataStorageVideoQualitySection => 'QUALITÉ VIDÉO';
+
+  @override
+  String get dataStorageVideoQualitySubtitle =>
+      'Choisissez la qualité vidéo par défaut';
+
+  @override
+  String get dataStorageSelectQuality => 'Sélectionner la qualité';
+
+  @override
+  String get dataStorageQualityAuto => 'Auto';
+
+  @override
+  String get dataStorageQualityAutoDesc =>
+      'Ajuster la qualité en fonction de la connexion';
+
+  @override
+  String get dataStorageQualityAutoData => 'Variable';
+
+  @override
+  String get dataStorageQuality1080p => '1080p HD';
+
+  @override
+  String get dataStorageQuality1080pDesc =>
+      'Meilleure qualité, taille de fichier plus grande';
+
+  @override
+  String get dataStorageQuality1080pData => '~3 Go/heure';
+
+  @override
+  String get dataStorageQuality720p => '720p';
+
+  @override
+  String get dataStorageQuality720pDesc =>
+      'Bonne qualité, taille de fichier modérée';
+
+  @override
+  String get dataStorageQuality720pData => '~1,5 Go/heure';
+
+  @override
+  String get dataStorageQuality480p => '480p';
+
+  @override
+  String get dataStorageQuality480pDesc =>
+      'Qualité standard, taille de fichier plus petite';
+
+  @override
+  String get dataStorageQuality480pData => '~700 Mo/heure';
+
+  @override
+  String get dataStorageQuality360p => '360p';
+
+  @override
+  String get dataStorageQuality360pDesc =>
+      'Qualité inférieure, données minimales';
+
+  @override
+  String get dataStorageQuality360pData => '~400 Mo/heure';
+
+  @override
+  String get dataStorageOfflineSection => 'CONTENU HORS LIGNE';
+
+  @override
+  String get dataStorageOfflineSubtitle => 'Gérer le contenu téléchargé';
+
+  @override
+  String get dataStorageOfflineMode => 'Mode hors ligne';
+
+  @override
+  String get dataStorageOfflineModeSubtitle =>
+      'Utiliser uniquement le contenu téléchargé';
+
+  @override
+  String get dataStorageManageDownloads => 'Gérer les téléchargements';
+
+  @override
+  String dataStorageManageDownloadsSubtitle(int count, int size) {
+    return '$count vidéos, $size Mo';
+  }
+
+  @override
+  String get dataStorageDeleteAll => 'Supprimer tous les téléchargements';
+
+  @override
+  String get dataStorageDeleteAllSubtitle => 'Libérer de l\'espace de stockage';
+
+  @override
+  String get dataStorageDataUsageSection => 'UTILISATION DES DONNÉES';
+
+  @override
+  String get dataStorageDataUsageSubtitle =>
+      'Suivez votre consommation de données';
+
+  @override
+  String get dataStorageWifiUsage => 'Utilisation Wi-Fi (ce mois)';
+
+  @override
+  String get dataStorageMobileUsage => 'Données mobiles (ce mois)';
+
+  @override
+  String get dataStorageTotalUsage => 'Utilisation totale (ce mois)';
+
+  @override
+  String get dataStorageAdvancedSection => 'AVANCÉ';
+
+  @override
+  String get dataStorageSyncNow => 'Synchroniser maintenant';
+
+  @override
+  String get dataStorageSyncNowSubtitle =>
+      'Synchroniser toutes les données avec le serveur';
+
+  @override
+  String get dataStorageLocation => 'Emplacement de stockage';
+
+  @override
+  String get dataStorageLocationInternal => 'Stockage interne';
+
+  @override
+  String get dataStorageLocationSoon =>
+      'Gestion de l\'emplacement de stockage bientôt disponible';
+
+  @override
+  String get dataStorageTip => 'Conseil de stockage';
+
+  @override
+  String get dataStorageTipText =>
+      'Pour économiser les données mobiles, activez \"Télécharger uniquement en Wi-Fi\" et téléchargez le contenu lorsque vous êtes connecté au Wi-Fi. Videz le cache régulièrement pour libérer de l\'espace.';
+
+  @override
+  String get dataStorageClearCacheTitle => 'Vider le cache';
+
+  @override
+  String dataStorageClearCacheMessage(String size) {
+    return 'Cela videra $size Mo de données en cache. Cela peut ralentir temporairement l\'application pendant la remise en cache des données.';
+  }
+
+  @override
+  String get dataStorageClearCacheButton => 'Vider';
+
+  @override
+  String get dataStorageCacheCleared => 'Cache vidé avec succès';
+
+  @override
+  String get dataStorageDeleteAllTitle => 'Supprimer tous les téléchargements';
+
+  @override
+  String dataStorageDeleteAllMessage(int size) {
+    return 'Êtes-vous sûr de vouloir supprimer tout le contenu téléchargé ? Cela libérera environ $size Mo de stockage.';
+  }
+
+  @override
+  String get dataStorageAllDeleted => 'Tous les téléchargements supprimés';
+
+  @override
+  String get dataStorageSyncing => 'Synchronisation des données...';
+
+  @override
+  String get dataStorageSyncCompleted => 'Synchronisation terminée';
+
+  @override
+  String get languageSettingsTitle => 'Langue et région';
+
+  @override
+  String get languageSettingsBack => 'Retour';
+
+  @override
+  String get languageSettingsAppLanguage => 'LANGUE DE L\'APPLICATION';
+
+  @override
+  String get languageSettingsAppLanguageSubtitle =>
+      'Choisissez votre langue préférée';
+
+  @override
+  String languageSettingsChanged(String language) {
+    return 'Langue changée en $language';
+  }
+
+  @override
+  String get languageSettingsDateTime => 'DATE ET HEURE';
+
+  @override
+  String get languageSettingsDateTimeSubtitle =>
+      'Personnaliser l\'affichage de la date et de l\'heure';
+
+  @override
+  String get languageSettingsDateFormat => 'Format de date';
+
+  @override
+  String get languageSettingsDateFormatDefault => 'Système par défaut';
+
+  @override
+  String get languageSettingsDateFormatMDY => 'MM/JJ/AAAA (12/31/2024)';
+
+  @override
+  String get languageSettingsDateFormatDMY => 'JJ/MM/AAAA (31/12/2024)';
+
+  @override
+  String get languageSettingsDateFormatYMD => 'AAAA/MM/JJ (2024/12/31)';
+
+  @override
+  String get languageSettingsDateFormatLong => '31 décembre 2024';
+
+  @override
+  String get languageSettingsTimeFormat => 'Format de l\'heure';
+
+  @override
+  String get languageSettingsTimeFormat12h => '12 heures (2:30 PM)';
+
+  @override
+  String get languageSettingsTimeFormat24h => '24 heures (14:30)';
+
+  @override
+  String get languageSettingsNumberFormat => 'FORMAT DES NOMBRES';
+
+  @override
+  String get languageSettingsNumberFormatSubtitle =>
+      'Affichage des devises et des nombres';
+
+  @override
+  String get languageSettingsNumberFormatDefault => 'Système par défaut';
+
+  @override
+  String get languageSettingsNumberFormatComma => '1,234,567.89';
+
+  @override
+  String get languageSettingsNumberFormatPeriod => '1.234.567,89';
+
+  @override
+  String get languageSettingsNumberFormatSpace => '1 234 567,89';
+
+  @override
+  String get languageSettingsTranslation => 'TRADUCTION DE CONTENU';
+
+  @override
+  String get languageSettingsTranslationSubtitle =>
+      'Préférences de traduction automatique';
+
+  @override
+  String get languageSettingsAutoTranslate =>
+      'Traduire automatiquement le contenu';
+
+  @override
+  String get languageSettingsAutoTranslateSubtitle =>
+      'Traduire automatiquement le contenu dans votre langue';
+
+  @override
+  String get languageSettingsShowOriginal => 'Afficher le texte original';
+
+  @override
+  String get languageSettingsShowOriginalSubtitle =>
+      'Afficher la langue originale à côté de la traduction';
+
+  @override
+  String get languageSettingsRegional => 'PARAMÈTRES RÉGIONAUX';
+
+  @override
+  String get languageSettingsRegionalSubtitle =>
+      'Préférences basées sur la localisation';
+
+  @override
+  String get languageSettingsRegion => 'Région';
+
+  @override
+  String get languageSettingsRegionKenya => 'Kenya (Afrique de l\'Est)';
+
+  @override
+  String get languageSettingsFirstDay => 'Premier jour de la semaine';
+
+  @override
+  String get languageSettingsFirstDayMonday => 'Lundi';
+
+  @override
+  String get languageSettingsContent => 'PRÉFÉRENCES DE CONTENU';
+
+  @override
+  String get languageSettingsContentSubtitle =>
+      'Langues pour les cours et les matériaux';
+
+  @override
+  String get languageSettingsCourseLanguages => 'Langues de cours préférées';
+
+  @override
+  String get languageSettingsCourseLanguagesValue => 'Anglais, Kiswahili';
+
+  @override
+  String get languageSettingsInfoTitle => 'Paramètres de langue';
+
+  @override
+  String get languageSettingsInfoText =>
+      'Changer votre langue mettra à jour tous les menus, boutons et messages système. Le contenu des cours peut toujours apparaître dans sa langue d\'origine.';
+
+  @override
+  String get languageSettingsSelectRegion => 'Sélectionner la région';
+
+  @override
+  String languageSettingsRegionChanged(String region) {
+    return 'Région changée en $region';
+  }
+
+  @override
+  String get languageSettingsFirstDayTitle => 'Premier jour de la semaine';
+
+  @override
+  String languageSettingsFirstDaySet(String day) {
+    return 'Premier jour défini sur $day';
+  }
+
+  @override
+  String get languageSettingsCourseLanguagesSaved =>
+      'Préférences de langue de cours enregistrées';
+
+  @override
+  String get sendFeedbackTitle => 'Envoyer des commentaires';
+
+  @override
+  String get sendFeedbackHelp =>
+      'Vos commentaires nous aident à améliorer et à mieux vous servir.';
+
+  @override
+  String get sendFeedbackType => 'Type de commentaire';
+
+  @override
+  String get sendFeedbackTypeGeneral => 'Commentaire général';
+
+  @override
+  String get sendFeedbackTypeFeature => 'Demande de fonctionnalité';
+
+  @override
+  String get sendFeedbackTypeImprovement => 'Suggestion d\'amélioration';
+
+  @override
+  String get sendFeedbackTypeComplaint => 'Réclamation';
+
+  @override
+  String get sendFeedbackTypePraise => 'Éloge';
+
+  @override
+  String get sendFeedbackExperience => 'Expérience globale';
+
+  @override
+  String get sendFeedbackRatingPoor => 'Médiocre';
+
+  @override
+  String get sendFeedbackRatingFair => 'Passable';
+
+  @override
+  String get sendFeedbackRatingGood => 'Bon';
+
+  @override
+  String get sendFeedbackRatingVeryGood => 'Très bon';
+
+  @override
+  String get sendFeedbackRatingExcellent => 'Excellent';
+
+  @override
+  String get sendFeedbackYourFeedback => 'Vos commentaires';
+
+  @override
+  String get sendFeedbackPlaceholder => 'Dites-nous ce que vous pensez...';
+
+  @override
+  String get sendFeedbackRequired => 'Veuillez entrer vos commentaires';
+
+  @override
+  String get sendFeedbackTooShort =>
+      'Les commentaires doivent comporter au moins 10 caractères';
+
+  @override
+  String get sendFeedbackAttachScreenshot => 'Joindre une capture d\'écran';
+
+  @override
+  String get sendFeedbackScreenshotHelp =>
+      'Facultatif - nous aide à comprendre le problème';
+
+  @override
+  String get sendFeedbackScreenshotAttached => 'Capture d\'écran jointe';
+
+  @override
+  String get sendFeedbackScreenshotTooLarge =>
+      'L\'image est trop grande. Veuillez sélectionner une image de moins de 5 Mo.';
+
+  @override
+  String get sendFeedbackScreenshotSuccess =>
+      'Capture d\'écran jointe avec succès';
+
+  @override
+  String sendFeedbackScreenshotError(String error) {
+    return 'Erreur lors de la sélection de l\'image : $error';
+  }
+
+  @override
+  String get sendFeedbackAnonymous => 'Soumettre anonymement';
+
+  @override
+  String get sendFeedbackAnonymousSubtitle =>
+      'Votre identité ne sera pas partagée';
+
+  @override
+  String get sendFeedbackSubmit => 'Soumettre les commentaires';
+
+  @override
+  String get sendFeedbackThankYou => 'Merci pour vos commentaires !';
+
+  @override
+  String get sendFeedbackThankYouWithScreenshot =>
+      'Merci pour vos commentaires ! (Capture d\'écran jointe)';
+
+  @override
+  String get settingsQuickSettings => 'PARAMÈTRES RAPIDES';
+
+  @override
+  String get settingsQuickSettingsSubtitle => 'Paramètres fréquemment utilisés';
+
+  @override
+  String get settingsPushNotifications => 'Notifications push';
+
+  @override
+  String get settingsPushNotificationsSubtitle =>
+      'Recevoir des notifications de l\'application';
+
+  @override
+  String get settingsEmailNotifications => 'Notifications par e-mail';
+
+  @override
+  String get settingsEmailNotificationsSubtitle =>
+      'Recevoir des mises à jour par e-mail';
+
+  @override
+  String get settingsSmsNotifications => 'Notifications SMS';
+
+  @override
+  String get settingsSmsNotificationsSubtitle => 'Recevoir des alertes SMS';
+
+  @override
+  String get settingsPreferences => 'PRÉFÉRENCES';
+
+  @override
+  String get settingsPreferencesSubtitle => 'Personnalisez votre expérience';
+
+  @override
+  String get settingsAppearance => 'Apparence';
+
+  @override
+  String get settingsAppearanceSubtitle => 'Thème, couleurs et affichage';
+
+  @override
+  String get settingsLanguageRegion => 'Langue et région';
+
+  @override
+  String get settingsLanguageRegionValue => 'Anglais, Kenya';
+
+  @override
+  String get settingsDataStorage => 'Données et stockage';
+
+  @override
+  String get settingsDataStorageSubtitle =>
+      'Gérer les téléchargements et le cache';
+
+  @override
+  String get settingsAccount => 'COMPTE';
+
+  @override
+  String get settingsAccountSubtitle => 'Gérez les paramètres de votre compte';
+
+  @override
+  String get settingsEditProfile => 'Modifier le profil';
+
+  @override
+  String get settingsEditProfileSubtitle =>
+      'Mettre à jour vos informations personnelles';
+
+  @override
+  String get settingsPrivacySecurity => 'Confidentialité et sécurité';
+
+  @override
+  String get settingsPrivacySecuritySubtitle =>
+      'Contrôlez vos paramètres de confidentialité';
+
+  @override
+  String get settingsPaymentMethods => 'Modes de paiement';
+
+  @override
+  String get settingsPaymentMethodsSubtitle => 'Gérer les options de paiement';
+
+  @override
+  String get settingsSubscriptions => 'Abonnements';
+
+  @override
+  String get settingsSubscriptionsSubtitle =>
+      'Afficher et gérer les abonnements';
+
+  @override
+  String get settingsLearning => 'APPRENTISSAGE';
+
+  @override
+  String get settingsLearningSubtitle =>
+      'Personnalisez votre expérience d\'apprentissage';
+
+  @override
+  String get settingsStudySchedule => 'Horaire d\'étude';
+
+  @override
+  String get settingsStudyScheduleSubtitle =>
+      'Définir des rappels et des objectifs';
+
+  @override
+  String get settingsProgressReports => 'Rapports de progression';
+
+  @override
+  String get settingsProgressReportsSubtitle =>
+      'Consultez vos analyses d\'apprentissage';
+
+  @override
+  String get settingsSupport => 'SUPPORT';
+
+  @override
+  String get settingsSupportSubtitle =>
+      'Obtenez de l\'aide et donnez votre avis';
+
+  @override
+  String get settingsHelpCenter => 'Centre d\'aide';
+
+  @override
+  String get settingsHelpCenterSubtitle => 'Parcourir les articles d\'aide';
+
+  @override
+  String get settingsContactSupport => 'Contacter le support';
+
+  @override
+  String get settingsContactSupportSubtitle => 'Contactez notre équipe';
+
+  @override
+  String get settingsReportBug => 'Signaler un bug';
+
+  @override
+  String get settingsReportBugSubtitle => 'Aidez-nous à améliorer';
+
+  @override
+  String get settingsSendFeedback => 'Envoyer des commentaires';
+
+  @override
+  String get settingsSendFeedbackSubtitle => 'Partagez vos pensées';
+
+  @override
+  String get settingsLegal => 'JURIDIQUE';
+
+  @override
+  String get settingsPrivacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get settingsCookieSettings => 'Paramètres des cookies';
+
+  @override
+  String get settingsCookieSettingsSubtitle =>
+      'Gérer les préférences de cookies';
+
+  @override
+  String get settingsTermsOfService => 'Conditions d\'utilisation';
+
+  @override
+  String get settingsLicenses => 'Licences';
+
+  @override
+  String get settingsLicensesSubtitle => 'Licences open source';
+
+  @override
+  String get settingsAbout => 'À PROPOS';
+
+  @override
+  String get settingsLogout => 'Déconnexion';
+
+  @override
+  String get settingsLogoutConfirm =>
+      'Êtes-vous sûr de vouloir vous déconnecter ?';
+
+  @override
+  String get onboardingFeaturesTitle => 'Fonctionnalités';
+
+  @override
+  String get onboardingGotIt => 'Compris !';
+
+  @override
+  String get onboardingClose => 'Fermer';
+
+  @override
+  String get onboardingTryIt => 'Essayer';
+
+  @override
+  String onboardingOpeningFeature(String feature) {
+    return 'Ouverture de $feature...';
+  }
+
+  @override
+  String get onboardingWelcomeDescription =>
+      'Votre plateforme tout-en-un pour découvrir des cours, gérer vos candidatures et atteindre vos objectifs éducatifs.';
+
+  @override
+  String get onboardingDiscoverCoursesTitle => 'Découvrir des cours';
+
+  @override
+  String get onboardingDiscoverCoursesDescription =>
+      'Parcourez des milliers de cours des meilleures institutions. Filtrez par matière, niveau, durée et plus encore pour trouver la solution parfaite.';
+
+  @override
+  String get onboardingTrackApplicationsTitle => 'Suivre les candidatures';
+
+  @override
+  String get onboardingTrackApplicationsDescription =>
+      'Gérez toutes vos candidatures de cours en un seul endroit. Recevez des mises à jour en temps réel et ne manquez jamais une date limite.';
+
+  @override
+  String get onboardingStudySmarterTitle => 'Étudier plus intelligemment';
+
+  @override
+  String get onboardingStudySmarterDescription =>
+      'Prenez des notes, fixez des objectifs et suivez vos progrès. Restez organisé avec nos outils d\'étude puissants.';
+
+  @override
+  String get onboardingStayConnectedTitle => 'Rester connecté';
+
+  @override
+  String get onboardingStayConnectedDescription =>
+      'Envoyez des messages directement aux institutions, obtenez des conseils personnalisés et recevez des notifications instantanées pour les mises à jour importantes.';
+
+  @override
+  String get onboardingWelcomeToFlow => 'Bienvenue sur Flow !';
+
+  @override
+  String get onboardingFeatureCategoryCore => 'Fonctionnalités principales';
+
+  @override
+  String get onboardingFeatureCategoryStudyTools => 'Outils d\'étude';
+
+  @override
+  String get onboardingFeatureCategoryProductivity => 'Productivité';
+
+  @override
+  String get onboardingFeatureCategoryCollaboration => 'Collaboration';
+
+  @override
+  String get onboardingFeatureCourseDiscovery => 'Découverte de cours';
+
+  @override
+  String get onboardingFeatureCourseDiscoveryDesc =>
+      'Parcourez et recherchez des milliers de cours des meilleures institutions du monde entier';
+
+  @override
+  String get onboardingFeatureApplicationTracking => 'Suivi des candidatures';
+
+  @override
+  String get onboardingFeatureApplicationTrackingDesc =>
+      'Gérez toutes vos candidatures de cours et suivez leur statut en temps réel';
+
+  @override
+  String get onboardingFeatureLearningDashboard =>
+      'Tableau de bord d\'apprentissage';
+
+  @override
+  String get onboardingFeatureLearningDashboardDesc =>
+      'Suivez vos progrès, consultez les cours inscrits et accédez aux supports d\'apprentissage';
+
+  @override
+  String get onboardingFeatureMessaging => 'Messagerie';
+
+  @override
+  String get onboardingFeatureMessagingDesc =>
+      'Communiquez directement avec les institutions et les conseillers';
+
+  @override
+  String get onboardingFeatureNotes => 'Notes';
+
+  @override
+  String get onboardingFeatureNotesDesc =>
+      'Prenez, organisez et synchronisez des notes sur tous vos appareils';
+
+  @override
+  String get onboardingFeatureBookmarks => 'Favoris';
+
+  @override
+  String get onboardingFeatureBookmarksDesc =>
+      'Enregistrez des cours et des ressources pour un accès rapide ultérieur';
+
+  @override
+  String get onboardingFeatureAchievementsDesc =>
+      'Gagnez des badges et suivez les jalons au fur et à mesure de votre progression';
+
+  @override
+  String get onboardingFeatureProgressAnalytics => 'Analyse des progrès';
+
+  @override
+  String get onboardingFeatureProgressAnalyticsDesc =>
+      'Visualisez votre parcours d\'apprentissage avec des statistiques détaillées';
+
+  @override
+  String get onboardingFeatureCalendar => 'Calendrier';
+
+  @override
+  String get onboardingFeatureCalendarDesc =>
+      'Suivez les dates limites, les événements et les dates importantes';
+
+  @override
+  String get onboardingFeatureSmartNotifications =>
+      'Notifications intelligentes';
+
+  @override
+  String get onboardingFeatureSmartNotificationsDesc =>
+      'Recevez des rappels et des mises à jour en temps opportun concernant vos candidatures';
+
+  @override
+  String get onboardingFeatureStudyScheduler => 'Planificateur d\'études';
+
+  @override
+  String get onboardingFeatureStudySchedulerDesc =>
+      'Planifiez et optimisez votre temps d\'étude';
+
+  @override
+  String get onboardingFeatureGoalsMilestones => 'Objectifs et jalons';
+
+  @override
+  String get onboardingFeatureGoalsMilestonesDesc =>
+      'Fixez et suivez vos objectifs d\'apprentissage';
+
+  @override
+  String get onboardingFeatureStudyGroups => 'Groupes d\'étude';
+
+  @override
+  String get onboardingFeatureStudyGroupsDesc =>
+      'Connectez-vous et collaborez avec d\'autres apprenants';
+
+  @override
+  String get onboardingFeatureDiscussionForums => 'Forums de discussion';
+
+  @override
+  String get onboardingFeatureDiscussionForumsDesc =>
+      'Participez aux discussions de cours et aux questions-réponses';
+
+  @override
+  String get onboardingFeatureResourceSharing => 'Partage de ressources';
+
+  @override
+  String get onboardingFeatureResourceSharingDesc =>
+      'Partagez des notes, des liens et du matériel d\'étude';
+
+  @override
+  String get onboardingFeatureLiveSessions => 'Sessions en direct';
+
+  @override
+  String get onboardingFeatureLiveSessionsDesc =>
+      'Rejoignez des cours virtuels et des webinaires';
+
+  @override
+  String get onboardingHowToUse => 'Comment utiliser :';
+
+  @override
+  String get onboardingInstructionsCourseDiscovery =>
+      'Accédez à l\'onglet Explorer et utilisez la barre de recherche ou parcourez les catégories.';
+
+  @override
+  String get onboardingInstructionsApplicationTracking =>
+      'Accédez à l\'onglet Candidatures pour afficher et gérer toutes vos candidatures.';
+
+  @override
+  String get onboardingInstructionsLearningDashboard =>
+      'Accédez à votre tableau de bord depuis l\'onglet Accueil pour voir vos progrès.';
+
+  @override
+  String get onboardingInstructionsMessaging =>
+      'Ouvrez l\'onglet Messages pour discuter avec les institutions et les conseillers.';
+
+  @override
+  String get onboardingInstructionsNotes =>
+      'Appuyez sur l\'icône Notes pour créer et organiser vos notes d\'étude.';
+
+  @override
+  String get onboardingInstructionsBookmarks =>
+      'Enregistrez des éléments en appuyant sur l\'icône de favori sur les cours ou les ressources.';
+
+  @override
+  String get onboardingInstructionsAchievements =>
+      'Consultez vos réalisations dans la section Profil sous Progrès.';
+
+  @override
+  String get onboardingInstructionsProgressAnalytics =>
+      'Vérifiez les analyses détaillées dans votre section Profil > Progrès.';
+
+  @override
+  String get onboardingInstructionsCalendar =>
+      'Accédez au calendrier depuis la navigation inférieure ou le menu.';
+
+  @override
+  String get onboardingInstructionsSmartNotifications =>
+      'Activez les notifications dans Paramètres > Notifications.';
+
+  @override
+  String get onboardingInstructionsStudyScheduler =>
+      'Créez des horaires d\'étude dans Outils > Planificateur d\'études.';
+
+  @override
+  String get onboardingInstructionsGoalsMilestones =>
+      'Fixez des objectifs dans Profil > Progrès > Objectifs.';
+
+  @override
+  String get onboardingInstructionsStudyGroups =>
+      'Rejoignez ou créez des groupes d\'étude depuis Communauté > Groupes.';
+
+  @override
+  String get onboardingInstructionsDiscussionForums =>
+      'Participez aux forums depuis Communauté > Discussions.';
+
+  @override
+  String get onboardingInstructionsResourceSharing =>
+      'Partagez des ressources à l\'aide du bouton de partage sur n\'importe quel contenu.';
+
+  @override
+  String get onboardingInstructionsLiveSessions =>
+      'Rejoignez des sessions en direct depuis la section Horaire ou Cours.';
+
+  @override
+  String get onboardingInstructionsDefault =>
+      'Explorez l\'application pour découvrir cette fonctionnalité !';
+
+  @override
+  String get onboardingTutorialCompleted => 'Tutoriel terminé !';
+
+  @override
+  String get onboardingTutorialExample => 'Exemple de tutoriel';
+
+  @override
+  String get onboardingTutorialSearchFeature => 'Fonction de recherche';
+
+  @override
+  String get onboardingTutorialSearchFeatureDesc =>
+      'Utilisez la barre de recherche pour trouver des cours, des institutions ou du contenu.';
+
+  @override
+  String get onboardingTutorialFilterOptions => 'Options de filtre';
+
+  @override
+  String get onboardingTutorialFilterOptionsDesc =>
+      'Appliquez des filtres pour affiner vos résultats de recherche.';
+
+  @override
+  String get onboardingTutorialNotifications => 'Notifications';
+
+  @override
+  String get onboardingTutorialNotificationsDesc =>
+      'Consultez vos notifications pour les mises à jour et messages importants.';
+
+  @override
+  String get onboardingTutorialYourProfile => 'Votre profil';
+
+  @override
+  String get onboardingTutorialYourProfileDesc =>
+      'Accédez à votre profil, paramètres et préférences ici.';
+
+  @override
+  String get onboardingTutorialSearchHint => 'Rechercher...';
+
+  @override
+  String get onboardingTutorialRestartTutorial => 'Redémarrer le tutoriel';
+
+  @override
+  String get paymentsFailedTitle => 'Paiement échoué';
+
+  @override
+  String get paymentsFailedHeading => 'Paiement échoué';
+
+  @override
+  String get paymentsFailedDefaultMessage =>
+      'Nous n\'avons pas pu traiter votre paiement. Veuillez réessayer.';
+
+  @override
+  String get paymentsTransactionDetails => 'Détails de la transaction';
+
+  @override
+  String get paymentsTransactionId => 'ID de transaction';
+
+  @override
+  String get paymentsReference => 'Référence';
+
+  @override
+  String get paymentsPaymentMethod => 'Méthode de paiement';
+
+  @override
+  String get paymentsAmount => 'Montant';
+
+  @override
+  String get paymentsFailureReason => 'Raison de l\'échec';
+
+  @override
+  String get paymentsCommonIssues => 'Problèmes courants';
+
+  @override
+  String get paymentsInsufficientFunds => 'Fonds insuffisants';
+
+  @override
+  String get paymentsInsufficientFundsDesc =>
+      'Assurez-vous d\'avoir un solde suffisant sur votre compte';
+
+  @override
+  String get paymentsCardDeclined => 'Carte refusée';
+
+  @override
+  String get paymentsCardDeclinedDesc =>
+      'Vérifiez auprès de votre banque ou essayez une autre carte';
+
+  @override
+  String get paymentsNetworkIssues => 'Problèmes de réseau';
+
+  @override
+  String get paymentsNetworkIssuesDesc =>
+      'Assurez-vous d\'avoir une connexion Internet stable';
+
+  @override
+  String get paymentsIncorrectDetails => 'Détails incorrects';
+
+  @override
+  String get paymentsIncorrectDetailsDesc =>
+      'Vérifiez que vos informations de paiement sont correctes';
+
+  @override
+  String get paymentsHelpNotice =>
+      'Si le problème persiste, veuillez contacter le support';
+
+  @override
+  String get paymentsTryAgain => 'Réessayer';
+
+  @override
+  String get paymentsContactSupport => 'Contacter le support';
+
+  @override
+  String get paymentsBackToHome => 'Retour à l\'accueil';
+
+  @override
+  String get paymentsHistoryTitle => 'Historique des paiements';
+
+  @override
+  String get paymentsHistoryRetry => 'Réessayer';
+
+  @override
+  String get paymentsNoPaymentsTitle => 'Aucun paiement';
+
+  @override
+  String get paymentsDownloadReceipt => 'Télécharger le reçu';
+
+  @override
+  String get paymentsRetryPayment => 'Réessayer le paiement';
+
+  @override
+  String get paymentsDownloadAsPdf => 'Télécharger en PDF';
+
+  @override
+  String get paymentsSaveReceiptToDevice =>
+      'Enregistrer le reçu sur l\'appareil';
+
+  @override
+  String get paymentsDownloadingReceipt => 'Téléchargement du reçu...';
+
+  @override
+  String get paymentsEmailReceipt => 'Reçu par e-mail';
+
+  @override
+  String get paymentsSendToEmail => 'Envoyer à votre adresse e-mail';
+
+  @override
+  String get paymentsSendingReceiptViaEmail => 'Envoi du reçu par e-mail...';
+
+  @override
+  String get paymentsShareReceipt => 'Partager le reçu';
+
+  @override
+  String get paymentsShareViaOtherApps => 'Partager via d\'autres applications';
+
+  @override
+  String get paymentsOpeningShareOptions =>
+      'Ouverture des options de partage...';
+
+  @override
+  String get paymentsSelectPaymentMethodTitle =>
+      'Sélectionner la méthode de paiement';
+
+  @override
+  String get paymentsItem => 'Article';
+
+  @override
+  String get paymentsType => 'Type';
+
+  @override
+  String get paymentsTotalAmount => 'Montant total';
+
+  @override
+  String paymentsPayWith(String method) {
+    return 'Payer avec $method';
+  }
+
+  @override
+  String get paymentsMpesaPhoneNumber => 'Numéro de téléphone M-Pesa';
+
+  @override
+  String get paymentsMpesaPhoneHint => '254712345678';
+
+  @override
+  String get paymentsCardholderName => 'Nom du titulaire de la carte';
+
+  @override
+  String get paymentsCardholderNameHint => 'JEAN DUPONT';
+
+  @override
+  String get paymentsCardNumber => 'Numéro de carte';
+
+  @override
+  String get paymentsCardNumberHint => '1234 5678 9012 3456';
+
+  @override
+  String get paymentsExpiryDate => 'Date d\'expiration';
+
+  @override
+  String get paymentsExpiryDateHint => 'MM/AA';
+
+  @override
+  String get paymentsCvv => 'CVV';
+
+  @override
+  String get paymentsCvvHint => '123';
+
+  @override
+  String get paymentsPayNow => 'Payer maintenant';
+
+  @override
+  String get paymentsProcessing => 'Traitement en cours';
+
+  @override
+  String get paymentsProcessingPayment => 'Traitement de votre paiement...';
+
+  @override
+  String get paymentsReceiptOptions => 'Options de reçu';
+
+  @override
+  String get paymentsPurchaseDetails => 'Détails de l\'achat';
+
+  @override
+  String get paymentsSuccessTitle => 'Paiement réussi !';
+
+  @override
+  String get paymentsSuccessMessage =>
+      'Votre paiement a été traité avec succès';
+
+  @override
+  String get paymentsPaymentDetails => 'Détails du paiement';
+
+  @override
+  String get paymentsDateAndTime => 'Date et heure';
+
+  @override
+  String get paymentsAmountPaid => 'Montant payé';
+
+  @override
+  String get paymentsReceiptSentToEmail =>
+      'Un reçu a été envoyé à votre adresse e-mail';
+
+  @override
+  String get paymentsCompletedAt => 'Terminé le';
+
+  @override
+  String get paymentsDate => 'Date';
+
+  @override
+  String get profileChangePasswordTitle => 'Changer le mot de passe';
+
+  @override
+  String get profileChangePasswordButton => 'Changer le mot de passe';
+
+  @override
+  String get profilePasswordRequirements =>
+      'Votre mot de passe doit comporter au moins 8 caractères et inclure des lettres et des chiffres';
+
+  @override
+  String get profileCurrentPassword => 'Mot de passe actuel';
+
+  @override
+  String get profileNewPassword => 'Nouveau mot de passe';
+
+  @override
+  String get profileConfirmNewPassword => 'Confirmer le nouveau mot de passe';
+
+  @override
+  String get profileEnterCurrentPassword =>
+      'Veuillez entrer votre mot de passe actuel';
+
+  @override
+  String get profileEnterNewPassword =>
+      'Veuillez entrer un nouveau mot de passe';
+
+  @override
+  String get profilePasswordMinLength =>
+      'Le mot de passe doit comporter au moins 8 caractères';
+
+  @override
+  String get profilePasswordMustContainLettersNumbers =>
+      'Le mot de passe doit contenir des lettres et des chiffres';
+
+  @override
+  String get profileNewPasswordMustDiffer =>
+      'Le nouveau mot de passe doit être différent de l\'actuel';
+
+  @override
+  String get profileConfirmNewPasswordPrompt =>
+      'Veuillez confirmer votre nouveau mot de passe';
+
+  @override
+  String get profilePasswordsDoNotMatch =>
+      'Les mots de passe ne correspondent pas';
+
+  @override
+  String get profilePasswordStrength => 'Force du mot de passe';
+
+  @override
+  String get profilePasswordStrengthTooWeak => 'Trop faible';
+
+  @override
+  String get profilePasswordStrengthWeak => 'Faible';
+
+  @override
+  String get profilePasswordStrengthFair => 'Correct';
+
+  @override
+  String get profilePasswordStrengthGood => 'Bon';
+
+  @override
+  String get profilePasswordStrengthStrong => 'Fort';
+
+  @override
+  String get profileForgotCurrentPassword => 'Mot de passe actuel oublié ?';
+
+  @override
+  String get profilePasswordChangedSuccess =>
+      'Mot de passe changé avec succès !';
+
+  @override
+  String get profileResetPasswordTitle => 'Réinitialiser le mot de passe';
+
+  @override
+  String get profileResetPasswordMessage =>
+      'Nous vous enverrons un lien de réinitialisation de mot de passe à votre adresse e-mail enregistrée.';
+
+  @override
+  String get profilePasswordResetEmailSent =>
+      'E-mail de réinitialisation de mot de passe envoyé';
+
+  @override
+  String get profileSendResetLink => 'Envoyer le lien de réinitialisation';
+
+  @override
+  String get profileBack => 'Retour';
+
+  @override
+  String get profileNoUserFound => 'Aucun utilisateur trouvé';
+
+  @override
+  String get profilePhotoSelected =>
+      'Photo sélectionnée ! Enregistrez vos modifications pour télécharger.';
+
+  @override
+  String profileErrorSelectingPhoto(String error) {
+    return 'Erreur lors de la sélection de la photo : $error';
+  }
+
+  @override
+  String get profileDocumentUploadComingSoon =>
+      'Téléchargement de documents bientôt disponible';
+
+  @override
+  String get profileUploadCredentialDocuments =>
+      'Télécharger des documents d\'identification';
+
+  @override
+  String get profileUnsavedChangesTitle => 'Modifications non enregistrées';
+
+  @override
+  String get profileUnsavedChangesMessage =>
+      'Vous avez des modifications non enregistrées. Voulez-vous les abandonner ?';
+
+  @override
+  String get profileDiscard => 'Abandonner';
+
+  @override
+  String get profileUpdatedSuccess => 'Profil mis à jour avec succès !';
+
+  @override
+  String profileErrorSaving(String error) {
+    return 'Erreur lors de l\'enregistrement du profil : $error';
+  }
 }

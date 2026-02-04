@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingFeatureAchievements.
   ///
   /// In en, this message translates to:
-  /// **'Achievement system'**
+  /// **'Achievements'**
   String get onboardingFeatureAchievements;
 
   /// No description provided for @heroTrustBadge.
@@ -36995,6 +36995,3018 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No offerings yet'**
   String get browseInstitutionsNoOfferingsYet;
+
+  /// No description provided for @subscriptionsFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get subscriptionsFree;
+
+  /// No description provided for @subscriptionsActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get subscriptionsActive;
+
+  /// No description provided for @subscriptionsStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get subscriptionsStatus;
+
+  /// No description provided for @subscriptionsPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get subscriptionsPlan;
+
+  /// No description provided for @subscriptionsStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get subscriptionsStarted;
+
+  /// No description provided for @subscriptionsBasicFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic (Free)'**
+  String get subscriptionsBasicFree;
+
+  /// No description provided for @subscriptionsBasicFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to basic courses'**
+  String get subscriptionsBasicFeature1;
+
+  /// No description provided for @subscriptionsBasicFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'Limited storage'**
+  String get subscriptionsBasicFeature2;
+
+  /// No description provided for @subscriptionsBasicFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Email support'**
+  String get subscriptionsBasicFeature3;
+
+  /// No description provided for @subscriptionsPremiumFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to all courses'**
+  String get subscriptionsPremiumFeature1;
+
+  /// No description provided for @subscriptionsPremiumFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited storage'**
+  String get subscriptionsPremiumFeature2;
+
+  /// No description provided for @subscriptionsPremiumFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority support'**
+  String get subscriptionsPremiumFeature3;
+
+  /// No description provided for @subscriptionsPremiumFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline downloads'**
+  String get subscriptionsPremiumFeature4;
+
+  /// No description provided for @subscriptionsPremiumFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate of completion'**
+  String get subscriptionsPremiumFeature5;
+
+  /// No description provided for @subscriptionsInstitutionFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything in Premium'**
+  String get subscriptionsInstitutionFeature1;
+
+  /// No description provided for @subscriptionsInstitutionFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-user management'**
+  String get subscriptionsInstitutionFeature2;
+
+  /// No description provided for @subscriptionsInstitutionFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics dashboard'**
+  String get subscriptionsInstitutionFeature3;
+
+  /// No description provided for @subscriptionsInstitutionFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom branding'**
+  String get subscriptionsInstitutionFeature4;
+
+  /// No description provided for @subscriptionsInstitutionFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'API access'**
+  String get subscriptionsInstitutionFeature5;
+
+  /// No description provided for @studyScheduleSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get studyScheduleSave;
+
+  /// No description provided for @studyScheduleDailyGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Study Goal'**
+  String get studyScheduleDailyGoal;
+
+  /// No description provided for @studyScheduleMinutesPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes per day'**
+  String studyScheduleMinutesPerDay(int minutes);
+
+  /// No description provided for @studyScheduleReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Reminders'**
+  String get studyScheduleReminders;
+
+  /// No description provided for @studyScheduleRemindersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified at scheduled times'**
+  String get studyScheduleRemindersSubtitle;
+
+  /// No description provided for @studyScheduleWeeklySchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Schedule'**
+  String get studyScheduleWeeklySchedule;
+
+  /// No description provided for @studyScheduleSetPreferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your preferred study times'**
+  String get studyScheduleSetPreferred;
+
+  /// No description provided for @studyScheduleAddTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time'**
+  String get studyScheduleAddTime;
+
+  /// No description provided for @studyScheduleNoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'No study time set'**
+  String get studyScheduleNoTime;
+
+  /// No description provided for @studyScheduleSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Study schedule saved successfully'**
+  String get studyScheduleSaved;
+
+  /// No description provided for @progressReportsExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Report'**
+  String get progressReportsExport;
+
+  /// No description provided for @progressReportsOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get progressReportsOverview;
+
+  /// No description provided for @progressReportsCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get progressReportsCourses;
+
+  /// No description provided for @progressReportsSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get progressReportsSkills;
+
+  /// No description provided for @progressReportsStudyTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Time'**
+  String get progressReportsStudyTime;
+
+  /// No description provided for @progressReportsAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get progressReportsAchievements;
+
+  /// No description provided for @progressReportsAvgScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. Score'**
+  String get progressReportsAvgScore;
+
+  /// No description provided for @progressReportsWeeklyActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Activity'**
+  String get progressReportsWeeklyActivity;
+
+  /// No description provided for @progressReportsActivityChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity chart will be displayed here'**
+  String get progressReportsActivityChart;
+
+  /// No description provided for @progressReportsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get progressReportsCompleted;
+
+  /// No description provided for @progressReportsOfLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} lessons completed'**
+  String progressReportsOfLessons(int completed, int total);
+
+  /// No description provided for @progressReportsExported.
+  ///
+  /// In en, this message translates to:
+  /// **'Report exported successfully'**
+  String get progressReportsExported;
+
+  /// No description provided for @privacyPolicyShareSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Share functionality coming soon'**
+  String get privacyPolicyShareSoon;
+
+  /// No description provided for @privacyPolicyFlowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow EdTech Privacy Policy'**
+  String get privacyPolicyFlowTitle;
+
+  /// No description provided for @privacyPolicyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'This Privacy Policy describes how Flow EdTech collects, uses, and protects your personal information.'**
+  String get privacyPolicyIntro;
+
+  /// No description provided for @privacyPolicySection1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Information We Collect'**
+  String get privacyPolicySection1;
+
+  /// No description provided for @privacyPolicySection2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. How We Use Your Information'**
+  String get privacyPolicySection2;
+
+  /// No description provided for @privacyPolicySection3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Information Sharing and Disclosure'**
+  String get privacyPolicySection3;
+
+  /// No description provided for @privacyPolicySection4.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Data Security'**
+  String get privacyPolicySection4;
+
+  /// No description provided for @privacyPolicySection5.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Your Rights and Choices'**
+  String get privacyPolicySection5;
+
+  /// No description provided for @privacyPolicySection6.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Cookies and Tracking Technologies'**
+  String get privacyPolicySection6;
+
+  /// No description provided for @privacyPolicySection7.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Children\'s Privacy'**
+  String get privacyPolicySection7;
+
+  /// No description provided for @privacyPolicySection8.
+  ///
+  /// In en, this message translates to:
+  /// **'8. International Data Transfers'**
+  String get privacyPolicySection8;
+
+  /// No description provided for @privacyPolicySection9.
+  ///
+  /// In en, this message translates to:
+  /// **'9. Changes to This Privacy Policy'**
+  String get privacyPolicySection9;
+
+  /// No description provided for @privacyPolicySection10.
+  ///
+  /// In en, this message translates to:
+  /// **'10. Contact Us'**
+  String get privacyPolicySection10;
+
+  /// No description provided for @termsOfServiceShareSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Share functionality coming soon'**
+  String get termsOfServiceShareSoon;
+
+  /// No description provided for @termsOfServiceFlowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow EdTech Terms of Service'**
+  String get termsOfServiceFlowTitle;
+
+  /// No description provided for @termsOfServiceEffective.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective Date: October 28, 2025'**
+  String get termsOfServiceEffective;
+
+  /// No description provided for @termsOfServiceIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Please read these Terms of Service carefully before using our platform. By accessing or using our services, you agree to be bound by these terms.'**
+  String get termsOfServiceIntro;
+
+  /// No description provided for @termsOfServiceSection1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Acceptance of Terms'**
+  String get termsOfServiceSection1;
+
+  /// No description provided for @termsOfServiceSection2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Account Registration and Eligibility'**
+  String get termsOfServiceSection2;
+
+  /// No description provided for @termsOfServiceSection3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. User Conduct and Responsibilities'**
+  String get termsOfServiceSection3;
+
+  /// No description provided for @termsOfServiceSection4.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Intellectual Property Rights'**
+  String get termsOfServiceSection4;
+
+  /// No description provided for @termsOfServiceSection5.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Subscriptions, Payments, and Refunds'**
+  String get termsOfServiceSection5;
+
+  /// No description provided for @termsOfServiceSection6.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Course Access and Educational Content'**
+  String get termsOfServiceSection6;
+
+  /// No description provided for @termsOfServiceSection7.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Privacy and Data Protection'**
+  String get termsOfServiceSection7;
+
+  /// No description provided for @termsOfServiceSection8.
+  ///
+  /// In en, this message translates to:
+  /// **'8. Disclaimers and Limitations of Liability'**
+  String get termsOfServiceSection8;
+
+  /// No description provided for @termsOfServiceSection9.
+  ///
+  /// In en, this message translates to:
+  /// **'9. Third-Party Services and Links'**
+  String get termsOfServiceSection9;
+
+  /// No description provided for @termsOfServiceSection10.
+  ///
+  /// In en, this message translates to:
+  /// **'10. Termination'**
+  String get termsOfServiceSection10;
+
+  /// No description provided for @termsOfServiceSection11.
+  ///
+  /// In en, this message translates to:
+  /// **'11. Dispute Resolution and Arbitration'**
+  String get termsOfServiceSection11;
+
+  /// No description provided for @termsOfServiceSection12.
+  ///
+  /// In en, this message translates to:
+  /// **'12. Governing Law'**
+  String get termsOfServiceSection12;
+
+  /// No description provided for @termsOfServiceSection13.
+  ///
+  /// In en, this message translates to:
+  /// **'13. Changes to Terms of Service'**
+  String get termsOfServiceSection13;
+
+  /// No description provided for @termsOfServiceSection14.
+  ///
+  /// In en, this message translates to:
+  /// **'14. Contact Information'**
+  String get termsOfServiceSection14;
+
+  /// No description provided for @appearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceTitle;
+
+  /// No description provided for @appearanceBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get appearanceBack;
+
+  /// No description provided for @appearanceRefreshApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh App'**
+  String get appearanceRefreshApp;
+
+  /// No description provided for @appearanceRefreshed.
+  ///
+  /// In en, this message translates to:
+  /// **'App refreshed! Changes applied.'**
+  String get appearanceRefreshed;
+
+  /// No description provided for @appearanceInfoBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme and accent changes apply automatically. For other changes, tap the refresh button above.'**
+  String get appearanceInfoBanner;
+
+  /// No description provided for @appearanceThemeSection.
+  ///
+  /// In en, this message translates to:
+  /// **'THEME'**
+  String get appearanceThemeSection;
+
+  /// No description provided for @appearanceThemeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how Flow looks to you'**
+  String get appearanceThemeSubtitle;
+
+  /// No description provided for @appearanceTextSizeSection.
+  ///
+  /// In en, this message translates to:
+  /// **'TEXT SIZE'**
+  String get appearanceTextSizeSection;
+
+  /// No description provided for @appearanceTextSizeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust the size of text throughout the app'**
+  String get appearanceTextSizeSubtitle;
+
+  /// No description provided for @appearancePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get appearancePreview;
+
+  /// No description provided for @appearancePreviewText.
+  ///
+  /// In en, this message translates to:
+  /// **'The quick brown fox jumps over the lazy dog'**
+  String get appearancePreviewText;
+
+  /// No description provided for @appearanceFontFamilySection.
+  ///
+  /// In en, this message translates to:
+  /// **'FONT FAMILY'**
+  String get appearanceFontFamilySection;
+
+  /// No description provided for @appearanceFontFamilySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred font'**
+  String get appearanceFontFamilySubtitle;
+
+  /// No description provided for @appearanceDisplayOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'DISPLAY OPTIONS'**
+  String get appearanceDisplayOptions;
+
+  /// No description provided for @appearanceCompactMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact Mode'**
+  String get appearanceCompactMode;
+
+  /// No description provided for @appearanceCompactModeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more content on screen'**
+  String get appearanceCompactModeSubtitle;
+
+  /// No description provided for @appearanceColorAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'COLOR ACCENT'**
+  String get appearanceColorAccent;
+
+  /// No description provided for @appearanceColorAccentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize app colors'**
+  String get appearanceColorAccentSubtitle;
+
+  /// No description provided for @appearanceChooseAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your accent color'**
+  String get appearanceChooseAccent;
+
+  /// No description provided for @bugReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Bug'**
+  String get bugReportTitle;
+
+  /// No description provided for @bugReportHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve by reporting bugs and issues you encounter.'**
+  String get bugReportHelp;
+
+  /// No description provided for @bugReportTitleField.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug Title'**
+  String get bugReportTitleField;
+
+  /// No description provided for @bugReportTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief description of the issue'**
+  String get bugReportTitleHint;
+
+  /// No description provided for @bugReportTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a bug title'**
+  String get bugReportTitleRequired;
+
+  /// No description provided for @bugReportSeverity.
+  ///
+  /// In en, this message translates to:
+  /// **'Severity'**
+  String get bugReportSeverity;
+
+  /// No description provided for @bugReportSeverityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low - Minor inconvenience'**
+  String get bugReportSeverityLow;
+
+  /// No description provided for @bugReportSeverityMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium - Affects functionality'**
+  String get bugReportSeverityMedium;
+
+  /// No description provided for @bugReportSeverityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High - App unusable'**
+  String get bugReportSeverityHigh;
+
+  /// No description provided for @bugReportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get bugReportDescription;
+
+  /// No description provided for @bugReportDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened?'**
+  String get bugReportDescriptionHint;
+
+  /// No description provided for @bugReportDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please describe the bug'**
+  String get bugReportDescriptionRequired;
+
+  /// No description provided for @bugReportSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps to Reproduce'**
+  String get bugReportSteps;
+
+  /// No description provided for @bugReportStepsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Go to...\n2. Click on...\n3. See error'**
+  String get bugReportStepsHint;
+
+  /// No description provided for @bugReportStepsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please provide steps to reproduce'**
+  String get bugReportStepsRequired;
+
+  /// No description provided for @bugReportAttachScreenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach Screenshot'**
+  String get bugReportAttachScreenshot;
+
+  /// No description provided for @bugReportScreenshotHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us understand the issue better'**
+  String get bugReportScreenshotHelp;
+
+  /// No description provided for @bugReportScreenshotSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot attachment coming soon'**
+  String get bugReportScreenshotSoon;
+
+  /// No description provided for @bugReportIncludeDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Include Device Information'**
+  String get bugReportIncludeDevice;
+
+  /// No description provided for @bugReportDeviceInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'OS version, app version, device model'**
+  String get bugReportDeviceInfo;
+
+  /// No description provided for @bugReportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Bug Report'**
+  String get bugReportSubmit;
+
+  /// No description provided for @bugReportSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug report submitted successfully! Thank you for helping us improve.'**
+  String get bugReportSubmitted;
+
+  /// No description provided for @contactSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contactSupportTitle;
+
+  /// No description provided for @contactSupportGetInTouch.
+  ///
+  /// In en, this message translates to:
+  /// **'Get in Touch'**
+  String get contactSupportGetInTouch;
+
+  /// No description provided for @contactSupportEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get contactSupportEmail;
+
+  /// No description provided for @contactSupportEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'support@flowedtech.com'**
+  String get contactSupportEmailAddress;
+
+  /// No description provided for @contactSupportLiveChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Chat'**
+  String get contactSupportLiveChat;
+
+  /// No description provided for @contactSupportLiveChatAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available 24/7'**
+  String get contactSupportLiveChatAvailable;
+
+  /// No description provided for @contactSupportPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get contactSupportPhone;
+
+  /// No description provided for @contactSupportPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'+1 (555) 123-4567'**
+  String get contactSupportPhoneNumber;
+
+  /// No description provided for @contactSupportHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Hours'**
+  String get contactSupportHours;
+
+  /// No description provided for @contactSupportHoursText.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday - Friday: 9am - 5pm EST\nWeekends: 10am - 4pm EST'**
+  String get contactSupportHoursText;
+
+  /// No description provided for @contactSupportSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send us a Message'**
+  String get contactSupportSendMessage;
+
+  /// No description provided for @contactSupportCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get contactSupportCategory;
+
+  /// No description provided for @contactSupportCategoryGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General Inquiry'**
+  String get contactSupportCategoryGeneral;
+
+  /// No description provided for @contactSupportCategoryTechnical.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Issue'**
+  String get contactSupportCategoryTechnical;
+
+  /// No description provided for @contactSupportCategoryBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing Question'**
+  String get contactSupportCategoryBilling;
+
+  /// No description provided for @contactSupportCategoryFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get contactSupportCategoryFeedback;
+
+  /// No description provided for @contactSupportSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get contactSupportSubject;
+
+  /// No description provided for @contactSupportSubjectRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a subject'**
+  String get contactSupportSubjectRequired;
+
+  /// No description provided for @contactSupportMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get contactSupportMessage;
+
+  /// No description provided for @contactSupportMessageRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your message'**
+  String get contactSupportMessageRequired;
+
+  /// No description provided for @contactSupportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get contactSupportSend;
+
+  /// No description provided for @contactSupportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Message sent successfully! We\'ll get back to you soon.'**
+  String get contactSupportSent;
+
+  /// No description provided for @dataStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data & Storage'**
+  String get dataStorageTitle;
+
+  /// No description provided for @dataStorageBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get dataStorageBack;
+
+  /// No description provided for @dataStorageUsageSection.
+  ///
+  /// In en, this message translates to:
+  /// **'STORAGE USAGE'**
+  String get dataStorageUsageSection;
+
+  /// No description provided for @dataStorageUsageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your app storage'**
+  String get dataStorageUsageSubtitle;
+
+  /// No description provided for @dataStorageClearCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Cache'**
+  String get dataStorageClearCache;
+
+  /// No description provided for @dataStorageDownloadSection.
+  ///
+  /// In en, this message translates to:
+  /// **'DOWNLOAD SETTINGS'**
+  String get dataStorageDownloadSection;
+
+  /// No description provided for @dataStorageDownloadSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control how content is downloaded'**
+  String get dataStorageDownloadSubtitle;
+
+  /// No description provided for @dataStorageAutoDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Download Videos'**
+  String get dataStorageAutoDownload;
+
+  /// No description provided for @dataStorageAutoDownloadSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically download enrolled course videos'**
+  String get dataStorageAutoDownloadSubtitle;
+
+  /// No description provided for @dataStorageWifiOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Download on Wi-Fi Only'**
+  String get dataStorageWifiOnly;
+
+  /// No description provided for @dataStorageWifiOnlySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prevent mobile data usage for downloads'**
+  String get dataStorageWifiOnlySubtitle;
+
+  /// No description provided for @dataStorageAutoDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Delete Watched Videos'**
+  String get dataStorageAutoDelete;
+
+  /// No description provided for @dataStorageAutoDeleteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Free up space by removing watched content'**
+  String get dataStorageAutoDeleteSubtitle;
+
+  /// No description provided for @dataStorageVideoQualitySection.
+  ///
+  /// In en, this message translates to:
+  /// **'VIDEO QUALITY'**
+  String get dataStorageVideoQualitySection;
+
+  /// No description provided for @dataStorageVideoQualitySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose default video quality'**
+  String get dataStorageVideoQualitySubtitle;
+
+  /// No description provided for @dataStorageSelectQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Quality'**
+  String get dataStorageSelectQuality;
+
+  /// No description provided for @dataStorageQualityAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get dataStorageQualityAuto;
+
+  /// No description provided for @dataStorageQualityAutoDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust quality based on connection'**
+  String get dataStorageQualityAutoDesc;
+
+  /// No description provided for @dataStorageQualityAutoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Varies'**
+  String get dataStorageQualityAutoData;
+
+  /// No description provided for @dataStorageQuality1080p.
+  ///
+  /// In en, this message translates to:
+  /// **'1080p HD'**
+  String get dataStorageQuality1080p;
+
+  /// No description provided for @dataStorageQuality1080pDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Best quality, larger file size'**
+  String get dataStorageQuality1080pDesc;
+
+  /// No description provided for @dataStorageQuality1080pData.
+  ///
+  /// In en, this message translates to:
+  /// **'~3 GB/hour'**
+  String get dataStorageQuality1080pData;
+
+  /// No description provided for @dataStorageQuality720p.
+  ///
+  /// In en, this message translates to:
+  /// **'720p'**
+  String get dataStorageQuality720p;
+
+  /// No description provided for @dataStorageQuality720pDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Good quality, moderate file size'**
+  String get dataStorageQuality720pDesc;
+
+  /// No description provided for @dataStorageQuality720pData.
+  ///
+  /// In en, this message translates to:
+  /// **'~1.5 GB/hour'**
+  String get dataStorageQuality720pData;
+
+  /// No description provided for @dataStorageQuality480p.
+  ///
+  /// In en, this message translates to:
+  /// **'480p'**
+  String get dataStorageQuality480p;
+
+  /// No description provided for @dataStorageQuality480pDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard quality, smaller file size'**
+  String get dataStorageQuality480pDesc;
+
+  /// No description provided for @dataStorageQuality480pData.
+  ///
+  /// In en, this message translates to:
+  /// **'~700 MB/hour'**
+  String get dataStorageQuality480pData;
+
+  /// No description provided for @dataStorageQuality360p.
+  ///
+  /// In en, this message translates to:
+  /// **'360p'**
+  String get dataStorageQuality360p;
+
+  /// No description provided for @dataStorageQuality360pDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower quality, minimal data'**
+  String get dataStorageQuality360pDesc;
+
+  /// No description provided for @dataStorageQuality360pData.
+  ///
+  /// In en, this message translates to:
+  /// **'~400 MB/hour'**
+  String get dataStorageQuality360pData;
+
+  /// No description provided for @dataStorageOfflineSection.
+  ///
+  /// In en, this message translates to:
+  /// **'OFFLINE CONTENT'**
+  String get dataStorageOfflineSection;
+
+  /// No description provided for @dataStorageOfflineSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage downloaded content'**
+  String get dataStorageOfflineSubtitle;
+
+  /// No description provided for @dataStorageOfflineMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Mode'**
+  String get dataStorageOfflineMode;
+
+  /// No description provided for @dataStorageOfflineModeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use only downloaded content'**
+  String get dataStorageOfflineModeSubtitle;
+
+  /// No description provided for @dataStorageManageDownloads.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Downloads'**
+  String get dataStorageManageDownloads;
+
+  /// No description provided for @dataStorageManageDownloadsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} videos, {size} MB'**
+  String dataStorageManageDownloadsSubtitle(int count, int size);
+
+  /// No description provided for @dataStorageDeleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete All Downloads'**
+  String get dataStorageDeleteAll;
+
+  /// No description provided for @dataStorageDeleteAllSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Free up storage space'**
+  String get dataStorageDeleteAllSubtitle;
+
+  /// No description provided for @dataStorageDataUsageSection.
+  ///
+  /// In en, this message translates to:
+  /// **'DATA USAGE'**
+  String get dataStorageDataUsageSection;
+
+  /// No description provided for @dataStorageDataUsageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your data consumption'**
+  String get dataStorageDataUsageSubtitle;
+
+  /// No description provided for @dataStorageWifiUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi Usage (This Month)'**
+  String get dataStorageWifiUsage;
+
+  /// No description provided for @dataStorageMobileUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Data (This Month)'**
+  String get dataStorageMobileUsage;
+
+  /// No description provided for @dataStorageTotalUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Usage (This Month)'**
+  String get dataStorageTotalUsage;
+
+  /// No description provided for @dataStorageAdvancedSection.
+  ///
+  /// In en, this message translates to:
+  /// **'ADVANCED'**
+  String get dataStorageAdvancedSection;
+
+  /// No description provided for @dataStorageSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get dataStorageSyncNow;
+
+  /// No description provided for @dataStorageSyncNowSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync all data with server'**
+  String get dataStorageSyncNowSubtitle;
+
+  /// No description provided for @dataStorageLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage Location'**
+  String get dataStorageLocation;
+
+  /// No description provided for @dataStorageLocationInternal.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal Storage'**
+  String get dataStorageLocationInternal;
+
+  /// No description provided for @dataStorageLocationSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage location management coming soon'**
+  String get dataStorageLocationSoon;
+
+  /// No description provided for @dataStorageTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage Tip'**
+  String get dataStorageTip;
+
+  /// No description provided for @dataStorageTipText.
+  ///
+  /// In en, this message translates to:
+  /// **'To save mobile data, enable \"Download on Wi-Fi Only\" and download content when connected to Wi-Fi. Clear cache regularly to free up space.'**
+  String get dataStorageTipText;
+
+  /// No description provided for @dataStorageClearCacheTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Cache'**
+  String get dataStorageClearCacheTitle;
+
+  /// No description provided for @dataStorageClearCacheMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will clear {size} MB of cached data. This may slow down the app temporarily while data is re-cached.'**
+  String dataStorageClearCacheMessage(String size);
+
+  /// No description provided for @dataStorageClearCacheButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get dataStorageClearCacheButton;
+
+  /// No description provided for @dataStorageCacheCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Cache cleared successfully'**
+  String get dataStorageCacheCleared;
+
+  /// No description provided for @dataStorageDeleteAllTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete All Downloads'**
+  String get dataStorageDeleteAllTitle;
+
+  /// No description provided for @dataStorageDeleteAllMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete all downloaded content? This will free up approximately {size} MB of storage.'**
+  String dataStorageDeleteAllMessage(int size);
+
+  /// No description provided for @dataStorageAllDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'All downloads deleted'**
+  String get dataStorageAllDeleted;
+
+  /// No description provided for @dataStorageSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing data...'**
+  String get dataStorageSyncing;
+
+  /// No description provided for @dataStorageSyncCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync completed'**
+  String get dataStorageSyncCompleted;
+
+  /// No description provided for @languageSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language & Region'**
+  String get languageSettingsTitle;
+
+  /// No description provided for @languageSettingsBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get languageSettingsBack;
+
+  /// No description provided for @languageSettingsAppLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'APP LANGUAGE'**
+  String get languageSettingsAppLanguage;
+
+  /// No description provided for @languageSettingsAppLanguageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred language'**
+  String get languageSettingsAppLanguageSubtitle;
+
+  /// No description provided for @languageSettingsChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed to {language}'**
+  String languageSettingsChanged(String language);
+
+  /// No description provided for @languageSettingsDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'DATE & TIME'**
+  String get languageSettingsDateTime;
+
+  /// No description provided for @languageSettingsDateTimeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize date and time display'**
+  String get languageSettingsDateTimeSubtitle;
+
+  /// No description provided for @languageSettingsDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Format'**
+  String get languageSettingsDateFormat;
+
+  /// No description provided for @languageSettingsDateFormatDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get languageSettingsDateFormatDefault;
+
+  /// No description provided for @languageSettingsDateFormatMDY.
+  ///
+  /// In en, this message translates to:
+  /// **'MM/DD/YYYY (12/31/2024)'**
+  String get languageSettingsDateFormatMDY;
+
+  /// No description provided for @languageSettingsDateFormatDMY.
+  ///
+  /// In en, this message translates to:
+  /// **'DD/MM/YYYY (31/12/2024)'**
+  String get languageSettingsDateFormatDMY;
+
+  /// No description provided for @languageSettingsDateFormatYMD.
+  ///
+  /// In en, this message translates to:
+  /// **'YYYY/MM/DD (2024/12/31)'**
+  String get languageSettingsDateFormatYMD;
+
+  /// No description provided for @languageSettingsDateFormatLong.
+  ///
+  /// In en, this message translates to:
+  /// **'December 31, 2024'**
+  String get languageSettingsDateFormatLong;
+
+  /// No description provided for @languageSettingsTimeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Format'**
+  String get languageSettingsTimeFormat;
+
+  /// No description provided for @languageSettingsTimeFormat12h.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour (2:30 PM)'**
+  String get languageSettingsTimeFormat12h;
+
+  /// No description provided for @languageSettingsTimeFormat24h.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour (14:30)'**
+  String get languageSettingsTimeFormat24h;
+
+  /// No description provided for @languageSettingsNumberFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'NUMBER FORMAT'**
+  String get languageSettingsNumberFormat;
+
+  /// No description provided for @languageSettingsNumberFormatSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency and number display'**
+  String get languageSettingsNumberFormatSubtitle;
+
+  /// No description provided for @languageSettingsNumberFormatDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get languageSettingsNumberFormatDefault;
+
+  /// No description provided for @languageSettingsNumberFormatComma.
+  ///
+  /// In en, this message translates to:
+  /// **'1,234,567.89'**
+  String get languageSettingsNumberFormatComma;
+
+  /// No description provided for @languageSettingsNumberFormatPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'1.234.567,89'**
+  String get languageSettingsNumberFormatPeriod;
+
+  /// No description provided for @languageSettingsNumberFormatSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'1 234 567,89'**
+  String get languageSettingsNumberFormatSpace;
+
+  /// No description provided for @languageSettingsTranslation.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTENT TRANSLATION'**
+  String get languageSettingsTranslation;
+
+  /// No description provided for @languageSettingsTranslationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic translation preferences'**
+  String get languageSettingsTranslationSubtitle;
+
+  /// No description provided for @languageSettingsAutoTranslate.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Translate Content'**
+  String get languageSettingsAutoTranslate;
+
+  /// No description provided for @languageSettingsAutoTranslateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically translate content to your language'**
+  String get languageSettingsAutoTranslateSubtitle;
+
+  /// No description provided for @languageSettingsShowOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Original Text'**
+  String get languageSettingsShowOriginal;
+
+  /// No description provided for @languageSettingsShowOriginalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display original language alongside translation'**
+  String get languageSettingsShowOriginalSubtitle;
+
+  /// No description provided for @languageSettingsRegional.
+  ///
+  /// In en, this message translates to:
+  /// **'REGIONAL SETTINGS'**
+  String get languageSettingsRegional;
+
+  /// No description provided for @languageSettingsRegionalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location-based preferences'**
+  String get languageSettingsRegionalSubtitle;
+
+  /// No description provided for @languageSettingsRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get languageSettingsRegion;
+
+  /// No description provided for @languageSettingsRegionKenya.
+  ///
+  /// In en, this message translates to:
+  /// **'Kenya (East Africa)'**
+  String get languageSettingsRegionKenya;
+
+  /// No description provided for @languageSettingsFirstDay.
+  ///
+  /// In en, this message translates to:
+  /// **'First Day of Week'**
+  String get languageSettingsFirstDay;
+
+  /// No description provided for @languageSettingsFirstDayMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get languageSettingsFirstDayMonday;
+
+  /// No description provided for @languageSettingsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTENT PREFERENCES'**
+  String get languageSettingsContent;
+
+  /// No description provided for @languageSettingsContentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages for courses and materials'**
+  String get languageSettingsContentSubtitle;
+
+  /// No description provided for @languageSettingsCourseLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Course Languages'**
+  String get languageSettingsCourseLanguages;
+
+  /// No description provided for @languageSettingsCourseLanguagesValue.
+  ///
+  /// In en, this message translates to:
+  /// **'English, Kiswahili'**
+  String get languageSettingsCourseLanguagesValue;
+
+  /// No description provided for @languageSettingsInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Settings'**
+  String get languageSettingsInfoTitle;
+
+  /// No description provided for @languageSettingsInfoText.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing your language will update all menus, buttons, and system messages. Course content may still appear in its original language.'**
+  String get languageSettingsInfoText;
+
+  /// No description provided for @languageSettingsSelectRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Region'**
+  String get languageSettingsSelectRegion;
+
+  /// No description provided for @languageSettingsRegionChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Region changed to {region}'**
+  String languageSettingsRegionChanged(String region);
+
+  /// No description provided for @languageSettingsFirstDayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'First Day of Week'**
+  String get languageSettingsFirstDayTitle;
+
+  /// No description provided for @languageSettingsFirstDaySet.
+  ///
+  /// In en, this message translates to:
+  /// **'First day set to {day}'**
+  String languageSettingsFirstDaySet(String day);
+
+  /// No description provided for @languageSettingsCourseLanguagesSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Course language preferences saved'**
+  String get languageSettingsCourseLanguagesSaved;
+
+  /// No description provided for @sendFeedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Feedback'**
+  String get sendFeedbackTitle;
+
+  /// No description provided for @sendFeedbackHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback helps us improve and serve you better.'**
+  String get sendFeedbackHelp;
+
+  /// No description provided for @sendFeedbackType.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Type'**
+  String get sendFeedbackType;
+
+  /// No description provided for @sendFeedbackTypeGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General Feedback'**
+  String get sendFeedbackTypeGeneral;
+
+  /// No description provided for @sendFeedbackTypeFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature Request'**
+  String get sendFeedbackTypeFeature;
+
+  /// No description provided for @sendFeedbackTypeImprovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Improvement Suggestion'**
+  String get sendFeedbackTypeImprovement;
+
+  /// No description provided for @sendFeedbackTypeComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaint'**
+  String get sendFeedbackTypeComplaint;
+
+  /// No description provided for @sendFeedbackTypePraise.
+  ///
+  /// In en, this message translates to:
+  /// **'Praise'**
+  String get sendFeedbackTypePraise;
+
+  /// No description provided for @sendFeedbackExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Experience'**
+  String get sendFeedbackExperience;
+
+  /// No description provided for @sendFeedbackRatingPoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get sendFeedbackRatingPoor;
+
+  /// No description provided for @sendFeedbackRatingFair.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair'**
+  String get sendFeedbackRatingFair;
+
+  /// No description provided for @sendFeedbackRatingGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get sendFeedbackRatingGood;
+
+  /// No description provided for @sendFeedbackRatingVeryGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Good'**
+  String get sendFeedbackRatingVeryGood;
+
+  /// No description provided for @sendFeedbackRatingExcellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get sendFeedbackRatingExcellent;
+
+  /// No description provided for @sendFeedbackYourFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Feedback'**
+  String get sendFeedbackYourFeedback;
+
+  /// No description provided for @sendFeedbackPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what you think...'**
+  String get sendFeedbackPlaceholder;
+
+  /// No description provided for @sendFeedbackRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your feedback'**
+  String get sendFeedbackRequired;
+
+  /// No description provided for @sendFeedbackTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback must be at least 10 characters'**
+  String get sendFeedbackTooShort;
+
+  /// No description provided for @sendFeedbackAttachScreenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach Screenshot'**
+  String get sendFeedbackAttachScreenshot;
+
+  /// No description provided for @sendFeedbackScreenshotHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional - helps us understand the issue'**
+  String get sendFeedbackScreenshotHelp;
+
+  /// No description provided for @sendFeedbackScreenshotAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot attached'**
+  String get sendFeedbackScreenshotAttached;
+
+  /// No description provided for @sendFeedbackScreenshotTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Image is too large. Please select an image under 5MB.'**
+  String get sendFeedbackScreenshotTooLarge;
+
+  /// No description provided for @sendFeedbackScreenshotSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot attached successfully'**
+  String get sendFeedbackScreenshotSuccess;
+
+  /// No description provided for @sendFeedbackScreenshotError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error selecting image: {error}'**
+  String sendFeedbackScreenshotError(String error);
+
+  /// No description provided for @sendFeedbackAnonymous.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Anonymously'**
+  String get sendFeedbackAnonymous;
+
+  /// No description provided for @sendFeedbackAnonymousSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your identity will not be shared'**
+  String get sendFeedbackAnonymousSubtitle;
+
+  /// No description provided for @sendFeedbackSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Feedback'**
+  String get sendFeedbackSubmit;
+
+  /// No description provided for @sendFeedbackThankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback!'**
+  String get sendFeedbackThankYou;
+
+  /// No description provided for @sendFeedbackThankYouWithScreenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback! (Screenshot attached)'**
+  String get sendFeedbackThankYouWithScreenshot;
+
+  /// No description provided for @settingsQuickSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'QUICK SETTINGS'**
+  String get settingsQuickSettings;
+
+  /// No description provided for @settingsQuickSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently used settings'**
+  String get settingsQuickSettingsSubtitle;
+
+  /// No description provided for @settingsPushNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get settingsPushNotifications;
+
+  /// No description provided for @settingsPushNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive app notifications'**
+  String get settingsPushNotificationsSubtitle;
+
+  /// No description provided for @settingsEmailNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Notifications'**
+  String get settingsEmailNotifications;
+
+  /// No description provided for @settingsEmailNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive updates via email'**
+  String get settingsEmailNotificationsSubtitle;
+
+  /// No description provided for @settingsSmsNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS Notifications'**
+  String get settingsSmsNotifications;
+
+  /// No description provided for @settingsSmsNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive SMS alerts'**
+  String get settingsSmsNotificationsSubtitle;
+
+  /// No description provided for @settingsPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'PREFERENCES'**
+  String get settingsPreferences;
+
+  /// No description provided for @settingsPreferencesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your experience'**
+  String get settingsPreferencesSubtitle;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearance;
+
+  /// No description provided for @settingsAppearanceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme, colors, and display'**
+  String get settingsAppearanceSubtitle;
+
+  /// No description provided for @settingsLanguageRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Language & Region'**
+  String get settingsLanguageRegion;
+
+  /// No description provided for @settingsLanguageRegionValue.
+  ///
+  /// In en, this message translates to:
+  /// **'English, Kenya'**
+  String get settingsLanguageRegionValue;
+
+  /// No description provided for @settingsDataStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Data & Storage'**
+  String get settingsDataStorage;
+
+  /// No description provided for @settingsDataStorageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage downloads and cache'**
+  String get settingsDataStorageSubtitle;
+
+  /// No description provided for @settingsAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT'**
+  String get settingsAccount;
+
+  /// No description provided for @settingsAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your account settings'**
+  String get settingsAccountSubtitle;
+
+  /// No description provided for @settingsEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get settingsEditProfile;
+
+  /// No description provided for @settingsEditProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your personal information'**
+  String get settingsEditProfileSubtitle;
+
+  /// No description provided for @settingsPrivacySecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Security'**
+  String get settingsPrivacySecurity;
+
+  /// No description provided for @settingsPrivacySecuritySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control your privacy settings'**
+  String get settingsPrivacySecuritySubtitle;
+
+  /// No description provided for @settingsPaymentMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Methods'**
+  String get settingsPaymentMethods;
+
+  /// No description provided for @settingsPaymentMethodsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage payment options'**
+  String get settingsPaymentMethodsSubtitle;
+
+  /// No description provided for @settingsSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get settingsSubscriptions;
+
+  /// No description provided for @settingsSubscriptionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage subscriptions'**
+  String get settingsSubscriptionsSubtitle;
+
+  /// No description provided for @settingsLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'LEARNING'**
+  String get settingsLearning;
+
+  /// No description provided for @settingsLearningSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your learning experience'**
+  String get settingsLearningSubtitle;
+
+  /// No description provided for @settingsStudySchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Schedule'**
+  String get settingsStudySchedule;
+
+  /// No description provided for @settingsStudyScheduleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set reminders and goals'**
+  String get settingsStudyScheduleSubtitle;
+
+  /// No description provided for @settingsProgressReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Reports'**
+  String get settingsProgressReports;
+
+  /// No description provided for @settingsProgressReportsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View your learning analytics'**
+  String get settingsProgressReportsSubtitle;
+
+  /// No description provided for @settingsSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'SUPPORT'**
+  String get settingsSupport;
+
+  /// No description provided for @settingsSupportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get help and provide feedback'**
+  String get settingsSupportSubtitle;
+
+  /// No description provided for @settingsHelpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get settingsHelpCenter;
+
+  /// No description provided for @settingsHelpCenterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse help articles'**
+  String get settingsHelpCenterSubtitle;
+
+  /// No description provided for @settingsContactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get settingsContactSupport;
+
+  /// No description provided for @settingsContactSupportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get in touch with our team'**
+  String get settingsContactSupportSubtitle;
+
+  /// No description provided for @settingsReportBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Bug'**
+  String get settingsReportBug;
+
+  /// No description provided for @settingsReportBugSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve'**
+  String get settingsReportBugSubtitle;
+
+  /// No description provided for @settingsSendFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Feedback'**
+  String get settingsSendFeedback;
+
+  /// No description provided for @settingsSendFeedbackSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts'**
+  String get settingsSendFeedbackSubtitle;
+
+  /// No description provided for @settingsLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'LEGAL'**
+  String get settingsLegal;
+
+  /// No description provided for @settingsPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get settingsPrivacyPolicy;
+
+  /// No description provided for @settingsCookieSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Cookie Settings'**
+  String get settingsCookieSettings;
+
+  /// No description provided for @settingsCookieSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage cookie preferences'**
+  String get settingsCookieSettingsSubtitle;
+
+  /// No description provided for @settingsTermsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get settingsTermsOfService;
+
+  /// No description provided for @settingsLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Licenses'**
+  String get settingsLicenses;
+
+  /// No description provided for @settingsLicensesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open source licenses'**
+  String get settingsLicensesSubtitle;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'ABOUT'**
+  String get settingsAbout;
+
+  /// No description provided for @settingsLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get settingsLogout;
+
+  /// No description provided for @settingsLogoutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout?'**
+  String get settingsLogoutConfirm;
+
+  /// No description provided for @onboardingFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get onboardingFeaturesTitle;
+
+  /// No description provided for @onboardingGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got It!'**
+  String get onboardingGotIt;
+
+  /// No description provided for @onboardingClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get onboardingClose;
+
+  /// No description provided for @onboardingTryIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Try It'**
+  String get onboardingTryIt;
+
+  /// No description provided for @onboardingOpeningFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening {feature}...'**
+  String onboardingOpeningFeature(String feature);
+
+  /// No description provided for @onboardingWelcomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your all-in-one platform for discovering courses, managing applications, and achieving your educational goals.'**
+  String get onboardingWelcomeDescription;
+
+  /// No description provided for @onboardingDiscoverCoursesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Courses'**
+  String get onboardingDiscoverCoursesTitle;
+
+  /// No description provided for @onboardingDiscoverCoursesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse thousands of courses from top institutions. Filter by subject, level, duration, and more to find the perfect fit.'**
+  String get onboardingDiscoverCoursesDescription;
+
+  /// No description provided for @onboardingTrackApplicationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track Applications'**
+  String get onboardingTrackApplicationsTitle;
+
+  /// No description provided for @onboardingTrackApplicationsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage all your course applications in one place. Get real-time updates and never miss a deadline.'**
+  String get onboardingTrackApplicationsDescription;
+
+  /// No description provided for @onboardingStudySmarterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Smarter'**
+  String get onboardingStudySmarterTitle;
+
+  /// No description provided for @onboardingStudySmarterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Take notes, set goals, and track your progress. Stay organized with our powerful study tools.'**
+  String get onboardingStudySmarterDescription;
+
+  /// No description provided for @onboardingStayConnectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Connected'**
+  String get onboardingStayConnectedTitle;
+
+  /// No description provided for @onboardingStayConnectedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Message institutions directly, get personalized counseling, and receive instant notifications for important updates.'**
+  String get onboardingStayConnectedDescription;
+
+  /// No description provided for @onboardingWelcomeToFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Flow!'**
+  String get onboardingWelcomeToFlow;
+
+  /// No description provided for @onboardingFeatureCategoryCore.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Features'**
+  String get onboardingFeatureCategoryCore;
+
+  /// No description provided for @onboardingFeatureCategoryStudyTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Tools'**
+  String get onboardingFeatureCategoryStudyTools;
+
+  /// No description provided for @onboardingFeatureCategoryProductivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Productivity'**
+  String get onboardingFeatureCategoryProductivity;
+
+  /// No description provided for @onboardingFeatureCategoryCollaboration.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaboration'**
+  String get onboardingFeatureCategoryCollaboration;
+
+  /// No description provided for @onboardingFeatureCourseDiscovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Discovery'**
+  String get onboardingFeatureCourseDiscovery;
+
+  /// No description provided for @onboardingFeatureCourseDiscoveryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse and search thousands of courses from top institutions worldwide'**
+  String get onboardingFeatureCourseDiscoveryDesc;
+
+  /// No description provided for @onboardingFeatureApplicationTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Tracking'**
+  String get onboardingFeatureApplicationTracking;
+
+  /// No description provided for @onboardingFeatureApplicationTrackingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage all your course applications and track their status in real-time'**
+  String get onboardingFeatureApplicationTrackingDesc;
+
+  /// No description provided for @onboardingFeatureLearningDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Dashboard'**
+  String get onboardingFeatureLearningDashboard;
+
+  /// No description provided for @onboardingFeatureLearningDashboardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your progress, view enrolled courses, and access learning materials'**
+  String get onboardingFeatureLearningDashboardDesc;
+
+  /// No description provided for @onboardingFeatureMessaging.
+  ///
+  /// In en, this message translates to:
+  /// **'Messaging'**
+  String get onboardingFeatureMessaging;
+
+  /// No description provided for @onboardingFeatureMessagingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Communicate directly with institutions and counselors'**
+  String get onboardingFeatureMessagingDesc;
+
+  /// No description provided for @onboardingFeatureNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get onboardingFeatureNotes;
+
+  /// No description provided for @onboardingFeatureNotesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take, organize, and sync notes across all your devices'**
+  String get onboardingFeatureNotesDesc;
+
+  /// No description provided for @onboardingFeatureBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get onboardingFeatureBookmarks;
+
+  /// No description provided for @onboardingFeatureBookmarksDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save courses and resources for quick access later'**
+  String get onboardingFeatureBookmarksDesc;
+
+  /// No description provided for @onboardingFeatureAchievementsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn badges and track milestones as you progress'**
+  String get onboardingFeatureAchievementsDesc;
+
+  /// No description provided for @onboardingFeatureProgressAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Analytics'**
+  String get onboardingFeatureProgressAnalytics;
+
+  /// No description provided for @onboardingFeatureProgressAnalyticsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Visualize your learning journey with detailed statistics'**
+  String get onboardingFeatureProgressAnalyticsDesc;
+
+  /// No description provided for @onboardingFeatureCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get onboardingFeatureCalendar;
+
+  /// No description provided for @onboardingFeatureCalendarDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track deadlines, events, and important dates'**
+  String get onboardingFeatureCalendarDesc;
+
+  /// No description provided for @onboardingFeatureSmartNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Notifications'**
+  String get onboardingFeatureSmartNotifications;
+
+  /// No description provided for @onboardingFeatureSmartNotificationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get timely reminders and updates about your applications'**
+  String get onboardingFeatureSmartNotificationsDesc;
+
+  /// No description provided for @onboardingFeatureStudyScheduler.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Scheduler'**
+  String get onboardingFeatureStudyScheduler;
+
+  /// No description provided for @onboardingFeatureStudySchedulerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan and optimize your study time'**
+  String get onboardingFeatureStudySchedulerDesc;
+
+  /// No description provided for @onboardingFeatureGoalsMilestones.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals & Milestones'**
+  String get onboardingFeatureGoalsMilestones;
+
+  /// No description provided for @onboardingFeatureGoalsMilestonesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Set and track your learning goals'**
+  String get onboardingFeatureGoalsMilestonesDesc;
+
+  /// No description provided for @onboardingFeatureStudyGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Groups'**
+  String get onboardingFeatureStudyGroups;
+
+  /// No description provided for @onboardingFeatureStudyGroupsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect and collaborate with fellow learners'**
+  String get onboardingFeatureStudyGroupsDesc;
+
+  /// No description provided for @onboardingFeatureDiscussionForums.
+  ///
+  /// In en, this message translates to:
+  /// **'Discussion Forums'**
+  String get onboardingFeatureDiscussionForums;
+
+  /// No description provided for @onboardingFeatureDiscussionForumsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Participate in course discussions and Q&A'**
+  String get onboardingFeatureDiscussionForumsDesc;
+
+  /// No description provided for @onboardingFeatureResourceSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource Sharing'**
+  String get onboardingFeatureResourceSharing;
+
+  /// No description provided for @onboardingFeatureResourceSharingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share notes, links, and study materials'**
+  String get onboardingFeatureResourceSharingDesc;
+
+  /// No description provided for @onboardingFeatureLiveSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Sessions'**
+  String get onboardingFeatureLiveSessions;
+
+  /// No description provided for @onboardingFeatureLiveSessionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Join virtual classes and webinars'**
+  String get onboardingFeatureLiveSessionsDesc;
+
+  /// No description provided for @onboardingHowToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use:'**
+  String get onboardingHowToUse;
+
+  /// No description provided for @onboardingInstructionsCourseDiscovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate to the Explore tab and use the search bar or browse categories.'**
+  String get onboardingInstructionsCourseDiscovery;
+
+  /// No description provided for @onboardingInstructionsApplicationTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Applications tab to view and manage all your applications.'**
+  String get onboardingInstructionsApplicationTracking;
+
+  /// No description provided for @onboardingInstructionsLearningDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your dashboard from the Home tab to see your progress.'**
+  String get onboardingInstructionsLearningDashboard;
+
+  /// No description provided for @onboardingInstructionsMessaging.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Messages tab to chat with institutions and counselors.'**
+  String get onboardingInstructionsMessaging;
+
+  /// No description provided for @onboardingInstructionsNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the Notes icon to create and organize your study notes.'**
+  String get onboardingInstructionsNotes;
+
+  /// No description provided for @onboardingInstructionsBookmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Save items by tapping the bookmark icon on courses or resources.'**
+  String get onboardingInstructionsBookmarks;
+
+  /// No description provided for @onboardingInstructionsAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'View your achievements in the Profile section under Progress.'**
+  String get onboardingInstructionsAchievements;
+
+  /// No description provided for @onboardingInstructionsProgressAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Check detailed analytics in your Profile > Progress section.'**
+  String get onboardingInstructionsProgressAnalytics;
+
+  /// No description provided for @onboardingInstructionsCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Access the Calendar from the bottom navigation or menu.'**
+  String get onboardingInstructionsCalendar;
+
+  /// No description provided for @onboardingInstructionsSmartNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications in Settings > Notifications.'**
+  String get onboardingInstructionsSmartNotifications;
+
+  /// No description provided for @onboardingInstructionsStudyScheduler.
+  ///
+  /// In en, this message translates to:
+  /// **'Create study schedules in Tools > Study Planner.'**
+  String get onboardingInstructionsStudyScheduler;
+
+  /// No description provided for @onboardingInstructionsGoalsMilestones.
+  ///
+  /// In en, this message translates to:
+  /// **'Set goals in Profile > Progress > Goals.'**
+  String get onboardingInstructionsGoalsMilestones;
+
+  /// No description provided for @onboardingInstructionsStudyGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Join or create study groups from Community > Groups.'**
+  String get onboardingInstructionsStudyGroups;
+
+  /// No description provided for @onboardingInstructionsDiscussionForums.
+  ///
+  /// In en, this message translates to:
+  /// **'Participate in forums from Community > Discussions.'**
+  String get onboardingInstructionsDiscussionForums;
+
+  /// No description provided for @onboardingInstructionsResourceSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Share resources using the share button on any content.'**
+  String get onboardingInstructionsResourceSharing;
+
+  /// No description provided for @onboardingInstructionsLiveSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Join live sessions from the Schedule or Courses section.'**
+  String get onboardingInstructionsLiveSessions;
+
+  /// No description provided for @onboardingInstructionsDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the app to discover this feature!'**
+  String get onboardingInstructionsDefault;
+
+  /// No description provided for @onboardingTutorialCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial completed!'**
+  String get onboardingTutorialCompleted;
+
+  /// No description provided for @onboardingTutorialExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial Example'**
+  String get onboardingTutorialExample;
+
+  /// No description provided for @onboardingTutorialSearchFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Feature'**
+  String get onboardingTutorialSearchFeature;
+
+  /// No description provided for @onboardingTutorialSearchFeatureDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the search bar to find courses, institutions, or content.'**
+  String get onboardingTutorialSearchFeatureDesc;
+
+  /// No description provided for @onboardingTutorialFilterOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Options'**
+  String get onboardingTutorialFilterOptions;
+
+  /// No description provided for @onboardingTutorialFilterOptionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters to narrow down your search results.'**
+  String get onboardingTutorialFilterOptionsDesc;
+
+  /// No description provided for @onboardingTutorialNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get onboardingTutorialNotifications;
+
+  /// No description provided for @onboardingTutorialNotificationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your notifications for important updates and messages.'**
+  String get onboardingTutorialNotificationsDesc;
+
+  /// No description provided for @onboardingTutorialYourProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Profile'**
+  String get onboardingTutorialYourProfile;
+
+  /// No description provided for @onboardingTutorialYourProfileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Access your profile, settings, and preferences here.'**
+  String get onboardingTutorialYourProfileDesc;
+
+  /// No description provided for @onboardingTutorialSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get onboardingTutorialSearchHint;
+
+  /// No description provided for @onboardingTutorialRestartTutorial.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Tutorial'**
+  String get onboardingTutorialRestartTutorial;
+
+  /// No description provided for @paymentsFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Failed'**
+  String get paymentsFailedTitle;
+
+  /// No description provided for @paymentsFailedHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Failed'**
+  String get paymentsFailedHeading;
+
+  /// No description provided for @paymentsFailedDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not process your payment. Please try again.'**
+  String get paymentsFailedDefaultMessage;
+
+  /// No description provided for @paymentsTransactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get paymentsTransactionDetails;
+
+  /// No description provided for @paymentsTransactionId.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get paymentsTransactionId;
+
+  /// No description provided for @paymentsReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get paymentsReference;
+
+  /// No description provided for @paymentsPaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentsPaymentMethod;
+
+  /// No description provided for @paymentsAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get paymentsAmount;
+
+  /// No description provided for @paymentsFailureReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Failure Reason'**
+  String get paymentsFailureReason;
+
+  /// No description provided for @paymentsCommonIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Common Issues'**
+  String get paymentsCommonIssues;
+
+  /// No description provided for @paymentsInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient Funds'**
+  String get paymentsInsufficientFunds;
+
+  /// No description provided for @paymentsInsufficientFundsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure you have sufficient balance in your account'**
+  String get paymentsInsufficientFundsDesc;
+
+  /// No description provided for @paymentsCardDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Declined'**
+  String get paymentsCardDeclined;
+
+  /// No description provided for @paymentsCardDeclinedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Check with your bank or try a different card'**
+  String get paymentsCardDeclinedDesc;
+
+  /// No description provided for @paymentsNetworkIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Network Issues'**
+  String get paymentsNetworkIssues;
+
+  /// No description provided for @paymentsNetworkIssuesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure you have a stable internet connection'**
+  String get paymentsNetworkIssuesDesc;
+
+  /// No description provided for @paymentsIncorrectDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect Details'**
+  String get paymentsIncorrectDetails;
+
+  /// No description provided for @paymentsIncorrectDetailsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your payment information is correct'**
+  String get paymentsIncorrectDetailsDesc;
+
+  /// No description provided for @paymentsHelpNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'If the problem persists, please contact support'**
+  String get paymentsHelpNotice;
+
+  /// No description provided for @paymentsTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get paymentsTryAgain;
+
+  /// No description provided for @paymentsContactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get paymentsContactSupport;
+
+  /// No description provided for @paymentsBackToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get paymentsBackToHome;
+
+  /// No description provided for @paymentsHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment History'**
+  String get paymentsHistoryTitle;
+
+  /// No description provided for @paymentsHistoryRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get paymentsHistoryRetry;
+
+  /// No description provided for @paymentsNoPaymentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Payments'**
+  String get paymentsNoPaymentsTitle;
+
+  /// No description provided for @paymentsDownloadReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Receipt'**
+  String get paymentsDownloadReceipt;
+
+  /// No description provided for @paymentsRetryPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Payment'**
+  String get paymentsRetryPayment;
+
+  /// No description provided for @paymentsDownloadAsPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download as PDF'**
+  String get paymentsDownloadAsPdf;
+
+  /// No description provided for @paymentsSaveReceiptToDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Save receipt to device'**
+  String get paymentsSaveReceiptToDevice;
+
+  /// No description provided for @paymentsDownloadingReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading receipt...'**
+  String get paymentsDownloadingReceipt;
+
+  /// No description provided for @paymentsEmailReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Receipt'**
+  String get paymentsEmailReceipt;
+
+  /// No description provided for @paymentsSendToEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to your email address'**
+  String get paymentsSendToEmail;
+
+  /// No description provided for @paymentsSendingReceiptViaEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending receipt via email...'**
+  String get paymentsSendingReceiptViaEmail;
+
+  /// No description provided for @paymentsShareReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Receipt'**
+  String get paymentsShareReceipt;
+
+  /// No description provided for @paymentsShareViaOtherApps.
+  ///
+  /// In en, this message translates to:
+  /// **'Share via other apps'**
+  String get paymentsShareViaOtherApps;
+
+  /// No description provided for @paymentsOpeningShareOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening share options...'**
+  String get paymentsOpeningShareOptions;
+
+  /// No description provided for @paymentsSelectPaymentMethodTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Payment Method'**
+  String get paymentsSelectPaymentMethodTitle;
+
+  /// No description provided for @paymentsItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get paymentsItem;
+
+  /// No description provided for @paymentsType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get paymentsType;
+
+  /// No description provided for @paymentsTotalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get paymentsTotalAmount;
+
+  /// No description provided for @paymentsPayWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with {method}'**
+  String paymentsPayWith(String method);
+
+  /// No description provided for @paymentsMpesaPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'M-Pesa Phone Number'**
+  String get paymentsMpesaPhoneNumber;
+
+  /// No description provided for @paymentsMpesaPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'254712345678'**
+  String get paymentsMpesaPhoneHint;
+
+  /// No description provided for @paymentsCardholderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardholder Name'**
+  String get paymentsCardholderName;
+
+  /// No description provided for @paymentsCardholderNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'JOHN DOE'**
+  String get paymentsCardholderNameHint;
+
+  /// No description provided for @paymentsCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Number'**
+  String get paymentsCardNumber;
+
+  /// No description provided for @paymentsCardNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1234 5678 9012 3456'**
+  String get paymentsCardNumberHint;
+
+  /// No description provided for @paymentsExpiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Date'**
+  String get paymentsExpiryDate;
+
+  /// No description provided for @paymentsExpiryDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'MM/YY'**
+  String get paymentsExpiryDateHint;
+
+  /// No description provided for @paymentsCvv.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV'**
+  String get paymentsCvv;
+
+  /// No description provided for @paymentsCvvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'123'**
+  String get paymentsCvvHint;
+
+  /// No description provided for @paymentsPayNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get paymentsPayNow;
+
+  /// No description provided for @paymentsProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get paymentsProcessing;
+
+  /// No description provided for @paymentsProcessingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing your payment...'**
+  String get paymentsProcessingPayment;
+
+  /// No description provided for @paymentsReceiptOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt Options'**
+  String get paymentsReceiptOptions;
+
+  /// No description provided for @paymentsPurchaseDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase Details'**
+  String get paymentsPurchaseDetails;
+
+  /// No description provided for @paymentsSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Successful!'**
+  String get paymentsSuccessTitle;
+
+  /// No description provided for @paymentsSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment has been processed successfully'**
+  String get paymentsSuccessMessage;
+
+  /// No description provided for @paymentsPaymentDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Details'**
+  String get paymentsPaymentDetails;
+
+  /// No description provided for @paymentsDateAndTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & Time'**
+  String get paymentsDateAndTime;
+
+  /// No description provided for @paymentsAmountPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount Paid'**
+  String get paymentsAmountPaid;
+
+  /// No description provided for @paymentsReceiptSentToEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'A receipt has been sent to your email address'**
+  String get paymentsReceiptSentToEmail;
+
+  /// No description provided for @paymentsCompletedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed At'**
+  String get paymentsCompletedAt;
+
+  /// No description provided for @paymentsDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get paymentsDate;
+
+  /// No description provided for @profileChangePasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get profileChangePasswordTitle;
+
+  /// No description provided for @profileChangePasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get profileChangePasswordButton;
+
+  /// No description provided for @profilePasswordRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password must be at least 8 characters long and include letters and numbers'**
+  String get profilePasswordRequirements;
+
+  /// No description provided for @profileCurrentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get profileCurrentPassword;
+
+  /// No description provided for @profileNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get profileNewPassword;
+
+  /// No description provided for @profileConfirmNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get profileConfirmNewPassword;
+
+  /// No description provided for @profileEnterCurrentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your current password'**
+  String get profileEnterCurrentPassword;
+
+  /// No description provided for @profileEnterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a new password'**
+  String get profileEnterNewPassword;
+
+  /// No description provided for @profilePasswordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get profilePasswordMinLength;
+
+  /// No description provided for @profilePasswordMustContainLettersNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain letters and numbers'**
+  String get profilePasswordMustContainLettersNumbers;
+
+  /// No description provided for @profileNewPasswordMustDiffer.
+  ///
+  /// In en, this message translates to:
+  /// **'New password must be different from current'**
+  String get profileNewPasswordMustDiffer;
+
+  /// No description provided for @profileConfirmNewPasswordPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your new password'**
+  String get profileConfirmNewPasswordPrompt;
+
+  /// No description provided for @profilePasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get profilePasswordsDoNotMatch;
+
+  /// No description provided for @profilePasswordStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Strength'**
+  String get profilePasswordStrength;
+
+  /// No description provided for @profilePasswordStrengthTooWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Too weak'**
+  String get profilePasswordStrengthTooWeak;
+
+  /// No description provided for @profilePasswordStrengthWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get profilePasswordStrengthWeak;
+
+  /// No description provided for @profilePasswordStrengthFair.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair'**
+  String get profilePasswordStrengthFair;
+
+  /// No description provided for @profilePasswordStrengthGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get profilePasswordStrengthGood;
+
+  /// No description provided for @profilePasswordStrengthStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get profilePasswordStrengthStrong;
+
+  /// No description provided for @profileForgotCurrentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your current password?'**
+  String get profileForgotCurrentPassword;
+
+  /// No description provided for @profilePasswordChangedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully!'**
+  String get profilePasswordChangedSuccess;
+
+  /// No description provided for @profileResetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get profileResetPasswordTitle;
+
+  /// No description provided for @profileResetPasswordMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send you a password reset link to your registered email address.'**
+  String get profileResetPasswordMessage;
+
+  /// No description provided for @profilePasswordResetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent'**
+  String get profilePasswordResetEmailSent;
+
+  /// No description provided for @profileSendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get profileSendResetLink;
+
+  /// No description provided for @profileBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get profileBack;
+
+  /// No description provided for @profileNoUserFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No user found'**
+  String get profileNoUserFound;
+
+  /// No description provided for @profilePhotoSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo selected! Save your changes to upload.'**
+  String get profilePhotoSelected;
+
+  /// No description provided for @profileErrorSelectingPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Error selecting photo: {error}'**
+  String profileErrorSelectingPhoto(String error);
+
+  /// No description provided for @profileDocumentUploadComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Document upload coming soon'**
+  String get profileDocumentUploadComingSoon;
+
+  /// No description provided for @profileUploadCredentialDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Credential Documents'**
+  String get profileUploadCredentialDocuments;
+
+  /// No description provided for @profileUnsavedChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsaved Changes'**
+  String get profileUnsavedChangesTitle;
+
+  /// No description provided for @profileUnsavedChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Do you want to discard them?'**
+  String get profileUnsavedChangesMessage;
+
+  /// No description provided for @profileDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get profileDiscard;
+
+  /// No description provided for @profileUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully!'**
+  String get profileUpdatedSuccess;
+
+  /// No description provided for @profileErrorSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving profile: {error}'**
+  String profileErrorSaving(String error);
 }
 
 class _AppLocalizationsDelegate
