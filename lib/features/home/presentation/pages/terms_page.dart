@@ -13,60 +13,8 @@ class TermsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'terms',
-      fallbackTitle: context.l10n.termsPageTitle,
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final sections = content.getSections();
-    final lastUpdated = content.getString('last_updated');
-
-    return FooterPageScaffold(
-      title: content.title,
-      subtitle: content.subtitle,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (lastUpdated.isNotEmpty) ...[
-            Text(
-              context.l10n.privacyPageLastUpdatedLabel(lastUpdated),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 24),
-          ],
-          ContentSectionsWidget(sections: sections),
-          const SizedBox(height: 32),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              children: [
-                Icon(Icons.gavel, color: AppColors.primary, size: 32),
-                const SizedBox(height: 12),
-                Text(
-                  context.l10n.termsPageAgreement,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    // Always use translated static content for proper l10n support
+    return _buildStaticPage(context);
   }
 
   Widget _buildStaticPage(BuildContext context) {
