@@ -13,12 +13,7 @@ class PartnersPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'partners',
-      fallbackTitle: 'Partners',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
+    return _buildStaticPage(context);
   }
 
   Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
@@ -149,14 +144,14 @@ class PartnersPage extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(
-                        'Ready to Partner?',
+                        context.l10n.partnersPageReadyToPartner,
                         style: theme.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Let's discuss how we can work together",
+                        context.l10n.partnersPageLetsDiscuss,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -165,7 +160,7 @@ class PartnersPage extends ConsumerWidget {
                       FilledButton.icon(
                         onPressed: () => context.go('/contact'),
                         icon: const Icon(Icons.mail),
-                        label: const Text('Contact Partnership Team'),
+                        label: Text(context.l10n.partnersPageContactTeam),
                       ),
                     ],
                   ),
@@ -204,7 +199,7 @@ class PartnersPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Partners'),
+        title: Text(context.l10n.partnersPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -233,7 +228,7 @@ class PartnersPage extends ConsumerWidget {
                       const Icon(Icons.handshake, size: 64, color: Colors.white),
                       const SizedBox(height: 16),
                       Text(
-                        'Partner With Flow',
+                        context.l10n.partnersPageHeroTitle,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -241,7 +236,7 @@ class PartnersPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Join us in transforming education across Africa',
+                        context.l10n.partnersPageHeroSubtitle,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: Colors.white70,
                         ),
@@ -255,7 +250,7 @@ class PartnersPage extends ConsumerWidget {
 
                 // Partnership Types
                 Text(
-                  'Partnership Opportunities',
+                  context.l10n.partnersPageOpportunities,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -265,56 +260,52 @@ class PartnersPage extends ConsumerWidget {
                 _buildPartnershipCard(
                   theme,
                   icon: Icons.school,
-                  title: 'Universities & Institutions',
-                  description:
-                      'List your programs, connect with prospective students, and streamline your admissions process.',
+                  title: context.l10n.partnersPageUniversities,
+                  description: context.l10n.partnersPageUniversitiesDesc,
                   benefits: [
-                    'Direct access to qualified applicants',
-                    'Application management tools',
-                    'Analytics and insights',
-                    'Brand visibility',
+                    context.l10n.partnersPageBenefitDirectAccess,
+                    context.l10n.partnersPageBenefitAppManagement,
+                    context.l10n.partnersPageBenefitAnalytics,
+                    context.l10n.partnersPageBenefitBrandVisibility,
                   ],
                 ),
 
                 _buildPartnershipCard(
                   theme,
                   icon: Icons.support_agent,
-                  title: 'Education Counselors',
-                  description:
-                      'Join our network of counselors and help guide students to their perfect educational fit.',
+                  title: context.l10n.partnersPageCounselors,
+                  description: context.l10n.partnersPageCounselorsDesc,
                   benefits: [
-                    'Client management tools',
-                    'Student matching',
-                    'Scheduling system',
-                    'Revenue opportunities',
+                    context.l10n.partnersPageBenefitClientManagement,
+                    context.l10n.partnersPageBenefitStudentMatching,
+                    context.l10n.partnersPageBenefitScheduling,
+                    context.l10n.partnersPageBenefitRevenue,
                   ],
                 ),
 
                 _buildPartnershipCard(
                   theme,
                   icon: Icons.business,
-                  title: 'Corporate Partners',
-                  description:
-                      'Support education initiatives through scholarships, internships, and mentorship programs.',
+                  title: context.l10n.partnersPageCorporate,
+                  description: context.l10n.partnersPageCorporateDesc,
                   benefits: [
-                    'CSR visibility',
-                    'Talent pipeline',
-                    'Brand association',
-                    'Impact reporting',
+                    context.l10n.partnersPageBenefitCsrVisibility,
+                    context.l10n.partnersPageBenefitTalentPipeline,
+                    context.l10n.partnersPageBenefitBrandAssociation,
+                    context.l10n.partnersPageBenefitImpactReporting,
                   ],
                 ),
 
                 _buildPartnershipCard(
                   theme,
                   icon: Icons.public,
-                  title: 'NGOs & Government',
-                  description:
-                      'Collaborate on initiatives to improve education access and outcomes across regions.',
+                  title: context.l10n.partnersPageNgo,
+                  description: context.l10n.partnersPageNgoDesc,
                   benefits: [
-                    'Data and insights',
-                    'Platform integration',
-                    'Reach and scale',
-                    'Impact measurement',
+                    context.l10n.partnersPageBenefitDataInsights,
+                    context.l10n.partnersPageBenefitPlatformIntegration,
+                    context.l10n.partnersPageBenefitReachScale,
+                    context.l10n.partnersPageBenefitImpactMeasurement,
                   ],
                 ),
 
@@ -322,7 +313,7 @@ class PartnersPage extends ConsumerWidget {
 
                 // Current Partners
                 Text(
-                  'Our Partners',
+                  context.l10n.partnersPageOurPartners,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -333,12 +324,12 @@ class PartnersPage extends ConsumerWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildPartnerLogo(theme, 'University of Ghana'),
-                    _buildPartnerLogo(theme, 'Ashesi University'),
-                    _buildPartnerLogo(theme, 'Kenyatta University'),
-                    _buildPartnerLogo(theme, 'University of Lagos'),
-                    _buildPartnerLogo(theme, 'KNUST'),
-                    _buildPartnerLogo(theme, 'Makerere University'),
+                    _buildPartnerLogo(theme, context.l10n.partnersPagePartnerUnivGhana),
+                    _buildPartnerLogo(theme, context.l10n.partnersPagePartnerAshesi),
+                    _buildPartnerLogo(theme, context.l10n.partnersPagePartnerKenyatta),
+                    _buildPartnerLogo(theme, context.l10n.partnersPagePartnerUnilag),
+                    _buildPartnerLogo(theme, context.l10n.partnersPagePartnerKnust),
+                    _buildPartnerLogo(theme, context.l10n.partnersPagePartnerMakerere),
                   ],
                 ),
 
@@ -356,14 +347,14 @@ class PartnersPage extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(
-                        'Ready to Partner?',
+                        context.l10n.partnersPageReadyToPartner,
                         style: theme.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Let's discuss how we can work together",
+                        context.l10n.partnersPageLetsDiscuss,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -372,7 +363,7 @@ class PartnersPage extends ConsumerWidget {
                       FilledButton.icon(
                         onPressed: () => context.go('/contact'),
                         icon: const Icon(Icons.mail),
-                        label: const Text('Contact Partnership Team'),
+                        label: Text(context.l10n.partnersPageContactTeam),
                       ),
                     ],
                   ),

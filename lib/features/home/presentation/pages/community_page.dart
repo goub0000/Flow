@@ -13,12 +13,7 @@ class CommunityPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'community',
-      fallbackTitle: 'Community',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
+    return _buildStaticPage(context);
   }
 
   Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
@@ -106,6 +101,7 @@ class CommunityPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 ...featuredGroups.map((group) => _buildGroupCard(
+                  context,
                   theme,
                   icon: _getIconForGroup(group['icon'] ?? 'school'),
                   title: group['title'] ?? '',
@@ -146,6 +142,7 @@ class CommunityPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 ...events.map((event) => _buildEventCard(
+                  context,
                   theme,
                   title: event['title'] ?? '',
                   date: event['date'] ?? '',
@@ -215,6 +212,7 @@ class CommunityPage extends ConsumerWidget {
 
   Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -241,7 +239,7 @@ class CommunityPage extends ConsumerWidget {
                     const Icon(Icons.groups, size: 64, color: Colors.white),
                     const SizedBox(height: 16),
                     Text(
-                      'Join Our Community',
+                      l10n.communityPageTitle,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -249,7 +247,7 @@ class CommunityPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Connect with students, counselors, and educators',
+                      l10n.communityPageSubtitle,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: Colors.white70,
                       ),
@@ -264,11 +262,11 @@ class CommunityPage extends ConsumerWidget {
               // Community Stats
               Row(
                 children: [
-                  Expanded(child: _buildStatCard(theme, '50K+', 'Members')),
+                  Expanded(child: _buildStatCard(theme, '50K+', l10n.communityPageMembers)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildStatCard(theme, '200+', 'Groups')),
+                  Expanded(child: _buildStatCard(theme, '200+', l10n.communityPageGroups)),
                   const SizedBox(width: 16),
-                  Expanded(child: _buildStatCard(theme, '5K+', 'Discussions')),
+                  Expanded(child: _buildStatCard(theme, '5K+', l10n.communityPageDiscussions)),
                 ],
               ),
 
@@ -276,7 +274,7 @@ class CommunityPage extends ConsumerWidget {
 
               // Featured Groups
               Text(
-                'Featured Groups',
+                l10n.communityPageFeaturedGroups,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -284,6 +282,7 @@ class CommunityPage extends ConsumerWidget {
               const SizedBox(height: 16),
 
               _buildGroupCard(
+                context,
                 theme,
                 icon: Icons.school,
                 title: 'University Applicants 2026',
@@ -291,6 +290,7 @@ class CommunityPage extends ConsumerWidget {
                 description: 'Connect with fellow students applying to universities this year.',
               ),
               _buildGroupCard(
+                context,
                 theme,
                 icon: Icons.engineering,
                 title: 'STEM Students Africa',
@@ -298,6 +298,7 @@ class CommunityPage extends ConsumerWidget {
                 description: 'A community for students pursuing science, technology, engineering, and math.',
               ),
               _buildGroupCard(
+                context,
                 theme,
                 icon: Icons.medical_services,
                 title: 'Medical School Aspirants',
@@ -305,6 +306,7 @@ class CommunityPage extends ConsumerWidget {
                 description: 'Resources and support for future medical professionals.',
               ),
               _buildGroupCard(
+                context,
                 theme,
                 icon: Icons.business,
                 title: 'Business & Economics',
@@ -316,7 +318,7 @@ class CommunityPage extends ConsumerWidget {
 
               // Discussion Topics
               Text(
-                'Popular Discussions',
+                l10n.communityPagePopularDiscussions,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -356,7 +358,7 @@ class CommunityPage extends ConsumerWidget {
 
               // Events
               Text(
-                'Upcoming Events',
+                l10n.communityPageUpcomingEvents,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -364,6 +366,7 @@ class CommunityPage extends ConsumerWidget {
               const SizedBox(height: 16),
 
               _buildEventCard(
+                context,
                 theme,
                 title: 'Virtual University Fair 2026',
                 date: 'Feb 15, 2026',
@@ -371,6 +374,7 @@ class CommunityPage extends ConsumerWidget {
                 attendees: 2500,
               ),
               _buildEventCard(
+                context,
                 theme,
                 title: 'Scholarship Application Workshop',
                 date: 'Feb 20, 2026',
@@ -378,6 +382,7 @@ class CommunityPage extends ConsumerWidget {
                 attendees: 850,
               ),
               _buildEventCard(
+                context,
                 theme,
                 title: 'Career Guidance Webinar',
                 date: 'Feb 25, 2026',
@@ -399,14 +404,14 @@ class CommunityPage extends ConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Ready to Join?',
+                      l10n.communityPageReadyToJoin,
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Create an account to join the community',
+                      l10n.communityPageCreateAccount,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -415,7 +420,7 @@ class CommunityPage extends ConsumerWidget {
                     FilledButton.icon(
                       onPressed: () => context.go('/register'),
                       icon: const Icon(Icons.person_add),
-                      label: const Text('Sign Up Free'),
+                      label: Text(l10n.communityPageSignUpFree),
                     ),
                   ],
                 ),
@@ -458,6 +463,7 @@ class CommunityPage extends ConsumerWidget {
   }
 
   Widget _buildGroupCard(
+    BuildContext context,
     ThemeData theme, {
     required IconData icon,
     required String title,
@@ -512,7 +518,7 @@ class CommunityPage extends ConsumerWidget {
           ),
           OutlinedButton(
             onPressed: () {},
-            child: const Text('Join'),
+            child: Text(context.l10n.communityPageJoin),
           ),
         ],
       ),
@@ -578,6 +584,7 @@ class CommunityPage extends ConsumerWidget {
   }
 
   Widget _buildEventCard(
+    BuildContext context,
     ThemeData theme, {
     required String title,
     required String date,
@@ -634,7 +641,7 @@ class CommunityPage extends ConsumerWidget {
                 ),
               ),
               Text(
-                'attending',
+                context.l10n.communityPageAttending,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                 ),

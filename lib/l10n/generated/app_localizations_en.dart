@@ -8370,6 +8370,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get careersPageContactUs => 'Contact Us';
 
   @override
+  String get careersPageJobSeniorFlutter => 'Senior Flutter Developer';
+
+  @override
+  String get careersPageJobBackendEngineer =>
+      'Backend Engineer (Python/FastAPI)';
+
+  @override
+  String get careersPageJobProductDesigner => 'Product Designer';
+
+  @override
+  String get careersPageJobContentSpecialist => 'Education Content Specialist';
+
+  @override
+  String get careersPageJobCustomerSuccess => 'Customer Success Manager';
+
+  @override
+  String get careersPageDepartmentEngineering => 'Engineering';
+
+  @override
+  String get careersPageDepartmentDesign => 'Design';
+
+  @override
+  String get careersPageDepartmentContent => 'Content';
+
+  @override
+  String get careersPageDepartmentOperations => 'Operations';
+
+  @override
+  String get careersPageLocationRemoteAfrica => 'Remote (Africa)';
+
+  @override
+  String get careersPageLocationAccra => 'Accra, Ghana';
+
+  @override
+  String get careersPageLocationLagos => 'Lagos, Nigeria';
+
+  @override
+  String get careersPageLocationNairobi => 'Nairobi, Kenya';
+
+  @override
+  String get careersPageTypeFullTime => 'Full-time';
+
+  @override
   String get communityPageTitle => 'Join Our Community';
 
   @override
@@ -8416,7 +8459,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get compliancePageTitle => 'Compliance';
+  String get compliancePageTitle => 'Compliance & Certifications';
 
   @override
   String get compliancePageHeadline => 'Compliance & Certifications';
@@ -8924,6 +8967,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get partnersPageContactTeam => 'Contact Partnership Team';
+
+  @override
+  String get partnersPageBenefitDirectAccess =>
+      'Direct access to qualified applicants';
+
+  @override
+  String get partnersPageBenefitAppManagement => 'Application management tools';
+
+  @override
+  String get partnersPageBenefitAnalytics => 'Analytics and insights';
+
+  @override
+  String get partnersPageBenefitBrandVisibility => 'Brand visibility';
+
+  @override
+  String get partnersPageBenefitClientManagement => 'Client management tools';
+
+  @override
+  String get partnersPageBenefitStudentMatching => 'Student matching';
+
+  @override
+  String get partnersPageBenefitScheduling => 'Scheduling system';
+
+  @override
+  String get partnersPageBenefitRevenue => 'Revenue opportunities';
+
+  @override
+  String get partnersPageBenefitCsrVisibility => 'CSR visibility';
+
+  @override
+  String get partnersPageBenefitTalentPipeline => 'Talent pipeline';
+
+  @override
+  String get partnersPageBenefitBrandAssociation => 'Brand association';
+
+  @override
+  String get partnersPageBenefitImpactReporting => 'Impact reporting';
+
+  @override
+  String get partnersPageBenefitDataInsights => 'Data and insights';
+
+  @override
+  String get partnersPageBenefitPlatformIntegration => 'Platform integration';
+
+  @override
+  String get partnersPageBenefitReachScale => 'Reach and scale';
+
+  @override
+  String get partnersPageBenefitImpactMeasurement => 'Impact measurement';
+
+  @override
+  String get partnersPagePartnerUnivGhana => 'University of Ghana';
+
+  @override
+  String get partnersPagePartnerAshesi => 'Ashesi University';
+
+  @override
+  String get partnersPagePartnerKenyatta => 'Kenyatta University';
+
+  @override
+  String get partnersPagePartnerUnilag => 'University of Lagos';
+
+  @override
+  String get partnersPagePartnerKnust => 'KNUST';
+
+  @override
+  String get partnersPagePartnerMakerere => 'Makerere University';
 
   @override
   String get pressPageTitle => 'Press Kit';
@@ -22055,4 +22165,301 @@ class AppLocalizationsEn extends AppLocalizations {
   String profileErrorSaving(String error) {
     return 'Error saving profile: $error';
   }
+
+  @override
+  String get apiDocsPageQuickStartCode =>
+      'curl -X GET \"https://api.flowedtech.com/v1/universities\" \\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\n  -H \"Content-Type: application/json\"';
+
+  @override
+  String get apiDocsPageEndpointsTitle => 'API Endpoints';
+
+  @override
+  String get apiDocsPageUniversitiesSection => 'Universities';
+
+  @override
+  String get apiDocsPageUniversitiesList => 'List all universities';
+
+  @override
+  String get apiDocsPageUniversitiesDetails => 'Get university details';
+
+  @override
+  String get apiDocsPageUniversitiesSearch => 'Search universities';
+
+  @override
+  String get apiDocsPageUniversitiesPrograms => 'List programs';
+
+  @override
+  String get apiDocsPageProgramsSection => 'Programs';
+
+  @override
+  String get apiDocsPageProgramsList => 'List all programs';
+
+  @override
+  String get apiDocsPageProgramsDetails => 'Get program details';
+
+  @override
+  String get apiDocsPageProgramsSearch => 'Search programs';
+
+  @override
+  String get apiDocsPageRecommendationsSection => 'Recommendations';
+
+  @override
+  String get apiDocsPageRecommendationsGenerate => 'Generate recommendations';
+
+  @override
+  String get apiDocsPageRecommendationsDetails => 'Get recommendation details';
+
+  @override
+  String get apiDocsPageStudentsSection => 'Students';
+
+  @override
+  String get apiDocsPageStudentsProfile => 'Get student profile';
+
+  @override
+  String get apiDocsPageStudentsUpdate => 'Update student profile';
+
+  @override
+  String get apiDocsPageStudentsApplications => 'List applications';
+
+  @override
+  String get apiDocsPageAuthTitle => 'Authentication';
+
+  @override
+  String get apiDocsPageAuthDescription =>
+      'All API requests require authentication using an API key.';
+
+  @override
+  String get apiDocsPageAuthHeader => 'Authorization: Bearer YOUR_API_KEY';
+
+  @override
+  String get apiDocsPageRateLimitsTitle => 'Rate Limits';
+
+  @override
+  String get apiDocsPageRateLimitFree => 'Free Tier';
+
+  @override
+  String get apiDocsPageRateLimitFreeValue => '100 requests/hour';
+
+  @override
+  String get apiDocsPageRateLimitBasic => 'Basic';
+
+  @override
+  String get apiDocsPageRateLimitBasicValue => '1,000 requests/hour';
+
+  @override
+  String get apiDocsPageRateLimitPro => 'Pro';
+
+  @override
+  String get apiDocsPageRateLimitProValue => '10,000 requests/hour';
+
+  @override
+  String get apiDocsPageRateLimitEnterprise => 'Enterprise';
+
+  @override
+  String get apiDocsPageRateLimitEnterpriseValue => 'Unlimited';
+
+  @override
+  String get apiDocsPageContactTitle => 'Need API Access?';
+
+  @override
+  String get apiDocsPageContactDescription =>
+      'Contact us to get your API credentials';
+
+  @override
+  String get apiDocsPageContactButton => 'Contact Us';
+
+  @override
+  String get compliancePageCertificationsTitle => 'Certifications';
+
+  @override
+  String get compliancePageCertSoc2Title => 'SOC 2 Type II';
+
+  @override
+  String get compliancePageCertSoc2Description =>
+      'Certified for security, availability, and confidentiality';
+
+  @override
+  String get compliancePageCertIsoTitle => 'ISO 27001';
+
+  @override
+  String get compliancePageCertIsoDescription =>
+      'Information security management certification';
+
+  @override
+  String get compliancePageCertGdprTitle => 'GDPR Compliant';
+
+  @override
+  String get compliancePageCertGdprDescription =>
+      'EU General Data Protection Regulation';
+
+  @override
+  String get compliancePageDataProtectionTitle => 'Data Protection';
+
+  @override
+  String get compliancePagePrivacyTitle => 'Privacy Practices';
+
+  @override
+  String get compliancePageRegulatoryTitle => 'Regulatory Compliance';
+
+  @override
+  String get compliancePageThirdPartyTitle => 'Third-Party Security';
+
+  @override
+  String get compliancePageSecurityTitle => 'Security Practices';
+
+  @override
+  String get compliancePageSecurityUpdatesTitle => 'Regular Updates';
+
+  @override
+  String get compliancePageSecurityUpdatesDescription =>
+      'Security patches and updates deployed continuously';
+
+  @override
+  String get compliancePageSecurityBugBountyTitle => 'Bug Bounty Program';
+
+  @override
+  String get compliancePageSecurityBugBountyDescription =>
+      'Responsible disclosure program for security researchers';
+
+  @override
+  String get compliancePageSecurityMonitoringTitle => 'Monitoring';
+
+  @override
+  String get compliancePageSecurityMonitoringDescription =>
+      '24/7 security monitoring and threat detection';
+
+  @override
+  String get compliancePageSecurityAuditTitle => 'Audit Logs';
+
+  @override
+  String get compliancePageSecurityAuditDescription =>
+      'Comprehensive logging of all security events';
+
+  @override
+  String get compliancePageContactTitle => 'Compliance Questions?';
+
+  @override
+  String get compliancePageContactDescription =>
+      'Contact our compliance team for inquiries';
+
+  @override
+  String get compliancePageContactEmail => 'compliance@flowedtech.com';
+
+  @override
+  String get dataProtectionPageTitle => 'Data Protection';
+
+  @override
+  String get dataProtectionPageSubtitle =>
+      'How we protect and manage your personal data';
+
+  @override
+  String get dataProtectionPageRightsTitle => 'Your Data Rights';
+
+  @override
+  String get dataProtectionPageRightsDescription =>
+      'Under data protection laws, you have the following rights:';
+
+  @override
+  String get dataProtectionPageRightAccessTitle => 'Right to Access';
+
+  @override
+  String get dataProtectionPageRightAccessDescription =>
+      'You can request a copy of all personal data we hold about you. We will provide this within 30 days.';
+
+  @override
+  String get dataProtectionPageRightRectificationTitle =>
+      'Right to Rectification';
+
+  @override
+  String get dataProtectionPageRightRectificationDescription =>
+      'You can request correction of inaccurate or incomplete personal data.';
+
+  @override
+  String get dataProtectionPageRightErasureTitle => 'Right to Erasure';
+
+  @override
+  String get dataProtectionPageRightErasureDescription =>
+      'You can request deletion of your personal data in certain circumstances.';
+
+  @override
+  String get dataProtectionPageRightPortabilityTitle =>
+      'Right to Data Portability';
+
+  @override
+  String get dataProtectionPageRightPortabilityDescription =>
+      'You can request your data in a structured, machine-readable format.';
+
+  @override
+  String get dataProtectionPageRightObjectTitle => 'Right to Object';
+
+  @override
+  String get dataProtectionPageRightObjectDescription =>
+      'You can object to processing of your personal data for certain purposes.';
+
+  @override
+  String get dataProtectionPageRightRestrictTitle =>
+      'Right to Restrict Processing';
+
+  @override
+  String get dataProtectionPageRightRestrictDescription =>
+      'You can request that we limit how we use your data.';
+
+  @override
+  String get dataProtectionPageProtectionTitle => 'How We Protect Your Data';
+
+  @override
+  String get dataProtectionPageProtectionContent =>
+      'We implement robust security measures to protect your personal data:\n\n**Technical Measures**\n• End-to-end encryption for data transmission\n• AES-256 encryption for stored data\n• Regular security audits and penetration testing\n• Intrusion detection systems\n• Secure data centers with physical security\n\n**Organizational Measures**\n• Staff training on data protection\n• Access controls and authentication\n• Data protection impact assessments\n• Incident response procedures\n• Regular compliance reviews';
+
+  @override
+  String get dataProtectionPageStorageTitle => 'Data Storage & Retention';
+
+  @override
+  String get dataProtectionPageStorageContent =>
+      '**Where We Store Your Data**\nYour data is stored on secure servers located in regions with strong data protection laws. We use industry-leading cloud providers with SOC 2 and ISO 27001 certifications.\n\n**How Long We Keep Your Data**\n• Account data: Until you delete your account\n• Application data: 7 years for compliance\n• Analytics data: 2 years\n• Communication logs: 3 years\n\nAfter these periods, data is securely deleted or anonymized.';
+
+  @override
+  String get dataProtectionPageSharingTitle => 'Data Sharing';
+
+  @override
+  String get dataProtectionPageSharingContent =>
+      'We only share your data when necessary:\n\n• **With your consent**: When you explicitly agree\n• **Service providers**: Partners who help us deliver services\n• **Legal requirements**: When required by law\n• **Business transfers**: In case of merger or acquisition\n\nWe never sell your personal data to third parties.';
+
+  @override
+  String get dataProtectionPageExerciseTitle => 'Exercise Your Rights';
+
+  @override
+  String get dataProtectionPageExerciseDescription =>
+      'To make a data request or exercise any of your rights, contact our Data Protection Officer:';
+
+  @override
+  String get dataProtectionPageExerciseEmail => 'dpo@flowedtech.com';
+
+  @override
+  String get dataProtectionPageExerciseContactButton => 'Contact Us';
+
+  @override
+  String get dataProtectionPageExerciseManageButton => 'Manage Data';
+
+  @override
+  String get dataProtectionPageRelatedTitle => 'Related Information';
+
+  @override
+  String get dataProtectionPageRelatedPrivacy => 'Privacy Policy';
+
+  @override
+  String get dataProtectionPageRelatedCookies => 'Cookie Policy';
+
+  @override
+  String get dataProtectionPageRelatedTerms => 'Terms of Service';
+
+  @override
+  String get dataProtectionPageRelatedCompliance => 'Compliance';
+
+  @override
+  String get mobileAppsPageHeroTitle => 'Flow on Mobile';
+
+  @override
+  String get mobileAppsPageHeroSubtitle =>
+      'Take your education journey with you.\nDownload the Flow app on your favorite platform.';
 }

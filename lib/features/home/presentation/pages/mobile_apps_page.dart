@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/providers/page_content_provider.dart';
-import '../../../../core/models/page_content_model.dart';
-import '../widgets/dynamic_page_wrapper.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Mobile Apps download page
 class MobileAppsPage extends ConsumerWidget {
@@ -12,260 +10,12 @@ class MobileAppsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'mobile-apps',
-      fallbackTitle: 'Mobile Apps',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final heroTitle = content.getString('hero_title') ?? 'Flow on Mobile';
-    final heroSubtitle = content.getString('hero_subtitle') ?? 'Take your education journey with you.\nDownload the Flow app on your favorite platform.';
-    final features = content.getList('features');
-    final requirements = content.getMap('requirements');
-    final downloadLinks = content.getMap('download_links');
-    final qrTitle = content.getString('qr_title') ?? 'Scan to Download';
-    final qrSubtitle = content.getString('qr_subtitle') ?? 'Scan this QR code with your phone camera to download the app';
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
-          child: Column(
-            children: [
-              // Hero
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(48),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.accent],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Column(
-                  children: [
-                    const Icon(
-                      Icons.phone_iphone,
-                      size: 80,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      heroTitle,
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      heroSubtitle,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white70,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 48),
-
-              // Download Buttons
-              Text(
-                'Download Now',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                alignment: WrapAlignment.center,
-                children: [
-                  _buildDownloadButton(
-                    theme,
-                    icon: Icons.apple,
-                    store: 'App Store',
-                    platform: 'iOS',
-                    url: downloadLinks['ios'] ?? '',
-                    onTap: () {},
-                  ),
-                  _buildDownloadButton(
-                    theme,
-                    icon: Icons.android,
-                    store: 'Google Play',
-                    platform: 'Android',
-                    url: downloadLinks['android'] ?? '',
-                    onTap: () {},
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 48),
-
-              // Features
-              Text(
-                'Mobile App Features',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              if (features.isNotEmpty)
-                GridView.count(
-                  crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1.1,
-                  children: features.map((feature) => _buildFeatureCard(
-                    theme,
-                    _getIconForFeature(feature['icon'] ?? ''),
-                    feature['title'] ?? '',
-                    feature['description'] ?? '',
-                  )).toList(),
-                ),
-
-              const SizedBox(height: 48),
-
-              // Screenshots
-              Text(
-                'App Preview',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              SizedBox(
-                height: 400,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildScreenshot(theme, 'Home Screen', Icons.home),
-                    const SizedBox(width: 16),
-                    _buildScreenshot(theme, 'University Search', Icons.search),
-                    const SizedBox(width: 16),
-                    _buildScreenshot(theme, 'Applications', Icons.description),
-                    const SizedBox(width: 16),
-                    _buildScreenshot(theme, 'Profile', Icons.person),
-                    const SizedBox(width: 16),
-                    _buildScreenshot(theme, 'Messages', Icons.message),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 48),
-
-              // Requirements
-              Text(
-                'System Requirements',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildRequirementCard(
-                      theme,
-                      icon: Icons.apple,
-                      platform: 'iOS',
-                      requirements: requirements['ios'] is List
-                          ? (requirements['ios'] as List).map((e) => e.toString()).toList()
-                          : ['iOS 14.0 or later', 'iPhone, iPad, iPod touch', '50 MB storage'],
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildRequirementCard(
-                      theme,
-                      icon: Icons.android,
-                      platform: 'Android',
-                      requirements: requirements['android'] is List
-                          ? (requirements['android'] as List).map((e) => e.toString()).toList()
-                          : ['Android 8.0 or later', 'Any Android device', '40 MB storage'],
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 48),
-
-              // QR Code section
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.qr_code, size: 120, color: AppColors.primary),
-                    const SizedBox(height: 16),
-                    Text(
-                      qrTitle,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      qrSubtitle,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 48),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  IconData _getIconForFeature(String iconName) {
-    switch (iconName) {
-      case 'offline_bolt':
-        return Icons.offline_bolt;
-      case 'notifications_active':
-        return Icons.notifications_active;
-      case 'fingerprint':
-        return Icons.fingerprint;
-      case 'sync':
-        return Icons.sync;
-      case 'dark_mode':
-        return Icons.dark_mode;
-      case 'speed':
-        return Icons.speed;
-      default:
-        return Icons.star;
-    }
+    return _buildStaticPage(context);
   }
 
   Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -295,7 +45,7 @@ class MobileAppsPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Flow on Mobile',
+                      l10n.mobileAppsPageHeroTitle,
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -303,7 +53,7 @@ class MobileAppsPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Take your education journey with you.\nDownload the Flow app on your favorite platform.',
+                      l10n.mobileAppsPageHeroSubtitle,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: Colors.white70,
                       ),

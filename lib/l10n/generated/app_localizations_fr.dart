@@ -8513,6 +8513,51 @@ class AppLocalizationsFr extends AppLocalizations {
   String get careersPageContactUs => 'Nous contacter';
 
   @override
+  String get careersPageJobSeniorFlutter => 'Développeur Flutter Senior';
+
+  @override
+  String get careersPageJobBackendEngineer =>
+      'Ingénieur Backend (Python/FastAPI)';
+
+  @override
+  String get careersPageJobProductDesigner => 'Designer de produits';
+
+  @override
+  String get careersPageJobContentSpecialist =>
+      'Spécialiste du contenu éducatif';
+
+  @override
+  String get careersPageJobCustomerSuccess =>
+      'Responsable de la réussite client';
+
+  @override
+  String get careersPageDepartmentEngineering => 'Ingénierie';
+
+  @override
+  String get careersPageDepartmentDesign => 'Design';
+
+  @override
+  String get careersPageDepartmentContent => 'Contenu';
+
+  @override
+  String get careersPageDepartmentOperations => 'Opérations';
+
+  @override
+  String get careersPageLocationRemoteAfrica => 'À distance (Afrique)';
+
+  @override
+  String get careersPageLocationAccra => 'Accra, Ghana';
+
+  @override
+  String get careersPageLocationLagos => 'Lagos, Nigeria';
+
+  @override
+  String get careersPageLocationNairobi => 'Nairobi, Kenya';
+
+  @override
+  String get careersPageTypeFullTime => 'Temps plein';
+
+  @override
   String get communityPageTitle => 'Rejoignez notre communauté';
 
   @override
@@ -8559,7 +8604,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get compliancePageTitle => 'Conformité';
+  String get compliancePageTitle => 'Conformité et Certifications';
 
   @override
   String get compliancePageHeadline => 'Conformité et certifications';
@@ -8597,28 +8642,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get compliancePageDataProtectionContent =>
-      'Nous mettons en œuvre des mesures complètes de protection des données pour protéger vos informations :\n\n• Chiffrement de bout en bout pour les données en transit\n• Chiffrement AES-256 pour les données au repos\n• Audits de sécurité réguliers et tests de pénétration\n• Support d\'authentification multi-facteurs\n• Contrôle d\'accès basé sur les rôles\n• Sauvegarde automatisée et récupération après sinistre';
+      'Nous mettons en œuvre des mesures complètes de protection des données pour sauvegarder vos informations:\n\n• Chiffrement de bout en bout pour les données en transit\n• Chiffrement AES-256 pour les données au repos\n• Audits de sécurité et tests de pénétration réguliers\n• Support de l\'authentification multifacteur\n• Contrôle d\'accès basé sur les rôles\n• Sauvegarde automatisée et reprise après sinistre';
 
   @override
   String get compliancePagePrivacyPractices => 'Pratiques de confidentialité';
 
   @override
   String get compliancePagePrivacyContent =>
-      'Nos pratiques de confidentialité sont conçues pour protéger vos droits :\n\n• Politiques transparentes de collecte et d\'utilisation des données\n• Gestion du consentement pour le traitement des données\n• Principes de minimisation des données\n• Droit d\'accès, de rectification et de suppression des données\n• Support de portabilité des données\n• Évaluations régulières d\'impact sur la vie privée';
+      'Nos pratiques de confidentialité sont conçues pour protéger vos droits:\n\n• Politiques transparentes de collecte et d\'utilisation des données\n• Gestion du consentement de l\'utilisateur pour le traitement des données\n• Principes de minimisation des données\n• Droit d\'accès, de rectification et de suppression des données personnelles\n• Support de la portabilité des données\n• Évaluations régulières de l\'impact sur la vie privée';
 
   @override
   String get compliancePageRegulatory => 'Conformité réglementaire';
 
   @override
   String get compliancePageRegulatoryContent =>
-      'Flow respecte les réglementations internationales et régionales :\n\n• Règlement général sur la protection des données (RGPD) - UE\n• Loi sur la protection des informations personnelles (POPIA) - Afrique du Sud\n• Loi sur la protection des données - Ghana, Kenya, Nigeria\n• Loi sur la protection de la vie privée des enfants en ligne (COPPA)\n• Loi californienne sur la protection des consommateurs (CCPA)';
+      'Flow adhère aux réglementations internationales et régionales:\n\n• Règlement Général sur la Protection des Données (RGPD) - UE\n• Loi sur la Protection des Informations Personnelles (POPIA) - Afrique du Sud\n• Loi sur la Protection des Données - Ghana, Kenya, Nigéria\n• Loi sur la Protection de la Vie Privée des Enfants en Ligne (COPPA)\n• Loi sur la Protection de la Vie Privée des Consommateurs de Californie (CCPA)';
 
   @override
   String get compliancePageThirdParty => 'Sécurité des tiers';
 
   @override
   String get compliancePageThirdPartyContent =>
-      'Nous vérifions et surveillons attentivement nos prestataires de services tiers :\n\n• Évaluations de sécurité des fournisseurs\n• Accords de traitement des données\n• Transparence des sous-traitants\n• Revues de conformité régulières\n• Coordination de la réponse aux incidents';
+      'Nous évaluons et surveillons soigneusement nos fournisseurs de services tiers:\n\n• Évaluations de sécurité des fournisseurs\n• Accords de traitement des données\n• Transparence des sous-traitants\n• Examens de conformité réguliers\n• Coordination de la réponse aux incidents';
 
   @override
   String get compliancePageSecurityPractices => 'Pratiques de sécurité';
@@ -9075,6 +9120,76 @@ class AppLocalizationsFr extends AppLocalizations {
   String get partnersPageContactTeam => 'Contacter l\'équipe partenariats';
 
   @override
+  String get partnersPageBenefitDirectAccess =>
+      'Accès direct aux candidats qualifiés';
+
+  @override
+  String get partnersPageBenefitAppManagement =>
+      'Outils de gestion des candidatures';
+
+  @override
+  String get partnersPageBenefitAnalytics => 'Analyses et informations';
+
+  @override
+  String get partnersPageBenefitBrandVisibility => 'Visibilité de la marque';
+
+  @override
+  String get partnersPageBenefitClientManagement =>
+      'Outils de gestion des clients';
+
+  @override
+  String get partnersPageBenefitStudentMatching => 'Jumelage d\'étudiants';
+
+  @override
+  String get partnersPageBenefitScheduling => 'Système de planification';
+
+  @override
+  String get partnersPageBenefitRevenue => 'Opportunités de revenus';
+
+  @override
+  String get partnersPageBenefitCsrVisibility => 'Visibilité RSE';
+
+  @override
+  String get partnersPageBenefitTalentPipeline => 'Pipeline de talents';
+
+  @override
+  String get partnersPageBenefitBrandAssociation => 'Association de marque';
+
+  @override
+  String get partnersPageBenefitImpactReporting => 'Rapport d\'impact';
+
+  @override
+  String get partnersPageBenefitDataInsights => 'Données et informations';
+
+  @override
+  String get partnersPageBenefitPlatformIntegration =>
+      'Intégration de plateforme';
+
+  @override
+  String get partnersPageBenefitReachScale => 'Portée et échelle';
+
+  @override
+  String get partnersPageBenefitImpactMeasurement => 'Mesure de l\'impact';
+
+  @override
+  String get partnersPagePartnerUnivGhana => 'Université du Ghana';
+
+  @override
+  String get partnersPagePartnerAshesi => 'Université Ashesi';
+
+  @override
+  String get partnersPagePartnerKenyatta => 'Université Kenyatta';
+
+  @override
+  String get partnersPagePartnerUnilag => 'Université de Lagos';
+
+  @override
+  String get partnersPagePartnerKnust => 'KNUST';
+
+  @override
+  String get partnersPagePartnerMakerere => 'Université Makerere';
+
+  @override
   String get pressPageTitle => 'Dossier de presse';
 
   @override
@@ -9158,7 +9273,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get apiDocsPageSubtitle => 'Intégrez Flow dans vos applications';
 
   @override
-  String get apiDocsPageQuickStart => 'Démarrage rapide';
+  String get apiDocsPageQuickStart => 'Démarrage Rapide';
 
   @override
   String get apiDocsPageEndpoints => 'Points de terminaison API';
@@ -22432,4 +22547,308 @@ class AppLocalizationsFr extends AppLocalizations {
   String profileErrorSaving(String error) {
     return 'Erreur lors de l\'enregistrement du profil : $error';
   }
+
+  @override
+  String get apiDocsPageQuickStartCode =>
+      'curl -X GET \"https://api.flowedtech.com/v1/universities\" \\\n  -H \"Authorization: Bearer VOTRE_CLE_API\" \\\n  -H \"Content-Type: application/json\"';
+
+  @override
+  String get apiDocsPageEndpointsTitle => 'Points de Terminaison API';
+
+  @override
+  String get apiDocsPageUniversitiesSection => 'Universités';
+
+  @override
+  String get apiDocsPageUniversitiesList => 'Lister toutes les universités';
+
+  @override
+  String get apiDocsPageUniversitiesDetails =>
+      'Obtenir les détails d\'une université';
+
+  @override
+  String get apiDocsPageUniversitiesSearch => 'Rechercher des universités';
+
+  @override
+  String get apiDocsPageUniversitiesPrograms => 'Lister les programmes';
+
+  @override
+  String get apiDocsPageProgramsSection => 'Programmes';
+
+  @override
+  String get apiDocsPageProgramsList => 'Lister tous les programmes';
+
+  @override
+  String get apiDocsPageProgramsDetails =>
+      'Obtenir les détails d\'un programme';
+
+  @override
+  String get apiDocsPageProgramsSearch => 'Rechercher des programmes';
+
+  @override
+  String get apiDocsPageRecommendationsSection => 'Recommandations';
+
+  @override
+  String get apiDocsPageRecommendationsGenerate =>
+      'Générer des recommandations';
+
+  @override
+  String get apiDocsPageRecommendationsDetails =>
+      'Obtenir les détails d\'une recommandation';
+
+  @override
+  String get apiDocsPageStudentsSection => 'Étudiants';
+
+  @override
+  String get apiDocsPageStudentsProfile => 'Obtenir le profil étudiant';
+
+  @override
+  String get apiDocsPageStudentsUpdate => 'Mettre à jour le profil étudiant';
+
+  @override
+  String get apiDocsPageStudentsApplications => 'Lister les candidatures';
+
+  @override
+  String get apiDocsPageAuthTitle => 'Authentification';
+
+  @override
+  String get apiDocsPageAuthDescription =>
+      'Toutes les requêtes API nécessitent une authentification à l\'aide d\'une clé API.';
+
+  @override
+  String get apiDocsPageAuthHeader => 'Authorization: Bearer VOTRE_CLE_API';
+
+  @override
+  String get apiDocsPageRateLimitsTitle => 'Limites de Débit';
+
+  @override
+  String get apiDocsPageRateLimitFree => 'Niveau Gratuit';
+
+  @override
+  String get apiDocsPageRateLimitFreeValue => '100 requêtes/heure';
+
+  @override
+  String get apiDocsPageRateLimitBasic => 'Basique';
+
+  @override
+  String get apiDocsPageRateLimitBasicValue => '1 000 requêtes/heure';
+
+  @override
+  String get apiDocsPageRateLimitPro => 'Pro';
+
+  @override
+  String get apiDocsPageRateLimitProValue => '10 000 requêtes/heure';
+
+  @override
+  String get apiDocsPageRateLimitEnterprise => 'Entreprise';
+
+  @override
+  String get apiDocsPageRateLimitEnterpriseValue => 'Illimité';
+
+  @override
+  String get apiDocsPageContactTitle => 'Besoin d\'un Accès API?';
+
+  @override
+  String get apiDocsPageContactDescription =>
+      'Contactez-nous pour obtenir vos identifiants API';
+
+  @override
+  String get apiDocsPageContactButton => 'Nous Contacter';
+
+  @override
+  String get compliancePageCertificationsTitle => 'Certifications';
+
+  @override
+  String get compliancePageCertSoc2Title => 'SOC 2 Type II';
+
+  @override
+  String get compliancePageCertSoc2Description =>
+      'Certifié pour la sécurité, la disponibilité et la confidentialité';
+
+  @override
+  String get compliancePageCertIsoTitle => 'ISO 27001';
+
+  @override
+  String get compliancePageCertIsoDescription =>
+      'Certification de gestion de la sécurité de l\'information';
+
+  @override
+  String get compliancePageCertGdprTitle => 'Conforme RGPD';
+
+  @override
+  String get compliancePageCertGdprDescription =>
+      'Règlement Général sur la Protection des Données de l\'UE';
+
+  @override
+  String get compliancePageDataProtectionTitle => 'Protection des Données';
+
+  @override
+  String get compliancePagePrivacyTitle => 'Pratiques de Confidentialité';
+
+  @override
+  String get compliancePageRegulatoryTitle => 'Conformité Réglementaire';
+
+  @override
+  String get compliancePageThirdPartyTitle => 'Sécurité des Tiers';
+
+  @override
+  String get compliancePageSecurityTitle => 'Pratiques de Sécurité';
+
+  @override
+  String get compliancePageSecurityUpdatesTitle => 'Mises à Jour Régulières';
+
+  @override
+  String get compliancePageSecurityUpdatesDescription =>
+      'Correctifs et mises à jour de sécurité déployés en continu';
+
+  @override
+  String get compliancePageSecurityBugBountyTitle =>
+      'Programme de Prime aux Bugs';
+
+  @override
+  String get compliancePageSecurityBugBountyDescription =>
+      'Programme de divulgation responsable pour les chercheurs en sécurité';
+
+  @override
+  String get compliancePageSecurityMonitoringTitle => 'Surveillance';
+
+  @override
+  String get compliancePageSecurityMonitoringDescription =>
+      'Surveillance de sécurité et détection des menaces 24/7';
+
+  @override
+  String get compliancePageSecurityAuditTitle => 'Journaux d\'Audit';
+
+  @override
+  String get compliancePageSecurityAuditDescription =>
+      'Journalisation complète de tous les événements de sécurité';
+
+  @override
+  String get compliancePageContactTitle => 'Questions sur la Conformité?';
+
+  @override
+  String get compliancePageContactDescription =>
+      'Contactez notre équipe de conformité pour toute question';
+
+  @override
+  String get compliancePageContactEmail => 'conformite@flowedtech.com';
+
+  @override
+  String get dataProtectionPageTitle => 'Protection des Données';
+
+  @override
+  String get dataProtectionPageSubtitle =>
+      'Comment nous protégeons et gérons vos données personnelles';
+
+  @override
+  String get dataProtectionPageRightsTitle => 'Vos Droits sur les Données';
+
+  @override
+  String get dataProtectionPageRightsDescription =>
+      'En vertu des lois sur la protection des données, vous disposez des droits suivants:';
+
+  @override
+  String get dataProtectionPageRightAccessTitle => 'Droit d\'Accès';
+
+  @override
+  String get dataProtectionPageRightAccessDescription =>
+      'Vous pouvez demander une copie de toutes les données personnelles que nous détenons à votre sujet. Nous vous la fournirons dans les 30 jours.';
+
+  @override
+  String get dataProtectionPageRightRectificationTitle =>
+      'Droit de Rectification';
+
+  @override
+  String get dataProtectionPageRightRectificationDescription =>
+      'Vous pouvez demander la correction de données personnelles inexactes ou incomplètes.';
+
+  @override
+  String get dataProtectionPageRightErasureTitle => 'Droit à l\'Effacement';
+
+  @override
+  String get dataProtectionPageRightErasureDescription =>
+      'Vous pouvez demander la suppression de vos données personnelles dans certaines circonstances.';
+
+  @override
+  String get dataProtectionPageRightPortabilityTitle =>
+      'Droit à la Portabilité des Données';
+
+  @override
+  String get dataProtectionPageRightPortabilityDescription =>
+      'Vous pouvez demander vos données dans un format structuré et lisible par machine.';
+
+  @override
+  String get dataProtectionPageRightObjectTitle => 'Droit d\'Opposition';
+
+  @override
+  String get dataProtectionPageRightObjectDescription =>
+      'Vous pouvez vous opposer au traitement de vos données personnelles à certaines fins.';
+
+  @override
+  String get dataProtectionPageRightRestrictTitle =>
+      'Droit de Limitation du Traitement';
+
+  @override
+  String get dataProtectionPageRightRestrictDescription =>
+      'Vous pouvez demander que nous limitions l\'utilisation de vos données.';
+
+  @override
+  String get dataProtectionPageProtectionTitle =>
+      'Comment Nous Protégeons Vos Données';
+
+  @override
+  String get dataProtectionPageProtectionContent =>
+      'Nous mettons en œuvre des mesures de sécurité robustes pour protéger vos données personnelles:\n\n**Mesures Techniques**\n• Chiffrement de bout en bout pour la transmission des données\n• Chiffrement AES-256 pour les données stockées\n• Audits de sécurité et tests de pénétration réguliers\n• Systèmes de détection d\'intrusion\n• Centres de données sécurisés avec sécurité physique\n\n**Mesures Organisationnelles**\n• Formation du personnel à la protection des données\n• Contrôles d\'accès et authentification\n• Évaluations d\'impact sur la protection des données\n• Procédures de réponse aux incidents\n• Examens de conformité réguliers';
+
+  @override
+  String get dataProtectionPageStorageTitle =>
+      'Stockage et Conservation des Données';
+
+  @override
+  String get dataProtectionPageStorageContent =>
+      '**Où Nous Stockons Vos Données**\nVos données sont stockées sur des serveurs sécurisés situés dans des régions dotées de lois strictes sur la protection des données. Nous utilisons des fournisseurs cloud de premier plan avec certifications SOC 2 et ISO 27001.\n\n**Combien de Temps Nous Conservons Vos Données**\n• Données de compte: Jusqu\'à ce que vous supprimiez votre compte\n• Données de candidature: 7 ans pour la conformité\n• Données d\'analyse: 2 ans\n• Journaux de communication: 3 ans\n\nAprès ces périodes, les données sont supprimées en toute sécurité ou anonymisées.';
+
+  @override
+  String get dataProtectionPageSharingTitle => 'Partage des Données';
+
+  @override
+  String get dataProtectionPageSharingContent =>
+      'Nous ne partageons vos données que lorsque cela est nécessaire:\n\n• **Avec votre consentement**: Lorsque vous acceptez explicitement\n• **Fournisseurs de services**: Partenaires qui nous aident à fournir des services\n• **Exigences légales**: Lorsque la loi l\'exige\n• **Transferts commerciaux**: En cas de fusion ou d\'acquisition\n\nNous ne vendons jamais vos données personnelles à des tiers.';
+
+  @override
+  String get dataProtectionPageExerciseTitle => 'Exercez Vos Droits';
+
+  @override
+  String get dataProtectionPageExerciseDescription =>
+      'Pour faire une demande de données ou exercer l\'un de vos droits, contactez notre Délégué à la Protection des Données:';
+
+  @override
+  String get dataProtectionPageExerciseEmail => 'dpd@flowedtech.com';
+
+  @override
+  String get dataProtectionPageExerciseContactButton => 'Nous Contacter';
+
+  @override
+  String get dataProtectionPageExerciseManageButton => 'Gérer les Données';
+
+  @override
+  String get dataProtectionPageRelatedTitle => 'Informations Connexes';
+
+  @override
+  String get dataProtectionPageRelatedPrivacy => 'Politique de Confidentialité';
+
+  @override
+  String get dataProtectionPageRelatedCookies => 'Politique des Cookies';
+
+  @override
+  String get dataProtectionPageRelatedTerms => 'Conditions d\'Utilisation';
+
+  @override
+  String get dataProtectionPageRelatedCompliance => 'Conformité';
+
+  @override
+  String get mobileAppsPageHeroTitle => 'Flow sur Mobile';
+
+  @override
+  String get mobileAppsPageHeroSubtitle =>
+      'Emportez votre parcours éducatif avec vous.\nTéléchargez l\'application Flow sur votre plateforme préférée.';
 }

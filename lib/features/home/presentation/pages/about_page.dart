@@ -13,12 +13,7 @@ class AboutPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'about',
-      fallbackTitle: 'About Flow',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
+    return _buildStaticPage(context);
   }
 
   Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
@@ -151,7 +146,7 @@ class AboutPage extends ConsumerWidget {
                   child: FilledButton.icon(
                     onPressed: () => context.go('/contact'),
                     icon: const Icon(Icons.mail),
-                    label: const Text('Get in Touch'),
+                    label: Text(context.l10n.aboutPageGetInTouch),
                   ),
                 ),
 
@@ -210,7 +205,7 @@ class AboutPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Flow EdTech',
+                        context.l10n.aboutPageFlowEdTech,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColors.primary,
@@ -218,7 +213,7 @@ class AboutPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Africa's Premier Education Platform",
+                        context.l10n.aboutPagePremierPlatform,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -232,9 +227,8 @@ class AboutPage extends ConsumerWidget {
                 _buildSection(
                   theme,
                   icon: Icons.flag,
-                  title: 'Our Mission',
-                  content:
-                      'Flow is dedicated to transforming education across Africa by connecting students with universities, counselors, and resources they need to succeed.',
+                  title: context.l10n.aboutPageOurMission,
+                  content: context.l10n.aboutPageMissionContent,
                 ),
 
                 const SizedBox(height: 24),
@@ -242,9 +236,8 @@ class AboutPage extends ConsumerWidget {
                 _buildSection(
                   theme,
                   icon: Icons.visibility,
-                  title: 'Our Vision',
-                  content:
-                      'We envision a future where every African student has the tools, information, and support needed to achieve their educational dreams.',
+                  title: context.l10n.aboutPageOurVision,
+                  content: context.l10n.aboutPageVisionContent,
                 ),
 
                 const SizedBox(height: 32),
@@ -253,7 +246,7 @@ class AboutPage extends ConsumerWidget {
                   child: FilledButton.icon(
                     onPressed: () => context.go('/contact'),
                     icon: const Icon(Icons.mail),
-                    label: const Text('Get in Touch'),
+                    label: Text(context.l10n.aboutPageGetInTouch),
                   ),
                 ),
 

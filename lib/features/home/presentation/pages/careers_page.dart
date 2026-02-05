@@ -13,12 +13,7 @@ class CareersPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'careers',
-      fallbackTitle: 'Careers',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
+    return _buildStaticPage(context);
   }
 
   Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
@@ -203,7 +198,7 @@ class CareersPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Careers'),
+        title: Text(context.l10n.careersPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -239,7 +234,7 @@ class CareersPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Join Our Mission',
+                        context.l10n.careersPageJoinMission,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -247,7 +242,7 @@ class CareersPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Help us transform education across Africa',
+                        context.l10n.careersPageHeroSubtitle,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: Colors.white70,
                         ),
@@ -261,7 +256,7 @@ class CareersPage extends ConsumerWidget {
 
                 // Why Join Us
                 Text(
-                  'Why Join Flow?',
+                  context.l10n.careersPageWhyJoin,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -272,14 +267,14 @@ class CareersPage extends ConsumerWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildBenefitCard(theme, Icons.public, 'Global Impact',
-                        'Work on solutions that affect millions of students across Africa'),
-                    _buildBenefitCard(theme, Icons.trending_up, 'Growth',
-                        'Continuous learning and career development opportunities'),
-                    _buildBenefitCard(theme, Icons.groups, 'Great Team',
-                        'Collaborate with passionate and talented individuals'),
-                    _buildBenefitCard(theme, Icons.work_outline, 'Flexibility',
-                        'Remote-friendly culture with flexible working hours'),
+                    _buildBenefitCard(theme, Icons.public, context.l10n.careersPageGlobalImpact,
+                        context.l10n.careersPageGlobalImpactDesc),
+                    _buildBenefitCard(theme, Icons.trending_up, context.l10n.careersPageGrowth,
+                        context.l10n.careersPageGrowthDesc),
+                    _buildBenefitCard(theme, Icons.groups, context.l10n.careersPageGreatTeam,
+                        context.l10n.careersPageGreatTeamDesc),
+                    _buildBenefitCard(theme, Icons.work_outline, context.l10n.careersPageFlexibility,
+                        context.l10n.careersPageFlexibilityDesc),
                   ],
                 ),
 
@@ -287,7 +282,7 @@ class CareersPage extends ConsumerWidget {
 
                 // Open Positions
                 Text(
-                  'Open Positions',
+                  context.l10n.careersPageOpenPositions,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -295,39 +290,44 @@ class CareersPage extends ConsumerWidget {
                 const SizedBox(height: 24),
 
                 _buildJobCard(
+                  context,
                   theme,
-                  title: 'Senior Flutter Developer',
-                  department: 'Engineering',
-                  location: 'Remote (Africa)',
-                  type: 'Full-time',
+                  title: context.l10n.careersPageJobSeniorFlutter,
+                  department: context.l10n.careersPageDepartmentEngineering,
+                  location: context.l10n.careersPageLocationRemoteAfrica,
+                  type: context.l10n.careersPageTypeFullTime,
                 ),
                 _buildJobCard(
+                  context,
                   theme,
-                  title: 'Backend Engineer (Python/FastAPI)',
-                  department: 'Engineering',
-                  location: 'Accra, Ghana',
-                  type: 'Full-time',
+                  title: context.l10n.careersPageJobBackendEngineer,
+                  department: context.l10n.careersPageDepartmentEngineering,
+                  location: context.l10n.careersPageLocationAccra,
+                  type: context.l10n.careersPageTypeFullTime,
                 ),
                 _buildJobCard(
+                  context,
                   theme,
-                  title: 'Product Designer',
-                  department: 'Design',
-                  location: 'Remote (Africa)',
-                  type: 'Full-time',
+                  title: context.l10n.careersPageJobProductDesigner,
+                  department: context.l10n.careersPageDepartmentDesign,
+                  location: context.l10n.careersPageLocationRemoteAfrica,
+                  type: context.l10n.careersPageTypeFullTime,
                 ),
                 _buildJobCard(
+                  context,
                   theme,
-                  title: 'Education Content Specialist',
-                  department: 'Content',
-                  location: 'Lagos, Nigeria',
-                  type: 'Full-time',
+                  title: context.l10n.careersPageJobContentSpecialist,
+                  department: context.l10n.careersPageDepartmentContent,
+                  location: context.l10n.careersPageLocationLagos,
+                  type: context.l10n.careersPageTypeFullTime,
                 ),
                 _buildJobCard(
+                  context,
                   theme,
-                  title: 'Customer Success Manager',
-                  department: 'Operations',
-                  location: 'Nairobi, Kenya',
-                  type: 'Full-time',
+                  title: context.l10n.careersPageJobCustomerSuccess,
+                  department: context.l10n.careersPageDepartmentOperations,
+                  location: context.l10n.careersPageLocationNairobi,
+                  type: context.l10n.careersPageTypeFullTime,
                 ),
 
                 const SizedBox(height: 40),
@@ -350,14 +350,14 @@ class CareersPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        "Don't see a perfect fit?",
+                        context.l10n.careersPageNoFit,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "We're always looking for talented individuals. Send your resume to careers@flowedtech.com",
+                        context.l10n.careersPageNoFitDesc,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -367,7 +367,7 @@ class CareersPage extends ConsumerWidget {
                       OutlinedButton.icon(
                         onPressed: () => context.go('/contact'),
                         icon: const Icon(Icons.send),
-                        label: const Text('Contact Us'),
+                        label: Text(context.l10n.careersPageContactUs),
                       ),
                     ],
                   ),
@@ -415,6 +415,7 @@ class CareersPage extends ConsumerWidget {
   }
 
   Widget _buildJobCard(
+    BuildContext context,
     ThemeData theme, {
     required String title,
     required String department,
@@ -457,7 +458,7 @@ class CareersPage extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {},
-            child: const Text('Apply'),
+            child: Text(context.l10n.careersPageApply),
           ),
         ],
       ),

@@ -15350,6 +15350,90 @@ abstract class AppLocalizations {
   /// **'Contact Us'**
   String get careersPageContactUs;
 
+  /// No description provided for @careersPageJobSeniorFlutter.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior Flutter Developer'**
+  String get careersPageJobSeniorFlutter;
+
+  /// No description provided for @careersPageJobBackendEngineer.
+  ///
+  /// In en, this message translates to:
+  /// **'Backend Engineer (Python/FastAPI)'**
+  String get careersPageJobBackendEngineer;
+
+  /// No description provided for @careersPageJobProductDesigner.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Designer'**
+  String get careersPageJobProductDesigner;
+
+  /// No description provided for @careersPageJobContentSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Education Content Specialist'**
+  String get careersPageJobContentSpecialist;
+
+  /// No description provided for @careersPageJobCustomerSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Success Manager'**
+  String get careersPageJobCustomerSuccess;
+
+  /// No description provided for @careersPageDepartmentEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Engineering'**
+  String get careersPageDepartmentEngineering;
+
+  /// No description provided for @careersPageDepartmentDesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Design'**
+  String get careersPageDepartmentDesign;
+
+  /// No description provided for @careersPageDepartmentContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get careersPageDepartmentContent;
+
+  /// No description provided for @careersPageDepartmentOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get careersPageDepartmentOperations;
+
+  /// No description provided for @careersPageLocationRemoteAfrica.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote (Africa)'**
+  String get careersPageLocationRemoteAfrica;
+
+  /// No description provided for @careersPageLocationAccra.
+  ///
+  /// In en, this message translates to:
+  /// **'Accra, Ghana'**
+  String get careersPageLocationAccra;
+
+  /// No description provided for @careersPageLocationLagos.
+  ///
+  /// In en, this message translates to:
+  /// **'Lagos, Nigeria'**
+  String get careersPageLocationLagos;
+
+  /// No description provided for @careersPageLocationNairobi.
+  ///
+  /// In en, this message translates to:
+  /// **'Nairobi, Kenya'**
+  String get careersPageLocationNairobi;
+
+  /// No description provided for @careersPageTypeFullTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-time'**
+  String get careersPageTypeFullTime;
+
   /// No description provided for @communityPageTitle.
   ///
   /// In en, this message translates to:
@@ -15437,7 +15521,7 @@ abstract class AppLocalizations {
   /// No description provided for @compliancePageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Compliance'**
+  /// **'Compliance & Certifications'**
   String get compliancePageTitle;
 
   /// No description provided for @compliancePageHeadline.
@@ -16363,6 +16447,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact Partnership Team'**
   String get partnersPageContactTeam;
+
+  /// No description provided for @partnersPageBenefitDirectAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct access to qualified applicants'**
+  String get partnersPageBenefitDirectAccess;
+
+  /// No description provided for @partnersPageBenefitAppManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Application management tools'**
+  String get partnersPageBenefitAppManagement;
+
+  /// No description provided for @partnersPageBenefitAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics and insights'**
+  String get partnersPageBenefitAnalytics;
+
+  /// No description provided for @partnersPageBenefitBrandVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand visibility'**
+  String get partnersPageBenefitBrandVisibility;
+
+  /// No description provided for @partnersPageBenefitClientManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Client management tools'**
+  String get partnersPageBenefitClientManagement;
+
+  /// No description provided for @partnersPageBenefitStudentMatching.
+  ///
+  /// In en, this message translates to:
+  /// **'Student matching'**
+  String get partnersPageBenefitStudentMatching;
+
+  /// No description provided for @partnersPageBenefitScheduling.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduling system'**
+  String get partnersPageBenefitScheduling;
+
+  /// No description provided for @partnersPageBenefitRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue opportunities'**
+  String get partnersPageBenefitRevenue;
+
+  /// No description provided for @partnersPageBenefitCsrVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'CSR visibility'**
+  String get partnersPageBenefitCsrVisibility;
+
+  /// No description provided for @partnersPageBenefitTalentPipeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Talent pipeline'**
+  String get partnersPageBenefitTalentPipeline;
+
+  /// No description provided for @partnersPageBenefitBrandAssociation.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand association'**
+  String get partnersPageBenefitBrandAssociation;
+
+  /// No description provided for @partnersPageBenefitImpactReporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Impact reporting'**
+  String get partnersPageBenefitImpactReporting;
+
+  /// No description provided for @partnersPageBenefitDataInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Data and insights'**
+  String get partnersPageBenefitDataInsights;
+
+  /// No description provided for @partnersPageBenefitPlatformIntegration.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform integration'**
+  String get partnersPageBenefitPlatformIntegration;
+
+  /// No description provided for @partnersPageBenefitReachScale.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach and scale'**
+  String get partnersPageBenefitReachScale;
+
+  /// No description provided for @partnersPageBenefitImpactMeasurement.
+  ///
+  /// In en, this message translates to:
+  /// **'Impact measurement'**
+  String get partnersPageBenefitImpactMeasurement;
+
+  /// No description provided for @partnersPagePartnerUnivGhana.
+  ///
+  /// In en, this message translates to:
+  /// **'University of Ghana'**
+  String get partnersPagePartnerUnivGhana;
+
+  /// No description provided for @partnersPagePartnerAshesi.
+  ///
+  /// In en, this message translates to:
+  /// **'Ashesi University'**
+  String get partnersPagePartnerAshesi;
+
+  /// No description provided for @partnersPagePartnerKenyatta.
+  ///
+  /// In en, this message translates to:
+  /// **'Kenyatta University'**
+  String get partnersPagePartnerKenyatta;
+
+  /// No description provided for @partnersPagePartnerUnilag.
+  ///
+  /// In en, this message translates to:
+  /// **'University of Lagos'**
+  String get partnersPagePartnerUnilag;
+
+  /// No description provided for @partnersPagePartnerKnust.
+  ///
+  /// In en, this message translates to:
+  /// **'KNUST'**
+  String get partnersPagePartnerKnust;
+
+  /// No description provided for @partnersPagePartnerMakerere.
+  ///
+  /// In en, this message translates to:
+  /// **'Makerere University'**
+  String get partnersPagePartnerMakerere;
 
   /// No description provided for @pressPageTitle.
   ///
@@ -40007,6 +40223,546 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error saving profile: {error}'**
   String profileErrorSaving(String error);
+
+  /// No description provided for @apiDocsPageQuickStartCode.
+  ///
+  /// In en, this message translates to:
+  /// **'curl -X GET \"https://api.flowedtech.com/v1/universities\" \\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\n  -H \"Content-Type: application/json\"'**
+  String get apiDocsPageQuickStartCode;
+
+  /// No description provided for @apiDocsPageEndpointsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'API Endpoints'**
+  String get apiDocsPageEndpointsTitle;
+
+  /// No description provided for @apiDocsPageUniversitiesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Universities'**
+  String get apiDocsPageUniversitiesSection;
+
+  /// No description provided for @apiDocsPageUniversitiesList.
+  ///
+  /// In en, this message translates to:
+  /// **'List all universities'**
+  String get apiDocsPageUniversitiesList;
+
+  /// No description provided for @apiDocsPageUniversitiesDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Get university details'**
+  String get apiDocsPageUniversitiesDetails;
+
+  /// No description provided for @apiDocsPageUniversitiesSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search universities'**
+  String get apiDocsPageUniversitiesSearch;
+
+  /// No description provided for @apiDocsPageUniversitiesPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'List programs'**
+  String get apiDocsPageUniversitiesPrograms;
+
+  /// No description provided for @apiDocsPageProgramsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get apiDocsPageProgramsSection;
+
+  /// No description provided for @apiDocsPageProgramsList.
+  ///
+  /// In en, this message translates to:
+  /// **'List all programs'**
+  String get apiDocsPageProgramsList;
+
+  /// No description provided for @apiDocsPageProgramsDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Get program details'**
+  String get apiDocsPageProgramsDetails;
+
+  /// No description provided for @apiDocsPageProgramsSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search programs'**
+  String get apiDocsPageProgramsSearch;
+
+  /// No description provided for @apiDocsPageRecommendationsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get apiDocsPageRecommendationsSection;
+
+  /// No description provided for @apiDocsPageRecommendationsGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate recommendations'**
+  String get apiDocsPageRecommendationsGenerate;
+
+  /// No description provided for @apiDocsPageRecommendationsDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Get recommendation details'**
+  String get apiDocsPageRecommendationsDetails;
+
+  /// No description provided for @apiDocsPageStudentsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get apiDocsPageStudentsSection;
+
+  /// No description provided for @apiDocsPageStudentsProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Get student profile'**
+  String get apiDocsPageStudentsProfile;
+
+  /// No description provided for @apiDocsPageStudentsUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update student profile'**
+  String get apiDocsPageStudentsUpdate;
+
+  /// No description provided for @apiDocsPageStudentsApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'List applications'**
+  String get apiDocsPageStudentsApplications;
+
+  /// No description provided for @apiDocsPageAuthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication'**
+  String get apiDocsPageAuthTitle;
+
+  /// No description provided for @apiDocsPageAuthDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'All API requests require authentication using an API key.'**
+  String get apiDocsPageAuthDescription;
+
+  /// No description provided for @apiDocsPageAuthHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorization: Bearer YOUR_API_KEY'**
+  String get apiDocsPageAuthHeader;
+
+  /// No description provided for @apiDocsPageRateLimitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Limits'**
+  String get apiDocsPageRateLimitsTitle;
+
+  /// No description provided for @apiDocsPageRateLimitFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Tier'**
+  String get apiDocsPageRateLimitFree;
+
+  /// No description provided for @apiDocsPageRateLimitFreeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'100 requests/hour'**
+  String get apiDocsPageRateLimitFreeValue;
+
+  /// No description provided for @apiDocsPageRateLimitBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get apiDocsPageRateLimitBasic;
+
+  /// No description provided for @apiDocsPageRateLimitBasicValue.
+  ///
+  /// In en, this message translates to:
+  /// **'1,000 requests/hour'**
+  String get apiDocsPageRateLimitBasicValue;
+
+  /// No description provided for @apiDocsPageRateLimitPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get apiDocsPageRateLimitPro;
+
+  /// No description provided for @apiDocsPageRateLimitProValue.
+  ///
+  /// In en, this message translates to:
+  /// **'10,000 requests/hour'**
+  String get apiDocsPageRateLimitProValue;
+
+  /// No description provided for @apiDocsPageRateLimitEnterprise.
+  ///
+  /// In en, this message translates to:
+  /// **'Enterprise'**
+  String get apiDocsPageRateLimitEnterprise;
+
+  /// No description provided for @apiDocsPageRateLimitEnterpriseValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get apiDocsPageRateLimitEnterpriseValue;
+
+  /// No description provided for @apiDocsPageContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Need API Access?'**
+  String get apiDocsPageContactTitle;
+
+  /// No description provided for @apiDocsPageContactDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us to get your API credentials'**
+  String get apiDocsPageContactDescription;
+
+  /// No description provided for @apiDocsPageContactButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get apiDocsPageContactButton;
+
+  /// No description provided for @compliancePageCertificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Certifications'**
+  String get compliancePageCertificationsTitle;
+
+  /// No description provided for @compliancePageCertSoc2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'SOC 2 Type II'**
+  String get compliancePageCertSoc2Title;
+
+  /// No description provided for @compliancePageCertSoc2Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified for security, availability, and confidentiality'**
+  String get compliancePageCertSoc2Description;
+
+  /// No description provided for @compliancePageCertIsoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ISO 27001'**
+  String get compliancePageCertIsoTitle;
+
+  /// No description provided for @compliancePageCertIsoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Information security management certification'**
+  String get compliancePageCertIsoDescription;
+
+  /// No description provided for @compliancePageCertGdprTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'GDPR Compliant'**
+  String get compliancePageCertGdprTitle;
+
+  /// No description provided for @compliancePageCertGdprDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'EU General Data Protection Regulation'**
+  String get compliancePageCertGdprDescription;
+
+  /// No description provided for @compliancePageDataProtectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Protection'**
+  String get compliancePageDataProtectionTitle;
+
+  /// No description provided for @compliancePagePrivacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Practices'**
+  String get compliancePagePrivacyTitle;
+
+  /// No description provided for @compliancePageRegulatoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Regulatory Compliance'**
+  String get compliancePageRegulatoryTitle;
+
+  /// No description provided for @compliancePageThirdPartyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Third-Party Security'**
+  String get compliancePageThirdPartyTitle;
+
+  /// No description provided for @compliancePageSecurityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Practices'**
+  String get compliancePageSecurityTitle;
+
+  /// No description provided for @compliancePageSecurityUpdatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular Updates'**
+  String get compliancePageSecurityUpdatesTitle;
+
+  /// No description provided for @compliancePageSecurityUpdatesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Security patches and updates deployed continuously'**
+  String get compliancePageSecurityUpdatesDescription;
+
+  /// No description provided for @compliancePageSecurityBugBountyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug Bounty Program'**
+  String get compliancePageSecurityBugBountyTitle;
+
+  /// No description provided for @compliancePageSecurityBugBountyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Responsible disclosure program for security researchers'**
+  String get compliancePageSecurityBugBountyDescription;
+
+  /// No description provided for @compliancePageSecurityMonitoringTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring'**
+  String get compliancePageSecurityMonitoringTitle;
+
+  /// No description provided for @compliancePageSecurityMonitoringDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'24/7 security monitoring and threat detection'**
+  String get compliancePageSecurityMonitoringDescription;
+
+  /// No description provided for @compliancePageSecurityAuditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Audit Logs'**
+  String get compliancePageSecurityAuditTitle;
+
+  /// No description provided for @compliancePageSecurityAuditDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Comprehensive logging of all security events'**
+  String get compliancePageSecurityAuditDescription;
+
+  /// No description provided for @compliancePageContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compliance Questions?'**
+  String get compliancePageContactTitle;
+
+  /// No description provided for @compliancePageContactDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact our compliance team for inquiries'**
+  String get compliancePageContactDescription;
+
+  /// No description provided for @compliancePageContactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'compliance@flowedtech.com'**
+  String get compliancePageContactEmail;
+
+  /// No description provided for @dataProtectionPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Protection'**
+  String get dataProtectionPageTitle;
+
+  /// No description provided for @dataProtectionPageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How we protect and manage your personal data'**
+  String get dataProtectionPageSubtitle;
+
+  /// No description provided for @dataProtectionPageRightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Data Rights'**
+  String get dataProtectionPageRightsTitle;
+
+  /// No description provided for @dataProtectionPageRightsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Under data protection laws, you have the following rights:'**
+  String get dataProtectionPageRightsDescription;
+
+  /// No description provided for @dataProtectionPageRightAccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Access'**
+  String get dataProtectionPageRightAccessTitle;
+
+  /// No description provided for @dataProtectionPageRightAccessDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request a copy of all personal data we hold about you. We will provide this within 30 days.'**
+  String get dataProtectionPageRightAccessDescription;
+
+  /// No description provided for @dataProtectionPageRightRectificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Rectification'**
+  String get dataProtectionPageRightRectificationTitle;
+
+  /// No description provided for @dataProtectionPageRightRectificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request correction of inaccurate or incomplete personal data.'**
+  String get dataProtectionPageRightRectificationDescription;
+
+  /// No description provided for @dataProtectionPageRightErasureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Erasure'**
+  String get dataProtectionPageRightErasureTitle;
+
+  /// No description provided for @dataProtectionPageRightErasureDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request deletion of your personal data in certain circumstances.'**
+  String get dataProtectionPageRightErasureDescription;
+
+  /// No description provided for @dataProtectionPageRightPortabilityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Data Portability'**
+  String get dataProtectionPageRightPortabilityTitle;
+
+  /// No description provided for @dataProtectionPageRightPortabilityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request your data in a structured, machine-readable format.'**
+  String get dataProtectionPageRightPortabilityDescription;
+
+  /// No description provided for @dataProtectionPageRightObjectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Object'**
+  String get dataProtectionPageRightObjectTitle;
+
+  /// No description provided for @dataProtectionPageRightObjectDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can object to processing of your personal data for certain purposes.'**
+  String get dataProtectionPageRightObjectDescription;
+
+  /// No description provided for @dataProtectionPageRightRestrictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Restrict Processing'**
+  String get dataProtectionPageRightRestrictTitle;
+
+  /// No description provided for @dataProtectionPageRightRestrictDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request that we limit how we use your data.'**
+  String get dataProtectionPageRightRestrictDescription;
+
+  /// No description provided for @dataProtectionPageProtectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How We Protect Your Data'**
+  String get dataProtectionPageProtectionTitle;
+
+  /// No description provided for @dataProtectionPageProtectionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'We implement robust security measures to protect your personal data:\n\n**Technical Measures**\n• End-to-end encryption for data transmission\n• AES-256 encryption for stored data\n• Regular security audits and penetration testing\n• Intrusion detection systems\n• Secure data centers with physical security\n\n**Organizational Measures**\n• Staff training on data protection\n• Access controls and authentication\n• Data protection impact assessments\n• Incident response procedures\n• Regular compliance reviews'**
+  String get dataProtectionPageProtectionContent;
+
+  /// No description provided for @dataProtectionPageStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Storage & Retention'**
+  String get dataProtectionPageStorageTitle;
+
+  /// No description provided for @dataProtectionPageStorageContent.
+  ///
+  /// In en, this message translates to:
+  /// **'**Where We Store Your Data**\nYour data is stored on secure servers located in regions with strong data protection laws. We use industry-leading cloud providers with SOC 2 and ISO 27001 certifications.\n\n**How Long We Keep Your Data**\n• Account data: Until you delete your account\n• Application data: 7 years for compliance\n• Analytics data: 2 years\n• Communication logs: 3 years\n\nAfter these periods, data is securely deleted or anonymized.'**
+  String get dataProtectionPageStorageContent;
+
+  /// No description provided for @dataProtectionPageSharingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sharing'**
+  String get dataProtectionPageSharingTitle;
+
+  /// No description provided for @dataProtectionPageSharingContent.
+  ///
+  /// In en, this message translates to:
+  /// **'We only share your data when necessary:\n\n• **With your consent**: When you explicitly agree\n• **Service providers**: Partners who help us deliver services\n• **Legal requirements**: When required by law\n• **Business transfers**: In case of merger or acquisition\n\nWe never sell your personal data to third parties.'**
+  String get dataProtectionPageSharingContent;
+
+  /// No description provided for @dataProtectionPageExerciseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise Your Rights'**
+  String get dataProtectionPageExerciseTitle;
+
+  /// No description provided for @dataProtectionPageExerciseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'To make a data request or exercise any of your rights, contact our Data Protection Officer:'**
+  String get dataProtectionPageExerciseDescription;
+
+  /// No description provided for @dataProtectionPageExerciseEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'dpo@flowedtech.com'**
+  String get dataProtectionPageExerciseEmail;
+
+  /// No description provided for @dataProtectionPageExerciseContactButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get dataProtectionPageExerciseContactButton;
+
+  /// No description provided for @dataProtectionPageExerciseManageButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Data'**
+  String get dataProtectionPageExerciseManageButton;
+
+  /// No description provided for @dataProtectionPageRelatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Related Information'**
+  String get dataProtectionPageRelatedTitle;
+
+  /// No description provided for @dataProtectionPageRelatedPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get dataProtectionPageRelatedPrivacy;
+
+  /// No description provided for @dataProtectionPageRelatedCookies.
+  ///
+  /// In en, this message translates to:
+  /// **'Cookie Policy'**
+  String get dataProtectionPageRelatedCookies;
+
+  /// No description provided for @dataProtectionPageRelatedTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get dataProtectionPageRelatedTerms;
+
+  /// No description provided for @dataProtectionPageRelatedCompliance.
+  ///
+  /// In en, this message translates to:
+  /// **'Compliance'**
+  String get dataProtectionPageRelatedCompliance;
+
+  /// No description provided for @mobileAppsPageHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow on Mobile'**
+  String get mobileAppsPageHeroTitle;
+
+  /// No description provided for @mobileAppsPageHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Take your education journey with you.\nDownload the Flow app on your favorite platform.'**
+  String get mobileAppsPageHeroSubtitle;
 }
 
 class _AppLocalizationsDelegate

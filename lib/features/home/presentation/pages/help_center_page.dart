@@ -13,12 +13,7 @@ class HelpCenterPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'help',
-      fallbackTitle: 'Help Center',
-      builder: (context, content) => _HelpCenterDynamicContent(content: content),
-      fallbackBuilder: (context) => const _HelpCenterStaticContent(),
-    );
+    return const _HelpCenterStaticContent();
   }
 }
 
@@ -214,14 +209,14 @@ class _HelpCenterDynamicContentState extends State<_HelpCenterDynamicContent> {
                       Icon(Icons.support_agent, size: 48, color: AppColors.primary),
                       const SizedBox(height: 16),
                       Text(
-                        'Still need help?',
+                        context.l10n.helpCenterPageStillNeedHelp,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Our support team is here to assist you",
+                        context.l10n.helpCenterPageSupportTeam,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -230,7 +225,7 @@ class _HelpCenterDynamicContentState extends State<_HelpCenterDynamicContent> {
                       FilledButton.icon(
                         onPressed: () => context.go('/contact'),
                         icon: const Icon(Icons.mail),
-                        label: const Text('Contact Support'),
+                        label: Text(context.l10n.helpCenterPageContactSupport),
                       ),
                     ],
                   ),
@@ -368,6 +363,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -375,7 +371,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Help Center'),
+        title: Text(l10n.helpCenterPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -389,7 +385,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
               children: [
                 // Header
                 Text(
-                  'How can we help?',
+                  l10n.helpCenterPageHowCanWeHelp,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -400,7 +396,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search for help...',
+                    hintText: l10n.helpCenterPageSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -415,7 +411,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
 
                 // Quick Links
                 Text(
-                  'Quick Links',
+                  l10n.helpCenterPageQuickLinks,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -426,10 +422,10 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    _buildQuickLink(context, theme, Icons.school, 'University Search', '/universities'),
-                    _buildQuickLink(context, theme, Icons.person, 'My Profile', '/profile'),
-                    _buildQuickLink(context, theme, Icons.settings, 'Settings', '/settings'),
-                    _buildQuickLink(context, theme, Icons.mail, 'Contact Support', '/contact'),
+                    _buildQuickLink(context, theme, Icons.school, l10n.helpCenterPageUniversitySearch, '/universities'),
+                    _buildQuickLink(context, theme, Icons.person, l10n.helpCenterPageMyProfile, '/profile'),
+                    _buildQuickLink(context, theme, Icons.settings, l10n.helpCenterPageSettings, '/settings'),
+                    _buildQuickLink(context, theme, Icons.mail, l10n.helpCenterPageContactSupport, '/contact'),
                   ],
                 ),
 
@@ -437,7 +433,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
 
                 // Categories
                 Text(
-                  'Categories',
+                  l10n.helpCenterPageCategories,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -462,7 +458,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
 
                 // FAQs
                 Text(
-                  'Frequently Asked Questions',
+                  l10n.helpCenterPageFaq,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -480,7 +476,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                         Icon(Icons.search_off, size: 48, color: AppColors.textSecondary),
                         const SizedBox(height: 16),
                         Text(
-                          'No results found',
+                          l10n.helpCenterPageNoResults,
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -509,14 +505,14 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                       Icon(Icons.support_agent, size: 48, color: AppColors.primary),
                       const SizedBox(height: 16),
                       Text(
-                        'Still need help?',
+                        context.l10n.helpCenterPageStillNeedHelp,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Our support team is here to assist you",
+                        context.l10n.helpCenterPageSupportTeam,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -525,7 +521,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                       FilledButton.icon(
                         onPressed: () => context.go('/contact'),
                         icon: const Icon(Icons.mail),
-                        label: const Text('Contact Support'),
+                        label: Text(context.l10n.helpCenterPageContactSupport),
                       ),
                     ],
                   ),

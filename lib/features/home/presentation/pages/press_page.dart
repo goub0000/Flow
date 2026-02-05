@@ -13,12 +13,7 @@ class PressPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'press',
-      fallbackTitle: 'Press Kit',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
+    return _buildStaticPage(context);
   }
 
   Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
@@ -113,10 +108,10 @@ class PressPage extends ConsumerWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildAssetCard(theme, Icons.image, 'Logo Pack', 'PNG, SVG, and vector formats'),
-                    _buildAssetCard(theme, Icons.color_lens, 'Brand Guidelines', 'Colors, typography, usage'),
-                    _buildAssetCard(theme, Icons.photo_library, 'Screenshots', 'App screenshots and demos'),
-                    _buildAssetCard(theme, Icons.videocam, 'Video Assets', 'Product videos and B-roll'),
+                    _buildAssetCard(context, theme, Icons.image, 'Logo Pack', 'PNG, SVG, and vector formats'),
+                    _buildAssetCard(context, theme, Icons.color_lens, 'Brand Guidelines', 'Colors, typography, usage'),
+                    _buildAssetCard(context, theme, Icons.photo_library, 'Screenshots', 'App screenshots and demos'),
+                    _buildAssetCard(context, theme, Icons.videocam, 'Video Assets', 'Product videos and B-roll'),
                   ],
                 ),
 
@@ -195,6 +190,7 @@ class PressPage extends ConsumerWidget {
 
   Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -202,7 +198,7 @@ class PressPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Press Kit'),
+        title: Text(l10n.pressPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -215,14 +211,14 @@ class PressPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Press Kit',
+                  l10n.pressPageTitle,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Resources for media and press coverage',
+                  l10n.pressPageSubtitle,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -234,16 +230,15 @@ class PressPage extends ConsumerWidget {
                 _buildSection(
                   theme,
                   icon: Icons.business,
-                  title: 'Company Overview',
-                  content:
-                      "Flow EdTech is Africa's leading education technology platform, connecting students with universities, counselors, and educational resources. Founded with the mission to democratize access to quality education guidance across the African continent.",
+                  title: l10n.pressPageCompanyOverview,
+                  content: l10n.pressPageCompanyOverviewContent,
                 ),
 
                 const SizedBox(height: 24),
 
                 // Key Facts
                 Text(
-                  'Key Facts',
+                  l10n.pressPageKeyFacts,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -259,12 +254,12 @@ class PressPage extends ConsumerWidget {
                   ),
                   child: Column(
                     children: [
-                      _buildFactRow(theme, 'Founded', '2024'),
-                      _buildFactRow(theme, 'Headquarters', 'Accra, Ghana'),
-                      _buildFactRow(theme, 'Active Users', '50,000+'),
-                      _buildFactRow(theme, 'Partner Institutions', '200+'),
-                      _buildFactRow(theme, 'Countries', '20+'),
-                      _buildFactRow(theme, 'Universities in Database', '18,000+'),
+                      _buildFactRow(theme, l10n.pressPageFounded, '2024'),
+                      _buildFactRow(theme, l10n.pressPageHeadquarters, 'Accra, Ghana'),
+                      _buildFactRow(theme, l10n.pressPageActiveUsers, '50,000+'),
+                      _buildFactRow(theme, l10n.pressPagePartnerInstitutions, '200+'),
+                      _buildFactRow(theme, l10n.pressPageCountries, '20+'),
+                      _buildFactRow(theme, l10n.pressPageUniversitiesInDb, '18,000+'),
                     ],
                   ),
                 ),
@@ -273,7 +268,7 @@ class PressPage extends ConsumerWidget {
 
                 // Brand Assets
                 Text(
-                  'Brand Assets',
+                  l10n.pressPageBrandAssets,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -284,10 +279,10 @@ class PressPage extends ConsumerWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildAssetCard(theme, Icons.image, 'Logo Pack', 'PNG, SVG, and vector formats'),
-                    _buildAssetCard(theme, Icons.color_lens, 'Brand Guidelines', 'Colors, typography, usage'),
-                    _buildAssetCard(theme, Icons.photo_library, 'Screenshots', 'App screenshots and demos'),
-                    _buildAssetCard(theme, Icons.videocam, 'Video Assets', 'Product videos and B-roll'),
+                    _buildAssetCard(context, theme, Icons.image, l10n.pressPageLogoPack, l10n.pressPageLogoPackDesc),
+                    _buildAssetCard(context, theme, Icons.color_lens, l10n.pressPageBrandGuidelines, l10n.pressPageBrandGuidelinesDesc),
+                    _buildAssetCard(context, theme, Icons.photo_library, l10n.pressPageScreenshots, l10n.pressPageScreenshotsDesc),
+                    _buildAssetCard(context, theme, Icons.videocam, l10n.pressPageVideoAssets, l10n.pressPageVideoAssetsDesc),
                   ],
                 ),
 
@@ -295,7 +290,7 @@ class PressPage extends ConsumerWidget {
 
                 // Recent News
                 Text(
-                  'Recent News',
+                  l10n.pressPageRecentNews,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -341,14 +336,14 @@ class PressPage extends ConsumerWidget {
                       Icon(Icons.contact_mail, size: 40, color: AppColors.primary),
                       const SizedBox(height: 16),
                       Text(
-                        'Media Contact',
+                        l10n.pressPageMediaContact,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'For press inquiries, please contact:',
+                        l10n.pressPageMediaContactDesc,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -426,7 +421,7 @@ class PressPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildAssetCard(ThemeData theme, IconData icon, String title, String description) {
+  Widget _buildAssetCard(BuildContext context, ThemeData theme, IconData icon, String title, String description) {
     return Container(
       width: 200,
       padding: const EdgeInsets.all(20),
@@ -457,7 +452,7 @@ class PressPage extends ConsumerWidget {
           TextButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.download, size: 16),
-            label: const Text('Download'),
+            label: Text(context.l10n.pressPageDownload),
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
               minimumSize: Size.zero,

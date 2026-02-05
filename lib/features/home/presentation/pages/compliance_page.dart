@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/providers/page_content_provider.dart';
-import '../../../../core/models/page_content_model.dart';
-import '../widgets/dynamic_page_wrapper.dart';
+import '../../../../core/l10n_extension.dart';
 
 /// Compliance page with regulatory information - fetches content from CMS
 class CompliancePage extends ConsumerWidget {
@@ -12,169 +10,11 @@ class CompliancePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'compliance',
-      fallbackTitle: 'Compliance',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final sections = content.getSections();
-    final lastUpdated = content.getString('last_updated');
-    final certifications = content.getList('certifications');
-    final complianceEmail = content.getString('compliance_email');
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
-        ),
-        title: Text(content.title),
-        backgroundColor: AppColors.surface,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  content.title,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (content.subtitle != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    content.subtitle!,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-                if (lastUpdated.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    'Last updated: $lastUpdated',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-
-                const SizedBox(height: 32),
-
-                // Certifications
-                if (certifications.isNotEmpty) ...[
-                  Text(
-                    'Certifications',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
-                    children: certifications.map((cert) {
-                      final c = cert as Map<String, dynamic>;
-                      return _buildCertCard(
-                        theme,
-                        icon: _getCertIcon(c['icon']?.toString()),
-                        title: c['title']?.toString() ?? '',
-                        description: c['description']?.toString() ?? '',
-                      );
-                    }).toList(),
-                  ),
-
-                  const SizedBox(height: 32),
-                ],
-
-                // Sections from CMS
-                if (sections.isNotEmpty)
-                  ...sections.map((section) => _buildComplianceSection(
-                        theme,
-                        icon: Icons.verified,
-                        title: section.title,
-                        content: section.content,
-                      )),
-
-                const SizedBox(height: 32),
-
-                // Contact
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primary.withOpacity(0.1),
-                        AppColors.accent.withOpacity(0.1),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.contact_support, size: 40, color: AppColors.primary),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Compliance Questions?',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Contact our compliance team for inquiries',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        complianceEmail.isNotEmpty ? complianceEmail : 'compliance@flowedtech.com',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 48),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  IconData _getCertIcon(String? iconName) {
-    switch (iconName) {
-      case 'verified_user':
-        return Icons.verified_user;
-      case 'security':
-        return Icons.security;
-      case 'shield':
-        return Icons.shield;
-      default:
-        return Icons.verified;
-    }
+    return _buildStaticPage(context);
   }
 
   Widget _buildStaticPage(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -183,7 +23,7 @@ class CompliancePage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Compliance'),
+        title: Text(l10n.compliancePageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -196,14 +36,14 @@ class CompliancePage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Compliance & Certifications',
+                  l10n.compliancePageTitle,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Our commitment to security, privacy, and regulatory compliance',
+                  l10n.compliancePageSubtitle,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -213,7 +53,7 @@ class CompliancePage extends ConsumerWidget {
 
                 // Certifications
                 Text(
-                  'Certifications',
+                  l10n.compliancePageCertificationsTitle,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -227,20 +67,20 @@ class CompliancePage extends ConsumerWidget {
                     _buildCertCard(
                       theme,
                       icon: Icons.verified_user,
-                      title: 'SOC 2 Type II',
-                      description: 'Certified for security, availability, and confidentiality',
+                      title: l10n.compliancePageCertSoc2Title,
+                      description: l10n.compliancePageCertSoc2Description,
                     ),
                     _buildCertCard(
                       theme,
                       icon: Icons.security,
-                      title: 'ISO 27001',
-                      description: 'Information security management certification',
+                      title: l10n.compliancePageCertIsoTitle,
+                      description: l10n.compliancePageCertIsoDescription,
                     ),
                     _buildCertCard(
                       theme,
                       icon: Icons.shield,
-                      title: 'GDPR Compliant',
-                      description: 'EU General Data Protection Regulation',
+                      title: l10n.compliancePageCertGdprTitle,
+                      description: l10n.compliancePageCertGdprDescription,
                     ),
                   ],
                 ),
@@ -251,70 +91,36 @@ class CompliancePage extends ConsumerWidget {
                 _buildComplianceSection(
                   theme,
                   icon: Icons.lock,
-                  title: 'Data Protection',
-                  content: '''
-We implement comprehensive data protection measures to safeguard your information:
-
-• End-to-end encryption for data in transit
-• AES-256 encryption for data at rest
-• Regular security audits and penetration testing
-• Multi-factor authentication support
-• Role-based access control
-• Automated backup and disaster recovery
-                  ''',
+                  title: l10n.compliancePageDataProtectionTitle,
+                  content: l10n.compliancePageDataProtectionContent,
                 ),
 
                 _buildComplianceSection(
                   theme,
                   icon: Icons.privacy_tip,
-                  title: 'Privacy Practices',
-                  content: '''
-Our privacy practices are designed to protect your rights:
-
-• Transparent data collection and usage policies
-• User consent management for data processing
-• Data minimization principles
-• Right to access, rectify, and delete personal data
-• Data portability support
-• Regular privacy impact assessments
-                  ''',
+                  title: l10n.compliancePagePrivacyTitle,
+                  content: l10n.compliancePagePrivacyContent,
                 ),
 
                 _buildComplianceSection(
                   theme,
                   icon: Icons.policy,
-                  title: 'Regulatory Compliance',
-                  content: '''
-Flow adheres to international and regional regulations:
-
-• General Data Protection Regulation (GDPR) - EU
-• Protection of Personal Information Act (POPIA) - South Africa
-• Data Protection Act - Ghana, Kenya, Nigeria
-• Children's Online Privacy Protection Act (COPPA)
-• California Consumer Privacy Act (CCPA)
-                  ''',
+                  title: l10n.compliancePageRegulatoryTitle,
+                  content: l10n.compliancePageRegulatoryContent,
                 ),
 
                 _buildComplianceSection(
                   theme,
                   icon: Icons.business,
-                  title: 'Third-Party Security',
-                  content: '''
-We carefully vet and monitor our third-party service providers:
-
-• Vendor security assessments
-• Data processing agreements
-• Subprocessor transparency
-• Regular compliance reviews
-• Incident response coordination
-                  ''',
+                  title: l10n.compliancePageThirdPartyTitle,
+                  content: l10n.compliancePageThirdPartyContent,
                 ),
 
                 const SizedBox(height: 32),
 
                 // Security Practices
                 Text(
-                  'Security Practices',
+                  l10n.compliancePageSecurityTitle,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -330,17 +136,17 @@ We carefully vet and monitor our third-party service providers:
                   ),
                   child: Column(
                     children: [
-                      _buildSecurityItem(theme, Icons.update, 'Regular Updates',
-                          'Security patches and updates deployed continuously'),
+                      _buildSecurityItem(theme, Icons.update, l10n.compliancePageSecurityUpdatesTitle,
+                          l10n.compliancePageSecurityUpdatesDescription),
                       const Divider(),
-                      _buildSecurityItem(theme, Icons.bug_report, 'Bug Bounty Program',
-                          'Responsible disclosure program for security researchers'),
+                      _buildSecurityItem(theme, Icons.bug_report, l10n.compliancePageSecurityBugBountyTitle,
+                          l10n.compliancePageSecurityBugBountyDescription),
                       const Divider(),
-                      _buildSecurityItem(theme, Icons.monitor, 'Monitoring',
-                          '24/7 security monitoring and threat detection'),
+                      _buildSecurityItem(theme, Icons.monitor, l10n.compliancePageSecurityMonitoringTitle,
+                          l10n.compliancePageSecurityMonitoringDescription),
                       const Divider(),
-                      _buildSecurityItem(theme, Icons.history, 'Audit Logs',
-                          'Comprehensive logging of all security events'),
+                      _buildSecurityItem(theme, Icons.history, l10n.compliancePageSecurityAuditTitle,
+                          l10n.compliancePageSecurityAuditDescription),
                     ],
                   ),
                 ),
@@ -365,21 +171,21 @@ We carefully vet and monitor our third-party service providers:
                       Icon(Icons.contact_support, size: 40, color: AppColors.primary),
                       const SizedBox(height: 16),
                       Text(
-                        'Compliance Questions?',
+                        l10n.compliancePageContactTitle,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Contact our compliance team for inquiries',
+                        l10n.compliancePageContactDescription,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'compliance@flowedtech.com',
+                        l10n.compliancePageContactEmail,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,

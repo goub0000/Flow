@@ -13,12 +13,7 @@ class ContactPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'contact',
-      fallbackTitle: 'Contact Us',
-      builder: (context, content) => _ContactDynamicContent(content: content),
-      fallbackBuilder: (context) => const _ContactStaticContent(),
-    );
+    return const _ContactStaticContent();
   }
 }
 
@@ -59,8 +54,8 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
     if (mounted) {
       setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Thank you for your message! We will get back to you soon.'),
+        SnackBar(
+          content: Text(context.l10n.contactPageSuccessMessage),
           backgroundColor: Colors.green,
         ),
       );
@@ -246,7 +241,7 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Send us a message',
+              context.l10n.contactPageSendMessage,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -256,14 +251,14 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
             // Name field
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Your Name',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageYourName,
                 prefixIcon: Icon(Icons.person_outline),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your name';
+                  return context.l10n.contactPageNameRequired;
                 }
                 return null;
               },
@@ -274,17 +269,17 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Email Address',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageEmailAddress,
                 prefixIcon: Icon(Icons.email_outlined),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return context.l10n.contactPageEmailRequired;
                 }
                 if (!value.contains('@')) {
-                  return 'Please enter a valid email';
+                  return context.l10n.contactPageEmailInvalid;
                 }
                 return null;
               },
@@ -294,14 +289,14 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
             // Subject field
             TextFormField(
               controller: _subjectController,
-              decoration: const InputDecoration(
-                labelText: 'Subject',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageSubject,
                 prefixIcon: Icon(Icons.subject),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a subject';
+                  return context.l10n.contactPageSubjectRequired;
                 }
                 return null;
               },
@@ -312,14 +307,14 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
             TextFormField(
               controller: _messageController,
               maxLines: 5,
-              decoration: const InputDecoration(
-                labelText: 'Message',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageMessage,
                 alignLabelWithHint: true,
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your message';
+                  return context.l10n.contactPageMessageRequired;
                 }
                 return null;
               },
@@ -340,7 +335,7 @@ class _ContactDynamicContentState extends State<_ContactDynamicContent> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Send Message'),
+                    : Text(context.l10n.contactPageSendButton),
               ),
             ),
           ],
@@ -385,8 +380,8 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
     if (mounted) {
       setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Thank you for your message! We will get back to you soon.'),
+        SnackBar(
+          content: Text(context.l10n.contactPageSuccessMessage),
           backgroundColor: Colors.green,
         ),
       );
@@ -408,7 +403,7 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Contact Us'),
+        title: Text(context.l10n.contactPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -422,14 +417,14 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
               children: [
                 // Header
                 Text(
-                  'Get in Touch',
+                  context.l10n.contactPageGetInTouch,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Have questions? We'd love to hear from you.",
+                  context.l10n.contactPageSubtitle,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -475,25 +470,25 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
         _buildContactCard(
           theme,
           icon: Icons.email,
-          title: 'Email',
-          content: 'support@flowedtech.com',
-          subtitle: 'We reply within 24 hours',
+          title: context.l10n.contactPageEmail,
+          content: context.l10n.contactPageEmailValue,
+          subtitle: context.l10n.contactPageEmailReply,
         ),
         const SizedBox(height: 16),
         _buildContactCard(
           theme,
           icon: Icons.location_on,
-          title: 'Office',
-          content: 'Accra, Ghana',
-          subtitle: 'West Africa',
+          title: context.l10n.contactPageOffice,
+          content: context.l10n.contactPageOfficeValue,
+          subtitle: context.l10n.contactPageOfficeRegion,
         ),
         const SizedBox(height: 16),
         _buildContactCard(
           theme,
           icon: Icons.access_time,
-          title: 'Hours',
-          content: 'Mon - Fri: 9AM - 6PM',
-          subtitle: 'GMT timezone',
+          title: context.l10n.contactPageHours,
+          content: context.l10n.contactPageHoursValue,
+          subtitle: context.l10n.contactPageHoursTimezone,
         ),
       ],
     );
@@ -569,7 +564,7 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Send us a message',
+              context.l10n.contactPageSendMessage,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -579,14 +574,14 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
             // Name field
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Your Name',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageYourName,
                 prefixIcon: Icon(Icons.person_outline),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your name';
+                  return context.l10n.contactPageNameRequired;
                 }
                 return null;
               },
@@ -597,17 +592,17 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Email Address',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageEmailAddress,
                 prefixIcon: Icon(Icons.email_outlined),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return context.l10n.contactPageEmailRequired;
                 }
                 if (!value.contains('@')) {
-                  return 'Please enter a valid email';
+                  return context.l10n.contactPageEmailInvalid;
                 }
                 return null;
               },
@@ -617,14 +612,14 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
             // Subject field
             TextFormField(
               controller: _subjectController,
-              decoration: const InputDecoration(
-                labelText: 'Subject',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageSubject,
                 prefixIcon: Icon(Icons.subject),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a subject';
+                  return context.l10n.contactPageSubjectRequired;
                 }
                 return null;
               },
@@ -635,14 +630,14 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
             TextFormField(
               controller: _messageController,
               maxLines: 5,
-              decoration: const InputDecoration(
-                labelText: 'Message',
+              decoration: InputDecoration(
+                labelText: context.l10n.contactPageMessage,
                 alignLabelWithHint: true,
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your message';
+                  return context.l10n.contactPageMessageRequired;
                 }
                 return null;
               },
@@ -663,7 +658,7 @@ class _ContactStaticContentState extends State<_ContactStaticContent> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Send Message'),
+                    : Text(context.l10n.contactPageSendButton),
               ),
             ),
           ],

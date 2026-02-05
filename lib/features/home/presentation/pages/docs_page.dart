@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/providers/page_content_provider.dart';
-import '../../../../core/models/page_content_model.dart';
 import '../../../../core/l10n_extension.dart';
-import '../widgets/dynamic_page_wrapper.dart';
 
 /// Documentation page with guides and tutorials - fetches content from CMS
 class DocsPage extends ConsumerWidget {
@@ -13,178 +10,12 @@ class DocsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'docs',
-      fallbackTitle: 'Documentation',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final docSections = content.getList('doc_sections');
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
-        ),
-        title: Text(content.title),
-        backgroundColor: AppColors.surface,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 900),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  content.title,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (content.subtitle != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    content.subtitle!,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-
-                const SizedBox(height: 32),
-
-                // Doc Sections from CMS
-                if (docSections.isNotEmpty)
-                  ...docSections.map((section) {
-                    final s = section as Map<String, dynamic>;
-                    final articles = (s['articles'] as List<dynamic>?)
-                            ?.map((a) => _DocArticle(
-                                  (a as Map<String, dynamic>)['title']?.toString() ?? '',
-                                  a['read_time']?.toString() ?? '',
-                                  _getDocIcon(a['icon']?.toString()),
-                                ))
-                            .toList() ??
-                        [];
-                    return _buildDocSection(
-                      theme,
-                      icon: _getDocIcon(s['icon']?.toString()),
-                      title: s['title']?.toString() ?? '',
-                      description: s['description']?.toString() ?? '',
-                      articles: articles,
-                    );
-                  }),
-
-                const SizedBox(height: 32),
-
-                // Need more help?
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.help_center, size: 48, color: AppColors.primary),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Can't find what you're looking for?",
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Check out our Help Center or contact support',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      FilledButton(
-                        onPressed: () => context.go('/help'),
-                        child: const Text('Help Center'),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 48),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  IconData _getDocIcon(String? iconName) {
-    switch (iconName) {
-      case 'rocket_launch':
-        return Icons.rocket_launch;
-      case 'school':
-        return Icons.school;
-      case 'family_restroom':
-        return Icons.family_restroom;
-      case 'support_agent':
-        return Icons.support_agent;
-      case 'business':
-        return Icons.business;
-      case 'person_add':
-        return Icons.person_add;
-      case 'edit':
-        return Icons.edit;
-      case 'dashboard':
-        return Icons.dashboard;
-      case 'play_circle':
-        return Icons.play_circle;
-      case 'search':
-        return Icons.search;
-      case 'recommend':
-        return Icons.recommend;
-      case 'track_changes':
-        return Icons.track_changes;
-      case 'folder':
-        return Icons.folder;
-      case 'link':
-        return Icons.link;
-      case 'insights':
-        return Icons.insights;
-      case 'assessment':
-        return Icons.assessment;
-      case 'chat':
-        return Icons.chat;
-      case 'people':
-        return Icons.people;
-      case 'calendar_today':
-        return Icons.calendar_today;
-      case 'payment':
-        return Icons.payment;
-      case 'analytics':
-        return Icons.analytics;
-      default:
-        return Icons.article;
-    }
+    return _buildStaticPage(context);
   }
 
   Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -192,7 +23,7 @@ class DocsPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Documentation'),
+        title: Text(l10n.docsPageTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -205,14 +36,14 @@ class DocsPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Documentation',
+                  l10n.docsPageTitle,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Everything you need to know about using Flow',
+                  l10n.docsPageSubtitle,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: AppColors.textSecondary,
                   ),

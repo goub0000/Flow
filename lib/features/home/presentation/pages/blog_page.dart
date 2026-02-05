@@ -13,12 +13,7 @@ class BlogPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicPageWrapper(
-      pageSlug: 'blog',
-      fallbackTitle: 'Blog',
-      builder: (context, content) => _buildDynamicPage(context, content),
-      fallbackBuilder: (context) => _buildStaticPage(context),
-    );
+    return _buildStaticPage(context);
   }
 
   Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
@@ -57,6 +52,7 @@ class BlogPage extends ConsumerWidget {
               // Featured Post
               if (featuredPost.isNotEmpty)
                 _buildFeaturedPost(
+                  context,
                   theme,
                   title: featuredPost['title'] ?? '',
                   excerpt: featuredPost['excerpt'] ?? '',
@@ -189,6 +185,7 @@ class BlogPage extends ConsumerWidget {
 
   Widget _buildStaticPage(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -199,14 +196,14 @@ class BlogPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Flow Blog',
+                l10n.blogPageTitle,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Insights, tips, and stories about education in Africa',
+                l10n.blogPageSubtitle,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -216,6 +213,7 @@ class BlogPage extends ConsumerWidget {
 
               // Featured Post
               _buildFeaturedPost(
+                context,
                 theme,
                 title: 'The Future of Education Technology in Africa',
                 excerpt:
@@ -230,7 +228,7 @@ class BlogPage extends ConsumerWidget {
 
               // Categories
               Text(
-                'Categories',
+                l10n.blogPageCategories,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -241,7 +239,7 @@ class BlogPage extends ConsumerWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  _buildCategoryChip(theme, 'All', true),
+                  _buildCategoryChip(theme, l10n.blogPageAll, true),
                   _buildCategoryChip(theme, 'EdTech', false),
                   _buildCategoryChip(theme, 'University Guides', false),
                   _buildCategoryChip(theme, 'Career Advice', false),
@@ -254,7 +252,7 @@ class BlogPage extends ConsumerWidget {
 
               // Recent Posts
               Text(
-                'Recent Posts',
+                l10n.blogPageRecentPosts,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -336,14 +334,14 @@ class BlogPage extends ConsumerWidget {
                     Icon(Icons.mail, size: 48, color: AppColors.primary),
                     const SizedBox(height: 16),
                     Text(
-                      'Subscribe to Our Newsletter',
+                      l10n.blogPageSubscribeTitle,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Get the latest articles and resources delivered to your inbox',
+                      l10n.blogPageSubscribeSubtitle,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -357,7 +355,7 @@ class BlogPage extends ConsumerWidget {
                           Expanded(
                             child: TextField(
                               decoration: InputDecoration(
-                                hintText: 'Enter your email',
+                                hintText: l10n.blogPageEnterEmail,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -373,7 +371,7 @@ class BlogPage extends ConsumerWidget {
                           const SizedBox(width: 12),
                           FilledButton(
                             onPressed: () {},
-                            child: const Text('Subscribe'),
+                            child: Text(l10n.blogPageSubscribeButton),
                           ),
                         ],
                       ),
@@ -391,6 +389,7 @@ class BlogPage extends ConsumerWidget {
   }
 
   Widget _buildFeaturedPost(
+    BuildContext context,
     ThemeData theme, {
     required String title,
     required String excerpt,
@@ -452,7 +451,7 @@ class BlogPage extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        'Featured',
+                        context.l10n.blogPageFeatured,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: AppColors.accent,
                           fontWeight: FontWeight.w600,
