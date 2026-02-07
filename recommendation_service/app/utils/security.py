@@ -382,10 +382,13 @@ def check_user_can_access_student(current_user: CurrentUser, student_id: str):
 def apply_regional_filter(query, current_user: CurrentUser, region_column: str = 'location'):
     """
     Filter query results by the admin's regional scope.
-    Only applies if the current user is a regional admin with a scope set.
-    Super admins and other roles see all records.
+    Only applies if the current user is a regional admin with a specific region set.
+    Super admins and admins with 'global' scope see all records.
     """
     if current_user.is_regional_admin and current_user.regional_scope:
+        # 'global' or 'Global' means no regional filtering - see all records
+        if current_user.regional_scope.lower() == 'global':
+            return query
         query = query.ilike(region_column, f'%{current_user.regional_scope}%')
     return query
 
