@@ -5,6 +5,8 @@ import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/services/auth_service.dart';
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_config.dart';
 
 /// Admin authentication state
 class AdminAuthState {
@@ -38,8 +40,9 @@ class AdminAuthState {
 /// Admin authentication provider
 class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
   final AuthService _authService;
+  final ApiClient _apiClient;
 
-  AdminAuthNotifier(this._authService) : super(const AdminAuthState()) {
+  AdminAuthNotifier(this._authService, this._apiClient) : super(const AdminAuthState()) {
     // Check if there's an existing admin session
     _initializeFromAuthState();
   }
@@ -65,7 +68,8 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
         final role = UserRoleHelper.getRoleName(userData.activeRole).toLowerCase();
         // Check if user is an admin
         if (role.contains('admin')) {
-          final adminUser = _createAdminUserFromUserModel(userData, role);
+          // Fetch actual admin profile from admin_users table
+          final adminUser = await _fetchAdminProfile(userData, role);
           state = AdminAuthState(
             currentAdmin: adminUser,
             isAuthenticated: true,
@@ -79,6 +83,99 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
     } catch (e) {
       state = AdminAuthState(isLoading: false, error: e.toString());
     }
+  }
+
+  /// Fetch admin profile from the backend admin_users table
+  Future<AdminUser> _fetchAdminProfile(dynamic userData, String fallbackRole) async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/users/admins/me',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        final adminData = response.data!;
+        final adminRole = adminData['admin_role'] as String? ?? fallbackRole;
+        final permissions = adminData['permissions'] as List<dynamic>?;
+        final regionalScope = adminData['regional_scope'] as String?;
+        final isActive = adminData['is_active'] as bool? ?? true;
+
+        return _createAdminUserFromApiData(
+          userData,
+          adminRole,
+          permissions,
+          regionalScope,
+          isActive,
+        );
+      }
+    } catch (e) {
+      // If API call fails, fall back to creating from user model
+    }
+
+    // Fallback to creating admin from user model without actual permissions
+    return _createAdminUserFromUserModel(userData, fallbackRole);
+  }
+
+  /// Create AdminUser from API data with actual permissions
+  AdminUser _createAdminUserFromApiData(
+    dynamic userData,
+    String adminRoleStr,
+    List<dynamic>? permissionsList,
+    String? regionalScope,
+    bool isActive,
+  ) {
+    UserRole adminRole;
+    AdminPermissions permissions;
+
+    final role = adminRoleStr.toLowerCase();
+    if (role == 'superadmin' || role == 'admin_super') {
+      adminRole = UserRole.superAdmin;
+      permissions = AdminPermissions.superAdmin();
+    } else if (role == 'regionaladmin' || role == 'admin_regional') {
+      adminRole = UserRole.regionalAdmin;
+      permissions = AdminPermissions.regionalAdmin(regionalScope ?? 'global');
+    } else if (role == 'contentadmin' || role == 'admin_content') {
+      adminRole = UserRole.contentAdmin;
+      permissions = AdminPermissions.contentAdmin();
+    } else if (role == 'supportadmin' || role == 'admin_support') {
+      adminRole = UserRole.supportAdmin;
+      permissions = AdminPermissions.supportAdmin();
+    } else if (role == 'financeadmin' || role == 'admin_finance') {
+      adminRole = UserRole.financeAdmin;
+      permissions = AdminPermissions.financeAdmin();
+    } else if (role == 'analyticsadmin' || role == 'admin_analytics') {
+      adminRole = UserRole.analyticsAdmin;
+      permissions = AdminPermissions.analyticsAdmin();
+    } else {
+      adminRole = UserRole.supportAdmin;
+      permissions = AdminPermissions.supportAdmin();
+    }
+
+    // Override with custom permissions if provided
+    if (permissionsList != null && permissionsList.isNotEmpty) {
+      final customPermissions = permissionsList
+          .map((p) => AdminPermission.values.firstWhere(
+                (ap) => ap.name == p.toString(),
+                orElse: () => AdminPermission.viewAllUsers,
+              ))
+          .toSet();
+      permissions = AdminPermissions(
+        permissions: customPermissions,
+        regionalScope: regionalScope,
+      );
+    }
+
+    return AdminUser(
+      id: userData.id ?? '',
+      email: userData.email ?? '',
+      displayName: userData.displayName ?? 'Admin',
+      adminRole: adminRole,
+      permissions: permissions,
+      mfaEnabled: false,
+      createdAt: userData.createdAt ?? DateTime.now(),
+      lastLogin: DateTime.now(),
+      isActive: isActive,
+    );
   }
 
   /// Create AdminUser from UserModel
@@ -165,7 +262,8 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
         throw Exception('Access denied: admin role required');
       }
 
-      final adminUser = _createAdminUserFromUserModel(userData, role);
+      // Fetch actual admin profile from admin_users table
+      final adminUser = await _fetchAdminProfile(userData, role);
       state = AdminAuthState(
         currentAdmin: adminUser,
         isAuthenticated: true,
@@ -304,7 +402,8 @@ class AdminAuthNotifier extends StateNotifier<AdminAuthState> {
 final adminAuthProvider =
     StateNotifierProvider<AdminAuthNotifier, AdminAuthState>((ref) {
   final authService = ref.watch(authServiceProvider);
-  return AdminAuthNotifier(authService);
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminAuthNotifier(authService, apiClient);
 });
 
 /// Current admin user provider (convenience)
