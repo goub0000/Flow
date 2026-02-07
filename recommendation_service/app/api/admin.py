@@ -376,7 +376,7 @@ async def get_current_admin_profile(
     Get current admin's profile (any admin role).
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client to bypass RLS
         response = db.table('admin_users').select('*').eq('id', current_user.id).single().execute()
 
         if not response.data:
@@ -412,7 +412,7 @@ async def list_admin_users(
     Regional admins only see admins below their hierarchy level.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client to bypass RLS
         response = db.table('admin_users').select(
             '*, users!inner(email, display_name)'
         ).execute()
@@ -471,7 +471,7 @@ async def get_admin_user(
     Get a single admin user by ID (Super Admin and Regional Admin).
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client to bypass RLS
         response = db.table('admin_users').select(
             '*, users!inner(email, display_name, phone_number)'
         ).eq('id', admin_id).single().execute()
@@ -528,7 +528,7 @@ async def update_admin_user(
 
         if request.admin_role == 'regionaladmin' and not request.regional_scope:
             # Check if existing record already has regional_scope
-            db = get_supabase()
+            db = get_supabase_admin()  # Use admin client to bypass RLS
             existing = db.table('admin_users').select('regional_scope').eq('id', admin_id).single().execute()
             if not (existing.data and existing.data.get('regional_scope')):
                 raise HTTPException(
@@ -540,7 +540,7 @@ async def update_admin_user(
     caller_role = UserRole.normalize_role(current_user.role)
     caller_level = _ROLE_HIERARCHY.get(caller_role, 0)
     if caller_level < 3:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client to bypass RLS
         existing_admin = db.table('admin_users').select('admin_role').eq('id', admin_id).single().execute()
         if existing_admin.data:
             existing_role = existing_admin.data.get('admin_role', '')
