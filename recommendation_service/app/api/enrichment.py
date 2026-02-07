@@ -9,7 +9,7 @@ from typing import Optional, List
 import logging
 import aiohttp
 from datetime import datetime
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.enrichment.auto_fill_orchestrator import AutoFillOrchestrator
 from app.enrichment.async_auto_fill_orchestrator import AsyncAutoFillOrchestrator
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 def _get_job_from_db(job_id: str) -> Optional[dict]:
     """Retrieve job status from database"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         response = db.table('enrichment_jobs').select('*').eq('job_id', job_id).single().execute()
         if response.data:
             job = response.data
@@ -46,7 +46,7 @@ def _get_job_from_db(job_id: str) -> Optional[dict]:
 def _create_job_in_db(job_id: str, status: str = 'pending', message: str = 'Job queued') -> dict:
     """Create new job record in database"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         job_data = {
             'job_id': job_id,
             'status': status,
@@ -77,7 +77,7 @@ def _create_job_in_db(job_id: str, status: str = 'pending', message: str = 'Job 
 def _update_job_in_db(job_id: str, updates: dict) -> bool:
     """Update job status in database"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         # Map API field names to database column names
         db_updates = {}
         if 'status' in updates:
@@ -131,7 +131,7 @@ def run_enrichment_job(job_id: str, request: EnrichmentRequest, trigger_ml_train
         _update_job_in_db(job_id, {'status': 'running', 'started_at': datetime.now()})
 
         # Get database client
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
 
         # Initialize orchestrator
         orchestrator = AutoFillOrchestrator(
@@ -190,7 +190,7 @@ async def run_async_enrichment_job(job_id: str, request: EnrichmentRequest, trig
         _update_job_in_db(job_id, {'status': 'running', 'started_at': datetime.now()})
 
         # Get database client
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
 
         # Initialize async orchestrator
         orchestrator = AsyncAutoFillOrchestrator(
@@ -290,7 +290,7 @@ async def get_enrichment_status(job_id: str):
 async def get_all_enrichment_jobs():
     """Get status of all enrichment jobs"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         # Get recent jobs (last 100)
         response = db.table('enrichment_jobs')\
             .select('*')\
@@ -328,7 +328,7 @@ async def analyze_data_quality():
     Returns statistics on which fields have NULL values and how many
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
 
         # Get total count
         result = db.table('universities').select('id', count='exact').limit(1).execute()
@@ -560,7 +560,7 @@ async def run_us_enrichment_job(job_id: str, limit: int):
         logger.info(f"Starting US university enrichment job {job_id}")
         _update_job_in_db(job_id, {'status': 'running', 'started_at': datetime.now()})
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
 
         # Use orchestrator with US-only query
         orchestrator = AsyncAutoFillOrchestrator(
@@ -651,7 +651,7 @@ async def get_us_university_stats():
     Shows how many US universities need College Scorecard enrichment
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
 
         # Get all US universities
         response = db.table('universities').select('*').in_(
@@ -720,7 +720,7 @@ async def clear_old_jobs():
     from datetime import timedelta
 
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cutoff = (datetime.now() - timedelta(hours=24)).isoformat()
 
         # Delete old completed/failed jobs
@@ -760,7 +760,7 @@ async def cleanup_stuck_jobs():
     from datetime import timedelta
 
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cutoff = (datetime.now() - timedelta(hours=6)).isoformat()
 
         # Find stuck jobs (running for more than 6 hours)
@@ -815,7 +815,7 @@ async def get_cache_statistics():
     try:
         from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cache = AsyncEnrichmentCache(db)
 
         stats = cache.get_database_stats()
@@ -844,7 +844,7 @@ async def get_cache_health():
     try:
         from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cache = AsyncEnrichmentCache(db)
 
         stats = cache.get_database_stats()
@@ -919,7 +919,7 @@ async def invalidate_university_cache(university_id: int):
     try:
         from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cache = AsyncEnrichmentCache(db)
 
         deleted = cache.invalidate_university(university_id)
@@ -956,7 +956,7 @@ async def invalidate_field_cache(field_name: str):
     try:
         from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cache = AsyncEnrichmentCache(db)
 
         deleted = cache.invalidate_field(field_name)
@@ -990,7 +990,7 @@ async def cleanup_expired_cache():
     try:
         from app.enrichment.async_enrichment_cache import AsyncEnrichmentCache
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
         cache = AsyncEnrichmentCache(db)
 
         deleted = cache.cleanup_expired()
@@ -1026,7 +1026,7 @@ async def clear_all_cache():
         Number of entries deleted
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for enrichment data
 
         # Delete all cache entries
         response = db.table('enrichment_cache').delete().neq('id', 0).execute()

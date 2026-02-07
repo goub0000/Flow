@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query, Path
 from typing import List, Optional
 from uuid import UUID
 from datetime import datetime
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.schemas.program import (
     ProgramCreate,
     ProgramUpdate,
@@ -89,7 +89,7 @@ async def get_programs(
     - limit: Pagination limit (max 100)
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # CRITICAL: First, get all registered institution user IDs from auth.users
         # This ensures we only show programs from registered institutions,
@@ -167,7 +167,7 @@ async def get_programs(
 async def get_program_statistics(institution_id: Optional[UUID] = None):
     """Get program statistics, optionally filtered by institution"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Build query
         query = db.table('programs').select('*')
@@ -204,7 +204,7 @@ async def get_program_statistics(institution_id: Optional[UUID] = None):
 async def get_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Get a specific program by ID"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         result = db.table('programs').select('*').eq('id', str(program_id)).execute()
 
@@ -224,7 +224,7 @@ async def get_program(program_id: str = Path(..., description="Program ID", patt
 async def create_program(program: ProgramCreate):
     """Create a new program"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Convert Pydantic model to dict
         program_data = program.model_dump()
@@ -262,7 +262,7 @@ async def create_program(program: ProgramCreate):
 async def update_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$"), program: ProgramUpdate = ...):
     """Update an existing program"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Check if program exists
         existing = db.table('programs').select('id').eq('id', str(program_id)).execute()
@@ -305,7 +305,7 @@ async def update_program(program_id: str = Path(..., description="Program ID", p
 async def delete_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Delete a program"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Check if program exists
         existing = db.table('programs').select('id').eq('id', str(program_id)).execute()
@@ -328,7 +328,7 @@ async def delete_program(program_id: str = Path(..., description="Program ID", p
 async def toggle_program_status(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Toggle program active status"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Get current status
         result = db.table('programs').select('is_active').eq('id', str(program_id)).execute()
@@ -371,7 +371,7 @@ async def get_institution_programs(
 async def enroll_student_in_program(program_id: str = Path(..., description="Program ID", pattern="^[a-zA-Z0-9_-]+$")):
     """Increment enrolled students count (simulated enrollment)"""
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Get current enrollment
         result = db.table('programs').select('enrolled_students, max_students').eq('id', str(program_id)).execute()

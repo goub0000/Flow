@@ -7,7 +7,7 @@ from uuid import uuid4
 from datetime import datetime
 
 from app.services.messaging_service import MessagingService
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.schemas.messaging import (
     ConversationCreateRequest,
     ConversationResponse,
@@ -322,7 +322,7 @@ async def diagnose_storage(
     import os
     logger = logging.getLogger(__name__)
 
-    supabase = get_supabase()
+    supabase = get_supabase_admin()  # Use admin client for messaging data
     bucket_name = "messaging-attachments"
 
     diagnosis = {
@@ -443,7 +443,7 @@ async def upload_file(
         logger.info(f"Uploading file: {original_filename} -> {unique_filename}, type: {file_type}, size: {file_size}")
 
         # Upload to Supabase Storage
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for messaging data
         bucket_name = "messaging-attachments"
 
         try:

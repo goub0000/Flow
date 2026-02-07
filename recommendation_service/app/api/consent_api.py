@@ -9,7 +9,7 @@ from typing import Optional, List
 from datetime import datetime
 import logging
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.utils.security import get_current_user, get_optional_user, CurrentUser, require_admin
 
 logger = logging.getLogger(__name__)
@@ -61,7 +61,7 @@ async def save_consent(
     - Saved consent data (201 for new, 200 for update)
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for consent data
         user_id = current_user.id
 
         now = datetime.utcnow().isoformat()
@@ -142,7 +142,7 @@ async def get_consent(
     - User's consent data or null if not set
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for consent data
         user_id = current_user.id
 
         response = db.table('cookie_consents').select('*').eq('user_id', user_id).execute()
@@ -193,7 +193,7 @@ async def get_consent_statistics(
     **Requires:** Admin authentication
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for consent data
 
         # Get total users
         users_result = db.table('users').select('id', count='exact').execute()
@@ -289,7 +289,7 @@ async def get_consent_users(
     **Requires:** Admin authentication
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for consent data
 
         # Fetch all consent records joined with user display names
         query = db.table('cookie_consents').select(

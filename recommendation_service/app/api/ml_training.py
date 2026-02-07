@@ -3,7 +3,7 @@ ML Model Training API
 Train models directly on Railway
 """
 from fastapi import APIRouter, BackgroundTasks
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 import logging
 
 router = APIRouter()
@@ -36,7 +36,7 @@ def train_models_background():
         import os
         from datetime import datetime
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
 
         # Determine training data size based on data quality
         # As enrichment improves, use more real data

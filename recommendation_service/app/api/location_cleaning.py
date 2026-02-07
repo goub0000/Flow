@@ -8,7 +8,7 @@ from datetime import datetime
 import logging
 import uuid
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.enrichment.location_cleaner import LocationCleaner
 
 router = APIRouter()
@@ -50,7 +50,7 @@ def run_cleaning_job(job_id: str, request: CleaningRequest):
         logger.info(f"Starting location cleaning job {job_id}")
         cleaning_jobs[job_id]['status'] = 'running'
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
         cleaner = LocationCleaner(db=db)
 
         # Run cleaning
@@ -147,7 +147,7 @@ def preview_location_changes(limit: int = 50):
     """
     limit = min(limit, 100)  # Cap at 100 for performance
 
-    db = get_supabase()
+    db = get_supabase_admin()  # Use admin client for data access
     cleaner = LocationCleaner(db=db)
 
     changes = cleaner.preview_changes(limit=limit)
@@ -176,7 +176,7 @@ def analyze_location_data():
     Analyze current location data quality
     Shows statistics about country codes and state values
     """
-    db = get_supabase()
+    db = get_supabase_admin()  # Use admin client for data access
 
     # Get sample of data
     response = db.table('universities').select('country', 'state').limit(1000).execute()

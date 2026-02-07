@@ -69,10 +69,10 @@ async def get_my_assigned_courses(
     **Returns:**
     - List of assigned courses with assignment details
     """
-    from app.database.config import get_supabase
+    from app.database.config import get_supabase_admin
 
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for content access
 
         # Get assignments for this user (directly assigned or assigned to all students)
         assignments_response = db.table('content_assignments').select(

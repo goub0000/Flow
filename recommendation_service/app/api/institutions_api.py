@@ -9,7 +9,7 @@ import logging
 from datetime import datetime, timedelta
 from collections import defaultdict
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.utils.security import get_current_user, CurrentUser
 from pydantic import BaseModel
 
@@ -71,7 +71,7 @@ async def get_institutions(
     - Total count for pagination
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Calculate offset for pagination
         offset = (page - 1) * page_size
@@ -174,7 +174,7 @@ async def get_institution(
     - Institution details including programs and courses count
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Fetch institution
         response = db.table('users').select(
@@ -313,7 +313,7 @@ async def get_application_funnel(
     - Overall conversion rate from viewed to accepted
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Calculate date filter based on period
         if period == "7_days":
@@ -458,7 +458,7 @@ async def get_applicant_demographics(
     - Academic background distribution (high school, bachelor's, master's, etc.)
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Get all applications for this institution
         response = db.table('applications').select(
@@ -572,7 +572,7 @@ async def get_program_popularity(
     - Highest acceptance rate
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Get all applications for this institution grouped by program
         response = db.table('applications').select(
@@ -670,7 +670,7 @@ async def get_time_to_decision(
     - Distribution of pending application ages
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for public data access
 
         # Get all applications
         response = db.table('applications').select(

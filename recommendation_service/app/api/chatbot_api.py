@@ -11,7 +11,7 @@ import os
 
 from app.services.ai_chat_service import get_ai_chat_service, AIChatService
 from app.services.feedback_analytics_service import get_feedback_analytics_service
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.schemas.chatbot import (
     ChatMessageRequest,
     ChatMessageResponse,
@@ -69,7 +69,7 @@ async def send_message(
     - AI response with confidence score and quick actions
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
         ai_service = get_ai_chat_service()
 
         conversation_id = request.conversation_id
@@ -218,7 +218,7 @@ async def list_conversations(
     - status_filter: Filter by status (active, archived, escalated)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Build query
         query = supabase.table('chatbot_conversations').select(
@@ -285,7 +285,7 @@ async def get_conversation(
     **Requires:** Authentication (must be owner or admin)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         result = supabase.table('chatbot_conversations').select(
             '*'
@@ -354,7 +354,7 @@ async def get_conversation_messages(
     **Requires:** Authentication (must be owner or admin)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify access to conversation
         conv_result = supabase.table('chatbot_conversations').select(
@@ -436,7 +436,7 @@ async def sync_conversation(
     - updated_at: Last update timestamp
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         conv_id = request.get('id')
         if not conv_id:
@@ -505,7 +505,7 @@ async def delete_conversation(
     **Requires:** Authentication (must be owner)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify ownership
         conv_result = supabase.table('chatbot_conversations').select(
@@ -565,7 +565,7 @@ async def submit_feedback(
     - comment: Optional feedback comment
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify message exists and belongs to user's conversation
         msg_result = supabase.table('chatbot_messages').select(
@@ -643,7 +643,7 @@ async def escalate_conversation(
     **Requires:** Authentication (must be conversation owner)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify ownership
         conv_result = supabase.table('chatbot_conversations').select(
@@ -749,7 +749,7 @@ async def get_admin_stats(
     - Total conversations, active conversations, message counts, topic breakdown
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify admin role
         user_result = supabase.table('users').select(
@@ -830,7 +830,7 @@ async def get_support_queue(
     **Requires:** Admin authentication
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify admin role
         user_result = supabase.table('users').select(
@@ -961,7 +961,7 @@ async def assign_conversation(
     Assign escalated conversation to agent (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Update queue entry
         supabase.table('chatbot_support_queue').update({
@@ -991,7 +991,7 @@ async def agent_reply(
     Send agent reply to conversation (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Get agent name
         agent_result = supabase.table('users').select(
@@ -1054,7 +1054,7 @@ async def list_all_conversations(
     List all conversations (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         query = supabase.table('chatbot_conversations').select('*', count='exact')
 
@@ -1122,7 +1122,7 @@ async def list_faqs(
     List FAQs (public endpoint)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         query = supabase.table('chatbot_faqs').select('*', count='exact')
 
@@ -1185,7 +1185,7 @@ async def create_faq(
     Create FAQ (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         faq_data = {
             'question': request.question,
@@ -1236,7 +1236,7 @@ async def update_faq(
     Update FAQ (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         update_data = {'updated_at': datetime.utcnow().isoformat()}
 
@@ -1301,7 +1301,7 @@ async def delete_faq(
     Delete FAQ (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         supabase.table('chatbot_faqs').delete().eq('id', faq_id).execute()
 
@@ -1324,7 +1324,7 @@ async def get_feedback_stats(
     Get feedback statistics (admin only)
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Get overall stats
         helpful_result = supabase.table('chatbot_messages').select(
@@ -1379,7 +1379,7 @@ async def get_feedback_report(
     - Comprehensive report with trends, provider comparison, suggestions
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify admin role
         user_result = supabase.table('users').select(
@@ -1525,7 +1525,7 @@ async def upload_file(
     - File URL and metadata
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Validate file extension
         file_ext = os.path.splitext(file.filename or '')[1].lower()
@@ -1634,7 +1634,7 @@ async def archive_old_conversations(
     - Count of archived conversations
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify admin role
         user_result = supabase.table('users').select(
@@ -1713,7 +1713,7 @@ async def delete_user_data(
         )
 
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Get user's conversation IDs
         convs_result = supabase.table('chatbot_conversations').select(
@@ -1793,7 +1793,7 @@ async def admin_delete_user_data(
         )
 
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify admin role
         admin_result = supabase.table('users').select(
@@ -1878,7 +1878,7 @@ async def anonymize_old_data(
     - Keeps message content and metadata for analysis
     """
     try:
-        supabase = get_supabase()
+        supabase = get_supabase_admin()  # Use admin client for chatbot data
 
         # Verify admin role
         user_result = supabase.table('users').select(

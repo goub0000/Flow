@@ -11,7 +11,7 @@ import os
 import psutil
 import logging
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.utils.security import RoleChecker, UserRole, CurrentUser
 from app.cache.redis_cache import cache
 
@@ -71,7 +71,7 @@ async def health_check():
 
     # Check database connection
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
         db.table('users').select('id').limit(1).execute()
         checks["database"] = "connected"
     except Exception as e:
@@ -121,7 +121,7 @@ async def readiness_check():
     """
     try:
         # Check critical services
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
         db.table('users').select('id').limit(1).execute()
 
         return {"status": "ready", "timestamp": datetime.utcnow().isoformat()}
@@ -214,7 +214,7 @@ async def detailed_health_check(
 
     # Database check
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
 
         # Test connection
         start_time = datetime.utcnow()

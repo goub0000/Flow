@@ -7,7 +7,7 @@ from typing import Dict, Any, List, Optional
 import logging
 from datetime import datetime
 
-from app.database.config import get_supabase
+from app.database.config import get_supabase, get_supabase_admin
 from app.utils.security import get_current_user, CurrentUser, require_institution
 from pydantic import BaseModel
 
@@ -48,7 +48,7 @@ async def debug_institution_applications(
     applications_found = []
 
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
         timestamp = datetime.utcnow().isoformat()
 
         # 1. Log current user info
@@ -232,7 +232,7 @@ async def check_student_applications(
     - Application details and diagnostic information
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Use admin client for data access
 
         if student_id:
             # Check specific student
