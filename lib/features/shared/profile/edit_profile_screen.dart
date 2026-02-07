@@ -1,13 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/models/user_model.dart';
 import '../../../core/constants/user_roles.dart';
 import '../../../core/widgets/custom_app_bar.dart';
-import '../../../core/l10n_extension.dart';
 import '../../authentication/providers/auth_provider.dart';
 import '../widgets/custom_card.dart';
 import '../providers/profile_provider.dart';
@@ -1699,46 +1699,45 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         photoFileName: _selectedPhotoFileName,
       );
 
-      if (mounted) {
-        if (success) {
-          // Refresh the profile to ensure we have the latest data
-          await ref.read(profileProvider.notifier).refresh();
+      if (!mounted) return;
+      if (success) {
+        // Refresh the profile to ensure we have the latest data
+        await ref.read(profileProvider.notifier).refresh();
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Profile updated successfully!'),
-              backgroundColor: AppColors.success,
-            ),
-          );
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Profile updated successfully!'),
+            backgroundColor: AppColors.success,
+          ),
+        );
 
-          setState(() {
-            _hasUnsavedChanges = false;
-            _isSubmitting = false;
-          });
+        setState(() {
+          _hasUnsavedChanges = false;
+          _isSubmitting = false;
+        });
 
-          context.pop();
-        } else {
-          // Get error from provider state
-          final error = ref.read(profileProvider).error ?? 'Failed to update profile';
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(error),
-              backgroundColor: AppColors.error,
-            ),
-          );
-          setState(() => _isSubmitting = false);
-        }
-      }
-    } catch (e) {
-      if (mounted) {
+        context.pop();
+      } else {
+        // Get error from provider state
+        final error = ref.read(profileProvider).error ?? 'Failed to update profile';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error saving profile: $e'),
+            content: Text(error),
             backgroundColor: AppColors.error,
           ),
         );
         setState(() => _isSubmitting = false);
       }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving profile: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      setState(() => _isSubmitting = false);
     }
   }
 }
@@ -1790,7 +1789,7 @@ class _ProfileCompletionIndicator extends StatelessWidget {
             child: LinearProgressIndicator(
               value: completion,
               minHeight: 8,
-              backgroundColor: AppColors.surfaceVariant,
+              backgroundColor: AppColors.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation<Color>(_getCompletionColor(completion)),
             ),
           ),

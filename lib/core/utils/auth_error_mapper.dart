@@ -1,5 +1,6 @@
 /// Authentication Error Mapper
 /// Maps technical error messages from Supabase/backend to user-friendly messages
+library;
 
 class AuthErrorMapper {
   /// Common error patterns and their user-friendly messages

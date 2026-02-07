@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/course_content_models.dart';
@@ -24,7 +26,6 @@ class CourseContentBuilderScreen extends ConsumerStatefulWidget {
 
 class _CourseContentBuilderScreenState
     extends ConsumerState<CourseContentBuilderScreen> {
-  final _moduleFormKey = GlobalKey<FormState>();
   final _lessonFormKey = GlobalKey<FormState>();
   final _moduleTitleController = TextEditingController();
   final _moduleDescriptionController = TextEditingController();
@@ -205,7 +206,7 @@ class _CourseContentBuilderScreenState
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor.withValues(alpha:0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -530,7 +531,8 @@ class _CourseContentBuilderScreenState
               .read(courseModulesProvider(widget.courseId).notifier)
               .createModule(fullRequest);
 
-          if (result != null && mounted) {
+          if (!context.mounted) return;
+          if (result != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(context.l10n.instCourseModuleCreatedSuccess(request.title)),
@@ -565,7 +567,8 @@ class _CourseContentBuilderScreenState
               .read(courseModulesProvider(widget.courseId).notifier)
               .updateModule(module.id, fullRequest);
 
-          if (result != null && mounted) {
+          if (!context.mounted) return;
+          if (result != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(context.l10n.instCourseModuleUpdatedSuccess(request.title)),
@@ -691,6 +694,8 @@ class _CourseContentBuilderScreenState
       ),
     );
 
+    if (!mounted) return;
+
     // Refresh lessons if changes were made
     if (result == true) {
       ref.read(lessonsProvider.notifier).fetchModuleLessons(moduleId);
@@ -768,8 +773,8 @@ class _CourseContentBuilderScreenState
   void _showEditCourseInfoDialog() {
     final titleController = TextEditingController(text: widget.course?.title ?? '');
     final descriptionController = TextEditingController(text: widget.course?.description ?? '');
-    String selectedType = (widget.course?.courseType?.toString()) ?? 'video';
-    String selectedLevel = (widget.course?.level?.toString()) ?? 'beginner';
+    String selectedType = widget.course?.courseType.toString() ?? 'video';
+    String selectedLevel = widget.course?.level.toString() ?? 'beginner';
     bool isSaving = false;
 
     showDialog(
@@ -882,15 +887,14 @@ class _CourseContentBuilderScreenState
                       // For now just show success message
                       await Future.delayed(const Duration(milliseconds: 500));
 
-                      if (mounted) {
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(context.l10n.instCourseInfoUpdatedSuccess),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                      }
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(context.l10n.instCourseInfoUpdatedSuccess),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
                     },
               icon: isSaving
                   ? const SizedBox(

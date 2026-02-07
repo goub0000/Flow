@@ -110,7 +110,7 @@ class _ApprovalFilterDialogState extends State<ApprovalFilterDialog> {
                   return FilterChip(
                     label: Text(priority.displayName),
                     selected: isSelected,
-                    selectedColor: _getPriorityColor(priority).withOpacity(0.2),
+                    selectedColor: _getPriorityColor(priority).withValues(alpha: 0.2),
                     onSelected: (selected) {
                       setState(() {
                         if (selected) {

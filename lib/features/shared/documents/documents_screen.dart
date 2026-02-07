@@ -3,12 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/models/document_model.dart';
-import '../../../core/l10n_extension.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/skeleton_loader.dart';
 import '../widgets/file_upload_widget.dart';
-import '../widgets/cached_image.dart';
 import '../providers/documents_provider.dart';
 
 class DocumentsScreen extends ConsumerStatefulWidget {
@@ -676,23 +674,21 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen>
               Navigator.pop(context);
               try {
                 await ref.read(documentsProvider.notifier).deleteDocument(document.id);
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Document deleted'),
-                      backgroundColor: AppColors.success,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Document deleted'),
+                    backgroundColor: AppColors.success,
+                  ),
+                );
               } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Failed to delete document: $e'),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Failed to delete document: $e'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
               }
             },
             style: ElevatedButton.styleFrom(

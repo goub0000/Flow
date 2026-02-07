@@ -177,7 +177,8 @@ class SettingsSwitchTile extends StatelessWidget {
       trailing: Switch(
         value: value,
         onChanged: enabled ? onChanged : null,
-        activeColor: AppColors.primary,
+        activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+        activeThumbColor: AppColors.primary,
       ),
       onTap: enabled ? () => onChanged(!value) : null,
     );

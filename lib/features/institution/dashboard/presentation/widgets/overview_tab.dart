@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/models/program_model.dart';
-import '../../../../../core/models/applicant_model.dart';
 import '../../../../shared/widgets/custom_card.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
 import '../../../../shared/widgets/refresh_utilities.dart';
@@ -46,7 +44,7 @@ class _OverviewTabState extends ConsumerState<OverviewTab> with RefreshableMixin
         try {
           ref.read(institutionApplicantsRealtimeProvider.notifier).refresh();
         } catch (e) {
-          print('[DEBUG] Real-time provider refresh skipped: $e');
+          // Real-time provider might not be available
         }
 
         // Refresh analytics data

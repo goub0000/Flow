@@ -43,6 +43,7 @@ class AppColors {
   static const Color background = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceVariant = Color(0xFFF8FAFB);
+  static const Color surfaceContainerHighest = Color(0xFFF8FAFB);
 
   // Text Colors
   // WCAG AA compliant: minimum 4.5:1 contrast ratio for normal text

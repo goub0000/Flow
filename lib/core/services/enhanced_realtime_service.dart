@@ -1,6 +1,7 @@
 /// Enhanced Realtime Service
 /// Comprehensive Supabase real-time subscription management with auto-reconnection
 /// and proper cleanup mechanisms
+library;
 
 import 'dart:async';
 import 'package:logging/logging.dart';

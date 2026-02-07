@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -357,7 +359,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(Icons.quiz_outlined, color: AppColors.primary, size: 24),
@@ -398,7 +400,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: faq.isActive ? AppColors.border : AppColors.error.withOpacity(0.3),
+          color: faq.isActive ? AppColors.border : AppColors.error.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -410,7 +412,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
             decoration: BoxDecoration(
               color: faq.isActive
                   ? AppColors.surface
-                  : AppColors.error.withOpacity(0.05),
+                  : AppColors.error.withValues(alpha: 0.05),
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(12)),
             ),
@@ -421,7 +423,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
@@ -440,7 +442,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(0.1),
+                      color: Colors.amber.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
@@ -465,7 +467,7 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.error.withOpacity(0.1),
+                      color: AppColors.error.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -607,10 +609,10 @@ class _FAQManagementScreenState extends ConsumerState<FAQManagementScreen> {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: faq.helpfulPercentage >= 70
-                          ? Colors.green.withOpacity(0.1)
+                          ? Colors.green.withValues(alpha: 0.1)
                           : faq.helpfulPercentage >= 40
-                              ? Colors.orange.withOpacity(0.1)
-                              : Colors.red.withOpacity(0.1),
+                              ? Colors.orange.withValues(alpha: 0.1)
+                              : Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(

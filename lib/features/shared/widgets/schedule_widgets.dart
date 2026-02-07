@@ -749,7 +749,7 @@ class EmptyScheduleState extends StatelessWidget {
   final String? subtitle;
   final VoidCallback? onAddEvent;
 
-  EmptyScheduleState({
+  const EmptyScheduleState({
     super.key,
     this.message,
     this.subtitle,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'app_colors.dart';
 
 /// Theme Mode Provider
@@ -35,7 +35,7 @@ class AdminThemeData {
         secondary: AppColors.secondary,
         tertiary: AppColors.accent,
         surface: AppColors.surface,
-        surfaceContainerHighest: AppColors.surfaceVariant,
+        surfaceContainerHighest: AppColors.surfaceContainerHighest,
         error: AppColors.error,
         onPrimary: AppColors.textOnPrimary,
         onSurface: AppColors.textPrimary,

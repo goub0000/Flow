@@ -1,5 +1,6 @@
 /// Enrollments Service
 /// Handles course enrollment-related API calls
+library;
 
 import '../api/api_client.dart';
 import '../api/api_config.dart';

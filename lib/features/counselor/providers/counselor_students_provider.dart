@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/counseling_models.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';

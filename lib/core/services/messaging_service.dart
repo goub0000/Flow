@@ -1,5 +1,6 @@
 /// Messaging Service
 /// Handles real-time messaging API calls
+library;
 
 import 'dart:typed_data';
 import '../api/api_client.dart';

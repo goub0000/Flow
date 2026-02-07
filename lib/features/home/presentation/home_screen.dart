@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -477,7 +479,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   end: Alignment.bottomCenter,
                   colors: [
                     AppColors.surface,
-                    AppColors.surfaceVariant,
+                    AppColors.surfaceContainerHighest,
                   ],
                 ),
               ),
@@ -541,7 +543,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.surfaceVariant,
+                    AppColors.surfaceContainerHighest,
                     AppColors.surface,
                   ],
                 ),
@@ -601,7 +603,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   end: Alignment.bottomRight,
                   colors: [
                     AppColors.surface,
-                    AppColors.surfaceVariant,
+                    AppColors.surfaceContainerHighest,
                     AppColors.surface,
                   ],
                 ),
@@ -870,91 +872,6 @@ class _AnimatedStatItemState extends State<_AnimatedStatItem>
   }
 }
 
-class _FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _FeatureCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 300,
-        padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withValues(alpha: 0.4), width: 3),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.2),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [color.withValues(alpha: 0.2), color.withValues(alpha: 0.1)],
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                size: 56,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-                fontSize: 20,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              description,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.6,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            Icon(
-              Icons.arrow_forward,
-              color: color,
-              size: 24,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _FooterLink extends StatelessWidget {
   final String label;
@@ -981,113 +898,8 @@ class _FooterLink extends StatelessWidget {
   }
 }
 
-class _FooterLinkWithIcon extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
 
-  const _FooterLinkWithIcon({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 16,
-              color: AppColors.textSecondary,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SocialIcon extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-
-  const _SocialIcon({
-    required this.icon,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(50),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.primary.withValues(alpha: 0.1),
-          border: Border.all(
-            color: AppColors.primary.withValues(alpha: 0.3),
-            width: 1.5,
-          ),
-        ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: AppColors.primary,
-        ),
-      ),
-    );
-  }
-}
-
-class _FooterFeature extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const _FooterFeature({
-    required this.icon,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          size: 16,
-          color: AppColors.primary,
-        ),
-        const SizedBox(width: 6),
-        Text(
-          text,
-          style: TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 13,
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class _PlatformFeature extends StatelessWidget {
   final IconData icon;
@@ -1102,8 +914,6 @@ class _PlatformFeature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       width: 160,
       padding: const EdgeInsets.all(10),
@@ -1141,8 +951,6 @@ class _HowItWorksStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       width: 150,
       padding: const EdgeInsets.all(10),
@@ -1192,8 +1000,6 @@ class _TestimonialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       width: 200,
       padding: const EdgeInsets.all(10),
@@ -1270,7 +1076,7 @@ class _AccountTypesSectionState extends State<_AccountTypesSection>
 
           // Tab Navigation
           Container(
-            decoration: BoxDecoration(color: AppColors.surfaceVariant, borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(color: AppColors.surfaceContainerHighest, borderRadius: BorderRadius.circular(8)),
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
@@ -1400,8 +1206,6 @@ class _AccountTypeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -1485,128 +1289,6 @@ class _FeatureItem {
   });
 }
 
-class _AccountTypesTabDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  double get minExtent => 56;
-
-  @override
-  double get maxExtent => 56;
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      height: 56,
-      color: AppColors.surface,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surfaceVariant,
-          border: Border(
-            bottom: BorderSide(color: AppColors.border, width: 1),
-          ),
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            children: [
-              Text(
-                '${context.l10n.homeNavWhoCanUse}: ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(width: 16),
-              _TabButton(
-                icon: Icons.school,
-                label: context.l10n.homeNavStudents,
-                color: AppColors.studentRole,
-                onTap: () {},
-              ),
-              const SizedBox(width: 8),
-              _TabButton(
-                icon: Icons.business,
-                label: context.l10n.homeNavInstitutions,
-                color: AppColors.institutionRole,
-                onTap: () {},
-              ),
-              const SizedBox(width: 8),
-              _TabButton(
-                icon: Icons.family_restroom,
-                label: context.l10n.homeNavParents,
-                color: AppColors.parentRole,
-                onTap: () {},
-              ),
-              const SizedBox(width: 8),
-              _TabButton(
-                icon: Icons.psychology,
-                label: context.l10n.homeNavCounselors,
-                color: AppColors.counselorRole,
-                onTap: () {},
-              ),
-              const SizedBox(width: 8),
-              _TabButton(
-                icon: Icons.rate_review,
-                label: context.l10n.homeNavRecommenders,
-                color: AppColors.recommenderRole,
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => false;
-}
-
-class _TabButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _TabButton({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.15),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: color.withValues(alpha: 0.5), width: 2),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 20, color: color),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _LanguageToggle extends ConsumerWidget {
   const _LanguageToggle();
@@ -1618,7 +1300,7 @@ class _LanguageToggle extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),

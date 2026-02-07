@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -503,6 +505,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
         allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'txt'],
       );
 
+      if (!mounted) return;
       if (result != null) {
         for (final file in result.files) {
           if (file.bytes != null) {
@@ -537,6 +540,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
         }
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error picking files: ${e.toString()}'),

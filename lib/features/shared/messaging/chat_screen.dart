@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, invocation_of_non_function_expression
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
@@ -204,7 +206,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           if (error != null)
             Container(
               padding: const EdgeInsets.all(12),
-              color: AppColors.error.withOpacity(0.1),
+              color: AppColors.error.withValues(alpha: 0.1),
               child: Row(
                 children: [
                   Icon(Icons.error_outline, color: AppColors.error, size: 20),
@@ -579,7 +581,7 @@ class _MessageBubble extends StatelessWidget {
                           fontSize: 10,
                           fontStyle: FontStyle.italic,
                           color: isCurrentUser
-                              ? Colors.white.withOpacity(0.7)
+                              ? Colors.white.withValues(alpha: 0.7)
                               : AppColors.textSecondary,
                         ),
                       ),
@@ -590,7 +592,7 @@ class _MessageBubble extends StatelessWidget {
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontStyle: FontStyle.italic,
                         color: isCurrentUser
-                            ? Colors.white.withOpacity(0.7)
+                            ? Colors.white.withValues(alpha: 0.7)
                             : AppColors.textSecondary,
                       ),
                     )

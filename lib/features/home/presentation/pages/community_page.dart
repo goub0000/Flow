@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/providers/page_content_provider.dart';
-import '../../../../core/models/page_content_model.dart';
 import '../../../../core/l10n_extension.dart';
-import '../widgets/dynamic_page_wrapper.dart';
 
 /// Community page with forums and user groups
 class CommunityPage extends ConsumerWidget {
@@ -14,200 +11,6 @@ class CommunityPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return _buildStaticPage(context);
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final heroTitle = content.getString('hero_title') ?? 'Join Our Community';
-    final heroSubtitle = content.getString('hero_subtitle') ?? 'Connect with students, counselors, and educators';
-    final stats = content.getList('stats');
-    final featuredGroups = content.getList('featured_groups');
-    final discussions = content.getList('discussions');
-    final events = content.getList('events');
-    final ctaTitle = content.getString('cta_title') ?? 'Ready to Join?';
-    final ctaSubtitle = content.getString('cta_subtitle') ?? 'Create an account to join the community';
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Hero
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(40),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.accent],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    const Icon(Icons.groups, size: 64, color: Colors.white),
-                    const SizedBox(height: 16),
-                    Text(
-                      heroTitle,
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      heroSubtitle,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white70,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // Community Stats
-              if (stats.isNotEmpty)
-                Row(
-                  children: [
-                    for (int i = 0; i < stats.length; i++) ...[
-                      Expanded(
-                        child: _buildStatCard(
-                          theme,
-                          stats[i]['value'] ?? '',
-                          stats[i]['label'] ?? '',
-                        ),
-                      ),
-                      if (i < stats.length - 1) const SizedBox(width: 16),
-                    ],
-                  ],
-                ),
-
-              const SizedBox(height: 40),
-
-              // Featured Groups
-              if (featuredGroups.isNotEmpty) ...[
-                Text(
-                  'Featured Groups',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...featuredGroups.map((group) => _buildGroupCard(
-                  context,
-                  theme,
-                  icon: _getIconForGroup(group['icon'] ?? 'school'),
-                  title: group['title'] ?? '',
-                  members: group['members'] ?? '',
-                  description: group['description'] ?? '',
-                )),
-              ],
-
-              const SizedBox(height: 40),
-
-              // Discussion Topics
-              if (discussions.isNotEmpty) ...[
-                Text(
-                  'Popular Discussions',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...discussions.map((discussion) => _buildDiscussionCard(
-                  theme,
-                  title: discussion['title'] ?? '',
-                  author: discussion['author'] ?? '',
-                  replies: discussion['replies'] ?? 0,
-                  likes: discussion['likes'] ?? 0,
-                )),
-              ],
-
-              const SizedBox(height: 40),
-
-              // Events
-              if (events.isNotEmpty) ...[
-                Text(
-                  'Upcoming Events',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...events.map((event) => _buildEventCard(
-                  context,
-                  theme,
-                  title: event['title'] ?? '',
-                  date: event['date'] ?? '',
-                  time: event['time'] ?? '',
-                  attendees: event['attendees'] ?? 0,
-                )),
-              ],
-
-              const SizedBox(height: 40),
-
-              // CTA
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      ctaTitle,
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      ctaSubtitle,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    FilledButton.icon(
-                      onPressed: () => context.go('/register'),
-                      icon: const Icon(Icons.person_add),
-                      label: const Text('Sign Up Free'),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 48),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  IconData _getIconForGroup(String iconName) {
-    switch (iconName) {
-      case 'school':
-        return Icons.school;
-      case 'engineering':
-        return Icons.engineering;
-      case 'medical_services':
-        return Icons.medical_services;
-      case 'business':
-        return Icons.business;
-      default:
-        return Icons.group;
-    }
   }
 
   Widget _buildStaticPage(BuildContext context) {
@@ -483,7 +286,7 @@ class CommunityPage extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: AppColors.primary, size: 28),
@@ -604,7 +407,7 @@ class CommunityPage extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.accent.withOpacity(0.1),
+              color: AppColors.accent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(Icons.event, color: AppColors.accent),

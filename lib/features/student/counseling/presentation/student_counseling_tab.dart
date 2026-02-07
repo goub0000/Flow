@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -280,7 +282,8 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
               final success = await ref
                   .read(studentCounselingProvider.notifier)
                   .cancelSession(session.id);
-              if (success && mounted) {
+              if (!context.mounted) return;
+              if (success) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(context.l10n.studentCounselingSessionCancelled)),
                 );
@@ -340,7 +343,8 @@ class _StudentCounselingTabState extends ConsumerState<StudentCounselingTab>
                           ? null
                           : commentController.text,
                     );
-                if (success && mounted) {
+                if (!context.mounted) return;
+                if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(context.l10n.studentCounselingFeedbackThanks)),
                   );

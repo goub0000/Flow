@@ -1,5 +1,6 @@
 /// Page Content Model
 /// Represents CMS content for footer pages
+library;
 
 class PageContentModel {
   final String id;

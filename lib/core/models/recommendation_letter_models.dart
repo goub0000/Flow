@@ -1,6 +1,7 @@
 /// Recommendation Letter Models
 /// Models that match the backend API response structure
 /// Backend: recommendation_service/app/schemas/recommendation_letters.py
+library;
 
 /// Request type enumeration
 enum RecommendationRequestType {

@@ -297,7 +297,7 @@ class _ExportsScreenState extends ConsumerState<ExportsScreen> {
                   width: 180,
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: isSelected ? src.color.withValues(alpha: 0.08) : AppColors.surfaceVariant,
+                    color: isSelected ? src.color.withValues(alpha: 0.08) : AppColors.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: isSelected ? src.color : AppColors.border,

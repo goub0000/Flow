@@ -265,7 +265,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             boxShadow: _focusNode.hasFocus
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -362,7 +362,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               border: Border.all(color: AppColors.border),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),

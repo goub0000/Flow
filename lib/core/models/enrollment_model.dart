@@ -1,5 +1,6 @@
 /// Enrollment Data Model
 /// Tracks student enrollment in courses
+library;
 
 class Enrollment {
   final String id;

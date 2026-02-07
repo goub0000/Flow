@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -326,7 +328,8 @@ class _CounselorsManagementScreenState
                 counselorId: counselor.id,
                 studentId: studentId,
               );
-          if (success && mounted) {
+          if (!context.mounted) return;
+          if (success) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(context.l10n.instCounselorsStudentAssigned)),

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
+
 /// API Configuration
 /// Contains all API endpoints and configuration settings
 ///
@@ -10,6 +12,7 @@
 ///
 /// Production:
 ///   server.js reads Railway env vars and serves /env-config.js before Flutter boots.
+library;
 
 import 'dart:js' as js;
 

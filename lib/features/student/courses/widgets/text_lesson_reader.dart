@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/models/course_content_models.dart';
 import '../../../institution/providers/course_content_provider.dart';
@@ -110,63 +110,57 @@ class _TextLessonReaderState extends ConsumerState<TextLessonReader> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child: MarkdownBody(
+            child: MarkdownWidget(
               data: content.content,
               selectable: true,
-              onTapLink: (text, href, title) {
-                if (href != null) {
-                  _launchUrl(href);
-                }
-              },
-              styleSheet: MarkdownStyleSheet(
-                p: const TextStyle(
-                  fontSize: 16,
-                  height: 1.8,
-                  letterSpacing: 0.3,
-                ),
-                h1: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  height: 1.5,
-                ),
-                h2: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  height: 1.4,
-                ),
-                h3: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  height: 1.3,
-                ),
-                code: TextStyle(
-                  backgroundColor: Colors.grey[100],
-                  fontFamily: 'monospace',
-                  fontSize: 14,
-                ),
-                codeblockDecoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                blockquote: TextStyle(
-                  color: Colors.grey[700],
-                  fontStyle: FontStyle.italic,
-                ),
-                blockquoteDecoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  border: Border(
-                    left: BorderSide(
-                      color: Colors.blue[300]!,
-                      width: 4,
-                    ),
+              shrinkWrap: true,
+              config: MarkdownConfig(
+                configs: [
+                  LinkConfig(
+                    onTap: _launchUrl,
                   ),
-                ),
+                  PConfig(textStyle: const TextStyle(
+                    fontSize: 16,
+                    height: 1.8,
+                    letterSpacing: 0.3,
+                  )),
+                  H1Config(style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    height: 1.5,
+                  )),
+                  H2Config(style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    height: 1.4,
+                  )),
+                  H3Config(style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    height: 1.3,
+                  )),
+                  CodeConfig(style: TextStyle(
+                    backgroundColor: Colors.grey[100],
+                    fontFamily: 'monospace',
+                    fontSize: 14,
+                  )),
+                  PreConfig(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.all(12),
+                  ),
+                  BlockquoteConfig(
+                    textColor: Colors.grey[700]!,
+                  ),
+                ],
               ),
             ),
           ),

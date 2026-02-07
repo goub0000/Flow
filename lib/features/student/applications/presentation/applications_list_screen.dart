@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -46,7 +48,7 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
         try {
           ref.read(studentApplicationsRealtimeProvider.notifier).refresh();
         } catch (e) {
-          print('[DEBUG] Real-time provider refresh skipped: $e');
+          // Real-time provider might not be available
         }
 
         // Update last refresh time
@@ -114,7 +116,6 @@ class _ApplicationsListScreenState extends ConsumerState<ApplicationsListScreen>
                 'studentName': ref.read(currentUserProvider)?.fullName ?? 'Student',
               },
               onExportComplete: () {
-                print('[DEBUG] Export completed successfully');
               },
             ),
         ],

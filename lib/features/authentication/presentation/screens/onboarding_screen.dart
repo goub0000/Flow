@@ -248,7 +248,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     width: 200,
                     height: 200,
                     decoration: BoxDecoration(
-                      color: page.color.withOpacity(0.1),
+                      color: page.color.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: _currentPage == 0
@@ -406,14 +406,14 @@ class OnboardingPage {
 
 /// Onboarding Service for managing onboarding state
 class OnboardingService {
-  static const String _onboardingKey = 'has_completed_onboarding';
+  // Key for SharedPreferences: 'has_completed_onboarding'
 
   /// Check if user has completed onboarding
   /// TODO: Implement with shared_preferences
   /// ```dart
   /// Future<bool> hasCompletedOnboarding() async {
   ///   final prefs = await SharedPreferences.getInstance();
-  ///   return prefs.getBool(_onboardingKey) ?? false;
+  ///   return prefs.getBool('has_completed_onboarding') ?? false;
   /// }
   /// ```
   Future<bool> hasCompletedOnboarding() async {
@@ -427,13 +427,13 @@ class OnboardingService {
   /// ```dart
   /// Future<void> completeOnboarding() async {
   ///   final prefs = await SharedPreferences.getInstance();
-  ///   await prefs.setBool(_onboardingKey, true);
+  ///   await prefs.setBool('has_completed_onboarding', true);
   /// }
   /// ```
   Future<void> completeOnboarding() async {
     // TODO: Save to SharedPreferences
     // final prefs = await SharedPreferences.getInstance();
-    // await prefs.setBool(_onboardingKey, true);
+    // await prefs.setBool('has_completed_onboarding', true);
   }
 
   /// Reset onboarding (useful for testing)
@@ -441,12 +441,12 @@ class OnboardingService {
   /// ```dart
   /// Future<void> resetOnboarding() async {
   ///   final prefs = await SharedPreferences.getInstance();
-  ///   await prefs.remove(_onboardingKey);
+  ///   await prefs.remove('has_completed_onboarding');
   /// }
   /// ```
   Future<void> resetOnboarding() async {
     // TODO: Remove from SharedPreferences
     // final prefs = await SharedPreferences.getInstance();
-    // await prefs.remove(_onboardingKey);
+    // await prefs.remove('has_completed_onboarding');
   }
 }

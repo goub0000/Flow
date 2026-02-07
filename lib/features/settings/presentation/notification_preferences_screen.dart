@@ -35,13 +35,13 @@ class _NotificationPreferencesScreenState
         if (preferences.isEmpty) {
           try {
             await ref.read(createDefaultPreferencesProvider)();
+            if (!mounted) return;
             ref.invalidate(notificationPreferencesProvider);
           } catch (e) {
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('${context.l10n.notifPrefScreenErrorCreating}: $e')),
-              );
-            }
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('${context.l10n.notifPrefScreenErrorCreating}: $e')),
+            );
           }
         }
       },
@@ -49,9 +49,8 @@ class _NotificationPreferencesScreenState
       error: (_, __) {},
     );
 
-    if (mounted) {
-      setState(() => _isInitializing = false);
-    }
+    if (!mounted) return;
+    setState(() => _isInitializing = false);
   }
 
   @override
@@ -139,7 +138,7 @@ class _NotificationPreferencesScreenState
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurface
-                                  .withOpacity(0.7),
+                                  .withValues(alpha: 0.7),
                             ),
                       ),
                     ],
@@ -261,7 +260,7 @@ class _NotificationPreferencesScreenState
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurface
-                                  .withOpacity(0.6),
+                                  .withValues(alpha: 0.6),
                             ),
                       ),
                     ],
@@ -341,7 +340,7 @@ class _NotificationPreferencesScreenState
             ),
             borderRadius: BorderRadius.circular(8),
             color: value && enabled
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                 : Colors.transparent,
           ),
           child: Row(
@@ -436,23 +435,21 @@ class _NotificationPreferencesScreenState
     try {
       await ref.read(updateNotificationPreferenceProvider)(request);
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.notifPrefScreenPreferencesUpdated),
-            duration: const Duration(seconds: 1),
-          ),
-        );
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.notifPrefScreenPreferencesUpdated),
+          duration: const Duration(seconds: 1),
+        ),
+      );
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${context.l10n.notifPrefScreenErrorUpdating}: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${context.l10n.notifPrefScreenErrorUpdating}: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 }

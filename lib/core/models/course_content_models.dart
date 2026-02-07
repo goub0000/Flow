@@ -1,6 +1,9 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 /// Course Content Models
 /// Models for course modules, lessons, and content types
 /// Matches backend CourseContent schemas
+library;
 
 import 'package:flutter/material.dart';
 

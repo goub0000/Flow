@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -372,18 +374,17 @@ class _AssessmentsManagementScreenState
                                   : null,
                             );
 
-                        if (mounted) {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(success
-                                  ? context.l10n.adminContentAssessmentCreated(selectedType == 'quiz' ? context.l10n.adminContentQuiz : context.l10n.adminContentAssignment)
-                                  : context.l10n.adminContentFailedToCreateAssessment),
-                              backgroundColor:
-                                  success ? AppColors.success : AppColors.error,
-                            ),
-                          );
-                        }
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? context.l10n.adminContentAssessmentCreated(selectedType == 'quiz' ? context.l10n.adminContentQuiz : context.l10n.adminContentAssignment)
+                                : context.l10n.adminContentFailedToCreateAssessment),
+                            backgroundColor:
+                                success ? AppColors.success : AppColors.error,
+                          ),
+                        );
                       },
                 child: isCreating
                     ? const SizedBox(

@@ -215,7 +215,7 @@ class ActivityTile extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: _getActivityColor().withOpacity(0.1),
+                color: _getActivityColor().withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -369,7 +369,7 @@ class QuickActionButton extends StatelessWidget {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: action.color.withOpacity(0.1),
+                      color: action.color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(

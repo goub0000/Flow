@@ -16,7 +16,7 @@ class AppTheme {
       secondary: AppColors.secondary,
       secondaryContainer: AppColors.secondaryLight,
       surface: AppColors.surface,
-      surfaceContainerHighest: AppColors.surfaceVariant,
+      surfaceContainerHighest: AppColors.surfaceContainerHighest,
       error: AppColors.error,
       onPrimary: AppColors.textOnPrimary,
       onSecondary: AppColors.textOnPrimary,
@@ -229,7 +229,7 @@ class AppTheme {
       elevation: 8,
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: AppColors.surfaceVariant,
+      backgroundColor: AppColors.surfaceContainerHighest,
       deleteIconColor: AppColors.textSecondary,
       labelStyle: GoogleFonts.inter(
         fontSize: 12,

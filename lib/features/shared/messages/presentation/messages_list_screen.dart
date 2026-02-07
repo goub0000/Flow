@@ -69,9 +69,10 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
               .read(conversationsRealtimeProvider.notifier)
               .getOrCreateDirectConversation(userId);
 
-          if (conversation != null && mounted) {
+          if (!context.mounted) return;
+          if (conversation != null) {
             context.push('/messages/${conversation.id}');
-          } else if (mounted) {
+          } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(context.l10n.msgFailedToCreateConversation),
@@ -207,30 +208,29 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                     onPressed: () async {
                       final messagingService = ref.read(messagingServiceProvider);
                       final result = await messagingService.checkSetup();
-                      if (mounted) {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Text(context.l10n.msgDatabaseSetupStatus),
-                            content: SingleChildScrollView(
-                              child: Text(
-                                result.success
-                                    ? 'Ready: ${result.data?['ready']}\n'
-                                      'Conversations table: ${result.data?['conversations_table']}\n'
-                                      'Messages table: ${result.data?['messages_table']}\n\n'
-                                      'Info: ${result.data?['tables_info']}'
-                                    : 'Error: ${result.message}',
-                              ),
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text(context.l10n.msgDatabaseSetupStatus),
+                          content: SingleChildScrollView(
+                            child: Text(
+                              result.success
+                                  ? 'Ready: ${result.data?['ready']}\n'
+                                    'Conversations table: ${result.data?['conversations_table']}\n'
+                                    'Messages table: ${result.data?['messages_table']}\n\n'
+                                    'Info: ${result.data?['tables_info']}'
+                                  : 'Error: ${result.message}',
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx),
-                                child: const Text('OK'),
-                              ),
-                            ],
                           ),
-                        );
-                      }
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: Text(context.l10n.msgCheckDatabaseSetup),
                   ),
@@ -239,27 +239,26 @@ class _MessagesListScreenState extends ConsumerState<MessagesListScreen> {
                     onPressed: () async {
                       final messagingService = ref.read(messagingServiceProvider);
                       final result = await messagingService.testInsert();
-                      if (mounted) {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Text(context.l10n.msgTestInsertResult),
-                            content: SingleChildScrollView(
-                              child: Text(
-                                result.success
-                                    ? 'SUCCESS!\n\n${result.data}'
-                                    : 'FAILED!\n\nError: ${result.message}\n\nData: ${result.data}',
-                              ),
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text(context.l10n.msgTestInsertResult),
+                          content: SingleChildScrollView(
+                            child: Text(
+                              result.success
+                                  ? 'SUCCESS!\n\n${result.data}'
+                                  : 'FAILED!\n\nError: ${result.message}\n\nData: ${result.data}',
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx),
-                                child: const Text('OK'),
-                              ),
-                            ],
                           ),
-                        );
-                      }
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: Text(context.l10n.msgTestInsert),
                   ),

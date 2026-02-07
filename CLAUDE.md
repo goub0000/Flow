@@ -106,7 +106,7 @@ Local builds use `--dart-define` which sets compile-time constants. The runtime 
 | Hosting     | Railway (2 services)                           |
 | Auth        | Supabase Auth                                  |
 | Storage     | Supabase Storage                               |
-| Navigation  | go_router 13.x                                 |
+| Navigation  | go_router 17.x                                 |
 | State       | flutter_riverpod + riverpod_annotation          |
 | Serialization | freezed + json_serializable                  |
 

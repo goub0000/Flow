@@ -662,7 +662,7 @@ class EmptyTasksState extends StatelessWidget {
   final String? subtitle;
   final VoidCallback? onAddTask;
 
-  EmptyTasksState({
+  const EmptyTasksState({
     super.key,
     this.message,
     this.subtitle,

@@ -1,8 +1,10 @@
 /// Conversations Real-Time Provider
 /// Manages conversations list via backend API with periodic refresh
+library;
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/conversation_model.dart';
 import '../../../core/providers/service_providers.dart';
 import '../../../core/services/messaging_service.dart';
@@ -84,8 +86,6 @@ class ConversationsRealtimeNotifier extends StateNotifier<RealtimeConversationsS
         return;
       }
 
-      print('[RealtimeConversations] Fetching conversations for user: ${user.id}');
-
       // Fetch conversations via backend API
       final response = await _messagingService.getConversations(
         page: 1,
@@ -108,10 +108,7 @@ class ConversationsRealtimeNotifier extends StateNotifier<RealtimeConversationsS
           isConnected: true,
           lastUpdate: DateTime.now(),
         );
-
-        print('[RealtimeConversations] Fetched ${conversations.length} conversations ($totalUnread unread)');
       } else {
-        print('[RealtimeConversations] API error: ${response.message}');
         state = state.copyWith(
           error: response.message ?? 'Failed to fetch conversations',
           isLoading: false,
@@ -119,7 +116,6 @@ class ConversationsRealtimeNotifier extends StateNotifier<RealtimeConversationsS
         );
       }
     } catch (e) {
-      print('[RealtimeConversations] Error fetching: $e');
       state = state.copyWith(
         error: 'Failed to fetch conversations: $e',
         isLoading: false,
@@ -132,7 +128,6 @@ class ConversationsRealtimeNotifier extends StateNotifier<RealtimeConversationsS
   void _setupPeriodicRefresh() {
     // Refresh every 10 seconds for near-realtime experience
     _refreshTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      print('[RealtimeConversations] Periodic refresh');
       refresh();
     });
   }
@@ -170,12 +165,10 @@ class ConversationsRealtimeNotifier extends StateNotifier<RealtimeConversationsS
 
       // For group conversations, we'd need a different endpoint
       // TODO: Implement group conversation creation when backend supports it
-      print('[RealtimeConversations] Group conversations not yet supported via API');
       state = state.copyWith(error: 'Group conversations not yet supported');
       return null;
 
     } catch (e) {
-      print('[RealtimeConversations] Error creating conversation: $e');
       state = state.copyWith(error: 'Failed to create conversation: $e');
       return null;
     }

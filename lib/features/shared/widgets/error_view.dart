@@ -37,7 +37,7 @@ class ErrorView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: errorInfo.color.withOpacity(0.1),
+                color: errorInfo.color.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -63,7 +63,7 @@ class ErrorView extends StatelessWidget {
             Text(
               customMessage ?? errorInfo.message,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               textAlign: TextAlign.center,
             ),
@@ -75,7 +75,7 @@ class ErrorView extends StatelessWidget {
                 title: Text(
                   context.l10n.swErrorTechnicalDetails,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
                 children: [
@@ -132,10 +132,10 @@ class ErrorView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.info.withOpacity(0.1),
+                  color: AppColors.info.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: AppColors.info.withOpacity(0.3),
+                    color: AppColors.info.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -347,10 +347,10 @@ class InlineErrorView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.error.withOpacity(0.1),
+        color: AppColors.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: AppColors.error.withOpacity(0.3),
+          color: AppColors.error.withValues(alpha: 0.3),
         ),
       ),
       child: Row(

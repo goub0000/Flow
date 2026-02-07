@@ -21,7 +21,6 @@ class ConsentService {
     try {
       return UserConsent.fromJson(jsonDecode(json));
     } catch (e) {
-      print('Error parsing consent: $e');
       return null;
     }
   }
@@ -48,7 +47,7 @@ class ConsentService {
             'user_agent': consent.userAgent,
           };
 
-          final response = await _httpClient.post(
+          await _httpClient.post(
             Uri.parse('${ApiConfig.apiBaseUrl}${ApiConfig.consent}'),
             headers: {
               'Content-Type': 'application/json',
@@ -57,22 +56,13 @@ class ConsentService {
             body: jsonEncode(consentData),
           );
 
-          if (response.statusCode == 201 || response.statusCode == 200) {
-            print('[ConsentService] Successfully saved consent to backend');
-          } else {
-            print('[ConsentService] Backend save failed: ${response.statusCode} - ${response.body}');
-          }
         } catch (e) {
-          print('[ConsentService] Failed to save consent to backend: $e');
           // Don't fail the entire operation if backend save fails
         }
-      } else {
-        print('[ConsentService] Skipping backend save - no access token');
       }
 
       return localSaveSuccess;
     } catch (e) {
-      print('[ConsentService] Error saving consent: $e');
       return false;
     }
   }
@@ -159,7 +149,6 @@ class ConsentService {
         '${CookieConstants.consentStatusKey}_$userId',
       );
     } catch (e) {
-      print('Error revoking consent: $e');
       return false;
     }
   }
@@ -181,11 +170,9 @@ class ConsentService {
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        print('[ConsentService] Failed to fetch statistics: ${response.statusCode}');
         return _emptyStatistics();
       }
     } catch (e) {
-      print('[ConsentService] Error fetching statistics: $e');
       return _emptyStatistics();
     }
   }
@@ -216,11 +203,9 @@ class ConsentService {
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        print('[ConsentService] Failed to fetch user consents: ${response.statusCode}');
         return {'users': [], 'total': 0};
       }
     } catch (e) {
-      print('[ConsentService] Error fetching user consents: $e');
       return {'users': [], 'total': 0};
     }
   }

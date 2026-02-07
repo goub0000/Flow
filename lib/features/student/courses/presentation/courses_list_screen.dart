@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -567,7 +569,7 @@ class _CoursesListScreenState extends ConsumerState<CoursesListScreen>
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primary.withOpacity(0.7),
+            AppColors.primary.withValues(alpha: 0.7),
             AppColors.primary,
           ],
           begin: Alignment.topLeft,
@@ -717,7 +719,7 @@ class _FiltersBottomSheet extends ConsumerWidget {
       label: Text(label),
       selected: isSelected,
       onSelected: (_) => onTap(),
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
     );
   }
 }

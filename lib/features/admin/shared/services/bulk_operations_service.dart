@@ -1,5 +1,3 @@
-import '../../../../core/models/user_model.dart';
-
 /// Service for performing bulk operations on user accounts
 class BulkOperationsService {
   /// Bulk activate user accounts

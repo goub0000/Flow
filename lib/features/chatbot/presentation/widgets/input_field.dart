@@ -68,7 +68,7 @@ class ChatInputField extends StatelessWidget {
             },
             icon: Icon(Icons.send, color: AppColors.primary),
             style: IconButton.styleFrom(
-              backgroundColor: AppColors.primary.withOpacity(0.1),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
               padding: const EdgeInsets.all(12),
             ),
           ),

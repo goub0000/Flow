@@ -1,5 +1,6 @@
 /// Real-Time Dashboard Example
 /// Shows how to integrate all real-time features in a student dashboard
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,7 @@ import '../../../core/models/notification_model.dart';
 
 /// Example dashboard screen with full real-time integration
 class RealtimeDashboardExample extends ConsumerStatefulWidget {
-  const RealtimeDashboardExample({Key? key}) : super(key: key);
+  const RealtimeDashboardExample({super.key});
 
   @override
   ConsumerState<RealtimeDashboardExample> createState() => _RealtimeDashboardExampleState();
@@ -30,8 +31,6 @@ class _RealtimeDashboardExampleState extends ConsumerState<RealtimeDashboardExam
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Real-Time Dashboard'),
@@ -114,7 +113,7 @@ class _ConnectionBanner extends ConsumerWidget {
     }
 
     return Container(
-      color: Colors.orange.withOpacity(0.1),
+      color: Colors.orange.withValues(alpha: 0.1),
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
@@ -238,7 +237,7 @@ class _StatCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, color: color, size: 20),
@@ -339,7 +338,7 @@ class _ApplicationCard extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: _getStatusColor(application.status).withOpacity(0.1),
+          backgroundColor: _getStatusColor(application.status).withValues(alpha: 0.1),
           child: Icon(
             _getStatusIcon(application.status),
             color: _getStatusColor(application.status),
@@ -356,7 +355,7 @@ class _ApplicationCard extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(application.status).withOpacity(0.1),
+                    color: _getStatusColor(application.status).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -369,11 +368,10 @@ class _ApplicationCard extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                if (application.lastUpdate != null)
-                  Text(
-                    'Updated ${_formatTime(application.lastUpdate!)}',
-                    style: const TextStyle(fontSize: 11),
-                  ),
+                Text(
+                  'Updated ${_formatTime(application.lastUpdate)}',
+                  style: const TextStyle(fontSize: 11),
+                ),
               ],
             ),
           ],
@@ -516,7 +514,7 @@ class _NotificationTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      color: notification.isRead ? null : Colors.blue.withOpacity(0.05),
+      color: notification.isRead ? null : Colors.blue.withValues(alpha: 0.05),
       child: ListTile(
         leading: Icon(
           _getNotificationIcon(notification.type),

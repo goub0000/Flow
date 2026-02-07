@@ -835,7 +835,7 @@ class EmptyVideosState extends StatelessWidget {
   final String? subtitle;
   final VoidCallback? onAction;
 
-  EmptyVideosState({
+  const EmptyVideosState({
     super.key,
     this.message,
     this.subtitle,

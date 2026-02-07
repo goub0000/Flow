@@ -269,22 +269,6 @@ class CardMessageFactory {
     VoidCallback? onViewApplication,
     VoidCallback? onContinue,
   }) {
-    Color statusColor;
-    switch (status.toLowerCase()) {
-      case 'accepted':
-        statusColor = AppColors.success;
-        break;
-      case 'rejected':
-        statusColor = AppColors.error;
-        break;
-      case 'pending':
-      case 'submitted':
-        statusColor = AppColors.warning;
-        break;
-      default:
-        statusColor = AppColors.info;
-    }
-
     return CardMessage(
       imageUrl: logoUrl,
       title: universityName,

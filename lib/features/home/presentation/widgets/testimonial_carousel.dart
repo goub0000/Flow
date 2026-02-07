@@ -111,7 +111,7 @@ class _TestimonialCarouselState extends State<TestimonialCarousel> {
                   decoration: BoxDecoration(
                     color: index == _currentPage
                         ? theme.colorScheme.primary
-                        : theme.colorScheme.primary.withOpacity(0.3),
+                        : theme.colorScheme.primary.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -148,13 +148,13 @@ class _TestimonialCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: isActive
-              ? theme.colorScheme.primary.withOpacity(0.3)
+              ? theme.colorScheme.primary.withValues(alpha: 0.3)
               : theme.colorScheme.outlineVariant,
           width: isActive ? 2 : 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isActive ? 0.1 : 0.05),
+            color: Colors.black.withValues(alpha: isActive ? 0.1 : 0.05),
             blurRadius: isActive ? 20 : 10,
             offset: Offset(0, isActive ? 10 : 5),
           ),
@@ -168,7 +168,7 @@ class _TestimonialCard extends StatelessWidget {
             // Quote Icon
             Icon(
               Icons.format_quote,
-              color: theme.colorScheme.primary.withOpacity(0.3),
+              color: theme.colorScheme.primary.withValues(alpha: 0.3),
               size: 32,
             ),
             const SizedBox(height: 12),
@@ -193,7 +193,7 @@ class _TestimonialCard extends StatelessWidget {
                 vertical: 6,
               ),
               decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
+                color: AppColors.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Row(

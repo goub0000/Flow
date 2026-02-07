@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/course_model.dart';
 import '../../../core/services/courses_api_service.dart';
 import '../../../features/authentication/providers/auth_provider.dart';
@@ -137,8 +138,7 @@ class InstitutionCoursesNotifier
       final stats = await _apiService.getMyCourseStatistics();
       state = state.copyWith(statistics: stats);
     } catch (e) {
-      // Don't update error state, just log
-      print('Failed to fetch statistics: $e');
+      // Don't update error state, just log silently
     }
   }
 

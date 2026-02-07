@@ -32,7 +32,6 @@ class AnalyticsService {
     );
 
     if (!canTrack) {
-      print('Cannot track session - no analytics consent');
       return;
     }
 
@@ -191,7 +190,6 @@ class AnalyticsService {
       final List<dynamic> list = jsonDecode(json);
       return list.map((e) => SessionAnalytics.fromJson(e)).toList();
     } catch (e) {
-      print('Error loading sessions: $e');
       return [];
     }
   }
@@ -219,7 +217,7 @@ class AnalyticsService {
         json,
       );
     } catch (e) {
-      print('Error saving session: $e');
+      // Error saving session
     }
   }
 

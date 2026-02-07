@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,16 +7,11 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/l10n_extension.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';
-import '../../../../core/models/admin_user_model.dart';
-import '../../../../core/models/user_model.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/widgets/permission_guard.dart';
-import '../../shared/widgets/export_dialog.dart';
 import '../../shared/widgets/bulk_action_bar.dart';
 import '../../../shared/widgets/logo_avatar.dart';
-import '../../shared/services/export_service.dart';
-import '../../shared/services/bulk_operations_service.dart';
 import '../../shared/utils/debouncer.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 import '../../shared/providers/admin_users_provider.dart';
@@ -152,7 +149,6 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
                 permission: AdminPermission.bulkUserOperations,
                 child: OutlinedButton.icon(
                   onPressed: () async {
-                    final admins = _getFilteredAdmins();
                     // TODO: Implement export for admins
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -333,7 +329,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           cellBuilder: (admin) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: admin.roleColor.withOpacity(0.1),
+              color: admin.roleColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Row(
@@ -362,7 +358,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
           cellBuilder: (admin) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: admin.isActive ? AppColors.success.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
+              color: admin.isActive ? AppColors.success.withValues(alpha: 0.1) : AppColors.error.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
@@ -627,7 +623,7 @@ class _AdminsListScreenState extends ConsumerState<AdminsListScreen> {
       ),
     );
 
-    if (confirmed != true) return;
+    if (confirmed != true || !mounted) return;
 
     setState(() => _isBulkOperationInProgress = true);
 

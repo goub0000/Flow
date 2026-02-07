@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +23,6 @@ class ProgramDetailScreen extends ConsumerStatefulWidget {
 
 class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
   late Program _program;
-  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -394,17 +395,16 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
           ElevatedButton(
             onPressed: () async {
               context.pop();
-              setState(() => _isProcessing = true);
 
               try {
                 await ref.read(institutionProgramsProvider.notifier).toggleProgramStatus(_program.id);
 
+                if (!context.mounted) return;
                 // Update local program state
                 final updatedProgram = ref.read(institutionProgramsProvider.notifier).getProgramById(_program.id);
-                if (updatedProgram != null && mounted) {
+                if (updatedProgram != null) {
                   setState(() {
                     _program = updatedProgram;
-                    _isProcessing = false;
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -419,15 +419,13 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                   );
                 }
               } catch (e) {
-                if (mounted) {
-                  setState(() => _isProcessing = false);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(context.l10n.instProgramErrorUpdatingStatus(e.toString())),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(context.l10n.instProgramErrorUpdatingStatus(e.toString())),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
               }
             },
             child: Text(context.l10n.instProgramConfirm),
@@ -453,12 +451,12 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
           ElevatedButton(
             onPressed: () async {
               context.pop();
-              setState(() => _isProcessing = true);
 
               try {
                 final success = await ref.read(institutionProgramsProvider.notifier).deleteProgram(_program.id);
 
-                if (success && mounted) {
+                if (!context.mounted) return;
+                if (success) {
                   context.pop(); // Go back to list
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -466,8 +464,7 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                       backgroundColor: AppColors.success,
                     ),
                   );
-                } else if (mounted) {
-                  setState(() => _isProcessing = false);
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(context.l10n.instProgramFailedToDelete),
@@ -476,15 +473,13 @@ class _ProgramDetailScreenState extends ConsumerState<ProgramDetailScreen> {
                   );
                 }
               } catch (e) {
-                if (mounted) {
-                  setState(() => _isProcessing = false);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(context.l10n.instProgramErrorDeleting(e.toString())),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(context.l10n.instProgramErrorDeleting(e.toString())),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
               }
             },
             style: ElevatedButton.styleFrom(

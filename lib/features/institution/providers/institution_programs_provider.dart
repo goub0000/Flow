@@ -1,17 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/program_model.dart';
 import '../services/programs_api_service.dart';
 import '../../authentication/providers/auth_provider.dart';
-
-const _uuid = Uuid();
 
 // Provider for Programs API Service
 final programsApiServiceProvider = Provider.autoDispose<ProgramsApiService>((ref) {
   // Get access token from auth provider
   final authState = ref.watch(authProvider);
-  print('[ProgramsApiService] Creating service with token: ${authState.accessToken?.substring(0, 20)}...');
-  print('[ProgramsApiService] Auth state: isAuthenticated=${authState.isAuthenticated}, user=${authState.user?.email}');
   return ProgramsApiService(accessToken: authState.accessToken);
 });
 

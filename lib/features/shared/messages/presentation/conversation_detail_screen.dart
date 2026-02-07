@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
@@ -10,7 +9,6 @@ import '../../../../core/l10n_extension.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/models/message_model.dart';
 import '../../../shared/providers/messaging_realtime_provider.dart';
-import '../../../shared/widgets/message_widgets.dart' hide Message;
 
 /// Conversation Detail Screen
 ///
@@ -327,6 +325,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
         mimeType: mimeType,
       );
 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
       if (response.success) {
@@ -344,6 +343,7 @@ class _ConversationDetailScreenState extends ConsumerState<ConversationDetailScr
         }
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

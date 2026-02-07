@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/l10n_extension.dart';
 
@@ -303,7 +302,7 @@ class MobileAppsPage extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: AppColors.primary, size: 28),
@@ -345,8 +344,8 @@ class MobileAppsPage extends ConsumerWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.1),
-                    AppColors.accent.withOpacity(0.1),
+                    AppColors.primary.withValues(alpha: 0.1),
+                    AppColors.accent.withValues(alpha: 0.1),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -354,7 +353,7 @@ class MobileAppsPage extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
-                child: Icon(icon, size: 64, color: AppColors.primary.withOpacity(0.5)),
+                child: Icon(icon, size: 64, color: AppColors.primary.withValues(alpha: 0.5)),
               ),
             ),
           ),

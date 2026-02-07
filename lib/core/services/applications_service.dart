@@ -1,5 +1,6 @@
 /// Applications Service
 /// Handles university/program application-related API calls
+library;
 
 import 'dart:typed_data';
 import '../api/api_client.dart';

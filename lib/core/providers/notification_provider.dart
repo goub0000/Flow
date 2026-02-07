@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/notification_models.dart';
 import '../services/notification_service.dart';
@@ -203,7 +204,7 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
   /// Mark all as read
   Future<void> markAllAsRead() async {
     try {
-      final count = await _service.markAllAsRead();
+      await _service.markAllAsRead();
 
       // Update UI
       final updatedNotifications =
@@ -290,7 +291,6 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 
       if (channel == null) {
         // User not authenticated yet, retry after delay
-        print('Notification subscription deferred - waiting for auth');
         Future.delayed(const Duration(milliseconds: 500), () {
           subscribeToRealtime();
         });
@@ -299,7 +299,7 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 
       _realtimeChannel = channel;
     } catch (e) {
-      print('Error subscribing to realtime updates: $e');
+      // Error subscribing to realtime updates - silently ignore
     }
   }
 

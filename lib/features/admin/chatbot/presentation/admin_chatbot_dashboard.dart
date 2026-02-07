@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -102,7 +104,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
+              colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
             ),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -210,7 +212,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -337,7 +339,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
@@ -348,7 +350,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 24),
@@ -395,7 +397,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -522,7 +524,7 @@ class _AdminChatbotDashboardState extends ConsumerState<AdminChatbotDashboard> {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 child: Text(
                   conversation.userName.isNotEmpty
                       ? conversation.userName[0].toUpperCase()

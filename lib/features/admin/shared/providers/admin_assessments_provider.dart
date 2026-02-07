@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
@@ -197,7 +198,6 @@ class AdminAssessmentsNotifier extends StateNotifier<AdminAssessmentsState> {
         );
       }
     } catch (e) {
-      print('[AdminAssessments] Error fetching assessments: $e');
       state = state.copyWith(
         error: 'Failed to fetch assessments: ${e.toString()}',
         isLoading: false,
@@ -248,7 +248,6 @@ class AdminAssessmentsNotifier extends StateNotifier<AdminAssessmentsState> {
         return false;
       }
     } catch (e) {
-      print('[AdminAssessments] Error creating assessment: $e');
       state = state.copyWith(
         error: 'Failed to create assessment: ${e.toString()}',
       );

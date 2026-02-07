@@ -4,6 +4,7 @@
 /// ```dart
 /// import 'package:flow/core/widgets/charts/charts.dart';
 /// ```
+library;
 
 export 'bar_chart_widget.dart';
 export 'area_chart_widget.dart';

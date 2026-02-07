@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -343,18 +345,17 @@ class _ResourcesManagementScreenState
                                   : null,
                             );
 
-                        if (mounted) {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(success
-                                  ? (selectedType == 'video' ? context.l10n.adminContentVideoResourceCreated : context.l10n.adminContentTextResourceCreated)
-                                  : context.l10n.adminContentFailedToCreateResource),
-                              backgroundColor:
-                                  success ? AppColors.success : AppColors.error,
-                            ),
-                          );
-                        }
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? (selectedType == 'video' ? context.l10n.adminContentVideoResourceCreated : context.l10n.adminContentTextResourceCreated)
+                                : context.l10n.adminContentFailedToCreateResource),
+                            backgroundColor:
+                                success ? AppColors.success : AppColors.error,
+                          ),
+                        );
                       },
                 child: isCreating
                     ? const SizedBox(

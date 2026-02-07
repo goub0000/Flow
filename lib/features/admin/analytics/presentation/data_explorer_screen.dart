@@ -331,7 +331,7 @@ class _DataExplorerScreenState extends ConsumerState<DataExplorerScreen> {
         scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
           child: DataTable(
-            headingRowColor: WidgetStateProperty.all(AppColors.surfaceVariant),
+            headingRowColor: WidgetStateProperty.all(AppColors.surfaceContainerHighest),
             headingTextStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textPrimary),
             dataTextStyle: const TextStyle(fontSize: 13),
             columnSpacing: 24,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -240,7 +242,7 @@ class _CreateApprovalRequestScreenState
                           return ChoiceChip(
                             label: Text(priority.displayName),
                             selected: isSelected,
-                            selectedColor: priority.color.withOpacity(0.2),
+                            selectedColor: priority.color.withValues(alpha: 0.2),
                             onSelected: (selected) {
                               if (selected) {
                                 setState(() {

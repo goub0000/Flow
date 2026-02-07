@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/l10n_extension.dart';
 import '../../../core/models/notification_models.dart';
 import '../../../core/providers/notification_provider.dart';
@@ -163,7 +162,7 @@ class _NotificationPreferencesScreenState
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurface
-                                  .withOpacity(0.7),
+                                  .withValues(alpha: 0.7),
                             ),
                       ),
                     ],
@@ -285,7 +284,7 @@ class _NotificationPreferencesScreenState
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurface
-                                  .withOpacity(0.6),
+                                  .withValues(alpha: 0.6),
                             ),
                       ),
                     ],
@@ -365,7 +364,7 @@ class _NotificationPreferencesScreenState
             ),
             borderRadius: BorderRadius.circular(8),
             color: value && enabled
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                 : Colors.transparent,
           ),
           child: Row(

@@ -1,4 +1,7 @@
+// ignore_for_file: unnecessary_overrides
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/course_content_models.dart';
 import '../../../core/models/quiz_assignment_models.dart';
 import '../../../core/services/course_content_api_service.dart';

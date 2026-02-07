@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -166,19 +165,56 @@ class _MessageBubbleState extends State<MessageBubble> {
     }
 
     // Render markdown for bot messages with formatting
-    return MarkdownBody(
+    return MarkdownWidget(
       data: content,
       selectable: true,
       shrinkWrap: true,
-      onTapLink: (text, href, title) {
-        if (href != null) {
-          _launchUrl(href);
-        }
-      },
-      styleSheet: _buildMarkdownStyleSheet(),
-      builders: {
-        'code': CodeBlockBuilder(),
-      },
+      config: MarkdownConfig(
+        configs: [
+          LinkConfig(
+            onTap: (href) {
+              _launchUrl(href);
+            },
+          ),
+          PConfig(textStyle: const TextStyle(
+            color: Colors.black87,
+            fontSize: 14,
+            height: 1.4,
+          )),
+          H1Config(style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          )),
+          H2Config(style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          )),
+          H3Config(style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          )),
+          CodeConfig(style: TextStyle(
+            fontFamily: 'monospace',
+            fontSize: 13,
+            backgroundColor: Colors.grey[200],
+            color: Colors.black87,
+          )),
+          PreConfig(
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey[300]!),
+            ),
+            padding: const EdgeInsets.all(12),
+          ),
+          BlockquoteConfig(
+            textColor: Colors.grey[700]!,
+          ),
+        ],
+      ),
     );
   }
 
@@ -194,79 +230,8 @@ class _MessageBubbleState extends State<MessageBubble> {
         content.contains('- ') ||
         content.contains('* ') ||
         content.contains('1. ') ||
-        content.contains('[') && content.contains('](') ||
+        (content.contains('[') && content.contains('](')) ||
         content.contains('>');
-  }
-
-  MarkdownStyleSheet _buildMarkdownStyleSheet() {
-    return MarkdownStyleSheet(
-      p: const TextStyle(
-        color: Colors.black87,
-        fontSize: 14,
-        height: 1.4,
-      ),
-      h1: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
-      ),
-      h2: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
-      ),
-      h3: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
-      ),
-      strong: const TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
-      ),
-      em: const TextStyle(
-        fontStyle: FontStyle.italic,
-        color: Colors.black87,
-      ),
-      code: TextStyle(
-        fontFamily: 'monospace',
-        fontSize: 13,
-        backgroundColor: Colors.grey[200],
-        color: Colors.black87,
-      ),
-      codeblockDecoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      codeblockPadding: const EdgeInsets.all(12),
-      blockquote: TextStyle(
-        color: Colors.grey[700],
-        fontStyle: FontStyle.italic,
-      ),
-      blockquoteDecoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: AppColors.primary.withValues(alpha: 0.5),
-            width: 4,
-          ),
-        ),
-      ),
-      blockquotePadding: const EdgeInsets.only(left: 12),
-      listBullet: TextStyle(
-        color: AppColors.primary,
-        fontSize: 14,
-      ),
-      a: TextStyle(
-        color: AppColors.primary,
-        decoration: TextDecoration.underline,
-      ),
-      horizontalRuleDecoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.grey[300]!, width: 1),
-        ),
-      ),
-    );
   }
 
   Future<void> _launchUrl(String url) async {
@@ -282,10 +247,10 @@ class _MessageBubbleState extends State<MessageBubble> {
       height: 32,
       decoration: BoxDecoration(
         color: isAgent
-            ? Colors.blue.withOpacity(0.1)
+            ? Colors.blue.withValues(alpha: 0.1)
             : isSystem
-                ? Colors.amber.withOpacity(0.1)
-                : AppColors.primary.withOpacity(0.1),
+                ? Colors.amber.withValues(alpha: 0.1)
+                : AppColors.primary.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: Icon(
@@ -322,7 +287,7 @@ class _MessageBubbleState extends State<MessageBubble> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -471,7 +436,7 @@ class _MessageBubbleState extends State<MessageBubble> {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(
@@ -497,116 +462,5 @@ class _MessageBubbleState extends State<MessageBubble> {
     final hour = time.hour.toString().padLeft(2, '0');
     final minute = time.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
-  }
-}
-
-/// Custom code block builder with copy functionality
-class CodeBlockBuilder extends MarkdownElementBuilder {
-  @override
-  Widget? visitElementAfter(element, preferredStyle) {
-    final code = element.textContent;
-    final language = element.attributes['class']?.replaceFirst('language-', '') ?? '';
-
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[300]!),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header with language and copy button
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
-              ),
-            ),
-            child: Row(
-              children: [
-                if (language.isNotEmpty)
-                  Text(
-                    language,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                const Spacer(),
-                _CopyButton(code: code),
-              ],
-            ),
-          ),
-          // Code content
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: SelectableText(
-              code,
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 13,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CopyButton extends StatefulWidget {
-  final String code;
-
-  const _CopyButton({required this.code});
-
-  @override
-  State<_CopyButton> createState() => _CopyButtonState();
-}
-
-class _CopyButtonState extends State<_CopyButton> {
-  bool _copied = false;
-
-  void _copy() async {
-    await Clipboard.setData(ClipboardData(text: widget.code));
-    setState(() => _copied = true);
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) setState(() => _copied = false);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _copy,
-      borderRadius: BorderRadius.circular(4),
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              _copied ? Icons.check : Icons.copy,
-              size: 14,
-              color: _copied ? Colors.green : Colors.grey[600],
-            ),
-            const SizedBox(width: 4),
-            Text(
-              _copied ? context.l10n.chatCopied : context.l10n.chatCopy,
-              style: TextStyle(
-                fontSize: 11,
-                color: _copied ? Colors.green : Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

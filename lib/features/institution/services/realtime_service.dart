@@ -10,17 +10,17 @@ class InstitutionRealtimeService {
 
   /// Subscribe to real-time updates for institution applications - Stub implementation
   Future<void> subscribeToApplications(String institutionId) async {
-    print('[Realtime] Real-time service is currently disabled - stub implementation');
+    // Real-time service is currently disabled - stub implementation
   }
 
   /// Subscribe to document upload updates for an application - Stub implementation
   Future<void> subscribeToDocumentUploads(String applicationId) async {
-    print('[Realtime] Real-time service is currently disabled - stub implementation');
+    // Real-time service is currently disabled - stub implementation
   }
 
   /// Unsubscribe from application updates - Stub implementation
   Future<void> unsubscribeFromApplications() async {
-    print('[Realtime] Real-time service is currently disabled - stub implementation');
+    // Real-time service is currently disabled - stub implementation
   }
 
   /// Clean up resources

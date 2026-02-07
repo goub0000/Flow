@@ -1,8 +1,10 @@
 /// Notifications Real-Time Provider
 /// Manages real-time subscriptions for notification updates
+library;
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/notification_model.dart';
 import '../../../core/providers/service_providers.dart' hide currentUserProvider;
@@ -60,7 +62,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
   final EnhancedRealtimeService _realtimeService;
   final SupabaseClient _supabase;
 
-  RealtimeChannel? _channel;
   StreamSubscription<ConnectionStatus>? _connectionSubscription;
   Timer? _refreshTimer;
   Timer? _newNotificationTimer;
@@ -95,7 +96,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
     try {
       final user = ref.read(currentUserProvider);
       if (user == null) {
-        print('[RealtimeNotifications] User not yet loaded, waiting...');
         state = state.copyWith(
           error: null, // Don't show error - just waiting for auth
           isLoading: false,
@@ -106,8 +106,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
         });
         return;
       }
-
-      print('[RealtimeNotifications] Fetching notifications for user: ${user.id}');
 
       // Fetch from Supabase
       final response = await _supabase
@@ -130,10 +128,7 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
         lastUpdate: DateTime.now(),
       );
 
-      print('[RealtimeNotifications] Fetched ${notifications.length} notifications ($unreadCount unread)');
-
     } catch (e) {
-      print('[RealtimeNotifications] Error fetching: $e');
       state = state.copyWith(
         error: 'Failed to fetch notifications: $e',
         isLoading: false,
@@ -145,7 +140,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
   void _setupRealtimeSubscription() {
     final user = ref.read(currentUserProvider);
     if (user == null) {
-      print('[RealtimeNotifications] Cannot setup subscription - no user, retrying...');
       // Retry after auth is loaded
       Future.delayed(const Duration(milliseconds: 500), () {
         if (!_disposed) _setupRealtimeSubscription();
@@ -155,9 +149,7 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
 
     final channelName = 'user_notifications_${user.id}';
 
-    print('[RealtimeNotifications] Setting up real-time subscription');
-
-    _channel = _realtimeService.subscribeToUserRecords(
+    _realtimeService.subscribeToUserRecords(
       table: 'notifications',
       channelName: channelName,
       userId: user.id,
@@ -166,7 +158,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
       onUpdate: _handleUpdate,
       onDelete: _handleDelete,
       onError: (error) {
-        print('[RealtimeNotifications] Subscription error: $error');
         state = state.copyWith(error: error);
       },
     );
@@ -175,8 +166,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
   /// Handle INSERT event (new notification)
   void _handleInsert(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeNotifications] New notification inserted: ${payload['id']}');
-
       final newNotification = NotificationModel.fromJson(payload);
 
       // Add to top of list
@@ -203,15 +192,13 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
       _showSystemNotification(newNotification);
 
     } catch (e) {
-      print('[RealtimeNotifications] Error handling insert: $e');
+      // Handle error silently
     }
   }
 
   /// Handle UPDATE event (notification marked as read, etc.)
   void _handleUpdate(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeNotifications] Notification updated: ${payload['id']}');
-
       final updatedNotification = NotificationModel.fromJson(payload);
 
       // Update in list
@@ -232,14 +219,13 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
       );
 
     } catch (e) {
-      print('[RealtimeNotifications] Error handling update: $e');
+      // Handle error silently
     }
   }
 
   /// Handle DELETE event
   void _handleDelete(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeNotifications] Notification deleted: ${payload['id']}');
 
       final deletedId = payload['id'] as String;
 
@@ -258,7 +244,7 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
       );
 
     } catch (e) {
-      print('[RealtimeNotifications] Error handling delete: $e');
+      // Handle error silently
     }
   }
 
@@ -280,7 +266,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
     // Refresh every 60 seconds if not connected to real-time
     _refreshTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
       if (!state.isConnected) {
-        print('[RealtimeNotifications] Periodic refresh (not connected to real-time)');
         refresh();
       }
     });
@@ -291,7 +276,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
     // TODO: Implement platform-specific notification
     // For web: Use browser notification API
     // For mobile: Use flutter_local_notifications package
-    print('[SystemNotification] ${notification.title}: ${notification.message}');
   }
 
   /// Manual refresh
@@ -334,8 +318,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
       // Real-time will confirm the update
       return true;
     } catch (e) {
-      print('[RealtimeNotifications] Error marking as read: $e');
-
       // Revert on error
       await refresh();
       return false;
@@ -378,8 +360,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
 
       return true;
     } catch (e) {
-      print('[RealtimeNotifications] Error marking all as read: $e');
-
       // Revert on error
       await refresh();
       return false;
@@ -412,8 +392,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
 
       return true;
     } catch (e) {
-      print('[RealtimeNotifications] Error deleting notification: $e');
-
       // Revert on error
       await refresh();
       return false;
@@ -440,8 +418,6 @@ class NotificationsRealtimeNotifier extends StateNotifier<RealtimeNotificationsS
 
       return true;
     } catch (e) {
-      print('[RealtimeNotifications] Error clearing all: $e');
-
       // Revert on error
       await refresh();
       return false;

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/models/chat_message.dart';
 import '../../domain/models/conversation.dart';
@@ -466,7 +467,6 @@ class ChatbotNotifier extends StateNotifier<ChatbotState> {
       await _storageService.saveActiveConversation(conversationId);
     } catch (e) {
       // Don't show error to user, just log it
-      print('Error saving conversation: $e');
     }
   }
 }

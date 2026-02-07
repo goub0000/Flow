@@ -1,7 +1,9 @@
 /// Page Content Providers
 /// Riverpod providers for CMS page content
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../models/page_content_model.dart';
 import '../services/page_content_service.dart';
 import 'service_providers.dart';

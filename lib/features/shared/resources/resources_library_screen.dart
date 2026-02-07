@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/l10n_extension.dart';
 import '../widgets/resource_widgets.dart';
 
 /// Resources Library Screen

@@ -1,4 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../models/approval_models.dart';

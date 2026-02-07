@@ -441,7 +441,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
-            color: AppColors.surfaceVariant,
+            color: AppColors.surfaceContainerHighest,
             border: Border(bottom: BorderSide(color: AppColors.border)),
           ),
           child: Row(
@@ -468,7 +468,7 @@ class _SqlQueriesScreenState extends ConsumerState<SqlQueriesScreen> {
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
                 child: DataTable(
-                  headingRowColor: WidgetStateProperty.all(AppColors.surfaceVariant),
+                  headingRowColor: WidgetStateProperty.all(AppColors.surfaceContainerHighest),
                   headingTextStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: AppColors.textPrimary),
                   dataTextStyle: const TextStyle(fontSize: 12),
                   columnSpacing: 20,

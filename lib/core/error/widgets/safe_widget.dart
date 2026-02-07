@@ -1,3 +1,5 @@
+// ignore_for_file: null_check_on_nullable_type_parameter
+
 import 'package:flutter/material.dart';
 import 'error_boundary.dart';
 import '../error_handler.dart';

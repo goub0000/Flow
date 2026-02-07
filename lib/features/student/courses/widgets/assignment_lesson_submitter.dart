@@ -319,7 +319,7 @@ class _AssignmentLessonSubmitterState
               ...rubric.map((criterion) {
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                     child: Text(
                       '${criterion['points']}',
                       style: TextStyle(
@@ -450,6 +450,7 @@ class _AssignmentLessonSubmitterState
       );
 
       if (result != null) {
+        if (!mounted) return;
         setState(() {
           for (final file in result.files) {
             // Check file size if max size is specified
@@ -485,6 +486,7 @@ class _AssignmentLessonSubmitterState
         }
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error selecting files: $e'),

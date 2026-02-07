@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/providers/page_content_provider.dart';
-import '../../../../core/models/page_content_model.dart';
 import '../../../../core/l10n_extension.dart';
-import '../widgets/dynamic_page_wrapper.dart';
 
 /// Help Center page with FAQs and support resources - fetches content from CMS
 class HelpCenterPage extends ConsumerWidget {
@@ -14,254 +11,6 @@ class HelpCenterPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const _HelpCenterStaticContent();
-  }
-}
-
-class _HelpCenterDynamicContent extends StatefulWidget {
-  final PublicPageContent content;
-
-  const _HelpCenterDynamicContent({required this.content});
-
-  @override
-  State<_HelpCenterDynamicContent> createState() => _HelpCenterDynamicContentState();
-}
-
-class _HelpCenterDynamicContentState extends State<_HelpCenterDynamicContent> {
-  final TextEditingController _searchController = TextEditingController();
-  String _selectedCategory = 'All';
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  List<String> get _categories {
-    final faqs = widget.content.getFaqs();
-    final cats = faqs.map((f) => f.category ?? 'General').toSet().toList();
-    return ['All', ...cats];
-  }
-
-  List<FaqItem> get _filteredFaqs {
-    final faqs = widget.content.getFaqs();
-    return faqs.where((faq) {
-      final matchesCategory = _selectedCategory == 'All' || faq.category == _selectedCategory;
-      final matchesSearch = _searchController.text.isEmpty ||
-          faq.question.toLowerCase().contains(_searchController.text.toLowerCase()) ||
-          faq.answer.toLowerCase().contains(_searchController.text.toLowerCase());
-      return matchesCategory && matchesSearch;
-    }).toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final intro = widget.content.getString('intro');
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
-        ),
-        title: Text(widget.content.title),
-        backgroundColor: AppColors.surface,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 900),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Text(
-                  widget.content.subtitle ?? 'How can we help?',
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (intro.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    intro,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 24),
-
-                // Search
-                TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search for help...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: AppColors.surface,
-                  ),
-                  onChanged: (_) => setState(() {}),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Quick Links
-                Text(
-                  'Quick Links',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
-                  children: [
-                    _buildQuickLink(context, theme, Icons.school, 'University Search', '/universities'),
-                    _buildQuickLink(context, theme, Icons.person, 'My Profile', '/profile'),
-                    _buildQuickLink(context, theme, Icons.settings, 'Settings', '/settings'),
-                    _buildQuickLink(context, theme, Icons.mail, 'Contact Support', '/contact'),
-                  ],
-                ),
-
-                const SizedBox(height: 32),
-
-                // Categories
-                if (_categories.length > 1) ...[
-                  Text(
-                    'Categories',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: _categories.map((cat) {
-                      final isSelected = cat == _selectedCategory;
-                      return FilterChip(
-                        label: Text(cat),
-                        selected: isSelected,
-                        onSelected: (_) => setState(() => _selectedCategory = cat),
-                        selectedColor: AppColors.primary.withOpacity(0.2),
-                      );
-                    }).toList(),
-                  ),
-
-                  const SizedBox(height: 32),
-                ],
-
-                // FAQs
-                Text(
-                  'Frequently Asked Questions',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                if (_filteredFaqs.isNotEmpty)
-                  FaqListWidget(faqs: _filteredFaqs)
-                else
-                  Container(
-                    padding: const EdgeInsets.all(32),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        Icon(Icons.search_off, size: 48, color: AppColors.textSecondary),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No results found',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                const SizedBox(height: 32),
-
-                // Still need help?
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primary.withOpacity(0.1),
-                        AppColors.accent.withOpacity(0.1),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.support_agent, size: 48, color: AppColors.primary),
-                      const SizedBox(height: 16),
-                      Text(
-                        context.l10n.helpCenterPageStillNeedHelp,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        context.l10n.helpCenterPageSupportTeam,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      FilledButton.icon(
-                        onPressed: () => context.go('/contact'),
-                        icon: const Icon(Icons.mail),
-                        label: Text(context.l10n.helpCenterPageContactSupport),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 48),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQuickLink(
-      BuildContext context, ThemeData theme, IconData icon, String label, String route) {
-    return InkWell(
-      onTap: () => context.go(route),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.border),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 20, color: AppColors.primary),
-            const SizedBox(width: 8),
-            Text(label, style: theme.textTheme.bodyMedium),
-          ],
-        ),
-      ),
-    );
   }
 }
 
@@ -449,7 +198,7 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                       label: Text(cat),
                       selected: isSelected,
                       onSelected: (_) => setState(() => _selectedCategory = cat),
-                      selectedColor: AppColors.primary.withOpacity(0.2),
+                      selectedColor: AppColors.primary.withValues(alpha: 0.2),
                     );
                   }).toList(),
                 ),
@@ -494,8 +243,8 @@ class _HelpCenterStaticContentState extends State<_HelpCenterStaticContent> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.primary.withOpacity(0.1),
-                        AppColors.accent.withOpacity(0.1),
+                        AppColors.primary.withValues(alpha: 0.1),
+                        AppColors.accent.withValues(alpha: 0.1),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(12),

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -1193,7 +1195,8 @@ class _SystemSettingsScreenState extends ConsumerState<SystemSettingsScreen> {
           Switch(
             value: currentValue,
             onChanged: (newValue) => _updateLocal(settingKey, newValue),
-            activeColor: AppColors.success,
+            activeTrackColor: AppColors.success.withValues(alpha: 0.5),
+            activeThumbColor: AppColors.success,
           ),
         ],
       ),

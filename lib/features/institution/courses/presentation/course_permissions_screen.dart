@@ -1,6 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/course_model.dart';
 import '../../../../core/models/enrollment_permission_model.dart';
@@ -202,26 +203,26 @@ class _GrantPermissionBottomSheetState
       }
     }
 
-    if (mounted) {
-      Navigator.pop(context);
+    if (!mounted) return;
 
-      if (successCount > 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.instCourseGrantedPermission(successCount)),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
+    Navigator.pop(context);
 
-      if (failCount > 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.instCourseFailedGrantPermission(failCount)),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+    if (successCount > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.instCourseGrantedPermission(successCount)),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+
+    if (failCount > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.instCourseFailedGrantPermission(failCount)),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -306,7 +307,7 @@ class _GrantPermissionBottomSheetState
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha:0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -338,7 +339,7 @@ class _GrantPermissionBottomSheetState
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha:0.05),
                   blurRadius: 10,
                   offset: const Offset(0, -5),
                 ),
@@ -692,14 +693,16 @@ class _PendingRequestsTabState extends ConsumerState<_PendingRequestsTab> {
         .read(enrollmentPermissionsProvider(widget.course.id).notifier)
         .approvePermission(permission.id);
 
-    if (success && mounted) {
+    if (!mounted) return;
+
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(context.l10n.instCourseApprovedStudent(permission.studentDisplayName ?? '')),
           backgroundColor: Colors.green,
         ),
       );
-    } else if (mounted) {
+    } else {
       final error =
           ref.read(enrollmentPermissionsProvider(widget.course.id)).error;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -761,12 +764,22 @@ class _PendingRequestsTabState extends ConsumerState<_PendingRequestsTab> {
       ),
     );
 
-    if (result == true && mounted) {
+    if (!mounted) {
+      reasonController.dispose();
+      return;
+    }
+
+    if (result == true) {
       final success = await ref
           .read(enrollmentPermissionsProvider(widget.course.id).notifier)
           .denyPermission(permission.id, reasonController.text.trim());
 
-      if (success && mounted) {
+      if (!context.mounted) {
+        reasonController.dispose();
+        return;
+      }
+
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(context.l10n.instCourseDeniedStudent(permission.studentDisplayName ?? '')),
@@ -934,7 +947,12 @@ class _ApprovedPermissionsTabState
       ),
     );
 
-    if (result == true && mounted) {
+    if (!mounted) {
+      reasonController.dispose();
+      return;
+    }
+
+    if (result == true) {
       final success = await ref
           .read(enrollmentPermissionsProvider(widget.course.id).notifier)
           .revokePermission(
@@ -944,7 +962,12 @@ class _ApprovedPermissionsTabState
                 : reasonController.text.trim(),
           );
 
-      if (success && mounted) {
+      if (!context.mounted) {
+        reasonController.dispose();
+        return;
+      }
+
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(context.l10n.instCourseRevokedPermissionFor(permission.studentDisplayName ?? '')),
@@ -1108,7 +1131,7 @@ class _AllStudentsTabState extends ConsumerState<_AllStudentsTab> {
             ? null
             : (hasPendingRequest
                 ? TextButton(
-                    onPressed: () => _approveRequest(context, ref, permission!),
+                    onPressed: () => _approveRequest(context, ref, permission),
                     child: Text(context.l10n.instCourseApprove),
                   )
                 : ElevatedButton(
@@ -1185,7 +1208,11 @@ class _AllStudentsTabState extends ConsumerState<_AllStudentsTab> {
       ),
     );
 
-    if (result == true && mounted) {
+    if (!mounted) {
+      notesController.dispose();
+      return;
+    }
+    if (result == true) {
       final success = await ref
           .read(enrollmentPermissionsProvider(widget.course.id).notifier)
           .grantPermission(
@@ -1193,7 +1220,11 @@ class _AllStudentsTabState extends ConsumerState<_AllStudentsTab> {
             notes: notesController.text.trim().isEmpty ? null : notesController.text.trim(),
           );
 
-      if (success && mounted) {
+      if (!context.mounted) {
+        notesController.dispose();
+        return;
+      }
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(context.l10n.instCourseGrantedPermissionTo(student['display_name'] ?? '')),
@@ -1202,7 +1233,7 @@ class _AllStudentsTabState extends ConsumerState<_AllStudentsTab> {
         );
         // Refresh the list
         _fetchAdmittedStudents();
-      } else if (mounted) {
+      } else {
         final error = ref.read(enrollmentPermissionsProvider(widget.course.id)).error;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -1221,7 +1252,9 @@ class _AllStudentsTabState extends ConsumerState<_AllStudentsTab> {
         .read(enrollmentPermissionsProvider(widget.course.id).notifier)
         .approvePermission(permission['id']);
 
-    if (success && mounted) {
+    if (!context.mounted) return;
+
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(context.l10n.instCourseRequestApproved),
@@ -1230,7 +1263,7 @@ class _AllStudentsTabState extends ConsumerState<_AllStudentsTab> {
       );
       // Refresh the list
       _fetchAdmittedStudents();
-    } else if (mounted) {
+    } else {
       final error = ref.read(enrollmentPermissionsProvider(widget.course.id)).error;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

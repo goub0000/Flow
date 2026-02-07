@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:logging/logging.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/constants/user_roles.dart';

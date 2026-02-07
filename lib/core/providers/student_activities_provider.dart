@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../models/activity_models.dart';
 import '../services/student_activities_api_service.dart';
 import './service_providers.dart';
@@ -165,8 +166,6 @@ final studentActivitiesApiServiceProvider = Provider<StudentActivitiesApiService
   // Get the access token from the auth service
   final authService = ref.watch(authServiceProvider);
   final accessToken = authService.accessToken;
-
-  print('[StudentActivitiesProvider] Creating service with token: ${accessToken != null ? "present" : "null"}');
 
   return StudentActivitiesApiService(accessToken: accessToken);
 });

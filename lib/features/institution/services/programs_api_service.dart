@@ -95,8 +95,6 @@ class ProgramsApiService {
       programJson.remove('id');
       programJson.remove('created_at');
 
-      print('[ProgramsAPI] POST $baseUrl/programs with token: ${_accessToken?.substring(0, 20) ?? "NULL"}');
-      print('[ProgramsAPI] Program data: ${jsonEncode(programJson)}');
       final response = await _client.post(
         Uri.parse('$baseUrl/programs'),
         headers: _getHeaders(),

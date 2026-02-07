@@ -97,7 +97,6 @@ class ContentEditorWrapper extends StatefulWidget {
 
 class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
   bool _isPreviewMode = false;
-  bool _showValidationErrors = false;
   Timer? _autoSaveTimer;
   DateTime? _lastAutoSave;
 
@@ -168,9 +167,6 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
     if (errors.isEmpty) {
       widget.onSave();
     } else {
-      setState(() {
-        _showValidationErrors = true;
-      });
       _showValidationDialog(errors);
     }
   }
@@ -294,7 +290,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: widget.themeColor.withOpacity(0.1),
+            color: widget.themeColor.withValues(alpha:0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -461,7 +457,7 @@ class _ContentEditorWrapperState extends State<ContentEditorWrapper> {
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             color: isSelected
-                ? widget.themeColor.withOpacity(0.1)
+                ? widget.themeColor.withValues(alpha:0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
@@ -775,7 +771,7 @@ class ChipSelector<T> extends StatelessWidget {
           selected: isSelected,
           label: Text(labelBuilder(option)),
           avatar: icon != null ? Icon(icon, size: 18) : null,
-          selectedColor: color.withOpacity(0.2),
+          selectedColor: color.withValues(alpha:0.2),
           checkmarkColor: color,
           onSelected: (_) => onToggle(option),
         );

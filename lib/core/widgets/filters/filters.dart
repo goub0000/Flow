@@ -4,6 +4,7 @@
 /// ```dart
 /// import 'package:flow/core/widgets/filters/filters.dart';
 /// ```
+library;
 
 export 'advanced_filter.dart';
 export 'filter_bar.dart';

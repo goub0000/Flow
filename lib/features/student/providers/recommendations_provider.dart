@@ -69,11 +69,9 @@ final recommendationsProvider = FutureProvider<List<RecommendationItem>>((ref) a
       );
 
       if (response.success && response.data != null && response.data!.isNotEmpty) {
-        print('[DEBUG] Fetched ${response.data!.length} personalized recommendations from API');
         return response.data!;
       }
     } catch (e) {
-      print('[DEBUG] Recommendations API not available: $e');
       // Fall back to frontend-based recommendations
     }
 
@@ -81,7 +79,6 @@ final recommendationsProvider = FutureProvider<List<RecommendationItem>>((ref) a
     return await _generateLocalRecommendations(ref);
 
   } catch (e) {
-    print('[DEBUG] Error fetching recommendations: $e');
     // Return default recommendations on error
     return _getDefaultRecommendations();
   }
@@ -248,7 +245,6 @@ Future<List<RecommendationItem>> _generateLocalRecommendations(Ref ref) async {
     return recommendations.take(5).toList();
 
   } catch (e) {
-    print('[DEBUG] Error generating local recommendations: $e');
     return _getDefaultRecommendations();
   }
 }

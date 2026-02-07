@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/child_model.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
@@ -374,8 +375,8 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
       'totalCourses': totalCourses,
       'totalApplications': totalApplications,
       'pendingApplications': activeApplications,
-      'childrenWithAlerts': state.children.where((c) => c.lastActive != null &&
-        DateTime.now().difference(c.lastActive!).inDays > 3).length,
+      'childrenWithAlerts': state.children.where((c) =>
+        DateTime.now().difference(c.lastActive).inDays > 3).length,
     };
   }
 
@@ -388,7 +389,7 @@ class ParentChildrenNotifier extends StateNotifier<ParentChildrenState> {
   List<Child> getActiveChildren() {
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
     return state.children.where((child) {
-      return child.lastActive != null && child.lastActive!.isAfter(yesterday);
+      return child.lastActive.isAfter(yesterday);
     }).toList();
   }
 }

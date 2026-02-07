@@ -9,7 +9,6 @@ import '../../features/shared/cookies/presentation/cookie_settings_screen.dart';
 import '../../features/shared/notifications/notifications_screen.dart';
 import '../../features/shared/messages/presentation/messages_list_screen.dart';
 import '../../features/shared/messages/presentation/conversation_detail_screen.dart';
-import '../../features/shared/widgets/message_widgets.dart' as msg_widgets;
 import '../../features/shared/documents/documents_screen.dart';
 import '../../features/shared/documents/document_viewer_screen.dart';
 import '../../features/shared/payments/payment_method_screen.dart';
@@ -32,9 +31,6 @@ import '../../features/shared/widgets/task_widgets.dart'; // TaskModel
 import '../../features/shared/widgets/exam_widgets.dart'; // ExamModel
 import '../../features/shared/widgets/resource_widgets.dart'; // ResourceModel
 import '../../core/models/document_model.dart' as doc_model; // Document
-
-// Not found screen
-import '../../core/error/error_handling.dart';
 
 /// Shared routes available to all authenticated users
 List<RouteBase> sharedRoutes = [

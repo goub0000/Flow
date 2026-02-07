@@ -1,8 +1,10 @@
 /// Institution Applicants Real-Time Provider
 /// Manages real-time subscriptions for institution application updates
+library;
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/applicant_model.dart';
 import '../../../core/providers/service_providers.dart';
@@ -60,7 +62,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
   final EnhancedRealtimeService _realtimeService;
   final SupabaseClient _supabase;
 
-  RealtimeChannel? _channel;
   StreamSubscription<ConnectionStatus>? _connectionSubscription;
   Timer? _refreshTimer;
   String? _institutionId;
@@ -97,7 +98,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
     _institutionId = authState.user?.metadata?['institution_id'] as String?;
 
     if (_institutionId == null) {
-      print('[RealtimeInstitutionApplicants] No institution ID found');
       state = state.copyWith(error: 'Institution ID not found');
     }
   }
@@ -105,14 +105,12 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
   /// Fetch applicants from database
   Future<void> _fetchApplicants() async {
     if (_institutionId == null) {
-      print('[RealtimeInstitutionApplicants] Cannot fetch - no institution ID');
       return;
     }
 
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      print('[RealtimeInstitutionApplicants] Fetching applicants for institution: $_institutionId');
 
       // Build query with filters
       var queryBuilder = _supabase
@@ -160,10 +158,7 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
         statistics: statistics,
       );
 
-      print('[RealtimeInstitutionApplicants] Fetched ${applicants.length} applicants');
-
     } catch (e) {
-      print('[RealtimeInstitutionApplicants] Error fetching: $e');
       state = state.copyWith(
         error: 'Failed to fetch applicants: $e',
         isLoading: false,
@@ -174,15 +169,12 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
   /// Setup real-time subscription for application updates
   void _setupRealtimeSubscription() {
     if (_institutionId == null) {
-      print('[RealtimeInstitutionApplicants] Cannot setup subscription - no institution ID');
       return;
     }
 
     final channelName = 'institution_applications_$_institutionId';
 
-    print('[RealtimeInstitutionApplicants] Setting up real-time subscription');
-
-    _channel = _realtimeService.subscribeToTable(
+    _realtimeService.subscribeToTable(
       table: 'applications',
       channelName: channelName,
       filter: PostgresChangeFilter(
@@ -194,7 +186,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
       onUpdate: _handleUpdate,
       onDelete: _handleDelete,
       onError: (error) {
-        print('[RealtimeInstitutionApplicants] Subscription error: $error');
         state = state.copyWith(error: error);
       },
     );
@@ -203,8 +194,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
   /// Handle INSERT event
   void _handleInsert(Map<String, dynamic> payload) async {
     try {
-      print('[RealtimeInstitutionApplicants] New application inserted: ${payload['id']}');
-
       // Fetch the complete applicant data with joins
       final response = await _supabase
           .from('applications')
@@ -251,14 +240,13 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
         state = state.copyWith(statistics: statistics);
       }
     } catch (e) {
-      print('[RealtimeInstitutionApplicants] Error handling insert: $e');
+      // Handle error silently
     }
   }
 
   /// Handle UPDATE event
   void _handleUpdate(Map<String, dynamic> payload) async {
     try {
-      print('[RealtimeInstitutionApplicants] Application updated: ${payload['id']}');
 
       // Check if this applicant is in our current list
       final existingIndex = state.applicants.indexWhere((app) => app.id == payload['id']);
@@ -361,14 +349,13 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
       state = state.copyWith(statistics: statistics);
 
     } catch (e) {
-      print('[RealtimeInstitutionApplicants] Error handling update: $e');
+      // Handle error silently
     }
   }
 
   /// Handle DELETE event
   void _handleDelete(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeInstitutionApplicants] Application deleted: ${payload['id']}');
 
       final deletedId = payload['id'] as String;
 
@@ -388,7 +375,7 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
       // Show notification
       _showNotification('Application Removed', 'An application has been withdrawn or removed');
     } catch (e) {
-      print('[RealtimeInstitutionApplicants] Error handling delete: $e');
+      // Handle error silently
     }
   }
 
@@ -439,7 +426,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
           .map((json) => Applicant.fromJson(json))
           .toList();
     } catch (e) {
-      print('[RealtimeInstitutionApplicants] Error fetching all for statistics: $e');
       return [];
     }
   }
@@ -462,7 +448,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
     // Refresh every 30 seconds if not connected to real-time
     _refreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
       if (!state.isConnected) {
-        print('[RealtimeInstitutionApplicants] Periodic refresh (not connected to real-time)');
         refresh();
       }
     });
@@ -498,7 +483,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
   /// Show notification (placeholder - integrate with actual notification system)
   void _showNotification(String title, String message) {
     // TODO: Integrate with actual notification system
-    print('[Notification] $title: $message');
   }
 
   /// Manual refresh
@@ -550,8 +534,6 @@ class InstitutionApplicantsRealtimeNotifier extends StateNotifier<RealtimeInstit
       // Real-time will confirm the update
       return true;
     } catch (e) {
-      print('[RealtimeInstitutionApplicants] Error updating status: $e');
-
       // Revert on error
       state = state.copyWith(
         applicants: state.applicants,

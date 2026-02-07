@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -449,7 +451,7 @@ class _FraudDetectionScreenState extends ConsumerState<FraudDetectionScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: AppColors.surfaceVariant,
+                              color: AppColors.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(txn.type.toUpperCase(), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),

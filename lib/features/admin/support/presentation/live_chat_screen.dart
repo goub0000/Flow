@@ -1,7 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/l10n_extension.dart';
 import '../../shared/widgets/admin_data_table.dart';
 import '../../shared/providers/admin_live_chat_provider.dart';
 

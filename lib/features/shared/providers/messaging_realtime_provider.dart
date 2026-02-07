@@ -1,8 +1,10 @@
 /// Messaging Real-Time Provider
 /// Manages messages within conversations via backend API with periodic refresh
+library;
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/conversation_model.dart';
 import '../../../core/models/message_model.dart';
 import '../../../core/providers/service_providers.dart';
@@ -106,8 +108,6 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
         return;
       }
 
-      print('[RealtimeMessaging] Fetching conversation: $conversationId');
-
       // Fetch conversation
       final conversationResponse = await _messagingService.getConversationById(conversationId);
 
@@ -142,13 +142,10 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
         lastUpdate: DateTime.now(),
       );
 
-      print('[RealtimeMessaging] Fetched ${messages.length} messages');
-
       // Mark conversation as read
       _markConversationAsRead();
 
     } catch (e) {
-      print('[RealtimeMessaging] Error fetching: $e');
       state = state.copyWith(
         error: 'Failed to fetch conversation: $e',
         isLoading: false,
@@ -189,7 +186,7 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
         }
       }
     } catch (e) {
-      print('[RealtimeMessaging] Error fetching messages: $e');
+      // Handle error silently
     }
   }
 
@@ -197,9 +194,8 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
   Future<void> _markConversationAsRead() async {
     try {
       await _messagingService.markConversationAsRead(conversationId);
-      print('[RealtimeMessaging] Marked conversation as read');
     } catch (e) {
-      print('[RealtimeMessaging] Error marking conversation as read: $e');
+      // Handle error silently
     }
   }
 
@@ -211,7 +207,7 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
         isTyping: isTyping,
       );
     } catch (e) {
-      print('[RealtimeMessaging] Error sending typing indicator: $e');
+      // Handle error silently
     }
   }
 
@@ -240,7 +236,6 @@ class ConversationRealtimeNotifier extends StateNotifier<RealtimeConversationSta
         return null;
       }
     } catch (e) {
-      print('[RealtimeMessaging] Error sending message: $e');
       state = state.copyWith(error: 'Failed to send message: $e');
       return null;
     }

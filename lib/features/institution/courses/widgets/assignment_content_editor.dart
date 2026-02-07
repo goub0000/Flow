@@ -1,7 +1,7 @@
-import 'dart:async';
+// ignore_for_file: deprecated_member_use, unnecessary_brace_in_string_interps
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../core/models/course_content_models.dart';
 import '../../../../core/models/quiz_assignment_models.dart';
 import 'content_editor_wrapper.dart';
 
@@ -261,9 +261,9 @@ class _AssignmentContentEditorState extends State<AssignmentContentEditor>
       // _maxResubmissions = content.maxResubmissions ?? 3;
 
       // Load rubric
-      if (content.rubric != null && content.rubric!.isNotEmpty) {
+      if (content.rubric.isNotEmpty) {
         _useRubric = true;
-        for (final item in content.rubric!) {
+        for (final item in content.rubric) {
           _rubricCriteria.add(RubricCriterion.fromJson(item));
         }
       }
@@ -430,7 +430,7 @@ class _AssignmentContentEditorState extends State<AssignmentContentEditor>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -834,7 +834,7 @@ class _AssignmentContentEditorState extends State<AssignmentContentEditor>
                           Text(type.displayName),
                         ],
                       ),
-                      selectedColor: type.color.withOpacity(0.2),
+                      selectedColor: type.color.withValues(alpha:0.2),
                       onSelected: (selected) {
                         if (selected) {
                           setState(() {
@@ -850,9 +850,9 @@ class _AssignmentContentEditorState extends State<AssignmentContentEditor>
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: _submissionType.color.withOpacity(0.1),
+                    color: _submissionType.color.withValues(alpha:0.1),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: _submissionType.color.withOpacity(0.3)),
+                    border: Border.all(color: _submissionType.color.withValues(alpha:0.3)),
                   ),
                   child: Row(
                     children: [
@@ -1581,7 +1581,7 @@ class _AssignmentContentEditorState extends State<AssignmentContentEditor>
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: _submissionType.color.withOpacity(0.2),
+                            color: _submissionType.color.withValues(alpha:0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(

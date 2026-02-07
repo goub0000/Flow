@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../services/keyboard_shortcuts_service.dart';
 
 /// Keyboard Shortcuts Help Dialog
 /// Shows all available keyboard shortcuts in the admin dashboard

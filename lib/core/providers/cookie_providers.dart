@@ -1,6 +1,7 @@
 // lib/core/providers/cookie_providers.dart
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/consent_service.dart';
 import '../services/cookie_service.dart';

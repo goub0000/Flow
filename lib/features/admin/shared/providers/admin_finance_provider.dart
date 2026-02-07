@@ -1,4 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/models/payment_model.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
@@ -188,7 +191,6 @@ class AdminFinanceNotifier extends StateNotifier<AdminFinanceState> {
       }
     } catch (e) {
       // Statistics fetch failed, but transactions may still work
-      print('Failed to fetch finance stats: $e');
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/models/counseling_models.dart';
 import '../../../../../core/models/meeting_models.dart' as models;
 import '../../../../../core/providers/meetings_provider.dart';
 import '../../../../shared/widgets/custom_card.dart';

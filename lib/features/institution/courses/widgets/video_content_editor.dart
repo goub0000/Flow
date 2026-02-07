@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -373,7 +375,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -501,7 +503,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                             size: 18,
                             color: isSelected ? platform.color : Colors.grey,
                           ),
-                          selectedColor: platform.color.withOpacity(0.2),
+                          selectedColor: platform.color.withValues(alpha:0.2),
                           onSelected: (selected) {
                             if (selected) {
                               setState(() {
@@ -572,7 +574,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.6),
+                              color: Colors.black.withValues(alpha:0.6),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -591,7 +593,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.7),
+                              color: Colors.black.withValues(alpha:0.7),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -1267,7 +1269,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                     image: NetworkImage(_thumbnailUrl!),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.3),
+                      Colors.black.withValues(alpha:0.3),
                       BlendMode.darken,
                     ),
                   )
@@ -1279,7 +1281,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.9),
+                    color: Colors.red.withValues(alpha:0.9),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -1302,7 +1304,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          Colors.black.withValues(alpha:0.7),
                         ],
                       ),
                     ),
@@ -1312,7 +1314,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                         Container(
                           height: 4,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withValues(alpha:0.3),
                             borderRadius: BorderRadius.circular(2),
                           ),
                           child: FractionallySizedBox(
@@ -1353,7 +1355,7 @@ class _VideoContentEditorState extends State<VideoContentEditor>
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
+                    color: Colors.black.withValues(alpha:0.7),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(

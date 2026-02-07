@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -103,6 +105,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
         }),
       );
 
+      if (!mounted) return;
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(context.l10n.adminChatQueueAssignedToYou)),
@@ -110,6 +113,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
         _loadQueue();
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(context.l10n.adminChatQueueAssignFailed(e.toString()))),
       );
@@ -164,7 +168,7 @@ class _SupportQueueScreenState extends ConsumerState<SupportQueueScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.warning.withOpacity(0.1),
+              color: AppColors.warning.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(Icons.support_agent, color: AppColors.warning, size: 24),

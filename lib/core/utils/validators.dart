@@ -19,6 +19,7 @@
 ///   ])(value),
 /// )
 /// ```
+library;
 
 class Validators {
   // Private constructor to prevent instantiation

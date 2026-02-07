@@ -327,8 +327,4 @@ class _NotificationSnackbarState extends ConsumerState<NotificationSnackbar> {
     // This is a placeholder - actual implementation would listen to real-time updates
     return const SizedBox.shrink();
   }
-
-  void _showNotificationSnackbar() {
-    // TODO: Implement notification snackbar with slide-in animation
-  }
 }

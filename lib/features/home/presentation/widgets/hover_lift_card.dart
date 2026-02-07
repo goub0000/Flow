@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../../../core/constants/home_constants.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -95,7 +97,7 @@ class _HoverLiftCardState extends State<HoverLiftCard>
               borderRadius: BorderRadius.circular(widget.borderRadius),
               border: widget.showHoverBorder && _isHovered
                   ? Border.all(
-                      color: borderColor.withOpacity(0.5),
+                      color: borderColor.withValues(alpha: 0.5),
                       width: 2,
                     )
                   : Border.all(
@@ -104,7 +106,7 @@ class _HoverLiftCardState extends State<HoverLiftCard>
                     ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(_isHovered ? 0.12 : 0.06),
+                  color: Colors.black.withValues(alpha: _isHovered ? 0.12 : 0.06),
                   blurRadius: _elevation * 2,
                   offset: Offset(0, _elevation / 2),
                   spreadRadius: _isHovered ? 2 : 0,
@@ -247,7 +249,7 @@ class _ElevatedHoverCardState extends State<ElevatedHoverCard> {
             borderRadius: BorderRadius.circular(widget.borderRadius),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(_isHovered ? 0.12 : 0.06),
+                color: Colors.black.withValues(alpha: _isHovered ? 0.12 : 0.06),
                 blurRadius: _isHovered ? 20 : 10,
                 offset: Offset(0, _isHovered ? 8 : 4),
               ),

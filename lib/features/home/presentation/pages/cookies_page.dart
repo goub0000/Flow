@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/models/page_content_model.dart';
 import '../../../../core/l10n_extension.dart';
-import '../widgets/dynamic_page_wrapper.dart';
 
 /// Cookie Policy page - fetches content from CMS
 class CookiesPage extends ConsumerWidget {
@@ -14,133 +12,6 @@ class CookiesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Always use translated static content for proper l10n support
     return _buildStaticPage(context);
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final sections = content.getSections();
-    final lastUpdated = content.getString('last_updated');
-
-    return FooterPageScaffold(
-      title: content.title,
-      subtitle: content.subtitle,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (lastUpdated.isNotEmpty) ...[
-            Text(
-              context.l10n.privacyPageLastUpdatedLabel(lastUpdated),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 24),
-          ],
-          ContentSectionsWidget(sections: sections),
-          const SizedBox(height: 24),
-
-          // Cookie Types Table (dynamic if available)
-          if (content.getList('cookie_types').isNotEmpty) ...[
-            Text(
-              context.l10n.cookiesPageTypesTitle,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildDynamicCookieTable(context, theme, content.getList('cookie_types')),
-            const SizedBox(height: 32),
-          ],
-
-          // Manage preferences CTA
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.cookie, size: 40, color: AppColors.primary),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        context.l10n.cookiesPageManagePreferences,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        context.l10n.cookiesPageCustomize,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                FilledButton(
-                  onPressed: () => context.go('/settings/cookies'),
-                  child: Text(context.l10n.cookiesPageManageButton),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 32),
-
-          // Contact
-          Center(
-            child: Column(
-              children: [
-                Text(
-                  context.l10n.cookiesPageQuestionsTitle,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  context.l10n.cookiesPageQuestionsContact,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDynamicCookieTable(BuildContext context, ThemeData theme, List<dynamic> cookieTypes) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          _buildTableRow(theme, context.l10n.cookiesPageCookieType, context.l10n.cookiesPagePurpose, context.l10n.cookiesPageDuration, isHeader: true),
-          ...cookieTypes.map((cookie) {
-            final c = cookie as Map<String, dynamic>;
-            return _buildTableRow(
-              theme,
-              c['type']?.toString() ?? '',
-              c['purpose']?.toString() ?? '',
-              c['duration']?.toString() ?? '',
-            );
-          }),
-        ],
-      ),
-    );
   }
 
   Widget _buildStaticPage(BuildContext context) {
@@ -348,7 +219,7 @@ class CookiesPage extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: isHeader ? AppColors.primary.withOpacity(0.1) : null,
+        color: isHeader ? AppColors.primary.withValues(alpha: 0.1) : null,
         border: Border(
           bottom: BorderSide(color: AppColors.border),
         ),

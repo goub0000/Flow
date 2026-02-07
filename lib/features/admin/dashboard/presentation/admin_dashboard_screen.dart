@@ -1010,7 +1010,6 @@ class _UserDistributionChartState extends ConsumerState<_UserDistributionChart> 
     }
 
     final rolePercentages = _distributionData!['role_percentages'] as Map<String, dynamic>;
-    final totalUsers = _distributionData!['total_users'] as int;
 
     // Define colors for each role
     final roleColors = {

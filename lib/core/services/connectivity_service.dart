@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
+
 import 'dart:async';
 import 'dart:html' as html;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,16 +38,12 @@ class ConnectivityService {
     final browserOnline = html.window.navigator.onLine ?? true;
     _currentStatus = browserOnline ? ConnectivityStatus.online : ConnectivityStatus.offline;
 
-    print('[ConnectivityService] Initial status from browser: $_currentStatus');
-
     // Listen for online/offline events from browser
     html.window.onOnline.listen((_) {
-      print('[ConnectivityService] Browser online event received');
       _updateStatus(ConnectivityStatus.online);
     });
 
     html.window.onOffline.listen((_) {
-      print('[ConnectivityService] Browser offline event received');
       _updateStatus(ConnectivityStatus.offline);
     });
 
@@ -69,7 +67,6 @@ class ConnectivityService {
     if (_currentStatus != status) {
       _currentStatus = status;
       _controller.add(status);
-      print('[ConnectivityService] Status changed to: $status');
     }
   }
 
@@ -102,7 +99,6 @@ class ConnectivityService {
       _updateStatus(ConnectivityStatus.online);
 
     } catch (e) {
-      print('[ConnectivityService] Connectivity check error: $e');
       // Only mark offline if browser also reports offline
       // Otherwise, trust that we're online (fetch errors can have many causes)
       if (!(html.window.navigator.onLine ?? true)) {

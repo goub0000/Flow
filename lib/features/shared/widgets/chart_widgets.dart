@@ -403,7 +403,7 @@ class _LineChartPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final fillPaint = Paint()
-      ..color = lineColor.withOpacity(0.1)
+      ..color = lineColor.withValues(alpha: 0.1)
       ..style = PaintingStyle.fill;
 
     final dotPaint = Paint()
@@ -451,7 +451,7 @@ class _LineChartPainter extends CustomPainter {
           point,
           6,
           Paint()
-            ..color = lineColor.withOpacity(0.3)
+            ..color = lineColor.withValues(alpha: 0.3)
             ..style = PaintingStyle.fill,
         );
       }

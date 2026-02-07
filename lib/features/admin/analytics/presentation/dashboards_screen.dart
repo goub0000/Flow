@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_initializing_formals
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -18,8 +20,8 @@ class _DashboardWidget {
     required this.title,
     required this.icon,
     required this.color,
-    this.visible = true,
-  });
+    bool visible = true,
+  }) : visible = visible;
 }
 
 class DashboardsScreen extends ConsumerStatefulWidget {

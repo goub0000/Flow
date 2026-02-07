@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/enrollment_model.dart';
 import '../../../core/services/enrollments_api_service.dart';
 import '../../../features/authentication/providers/auth_provider.dart';

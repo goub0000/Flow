@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/applicant_model.dart';
 import '../services/applications_api_service.dart';
 import '../services/realtime_service.dart';
@@ -9,8 +10,6 @@ import '../../authentication/providers/auth_provider.dart';
 final applicationsApiServiceProvider = Provider.autoDispose<ApplicationsApiService>((ref) {
   // Get access token from auth provider
   final authState = ref.watch(authProvider);
-  print('[ApplicationsApiService] Creating service with token: ${authState.accessToken?.substring(0, 20)}...');
-  print('[ApplicationsApiService] Auth state: isAuthenticated=${authState.isAuthenticated}, user=${authState.user?.email}');
   return ApplicationsApiService(accessToken: authState.accessToken);
 });
 
@@ -80,7 +79,6 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
 
     // Listen for updates - simplified version without enum
     _realtimeSubscription = _realtimeService.applicationUpdates.listen((update) {
-      print('[InstitutionApplicants] Received real-time update: ${update.eventType} for ${update.applicationId}');
       // Real-time updates are disabled in the stub implementation
     });
   }
@@ -90,33 +88,16 @@ class InstitutionApplicantsNotifier extends StateNotifier<InstitutionApplicantsS
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      print('[InstitutionApplicants] Fetching applicants...');
-      print('[InstitutionApplicants] InstitutionId: $_institutionId, Status: $status, ProgramId: $programId');
-
-      // TODO: Replace with actual institution ID from user profile
-      const institutionId = '123';  // Hardcoded for testing
-
       final result = await _apiService.getInstitutionApplications(
         status: status,
         programId: programId,
       );
 
-      if (result != null) {
-        state = state.copyWith(
-          applicants: result,
-          isLoading: false,
-        );
-        print('[InstitutionApplicants] Successfully fetched ${result.length} applicants');
-      } else {
-        state = state.copyWith(
-          applicants: [],
-          isLoading: false,
-        );
-        print('[InstitutionApplicants] No applicants found');
-      }
-    } catch (e, stackTrace) {
-      print('[InstitutionApplicants] Error fetching applicants: $e');
-      print('[InstitutionApplicants] Stack trace: $stackTrace');
+      state = state.copyWith(
+        applicants: result,
+        isLoading: false,
+      );
+    } catch (e) {
       state = state.copyWith(
         error: 'Failed to load applicants: $e',
         isLoading: false,

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/recommendation_letter_models.dart';
 import '../../../core/api/api_client.dart';
-import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart';
 import '../../authentication/providers/auth_provider.dart';
 

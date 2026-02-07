@@ -1,4 +1,5 @@
-import 'dart:async';
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../core/models/course_content_models.dart';
@@ -350,7 +351,7 @@ class _TextContentEditorState extends State<TextContentEditor>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

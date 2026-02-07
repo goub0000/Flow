@@ -785,7 +785,8 @@ class _CommunicationsHubScreenState
                 final success = await ref
                     .read(adminCommunicationsProvider.notifier)
                     .scheduleCampaign(campaign.id, scheduledDateTime);
-                if (success && mounted) {
+                if (!context.mounted) return;
+                if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
@@ -1068,7 +1069,8 @@ class _CommunicationsHubScreenState
                       .createCampaign(campaign);
                 }
 
-                if (success && mounted) {
+                if (!context.mounted) return;
+                if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(

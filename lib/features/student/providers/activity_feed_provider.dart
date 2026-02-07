@@ -113,7 +113,6 @@ final activityFeedProvider = FutureProvider<List<ActivityItem>>((ref) async {
     return activities.take(10).toList();
 
   } catch (e) {
-    print('[DEBUG] Error generating activity feed: $e');
     // Return empty list on error
     return [];
   }

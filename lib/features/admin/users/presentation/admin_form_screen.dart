@@ -1,14 +1,14 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/user_roles.dart';
-import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/l10n_extension.dart';
 // AdminShell is now provided by ShellRoute in admin_routes.dart
-import '../../shared/widgets/permission_guard.dart';
 import '../../shared/providers/admin_auth_provider.dart';
 
 /// Admin Form Screen - Create or edit admin accounts
@@ -488,7 +488,8 @@ class _AdminFormScreenState extends ConsumerState<AdminFormScreen> {
             onChanged: _isLoading
                 ? null
                 : (value) => setState(() => _isActive = value),
-            activeColor: AppColors.success,
+            activeTrackColor: AppColors.success.withValues(alpha: 0.5),
+            activeThumbColor: AppColors.success,
           ),
         ],
       ),

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/course_content_models.dart';
@@ -37,7 +39,6 @@ class _LessonEditorScreenState extends ConsumerState<LessonEditorScreen>
   late bool _isPublished;
 
   bool _isSaving = false;
-  bool _hasUnsavedChanges = false;
 
   @override
   void initState() {

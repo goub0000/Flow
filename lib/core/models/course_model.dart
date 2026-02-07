@@ -1,5 +1,6 @@
 /// Course Data Model
 /// Matches backend CourseResponse schema
+library;
 
 class Course {
   final String id;

@@ -53,9 +53,6 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
   bool get _hasSections => _contentData.containsKey('sections') && _contentData['sections'] is List;
   bool get _hasRichTextFields => _richTextFieldNames.any((f) => _contentData.containsKey(f) && _contentData[f] is String);
 
-  // All pages support visual editing now
-  bool get _supportsVisualEditor => _hasSections || _hasRichTextFields || _contentData.isNotEmpty;
-
   @override
   void initState() {
     super.initState();
@@ -244,13 +241,6 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
     });
   }
 
-  void _updateContentField(String fieldName, dynamic value) {
-    setState(() {
-      _contentData[fieldName] = value;
-      _hasChanges = true;
-    });
-  }
-
   Future<void> _savePage() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -390,7 +380,8 @@ class _PageContentEditorScreenState extends ConsumerState<PageContentEditorScree
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop && _hasChanges) {
           final shouldPop = await _onWillPop();
-          if (shouldPop && mounted) {
+          if (!context.mounted) return;
+          if (shouldPop) {
             context.go('/admin/pages');
           }
         }

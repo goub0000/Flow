@@ -70,8 +70,8 @@ class _SearchPreviewState extends State<SearchPreview> {
             boxShadow: [
               BoxShadow(
                 color: _isFocused
-                    ? theme.colorScheme.primary.withOpacity(0.1)
-                    : Colors.black.withOpacity(0.05),
+                    ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.05),
                 blurRadius: _isFocused ? 20 : 10,
                 offset: const Offset(0, 4),
               ),
@@ -89,7 +89,7 @@ class _SearchPreviewState extends State<SearchPreview> {
                   decoration: InputDecoration(
                     hintText: context.l10n.searchHint,
                     hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                     ),
                     prefixIcon: Icon(
                       Icons.search,
@@ -199,7 +199,7 @@ class _SearchPreviewState extends State<SearchPreview> {
                       vertical: 14,
                     ),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(15),
                         bottomRight: Radius.circular(15),
@@ -284,7 +284,7 @@ class _SearchBarButtonState extends State<SearchBarButton> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(_isHovered ? 0.08 : 0.04),
+                color: Colors.black.withValues(alpha: _isHovered ? 0.08 : 0.04),
                 blurRadius: _isHovered ? 16 : 8,
                 offset: Offset(0, _isHovered ? 4 : 2),
               ),
@@ -303,7 +303,7 @@ class _SearchBarButtonState extends State<SearchBarButton> {
                 child: Text(
                   context.l10n.searchPlaceholder,
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                   ),
                 ),
               ),

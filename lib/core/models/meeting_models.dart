@@ -1,4 +1,5 @@
 /// Meeting models for parent-teacher/counselor scheduling system
+library;
 
 enum MeetingStatus {
   pending,

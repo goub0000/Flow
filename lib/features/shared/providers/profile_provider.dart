@@ -1,5 +1,8 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, provide_deprecation_message
+
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/api/api_client.dart';
@@ -45,7 +48,6 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
   ProfileNotifier(this.ref, this._authService, this._apiClient) : super(const ProfileState()) {
     // Load profile immediately
-    print('[DEBUG] ProfileNotifier initialized - loading profile');
     loadProfile();
 
     // Listen to auth state changes to reload profile when auth becomes available
@@ -58,17 +60,13 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     _isListeningToAuth = true;
 
     ref.listen(currentUserProvider, (previous, next) {
-      print('[DEBUG] ProfileNotifier: Auth state changed - previous: ${previous != null}, next: ${next != null}');
-
       // If user just became available and we don't have profile data, reload
       if (previous == null && next != null && state.user == null) {
-        print('[DEBUG] ProfileNotifier: User just logged in, reloading profile');
         loadProfile();
       }
 
       // If user logged out, clear profile
       if (previous != null && next == null) {
-        print('[DEBUG] ProfileNotifier: User logged out, clearing profile');
         state = const ProfileState();
       }
     });
@@ -76,7 +74,6 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
   /// Load user profile from backend API
   Future<void> loadProfile() async {
-    print('[DEBUG] ProfileNotifier.loadProfile() called');
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -88,18 +85,15 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
       // If auth is still loading, wait a moment and check again
       if (currentUser == null && ref.read(authProvider).isLoading) {
-        print('[DEBUG] ProfileNotifier: Auth still loading, waiting...');
         // Wait for a short time to allow auth to complete
         await Future.delayed(const Duration(milliseconds: 500));
         final retryUser = ref.read(currentUserProvider);
         if (retryUser != null) {
-          print('[DEBUG] ProfileNotifier: Auth completed after wait');
           return _loadProfileForUser(retryUser);
         }
       }
 
       if (currentUser == null) {
-        print('[DEBUG] ProfileNotifier: No user logged in');
         state = state.copyWith(
           error: 'No user logged in',
           isLoading: false,
@@ -122,7 +116,6 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     final response = await _authService.getCurrentUser();
 
     if (response.success && response.data != null) {
-      print('[DEBUG] Profile loaded successfully');
       state = state.copyWith(
         user: response.data,
         isLoading: false,
@@ -131,7 +124,6 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       // Update auth provider with fresh data
       ref.read(authProvider.notifier).refreshUser();
     } else {
-      print('[DEBUG] Profile load failed, using cached user');
       state = state.copyWith(
         user: currentUser,
         isLoading: false,
@@ -161,7 +153,6 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       final bioToUpdate = bio ?? additionalMetadata?['bio'] as String?;
 
       // Upload photo if provided - use backend API (bypasses RLS)
-      String? photoUrl;
       if (photoBytes != null && photoFileName != null) {
         try {
           // Determine mime type from file extension
@@ -180,13 +171,10 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
           );
 
           if (uploadResponse.success && uploadResponse.data != null) {
-            photoUrl = uploadResponse.data!['photo_url'] as String?;
-            print('[DEBUG] Photo uploaded successfully via backend: $photoUrl');
-          } else {
-            print('[DEBUG] Photo upload failed: ${uploadResponse.message}');
+            // Photo URL is returned but we don't need to use it directly
+            // as the backend already updated the user's photo_url
           }
         } catch (e) {
-          print('[DEBUG] Photo upload failed: $e');
           // Continue without photo - don't fail the whole update
         }
       }
@@ -330,7 +318,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
     try {
       // Call backend DELETE /auth/me endpoint
-      final response = await _authService.getCurrentUser(); // Just to verify auth works
+      // Just verify auth works before attempting deletion
+      await _authService.getCurrentUser();
 
       // TODO: Backend needs to implement proper account deletion
       // For now, just sign out

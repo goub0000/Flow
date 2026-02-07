@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/quiz_assignment_models.dart';
@@ -205,7 +206,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
               children: [
                 Chip(
                   label: Text('Q$questionNumber'),
-                  backgroundColor: AppColors.primary.withOpacity(0.1),
+                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -257,7 +258,6 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
     final options = question.options ?? [];
     return Column(
       children: options.map((option) {
-        final isSelected = _answers[question.id] == option.id;
         return RadioListTile<String>(
           value: option.id,
           groupValue: _answers[question.id] as String?,
@@ -522,7 +522,7 @@ class _QuizLessonTakerState extends ConsumerState<QuizLessonTaker> {
               children: [
                 Chip(
                   label: Text('Q$questionNumber'),
-                  backgroundColor: AppColors.primary.withOpacity(0.1),
+                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 ),
                 const SizedBox(width: 12),
                 if (isCorrect != null)

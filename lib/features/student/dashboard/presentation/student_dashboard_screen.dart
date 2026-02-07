@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,8 +11,6 @@ import '../../../shared/widgets/stats_widgets.dart';
 import '../../../shared/widgets/dashboard_widgets.dart';
 import '../../../shared/widgets/coming_soon_dialog.dart';
 import '../../../shared/widgets/refresh_utilities.dart';
-import '../../../shared/widgets/notification_badge.dart';
-import '../../../shared/widgets/message_badge.dart';
 import '../../../shared/cookies/presentation/cookie_banner.dart';
 import '../../progress/presentation/progress_screen.dart';
 import '../../applications/presentation/applications_list_screen.dart';
@@ -19,12 +19,10 @@ import '../../../shared/profile/profile_screen.dart';
 // Settings removed from bottom nav - accessible via profile menu in app bar
 import '../../providers/student_applications_provider.dart';
 import '../../../shared/providers/profile_provider.dart';
-import '../../providers/activity_feed_provider.dart';
 import '../../providers/recommendations_provider.dart';
 import '../../providers/dashboard_statistics_provider.dart';
 import '../../providers/student_applications_realtime_provider.dart';
 import '../../../../core/providers/student_activities_provider.dart';
-import '../../providers/student_recommendation_requests_provider.dart';
 import '../../providers/student_parent_linking_provider.dart';
 import '../../providers/student_counseling_provider.dart';
 
@@ -48,7 +46,6 @@ class _StudentDashboardScreenState
     _DashboardHomeTab(
       key: const PageStorageKey('home'),
       onNavigateToTab: (index) {
-        print('[DEBUG] Quick Action navigation to tab: $index');
         setState(() {
           _currentIndex = index;
         });
@@ -63,12 +60,10 @@ class _StudentDashboardScreenState
   @override
   void initState() {
     super.initState();
-    print('[DEBUG] StudentDashboardScreen initState - initial index: $_currentIndex');
   }
 
   @override
   void dispose() {
-    print('[DEBUG] StudentDashboardScreen dispose');
     super.dispose();
   }
 
@@ -93,9 +88,6 @@ class _StudentDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    // Debug logging
-    print('[DEBUG] StudentDashboardScreen build - currentIndex: $_currentIndex');
-
     // Get the current user for profile edit action
     final user = ref.watch(currentProfileProvider);
 
@@ -128,10 +120,8 @@ class _StudentDashboardScreenState
               ),
           ],
           onNavigationTap: (index) {
-            print('[DEBUG] Navigation tap - from $_currentIndex to $index');
             setState(() {
               _currentIndex = index;
-              print('[DEBUG] setState completed - new index: $_currentIndex');
             });
           },
           // NOTE: Consolidated to 5 items per Material Design guidelines
@@ -163,14 +153,9 @@ class _StudentDashboardScreenState
               label: context.l10n.dashCommonProfile,
             ),
           ],
-          body: Builder(
-            builder: (context) {
-              print('[DEBUG] IndexedStack rendering with index: $_currentIndex');
-              return IndexedStack(
-                index: _currentIndex,
-                children: _pages,
-              );
-            },
+          body: IndexedStack(
+            index: _currentIndex,
+            children: _pages,
           ),
         ),
         // Cookie consent banner
@@ -214,7 +199,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
           ref.read(studentApplicationsRealtimeProvider.notifier).refresh();
         } catch (e) {
           // Real-time provider might not be available
-          print('[DEBUG] Real-time provider refresh skipped: $e');
         }
 
         // Update last refresh time
@@ -256,9 +240,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
     // Get real recommendations
     final recommendationsAsync = ref.watch(recommendationsProvider);
 
-    // Get messages count (null means no badge shown)
-    final messagesCount = ref.watch(unreadMessagesCountProvider);
-
     return RefreshIndicator(
       onRefresh: _handleRefresh,
       child: SingleChildScrollView(
@@ -274,7 +255,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
               gradient: LinearGradient(
                 colors: [
                   AppColors.primary,
-                  AppColors.primary.withOpacity(0.7),
+                  AppColors.primary.withValues(alpha: 0.7),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -295,7 +276,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 Text(
                   context.l10n.dashStudentContinueJourney,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -308,7 +289,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                           Text(
                             context.l10n.dashStudentSuccessRate,
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                               fontSize: 12,
                             ),
                           ),
@@ -316,8 +297,8 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                           ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
-                              value: acceptedApplicationsCount / (applications.length > 0 ? applications.length : 1),
-                              backgroundColor: Colors.white.withOpacity(0.3),
+                              value: acceptedApplicationsCount / (applications.isNotEmpty ? applications.length : 1),
+                              backgroundColor: Colors.white.withValues(alpha: 0.3),
                               valueColor: const AlwaysStoppedAnimation(Colors.white),
                               minHeight: 8,
                             ),
@@ -327,7 +308,7 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      '${((acceptedApplicationsCount / (applications.length > 0 ? applications.length : 1)) * 100).toInt()}%',
+                      '${((acceptedApplicationsCount / (applications.isNotEmpty ? applications.length : 1)) * 100).toInt()}%',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -355,7 +336,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 icon: Icons.menu_book,
                 color: AppColors.primary,
                 onTap: () {
-                  print('[DEBUG] Quick Action: My Courses clicked');
                   widget.onNavigateToTab?.call(2); // Navigate to My Courses tab
                 },
               ),
@@ -366,7 +346,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 badgeCount: pendingApplicationsCount,
                 onTap: () {
                   // Use tab navigation instead of route navigation
-                  print('[DEBUG] Quick Action: My Applications clicked');
                   widget.onNavigateToTab?.call(1); // Navigate to Applications tab
                 },
               ),
@@ -375,7 +354,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 icon: Icons.recommend,
                 color: AppColors.success,
                 onTap: () {
-                  print('[DEBUG] Quick Action: Recommendation Letters clicked');
                   context.push('/student/recommendations');
                 },
               ),
@@ -385,7 +363,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 color: AppColors.parentRole,
                 badgeCount: ref.watch(pendingLinksCountProvider),
                 onTap: () {
-                  print('[DEBUG] Quick Action: Parent Linking clicked');
                   context.push('/student/parent-linking');
                 },
               ),
@@ -402,7 +379,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 color: Colors.teal,
                 badgeCount: ref.watch(studentCounselingProvider).upcomingSessions.length,
                 onTap: () {
-                  print('[DEBUG] Quick Action: Counseling clicked');
                   context.push('/student/counseling');
                 },
               ),
@@ -411,7 +387,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 icon: Icons.calendar_month,
                 color: Colors.orange,
                 onTap: () {
-                  print('[DEBUG] Quick Action: Schedule clicked');
                   context.push('/student/schedule');
                 },
               ),
@@ -420,7 +395,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 icon: Icons.library_books,
                 color: Colors.purple,
                 onTap: () {
-                  print('[DEBUG] Quick Action: Resources clicked');
                   context.push('/student/resources');
                 },
               ),
@@ -429,7 +403,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 icon: Icons.help_outline,
                 color: Colors.grey,
                 onTap: () {
-                  print('[DEBUG] Quick Action: Help clicked');
                   context.push('/student/help');
                 },
               ),
@@ -473,9 +446,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                   // For any other stats, navigate to applications
                   widget.onNavigateToTab?.call(1);
               }
-
-              // Log the stat tap for debugging
-              print('[DEBUG] Stat tapped: ${stat.label} with value: ${stat.value}');
             },
           ),
           const SizedBox(height: 24),
@@ -666,9 +636,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 // Navigate based on activity type
                 final metadata = activity.metadata;
 
-                // Log for debugging
-                print('[DEBUG] Activity tapped: Type=${activity.type}, Title=${activity.title}');
-
                 // Handle based on activity type
                 if (activity.type == ActivityType.application) {
                   // Navigate to application detail or applications tab
@@ -739,8 +706,6 @@ class _DashboardHomeTabState extends ConsumerState<_DashboardHomeTab> with Refre
                 final title = rec['title'] as String?;
                 final id = rec['id'] as String?;
                 final type = rec['type'] as String?;
-
-                print('[DEBUG] Recommendation tapped: Title=$title, Type=$type, ID=$id');
 
                 if (title == 'Find Your Path Assessment') {
                   // Navigate to the assessment

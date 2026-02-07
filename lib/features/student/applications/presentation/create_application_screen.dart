@@ -1,20 +1,18 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/models/institution_model.dart';
 import '../../../../core/models/program_model.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
-import '../../../../core/services/storage_service.dart';
 import '../../../../core/providers/service_providers.dart';
 import '../../../../core/l10n_extension.dart';
 import '../../../shared/widgets/custom_card.dart';
-import '../../../authentication/providers/auth_provider.dart' hide currentUserProvider;
 import '../../providers/student_applications_provider.dart';
 import '../../institutions/browse_institutions_screen.dart';
 
@@ -69,7 +67,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   String? _selectedState;
 
   // Document upload states
-  Map<String, PlatformFile?> _uploadedDocuments = {
+  final Map<String, PlatformFile?> _uploadedDocuments = {
     'transcript': null,
     'id': null,
     'statement': null,
@@ -91,11 +89,8 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
   }
 
   Future<void> _submitApplication() async {
-    print('[CreateApplication] _submitApplication() called');
-
     // No need to validate form again - we already validated step by step
     // Show uploading indicator
-    print('[CreateApplication] Showing upload indicator');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -126,8 +121,6 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       }
 
       // Backend expects documents as a List of Dict objects
-      print('[CreateApplication] Preparing document data for backend');
-
       // Prepare application data
       personalInfo = {
         'fullName': _fullNameController.text,
@@ -153,7 +146,6 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         try {
           return file.name;
         } catch (e) {
-          print('[CreateApplication] Error accessing file.name: $e');
           // Fallback: use bytes length as identifier
           return 'document_${file.size}_${DateTime.now().millisecondsSinceEpoch}';
         }
@@ -256,33 +248,33 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       applicationFee: _selectedProgram!.fee,  // Use program fee
     );
 
-    if (mounted) {
-      // Hide uploading snackbar
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    if (!mounted) return;
 
-      if (success) {
-        // Note: Applications list is automatically refreshed in submitApplication method
-        // No need to refresh here as it's already done in the provider
+    // Hide uploading snackbar
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Application submitted successfully!'),
-            backgroundColor: AppColors.success,
-            duration: Duration(seconds: 4),
+    if (success) {
+      // Note: Applications list is automatically refreshed in submitApplication method
+      // No need to refresh here as it's already done in the provider
+
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Application submitted successfully!'),
+          backgroundColor: AppColors.success,
+          duration: Duration(seconds: 4),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            ref.read(applicationsErrorProvider) ?? 'Failed to submit application',
           ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              ref.read(applicationsErrorProvider) ?? 'Failed to submit application',
-            ),
-            backgroundColor: AppColors.error,
-            duration: Duration(seconds: 5),
-          ),
-        );
-      }
+          backgroundColor: AppColors.error,
+          duration: Duration(seconds: 5),
+        ),
+      );
     }
   }
 
@@ -296,6 +288,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
 
     try {
       final prefs = await SharedPreferences.getInstance();
+      if (!mounted) return;
       final apiClient = ApiClient(prefs);
       final response = await apiClient.get<List<Program>>(
         '${ApiConfig.institutions}/$institutionId/programs',
@@ -309,6 +302,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         },
       );
 
+      if (!mounted) return;
       if (response.success && response.data != null) {
         setState(() {
           _availablePrograms = response.data!;
@@ -321,6 +315,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         });
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _programsError = 'Error loading programs: ${e.toString()}';
         _isLoadingPrograms = false;
@@ -336,6 +331,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
       );
 
       if (result != null && result.files.isNotEmpty) {
+        if (!mounted) return;
         setState(() {
           _uploadedDocuments[type] = result.files.first;
         });
@@ -348,6 +344,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
         );
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to pick file: ${e.toString()}'),
@@ -439,10 +436,6 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               setState(() => _currentStep++);
             } else {
               // Step 4: Validate documents before submission
-              print('[CreateApplication] Submit button clicked');
-              print('[CreateApplication] Current step: $_currentStep');
-              print('[CreateApplication] Uploaded documents: ${_uploadedDocuments.keys.where((key) => _uploadedDocuments[key] != null).toList()}');
-
               final missingDocs = <String>[];
               if (_uploadedDocuments['transcript'] == null) {
                 missingDocs.add('Academic Transcript');
@@ -455,7 +448,6 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               }
 
               if (missingDocs.isNotEmpty) {
-                print('[CreateApplication] Missing documents: ${missingDocs.join(", ")}');
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Missing required documents: ${missingDocs.join(", ")}'),
@@ -467,7 +459,6 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
               }
 
               // All documents uploaded, proceed with submission
-              print('[CreateApplication] All documents validated, calling _submitApplication()');
               _submitApplication();
             }
           },
@@ -639,7 +630,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                     )
                   else if (_programsError != null)
                     Card(
-                      color: AppColors.error.withOpacity(0.1),
+                      color: AppColors.error.withValues(alpha: 0.1),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Row(
@@ -658,7 +649,7 @@ class _CreateApplicationScreenState extends ConsumerState<CreateApplicationScree
                     )
                   else if (_availablePrograms.isEmpty && _selectedInstitution != null)
                     Card(
-                      color: AppColors.warning.withOpacity(0.1),
+                      color: AppColors.warning.withValues(alpha: 0.1),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Row(

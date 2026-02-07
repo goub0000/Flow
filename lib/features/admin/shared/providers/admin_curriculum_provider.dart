@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
@@ -164,7 +165,6 @@ class AdminCurriculumNotifier extends StateNotifier<AdminCurriculumState> {
         );
       }
     } catch (e) {
-      print('[AdminCurriculum] Error fetching curriculum: $e');
       state = state.copyWith(
         error: 'Failed to fetch curriculum: ${e.toString()}',
         isLoading: false,
@@ -199,7 +199,6 @@ class AdminCurriculumNotifier extends StateNotifier<AdminCurriculumState> {
         return false;
       }
     } catch (e) {
-      print('[AdminCurriculum] Error creating module: $e');
       state = state.copyWith(
         error: 'Failed to create module: ${e.toString()}',
       );

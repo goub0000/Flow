@@ -160,8 +160,8 @@ class CompliancePage extends ConsumerWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.primary.withOpacity(0.1),
-                        AppColors.accent.withOpacity(0.1),
+                        AppColors.primary.withValues(alpha: 0.1),
+                        AppColors.accent.withValues(alpha: 0.1),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(12),

@@ -1,5 +1,6 @@
 /// API Client
 /// Main HTTP client with authentication and error handling
+library;
 
 import 'dart:typed_data';
 import 'package:dio/dio.dart';

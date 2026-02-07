@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -137,28 +139,36 @@ class _LinkedParentCardState extends ConsumerState<_LinkedParentCard> {
                 subtitle: Text(context.l10n.parentLinkAllowViewGrades),
                 value: canViewGrades,
                 onChanged: (v) => setState(() => canViewGrades = v),
-                activeColor: AppColors.primary,
+                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+                thumbColor: WidgetStateProperty.resolveWith((states) =>
+                    states.contains(WidgetState.selected) ? AppColors.primary : null),
               ),
               SwitchListTile(
                 title: Text(context.l10n.parentLinkViewActivity),
                 subtitle: Text(context.l10n.parentLinkAllowViewActivity),
                 value: canViewActivity,
                 onChanged: (v) => setState(() => canViewActivity = v),
-                activeColor: AppColors.primary,
+                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+                thumbColor: WidgetStateProperty.resolveWith((states) =>
+                    states.contains(WidgetState.selected) ? AppColors.primary : null),
               ),
               SwitchListTile(
                 title: Text(context.l10n.parentLinkViewMessages),
                 subtitle: Text(context.l10n.parentLinkAllowViewMessages),
                 value: canViewMessages,
                 onChanged: (v) => setState(() => canViewMessages = v),
-                activeColor: AppColors.warning,
+                activeTrackColor: AppColors.warning.withValues(alpha: 0.5),
+                thumbColor: WidgetStateProperty.resolveWith((states) =>
+                    states.contains(WidgetState.selected) ? AppColors.warning : null),
               ),
               SwitchListTile(
                 title: Text(context.l10n.parentLinkReceiveAlerts),
                 subtitle: Text(context.l10n.parentLinkSendAlerts),
                 value: canReceiveAlerts,
                 onChanged: (v) => setState(() => canReceiveAlerts = v),
-                activeColor: AppColors.primary,
+                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+                thumbColor: WidgetStateProperty.resolveWith((states) =>
+                    states.contains(WidgetState.selected) ? AppColors.primary : null),
               ),
             ],
           ),
@@ -711,7 +721,6 @@ class _InviteCodesTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(studentParentLinkingProvider);
-    final activeCodes = ref.watch(activeInviteCodesProvider);
 
     return Column(
       children: [

@@ -59,32 +59,32 @@ class _CookiePreferencesModalState
     final service = ref.read(consentServiceProvider);
     final success = await service.updateConsent(widget.userId, _selections);
 
-    if (mounted) {
-      if (success) {
-        // Start/stop analytics based on selection
-        if (_selections[CookieCategory.analytics] == true) {
-          final analytics = ref.read(analyticsServiceProvider);
-          await analytics.startSession(widget.userId);
-        }
-
-        Navigator.of(context).pop(true);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.cookiePreferencesSavedSuccess),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      } else {
-        setState(() => _isSaving = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.l10n.cookieFailedToSave),
-            backgroundColor: Colors.red,
-          ),
-        );
+    if (!mounted) return;
+    if (success) {
+      // Start/stop analytics based on selection
+      if (_selections[CookieCategory.analytics] == true) {
+        final analytics = ref.read(analyticsServiceProvider);
+        await analytics.startSession(widget.userId);
       }
+
+      if (!mounted) return;
+      Navigator.of(context).pop(true);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.cookiePreferencesSavedSuccess),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } else {
+      setState(() => _isSaving = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.cookieFailedToSave),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -284,7 +284,8 @@ class _CategoryCard extends StatelessWidget {
                   Switch(
                     value: isEnabled,
                     onChanged: onChanged,
-                    activeColor: AppColors.primary,
+                    activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+                    activeThumbColor: AppColors.primary,
                   ),
               ],
             ),

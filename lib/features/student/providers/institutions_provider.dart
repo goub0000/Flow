@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/models/institution_model.dart';
 import '../../../core/api/api_config.dart';
@@ -70,9 +71,8 @@ class InstitutionsState {
 /// StateNotifier for managing institutions
 class InstitutionsNotifier extends StateNotifier<InstitutionsState> {
   final InstitutionsApiService _apiService;
-  final Ref _ref;
 
-  InstitutionsNotifier(this._ref)
+  InstitutionsNotifier(Ref ref)
       : _apiService = InstitutionsApiService(),
         super(const InstitutionsState()) {
     _initialize();

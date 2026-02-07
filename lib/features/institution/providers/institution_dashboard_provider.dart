@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'institution_programs_provider.dart';
 import 'institution_applicants_provider.dart';
-import '../services/applications_api_service.dart';
 
 /// State class for institution dashboard data
 class InstitutionDashboardState {
@@ -52,9 +52,7 @@ class InstitutionDashboardNotifier extends StateNotifier<InstitutionDashboardSta
       Map<String, dynamic> apiStatistics = {};
       try {
         apiStatistics = await apiService.getStatistics();
-        print('[InstitutionDashboard] Fetched API statistics: $apiStatistics');
       } catch (e) {
-        print('[InstitutionDashboard] Failed to fetch API statistics: $e');
         // Fall back to local provider statistics
       }
 
@@ -150,7 +148,6 @@ class InstitutionDashboardNotifier extends StateNotifier<InstitutionDashboardSta
 
       return activities;
     } catch (e) {
-      print('[InstitutionDashboard] Error generating activity: $e');
       return [];
     }
   }

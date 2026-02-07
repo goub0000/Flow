@@ -1,3 +1,5 @@
+// ignore_for_file: invocation_of_non_function_expression
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';

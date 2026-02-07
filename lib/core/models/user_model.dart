@@ -117,13 +117,6 @@ class UserModel {
         json['role']?.toString() ??
         'student';
 
-    // Debug logging
-    if (kDebugMode) {
-      print('[DEBUG] UserModel.fromJson - raw active_role: ${json['active_role']}');
-      print('[DEBUG] UserModel.fromJson - raw role: ${json['role']}');
-      print('[DEBUG] UserModel.fromJson - resolved activeRoleStr: $activeRoleStr');
-    }
-
     // Handle available_roles with fallback
     List<String> availableRolesStrs;
     final rolesData = json['available_roles'];

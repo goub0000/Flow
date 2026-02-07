@@ -5,7 +5,6 @@ import '../../../core/models/document_model.dart';
 import '../../../core/l10n_extension.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/enhanced_document_viewer.dart';
-import '../widgets/cached_image.dart';
 
 class DocumentViewerScreen extends StatelessWidget {
   final Document document;

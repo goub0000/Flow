@@ -180,43 +180,32 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
 
       // Simulate authentication
       await Future.delayed(const Duration(seconds: 1));
-      final authenticated = true; // Change to false to test failure
+      // TODO: Replace with actual biometric authentication
+      // final authenticated = await service.authenticate();
 
-      if (authenticated) {
-        // TODO: Save preference
-        // await service.setBiometricEnabled(true);
+      // TODO: Save preference
+      // await service.setBiometricEnabled(true);
 
-        if (mounted) {
-          setState(() {
-            _isBiometricEnabled = true;
-            _isLoading = false;
+      if (mounted) {
+        setState(() {
+          _isBiometricEnabled = true;
+          _isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.biometricEnabledSuccess),
+            backgroundColor: AppColors.success,
+          ),
+        );
+
+        if (widget.isSetup) {
+          // Complete setup, navigate to next screen
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              context.go('/student/dashboard'); // Or appropriate dashboard
+            }
           });
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.l10n.biometricEnabledSuccess),
-              backgroundColor: AppColors.success,
-            ),
-          );
-
-          if (widget.isSetup) {
-            // Complete setup, navigate to next screen
-            Future.delayed(const Duration(seconds: 1), () {
-              if (mounted) {
-                context.go('/student/dashboard'); // Or appropriate dashboard
-              }
-            });
-          }
-        }
-      } else {
-        if (mounted) {
-          setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.l10n.biometricAuthFailed),
-              backgroundColor: AppColors.error,
-            ),
-          );
         }
       }
     } catch (e) {
@@ -331,7 +320,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
                     color: (_isBiometricEnabled
                             ? AppColors.success
                             : AppColors.primary)
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -380,7 +369,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: _isBiometricEnabled
-                  ? AppColors.success.withOpacity(0.3)
+                  ? AppColors.success.withValues(alpha: 0.3)
                   : AppColors.border,
               width: _isBiometricEnabled ? 2 : 1,
             ),
@@ -394,7 +383,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
                   color: (_isBiometricEnabled
                           ? AppColors.success
                           : AppColors.primary)
-                      .withOpacity(0.1),
+                      .withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -430,7 +419,8 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
               Switch(
                 value: _isBiometricEnabled,
                 onChanged: _isLoading ? null : _toggleBiometric,
-                activeColor: AppColors.success,
+                activeTrackColor: AppColors.success.withValues(alpha: 0.5),
+                activeThumbColor: AppColors.success,
               ),
             ],
           ),
@@ -442,9 +432,9 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AppColors.info.withOpacity(0.1),
+              color: AppColors.info.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.info.withOpacity(0.3)),
+              border: Border.all(color: AppColors.info.withValues(alpha: 0.3)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -479,7 +469,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.warning.withOpacity(0.1),
+            color: AppColors.warning.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -539,7 +529,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
           width: 100,
           height: 100,
           decoration: BoxDecoration(
-            color: AppColors.error.withOpacity(0.1),
+            color: AppColors.error.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: const Icon(
@@ -590,7 +580,7 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
           width: 100,
           height: 100,
           decoration: BoxDecoration(
-            color: AppColors.warning.withOpacity(0.1),
+            color: AppColors.warning.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: const Icon(
@@ -671,8 +661,6 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         return Icons.fingerprint;
       case BiometricType.iris:
         return Icons.remove_red_eye;
-      default:
-        return Icons.fingerprint;
     }
   }
 
@@ -684,8 +672,6 @@ class _BiometricSetupScreenState extends ConsumerState<BiometricSetupScreen>
         return context.l10n.biometricTypeFingerprint;
       case BiometricType.iris:
         return context.l10n.biometricTypeIris;
-      default:
-        return context.l10n.biometricTypeGeneric;
     }
   }
 

@@ -1,5 +1,6 @@
 /// Notifications Service
 /// Handles push notifications and in-app notifications
+library;
 
 import '../api/api_client.dart';
 import '../api/api_config.dart';

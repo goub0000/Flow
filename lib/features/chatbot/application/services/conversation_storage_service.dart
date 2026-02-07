@@ -75,9 +75,7 @@ class ConversationStorageService {
         body: jsonEncode(body),
       ).timeout(const Duration(seconds: 10));
 
-      print('[ConversationStorage] Successfully synced conversation to backend: ${conversation.id}');
     } catch (e) {
-      print('[ConversationStorage] Failed to sync conversation to backend: $e');
       // Don't fail the entire operation if backend sync fails
     }
   }
@@ -95,7 +93,6 @@ class ConversationStorageService {
           .map((json) => Conversation.fromJson(json as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      print('Error loading conversations: $e');
       return [];
     }
   }
@@ -133,7 +130,7 @@ class ConversationStorageService {
         headers: _getHeaders(),
       ).timeout(const Duration(seconds: 10));
     } catch (e) {
-      print('[ConversationStorage] Failed to delete conversation from backend: $e');
+      // Backend delete failed silently
     }
   }
 
@@ -262,16 +259,13 @@ class ConversationStorageService {
           try {
             return _parseConversationFromBackend(json);
           } catch (e) {
-            print('[ConversationStorage] Error parsing conversation: $e');
             return null;
           }
         }).whereType<Conversation>().toList();
       }
 
-      print('[ConversationStorage] Failed to fetch conversations: ${response.statusCode}');
       return [];
     } catch (e) {
-      print('[ConversationStorage] Error fetching conversations from backend: $e');
       return [];
     }
   }
@@ -331,7 +325,6 @@ class ConversationStorageService {
       // Fallback to local stats
       return getStats();
     } catch (e) {
-      print('[ConversationStorage] Error fetching stats from backend: $e');
       return getStats();
     }
   }

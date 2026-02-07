@@ -1,5 +1,6 @@
 /// Enrollment Permission Model
 /// Tracks which students can enroll in which courses
+library;
 
 class EnrollmentPermission {
   final String id;

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../models/meeting_models.dart';
 import '../services/meetings_api_service.dart';
 import '../../features/authentication/providers/auth_provider.dart';

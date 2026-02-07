@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/models/admin_user_model.dart';
 import '../../../../core/constants/admin_permissions.dart';
 import '../../../../core/constants/user_roles.dart';

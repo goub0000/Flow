@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/models/child_model.dart';
 import '../../features/parent/dashboard/presentation/parent_dashboard_screen.dart';
-import '../../features/parent/children/presentation/children_list_screen.dart';
 import '../../features/parent/children/presentation/child_detail_screen.dart';
 
 /// Parent-specific routes

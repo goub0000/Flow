@@ -273,7 +273,7 @@ class _DateHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+      color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       child: Text(
         date,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -343,7 +343,7 @@ class _NotificationTile extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: notification.isUnread
-                ? color.withOpacity(0.05)
+                ? color.withValues(alpha: 0.05)
                 : Colors.transparent,
             border: Border(
               bottom: BorderSide(
@@ -359,7 +359,7 @@ class _NotificationTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(icon, color: color, size: 24),
@@ -410,7 +410,7 @@ class _NotificationTile extends StatelessWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withOpacity(0.6),
+                                .withValues(alpha: 0.6),
                           ),
                     ),
                   ],

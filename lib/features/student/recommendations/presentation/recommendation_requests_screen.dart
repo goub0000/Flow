@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/l10n_extension.dart';
@@ -169,7 +171,8 @@ class _RecommendationRequestsScreenState
             goals: data['goals'],
           );
 
-          if (success && mounted) {
+          if (!context.mounted) return;
+          if (success) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -177,7 +180,7 @@ class _RecommendationRequestsScreenState
                 backgroundColor: AppColors.success,
               ),
             );
-          } else if (mounted) {
+          } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(context.l10n.studentRecFailedToSend),
@@ -342,7 +345,8 @@ class _RecommendationRequestsScreenState
             goals: data['goals'],
           );
 
-          if (success && mounted) {
+          if (!context.mounted) return;
+          if (success) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -350,7 +354,7 @@ class _RecommendationRequestsScreenState
                 backgroundColor: AppColors.success,
               ),
             );
-          } else if (mounted) {
+          } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(context.l10n.studentRecFailedToUpdate),
@@ -651,7 +655,7 @@ class _CreateRequestSheetState extends ConsumerState<_CreateRequestSheet> {
   final _achievementsController = TextEditingController();
   final _goalsController = TextEditingController();
 
-  List<String> _selectedInstitutions = [];
+  final List<String> _selectedInstitutions = [];
   String _selectedType = 'academic';
   String _selectedPriority = 'normal';
   DateTime _deadline = DateTime.now().add(const Duration(days: 14));

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 /// A decorative wave divider between sections.
@@ -175,7 +177,7 @@ class LayeredWaveDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final secondary = secondaryColor ?? primaryColor.withOpacity(0.5);
+    final secondary = secondaryColor ?? primaryColor.withValues(alpha: 0.5);
 
     return Transform(
       transform: Matrix4.identity()..scale(1.0, flipVertical ? -1.0 : 1.0),

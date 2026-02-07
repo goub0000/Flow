@@ -34,18 +34,13 @@ class FindYourPathService {
   /// Create or update student profile
   Future<StudentProfile> saveProfile(StudentProfile profile) async {
     try {
-      print('[FYP] Saving profile for user: ${profile.userId}');
       final body = jsonEncode(profile.toJson());
-      print('[FYP] Request body: $body');
 
       final response = await _client.post(
         Uri.parse('$baseUrl/students/profile'),
         headers: _getAuthHeaders(),
         body: body,
       );
-
-      print('[FYP] Save profile response: ${response.statusCode}');
-      print('[FYP] Response body: ${response.body}');
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
@@ -57,7 +52,6 @@ class FindYourPathService {
         throw Exception('Failed to save profile: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      print('[FYP] Error saving profile: $e');
       throw Exception('Error saving profile: $e');
     }
   }
@@ -131,7 +125,6 @@ class FindYourPathService {
     double minMatchScore = 50.0,
   }) async {
     try {
-      print('[FYP] Generating recommendations for user: $userId');
       final body = jsonEncode({
         'user_id': userId,
         'limit': limit,
@@ -139,16 +132,12 @@ class FindYourPathService {
         'include_safety': includeSafety,
         'min_match_score': minMatchScore,
       });
-      print('[FYP] Request body: $body');
 
       final response = await _client.post(
         Uri.parse('$baseUrl/recommendations/generate'),
         headers: _getAuthHeaders(),
         body: body,
       );
-
-      print('[FYP] Generate recommendations response: ${response.statusCode}');
-      print('[FYP] Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
@@ -158,7 +147,6 @@ class FindYourPathService {
             'Failed to generate recommendations: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      print('[FYP] Error generating recommendations: $e');
       throw Exception('Error generating recommendations: $e');
     }
   }

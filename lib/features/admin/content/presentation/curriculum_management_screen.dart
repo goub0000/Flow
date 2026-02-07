@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -236,18 +238,17 @@ class _CurriculumManagementScreenState
                                       : descriptionController.text.trim(),
                             );
 
-                        if (mounted) {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(success
-                                  ? context.l10n.adminContentModuleCreated(titleController.text)
-                                  : context.l10n.adminContentFailedToCreateModule),
-                              backgroundColor:
-                                  success ? AppColors.success : AppColors.error,
-                            ),
-                          );
-                        }
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? context.l10n.adminContentModuleCreated(titleController.text)
+                                : context.l10n.adminContentFailedToCreateModule),
+                            backgroundColor:
+                                success ? AppColors.success : AppColors.error,
+                          ),
+                        );
                       },
                 child: isCreating
                     ? const SizedBox(

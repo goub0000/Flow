@@ -17,7 +17,6 @@ class ReportsScreen extends ConsumerStatefulWidget {
 
 class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   ReportCategory? _selectedCategory;
-  bool _isGenerating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -280,8 +279,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
     ReportModel report,
     ReportParameters params,
   ) async {
-    setState(() => _isGenerating = true);
-
     try {
       switch (report.type) {
         case ReportType.users:
@@ -323,10 +320,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             backgroundColor: AppColors.error,
           ),
         );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isGenerating = false);
       }
     }
   }

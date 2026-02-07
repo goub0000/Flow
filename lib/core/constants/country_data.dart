@@ -2,6 +2,7 @@
 ///
 /// Used by system settings to populate country/currency dropdowns
 /// and auto-select currency when a country is chosen.
+library;
 
 const Map<String, String> countryCurrencyMap = {
   // A

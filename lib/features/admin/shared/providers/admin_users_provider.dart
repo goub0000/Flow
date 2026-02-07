@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/api/api_client.dart';
@@ -136,7 +137,6 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
               },
             );
           } catch (e) {
-            print('[AdminUsers] Error parsing user: $e');
             return null;
           }
         }).whereType<UserModel>().toList();
@@ -152,7 +152,6 @@ class AdminUsersNotifier extends StateNotifier<AdminUsersState> {
         );
       }
     } catch (e) {
-      print('[AdminUsers] Error fetching users from backend: $e');
       state = state.copyWith(
         error: 'Failed to fetch users: ${e.toString()}',
         isLoading: false,

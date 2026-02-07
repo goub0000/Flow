@@ -1,5 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 /// Export Service
 /// Provides functionality to export data to various formats (PDF, CSV, Excel)
+library;
 
 import 'dart:convert';
 import 'dart:typed_data';

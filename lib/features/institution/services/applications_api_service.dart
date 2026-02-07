@@ -38,9 +38,6 @@ class ApplicationsApiService {
       };
       if (_accessToken != null) {
         headers['Authorization'] = 'Bearer $_accessToken';
-        print('[ApplicationsAPI] GET $uri with token: ${_accessToken!.substring(0, 20)}...');
-      } else {
-        print('[ApplicationsAPI] ❌ GET $uri WITHOUT TOKEN!');
       }
 
       final response = await _client.get(uri, headers: headers);
@@ -203,8 +200,6 @@ class ApplicationsApiService {
     final programName = app['program_name'] as String? ??
                        app['metadata']?['program_name'] as String? ??
                        'Program ${app['program_id'] ?? ''}';
-
-    print('[ApplicationsAPI] Mapping application ${app['id']}: program_name=$programName');
 
     return Applicant(
       id: app['id'] as String,

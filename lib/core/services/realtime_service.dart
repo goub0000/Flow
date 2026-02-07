@@ -1,5 +1,6 @@
 /// Realtime Service
 /// Handles Supabase Realtime subscriptions for live updates
+library;
 
 import 'dart:async';
 import 'package:logging/logging.dart';

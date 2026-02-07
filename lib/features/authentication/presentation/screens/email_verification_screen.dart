@@ -92,21 +92,15 @@ class _EmailVerificationScreenState
 
     try {
       // TODO: Integrate with actual backend
+      // TODO: Replace with actual backend check
       // final isVerified = await emailVerificationService.isEmailVerified();
 
-      // Simulate API call
+      // Simulate API call - returns false for demo
       await Future.delayed(const Duration(seconds: 1));
-      final isVerified = false; // Change to true to test success flow
 
       if (mounted) {
         if (!silent) {
           setState(() => _isChecking = false);
-        }
-
-        if (isVerified) {
-          _autoCheckTimer?.cancel();
-          _showSuccessAndNavigate();
-        } else if (!silent) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(context.l10n.emailVerifyNotYet),
@@ -114,6 +108,11 @@ class _EmailVerificationScreenState
             ),
           );
         }
+        // TODO: When backend is integrated, check isVerified and call:
+        // if (isVerified) {
+        //   _autoCheckTimer?.cancel();
+        //   _showSuccessAndNavigate();
+        // }
       }
     } catch (e) {
       if (mounted && !silent) {
@@ -183,6 +182,9 @@ class _EmailVerificationScreenState
     }
   }
 
+  /// Called when email verification is successful.
+  /// TODO: Will be called when backend integration is complete.
+  // ignore: unused_element
   void _showSuccessAndNavigate() {
     showDialog(
       context: context,
@@ -203,7 +205,7 @@ class _EmailVerificationScreenState
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: AppColors.success.withOpacity(0.1),
+                      color: AppColors.success.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -277,7 +279,7 @@ class _EmailVerificationScreenState
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.1),
+                            color: AppColors.primary.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: Stack(
@@ -361,7 +363,7 @@ class _EmailVerificationScreenState
                             width: 32,
                             height: 32,
                             decoration: BoxDecoration(
-                              color: AppColors.info.withOpacity(0.1),
+                              color: AppColors.info.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -443,7 +445,7 @@ class _EmailVerificationScreenState
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.warning.withOpacity(0.1),
+                    color: AppColors.warning.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(

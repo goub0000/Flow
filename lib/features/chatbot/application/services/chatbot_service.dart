@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, unnecessary_getters_setters
+
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -44,7 +46,6 @@ class ChatbotService {
           }
         } catch (e) {
           // API failed, fall back to local processing
-          print('Chatbot API error: $e');
         }
       }
     }
@@ -115,7 +116,6 @@ class ChatbotService {
 
       return response.statusCode == 200;
     } catch (e) {
-      print('Failed to submit feedback: $e');
       return false;
     }
   }
@@ -149,7 +149,6 @@ class ChatbotService {
 
       return response.statusCode == 200;
     } catch (e) {
-      print('Failed to escalate: $e');
       return false;
     }
   }
@@ -181,7 +180,7 @@ class ChatbotService {
         return messages;
       }
     } catch (e) {
-      print('Failed to load history: $e');
+      // Failed to load history
     }
 
     return [];

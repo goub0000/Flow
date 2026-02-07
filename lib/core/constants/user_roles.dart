@@ -146,7 +146,6 @@ extension UserRoleExtension on UserRole {
     }
 
     // Default to student only if no match found
-    print('[DEBUG] UserRole.fromString: No match for "$value", defaulting to student');
     return UserRole.student;
   }
 

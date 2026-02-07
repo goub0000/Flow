@@ -31,34 +31,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _loadProfileIfNeeded() {
-    print('[DEBUG] ProfileScreen._loadProfileIfNeeded() called');
     final user = ref.read(currentProfileProvider);
     final isLoading = ref.read(profileLoadingProvider);
     final error = ref.read(profileErrorProvider);
 
     // If no user data and not currently loading, trigger load
     if (user == null && !isLoading) {
-      print('[DEBUG] No user data found, triggering profile load');
       ref.read(profileProvider.notifier).loadProfile();
     } else if (error != null && user == null && !isLoading) {
       // Also retry if there was an error but we're not currently loading
-      print('[DEBUG] Previous error detected, retrying profile load');
       ref.read(profileProvider.notifier).loadProfile();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Debug logging
-    print('[DEBUG] ProfileScreen build - showBackButton: ${widget.showBackButton}');
-
     final isLoading = ref.watch(profileLoadingProvider);
     final user = ref.watch(currentProfileProvider);
     final error = ref.watch(profileErrorProvider);
     final completeness = ref.watch(profileCompletenessProvider);
     final theme = Theme.of(context);
-
-    print('[DEBUG] ProfileScreen state - isLoading: $isLoading, user: ${user != null}, error: $error');
 
     // When used in dashboard tabs (showBackButton = false), don't create a Scaffold
     // The DashboardScaffold already provides the AppBar and structure
@@ -155,18 +147,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
 
       // Return the profile content wrapped in RefreshIndicator
-      print('[DEBUG] ProfileScreen: Rendering profile content for user: ${user.email}');
-      print('[DEBUG] ProfileScreen: user.displayName: ${user.displayName}');
-      print('[DEBUG] ProfileScreen: user.photoUrl: ${user.photoUrl}');
-
       // Build profile content with error boundary
       Widget profileContent;
       try {
         profileContent = _buildProfileContent(user, completeness, theme, context);
-        print('[DEBUG] ProfileScreen: _buildProfileContent succeeded');
-      } catch (e, stack) {
-        print('[ERROR] ProfileScreen: Error in _buildProfileContent: $e');
-        print('[ERROR] Stack trace: $stack');
+      } catch (e) {
         // Return simple fallback content
         profileContent = _buildSimpleProfileFallback(user, theme, context);
       }
@@ -320,7 +305,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             radius: 50,
             backgroundColor: AppColors.primary,
             child: Text(
-              user.initials ?? 'U',
+              user.initials,
               style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -330,7 +315,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            user.displayName ?? user.email ?? 'User',
+            user.displayName ?? user.email,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -338,7 +323,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            user.email ?? '',
+            user.email,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
@@ -173,7 +174,6 @@ class AdminResourcesNotifier extends StateNotifier<AdminResourcesState> {
         );
       }
     } catch (e) {
-      print('[AdminResources] Error fetching resources: $e');
       state = state.copyWith(
         error: 'Failed to fetch resources: ${e.toString()}',
         isLoading: false,
@@ -224,7 +224,6 @@ class AdminResourcesNotifier extends StateNotifier<AdminResourcesState> {
         return false;
       }
     } catch (e) {
-      print('[AdminResources] Error creating resource: $e');
       state = state.copyWith(
         error: 'Failed to create resource: ${e.toString()}',
       );

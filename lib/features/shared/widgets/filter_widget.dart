@@ -504,7 +504,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.3),
+                              color: Colors.white.withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -564,7 +564,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             }
             onChanged(newSelected);
           },
-          selectedColor: AppColors.primary.withOpacity(0.2),
+          selectedColor: AppColors.primary.withValues(alpha: 0.2),
           checkmarkColor: AppColors.primary,
         );
       }).toList(),
@@ -591,7 +591,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               _filters.minRating = selected ? rating : null;
             });
           },
-          selectedColor: AppColors.primary.withOpacity(0.2),
+          selectedColor: AppColors.primary.withValues(alpha: 0.2),
         );
       }).toList(),
     );
@@ -729,7 +729,7 @@ class ActiveFiltersChips extends StatelessWidget {
       label: Text(label),
       onDeleted: onDeleted,
       deleteIcon: const Icon(Icons.close, size: 16),
-      backgroundColor: AppColors.primary.withOpacity(0.1),
+      backgroundColor: AppColors.primary.withValues(alpha: 0.1),
       labelStyle: const TextStyle(
         color: AppColors.primary,
         fontSize: 12,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_final_fields, unnecessary_string_interpolations, unnecessary_to_list_in_spreads
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -1115,7 +1117,7 @@ class _LoadingDialog extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),

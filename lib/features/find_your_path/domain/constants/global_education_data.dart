@@ -1,4 +1,5 @@
 /// Global education data constants for the questionnaire
+library;
 
 /// Grading systems available worldwide
 enum GradingSystem {

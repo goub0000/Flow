@@ -1,3 +1,5 @@
+// ignore_for_file: invocation_of_non_function_expression
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../../../core/models/quiz_assignment_models.dart';

@@ -1,5 +1,6 @@
 /// Storage Service
 /// Handles file uploads to Supabase Storage
+library;
 
 import 'dart:typed_data';
 import 'package:logging/logging.dart';

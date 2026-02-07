@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/course_model.dart';
 import '../../../core/services/courses_api_service.dart';
 import '../../../core/constants/user_roles.dart';

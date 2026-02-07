@@ -1,4 +1,5 @@
 /// Shared counseling models used across student, parent, and institution dashboards
+library;
 
 /// Session status enum
 enum SessionStatus {

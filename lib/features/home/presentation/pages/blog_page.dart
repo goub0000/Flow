@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/providers/page_content_provider.dart';
-import '../../../../core/models/page_content_model.dart';
 import '../../../../core/l10n_extension.dart';
-import '../widgets/dynamic_page_wrapper.dart';
 
 /// Blog page with articles and news
 class BlogPage extends ConsumerWidget {
@@ -14,173 +10,6 @@ class BlogPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return _buildStaticPage(context);
-  }
-
-  Widget _buildDynamicPage(BuildContext context, PublicPageContent content) {
-    final theme = Theme.of(context);
-    final intro = content.getString('intro') ?? 'Insights, tips, and stories about education in Africa';
-    final categories = content.getList('categories');
-    final featuredPost = content.getMap('featured_post');
-    final blogPosts = content.getList('blog_posts');
-    final newsletterTitle = content.getString('newsletter_title') ?? 'Subscribe to Our Newsletter';
-    final newsletterSubtitle = content.getString('newsletter_subtitle') ?? 'Get the latest articles and resources delivered to your inbox';
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                content.title,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                intro,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Featured Post
-              if (featuredPost.isNotEmpty)
-                _buildFeaturedPost(
-                  context,
-                  theme,
-                  title: featuredPost['title'] ?? '',
-                  excerpt: featuredPost['excerpt'] ?? '',
-                  author: featuredPost['author'] ?? '',
-                  date: featuredPost['date'] ?? '',
-                  readTime: featuredPost['read_time'] ?? '',
-                  category: featuredPost['category'] ?? '',
-                ),
-
-              const SizedBox(height: 32),
-
-              // Categories
-              if (categories.isNotEmpty) ...[
-                Text(
-                  'Categories',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    _buildCategoryChip(theme, 'All', true),
-                    ...categories.map((cat) => _buildCategoryChip(
-                      theme,
-                      cat is String ? cat : (cat['name'] ?? ''),
-                      false,
-                    )),
-                  ],
-                ),
-              ],
-
-              const SizedBox(height: 32),
-
-              // Recent Posts
-              if (blogPosts.isNotEmpty) ...[
-                Text(
-                  'Recent Posts',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ...blogPosts.map((post) => _buildBlogPost(
-                  theme,
-                  title: post['title'] ?? '',
-                  excerpt: post['excerpt'] ?? '',
-                  author: post['author'] ?? '',
-                  date: post['date'] ?? '',
-                  readTime: post['read_time'] ?? '',
-                  category: post['category'] ?? '',
-                )),
-              ],
-
-              const SizedBox(height: 32),
-
-              // Newsletter signup
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primary.withOpacity(0.1),
-                      AppColors.accent.withOpacity(0.1),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.mail, size: 48, color: AppColors.primary),
-                    const SizedBox(height: 16),
-                    Text(
-                      newsletterTitle,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      newsletterSubtitle,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: 400,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Enter your email',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          FilledButton(
-                            onPressed: () {},
-                            child: const Text('Subscribe'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 48),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _buildStaticPage(BuildContext context) {
@@ -323,8 +152,8 @@ class BlogPage extends ConsumerWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primary.withOpacity(0.1),
-                      AppColors.accent.withOpacity(0.1),
+                      AppColors.primary.withValues(alpha: 0.1),
+                      AppColors.accent.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
@@ -419,7 +248,7 @@ class BlogPage extends ConsumerWidget {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Center(
-              child: Icon(Icons.article, size: 64, color: Colors.white.withOpacity(0.5)),
+              child: Icon(Icons.article, size: 64, color: Colors.white.withValues(alpha: 0.5)),
             ),
           ),
           Padding(
@@ -432,7 +261,7 @@ class BlogPage extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: AppColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -447,7 +276,7 @@ class BlogPage extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.accent.withOpacity(0.1),
+                        color: AppColors.accent.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -480,7 +309,7 @@ class BlogPage extends ConsumerWidget {
                   children: [
                     CircleAvatar(
                       radius: 16,
-                      backgroundColor: AppColors.primary.withOpacity(0.2),
+                      backgroundColor: AppColors.primary.withValues(alpha: 0.2),
                       child: Text(
                         author.isNotEmpty ? author[0] : '',
                         style: TextStyle(
@@ -513,7 +342,7 @@ class BlogPage extends ConsumerWidget {
       label: Text(label),
       selected: isSelected,
       onSelected: (_) {},
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
     );
   }
 
@@ -541,7 +370,7 @@ class BlogPage extends ConsumerWidget {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(Icons.article, color: AppColors.primary),
@@ -554,7 +383,7 @@ class BlogPage extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(

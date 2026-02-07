@@ -78,7 +78,7 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -93,7 +93,7 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.accent.withOpacity(0.1),
+                  color: AppColors.accent.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -164,8 +164,8 @@ class _MiniQuizPreviewState extends State<MiniQuizPreview> {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? theme.colorScheme.primary.withOpacity(0.1)
-                        : theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                        ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                        : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: isSelected
@@ -268,14 +268,14 @@ class _QuizTeaserState extends State<QuizTeaser> {
             gradient: LinearGradient(
               colors: _isHovered
                   ? [AppColors.accent, AppColors.accentDark]
-                  : [AppColors.accent.withOpacity(0.9), AppColors.accentDark.withOpacity(0.9)],
+                  : [AppColors.accent.withValues(alpha: 0.9), AppColors.accentDark.withValues(alpha: 0.9)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: AppColors.accent.withOpacity(_isHovered ? 0.4 : 0.2),
+                color: AppColors.accent.withValues(alpha: _isHovered ? 0.4 : 0.2),
                 blurRadius: _isHovered ? 20 : 10,
                 offset: Offset(0, _isHovered ? 8 : 4),
               ),
@@ -287,7 +287,7 @@ class _QuizTeaserState extends State<QuizTeaser> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -311,7 +311,7 @@ class _QuizTeaserState extends State<QuizTeaser> {
                   Text(
                     context.l10n.quizTakeTheQuiz,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                     ),
                   ),
                 ],

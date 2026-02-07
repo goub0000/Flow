@@ -1,8 +1,10 @@
 /// Student Applications Real-Time Provider
 /// Manages real-time subscriptions for student application updates
+library;
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/providers/service_providers.dart';
@@ -65,7 +67,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
   final EnhancedRealtimeService _realtimeService;
   final SupabaseClient _supabase;
 
-  RealtimeChannel? _channel;
   StreamSubscription<ConnectionStatus>? _connectionSubscription;
   Timer? _refreshTimer;
 
@@ -105,8 +106,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
         return;
       }
 
-      print('[RealtimeApplications] Fetching applications for user: ${user.id}');
-
       // Fetch from Supabase directly
       final response = await _supabase
           .from('applications')
@@ -127,10 +126,7 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
         statistics: statistics,
       );
 
-      print('[RealtimeApplications] Fetched ${applications.length} applications');
-
     } catch (e) {
-      print('[RealtimeApplications] Error fetching: $e');
       state = state.copyWith(
         error: 'Failed to fetch applications: $e',
         isLoading: false,
@@ -142,15 +138,12 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
   void _setupRealtimeSubscription() {
     final user = ref.read(currentUserProvider);
     if (user == null) {
-      print('[RealtimeApplications] Cannot setup subscription - no user');
       return;
     }
 
     final channelName = 'student_applications_${user.id}';
 
-    print('[RealtimeApplications] Setting up real-time subscription');
-
-    _channel = _realtimeService.subscribeToUserRecords(
+    _realtimeService.subscribeToUserRecords(
       table: 'applications',
       channelName: channelName,
       userId: user.id,
@@ -159,7 +152,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
       onUpdate: _handleUpdate,
       onDelete: _handleDelete,
       onError: (error) {
-        print('[RealtimeApplications] Subscription error: $error');
         state = state.copyWith(error: error);
       },
     );
@@ -168,8 +160,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
   /// Handle INSERT event
   void _handleInsert(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeApplications] New application inserted: ${payload['id']}');
-
       final newApplication = Application.fromJson(payload);
 
       // Add to state if not already present
@@ -187,15 +177,13 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
         _showNotification('New Application', 'Your application to ${newApplication.institutionName} has been created');
       }
     } catch (e) {
-      print('[RealtimeApplications] Error handling insert: $e');
+      // Handle error silently
     }
   }
 
   /// Handle UPDATE event
   void _handleUpdate(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeApplications] Application updated: ${payload['id']}');
-
       final updatedApplication = Application.fromJson(payload);
 
       // Find and update the application
@@ -218,14 +206,13 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
         statistics: statistics,
       );
     } catch (e) {
-      print('[RealtimeApplications] Error handling update: $e');
+      // Handle error silently
     }
   }
 
   /// Handle DELETE event
   void _handleDelete(Map<String, dynamic> payload) {
     try {
-      print('[RealtimeApplications] Application deleted: ${payload['id']}');
 
       final deletedId = payload['id'] as String;
 
@@ -245,7 +232,7 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
       // Show notification
       _showNotification('Application Removed', 'An application has been removed');
     } catch (e) {
-      print('[RealtimeApplications] Error handling delete: $e');
+      // Handle error silently
     }
   }
 
@@ -267,7 +254,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
     // Refresh every 30 seconds if not connected to real-time
     _refreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
       if (!state.isConnected) {
-        print('[RealtimeApplications] Periodic refresh (not connected to real-time)');
         refresh();
       }
     });
@@ -315,7 +301,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
   /// Show notification (placeholder - integrate with actual notification system)
   void _showNotification(String title, String message) {
     // TODO: Integrate with actual notification system
-    print('[Notification] $title: $message');
   }
 
   /// Manual refresh
@@ -357,7 +342,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
 
       return success;
     } catch (e) {
-      print('[RealtimeApplications] Error submitting application: $e');
       return false;
     }
   }
@@ -390,8 +374,6 @@ class StudentApplicationsRealtimeNotifier extends StateNotifier<RealtimeApplicat
       // Real-time will confirm the update
       return true;
     } catch (e) {
-      print('[RealtimeApplications] Error updating status: $e');
-
       // Revert on error
       state = state.copyWith(
         applications: state.applications,

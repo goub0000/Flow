@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../data/services/find_your_path_service.dart';
 import '../../domain/models/student_profile.dart';
 import '../../domain/models/recommendation.dart';
@@ -175,7 +176,6 @@ class RecommendationsNotifier extends StateNotifier<RecommendationsState> {
           updatedRecs.add(rec.copyWith(university: university));
         } catch (e) {
           // If fetching fails, keep the recommendation without university
-          print('[FYP] Failed to load university ${rec.universityId}: $e');
           updatedRecs.add(rec);
         }
       } else {

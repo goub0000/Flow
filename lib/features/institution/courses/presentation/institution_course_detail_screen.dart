@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,7 +42,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                   : Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+                          colors: [AppColors.primary, AppColors.primary.withValues(alpha:0.7)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -76,7 +78,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      if (course.enrolledCount != null && course.enrolledCount! > 0)
+                      if (course.enrolledCount > 0)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
@@ -84,7 +86,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
-                            context.l10n.instCoursesEnrolledCount(course.enrolledCount ?? 0),
+                            context.l10n.instCoursesEnrolledCount(course.enrolledCount),
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -216,7 +218,7 @@ class InstitutionCourseDetailScreen extends ConsumerWidget {
                         children: [
                           _StatRow(
                             label: 'Enrolled Students',
-                            value: '${course.enrolledCount ?? 0}${course.maxStudents != null ? " / ${course.maxStudents}" : ""}',
+                            value: '${course.enrolledCount}${course.maxStudents != null ? " / ${course.maxStudents}" : ""}',
                           ),
                           const Divider(),
                           _StatRow(

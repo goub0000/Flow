@@ -226,7 +226,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.7),
+          color: Colors.black.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(
@@ -264,7 +264,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.7),
+          color: Colors.black.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(
@@ -279,7 +279,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
@@ -313,7 +313,7 @@ class _EnhancedDocumentViewerState extends State<EnhancedDocumentViewer> {
             Icon(
               _getFileIcon(),
               size: 80,
-              color: AppColors.textSecondary.withOpacity(0.5),
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
@@ -389,8 +389,6 @@ class _ZoomableImageViewerState extends State<ZoomableImageViewer> {
   final TransformationController _transformationController =
       TransformationController();
 
-  double _scale = 1.0;
-
   @override
   void dispose() {
     _transformationController.dispose();
@@ -405,11 +403,6 @@ class _ZoomableImageViewerState extends State<ZoomableImageViewer> {
         transformationController: _transformationController,
         minScale: 0.5,
         maxScale: 4.0,
-        onInteractionUpdate: (details) {
-          setState(() {
-            _scale = _transformationController.value.getMaxScaleOnAxis();
-          });
-        },
         child: Center(
           child: _buildImage(),
         ),
@@ -582,7 +575,7 @@ class PDFDocumentViewer extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.info.withOpacity(0.1),
+                  color: AppColors.info.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(

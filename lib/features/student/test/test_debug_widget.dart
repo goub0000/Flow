@@ -1,8 +1,9 @@
 /// TEMPORARY DEBUG WIDGET - DELETE AFTER TESTING
 /// This widget helps verify that the applications are being fetched correctly
+library;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/api/api_client.dart';
 import '../../../core/api/api_config.dart';
 import '../../../core/providers/service_providers.dart' hide currentUserProvider;
 import '../../authentication/providers/auth_provider.dart';
@@ -29,12 +30,12 @@ class TestDebugWidget extends ConsumerWidget {
               onPressed: () async {
                 try {
                   // Test the debug endpoint
-                  print('[TEST] Calling debug endpoint...');
                   final response = await apiClient.get(
                     '/debug/applications',
                     fromJson: (data) => data as Map<String, dynamic>,
                   );
 
+                  if (!context.mounted) return;
                   if (response.success && response.data != null) {
                     final data = response.data!;
                     showDialog(
@@ -71,11 +72,9 @@ class TestDebugWidget extends ConsumerWidget {
                         ],
                       ),
                     );
-                  } else {
-                    print('[TEST] Failed: ${response.message}');
                   }
                 } catch (e) {
-                  print('[TEST] Error: $e');
+                  // Error handling silently
                 }
               },
               child: const Text('Test Debug Endpoint'),
@@ -85,17 +84,13 @@ class TestDebugWidget extends ConsumerWidget {
               onPressed: () async {
                 try {
                   // Test the actual applications endpoint
-                  print('[TEST] Calling actual applications endpoint...');
-                  final response = await apiClient.get(
+                  await apiClient.get(
                     '${ApiConfig.students}/me/applications',
                     fromJson: (data) => data,
                   );
-
-                  print('[TEST] Response success: ${response.success}');
-                  print('[TEST] Response data: ${response.data}');
-                  print('[TEST] Response message: ${response.message}');
+                  // Response handled silently
                 } catch (e) {
-                  print('[TEST] Error calling applications endpoint: $e');
+                  // Error handling silently
                 }
               },
               child: const Text('Test Applications Endpoint'),

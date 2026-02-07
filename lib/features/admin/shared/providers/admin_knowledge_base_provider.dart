@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../chatbot/services/faq_api_service.dart';
 
 /// State class for Knowledge Base admin

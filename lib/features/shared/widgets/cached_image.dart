@@ -76,7 +76,7 @@ class CachedImage extends StatelessWidget {
             width: size,
             height: size,
             decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
+              color: AppColors.surfaceContainerHighest,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -165,7 +165,7 @@ class CachedImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.surfaceContainerHighest,
         borderRadius: borderRadius,
       ),
       child: Center(
@@ -190,7 +190,7 @@ class CachedImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: AppColors.error.withOpacity(0.1),
+        color: AppColors.error.withValues(alpha: 0.1),
         borderRadius: borderRadius,
       ),
       child: const Center(

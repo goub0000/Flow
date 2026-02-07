@@ -75,8 +75,8 @@ class FileUploadWidget extends StatefulWidget {
 
 class _FileUploadWidgetState extends State<FileUploadWidget> {
   List<PlatformFile> _selectedFiles = [];
-  bool _isUploading = false;
-  double _uploadProgress = 0.0;
+  final bool _isUploading = false;
+  final double _uploadProgress = 0.0;
   bool _isDragging = false;
 
   Future<void> _pickFiles() async {
@@ -89,6 +89,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
         allowMultiple: widget.allowMultiple,
       );
 
+      if (!mounted) return;
       if (result != null && result.files.isNotEmpty) {
         final validFiles = _validateFiles(result.files, context);
 
@@ -100,6 +101,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
         }
       }
     } catch (e) {
+      if (!mounted) return;
       _showError(context.l10n.swFileUploadPickFailed(e.toString()));
     }
   }
@@ -178,7 +180,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
                 ),
                 borderRadius: BorderRadius.circular(12),
                 color: _isDragging
-                    ? AppColors.primary.withOpacity(0.05)
+                    ? AppColors.primary.withValues(alpha: 0.05)
                     : AppColors.surface,
               ),
               child: Column(
@@ -299,7 +301,7 @@ class FilePreviewCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: _getFileColor().withOpacity(0.1),
+              color: _getFileColor().withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
@@ -449,6 +451,7 @@ class QuickFileUploadButton extends StatelessWidget {
         onFilesSelected(result.files);
       }
     } catch (e) {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(context.l10n.swFileUploadPickFailed(e.toString())),
@@ -497,6 +500,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
         allowMultiple: false,
       );
 
+      if (!mounted) return;
       if (result != null && result.files.isNotEmpty) {
         setState(() {
           _selectedImage = result.files.first;
@@ -504,6 +508,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
         widget.onImageSelected(result.files.first);
       }
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(context.l10n.swFileUploadPickImageFailed(e.toString())),

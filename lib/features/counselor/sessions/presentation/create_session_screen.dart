@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -304,7 +306,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                   onSelected: (selected) {
                     setState(() => _sessionType = type);
                   },
-                  backgroundColor: AppColors.surfaceVariant,
+                  backgroundColor: AppColors.surfaceContainerHighest,
                   selectedColor: AppColors.primary,
                   labelStyle: TextStyle(
                     color: isSelected
@@ -399,7 +401,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                   onSelected: (selected) {
                     setState(() => _duration = dur);
                   },
-                  backgroundColor: AppColors.surfaceVariant,
+                  backgroundColor: AppColors.surfaceContainerHighest,
                   selectedColor: AppColors.primary,
                   labelStyle: TextStyle(
                     color: isSelected
@@ -430,7 +432,7 @@ class _CreateSessionScreenState extends ConsumerState<CreateSessionScreen> {
                   onSelected: (selected) {
                     setState(() => _location = loc);
                   },
-                  backgroundColor: AppColors.surfaceVariant,
+                  backgroundColor: AppColors.surfaceContainerHighest,
                   selectedColor: AppColors.info,
                   labelStyle: TextStyle(
                     color: isSelected

@@ -140,7 +140,7 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
             Icon(
               Icons.article_outlined,
               size: 64,
-              color: AppColors.textSecondary.withOpacity(0.5),
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
@@ -250,7 +250,7 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: AppColors.border.withOpacity(0.5)),
+            bottom: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
           ),
         ),
         child: Row(
@@ -333,15 +333,15 @@ class _PageContentListScreenState extends ConsumerState<PageContentListScreen> {
 
     switch (status.toLowerCase()) {
       case 'published':
-        backgroundColor = AppColors.success.withOpacity(0.1);
+        backgroundColor = AppColors.success.withValues(alpha: 0.1);
         textColor = AppColors.success;
         break;
       case 'draft':
-        backgroundColor = AppColors.warning.withOpacity(0.1);
+        backgroundColor = AppColors.warning.withValues(alpha: 0.1);
         textColor = AppColors.warning;
         break;
       case 'archived':
-        backgroundColor = AppColors.textSecondary.withOpacity(0.1);
+        backgroundColor = AppColors.textSecondary.withValues(alpha: 0.1);
         textColor = AppColors.textSecondary;
         break;
       default:

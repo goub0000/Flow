@@ -45,7 +45,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(Icons.people, color: AppColors.primary, size: 24),
@@ -87,7 +87,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -147,7 +147,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
           _filterStatus = selected ? status : null;
         });
       },
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
       checkmarkColor: AppColors.primary,
     );
   }
@@ -281,7 +281,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       child: ExpansionTile(
         leading: CircleAvatar(
-          backgroundColor: _getStatusColor(status).withOpacity(0.2),
+          backgroundColor: _getStatusColor(status).withValues(alpha: 0.2),
           child: Icon(
             _getStatusIcon(status),
             color: _getStatusColor(status),
@@ -530,7 +530,7 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
     final cookieService = ref.read(cookieServiceProvider);
 
     try {
-      final data = await cookieService.exportUserData(userId);
+      await cookieService.exportUserData(userId);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -580,23 +580,21 @@ class _UserDataViewerScreenState extends ConsumerState<UserDataViewerScreen> {
               try {
                 await cookieService.deleteUserCookieData(userId);
 
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Data deleted for user $userId'),
-                      backgroundColor: AppColors.success,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Data deleted for user $userId'),
+                    backgroundColor: AppColors.success,
+                  ),
+                );
               } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error deleting data: $e'),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error deleting data: $e'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
               }
             },
             style: ElevatedButton.styleFrom(

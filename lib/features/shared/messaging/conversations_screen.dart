@@ -1,15 +1,15 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/l10n_extension.dart';
 import '../../../core/models/conversation_model.dart';
-import '../../../core/models/message_model.dart';
 import '../widgets/custom_card.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/logo_avatar.dart';
-import '../providers/messaging_provider.dart' hide Conversation;
+import '../providers/messaging_provider.dart';
 
 /// @deprecated This screen is deprecated. Use MessagesListScreen instead which has
 /// real-time messaging support with Supabase. This file is kept for backwards compatibility

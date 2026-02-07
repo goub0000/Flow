@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/api_config.dart';
 import '../../../../core/providers/service_providers.dart';
@@ -188,7 +189,6 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
         );
       }
     } catch (e) {
-      print('[AdminContent] Error fetching content: $e');
       state = state.copyWith(
         error: 'Failed to fetch content: ${e.toString()}',
         isLoading: false,
@@ -389,7 +389,6 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
         return false;
       }
     } catch (e) {
-      print('[AdminContent] Error creating content: $e');
       state = state.copyWith(
         error: 'Failed to create content: ${e.toString()}',
       );
@@ -427,7 +426,6 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
         return false;
       }
     } catch (e) {
-      print('[AdminContent] Error assigning content: $e');
       state = state.copyWith(
         error: 'Failed to assign content: ${e.toString()}',
       );
@@ -449,7 +447,6 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
       }
       return [];
     } catch (e) {
-      print('[AdminContent] Error fetching assignments: $e');
       return [];
     }
   }
@@ -460,7 +457,6 @@ class AdminContentNotifier extends StateNotifier<AdminContentState> {
       await _apiClient.delete('${ApiConfig.admin}/content/assignment/$assignmentId');
       return true;
     } catch (e) {
-      print('[AdminContent] Error removing assignment: $e');
       return false;
     }
   }

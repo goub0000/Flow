@@ -48,8 +48,8 @@ class ApiDocsPage extends ConsumerWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primary.withOpacity(0.1),
-                      AppColors.accent.withOpacity(0.1),
+                      AppColors.primary.withValues(alpha: 0.1),
+                      AppColors.accent.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -302,7 +302,7 @@ class ApiDocsPage extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: methodColor.withOpacity(0.1),
+              color: methodColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(

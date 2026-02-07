@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -364,17 +366,16 @@ class _ContentManagementScreenState
                   level: selectedLevel,
                 );
 
-                if (mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(success
-                          ? context.l10n.adminContentCreatedAsDraft(titleController.text)
-                          : context.l10n.adminContentFailedToCreate),
-                      backgroundColor: success ? AppColors.success : AppColors.error,
-                    ),
-                  );
-                }
+                if (!context.mounted) return;
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? context.l10n.adminContentCreatedAsDraft(titleController.text)
+                        : context.l10n.adminContentFailedToCreate),
+                    backgroundColor: success ? AppColors.success : AppColors.error,
+                  ),
+                );
               },
               child: isCreating
                   ? const SizedBox(
@@ -847,16 +848,15 @@ class _ContentManagementScreenState
               Navigator.pop(context);
               final success = await ref.read(adminContentProvider.notifier)
                   .archiveContent(content.id);
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success
-                        ? context.l10n.adminContentArchivedSuccessfully
-                        : context.l10n.adminContentFailedToArchive),
-                    backgroundColor: success ? AppColors.success : AppColors.error,
-                  ),
-                );
-              }
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(success
+                      ? context.l10n.adminContentArchivedSuccessfully
+                      : context.l10n.adminContentFailedToArchive),
+                  backgroundColor: success ? AppColors.success : AppColors.error,
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.warning,
@@ -1034,6 +1034,7 @@ class _ContentManagementScreenState
                     onChanged: (value) {
                       setDialogState(() => isRequired = value);
                     },
+                    activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
                     activeColor: AppColors.primary,
                     contentPadding: EdgeInsets.zero,
                   ),
@@ -1183,21 +1184,20 @@ class _ContentManagementScreenState
                               isRequired: isRequired,
                             );
 
-                        if (mounted) {
-                          Navigator.pop(context);
-                          final targetCount = selectedTargetType == 'all_students'
-                              ? 'all students'
-                              : '${selectedUserIds.length} ${selectedTargetType == 'student' ? 'student' : 'institution'}${selectedUserIds.length > 1 ? 's' : ''}';
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(success
-                                  ? 'Content assigned to $targetCount successfully'
-                                  : 'Failed to assign content'),
-                              backgroundColor:
-                                  success ? AppColors.success : AppColors.error,
-                            ),
-                          );
-                        }
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                        final targetCount = selectedTargetType == 'all_students'
+                            ? 'all students'
+                            : '${selectedUserIds.length} ${selectedTargetType == 'student' ? 'student' : 'institution'}${selectedUserIds.length > 1 ? 's' : ''}';
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? 'Content assigned to $targetCount successfully'
+                                : 'Failed to assign content'),
+                            backgroundColor:
+                                success ? AppColors.success : AppColors.error,
+                          ),
+                        );
                       },
                 icon: isAssigning
                     ? const SizedBox(
@@ -1487,17 +1487,16 @@ class _ContentManagementScreenState
                   setDialogState(() => isUpdating = true);
                   final success = await ref.read(adminContentProvider.notifier)
                       .rejectContent(content.id); // Sets to draft
-                  if (mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(success
-                            ? 'Content unpublished - set to draft'
-                            : 'Failed to unpublish content'),
-                        backgroundColor: success ? AppColors.warning : AppColors.error,
-                      ),
-                    );
-                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(success
+                          ? 'Content unpublished - set to draft'
+                          : 'Failed to unpublish content'),
+                      backgroundColor: success ? AppColors.warning : AppColors.error,
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.warning,
@@ -1518,17 +1517,16 @@ class _ContentManagementScreenState
                   setDialogState(() => isUpdating = true);
                   final success = await ref.read(adminContentProvider.notifier)
                       .rejectContent(content.id);
-                  if (mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(success
-                            ? 'Content set to draft'
-                            : 'Failed to update content'),
-                        backgroundColor: success ? AppColors.warning : AppColors.error,
-                      ),
-                    );
-                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(success
+                          ? 'Content set to draft'
+                          : 'Failed to update content'),
+                      backgroundColor: success ? AppColors.warning : AppColors.error,
+                    ),
+                  );
                 },
                 child: Text(
                   'Set to Draft',
@@ -1541,17 +1539,16 @@ class _ContentManagementScreenState
                   setDialogState(() => isUpdating = true);
                   final success = await ref.read(adminContentProvider.notifier)
                       .approveContent(content.id);
-                  if (mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(success
-                            ? 'Content published successfully!'
-                            : 'Failed to publish content'),
-                        backgroundColor: success ? AppColors.success : AppColors.error,
-                      ),
-                    );
-                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(success
+                          ? 'Content published successfully!'
+                          : 'Failed to publish content'),
+                      backgroundColor: success ? AppColors.success : AppColors.error,
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.success,
@@ -1614,16 +1611,15 @@ class _ContentManagementScreenState
               Navigator.pop(context);
               final success = await ref.read(adminContentProvider.notifier)
                   .deleteContent(content.id);
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success
-                        ? 'Content deleted successfully'
-                        : 'Failed to delete content'),
-                    backgroundColor: success ? AppColors.success : AppColors.error,
-                  ),
-                );
-              }
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(success
+                      ? 'Content deleted successfully'
+                      : 'Failed to delete content'),
+                  backgroundColor: success ? AppColors.success : AppColors.error,
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

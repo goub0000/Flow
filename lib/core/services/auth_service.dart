@@ -1,10 +1,10 @@
 /// Authentication Service
 /// Handles user authentication, registration, and session management
+library;
 
 import 'dart:convert';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../api/api_client.dart';
 import '../api/api_config.dart';
 import '../api/api_response.dart';
@@ -377,7 +377,7 @@ class AuthService {
     required String confirmNewPassword,
   }) async {
     try {
-      final response = await _apiClient.post(
+      await _apiClient.post(
         '${ApiConfig.auth}/change-password',
         data: {
           'current_password': currentPassword,

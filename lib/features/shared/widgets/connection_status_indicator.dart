@@ -1,5 +1,6 @@
 /// Connection Status Indicator Widget
 /// Shows the current real-time connection status with visual feedback
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,14 +18,14 @@ class ConnectionStatusIndicator extends ConsumerWidget {
   final double iconSize;
 
   const ConnectionStatusIndicator({
-    Key? key,
+    super.key,
     this.showText = true,
     this.showInAppBar = false,
     this.activeColor,
     this.inactiveColor,
     this.connectingColor,
     this.iconSize = 8,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,7 +77,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
         icon: Icons.circle,
         color: color,
         text: showText ? context.l10n.connectionStatusLive : null,
-        backgroundColor: color.withOpacity(0.1),
+        backgroundColor: color.withValues(alpha: 0.1),
       );
     }
 
@@ -84,7 +85,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
       icon: Icons.circle,
       color: color,
       text: showText ? context.l10n.connectionStatusLive : null,
-      backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
+      backgroundColor: color.withValues(alpha: isDarkMode ? 0.2 : 0.1),
     );
   }
 
@@ -94,7 +95,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
         icon: null,
         color: color,
         text: showText ? context.l10n.connectionStatusConnecting : null,
-        backgroundColor: color.withOpacity(0.1),
+        backgroundColor: color.withValues(alpha: 0.1),
         showProgress: true,
       );
     }
@@ -103,7 +104,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
       icon: null,
       color: color,
       text: showText ? context.l10n.connectionStatusConnecting : null,
-      backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
+      backgroundColor: color.withValues(alpha: isDarkMode ? 0.2 : 0.1),
       showProgress: true,
     );
   }
@@ -114,7 +115,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
         icon: Icons.circle,
         color: color,
         text: showText ? context.l10n.connectionStatusOffline : null,
-        backgroundColor: color.withOpacity(0.1),
+        backgroundColor: color.withValues(alpha: 0.1),
       );
     }
 
@@ -122,7 +123,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
       icon: Icons.circle,
       color: color,
       text: showText ? context.l10n.connectionStatusOffline : null,
-      backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
+      backgroundColor: color.withValues(alpha: isDarkMode ? 0.2 : 0.1),
     );
   }
 
@@ -132,7 +133,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
         icon: Icons.error_outline,
         color: color,
         text: showText ? context.l10n.connectionStatusError : null,
-        backgroundColor: color.withOpacity(0.1),
+        backgroundColor: color.withValues(alpha: 0.1),
       );
     }
 
@@ -140,7 +141,7 @@ class ConnectionStatusIndicator extends ConsumerWidget {
       icon: Icons.error_outline,
       color: color,
       text: showText ? context.l10n.connectionStatusError : null,
-      backgroundColor: color.withOpacity(isDarkMode ? 0.2 : 0.1),
+      backgroundColor: color.withValues(alpha: isDarkMode ? 0.2 : 0.1),
     );
   }
 
@@ -249,10 +250,10 @@ class AnimatedConnectionStatusIndicator extends ConsumerStatefulWidget {
   final double size;
 
   const AnimatedConnectionStatusIndicator({
-    Key? key,
+    super.key,
     this.showText = true,
     this.size = 24,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<AnimatedConnectionStatusIndicator> createState() =>
@@ -348,7 +349,7 @@ class _AnimatedConnectionStatusIndicatorState
                     width: widget.size * _scaleAnimation.value,
                     height: widget.size * _scaleAnimation.value,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.3 * (2 - _scaleAnimation.value)),
+                      color: color.withValues(alpha: 0.3 * (2 - _scaleAnimation.value)),
                       shape: BoxShape.circle,
                     ),
                   );
@@ -397,10 +398,10 @@ class ConnectionDotIndicator extends ConsumerWidget {
   final bool showAnimation;
 
   const ConnectionDotIndicator({
-    Key? key,
+    super.key,
     this.size = 8,
     this.showAnimation = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -457,10 +458,9 @@ class _PulsingDot extends StatefulWidget {
   final double size;
 
   const _PulsingDot({
-    Key? key,
     required this.color,
     required this.size,
-  }) : super(key: key);
+  });
 
   @override
   State<_PulsingDot> createState() => _PulsingDotState();
@@ -503,7 +503,7 @@ class _PulsingDotState extends State<_PulsingDot>
           width: widget.size,
           height: widget.size,
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(_animation.value),
+            color: widget.color.withValues(alpha: _animation.value),
             shape: BoxShape.circle,
           ),
         );

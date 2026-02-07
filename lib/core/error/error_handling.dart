@@ -4,6 +4,7 @@
 /// ```dart
 /// import 'package:flow/core/error/error_handling.dart';
 /// ```
+library;
 
 // Error Handler
 export 'error_handler.dart';

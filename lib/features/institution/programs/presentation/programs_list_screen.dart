@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -160,18 +162,6 @@ class _ProgramsListScreenState extends ConsumerState<ProgramsListScreen> {
                 Expanded(child: _buildProgramsList()),
               ],
             );
-  }
-
-  Widget _buildFloatingActionButton(BuildContext context) {
-    return FloatingActionButton.extended(
-        heroTag: 'programs_fab',
-        onPressed: () async {
-          await context.push('/institution/programs/create');
-          _loadPrograms();
-        },
-        icon: const Icon(Icons.add),
-        label: Text(context.l10n.instProgramNewProgram),
-    );
   }
 
   Widget _buildProgramsList() {

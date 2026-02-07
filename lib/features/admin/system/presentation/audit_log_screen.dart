@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -26,7 +28,6 @@ class _AuditLogScreenState extends ConsumerState<AuditLogScreen> {
   // TODO: Replace with actual state management
   final TextEditingController _searchController = TextEditingController();
   String _selectedAction = 'all';
-  String _selectedUser = 'all';
   String _selectedDateRange = 'today';
 
   @override

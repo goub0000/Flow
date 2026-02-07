@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -218,7 +220,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundColor: AppColors.primary.withOpacity(0.1),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
               child: Text(
                 '${module.orderIndex}',
                 style: TextStyle(
@@ -287,7 +289,7 @@ class _CourseLearningScreenState extends ConsumerState<CourseLearningScreen> {
     final isCurrent = _currentLessonId == lesson.id;
 
     return Container(
-      color: isCurrent ? AppColors.primary.withOpacity(0.1) : null,
+      color: isCurrent ? AppColors.primary.withValues(alpha: 0.1) : null,
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
         leading: Icon(

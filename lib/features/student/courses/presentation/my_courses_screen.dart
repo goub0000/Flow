@@ -1,9 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/models/enrollment_model.dart';
-import '../../../../core/models/course_model.dart';
 import '../../../../core/l10n_extension.dart';
 import '../../providers/enrollments_provider.dart';
 import '../../providers/courses_provider.dart';
@@ -200,7 +201,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primary.withOpacity(0.7),
+                      AppColors.primary.withValues(alpha: 0.7),
                       AppColors.primary,
                     ],
                     begin: Alignment.topLeft,
@@ -686,7 +687,7 @@ class _MyCoursesScreenState extends ConsumerState<MyCoursesScreen>
         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
         gradient: LinearGradient(
           colors: [
-            AppColors.primary.withOpacity(0.7),
+            AppColors.primary.withValues(alpha: 0.7),
             AppColors.primary,
           ],
           begin: Alignment.topLeft,
@@ -905,7 +906,7 @@ class _StatusFilterBottomSheet extends ConsumerWidget {
       ),
       selected: isSelected,
       onSelected: (_) => onTap(),
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
     );
   }
 

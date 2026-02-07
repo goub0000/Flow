@@ -1,6 +1,7 @@
 /// Institution Model
 /// Represents a registered institution (user account) in the Flow platform
 /// This is DIFFERENT from University model which is used for recommendations
+library;
 
 class Institution {
   final String id; // UUID from users table

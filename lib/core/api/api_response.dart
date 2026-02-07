@@ -1,5 +1,6 @@
 /// API Response Models
 /// Generic response wrapper for API calls
+library;
 
 class ApiResponse<T> {
   final bool success;

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/models/child_model.dart' hide Application, CourseProgress;
+import 'package:flutter_riverpod/legacy.dart';
 import '../../../core/models/progress_model.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/api/api_client.dart';
@@ -169,36 +169,6 @@ class ChildMonitoringNotifier extends StateNotifier<ChildMonitoringState> {
       'pendingAssignments': totalAssignments - completedAssignments,
       'gradeDistribution': gradeDistribution,
     };
-  }
-
-  /// Parse grade string to numeric value
-  double _parseGrade(String grade) {
-    // Handle letter grades
-    switch (grade.toUpperCase()) {
-      case 'A':
-        return 95.0;
-      case 'A-':
-        return 90.0;
-      case 'B+':
-        return 87.0;
-      case 'B':
-        return 85.0;
-      case 'B-':
-        return 80.0;
-      case 'C+':
-        return 77.0;
-      case 'C':
-        return 75.0;
-      case 'C-':
-        return 70.0;
-      case 'D':
-        return 65.0;
-      case 'F':
-        return 50.0;
-      default:
-        // Try to parse as number
-        return double.tryParse(grade.replaceAll('%', '')) ?? 0.0;
-    }
   }
 
   /// Get letter grade from numeric value

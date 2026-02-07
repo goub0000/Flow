@@ -21,7 +21,6 @@ class CookieService {
     );
 
     if (!canCollect && data.type.category != CookieCategory.essential) {
-      print('Cannot store ${data.type} - no consent');
       return false;
     }
 
@@ -42,7 +41,6 @@ class CookieService {
         json,
       );
     } catch (e) {
-      print('Error storing cookie data: $e');
       return false;
     }
   }
@@ -75,7 +73,6 @@ class CookieService {
       final List<dynamic> list = jsonDecode(json);
       return list.map((e) => CookieData.fromJson(e)).toList();
     } catch (e) {
-      print('Error loading cookie data: $e');
       return [];
     }
   }
@@ -87,7 +84,6 @@ class CookieService {
         '${CookieConstants.localCookieDataKey}_$userId',
       );
     } catch (e) {
-      print('Error deleting cookie data: $e');
       return false;
     }
   }
@@ -107,7 +103,6 @@ class CookieService {
         json,
       );
     } catch (e) {
-      print('Error deleting category data: $e');
       return false;
     }
   }
@@ -124,7 +119,6 @@ class CookieService {
         json,
       );
     } catch (e) {
-      print('Error anonymizing data: $e');
       return false;
     }
   }

@@ -1,5 +1,6 @@
 /// Page Content Service
 /// Service for fetching and managing CMS page content
+library;
 
 import 'package:logging/logging.dart';
 import '../api/api_client.dart';

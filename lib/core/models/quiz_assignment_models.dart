@@ -1,6 +1,7 @@
 /// Quiz and Assignment Models
 /// Models for quiz content, questions, assignments, and submissions
 /// Matches backend schemas
+library;
 
 import 'package:flutter/material.dart';
 
