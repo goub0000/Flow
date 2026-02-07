@@ -87,12 +87,14 @@ class _AdminDataTableState<T> extends State<AdminDataTable<T>> {
         // Table
         Expanded(
           child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width - 350,
-              ),
-              child: DataTable(
+            // Enable vertical scrolling for the table
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width - 350,
+                ),
+                child: DataTable(
                 showCheckboxColumn: widget.enableSelection,
                 sortColumnIndex: _sortColumnIndex,
                 sortAscending: _sortAscending,
@@ -171,6 +173,7 @@ class _AdminDataTableState<T> extends State<AdminDataTable<T>> {
                   );
                 }).toList(),
               ),
+            ),
             ),
           ),
         ),
