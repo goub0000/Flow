@@ -441,12 +441,133 @@ final adminRecommendersProvider = Provider<List<UserModel>>((ref) {
   return notifier.getUsersByRole('recommender');
 });
 
-/// Provider for admin users list (all admin roles)
+/// State class for admin users (from admin_users table)
+class AdminAdminsState {
+  final List<UserModel> admins;
+  final bool isLoading;
+  final String? error;
+
+  const AdminAdminsState({
+    this.admins = const [],
+    this.isLoading = false,
+    this.error,
+  });
+
+  AdminAdminsState copyWith({
+    List<UserModel>? admins,
+    bool? isLoading,
+    String? error,
+  }) {
+    return AdminAdminsState(
+      admins: admins ?? this.admins,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
+}
+
+/// StateNotifier for admin users (from admin_users table)
+class AdminAdminsNotifier extends StateNotifier<AdminAdminsState> {
+  final ApiClient _apiClient;
+
+  AdminAdminsNotifier(this._apiClient) : super(const AdminAdminsState()) {
+    fetchAdminUsers();
+  }
+
+  /// Fetch admin users from /admin/users/admins endpoint
+  Future<void> fetchAdminUsers() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.admin}/users/admins',
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      if (response.success && response.data != null) {
+        final adminsData = response.data!['admins'] as List<dynamic>? ?? [];
+
+        final admins = adminsData.map((adminData) {
+          try {
+            final roleString = adminData['admin_role'] as String?;
+            final activeRole = _parseAdminRole(roleString);
+
+            return UserModel(
+              id: adminData['id'] as String? ?? '',
+              email: adminData['email'] as String? ?? '',
+              displayName: adminData['display_name'] as String? ?? 'Unknown Admin',
+              photoUrl: null,
+              phoneNumber: null,
+              activeRole: activeRole,
+              availableRoles: [activeRole],
+              createdAt: adminData['created_at'] != null
+                  ? DateTime.parse(adminData['created_at'] as String)
+                  : DateTime.now(),
+              lastLoginAt: null,
+              isEmailVerified: true,
+              isPhoneVerified: false,
+              metadata: {
+                'isActive': adminData['is_active'] ?? true,
+                'adminRole': roleString,
+                'permissions': adminData['permissions'],
+                'regionalScope': adminData['regional_scope'],
+              },
+            );
+          } catch (e) {
+            return null;
+          }
+        }).whereType<UserModel>().toList();
+
+        state = state.copyWith(
+          admins: admins,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          error: response.message ?? 'Failed to fetch admin users',
+          isLoading: false,
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        error: 'Failed to fetch admin users: ${e.toString()}',
+        isLoading: false,
+      );
+    }
+  }
+
+  UserRole _parseAdminRole(String? roleString) {
+    if (roleString == null) return UserRole.superAdmin;
+
+    switch (roleString.toLowerCase()) {
+      case 'superadmin':
+        return UserRole.superAdmin;
+      case 'regionaladmin':
+        return UserRole.regionalAdmin;
+      case 'contentadmin':
+        return UserRole.contentAdmin;
+      case 'supportadmin':
+        return UserRole.supportAdmin;
+      case 'financeadmin':
+        return UserRole.financeAdmin;
+      case 'analyticsadmin':
+        return UserRole.analyticsAdmin;
+      default:
+        return UserRole.superAdmin;
+    }
+  }
+}
+
+/// Provider for admin admins state notifier
+final adminAdminsStateProvider = StateNotifierProvider<AdminAdminsNotifier, AdminAdminsState>((ref) {
+  final apiClient = ref.watch(apiClientProvider);
+  return AdminAdminsNotifier(apiClient);
+});
+
+/// Provider for admin users list (all admin roles) - fetches from admin_users table
 final adminAdminsProvider = Provider<List<UserModel>>((ref) {
-  // Watch state to trigger rebuilds when users change
-  ref.watch(adminUsersProvider);
-  final notifier = ref.read(adminUsersProvider.notifier);
-  return notifier.getAdminUsers();
+  final state = ref.watch(adminAdminsStateProvider);
+  return state.admins;
 });
 
 /// Provider for checking if users are loading

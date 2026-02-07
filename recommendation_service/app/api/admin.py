@@ -63,7 +63,7 @@ def run_enrichment_task(limit: Optional[int], priority_high_only: bool, rate_lim
 
         logger.info(f"Starting data enrichment (limit={limit}, priority_high={priority_high_only})")
 
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         orchestrator = AutoFillOrchestrator(db, rate_limit_delay=rate_limit_delay)
 
         # Determine priority fields
@@ -170,7 +170,7 @@ async def analyze_null_values(
     - priority: Field priority (1=HIGH, 2=MEDIUM, 3=LOW)
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         orchestrator = AutoFillOrchestrator(db)
 
         analysis = orchestrator.analyze_null_values()
@@ -654,7 +654,7 @@ async def get_recent_activity(
     ```
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Build query
         query = db.table('activity_log').select('*', count='exact')
@@ -732,7 +732,7 @@ async def get_activity_stats(
     - recent_applications: Number of recent application submissions
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Get current time boundaries
         now = datetime.utcnow()
@@ -878,7 +878,7 @@ async def clear_all_courses(
         )
 
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Get count before deletion
         count_response = db.table('courses').select('id', count='exact').execute()
@@ -917,7 +917,7 @@ async def get_courses_count(
     - by_status: Breakdown by status (draft, published, archived)
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Get total count
         total_response = db.table('courses').select('id', count='exact').execute()
@@ -966,7 +966,7 @@ async def get_user_activity(
     - List of activity log entries for the user
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         response = db.table('activity_log').select('*').eq(
             'user_id', user_id
@@ -1069,7 +1069,7 @@ async def get_user_growth_analytics(
     - average_per_period: Average users registered per month
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         now = datetime.now(timezone.utc)
 
         # Determine time range
@@ -1198,7 +1198,7 @@ async def get_role_distribution_analytics(
     - role_percentages: Percentage breakdown by role
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Get all users with roles
         response = db.table('users').select('active_role').execute()
@@ -1306,7 +1306,8 @@ async def get_all_users_for_admin(
     - total: Total count of users
     """
     try:
-        db = get_supabase()
+        # Use admin client to bypass RLS - admins need to see all users
+        db = get_supabase_admin()
 
         # Build query
         query = db.table('users').select('*')
@@ -1380,7 +1381,7 @@ async def get_enhanced_metrics(
     - Percentage changes for all metrics
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         now = datetime.utcnow()
 
         # Time boundaries
@@ -1571,7 +1572,7 @@ async def get_all_content_for_admin(
     - stats: Counts by status
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Build query for courses
         query = db.table('courses').select('*')
@@ -1656,7 +1657,7 @@ async def get_content_statistics(
     - Counts by category
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Get all courses
         response = db.table('courses').select('status, category, course_type').execute()
@@ -1720,7 +1721,7 @@ async def update_content_status(
     - Success message and updated content
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         new_status = status_update.get('status', '').lower()
 
         if new_status not in ['draft', 'published', 'archived', 'pending']:
@@ -1780,7 +1781,7 @@ async def delete_content(
     - Success message
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Soft delete by setting status to archived
         response = db.table('courses').update({
@@ -1845,7 +1846,7 @@ async def create_content(
     - Created content item
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         import uuid
 
         # Build content data with valid constraint values
@@ -1965,7 +1966,7 @@ async def assign_content(
     - List of created assignments
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         import uuid
 
         # Verify content exists
@@ -2125,7 +2126,7 @@ async def get_content_assignments(
     - List of assignments with target details
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Get content title
         content_response = db.table('courses').select('title').eq('id', content_id).single().execute()
@@ -2204,7 +2205,7 @@ async def remove_content_assignment(
     - Success message
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         response = db.table('content_assignments').delete().eq('id', assignment_id).execute()
 
@@ -2292,7 +2293,7 @@ async def get_support_tickets(
     **Admin Only** - Returns all support tickets with filtering options.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Build query
         query = db.table('support_tickets').select('*')
@@ -2380,7 +2381,7 @@ async def create_support_ticket(
     **Admin Only** - Create ticket on behalf of user or system.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         import uuid
 
         # Get user info if user_id provided
@@ -2441,7 +2442,7 @@ async def update_ticket_status(
     **Admin Only** - Change ticket status (open, in_progress, resolved, closed).
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         valid_statuses = ['open', 'in_progress', 'resolved', 'closed']
 
         if request.status.lower() not in valid_statuses:
@@ -2494,7 +2495,7 @@ async def assign_ticket(
     **Admin Only** - Assign ticket to a support team member.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         update_data = {
             'assigned_to': request.assigned_to,
@@ -2536,7 +2537,7 @@ async def get_ticket_details(
     **Admin Only** - Get full ticket details including history.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         response = db.table('support_tickets').select('*').eq('id', ticket_id).single().execute()
 
@@ -2641,7 +2642,7 @@ async def get_transactions(
     **Admin Only** - Returns all financial transactions with filtering.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Build query
         query = db.table('transactions').select('*')
@@ -2721,7 +2722,7 @@ async def get_finance_stats(
     **Admin Only** - Returns aggregated financial statistics.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         now = datetime.utcnow()
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
         week_start = today_start - timedelta(days=today_start.weekday())
@@ -2843,7 +2844,7 @@ async def get_campaigns(
     **Admin Only** - Returns all campaigns with filtering options.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
 
         # Build query
         query = db.table('communication_campaigns').select('*')
@@ -2915,7 +2916,7 @@ async def create_campaign(
     **Admin Only** - Create email, notification, or announcement campaign.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         import uuid
 
         campaign_data = {
@@ -2966,7 +2967,7 @@ async def send_announcement(
     **Admin Only** - Send announcement to all users or specific roles.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         import uuid
 
         # Determine target users
@@ -3033,7 +3034,7 @@ async def update_campaign_status(
     **Admin Only** - Change campaign status.
     """
     try:
-        db = get_supabase()
+        db = get_supabase_admin()  # Admin endpoints bypass RLS
         new_status = status_update.get('status', '').lower()
 
         valid_statuses = ['draft', 'scheduled', 'sent', 'cancelled']
