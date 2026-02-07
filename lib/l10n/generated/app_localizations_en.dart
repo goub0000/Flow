@@ -15602,373 +15602,353 @@ class AppLocalizationsEn extends AppLocalizations {
       'Admin Support Ticket Total Resolved';
 
   @override
-  String get adminSystemApiBaseUrl => 'Admin System Api Base Url';
+  String get adminSystemApiBaseUrl => 'API Base URL';
 
   @override
-  String get adminSystemApiBaseUrlDesc => 'Admin System Api Base Url Desc';
+  String get adminSystemApiBaseUrlDesc => 'The base URL for the API endpoints';
 
   @override
-  String get adminSystemApiKey => 'Admin System Api Key';
+  String get adminSystemApiKey => 'API Key';
 
   @override
-  String get adminSystemApiRateLimiting => 'Admin System Api Rate Limiting';
+  String get adminSystemApiRateLimiting => 'Enable Rate Limiting';
 
   @override
   String get adminSystemApiRateLimitingDesc =>
-      'Admin System Api Rate Limiting Desc';
+      'Limit API requests to prevent abuse';
 
   @override
   String get adminSystemApiSettingsSubtitle =>
-      'Admin System Api Settings Subtitle';
+      'Configure API endpoints and third-party integrations';
 
   @override
-  String get adminSystemApiSettingsTitle => 'Admin System Api Settings Title';
+  String get adminSystemApiSettingsTitle => 'API & Integrations';
 
   @override
-  String get adminSystemApiVersion => 'Admin System Api Version';
+  String get adminSystemApiVersion => 'API Version';
 
   @override
-  String get adminSystemApiVersionDesc => 'Admin System Api Version Desc';
+  String get adminSystemApiVersionDesc => 'Current API version in use';
 
   @override
-  String get adminSystemApplicationName => 'Admin System Application Name';
+  String get adminSystemApplicationName => 'Application Name';
 
   @override
   String get adminSystemApplicationNameDesc =>
-      'Admin System Application Name Desc';
+      'The display name of your application';
 
   @override
-  String get adminSystemApplicationSubmissions =>
-      'Admin System Application Submissions';
+  String get adminSystemApplicationSubmissions => 'Application Submissions';
 
   @override
   String get adminSystemApplicationSubmissionsDesc =>
-      'Admin System Application Submissions Desc';
+      'Allow students to submit university applications';
 
   @override
-  String get adminSystemConsumerKey => 'Admin System Consumer Key';
+  String get adminSystemConsumerKey => 'Consumer Key';
 
   @override
-  String get adminSystemConsumerSecret => 'Admin System Consumer Secret';
+  String get adminSystemConsumerSecret => 'Consumer Secret';
 
   @override
-  String get adminSystemDefaultCurrency => 'Admin System Default Currency';
+  String get adminSystemDefaultCurrency => 'Default Currency';
 
   @override
   String get adminSystemDefaultCurrencyDesc =>
-      'Admin System Default Currency Desc';
+      'Default currency for transactions';
 
   @override
-  String get adminSystemDefaultLanguage => 'Admin System Default Language';
+  String get adminSystemDefaultLanguage => 'Default Language';
 
   @override
   String get adminSystemDefaultLanguageDesc =>
-      'Admin System Default Language Desc';
+      'Default language for the platform';
 
   @override
-  String get adminSystemDefaultRegion => 'Admin System Default Region';
+  String get adminSystemDefaultRegion => 'Default Region';
 
   @override
-  String get adminSystemDefaultRegionDesc => 'Admin System Default Region Desc';
+  String get adminSystemDefaultRegionDesc => 'Default region for new users';
 
   @override
-  String get adminSystemDocumentUpload => 'Admin System Document Upload';
+  String get adminSystemDocumentUpload => 'Document Upload';
 
   @override
-  String get adminSystemDocumentUploadDesc =>
-      'Admin System Document Upload Desc';
+  String get adminSystemDocumentUploadDesc => 'Allow users to upload documents';
 
   @override
-  String get adminSystemEmailApiKeyDesc => 'Admin System Email Api Key Desc';
+  String get adminSystemEmailApiKeyDesc =>
+      'API key for the email service provider';
 
   @override
-  String get adminSystemEmailNotifications =>
-      'Admin System Email Notifications';
+  String get adminSystemEmailNotifications => 'Email Notifications';
 
   @override
   String get adminSystemEmailNotificationsDesc =>
-      'Admin System Email Notifications Desc';
+      'Send notifications via email';
 
   @override
-  String get adminSystemEmailService => 'Admin System Email Service';
+  String get adminSystemEmailService => 'Email Service';
 
   @override
-  String get adminSystemEmailServiceDesc => 'Admin System Email Service Desc';
+  String get adminSystemEmailServiceDesc => 'Email service provider to use';
 
   @override
   String get adminSystemEmailSettingsSubtitle =>
-      'Admin System Email Settings Subtitle';
+      'Configure email service provider and templates';
 
   @override
-  String get adminSystemEmailSettingsTitle =>
-      'Admin System Email Settings Title';
+  String get adminSystemEmailSettingsTitle => 'Email Settings';
 
   @override
-  String get adminSystemEmailVerification => 'Admin System Email Verification';
+  String get adminSystemEmailVerification => 'Email Verification';
 
   @override
   String get adminSystemEmailVerificationDesc =>
-      'Admin System Email Verification Desc';
+      'Require email verification for new accounts';
 
   @override
-  String get adminSystemEnableCardPayments =>
-      'Admin System Enable Card Payments';
+  String get adminSystemEnableCardPayments => 'Enable Card Payments';
 
   @override
   String get adminSystemEnableCardPaymentsDesc =>
-      'Admin System Enable Card Payments Desc';
+      'Accept credit/debit card payments';
 
   @override
-  String get adminSystemEnableMpesa => 'Admin System Enable Mpesa';
+  String get adminSystemEnableMpesa => 'Enable M-Pesa';
 
   @override
-  String get adminSystemEnableMpesaDesc => 'Admin System Enable Mpesa Desc';
+  String get adminSystemEnableMpesaDesc =>
+      'Accept M-Pesa mobile money payments';
 
   @override
   String get adminSystemFeatureFlagsSubtitle =>
-      'Admin System Feature Flags Subtitle';
+      'Enable or disable platform features';
 
   @override
-  String get adminSystemFeatureFlagsTitle => 'Admin System Feature Flags Title';
+  String get adminSystemFeatureFlagsTitle => 'Feature Flags';
 
   @override
-  String get adminSystemFromEmail => 'Admin System From Email';
+  String get adminSystemFromEmail => 'From Email';
 
   @override
-  String get adminSystemFromEmailDesc => 'Admin System From Email Desc';
+  String get adminSystemFromEmailDesc => 'Email address for outgoing emails';
 
   @override
-  String get adminSystemFromName => 'Admin System From Name';
+  String get adminSystemFromName => 'From Name';
 
   @override
-  String get adminSystemFromNameDesc => 'Admin System From Name Desc';
+  String get adminSystemFromNameDesc => 'Display name for outgoing emails';
 
   @override
   String get adminSystemGeneralSettingsSubtitle =>
-      'Admin System General Settings Subtitle';
+      'Configure basic application settings';
 
   @override
-  String get adminSystemGeneralSettingsTitle =>
-      'Admin System General Settings Title';
+  String get adminSystemGeneralSettingsTitle => 'General Settings';
 
   @override
-  String get adminSystemGoogleAnalyticsId => 'Admin System Google Analytics Id';
+  String get adminSystemGoogleAnalyticsId => 'Google Analytics ID';
 
   @override
-  String get adminSystemGoogleAnalyticsIdDesc =>
-      'Admin System Google Analytics Id Desc';
+  String get adminSystemGoogleAnalyticsIdDesc => 'Google Analytics tracking ID';
 
   @override
   String get adminSystemMpesaConsumerKeyDesc =>
-      'Admin System Mpesa Consumer Key Desc';
+      'Safaricom M-Pesa API consumer key';
 
   @override
   String get adminSystemMpesaConsumerSecretDesc =>
-      'Admin System Mpesa Consumer Secret Desc';
+      'Safaricom M-Pesa API consumer secret';
 
   @override
-  String get adminSystemMpesaShortcodeDesc =>
-      'Admin System Mpesa Shortcode Desc';
+  String get adminSystemMpesaShortcodeDesc => 'M-Pesa business shortcode';
 
   @override
-  String get adminSystemNavApiIntegrations =>
-      'Admin System Nav Api Integrations';
+  String get adminSystemNavApiIntegrations => 'API & Integrations';
 
   @override
-  String get adminSystemNavBackupRecovery => 'Admin System Nav Backup Recovery';
+  String get adminSystemNavBackupRecovery => 'Backup & Recovery';
 
   @override
-  String get adminSystemNavEmailSettings => 'Admin System Nav Email Settings';
+  String get adminSystemNavEmailSettings => 'Email Settings';
 
   @override
-  String get adminSystemNavFeatureFlags => 'Admin System Nav Feature Flags';
+  String get adminSystemNavFeatureFlags => 'Feature Flags';
 
   @override
-  String get adminSystemNavGeneral => 'Admin System Nav General';
+  String get adminSystemNavGeneral => 'General';
 
   @override
-  String get adminSystemNavPaymentGateways =>
-      'Admin System Nav Payment Gateways';
+  String get adminSystemNavPaymentGateways => 'Payment Gateways';
 
   @override
-  String get adminSystemNavSecurity => 'Admin System Nav Security';
+  String get adminSystemNavSecurity => 'Security';
 
   @override
-  String get adminSystemNavSmsSettings => 'Admin System Nav Sms Settings';
+  String get adminSystemNavSmsSettings => 'SMS Settings';
 
   @override
-  String get adminSystemPaymentProcessing => 'Admin System Payment Processing';
+  String get adminSystemPaymentProcessing => 'Payment Processing';
 
   @override
   String get adminSystemPaymentProcessingDesc =>
-      'Admin System Payment Processing Desc';
+      'Enable payment processing for fees';
 
   @override
-  String get adminSystemPaymentProcessor => 'Admin System Payment Processor';
+  String get adminSystemPaymentProcessor => 'Payment Processor';
 
   @override
-  String get adminSystemPaymentProcessorDesc =>
-      'Admin System Payment Processor Desc';
+  String get adminSystemPaymentProcessorDesc => 'Card payment processor to use';
 
   @override
   String get adminSystemPaymentSettingsSubtitle =>
-      'Admin System Payment Settings Subtitle';
+      'Configure payment gateways and processors';
 
   @override
-  String get adminSystemPaymentSettingsTitle =>
-      'Admin System Payment Settings Title';
+  String get adminSystemPaymentSettingsTitle => 'Payment Settings';
 
   @override
-  String get adminSystemPublishableKey => 'Admin System Publishable Key';
+  String get adminSystemPublishableKey => 'Publishable Key';
 
   @override
   String get adminSystemPublishableKeyDesc =>
-      'Admin System Publishable Key Desc';
+      'Public API key for client-side use';
 
   @override
-  String get adminSystemPushNotifications => 'Admin System Push Notifications';
+  String get adminSystemPushNotifications => 'Push Notifications';
 
   @override
   String get adminSystemPushNotificationsDesc =>
-      'Admin System Push Notifications Desc';
+      'Send push notifications to mobile apps';
 
   @override
-  String get adminSystemRecommendations => 'Admin System Recommendations';
+  String get adminSystemRecommendations => 'Recommendations';
 
   @override
   String get adminSystemRecommendationsDesc =>
-      'Admin System Recommendations Desc';
+      'Enable AI-powered university recommendations';
 
   @override
-  String get adminSystemSecretKey => 'Admin System Secret Key';
+  String get adminSystemSecretKey => 'Secret Key';
 
   @override
-  String get adminSystemSecretKeyDesc => 'Admin System Secret Key Desc';
+  String get adminSystemSecretKeyDesc => 'Secret API key for server-side use';
 
   @override
-  String get adminSystemSectionApiConfiguration =>
-      'Admin System Section Api Configuration';
+  String get adminSystemSectionApiConfiguration => 'API Configuration';
 
   @override
-  String get adminSystemSectionApplication =>
-      'Admin System Section Application';
+  String get adminSystemSectionApplication => 'Application';
 
   @override
-  String get adminSystemSectionApplicationFeatures =>
-      'Admin System Section Application Features';
+  String get adminSystemSectionApplicationFeatures => 'Application Features';
 
   @override
-  String get adminSystemSectionCardPayments =>
-      'Admin System Section Card Payments';
+  String get adminSystemSectionCardPayments => 'Card Payments';
 
   @override
-  String get adminSystemSectionCommunication =>
-      'Admin System Section Communication';
+  String get adminSystemSectionCommunication => 'Communication';
 
   @override
-  String get adminSystemSectionEmailProvider =>
-      'Admin System Section Email Provider';
+  String get adminSystemSectionEmailProvider => 'Email Provider';
 
   @override
-  String get adminSystemSectionMpesa => 'Admin System Section Mpesa';
+  String get adminSystemSectionMpesa => 'M-Pesa';
 
   @override
-  String get adminSystemSectionRegional => 'Admin System Section Regional';
+  String get adminSystemSectionRegional => 'Regional';
 
   @override
-  String get adminSystemSectionSmsProvider =>
-      'Admin System Section Sms Provider';
+  String get adminSystemSectionSmsProvider => 'SMS Provider';
 
   @override
-  String get adminSystemSectionThirdPartyServices =>
-      'Admin System Section Third Party Services';
+  String get adminSystemSectionThirdPartyServices => 'Third-Party Services';
 
   @override
-  String get adminSystemSectionUserFeatures =>
-      'Admin System Section User Features';
+  String get adminSystemSectionUserFeatures => 'User Features';
 
   @override
-  String get adminSystemSentryDsn => 'Admin System Sentry Dsn';
+  String get adminSystemSentryDsn => 'Sentry DSN';
 
   @override
-  String get adminSystemSentryDsnDesc => 'Admin System Sentry Dsn Desc';
+  String get adminSystemSentryDsnDesc => 'Sentry error tracking DSN';
 
   @override
   String get adminSystemSettingsSavedError =>
-      'Admin System Settings Saved Error';
+      'Failed to save settings. Please try again.';
 
   @override
-  String get adminSystemSettingsSavedSuccess =>
-      'Admin System Settings Saved Success';
+  String get adminSystemSettingsSavedSuccess => 'Settings saved successfully';
 
   @override
-  String get adminSystemSettingsSubtitle => 'Admin System Settings Subtitle';
+  String get adminSystemSettingsSubtitle => 'Manage system-wide configuration';
 
   @override
-  String get adminSystemSettingsTitle => 'Admin System Settings Title';
+  String get adminSystemSettingsTitle => 'System Settings';
 
   @override
-  String get adminSystemShortcode => 'Admin System Shortcode';
+  String get adminSystemShortcode => 'Shortcode';
 
   @override
-  String get adminSystemSmsApiKeyDesc => 'Admin System Sms Api Key Desc';
+  String get adminSystemSmsApiKeyDesc => 'API key for the SMS service provider';
 
   @override
-  String get adminSystemSmsNotifications => 'Admin System Sms Notifications';
+  String get adminSystemSmsNotifications => 'SMS Notifications';
 
   @override
-  String get adminSystemSmsNotificationsDesc =>
-      'Admin System Sms Notifications Desc';
+  String get adminSystemSmsNotificationsDesc => 'Send notifications via SMS';
 
   @override
-  String get adminSystemSmsSenderId => 'Admin System Sms Sender Id';
+  String get adminSystemSmsSenderId => 'Sender ID';
 
   @override
-  String get adminSystemSmsSenderIdDesc => 'Admin System Sms Sender Id Desc';
+  String get adminSystemSmsSenderIdDesc =>
+      'Sender ID for outgoing SMS messages';
 
   @override
-  String get adminSystemSmsService => 'Admin System Sms Service';
+  String get adminSystemSmsService => 'SMS Service';
 
   @override
-  String get adminSystemSmsServiceDesc => 'Admin System Sms Service Desc';
+  String get adminSystemSmsServiceDesc => 'SMS service provider to use';
 
   @override
   String get adminSystemSmsSettingsSubtitle =>
-      'Admin System Sms Settings Subtitle';
+      'Configure SMS service provider and sender ID';
 
   @override
-  String get adminSystemSmsSettingsTitle => 'Admin System Sms Settings Title';
+  String get adminSystemSmsSettingsTitle => 'SMS Settings';
 
   @override
-  String get adminSystemSocialLogin => 'Admin System Social Login';
+  String get adminSystemSocialLogin => 'Social Login';
 
   @override
-  String get adminSystemSocialLoginDesc => 'Admin System Social Login Desc';
+  String get adminSystemSocialLoginDesc =>
+      'Allow login with Google, Facebook, etc.';
 
   @override
-  String get adminSystemSupportEmail => 'Admin System Support Email';
+  String get adminSystemSupportEmail => 'Support Email';
 
   @override
-  String get adminSystemSupportEmailDesc => 'Admin System Support Email Desc';
+  String get adminSystemSupportEmailDesc => 'Email address for user support';
 
   @override
-  String get adminSystemSupportPhone => 'Admin System Support Phone';
+  String get adminSystemSupportPhone => 'Support Phone';
 
   @override
-  String get adminSystemSupportPhoneDesc => 'Admin System Support Phone Desc';
+  String get adminSystemSupportPhoneDesc => 'Phone number for user support';
 
   @override
-  String get adminSystemUnsavedChanges => 'Admin System Unsaved Changes';
+  String get adminSystemUnsavedChanges => 'You have unsaved changes';
 
   @override
-  String get adminSystemUserRegistration => 'Admin System User Registration';
+  String get adminSystemUserRegistration => 'User Registration';
 
   @override
-  String get adminSystemUserRegistrationDesc =>
-      'Admin System User Registration Desc';
+  String get adminSystemUserRegistrationDesc => 'Allow new users to register';
 
   @override
-  String get adminSystemViewAuditLogs => 'Admin System View Audit Logs';
+  String get adminSystemViewAuditLogs => 'View Audit Logs';
 
   @override
   String get adminUserDetailActivate => 'Admin User Detail Activate';

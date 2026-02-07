@@ -28383,649 +28383,649 @@ abstract class AppLocalizations {
   /// No description provided for @adminSystemApiBaseUrl.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Base Url'**
+  /// **'API Base URL'**
   String get adminSystemApiBaseUrl;
 
   /// No description provided for @adminSystemApiBaseUrlDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Base Url Desc'**
+  /// **'The base URL for the API endpoints'**
   String get adminSystemApiBaseUrlDesc;
 
   /// No description provided for @adminSystemApiKey.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Key'**
+  /// **'API Key'**
   String get adminSystemApiKey;
 
   /// No description provided for @adminSystemApiRateLimiting.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Rate Limiting'**
+  /// **'Enable Rate Limiting'**
   String get adminSystemApiRateLimiting;
 
   /// No description provided for @adminSystemApiRateLimitingDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Rate Limiting Desc'**
+  /// **'Limit API requests to prevent abuse'**
   String get adminSystemApiRateLimitingDesc;
 
   /// No description provided for @adminSystemApiSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Settings Subtitle'**
+  /// **'Configure API endpoints and third-party integrations'**
   String get adminSystemApiSettingsSubtitle;
 
   /// No description provided for @adminSystemApiSettingsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Settings Title'**
+  /// **'API & Integrations'**
   String get adminSystemApiSettingsTitle;
 
   /// No description provided for @adminSystemApiVersion.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Version'**
+  /// **'API Version'**
   String get adminSystemApiVersion;
 
   /// No description provided for @adminSystemApiVersionDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Api Version Desc'**
+  /// **'Current API version in use'**
   String get adminSystemApiVersionDesc;
 
   /// No description provided for @adminSystemApplicationName.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Application Name'**
+  /// **'Application Name'**
   String get adminSystemApplicationName;
 
   /// No description provided for @adminSystemApplicationNameDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Application Name Desc'**
+  /// **'The display name of your application'**
   String get adminSystemApplicationNameDesc;
 
   /// No description provided for @adminSystemApplicationSubmissions.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Application Submissions'**
+  /// **'Application Submissions'**
   String get adminSystemApplicationSubmissions;
 
   /// No description provided for @adminSystemApplicationSubmissionsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Application Submissions Desc'**
+  /// **'Allow students to submit university applications'**
   String get adminSystemApplicationSubmissionsDesc;
 
   /// No description provided for @adminSystemConsumerKey.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Consumer Key'**
+  /// **'Consumer Key'**
   String get adminSystemConsumerKey;
 
   /// No description provided for @adminSystemConsumerSecret.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Consumer Secret'**
+  /// **'Consumer Secret'**
   String get adminSystemConsumerSecret;
 
   /// No description provided for @adminSystemDefaultCurrency.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Default Currency'**
+  /// **'Default Currency'**
   String get adminSystemDefaultCurrency;
 
   /// No description provided for @adminSystemDefaultCurrencyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Default Currency Desc'**
+  /// **'Default currency for transactions'**
   String get adminSystemDefaultCurrencyDesc;
 
   /// No description provided for @adminSystemDefaultLanguage.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Default Language'**
+  /// **'Default Language'**
   String get adminSystemDefaultLanguage;
 
   /// No description provided for @adminSystemDefaultLanguageDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Default Language Desc'**
+  /// **'Default language for the platform'**
   String get adminSystemDefaultLanguageDesc;
 
   /// No description provided for @adminSystemDefaultRegion.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Default Region'**
+  /// **'Default Region'**
   String get adminSystemDefaultRegion;
 
   /// No description provided for @adminSystemDefaultRegionDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Default Region Desc'**
+  /// **'Default region for new users'**
   String get adminSystemDefaultRegionDesc;
 
   /// No description provided for @adminSystemDocumentUpload.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Document Upload'**
+  /// **'Document Upload'**
   String get adminSystemDocumentUpload;
 
   /// No description provided for @adminSystemDocumentUploadDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Document Upload Desc'**
+  /// **'Allow users to upload documents'**
   String get adminSystemDocumentUploadDesc;
 
   /// No description provided for @adminSystemEmailApiKeyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Api Key Desc'**
+  /// **'API key for the email service provider'**
   String get adminSystemEmailApiKeyDesc;
 
   /// No description provided for @adminSystemEmailNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Notifications'**
+  /// **'Email Notifications'**
   String get adminSystemEmailNotifications;
 
   /// No description provided for @adminSystemEmailNotificationsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Notifications Desc'**
+  /// **'Send notifications via email'**
   String get adminSystemEmailNotificationsDesc;
 
   /// No description provided for @adminSystemEmailService.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Service'**
+  /// **'Email Service'**
   String get adminSystemEmailService;
 
   /// No description provided for @adminSystemEmailServiceDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Service Desc'**
+  /// **'Email service provider to use'**
   String get adminSystemEmailServiceDesc;
 
   /// No description provided for @adminSystemEmailSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Settings Subtitle'**
+  /// **'Configure email service provider and templates'**
   String get adminSystemEmailSettingsSubtitle;
 
   /// No description provided for @adminSystemEmailSettingsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Settings Title'**
+  /// **'Email Settings'**
   String get adminSystemEmailSettingsTitle;
 
   /// No description provided for @adminSystemEmailVerification.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Verification'**
+  /// **'Email Verification'**
   String get adminSystemEmailVerification;
 
   /// No description provided for @adminSystemEmailVerificationDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Email Verification Desc'**
+  /// **'Require email verification for new accounts'**
   String get adminSystemEmailVerificationDesc;
 
   /// No description provided for @adminSystemEnableCardPayments.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Enable Card Payments'**
+  /// **'Enable Card Payments'**
   String get adminSystemEnableCardPayments;
 
   /// No description provided for @adminSystemEnableCardPaymentsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Enable Card Payments Desc'**
+  /// **'Accept credit/debit card payments'**
   String get adminSystemEnableCardPaymentsDesc;
 
   /// No description provided for @adminSystemEnableMpesa.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Enable Mpesa'**
+  /// **'Enable M-Pesa'**
   String get adminSystemEnableMpesa;
 
   /// No description provided for @adminSystemEnableMpesaDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Enable Mpesa Desc'**
+  /// **'Accept M-Pesa mobile money payments'**
   String get adminSystemEnableMpesaDesc;
 
   /// No description provided for @adminSystemFeatureFlagsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Feature Flags Subtitle'**
+  /// **'Enable or disable platform features'**
   String get adminSystemFeatureFlagsSubtitle;
 
   /// No description provided for @adminSystemFeatureFlagsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Feature Flags Title'**
+  /// **'Feature Flags'**
   String get adminSystemFeatureFlagsTitle;
 
   /// No description provided for @adminSystemFromEmail.
   ///
   /// In en, this message translates to:
-  /// **'Admin System From Email'**
+  /// **'From Email'**
   String get adminSystemFromEmail;
 
   /// No description provided for @adminSystemFromEmailDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System From Email Desc'**
+  /// **'Email address for outgoing emails'**
   String get adminSystemFromEmailDesc;
 
   /// No description provided for @adminSystemFromName.
   ///
   /// In en, this message translates to:
-  /// **'Admin System From Name'**
+  /// **'From Name'**
   String get adminSystemFromName;
 
   /// No description provided for @adminSystemFromNameDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System From Name Desc'**
+  /// **'Display name for outgoing emails'**
   String get adminSystemFromNameDesc;
 
   /// No description provided for @adminSystemGeneralSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System General Settings Subtitle'**
+  /// **'Configure basic application settings'**
   String get adminSystemGeneralSettingsSubtitle;
 
   /// No description provided for @adminSystemGeneralSettingsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System General Settings Title'**
+  /// **'General Settings'**
   String get adminSystemGeneralSettingsTitle;
 
   /// No description provided for @adminSystemGoogleAnalyticsId.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Google Analytics Id'**
+  /// **'Google Analytics ID'**
   String get adminSystemGoogleAnalyticsId;
 
   /// No description provided for @adminSystemGoogleAnalyticsIdDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Google Analytics Id Desc'**
+  /// **'Google Analytics tracking ID'**
   String get adminSystemGoogleAnalyticsIdDesc;
 
   /// No description provided for @adminSystemMpesaConsumerKeyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Mpesa Consumer Key Desc'**
+  /// **'Safaricom M-Pesa API consumer key'**
   String get adminSystemMpesaConsumerKeyDesc;
 
   /// No description provided for @adminSystemMpesaConsumerSecretDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Mpesa Consumer Secret Desc'**
+  /// **'Safaricom M-Pesa API consumer secret'**
   String get adminSystemMpesaConsumerSecretDesc;
 
   /// No description provided for @adminSystemMpesaShortcodeDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Mpesa Shortcode Desc'**
+  /// **'M-Pesa business shortcode'**
   String get adminSystemMpesaShortcodeDesc;
 
   /// No description provided for @adminSystemNavApiIntegrations.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Api Integrations'**
+  /// **'API & Integrations'**
   String get adminSystemNavApiIntegrations;
 
   /// No description provided for @adminSystemNavBackupRecovery.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Backup Recovery'**
+  /// **'Backup & Recovery'**
   String get adminSystemNavBackupRecovery;
 
   /// No description provided for @adminSystemNavEmailSettings.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Email Settings'**
+  /// **'Email Settings'**
   String get adminSystemNavEmailSettings;
 
   /// No description provided for @adminSystemNavFeatureFlags.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Feature Flags'**
+  /// **'Feature Flags'**
   String get adminSystemNavFeatureFlags;
 
   /// No description provided for @adminSystemNavGeneral.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav General'**
+  /// **'General'**
   String get adminSystemNavGeneral;
 
   /// No description provided for @adminSystemNavPaymentGateways.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Payment Gateways'**
+  /// **'Payment Gateways'**
   String get adminSystemNavPaymentGateways;
 
   /// No description provided for @adminSystemNavSecurity.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Security'**
+  /// **'Security'**
   String get adminSystemNavSecurity;
 
   /// No description provided for @adminSystemNavSmsSettings.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Nav Sms Settings'**
+  /// **'SMS Settings'**
   String get adminSystemNavSmsSettings;
 
   /// No description provided for @adminSystemPaymentProcessing.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Payment Processing'**
+  /// **'Payment Processing'**
   String get adminSystemPaymentProcessing;
 
   /// No description provided for @adminSystemPaymentProcessingDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Payment Processing Desc'**
+  /// **'Enable payment processing for fees'**
   String get adminSystemPaymentProcessingDesc;
 
   /// No description provided for @adminSystemPaymentProcessor.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Payment Processor'**
+  /// **'Payment Processor'**
   String get adminSystemPaymentProcessor;
 
   /// No description provided for @adminSystemPaymentProcessorDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Payment Processor Desc'**
+  /// **'Card payment processor to use'**
   String get adminSystemPaymentProcessorDesc;
 
   /// No description provided for @adminSystemPaymentSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Payment Settings Subtitle'**
+  /// **'Configure payment gateways and processors'**
   String get adminSystemPaymentSettingsSubtitle;
 
   /// No description provided for @adminSystemPaymentSettingsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Payment Settings Title'**
+  /// **'Payment Settings'**
   String get adminSystemPaymentSettingsTitle;
 
   /// No description provided for @adminSystemPublishableKey.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Publishable Key'**
+  /// **'Publishable Key'**
   String get adminSystemPublishableKey;
 
   /// No description provided for @adminSystemPublishableKeyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Publishable Key Desc'**
+  /// **'Public API key for client-side use'**
   String get adminSystemPublishableKeyDesc;
 
   /// No description provided for @adminSystemPushNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Push Notifications'**
+  /// **'Push Notifications'**
   String get adminSystemPushNotifications;
 
   /// No description provided for @adminSystemPushNotificationsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Push Notifications Desc'**
+  /// **'Send push notifications to mobile apps'**
   String get adminSystemPushNotificationsDesc;
 
   /// No description provided for @adminSystemRecommendations.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Recommendations'**
+  /// **'Recommendations'**
   String get adminSystemRecommendations;
 
   /// No description provided for @adminSystemRecommendationsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Recommendations Desc'**
+  /// **'Enable AI-powered university recommendations'**
   String get adminSystemRecommendationsDesc;
 
   /// No description provided for @adminSystemSecretKey.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Secret Key'**
+  /// **'Secret Key'**
   String get adminSystemSecretKey;
 
   /// No description provided for @adminSystemSecretKeyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Secret Key Desc'**
+  /// **'Secret API key for server-side use'**
   String get adminSystemSecretKeyDesc;
 
   /// No description provided for @adminSystemSectionApiConfiguration.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Api Configuration'**
+  /// **'API Configuration'**
   String get adminSystemSectionApiConfiguration;
 
   /// No description provided for @adminSystemSectionApplication.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Application'**
+  /// **'Application'**
   String get adminSystemSectionApplication;
 
   /// No description provided for @adminSystemSectionApplicationFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Application Features'**
+  /// **'Application Features'**
   String get adminSystemSectionApplicationFeatures;
 
   /// No description provided for @adminSystemSectionCardPayments.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Card Payments'**
+  /// **'Card Payments'**
   String get adminSystemSectionCardPayments;
 
   /// No description provided for @adminSystemSectionCommunication.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Communication'**
+  /// **'Communication'**
   String get adminSystemSectionCommunication;
 
   /// No description provided for @adminSystemSectionEmailProvider.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Email Provider'**
+  /// **'Email Provider'**
   String get adminSystemSectionEmailProvider;
 
   /// No description provided for @adminSystemSectionMpesa.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Mpesa'**
+  /// **'M-Pesa'**
   String get adminSystemSectionMpesa;
 
   /// No description provided for @adminSystemSectionRegional.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Regional'**
+  /// **'Regional'**
   String get adminSystemSectionRegional;
 
   /// No description provided for @adminSystemSectionSmsProvider.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Sms Provider'**
+  /// **'SMS Provider'**
   String get adminSystemSectionSmsProvider;
 
   /// No description provided for @adminSystemSectionThirdPartyServices.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section Third Party Services'**
+  /// **'Third-Party Services'**
   String get adminSystemSectionThirdPartyServices;
 
   /// No description provided for @adminSystemSectionUserFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Section User Features'**
+  /// **'User Features'**
   String get adminSystemSectionUserFeatures;
 
   /// No description provided for @adminSystemSentryDsn.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sentry Dsn'**
+  /// **'Sentry DSN'**
   String get adminSystemSentryDsn;
 
   /// No description provided for @adminSystemSentryDsnDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sentry Dsn Desc'**
+  /// **'Sentry error tracking DSN'**
   String get adminSystemSentryDsnDesc;
 
   /// No description provided for @adminSystemSettingsSavedError.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Settings Saved Error'**
+  /// **'Failed to save settings. Please try again.'**
   String get adminSystemSettingsSavedError;
 
   /// No description provided for @adminSystemSettingsSavedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Settings Saved Success'**
+  /// **'Settings saved successfully'**
   String get adminSystemSettingsSavedSuccess;
 
   /// No description provided for @adminSystemSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Settings Subtitle'**
+  /// **'Manage system-wide configuration'**
   String get adminSystemSettingsSubtitle;
 
   /// No description provided for @adminSystemSettingsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Settings Title'**
+  /// **'System Settings'**
   String get adminSystemSettingsTitle;
 
   /// No description provided for @adminSystemShortcode.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Shortcode'**
+  /// **'Shortcode'**
   String get adminSystemShortcode;
 
   /// No description provided for @adminSystemSmsApiKeyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Api Key Desc'**
+  /// **'API key for the SMS service provider'**
   String get adminSystemSmsApiKeyDesc;
 
   /// No description provided for @adminSystemSmsNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Notifications'**
+  /// **'SMS Notifications'**
   String get adminSystemSmsNotifications;
 
   /// No description provided for @adminSystemSmsNotificationsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Notifications Desc'**
+  /// **'Send notifications via SMS'**
   String get adminSystemSmsNotificationsDesc;
 
   /// No description provided for @adminSystemSmsSenderId.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Sender Id'**
+  /// **'Sender ID'**
   String get adminSystemSmsSenderId;
 
   /// No description provided for @adminSystemSmsSenderIdDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Sender Id Desc'**
+  /// **'Sender ID for outgoing SMS messages'**
   String get adminSystemSmsSenderIdDesc;
 
   /// No description provided for @adminSystemSmsService.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Service'**
+  /// **'SMS Service'**
   String get adminSystemSmsService;
 
   /// No description provided for @adminSystemSmsServiceDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Service Desc'**
+  /// **'SMS service provider to use'**
   String get adminSystemSmsServiceDesc;
 
   /// No description provided for @adminSystemSmsSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Settings Subtitle'**
+  /// **'Configure SMS service provider and sender ID'**
   String get adminSystemSmsSettingsSubtitle;
 
   /// No description provided for @adminSystemSmsSettingsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Sms Settings Title'**
+  /// **'SMS Settings'**
   String get adminSystemSmsSettingsTitle;
 
   /// No description provided for @adminSystemSocialLogin.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Social Login'**
+  /// **'Social Login'**
   String get adminSystemSocialLogin;
 
   /// No description provided for @adminSystemSocialLoginDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Social Login Desc'**
+  /// **'Allow login with Google, Facebook, etc.'**
   String get adminSystemSocialLoginDesc;
 
   /// No description provided for @adminSystemSupportEmail.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Support Email'**
+  /// **'Support Email'**
   String get adminSystemSupportEmail;
 
   /// No description provided for @adminSystemSupportEmailDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Support Email Desc'**
+  /// **'Email address for user support'**
   String get adminSystemSupportEmailDesc;
 
   /// No description provided for @adminSystemSupportPhone.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Support Phone'**
+  /// **'Support Phone'**
   String get adminSystemSupportPhone;
 
   /// No description provided for @adminSystemSupportPhoneDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Support Phone Desc'**
+  /// **'Phone number for user support'**
   String get adminSystemSupportPhoneDesc;
 
   /// No description provided for @adminSystemUnsavedChanges.
   ///
   /// In en, this message translates to:
-  /// **'Admin System Unsaved Changes'**
+  /// **'You have unsaved changes'**
   String get adminSystemUnsavedChanges;
 
   /// No description provided for @adminSystemUserRegistration.
   ///
   /// In en, this message translates to:
-  /// **'Admin System User Registration'**
+  /// **'User Registration'**
   String get adminSystemUserRegistration;
 
   /// No description provided for @adminSystemUserRegistrationDesc.
   ///
   /// In en, this message translates to:
-  /// **'Admin System User Registration Desc'**
+  /// **'Allow new users to register'**
   String get adminSystemUserRegistrationDesc;
 
   /// No description provided for @adminSystemViewAuditLogs.
   ///
   /// In en, this message translates to:
-  /// **'Admin System View Audit Logs'**
+  /// **'View Audit Logs'**
   String get adminSystemViewAuditLogs;
 
   /// No description provided for @adminUserDetailActivate.
